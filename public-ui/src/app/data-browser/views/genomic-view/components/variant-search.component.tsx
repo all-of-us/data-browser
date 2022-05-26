@@ -1,11 +1,10 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component'
+import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
-import { Spinner } from 'app/utils/spinner';
 import { ClrIcon } from 'app/utils/clr-icon';
+import { Spinner } from 'app/utils/spinner';
 import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
-import { Pointer } from 'highcharts';
 
 const styles = reactStyles({
     searchBar: {
@@ -92,17 +91,16 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         }
     }
     showFilter() {
-        this.setState({ filterShow: !this.state.filterShow })
+        this.setState({ filterShow: !this.state.filterShow });
     }
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
-        this.props.onFilterSubmit(filteredMetadata)
+        this.props.onFilterSubmit(filteredMetadata);
     }
 
     render() {
         const { searchWord, filterShow } = this.state;
         const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
@@ -117,12 +115,17 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
-            {(!loading && variantListSize) && <div onClick={() => this.showFilter()} style={styles.filterBtn}><ClrIcon shape="filter-2" /> Filter</div>}
+            {(!loading && variantListSize) && <div onClick={() => this.showFilter()}
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
-            <div style={styles.filterContainer}>{(!loading && filterShow) && <VariantFilterComponent filterMetadata={filterMetadata} onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}</div>
+            <div style={styles.filterContainer}>
+                {(!loading && filterShow) && <VariantFilterComponent
+                    filterMetadata={filterMetadata}
+                    onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
+            </div>
 
         </React.Fragment>;
     }

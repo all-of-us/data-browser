@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { ClrIcon } from 'app/utils/clr-icon';
-import { reactStyles } from 'app/utils';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
+import { reactStyles } from 'app/utils';
+import { ClrIcon } from 'app/utils/clr-icon';
+import * as React from 'react';
 
 const styles = reactStyles({
     filterItem: {
@@ -64,12 +64,12 @@ const styles = reactStyles({
     filterSlider: {
         padding: '1rem 0'
     }
-})
+});
 
 interface Props {
     filterItem: any;
     category: Cat;
-    onFilterChange: Function
+    onFilterChange: Function;
 }
 
 interface State {
@@ -81,17 +81,17 @@ interface State {
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
-    min:number;
-    max:number;
+    min: number;
+    max: number;
     constructor(props: Props) {
         super(props);
         this.state = {
             filterItemOpen: false,
-            filterItemState: props.filterItem || "",
-            filterCheckMap: props.filterItem || "",
+            filterItemState: props.filterItem || '',
+            filterCheckMap: props.filterItem || '',
             sliderMax: props.filterItem.max,
             sliderMin: props.filterItem.min
-        }
+        };
     }
 
     filterClick() {
@@ -100,31 +100,34 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
     filterBySearch(e) {
         if (e.target.value) {
-            this.setState({ filterItemState: this.state.filterItemState.filter(item => item.option && item.option.toLowerCase().startsWith(e.target.value)) })
+            this.setState({
+                filterItemState: this.state.filterItemState
+                    .filter(item => item.option && item.option.toLowerCase().startsWith(e.target.value))
+            });
         } else {
-            this.setState({ filterItemState: this.state.filterCheckMap })
+            this.setState({ filterItemState: this.state.filterCheckMap });
         }
     }
 
     selecting(value: boolean) {
         this.state.filterItemState.forEach(el => {
-            el.checked = value
+            el.checked = value;
         });
         this.setState({ filterItemState: this.state.filterItemState });
-        this.props.onFilterChange(this.state.filterItemState, this.props.category)
+        this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
     handleCheck(filteredItem) {
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
-        console.log(filtered,'filtered');
+        console.log(filtered, 'filtered');
         this.setState({
             filterItemState: filtered,
             filterCheckMap: filtered
         });
-        this.props.onFilterChange(filtered,this.props.category);
+        this.props.onFilterChange(filtered, this.props.category);
     }
 
     handleRangeSelect(event, isMax) {
-        const sliderValue = parseInt(event.target.value);
+        const sliderValue = Number(event.target.value);
         if (isMax) {
             this.state.filterItemState.max = sliderValue;
             this.max = sliderValue;
@@ -132,22 +135,24 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             this.state.filterItemState.min = sliderValue;
             this.min = sliderValue;
         }
-        this.props.onFilterChange(this.state.filterItemState,this.props.category);
+        this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
 
-    displayNumber(isMax){
+    displayNumber(isMax) {
+        
+        return String(this.state.filterItemState.min)
     }
 
     render(): React.ReactNode {
         const { category } = this.props;
-        const { filterItemOpen, filterItemState, sliderMin, sliderMax } = this.state;
+        const { filterItemOpen, filterItemState } = this.state;
         return <React.Fragment >
             <div onClick={() => this.filterClick()} style={styles.filterItem}>
                 <span>{category.display}</span>
                 <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
             </div>
             {(filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
-                <input style={styles.textFilter} type="input" onChange={(e) => this.filterBySearch(e)} />
+                <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
                 <div style={styles.selectContainer}>
                     <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
                     <span>|</span>
@@ -156,20 +161,25 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 {filterItemState.map((item: any, index: number) => {
                     const key = 'option' + index;
                     return <span style={styles.filterItemOption} key={key}>
-                        <input onChange={() => this.handleCheck(item)} id={item.option} style={styles.filterItemCheck} type="checkbox" name={item.option} checked={item.checked} />
+                        <input onChange={() => this.handleCheck(item)}
+                            id={item.option} style={styles.filterItemCheck} type='checkbox' name={item.option} checked={item.checked} />
                         <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
-                    </span>
+                    </span>;
                 })}
             </div> : <div>
                 {filterItemOpen && <div style={styles.filterItemForm}>
                     <label>min {this.displayNumber(false)} </label>
-                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq}  defaultValue={filterItemState.min} onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
+                    <input style={styles.filterSlider} type='range'
+                        step={filterItemState.maxFreq} defaultValue={filterItemState.min}
+                        onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
                     <label>max {this.displayNumber(true)}</label>
-                    <input style={styles.filterSlider} type="range" step={filterItemState.maxFreq} defaultValue={filterItemState.max} onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
+                    <input style={styles.filterSlider} type='range'
+                        step={filterItemState.maxFreq} defaultValue={filterItemState.max}
+                        onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
                 </div>}
             </div>
             }
-        </React.Fragment>
+        </React.Fragment>;
     }
 
 }

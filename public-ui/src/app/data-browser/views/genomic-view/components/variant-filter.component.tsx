@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { GenomicFilters } from 'publicGenerated';
+import { VariantFilterItemComponent } from 'app/data-browser/views/genomic-view/components/variant-filter-item.component';
 import { reactStyles } from 'app/utils';
-import { VariantFilterItemComponent } from 'app/data-browser/views/genomic-view/components/variant-filter-item.component'
+import { GenomicFilters } from 'publicGenerated';
+import * as React from 'react';
 
 const styles = reactStyles({
     filterBox: {
@@ -46,10 +46,10 @@ const styles = reactStyles({
         maxHeight: '340px',
         overflowY: 'scroll'
     }
-})
+});
 
 export interface Cat {
-    display: String,
+    display: String;
     field: String;
 }
 
@@ -80,10 +80,8 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         };
     }
     handleFilterChange(filteredItem: GenomicFilters, cat) {
-
         this.props.filterMetadata[cat.field] = filteredItem;
         this.setState({ filteredMetadata: this.props.filterMetadata });
-        // this.props.onFilterSubmit(this.props.filterMetadata);
     }
     submitFilter(filteredMetadata: GenomicFilters) {
         filteredMetadata = this.state.filteredMetadata;
@@ -97,7 +95,13 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             <div style={styles.filterItems}>
                 {filterCats.map((cat, index) => {
                     const key = 'cat' + index;
-                    { return filterMetadata && <VariantFilterItemComponent onFilterChange={(e, cat) => this.handleFilterChange(e, cat)} key={key} category={cat} filterItem={filterMetadata[cat.field.toString()]} /> }
+                    {
+                        return filterMetadata &&
+                            <VariantFilterItemComponent
+                                onFilterChange={(e) => this.handleFilterChange(e, cat)}
+                                key={key} category={cat}
+                                filterItem={filterMetadata[cat.field.toString()]} />;
+                    }
                 })
                 }
                 <div style={styles.actionBtnContainer}>
@@ -105,6 +109,6 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
             </div>
-        </div>
+        </div>;
     }
 }
