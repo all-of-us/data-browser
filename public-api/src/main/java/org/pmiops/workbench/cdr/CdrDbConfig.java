@@ -102,7 +102,7 @@ public class CdrDbConfig {
           log.info("using Tomcat pool for CDR data source, with minIdle: " +
             cdrPool.getMinIdle());
         } else {
-          log.warn("not using Tomcat pool or initializing pool configuration; " +
+          log.warning("not using Tomcat pool or initializing pool configuration; " +
               "this should only happen within tests");
         }
         cdrVersionDataSourceMap.put(dbCdrVersion.getCdrVersionId(), dataSource);
