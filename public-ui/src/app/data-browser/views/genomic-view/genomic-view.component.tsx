@@ -206,8 +206,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     getFilterMetadata(searchTerm: string) {
-        console.log(searchTerm, 'this is the searchterm');
-
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
                 this.setState({ filterMetadata: result });
