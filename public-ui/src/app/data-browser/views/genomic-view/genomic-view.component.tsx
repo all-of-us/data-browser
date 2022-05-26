@@ -209,7 +209,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
                 this.setState({ filterMetadata: result });
-                console.log(result, 'resullt');
             }
         ).catch(e => {
             console.log(e, 'error');
@@ -329,7 +328,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
         // console.log(searchRequest,"searchRequest222");
 
         genomicsApi().searchVariants(searchRequest).then(
-            results => {
+            results => {                
                 this.setState({
                     searchResults: results.items,
                     loadingResults: false
@@ -346,6 +345,8 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             rowCount: rowCount,
             filterMetadata: filteredMetadata
         };
+        console.log(searchRequest.filterMetadata,'this is what will go');
+        
         genomicsApi().searchVariants(searchRequest).then((results) => {
             this.setState({ searchResults: results.items });
         });
@@ -379,11 +380,11 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
+        console.log(filteredMetadata,'filteredMetadata');
+        
         this.filterGenomics(filteredMetadata);
         this.setState({ loadingResults: false });
         this.getSearchSize(this.state.searchTerm, true);
-
-
     }
 
     render() {
