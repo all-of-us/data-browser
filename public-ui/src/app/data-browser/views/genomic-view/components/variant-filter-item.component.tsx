@@ -138,11 +138,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
 
-    displayNumber(isMax) {
-        
-        return String(this.state.filterItemState.min)
-    }
-
     render(): React.ReactNode {
         const { category } = this.props;
         const { filterItemOpen, filterItemState } = this.state;
@@ -168,11 +163,11 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 })}
             </div> : <div>
                 {filterItemOpen && <div style={styles.filterItemForm}>
-                    <label>min {this.displayNumber(false)} </label>
+                    <label>min #todo </label>
                     <input style={styles.filterSlider} type='range'
                         step={filterItemState.maxFreq} defaultValue={filterItemState.min}
                         onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
-                    <label>max {this.displayNumber(true)}</label>
+                    <label>max #todo {}</label>
                     <input style={styles.filterSlider} type='range'
                         step={filterItemState.maxFreq} defaultValue={filterItemState.max}
                         onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
