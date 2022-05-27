@@ -440,7 +440,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select ob.observation_source_concept_id as concept, count(distinct ob.person_id) as count_val from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob
-where ob.observation_source_concept_id in (1384403, 43529654, 43528428)
+where ob.observation_source_concept_id in (1384403, 43529654, 43528428, 1310132, 1310137)
 group by observation_source_concept_id)
 where c1.concept_id=concept
 and c1.concept_id in (1384403, 43529654, 43528428)"
@@ -459,7 +459,7 @@ set c1.count_value=count_val from
 (select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
 on ob.observation_source_concept_id=cr.concept_id
-where cr.concept_id not in (1384403, 43529654, 43528428)
+where cr.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132)
 group by survey_concept_id,cr.concept_id)
 where c1.concept_id=question_id
 "
