@@ -115,7 +115,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
     handleCheck(filteredItem) {
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
-        console.log(filtered, 'filtered');
         this.setState({
             filterItemState: filtered,
             filterCheckMap: filtered
@@ -132,7 +131,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
             this.min = Math.floor((sliderValue / 100) * this.props.filterItem.max);
             this.state.filterItemState.min = this.min;
         }
-        console.log(this.state.filterItemState);
+        this.state.filterItemState.checked = true;
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
 

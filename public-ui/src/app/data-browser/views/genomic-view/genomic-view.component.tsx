@@ -380,8 +380,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
-        console.log(filteredMetadata, 'filteredMetadata');
-
         this.filterGenomics(filteredMetadata);
         this.setState({ loadingResults: false });
         this.getSearchSize(this.state.searchTerm, true);
