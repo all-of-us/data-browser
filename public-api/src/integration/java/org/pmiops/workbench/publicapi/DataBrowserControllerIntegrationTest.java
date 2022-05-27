@@ -38,7 +38,7 @@ public class DataBrowserControllerIntegrationTest {
   public static String CLIENT_ID = "238501349883-965gu9qminos5dfcpusi43eokvd5i3io.apps.googleusercontent.com";
 
   @TestConfiguration
-  static class Configuration {
+  public static class Configuration {
     @Bean
     DataBrowserApi client() throws IOException{
       DataBrowserApi api = new DataBrowserApi();
