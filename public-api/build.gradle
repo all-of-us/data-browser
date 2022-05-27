@@ -221,7 +221,7 @@ dependencies {
   }
 
   compile "org.springframework.retry:spring-retry"
-  compile "org.springframework.security:spring-security-core:5.3.2"
+  compile "org.springframework.security:spring-security-core"
   compile "org.springframework.security:spring-security-web"
 
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
