@@ -623,7 +623,8 @@ FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
 SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
 GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
-where q.concept_id=q2.concept_id and q.path=q2.path;"
+where q.concept_id=q2.concept_id and q.path=q2.path
+and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040);"
 
 #######################
 # Drop views created #
