@@ -1,5 +1,5 @@
 import { reactStyles } from 'app/utils';
-import { Variant } from 'publicGenerated';
+import { GenomicFilters, Variant } from 'publicGenerated';
 import * as React from 'react';
 import { VariantSearchComponent } from './variant-search.component';
 import { VariantTableComponent } from './variant-table.component';
@@ -34,6 +34,7 @@ interface Props {
     onPageChange: Function;
     onRowCountChange: Function;
     onSortClick: Function;
+    onFilterSubmit: Function;
     variantListSize: number;
     loadingVariantListSize: boolean;
     loadingResults: boolean;
@@ -42,6 +43,7 @@ interface Props {
     rowCount: number;
     participantCount: string;
     searchTerm: string;
+    filterMetadata: GenomicFilters;
 }
 
 interface State {
@@ -78,34 +80,39 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     handleSortClick(sortMetadata) {
         this.props.onSortClick(sortMetadata);
     }
+    handleFilterSubmit(filteredMetadata) {
+        this.props.onFilterSubmit(filteredMetadata);
+    }
 
     render() {
         const { searchTerm } = this.state;
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
-        rowCount} = this.props;
+            rowCount, filterMetadata } = this.props;
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
                     Use the Variant Search to explore allele frequencies for a gene or genomic region. Drill down into
                     specific variants to view select annotations and genetic ancestry associations. </p>
-                </div>
-                <VariantSearchComponent
-                    onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-                    loading={loadingVariantListSize}
-                    searchTerm={searchTerm}
-                    variantListSize={variantListSize} />
-                <VariantTableComponent
-                    loadingResults={loadingResults}
-                    loadingVariantListSize={loadingVariantListSize}
-                    variantListSize={variantListSize}
-                    searchResults={searchResults}
-                    searchTerm={searchTerm}
-                    onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-                    onRowCountChange={(info: any) => this.handleRowCountChange(info)}
-                    onPageChange={(info: any) => this.handlePageChange(info)}
-                    onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-                    currentPage={currentPage}
-                    rowCount={rowCount}/>
+            </div>
+            <VariantSearchComponent
+                onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
+                onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit(filteredMetadata); }}
+                loading={loadingVariantListSize}
+                searchTerm={searchTerm}
+                variantListSize={variantListSize}
+                filterMetadata={filterMetadata} />
+            <VariantTableComponent
+                loadingResults={loadingResults}
+                loadingVariantListSize={loadingVariantListSize}
+                variantListSize={variantListSize}
+                searchResults={searchResults}
+                searchTerm={searchTerm}
+                onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
+                onRowCountChange={(info: any) => this.handleRowCountChange(info)}
+                onPageChange={(info: any) => this.handlePageChange(info)}
+                onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
+                currentPage={currentPage}
+                rowCount={rowCount} />
         </React.Fragment>;
     }
 }

@@ -675,9 +675,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
-        System.out.println("************************ +++++++++ ****************************");
-        System.out.println(finalSql);
-        System.out.println("************************ +++++++++ ****************************");
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
