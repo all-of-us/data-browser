@@ -1074,7 +1074,7 @@ def migrate_database(dry_run = false)
   common = Common.new
   common.status "Migrating main database..."
   Dir.chdir("db") do
-    run_inline_or_log(dry_run, %W{./gradlew --info update -PrunList=main})
+    run_inline_or_log(dry_run, %W{gradle --info update -PrunList=main})
   end
 end
 
