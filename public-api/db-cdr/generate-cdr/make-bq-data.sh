@@ -554,7 +554,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set c.concept_name=sqm.concept_name
 from  (select distinct concept_id , concept_name
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_metadata\` where generate_counts = 1
-and concept_id not in (1310137, 1310132) group by 1,2) as sqm
+and concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040) group by 1,2) as sqm
 where c.concept_id = sqm.concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
