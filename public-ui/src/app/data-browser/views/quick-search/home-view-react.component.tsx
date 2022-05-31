@@ -559,18 +559,14 @@ export const dBHomeComponent = withRouteData(
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-                    The Data Browser provides interactive views of the publicly available <i>All of Us</i> Research
-                    Program participant data. Currently, participant-provided information, including data from surveys,
-                    wearables, physical measurements taken at the time of participant enrollment,
-                    and electronic health records (EHR) are available. EHR data are reported by health care providers
-                    and are not participant reported. The <i>All of Us</i> Research Program data will include more data
-                    types over time.<br /><br /> In order to protect participant privacy, the data are de-identified,
-                    limited to aggregate counts rounded up to counts of
-                    20, and summary demographic information. For more information, please visit our FAQ page.
+                    The Data Browser provides interactive views of the publicly-available <i>All of Us</i> Research Program participant data.
+                    Electronic Health Record (EHR) data are derived from reports by health care providers. Genomic data are derived
+                    from biosamples provided by participants. Physical measurements are taken at the time of participant enrollment.
+                    Data from survey responses and wearables data are collected from participants on an ongoing basis.
                     <br /><br />
-                    Please read the public data use statement available below for additional information about our
-                    unique dataset and how to
-                    acknowledge the <i>All of Us</i> Research Program in any presentations or publications.<br /><br />
+                    In order to protect participant privacy, we have removed personal identifiers, rounded aggregate data to counts of 20,
+                    and only included summary demographic information. Detailed data are available for analysis in the Researcher Workbench.
+                    <br /><br />
                     <button onClick={() => this.closePopUp()} className='disclaimer-btn'>public data use statement</button>
                 </p>
                 <div className='search-icon-container'>
