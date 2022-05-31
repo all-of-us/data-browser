@@ -73,8 +73,11 @@ export const SurveyDescReactComponent =
                  <h1> {props.surveyName} </h1>
                  {
                  props.isCopeSurvey ?
-                 <button className='disclaimer-btn' style={styles.disclaimerBtn} onClick={props.click}>IMPORTANT CONSIDERATIONS FOR
-                         COPE SURVEY - LEARN MORE</button>
+                 <p className='body-default help-text survey-desc'>This optional survey was released to participants for
+                  completion at multiple time points during the
+                 COVID-19 pandemic. As a result, a participant may have multiple data points if they completed more than one
+                   survey. Even though most of the content is consistent between survey versions, some questions were modified.
+                 </p>
                          : null
                  }
                  <div className='desc-container' style={styles.descContainer}>
