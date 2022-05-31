@@ -106,8 +106,7 @@ export class SurveyDescWrapperComponent extends BaseReactWrapper {
     @Input() public surveyName: string;
     @Input() public isCopeSurvey: boolean;
     @Input() public surveyDescription: string;
-    @Input('click') click: Function;
     constructor() {
-        super(SurveyDescReactComponent, ['surveyName', 'isCopeSurvey', 'surveyDescription', 'click']);
+        super(SurveyDescReactComponent, ['surveyName', 'isCopeSurvey', 'surveyDescription']);
     }
 }

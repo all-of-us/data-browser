@@ -173,7 +173,6 @@ interface State {
     showAnswer: {};
     questions: Array<any>;
     loading: boolean;
-    showStatement: boolean;
 }
 
 export const SurveyViewReactComponent = withRouteData(class extends React.Component<{}, State> {
@@ -199,8 +198,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             showAnswer: {},
             questions: [],
             loading: true,
-            surveyVersions: [],
-            showStatement: false,
+            surveyVersions: []
         };
     }
 
@@ -335,7 +333,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
 
 
     render() {
-        const { loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl, showStatement } = this.state;
+        const { loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl } = this.state;
         const statClass = isCopeSurvey ? 'cope-stat-layout' : 'stat-layout';
         const statStyle = isCopeSurvey ? styles.copeStatLayout : styles.statLayout;
         return <React.Fragment>
@@ -345,8 +343,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                     survey && <SurveyDescReactComponent
                         surveyName={survey.name}
                         isCopeSurvey={isCopeSurvey}
-                        surveyDescription={survey.description}
-                        click={() => this.setState({ showStatement: true })} />
+                        surveyDescription={survey.description}/>
                 }
                 <div className='search-bar-container' style={styles.searchBarContainer}>
                     <SearchComponent value={searchWord || ''} searchTitle='' domain='survey'
@@ -436,7 +433,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                     <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
                         measurementTestFilter={1} measurementOrderFilter={1} />
                 </div> : null}
-            {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={() => this.setState({ showStatement: false })} />}
         </React.Fragment>;
     }
 }
