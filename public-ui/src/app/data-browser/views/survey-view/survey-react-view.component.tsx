@@ -4,7 +4,6 @@ import { SurveyVersionTableReactComponent } from 'app/data-browser/components/su
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
 import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-metadata';
