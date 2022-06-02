@@ -30,7 +30,7 @@ public interface AchillesAnalysisDao extends CrudRepository<DbAchillesAnalysis, 
     @Query(value = "select distinct a from DbAchillesAnalysis a left join FETCH a.results r where a.analysisId in (?1)")
     List<DbAchillesAnalysis> findAnalysisByIds(List<Long> analysisId);
 
-    @Query(value = "select a from DbAchillesAnalysis a left join FETCH a.results r where a.analysisId in (?1) and r.stratum1 = ?2")
+    @Query(value = "select distinct a from DbAchillesAnalysis a left join FETCH a.results r where a.analysisId in (?1) and r.stratum1 = ?2")
     List<DbAchillesAnalysis> findSurveyAnalysisByIds(List<Long> analysisId, String domainId);
 
     @Query(value = "select distinct a from DbAchillesAnalysis a left join FETCH a.results r where a.analysisId in (?1) and r.stratum2=?2 and r.stratum6=?3")

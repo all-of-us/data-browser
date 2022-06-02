@@ -268,7 +268,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyVersionCountResponse surveyVersionCountResponse = new SurveyVersionCountResponse();
 
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findAnalysisByIds(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID)));
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyAnalysisByIds(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID)), String.valueOf(surveyConceptId));
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyAnalysisList);
         surveyVersionCountResponse.setAnalyses(analysisListResponse);
