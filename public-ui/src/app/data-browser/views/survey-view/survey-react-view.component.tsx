@@ -238,7 +238,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
         const copeFlag = (surveyConceptId === 1333342 || surveyConceptId === 905047 || surveyConceptId === 905055 || surveyConceptId === 765936);
-        if (surveyConceptId === 1333342) {
+        if (surveyConceptId === 1333342 || surveyConceptId === 765936) {
             const surveyVersions = [];
             api.getSurveyVersionCounts(surveyConceptId.toString()).then(
                 result => {
@@ -383,7 +383,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                                     </div> : null
                                     }
                                 </div>
-                                {(survey.conceptId === 1333342) ? surveyVersions && <div className='version-table' style={styles.versionTable}>
+                                {(isCopeSurvey) ? surveyVersions && <div className='version-table' style={styles.versionTable}>
                                     <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
                                 </div> :
                                     <div className='pdf-link' style={styles.pdfLink}>
