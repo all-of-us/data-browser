@@ -1,12 +1,10 @@
 concept_id,"name","description",question_count,participant_count,order_number
-765936,"Winter Minute Survey on COVID-19 Vaccines","Survey includes information regarding a participant’s COVID-19 vaccination experience.",71,0,10
-905047,"Summer 2021 Minute Survey on COVID-19 Vaccines","Survey includes information regarding a participant’s COVID-19 vaccination experience.",10,0,8
-905055,"Fall 2021 Minute Survey on COVID-19 Vaccines","Survey includes information regarding a participant’s COVID-19 vaccination experience.",10,0,9
-1333342,"COVID-19 Participant Experience (COPE)","Survey includes information about the impact of COVID-19 on participant mental and physical health.",191,100340,7
-1585710,"Overall Health","Survey includes information about how participants report levels of individual health.",21,331360,2
-1585855,"Lifestyle","Survey includes information on participant smoking, alcohol and recreational drug use.",26,331360,3
-1586134,"The Basics","This survey includes participant demographic information.",28,331360,1
-40192389,"Social Determinants of Health","Survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.",80,0,11
-43528698,"Family Health History","Survey includes information about the medical history of a participant’s immediate biological family members.",104,118340,6
-43528895,"Health Care Access & Utilization","Survey includes information about a participant’s access to and use of health care.",57,125200,5
-43529712,"Personal Medical History","This survey includes information about past medical history, including medical conditions and approximate age of diagnosis.",465,114460,4
+765936,"COPE Minute Survey","Survey includes information regarding a participant’s COVID-19 vaccination experience.",71,128680,8
+1333342,"COVID-19 Participant Experience (COPE)","Survey includes information about the impact of COVID-19 on participant mental and physical health.",191,105940,7
+1585710,"Overall Health","Survey includes information about how participants report levels of individual health.",21,372380,2
+1585855,"Lifestyle","Survey includes information on participant smoking, alcohol and recreational drug use.",26,372380,3
+1586134,"The Basics","This survey includes participant demographic information.",28,372380,1
+40192389,"Social Determinants of Health","Survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.",79,57620,9
+43528698,"Family Health History","Survey includes information about the medical history of a participant’s immediate biological family members.",104,145620,6
+43528895,"Health Care Access & Utilization","Survey includes information about a participant’s access to and use of health care.",57,160880,5
+43529712,"Personal Medical History","This survey includes information about past medical history, including medical conditions and approximate age of diagnosis.",465,142100,4

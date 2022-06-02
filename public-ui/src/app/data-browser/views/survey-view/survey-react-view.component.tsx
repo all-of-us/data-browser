@@ -4,7 +4,6 @@ import { SurveyVersionTableReactComponent } from 'app/data-browser/components/su
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
 import { SurveyQuestionReactComponent } from 'app/data-browser/views/survey-view/components/survey-question-react.component';
 import { SurveyDescReactComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { PopUpReactComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { GraphType } from 'app/utils/enum-metadata';
@@ -173,7 +172,6 @@ interface State {
     showAnswer: {};
     questions: Array<any>;
     loading: boolean;
-    showStatement: boolean;
 }
 
 export const SurveyViewReactComponent = withRouteData(class extends React.Component<{}, State> {
@@ -200,7 +198,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             questions: [],
             loading: true,
             surveyVersions: [],
-            showStatement: false,
         };
     }
 
@@ -240,7 +237,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         const surveyPdfUrl = (surveyConceptId === 43528895) ?
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
-        const copeFlag = surveyConceptId === 1333342;
+        const copeFlag = (surveyConceptId === 1333342 || surveyConceptId === 905047 || surveyConceptId === 905055 || surveyConceptId === 765936);
         if (surveyConceptId === 1333342) {
             const surveyVersions = [];
             api.getSurveyVersionCounts(surveyConceptId.toString()).then(
@@ -335,7 +332,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
 
 
     render() {
-        const { loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl, showStatement } = this.state;
+        const { loading, searchWord, isCopeSurvey, survey, questions, surveyVersions, surveyPdfUrl } = this.state;
         const statClass = isCopeSurvey ? 'cope-stat-layout' : 'stat-layout';
         const statStyle = isCopeSurvey ? styles.copeStatLayout : styles.statLayout;
         return <React.Fragment>
@@ -345,8 +342,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                     survey && <SurveyDescReactComponent
                         surveyName={survey.name}
                         isCopeSurvey={isCopeSurvey}
-                        surveyDescription={survey.description}
-                        click={() => this.setState({ showStatement: true })} />
+                        surveyDescription={survey.description} />
                 }
                 <div className='search-bar-container' style={styles.searchBarContainer}>
                     <SearchComponent value={searchWord || ''} searchTitle='' domain='survey'
@@ -387,7 +383,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                                     </div> : null
                                     }
                                 </div>
-                                {isCopeSurvey ? surveyVersions && <div className='version-table' style={styles.versionTable}>
+                                {(survey.conceptId === 1333342) ? surveyVersions && <div className='version-table' style={styles.versionTable}>
                                     <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
                                 </div> :
                                     <div className='pdf-link' style={styles.pdfLink}>
@@ -436,7 +432,6 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                     <NoResultSearchComponent domainMatch={(val) => this.fetchSurvey(val)} searchValue={searchWord}
                         measurementTestFilter={1} measurementOrderFilter={1} />
                 </div> : null}
-            {showStatement && <PopUpReactComponent helpText='CopePopUp' onClose={() => this.setState({ showStatement: false })} />}
         </React.Fragment>;
     }
 }

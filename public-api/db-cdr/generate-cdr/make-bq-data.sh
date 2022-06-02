@@ -475,6 +475,16 @@ on sq.concept_id = qc.concept_id
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
 
+# Set the question count on the survey_module row
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
+set sm.question_count=num_questions from
+(select count(distinct observation_source_concept_id) as num_questions
+from \`$BQ_PROJECT.$BQ_DATASET.observation\` a
+join \`$BQ_PROJECT.$BQ_DATASET.observation_ext\` b on a.observation_id=b.observation_id
+where b.survey_version_concept_id is not null and b.survey_version_concept_id in (765936))
+where sm.concept_id=765936;
+
 ########################
 # concept_relationship #
 ########################
