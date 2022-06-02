@@ -483,7 +483,7 @@ set sm.question_count=num_questions from
 from \`$BQ_PROJECT.$BQ_DATASET.observation\` a
 join \`$BQ_PROJECT.$BQ_DATASET.observation_ext\` b on a.observation_id=b.observation_id
 where b.survey_version_concept_id is not null and b.survey_version_concept_id in (765936))
-where sm.concept_id=765936;
+where sm.concept_id=765936;"
 
 ########################
 # concept_relationship #
