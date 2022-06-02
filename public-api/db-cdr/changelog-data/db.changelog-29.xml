@@ -24,6 +24,8 @@
       <column name="order_number" type="NUMERIC" />
       <column name="question_string" type="STRING" />
       <column name="type" type="STRING" />
+      <column name="parent_question_concept_id" type="NUMERIC" />
+      <column name="parent_answer_concept_id" type="NUMERIC" />
     </loadData>
 
   </changeSet>
