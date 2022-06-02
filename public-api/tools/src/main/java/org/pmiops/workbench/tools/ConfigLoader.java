@@ -19,10 +19,10 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.context.annotation.Configuration;
 
-@SpringBootApplication
-@EnableJpaRepositories("org.pmiops.workbench.db.dao")
-@EntityScan("org.pmiops.workbench.db.model")
+@Configuration
 /**
  * Run by api/project.rb update-cloud-config and (locally) docker-compose run update-config, which
  * is automatically invoked during api/project.rb dev-up.
@@ -68,7 +68,7 @@ public class ConfigLoader {
         log.info(marshalledDiff.toString());
         System.exit(1);
       }
-      Config existingConfig = configDao.findOne(configKey);
+      Config existingConfig = configDao.findById(configKey).orElse(null);
       if (existingConfig == null) {
         log.info("No configuration exists, creating one.");
         Config config = new Config();
@@ -92,7 +92,7 @@ public class ConfigLoader {
   }
 
   public static void main(String[] args) throws Exception {
-    new SpringApplicationBuilder(ConfigLoader.class).web(false).run(args);
+    CommandLineToolConfig.runCommandLine(ConfigLoader.class, args);
   }
 
 }

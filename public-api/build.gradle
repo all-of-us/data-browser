@@ -93,8 +93,9 @@ buildscript {    // Configuration for building
 
   ext {
     GAE_VERSION = '1.9.64'
-    SPRING_BOOT_VERSION = '1.5.22.RELEASE'
-    JACKSON_VERSION = '2.9.9'
+    SPRING_BOOT_VERSION = '2.5.12'
+    SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
+    JACKSON_VERSION = '2.13.1'
   }
 
   repositories {
@@ -110,6 +111,7 @@ buildscript {    // Configuration for building
     classpath 'io.swagger:swagger-codegen:2.2.3'
     classpath 'org.owasp:dependency-check-gradle:6.0.1'
     classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
+    classpath "io.spring.gradle:dependency-management-plugin:$project.ext.SPRING_DEPENDENCY_MANAGEMENT_VERSION"
   }
 }
 
@@ -124,6 +126,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'io.spring.dependency-management'
 
 sourceSets {
   generated {
@@ -194,18 +197,19 @@ dependencies {
   compile 'mysql:mysql-connector-java:8.0.13'
 
   // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-  compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.1.RELEASE'
+  compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
   compile 'com.google.guava:guava:26.0-jre'
 
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
   compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-  compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
+  compile("org.springframework.boot:spring-boot-starter-web") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
-  compile("org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}") {
+  compile("org.springframework.boot:spring-boot-starter-data-jpa") {
     exclude module: 'spring-boot-starter-tomcat'
+    exclude group: 'com.zaxxer', module: 'HikariCP'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
 
@@ -215,8 +219,18 @@ dependencies {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
-  compile 'org.springframework.security:spring-security-web:4.2.2.RELEASE'
+
+  compile "org.springframework.retry:spring-retry"
+  compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
+  compile "org.springframework.security:spring-security-web"
+
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
+
+  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
+  compile("org.springframework.boot:spring-boot-starter-tomcat")
+  compile("org.springframework.boot:spring-boot-starter-jdbc") {
+    exclude group: 'com.zaxxer', module: 'HikariCP'
+  }
 
   compile "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
   compile "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
@@ -242,19 +256,27 @@ dependencies {
 
   // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
   compile 'org.json:json:20160810'
+  compile 'org.springframework.boot:spring-boot-starter-validation'
 
   testCompile 'junit:junit:4.12'
-  testCompile 'org.mockito:mockito-core:1.10.19'
+  testCompile 'org.mockito:mockito-core:3.11.2'
   testCompile 'com.google.truth:truth:0.42'
-  testCompile "org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}"
+
+  testCompile("org.springframework.boot:spring-boot-starter-test") {
+    exclude group: 'org.junit', module: 'junit'
+    exclude group: 'org.mockito', module: 'mockito-core'
+    exclude group: 'org.mockito', module: 'mockito-all'
+  }
+
   testCompile 'com.h2database:h2:1.4.194'
-  testCompile 'org.liquibase:liquibase-core:3.5.3'
+  testCompile 'org.liquibase:liquibase-core:3.10.0'
   testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
   // For Swagger generation. These should include dependencies found in the Swagger codegen
   // example here:
   // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
-  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:${SPRING_BOOT_VERSION}"
+  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest"
+  generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
   generatedCompile 'io.springfox:springfox-swagger2:2.6.1'
   generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'

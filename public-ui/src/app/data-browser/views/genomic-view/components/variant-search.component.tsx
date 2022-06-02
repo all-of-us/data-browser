@@ -1,6 +1,9 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
+import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
+import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
+import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
 
 const styles = reactStyles({
@@ -22,6 +25,16 @@ const styles = reactStyles({
         display: 'flex',
         alignItems: 'center',
         height: '1rem'
+    },
+    filterBtn: {
+        fontFamily: 'gothamBold',
+        color: '#216FB4',
+        paddingBottom: '1rem',
+        cursor: 'Pointer'
+
+    },
+    filterContainer: {
+        position: 'relative'
     }
 });
 
@@ -43,19 +56,23 @@ const css = `
 
 interface Props {
     onSearchTerm: Function;
+    onFilterSubmit: Function;
     searchTerm: string;
     variantListSize: number;
+    filterMetadata: GenomicFilters;
     loading: boolean;
 }
 interface State {
     searchWord: string;
+    filterShow: boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            searchWord:  '',
+            searchWord: '',
+            filterShow: false
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -73,10 +90,16 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.setState({ searchWord: searchTerm });
         }
     }
+    showFilter() {
+        this.setState({ filterShow: !this.state.filterShow });
+    }
+    handleFilterSubmit(filteredMetadata: GenomicFilters) {
+        this.props.onFilterSubmit(filteredMetadata);
+    }
 
     render() {
-        const { searchWord } = this.state;
-        const { variantListSize, loading } = this.props;
+        const { searchWord, filterShow } = this.state;
+        const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <style>{css}</style>
@@ -84,7 +107,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region'/>
+                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region' />
                 </div>
                 <div style={styles.searchHelpText}>
                     Examples: <br></br>
@@ -92,10 +115,18 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
+            {(!loading && variantListSize) && <div onClick={() => this.showFilter()}
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
-                <Spinner /></span> } results</strong>}
+                    <Spinner /></span>} results</strong>}
+            <div style={styles.filterContainer}>
+                {(!loading && filterShow) && <VariantFilterComponent
+                    filterMetadata={filterMetadata}
+                    onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
+            </div>
+
         </React.Fragment>;
     }
 }

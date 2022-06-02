@@ -22,14 +22,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * See api/project.rb update-cdr-versions.
  * Reads CDR versions from a JSON file and updates the database to match.
  */
-@SpringBootApplication
-@EnableJpaRepositories("org.pmiops.workbench.db.dao")
-@EntityScan("org.pmiops.workbench.db.model")
+@Configuration
 public class UpdateCdrVersions {
 
   private static final Logger logger = Logger.getLogger(UpdateCdrVersions.class.getName());
@@ -105,13 +105,13 @@ public class UpdateCdrVersions {
         if (!dryRun) {
           // Note: this will fail if the database still has references to the CDR version being
           // deleted.
-          cdrVersionDao.delete(dbCdrVersion.getCdrVersionId());
+          cdrVersionDao.deleteById(dbCdrVersion.getCdrVersionId());
         }
       }
     };
   }
 
   public static void main(String[] args) throws Exception {
-    new SpringApplicationBuilder(UpdateCdrVersions.class).web(false).run(args);
+    CommandLineToolConfig.runCommandLine(UpdateCdrVersions.class, args);
   }
 }
