@@ -116,6 +116,12 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
           this.props.answerConceptId,
           this.state.nextLevel
         ).then(results => {
+            console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+            console.log(this.props.surveyConceptId);
+            console.log(this.props.questionConceptId);
+            console.log(this.props.answerConceptId);
+            console.log(results);
+            console.log('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
             this.setState({
                 subQuestions: this.processResults(results.questions.items)
             });
@@ -299,6 +305,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
             surveyVersions,
             surveyCountAnalysis,
             searchTerm } = this.props;
+        console.log(isCopeSurvey);
         console.log(question);
         return <React.Fragment>
             <style>{styleCss}</style>

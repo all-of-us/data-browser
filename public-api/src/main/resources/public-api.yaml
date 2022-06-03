@@ -483,6 +483,11 @@ paths:
           format: int32
           required: true
           description: sub question level
+        - in: query
+          name: path
+          type: string
+          required: false
+          description: question path
       responses:
         200:
           description: survey sub question fetch

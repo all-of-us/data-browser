@@ -784,7 +784,7 @@ public class AchillesAnalysisService {
                         participantCountAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setParticipantCountAnalysis(aa);
             }
-            if (surveyConceptId == 1333342L) {
+            if (surveyConceptId == 1333342L || surveyConceptId == 765936L) {
                 Multimap<String, AchillesResult> versionAnalysisResultsByQuestion = Multimaps.index(
                         analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
                 Analysis versionAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID));
