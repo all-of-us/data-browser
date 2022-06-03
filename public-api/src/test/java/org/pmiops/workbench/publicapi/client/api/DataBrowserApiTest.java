@@ -222,7 +222,7 @@ public class DataBrowserApiTest {
         Long questionConceptId = null;
         Long answerConceptId = null;
         Integer level = null;
-        SurveyQuestionFetchResponse response = api.getSubQuestions(surveyConceptId, questionConceptId, answerConceptId, level);
+        SurveyQuestionFetchResponse response = api.getSubQuestions(surveyConceptId, questionConceptId, answerConceptId, level, null);
 
         // TODO: test validations
     }
