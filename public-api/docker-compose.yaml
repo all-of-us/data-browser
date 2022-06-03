@@ -38,7 +38,7 @@ services:
 
   public-api:
     <<: *api-defaults
-    command: gradle :appengineRun
+    command: ./gradlew :appengineRun
     ports:
       - 8083:8083
       - 8084:8002
