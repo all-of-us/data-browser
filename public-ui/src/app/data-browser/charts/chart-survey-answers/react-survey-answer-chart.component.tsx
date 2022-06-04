@@ -1,4 +1,4 @@
-import { getBaseOptions, VERSION_NAME_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions, VERSION_NAME_MAP_COPE, VERSION_NAME_MAP_COPE_MINUTE} from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import { reactStyles } from 'app/utils';
 import { eightColors, eighteenColors, fourteenColors, tenColors, twentyFiveColors } from 'app/utils/colors';
 import * as highCharts from 'highcharts';
@@ -103,6 +103,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
 
   public sortAnswers() {
     const { versionAnalysis } = this.props;
+    const surveyConceptId = versionAnalysis !== null ? versionAnalysis[0].stratum1 : 0;
     const result = versionAnalysis.reduce((r, a) => {
       r[a.stratum7] = [...r[a.stratum7] || [], a];
       return r;
@@ -113,7 +114,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     }).forEach(key => {
         payload[key] = result[key];
     });
-    return this.conceptDist(payload);
+    return this.conceptDist(payload, surveyConceptId);
   }
 
   public mapOrder(array: any[], order: any[], key: string) {
@@ -122,7 +123,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     );
   }
 
-  public conceptDist(sortedAnswers: any) {
+  public conceptDist(sortedAnswers: any, surveyConceptId: any) {
     let tempArr: any[] = [];
     const categoryArr = [];
     const { answerChartInfo } = this.state;
@@ -148,15 +149,15 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
       }
     }
     this.setState({chartSeries: tempArr, categoryArr: categoryArr}, () => {
-        this.buildChartData();
+        this.buildChartData(surveyConceptId);
     });
   }
 
-  buildChartData() {
+  buildChartData(surveyConceptId: any) {
     const { categoryArr, chartSeries, colors } = this.state;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'column';
-    newBaseOptions.xAxis.categories = categoryArr.map(item  => VERSION_NAME_MAP[item]);
+    newBaseOptions.xAxis.categories = categoryArr.map(item  => (surveyConceptId === 1333342) ? VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]);
     newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.yAxis.title.style.fontSize = '16px';

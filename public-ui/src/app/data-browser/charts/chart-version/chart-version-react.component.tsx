@@ -4,7 +4,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { getBaseOptions, VERSION_NAME_MAP, VERSION_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
+import { getBaseOptions, VERSION_NAME_MAP_COPE, VERSION_NAME_MAP_COPE_MINUTE, VERSION_STRATUM_MAP } from 'app/data-browser/charts/react-base-chart/base-chart.service';
 import * as highCharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import * as React from 'react';
@@ -30,7 +30,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
       this.getChartOptions();
   }
 
-  setChartOptions(analysisName: string, categories: any, series: any) {
+  setChartOptions(analysisId: number, analysisName: string, categories: any, series: any) {
       const newBaseOptions = getBaseOptions();
       newBaseOptions.chart.type = 'column';
       newBaseOptions.plotOptions.column.groupPadding = 0.40;
@@ -68,15 +68,15 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
   }
 
   getChartOptions() {
-    const {versionAnalysis: {analysisName, results}, selectedResult} = this.props;
+    const {versionAnalysis: {analysisId, analysisName, results}, selectedResult} = this.props;
     const filteredResults = results.filter(
               r => r.stratum4 === selectedResult.stratum4);
     const {categories, series} = this.prepCategoriesAndData(filteredResults);
-    this.setChartOptions(analysisName, categories, series);
+    this.setChartOptions(analysisId, analysisName, categories, series);
   }
 
   prepCategoriesAndData(genderAnalysisResults) {
-    const {versionAnalysis: {analysisId}, surveyVersionAnalysis} = this.props;
+    const {versionAnalysis: {analysisId, stratum1}, surveyVersionAnalysis} = this.props;
     const data = [];
     const cats = [];
     const color = '#2691D0';
@@ -102,7 +102,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
             toolTipHelpText: this.getTooltipHelpText(a.stratum4, count,
             analysisStratumName, percentage, version),
             version: a.stratum7,
-            versionName: VERSION_NAME_MAP[a.stratum7],
+            versionName: (stratum1 === 1333342) ? VERSION_NAME_MAP_COPE[a.stratum7] : VERSION_NAME_MAP_COPE_MINUTE[a.stratum7],
             analysisId: analysisId
           });
           cats.push(a.stratum7);
@@ -119,7 +119,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           dataOnlyLT20: dataOnlyLT20,
           showInLegend: false
           }];
-        return { categories: cats.map(item  => VERSION_NAME_MAP[item]), series: series};
+        return { categories: cats.map(item  => (stratum1 === 1333342) ? VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]), series: series};
   }
 
   getTooltipHelpText(answer, count, analysisStratumName, percentage, version) {

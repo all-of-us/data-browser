@@ -343,7 +343,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set a.stratum_7='1'
 from (select parent_question_concept_id, parent_answer_concept_id, path from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
 where survey_concept_id=765936 and sub=1) b
-where a.stratum_2=b.parent_question_concept_id and a.stratum_3=b.parent_answer_concept_id
+where a.stratum_2=CAST(b.parent_question_concept_id as string) and a.stratum_3=CAST(b.parent_answer_concept_id as string)
 and CONTAINS_SUBSTR(b.path, a.stratum_6);"
 
 ###########################

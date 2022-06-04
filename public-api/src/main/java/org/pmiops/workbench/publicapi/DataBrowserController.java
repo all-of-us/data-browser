@@ -235,6 +235,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionIds.add(String.valueOf(qc.getConceptId()));
         }
 
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(conceptId);
+        System.out.println(answerConceptId);
+        System.out.println(path);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(questionIds);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
 
         List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L), questionIds);
 
