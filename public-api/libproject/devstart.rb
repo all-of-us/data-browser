@@ -922,7 +922,7 @@ def update_cdr_versions_for_project(versions_file, dry_run)
   Dir.chdir("tools") do
     common = Common.new
     common.run_inline %W{
-      ./gradlew --info updateCdrVersions
+      ../gradlew --info updateCdrVersions
      -PappArgs=['#{versions_file}',#{dry_run}]}
   end
 end
@@ -1082,7 +1082,7 @@ def migrate_meta_db()
   common = Common.new
   common.status "Migrating metadata db..."
   Dir.chdir("db") do
-    common.run_inline(%W{./gradlew --info update -PrunList=data -Pcontexts=cloud})
+    common.run_inline(%W{../gradlew --info update -PrunList=data -Pcontexts=cloud})
   end
 end
 
@@ -1095,8 +1095,8 @@ def load_config(project, dry_run = false)
   common = Common.new
   common.status "Loading #{config_json} into database..."
   Dir.chdir("tools") do
-    run_inline_or_log(dry_run, %W{./gradlew --info loadConfig -Pconfig_key=main -Pconfig_file=../config/#{config_json}})
-    run_inline_or_log(dry_run, %W{./gradlew --info loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json})
+    run_inline_or_log(dry_run, %W{../gradlew --info loadConfig -Pconfig_key=main -Pconfig_file=../config/#{config_json}})
+    run_inline_or_log(dry_run, %W{../gradlew --info loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json})
   end
 end
 
