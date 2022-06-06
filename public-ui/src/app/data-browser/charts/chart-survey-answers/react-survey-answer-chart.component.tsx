@@ -103,6 +103,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
 
   public sortAnswers() {
     const { versionAnalysis } = this.props;
+    console.log(versionAnalysis);
     const surveyConceptId = versionAnalysis !== null ? versionAnalysis[0].stratum1 : 0;
     const result = versionAnalysis.reduce((r, a) => {
       r[a.stratum7] = [...r[a.stratum7] || [], a];
