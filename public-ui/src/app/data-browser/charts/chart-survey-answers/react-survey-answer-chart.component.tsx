@@ -158,7 +158,8 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     const { categoryArr, chartSeries, colors } = this.state;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'column';
-    newBaseOptions.xAxis.categories = categoryArr.map(item  => (surveyConceptId === 1333342) ? VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]);
+    newBaseOptions.xAxis.categories = categoryArr.map(item  => (surveyConceptId === 1333342) ?
+        VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]);
     newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = 'Participant Count';
     newBaseOptions.yAxis.title.style.fontSize = '16px';

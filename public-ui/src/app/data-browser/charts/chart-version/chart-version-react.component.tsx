@@ -119,7 +119,8 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           dataOnlyLT20: dataOnlyLT20,
           showInLegend: false
           }];
-        return { categories: cats.map(item  => (stratum1 === 1333342) ? VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]), series: series};
+        return { categories: cats.map(item  => (stratum1 === 1333342) ?
+            VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]), series: series};
   }
 
   getTooltipHelpText(answer, count, analysisStratumName, percentage, version) {

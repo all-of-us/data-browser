@@ -237,7 +237,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         const surveyPdfUrl = (surveyConceptId === 43528895) ?
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
-        const copeFlag = (surveyConceptId === 1333342 || surveyConceptId === 905047 || surveyConceptId === 905055 || surveyConceptId === 765936);
+        const copeFlag = (surveyConceptId === 1333342 || surveyConceptId === 765936);
         if (surveyConceptId === 1333342 || surveyConceptId === 765936) {
             const surveyVersions = [];
             api.getSurveyVersionCounts(surveyConceptId.toString()).then(
