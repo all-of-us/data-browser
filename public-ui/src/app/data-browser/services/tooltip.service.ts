@@ -98,6 +98,11 @@ export const tooltips = {
     'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
     'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
+    'summer 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+    'fall 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+    'winter minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+    'cope minute survey': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+    'social determinants of health': 'This survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.',
     'genomics': 'Search and explore genomic variant data available within the dataset.',
     'pmValueChartHelpText': 'Values provide the numeric result of the ' +
         'physical measurements taken at the time of participant enrollment. ' +
@@ -296,6 +301,11 @@ export class TooltipService {
         'health care access & utilization': `This survey asks questions about participants' access
                                            to and use of health care.`,
         'covid-19 participant experience (cope)': 'This survey includes information about the impact of COVID-19 on participant mental and physical health.',
+        'summer 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+        'fall 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+        'winter minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+        'cope minute survey': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+        'social determinants of health': 'This survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.',
         'genomics': 'Search and explore genomic variant data available within the dataset.',
         'pmValueChartHelpText': 'Values provide the numeric result of the ' +
             'physical measurements taken at the time of participant enrollment. ' +

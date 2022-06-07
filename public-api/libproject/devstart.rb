@@ -311,7 +311,7 @@ Common.register_command({
 
 def clean()
   common = Common.new
-  common.run_inline %W{docker-compose run --rm public-api gradle clean}
+  common.run_inline %W{docker-compose run --rm public-api ./gradlew clean}
 end
 
 Common.register_command({

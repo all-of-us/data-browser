@@ -134,12 +134,12 @@ if [ "$SEARCH_VAT" = true ]; then
          END
          ASC
   )  AS row_number
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v3\`
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.charlie_vat\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.vat_v3\`
+     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.charlie_vat\`
      GROUP BY vid
   )
   SELECT
@@ -332,10 +332,19 @@ and a.stratum_3=b.aid and a.analysis_id=3110 and a.stratum_3 not in ('43529842',
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where ARRAY_LENGTH(SPLIT(path, '.')) = 5 and generate_counts=1) b
+from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2
+from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` where ARRAY_LENGTH(SPLIT(path, '.')) = 5 and generate_counts=1) b
 where a.stratum_2=b.qid2 and a.stratum_3=b.aid2
 and a.stratum_6=CONCAT(qid1, '.', aid1, '.', qid2)
 and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set a.stratum_7='1'
+from (select distinct parent_question_concept_id, parent_answer_concept_id from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
+where survey_concept_id=765936 and sub=1) b
+where a.analysis_id=3110 and
+a.stratum_2=CAST(b.parent_question_concept_id as string) and a.stratum_3=CAST(b.parent_answer_concept_id as string);"
 
 ###########################
 # concept with count cols #
@@ -440,10 +449,10 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select ob.observation_source_concept_id as concept, count(distinct ob.person_id) as count_val from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob
-where ob.observation_source_concept_id in (1384403, 43529654, 43528428)
+where ob.observation_source_concept_id in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
 group by observation_source_concept_id)
 where c1.concept_id=concept
-and c1.concept_id in (1384403, 43529654, 43528428)"
+and c1.concept_id in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)"
 
 # Set the participant count on the survey_module row
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -459,7 +468,7 @@ set c1.count_value=count_val from
 (select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
 from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
 on ob.observation_source_concept_id=cr.concept_id
-where cr.concept_id not in (1384403, 43529654, 43528428)
+where cr.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
 group by survey_concept_id,cr.concept_id)
 where c1.concept_id=question_id
 "
@@ -474,6 +483,16 @@ join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
+
+# Set the question count on the survey_module row
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
+set sm.question_count=num_questions from
+(select count(distinct observation_source_concept_id) as num_questions
+from \`$BQ_PROJECT.$BQ_DATASET.observation\` a
+join \`$BQ_PROJECT.$BQ_DATASET.observation_ext\` b on a.observation_id=b.observation_id
+where b.survey_version_concept_id is not null and b.survey_version_concept_id in (765936))
+where sm.concept_id=765936;"
 
 ########################
 # concept_relationship #
@@ -554,7 +573,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set c.concept_name=sqm.concept_name
 from  (select distinct concept_id , concept_name
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_metadata\` where generate_counts = 1
-and concept_id not in (1310137, 1310132) group by 1,2) as sqm
+and concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040) group by 1,2) as sqm
 where c.concept_id = sqm.concept_id"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -623,7 +642,8 @@ FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
 SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
 GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
-where q.concept_id=q2.concept_id and q.path=q2.path;"
+where q.concept_id=q2.concept_id and q.path=q2.path
+and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040);"
 
 #######################
 # Drop views created #

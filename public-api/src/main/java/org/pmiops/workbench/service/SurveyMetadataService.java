@@ -68,4 +68,11 @@ public class SurveyMetadataService {
                 .map(surveyMetadataMapper::dbModelToClient)
                 .collect(Collectors.toList());
     }
+
+    public List<SurveyMetadata> getSubQuestionsMultiLevel(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path){
+        return surveyMetadataDao.getSubQuestionsMultiLevel(surveyConceptId, questionConceptId, answerConceptId, path)
+                .stream()
+                .map(surveyMetadataMapper::dbModelToClient)
+                .collect(Collectors.toList());
+    }
 }

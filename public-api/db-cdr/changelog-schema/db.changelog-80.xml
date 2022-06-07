@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-80">
+  <validCheckSum>ANY</validCheckSum>
+  <preConditions onFail="MARK_RAN">
+    <not>
+      <columnExists tableName="survey_metadata" columnName="parent_question_concept_id"/>
+      <columnExists tableName="survey_metadata" columnName="parent_answer_concept_id"/>
+    </not>
+  </preConditions>
+  <addColumn tableName="survey_metadata">
+    <column name="parent_question_concept_id" type="BIGINT" />
+    <column name="parent_answer_concept_id" type="BIGINT" />
+  </addColumn>
+  </changeSet>
+
+</databaseChangeLog>

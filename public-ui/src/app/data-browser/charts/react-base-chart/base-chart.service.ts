@@ -25,13 +25,19 @@ export const VERSION_STRATUM_MAP = {
     'December': '12'
 };
 
-export const VERSION_NAME_MAP = {
+export const VERSION_NAME_MAP_COPE = {
     '1': 'May 2020',
     '2': 'June 2020',
     '3': 'July 2020',
     '4': 'Nov 2020',
     '5': 'Dec 2020',
     '6': 'Feb 2021'
+};
+
+export const VERSION_NAME_MAP_COPE_MINUTE = {
+    '1': 'Summer 2021',
+    '2': 'Fall 2021',
+    '3': 'Winter 2021'
 };
 
 export const AGE_STRATUM_MAP = {

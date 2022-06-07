@@ -211,7 +211,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     }
 
     @Override
-    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long conceptId, Long answerConceptId, Integer level) {
+    public ResponseEntity<SurveyQuestionFetchResponse> getSubQuestions(Long surveyConceptId, Long conceptId, Long answerConceptId, Integer level, String path) {
         try {
             cdrVersionService.setDefaultCdrVersion();
         } catch(NullPointerException ie) {
@@ -225,6 +225,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questions = surveyMetadataService.getSubQuestionsLevel1(String.valueOf(conceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
         } else if (level == 2) {
             questions = surveyMetadataService.getSubQuestionsLevel2(String.valueOf(conceptId), String.valueOf(answerConceptId));
+        } else {
+            questions = surveyMetadataService.getSubQuestionsMultiLevel(surveyConceptId, conceptId, answerConceptId, path);
         }
 
         List<String> questionIds = new ArrayList<>();
@@ -232,6 +234,15 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         for(SurveyMetadata qc: questions) {
             questionIds.add(String.valueOf(qc.getConceptId()));
         }
+
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(conceptId);
+        System.out.println(answerConceptId);
+        System.out.println(path);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        System.out.println(questionIds);
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^ ******** ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
 
         List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L), questionIds);
 
@@ -268,7 +279,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         SurveyVersionCountResponse surveyVersionCountResponse = new SurveyVersionCountResponse();
 
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findAnalysisByIds(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID)));
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyAnalysisByIds(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID)), String.valueOf(surveyConceptId));
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(surveyAnalysisList);
         surveyVersionCountResponse.setAnalyses(analysisListResponse);

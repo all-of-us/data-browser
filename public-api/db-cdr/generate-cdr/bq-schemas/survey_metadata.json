@@ -72,5 +72,15 @@
   {
     "name": "showup_date",
     "type": "TIMESTAMP"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "parent_question_concept_id",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "parent_answer_concept_id",
+    "type": "INTEGER"
   }
 ]
