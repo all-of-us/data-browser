@@ -102,6 +102,7 @@ export const tooltips = {
     'fall 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
     'winter minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
     'cope minute survey': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+    'minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
     'social determinants of health': 'This survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.',
     'genomics': 'Search and explore genomic variant data available within the dataset.',
     'pmValueChartHelpText': 'Values provide the numeric result of the ' +
@@ -305,6 +306,7 @@ export class TooltipService {
         'fall 2021 minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
         'winter minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
         'cope minute survey': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
+        'minute survey on covid-19 vaccines': 'This survey includes information regarding a participant’s COVID-19 vaccination experience.',
         'social determinants of health': 'This survey includes information about the social determinants of health, including a participant’s neighborhood, social life, stress, and feelings about everyday life.',
         'genomics': 'Search and explore genomic variant data available within the dataset.',
         'pmValueChartHelpText': 'Values provide the numeric result of the ' +
