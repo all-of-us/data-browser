@@ -656,6 +656,39 @@ FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`$
 On o.observation_source_concept_id=sq.concept_id
 Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
 and o.observation_source_concept_id not in (40766240,43528428,1585389)
+and survey_concept_id not in (1333342, 765936)
+Group by sq.survey_concept_id"
+
+# Count of people who took each survey
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3000 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
+'Survey' as stratum_3,
+count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
+Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and o.observation_source_concept_id not in (40766240,43528428,1585389)
+and survey_concept_id in (1333342)
+and ob_ext.survey_version_concept_id is not null and ob_ext.survey_version_concept_id in (2100000002, 2100000003, 2100000004, 2100000005, 2100000006, 2100000007)
+Group by sq.survey_concept_id"
+
+# Count of people who took each survey
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
+SELECT 0 as id, 3000 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
+'Survey' as stratum_3,
+count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
+Where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0)
+and o.observation_source_concept_id not in (40766240,43528428,1585389)
+and survey_concept_id in (765936)
+and ob_ext.survey_version_concept_id is not null and ob_ext.survey_version_concept_id in (765936, 905047, 905055)
 Group by sq.survey_concept_id"
 
 # Versioned question count of cope survey

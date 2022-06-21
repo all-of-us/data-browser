@@ -74,10 +74,10 @@ export const SurveyDescReactComponent =
                  {
                  props.isCopeSurvey ?
                  <p className='body-default help-text survey-desc'>This optional survey was released to participants for
-                 completion at multiple time points during the COVID-19 pandemic, so a participant may have multiple data
-                  points if they completed more than one survey. Most content is consistent between survey versions, but
-                   some questions were modified or repeated from the COPE Survey. Due to branching logic, total participant
-                    counts per question may vary.</p>
+                  completion at multiple time points during the
+                 COVID-19 pandemic. As a result, a participant may have multiple data points if they completed more than one
+                   survey. Even though most of the content is consistent between survey versions, some questions were modified.
+                 </p>
                          : null
                  }
                  <div className='desc-container' style={styles.descContainer}>
@@ -106,8 +106,7 @@ export class SurveyDescWrapperComponent extends BaseReactWrapper {
     @Input() public surveyName: string;
     @Input() public isCopeSurvey: boolean;
     @Input() public surveyDescription: string;
-    @Input('click') click: Function;
     constructor() {
-        super(SurveyDescReactComponent, ['surveyName', 'isCopeSurvey', 'surveyDescription', 'click']);
+        super(SurveyDescReactComponent, ['surveyName', 'isCopeSurvey', 'surveyDescription']);
     }
 }
