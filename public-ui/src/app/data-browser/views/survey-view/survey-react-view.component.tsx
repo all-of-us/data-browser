@@ -197,7 +197,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
             showAnswer: {},
             questions: [],
             loading: true,
-            surveyVersions: []
+            surveyVersions: [],
         };
     }
 
@@ -237,8 +237,8 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
         const surveyPdfUrl = (surveyConceptId === 43528895) ?
             '/assets/surveys/' + 'Health Care Access Utilization'.split(' ').join('_') + '.pdf'
             : '/assets/surveys/' + survey.name.split(' ').join('_') + '.pdf';
-        const copeFlag = surveyConceptId === 1333342;
-        if (surveyConceptId === 1333342) {
+        const copeFlag = (surveyConceptId === 1333342 || surveyConceptId === 765936);
+        if (surveyConceptId === 1333342 || surveyConceptId === 765936) {
             const surveyVersions = [];
             api.getSurveyVersionCounts(surveyConceptId.toString()).then(
                 result => {
@@ -342,7 +342,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                     survey && <SurveyDescReactComponent
                         surveyName={survey.name}
                         isCopeSurvey={isCopeSurvey}
-                        surveyDescription={survey.description}/>
+                        surveyDescription={survey.description} />
                 }
                 <div className='search-bar-container' style={styles.searchBarContainer}>
                     <SearchComponent value={searchWord || ''} searchTitle='' domain='survey'
@@ -383,7 +383,7 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                                     </div> : null
                                     }
                                 </div>
-                                {isCopeSurvey ? surveyVersions && <div className='version-table' style={styles.versionTable}>
+                                {(isCopeSurvey) ? surveyVersions && <div className='version-table' style={styles.versionTable}>
                                     <SurveyVersionTableReactComponent surveyVersions={surveyVersions} />
                                 </div> :
                                     <div className='pdf-link' style={styles.pdfLink}>

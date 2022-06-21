@@ -97,24 +97,24 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         };
     }
 
-
-    openDrawer(answerValueString) {
+    openDrawer(answerValueString, path) {
         this.setState({
             drawerOpen: (answerValueString !== 'Did not answer') ? !this.state.drawerOpen : false
         });
         if (this.props.hasSubQuestions === '1' && !this.state.subQuestions.length) {
-            this.getSubQuestions();
+            this.getSubQuestions(path);
         } else {
             this.processResults([this.props.question]);
         }
     }
 
-    getSubQuestions() {
+    getSubQuestions(path: string) {
         dataBrowserApi().getSubQuestions(
           this.props.surveyConceptId,
           this.props.questionConceptId,
           this.props.answerConceptId,
-          this.state.nextLevel
+          this.state.nextLevel,
+          path
         ).then(results => {
             this.setState({
                 subQuestions: this.processResults(results.questions.items)
@@ -213,7 +213,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
         const countString = countValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
         return <React.Fragment>
             <div className={drawerOpen ? 'active-row survey-tbl-exp-r survey-tbl-r' : 'survey-tbl-exp-r survey-tbl-r'}
-                onClick={() => this.openDrawer(answerValueString)}>
+                onClick={() => this.openDrawer(answerValueString, question.path)}>
                 <div className='survey-tbl-d first display-body info-text survey-answer-level-1'>
                     {answerValueString}
                 </div>
