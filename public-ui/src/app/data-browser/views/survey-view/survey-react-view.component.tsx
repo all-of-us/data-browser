@@ -256,7 +256,10 @@ export const SurveyViewReactComponent = withRouteData(class extends React.Compon
                                         'COPE_survey_' + item.stratum3.split('/')[0].replace('/', '_') + '_' + item.stratum4 + '_English.pdf'
                                 });
                             } else if (item.analysisId === 3401) {
-                                surveyVersions[i].numberOfQuestion = item.countValue;
+                                const matchingSurveyVersionAnalysisRow = surveyVersions.filter(sv => sv.monthName === item.stratum3);
+                                if (matchingSurveyVersionAnalysisRow && matchingSurveyVersionAnalysisRow.length > 0) {
+                                    matchingSurveyVersionAnalysisRow[0].numberOfQuestion = item.countValue;
+                                }
                             }
                         }
                         ));
