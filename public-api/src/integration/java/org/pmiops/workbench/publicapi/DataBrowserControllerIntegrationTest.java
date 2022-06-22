@@ -102,6 +102,7 @@ public class DataBrowserControllerIntegrationTest {
   public void testSearchConcepts() throws Exception {
     int maxResults = 20;
     ConceptListResponse resp = api.searchConcepts(new SearchConceptsRequest()
+            .query("")
             .domain(Domain.MEASUREMENT)
             .minCount(1)
             .maxResults(maxResults));
