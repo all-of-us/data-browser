@@ -1,3 +1,4 @@
+import { ArrayType, ProviderAstType } from '@angular/compiler';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -79,15 +80,27 @@ interface State {
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
-    min: number;
-    max: number;
+    min = 0;
+    max  = this.props.filterItem.max;
+    filterMax = this.props.filterItem.max
+    filterMin = this.props.filterItem.min
     constructor(props: Props) {
         super(props);
         this.state = {
             filterItemOpen: false,
-            filterItemState: props.filterItem || '',
+            filterItemState: props.filterItem  || '',
             filterCheckMap: props.filterItem || ''
         };
+    }
+
+    componentDidMount() {
+        if (Array.isArray(this.state.filterItemState)){
+        this.setState){
+            filterItemState: this.state.filterItemState.forEach(el=>{
+                el.checked = false;
+            })
+        }
+    }
     }
 
     filterClick() {
@@ -123,12 +136,15 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
 
     handleRangeSelect(event, isMax) {
-        const sliderValue = event.target.value;
-        if (isMax) {
-            this.max = Math.floor((sliderValue / 100) * this.props.filterItem.max);
+        const maxSliderValue = isMax && event.target.value;
+        const minSliderValue = !isMax &&  event.target.value;
+       
+        if (isMax && (this.max > this.filterMin) || (this.max < this.filterMax)) {
+            console.log(this.props.filterItem.max,maxSliderValue);   
+            this.max = Math.floor((maxSliderValue / 100) * this.filterMax) - this.min;
             this.state.filterItemState.max = this.max;
         } else {
-            this.min = Math.floor((sliderValue / 100) * this.props.filterItem.max);
+            this.min = Math.floor((minSliderValue / 100) * this.props.filterItem.max);
             this.state.filterItemState.min = this.min;
         }
         this.state.filterItemState.checked = true;
