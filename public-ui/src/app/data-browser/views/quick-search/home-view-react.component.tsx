@@ -559,7 +559,7 @@ export const dBHomeComponent = withRouteData(
                 <style>{css}</style>
                 <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>Data Browser</h1>
                 <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-                    The Data Browser provides interactive views of the publicly-available <i>All of Us</i>
+                    The Data Browser provides interactive views of the publicly-available <i>All of Us</i>&#32;
                     Research Program participant data. Electronic Health Record (EHR) data are derived from reports by
                     health care providers. Genomic data are derived from biosamples provided by participants. Physical
                     measurements are taken at the time of participant enrollment.
