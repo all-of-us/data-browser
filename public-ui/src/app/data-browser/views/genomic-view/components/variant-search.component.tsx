@@ -3,8 +3,8 @@ import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/comp
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
-import { GenomicFilters } from 'publicGenerated';
 import { environment } from 'environments/environment';
+import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
 
 const styles = reactStyles({
