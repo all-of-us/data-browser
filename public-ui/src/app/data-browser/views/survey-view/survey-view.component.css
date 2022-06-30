@@ -1,0 +1,280 @@
+.db-card {
+    overflow-x: auto;
+}
+
+strong {
+    font-family: GothamBook, Arial, sans-serif;
+    color: #302c71;
+}
+
+.title-container {
+    width: 100%;
+}
+
+.desc-container {
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.page-header {
+    padding: 18px;
+}
+
+.clear-icon {
+    float: right;
+    margin-top: 1.25%;
+}
+
+.survey-note {
+    margin: 5px;
+}
+
+.title-container {
+    padding-right: 18px;
+    margin: 0;
+}
+
+.title-container h1 {
+    line-height: 1em;
+}
+
+.search-bar-container,
+.results {
+    padding: 18px;
+}
+
+.results {
+    padding-top: 36px;
+    width: 100%;
+}
+
+.toggle-link,
+.toggle-link:link,
+.toggle-link:visited {
+    color: #216fb4;
+}
+
+.survey-head {
+    display: flex;
+    position: relative;
+    padding: 0 1rem;
+    margin-bottom: calc(18px * 4);
+}
+
+.stat-layout {
+    display: flex;
+    width: 80%;
+}
+
+.stat-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.cope-stat-layout {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.version-table {
+    width: 70%;
+}
+@media only screen and (max-width: 767px) {
+    .stat-container {
+        flex-basis: 100%;
+    }
+}
+
+.stat-container .info-text {
+    margin-top: 0;
+}
+
+.stat-container .secondary-display {
+    font-size: 70px;
+    line-height: 0.97em;
+}
+
+.stat-container {
+    padding-right: 45px;
+}
+
+.highlight {
+    font-family: GothamBold, Arial, san-serif;
+    font-weight: 700;
+    padding: 3px;
+}
+
+.stat-desc {
+    font-size: 0.75em;
+}
+
+.pdf-link {
+    padding-top: 1rem;
+}
+
+.bold-note-heading {
+    font-family: GothamBold, Arial, sans-serif;
+    font-weight: bold;
+}
+
+@media only screen and (min-width: 768px) {
+
+    .pdf-link {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding-top: 0;
+    }
+}
+
+.survey-results {
+    position: relative;
+}
+
+.no-results {
+    padding: 1em;
+}
+
+.question-result {
+    border-top: 1px solid #cccccc;
+    padding: 9px 0;
+}
+
+.question-result .secondary-display {
+    font-size: 0.9em;
+}
+
+.question-result .question-text {
+    font-family: Arial, sans-serif;
+    color: #262262;
+}
+
+.question-result:first-of-type{
+    border-top: none;
+}
+
+.topic-text:first-of-type{
+    border-top: none;
+}
+
+.question-result .survey-tbl {
+    width: 100%;
+}
+
+.see-answers {
+    font-size: 14px;
+    cursor: pointer;
+    color: #216fb4;
+}
+
+.see-answers clr-icon {
+    width: 1.3em;
+    height: 1.3em;
+    color: #216fb4;
+}
+.answer-layout {
+    display:flex;
+    align-items: center;
+}
+.cope-legend-item {
+    margin-right: 1rem;
+    color:transparent;
+}
+
+.survey-tbl-r.survey-tbl-head {
+    /* padding-bottom: 0; */
+    background: rgba(218, 230, 237, 0.7);
+    border: #cccccc 1px solid;
+    border-bottom: none;
+}
+.survey-sub-tbl {
+    border-bottom: #cccccc 1px solid;
+}
+.survey-sub-tbl .survey-tbl-exp-r:last-of-type {
+    border-bottom: none;
+}
+#answer-result {
+    width: calc(40%);
+}
+
+.active-question {
+    font-family: GothamBold, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.question .display-body {
+    padding-bottom: 18px;
+}
+
+.question .body-default {
+    padding-bottom: 18px;
+}
+
+.icon-btn clr-icon {
+    width: 2em;
+    height: 2em;
+    color: #216fb4;
+}
+
+.survey-tbl {
+    min-width: 666px;
+    padding-bottom: calc(18px * 3);
+}
+
+.sub-question-text {
+    text-align: left;
+    font-weight: bold;
+    font-family: GothamBold, Arial, Helvetica, sans-serif;
+}
+.sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
+    padding-top: 1rem;
+}
+/* .survey-question-heading {
+    padding-top: 2%;
+    text-align: left;
+} */
+
+.sub-table-1 {
+    margin-left: 2%;
+    width: 98%;
+}
+
+.sub-table-2 {
+    padding-top: 1rem;
+    margin-left: 2%;
+    width: 98%;
+}
+.disclaimer-btn {
+    padding: 0.5rem;
+    margin-top: 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .survey-head {
+        flex-direction: column;
+    }
+    .cope-stat-layout {
+        width: 100%;
+        align-items: flex-end;
+        flex-direction: row;
+    }
+    .cope-stat-layout .stat-container {
+        padding-right: 0px;
+        padding-bottom: 2rem;
+    }
+    .version-table {
+        width: 100%;
+    }
+}
+
+.topic-text + .question-result {
+  border-top: none;
+}
+
+.topic-text {
+    border-top: 1px solid #cccccc;
+    font-size: 1.2em;
+    font-weight: 500;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
