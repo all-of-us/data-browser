@@ -60,13 +60,15 @@ interface Props {
 interface State {
     filterCats: Cat[];
     filteredMetadata: any;
-
 }
 
 export class VariantFilterComponent extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
+        // this.props.filterMetadata.gene.filter(el=> el.checked=false);
+        // this.props.filterMetadata.consequence.filter(el=> el.checked=false);
+        // this.props.filterMetadata.clinicalSignificance.filter(el=> el.checked=false);
         this.state = {
             filterCats: [
                 { display: 'Gene', field: 'gene' },
@@ -77,12 +79,14 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
             filteredMetadata: this.props.filterMetadata
-        };
+        };   
     }
+
     handleFilterChange(filteredItem: GenomicFilters, cat) {
         this.props.filterMetadata[cat.field] = filteredItem;
         this.setState({ filteredMetadata: this.props.filterMetadata });
     }
+
     submitFilter(filteredMetadata: GenomicFilters) {
         filteredMetadata = this.state.filteredMetadata;
         this.props.onFilterSubmit(filteredMetadata);
@@ -100,7 +104,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                             <VariantFilterItemComponent
                                 onFilterChange={(e) => this.handleFilterChange(e, cat)}
                                 key={key} category={cat}
-                                filterItem={filterMetadata[cat.field.toString()]} />;
+                                filterItem={filteredMetadata[cat.field.toString()]} />;
                     }
                 })
                 }

@@ -81,29 +81,24 @@ interface State {
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
     min = 0;
-    max  = this.props.filterItem.max;
+    max = this.props.filterItem.max;
     filterMax = this.props.filterItem.max
     filterMin = this.props.filterItem.min
     constructor(props: Props) {
         super(props);
         this.state = {
             filterItemOpen: false,
-            filterItemState: props.filterItem  || '',
+            filterItemState: props.filterItem || '',
             filterCheckMap: props.filterItem || ''
         };
     }
 
     componentDidMount() {
-        if (Array.isArray(this.state.filterItemState)){
-        this.setState){
-            filterItemState: this.state.filterItemState.forEach(el=>{
-                el.checked = false;
-            })
-        }
-    }
+
     }
 
     filterClick() {
+
         this.setState({ filterItemOpen: !this.state.filterItemOpen });
     }
 
@@ -122,12 +117,13 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         this.state.filterItemState.forEach(el => {
             el.checked = value;
         });
-        this.setState({ filterItemState: this.state.filterItemState });
-
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
+
     handleCheck(filteredItem) {
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
+        console.log(filtered,'wherererer');
+        
         this.setState({
             filterItemState: filtered,
             filterCheckMap: filtered
@@ -137,10 +133,10 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
     handleRangeSelect(event, isMax) {
         const maxSliderValue = isMax && event.target.value;
-        const minSliderValue = !isMax &&  event.target.value;
-       
+        const minSliderValue = !isMax && event.target.value;
+
         if (isMax && (this.max > this.filterMin) || (this.max < this.filterMax)) {
-            console.log(this.props.filterItem.max,maxSliderValue);   
+            console.log(this.props.filterItem.max, maxSliderValue);
             this.max = Math.floor((maxSliderValue / 100) * this.filterMax) - this.min;
             this.state.filterItemState.max = this.max;
         } else {
