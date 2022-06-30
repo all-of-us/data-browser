@@ -79,7 +79,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
             filteredMetadata: this.props.filterMetadata
-        };   
+        };
     }
 
     handleFilterChange(filteredItem: GenomicFilters, cat) {

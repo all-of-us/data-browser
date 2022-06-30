@@ -1,4 +1,3 @@
-import { ArrayType, ProviderAstType } from '@angular/compiler';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -82,8 +81,8 @@ interface State {
 export class VariantFilterItemComponent extends React.Component<Props, State> {
     min = 0;
     max = this.props.filterItem.max;
-    filterMax = this.props.filterItem.max
-    filterMin = this.props.filterItem.min
+    filterMax = this.props.filterItem.max;
+    filterMin = this.props.filterItem.min;
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -122,8 +121,8 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
     handleCheck(filteredItem) {
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
-        console.log(filtered,'wherererer');
-        
+        console.log(filtered, 'wherererer');
+
         this.setState({
             filterItemState: filtered,
             filterCheckMap: filtered

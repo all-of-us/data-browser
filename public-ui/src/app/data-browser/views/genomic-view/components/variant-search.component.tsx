@@ -64,7 +64,7 @@ interface Props {
 }
 interface State {
     searchWord: string;
-    filterShow: boolean;
+    filterShow: Boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -95,6 +95,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
         this.props.onFilterSubmit(filteredMetadata);
+        this.setState({ filterShow: false });
     }
 
     render() {
@@ -126,7 +127,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     filterMetadata={filterMetadata}
                     onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
             </div>
-
         </React.Fragment>;
     }
 }

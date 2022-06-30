@@ -207,9 +207,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     getFilterMetadata(searchTerm: string) {
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
-                result.gene.forEach(el => {el.checked=false});
-                result.consequence.forEach(el => {el.checked=false});
-                result.clinicalSignificance.forEach(el => {el.checked=false});
+                result.gene.forEach(el => { el.checked = false; });
+                result.consequence.forEach(el => { el.checked = false; });
+                result.clinicalSignificance.forEach(el => { el.checked = false; });
                 this.setState({ filterMetadata: result });
             }
         ).catch(e => {
@@ -427,7 +427,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
                                 onFilterSubmit={(filteredMetadata: GenomicFilters) => {
-                                 this.handleFilterSubmit(filteredMetadata);
+                                    this.handleFilterSubmit(filteredMetadata);
                                 }}
                                 currentPage={currentPage}
                                 rowCount={rowCount}
