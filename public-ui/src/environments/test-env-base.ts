@@ -6,5 +6,6 @@ export const testEnvironmentBase = {
   gaId: 'UA-116298798-4',
   ehrReact: true,
   testReact: true,
-  geno: true
+  geno: true,
+  genoFilters: true
 };

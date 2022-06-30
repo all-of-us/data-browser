@@ -3,6 +3,7 @@ import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/comp
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
+import { environment } from 'environments/environment';
 import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
 
@@ -116,17 +117,19 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
-            {(!loading && variantListSize) && <div onClick={() => this.showFilter()}
+            {(!loading && variantListSize && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
-            <div style={styles.filterContainer}>
+            { environment.genoFilters && <div style={styles.filterContainer}>
                 {(!loading && filterShow) && <VariantFilterComponent
                     filterMetadata={filterMetadata}
                     onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
             </div>
+    }
+
         </React.Fragment>;
     }
 }

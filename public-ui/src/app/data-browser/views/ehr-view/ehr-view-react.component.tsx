@@ -382,7 +382,7 @@ export const EhrViewReactComponent = withRouteData(
         getTopConcepts() {
             const { searchWord, domain: { domain, name }, measurementTestFilter, measurementOrderFilter } = this.state;
             const searchRequest = {
-                query: searchWord,
+                query: searchWord ? searchWord : '',
                 domain: domain.toUpperCase(),
                 standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
                 maxResults: 50,
