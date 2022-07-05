@@ -30,6 +30,7 @@ interface Props {
   surveyCountAnalysis: any;
   isCopeSurvey: any;
   versionAnalysis: any;
+  surveyConceptId: any;
 }
 
 const chartStyleCss = `
@@ -141,7 +142,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { graphButtons, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis } = this.props;
+    const { graphButtons, searchTerm, surveyCountAnalysis, selectedResult, versionAnalysis, surveyConceptId } = this.props;
     const { isLoaded, graphToShow, displayGraphErrorMessage, selectedChartAnalysis } = this.state;
     const tabIndex = 0;
     return <React.Fragment>
@@ -184,7 +185,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               <div className='chart' key='age-chart'>
                 <VersionChartReactComponent versionAnalysis={selectedChartAnalysis}
                   surveyVersionAnalysis={versionAnalysis}
-                  selectedResult={selectedResult} />
+                  selectedResult={selectedResult}
+                   surveyConceptId={surveyConceptId}/>
               </div> : null
       }
 

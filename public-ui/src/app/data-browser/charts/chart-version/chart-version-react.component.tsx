@@ -17,6 +17,7 @@ interface Props {
     versionAnalysis: any;
     surveyVersionAnalysis: any;
     selectedResult: any;
+    surveyConceptId: any;
 }
 
 export class VersionChartReactComponent extends React.Component<Props, State> {
@@ -76,7 +77,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
   }
 
   prepCategoriesAndData(genderAnalysisResults) {
-    const {versionAnalysis: {analysisId, stratum1}, surveyVersionAnalysis} = this.props;
+    const {versionAnalysis: {analysisId}, surveyVersionAnalysis, surveyConceptId} = this.props;
     const data = [];
     const cats = [];
     const color = '#2691D0';
@@ -102,7 +103,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
             toolTipHelpText: this.getTooltipHelpText(a.stratum4, count,
             analysisStratumName, percentage, version),
             version: a.stratum7,
-            versionName: (stratum1 === 1333342) ? VERSION_NAME_MAP_COPE[a.stratum7] : VERSION_NAME_MAP_COPE_MINUTE[a.stratum7],
+            versionName: (surveyConceptId === '1333342') ? VERSION_NAME_MAP_COPE[a.stratum7] : VERSION_NAME_MAP_COPE_MINUTE[a.stratum7],
             analysisId: analysisId
           });
           cats.push(a.stratum7);
@@ -119,7 +120,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
           dataOnlyLT20: dataOnlyLT20,
           showInLegend: false
           }];
-        return { categories: cats.map(item  => (stratum1 === 1333342) ?
+        return { categories: cats.map(item  => (surveyConceptId === '1333342') ?
             VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]), series: series};
   }
 
