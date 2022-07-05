@@ -65,7 +65,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
   constructor(props) {
     super(props);
     this.state = {options: null, answerChartInfo: [], chartSeries: [], categoryArr: [], colors: []};
-    console.log('In SurveyAnswerChartReactComponent !!!');
   }
 
   componentDidMount() {
