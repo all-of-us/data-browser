@@ -203,7 +203,7 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
     render() {
         const { answerConceptId, answerValueString, hasSubQuestions,
             countValue, countPercent, isCopeSurvey, question, answer, surveyName,
-            surveyVersions, surveyCountAnalysis, searchTerm } = this.props;
+            surveyVersions, surveyCountAnalysis, searchTerm, surveyConceptId } = this.props;
         const { drawerOpen, subQuestions } = this.state;
         const graphButtons = ['Sex Assigned at Birth', 'Age When Survey Was Taken'];
         if (isCopeSurvey) {
@@ -265,7 +265,8 @@ const SurveyAnswerRowComponent = (class extends React.Component<SurveyRowProps, 
                         surveyName={surveyName}
                         versionAnalysis={surveyVersions}
                         surveyCountAnalysis={surveyCountAnalysis}
-                        searchTerm={searchTerm}>
+                        searchTerm={searchTerm}
+                        surveyConceptId={surveyConceptId}>
                     </SurveyChartReactComponent>
                 }
             </div>}

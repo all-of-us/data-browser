@@ -103,7 +103,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
 
   public sortAnswers() {
     const { versionAnalysis } = this.props;
-    console.log(versionAnalysis);
     const surveyConceptId = versionAnalysis !== null ? versionAnalysis[0].stratum1 : 0;
     const result = versionAnalysis.reduce((r, a) => {
       r[a.stratum7] = [...r[a.stratum7] || [], a];
@@ -158,7 +157,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<Props, Stat
     const { categoryArr, chartSeries, colors } = this.state;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = 'column';
-    newBaseOptions.xAxis.categories = categoryArr.map(item  => (surveyConceptId === 1333342) ?
+    newBaseOptions.xAxis.categories = categoryArr.map(item  => (surveyConceptId === '1333342') ?
         VERSION_NAME_MAP_COPE[item] : VERSION_NAME_MAP_COPE_MINUTE[item]);
     newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = 'Participant Count';
