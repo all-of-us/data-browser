@@ -96,7 +96,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
             </div>
             <VariantSearchComponent
                 onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-                onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit(filteredMetadata); }}
+                onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit( filteredMetadata); }}
                 loading={loadingVariantListSize}
                 searchTerm={searchTerm}
                 variantListSize={variantListSize}

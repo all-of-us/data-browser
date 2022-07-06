@@ -120,9 +120,9 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
 
     handleCheck(filteredItem) {
+        console.log(filteredItem,'chick');
+        
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
-        console.log(filtered, 'wherererer');
-
         this.setState({
             filterItemState: filtered,
             filterCheckMap: filtered

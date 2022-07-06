@@ -55,6 +55,7 @@ export interface Cat {
 
 interface Props {
     filterMetadata: GenomicFilters;
+    onFilterChange: Function;
     onFilterSubmit: Function;
 }
 interface State {
@@ -82,9 +83,11 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         };
     }
 
-    handleFilterChange(filteredItem: GenomicFilters, cat) {
+    handleFilterChange(filteredItem: GenomicFilters, cat: any) {
+    
         this.props.filterMetadata[cat.field] = filteredItem;
-        this.setState({ filteredMetadata: this.props.filterMetadata });
+        this.setState({ filteredMetadata : this.props.filterMetadata });
+        this.props.onFilterChange(this.state.filteredMetadata[cat.field], cat)
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {

@@ -1,11 +1,12 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
+import { Cat, VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
+import { VariantFilterChips } from './variant-filter-chips.component';
 
 const styles = reactStyles({
     searchBar: {
@@ -55,6 +56,10 @@ const css = `
 }
 `;
 
+export interface Chip {
+    cat: any;
+    data: GenomicFilters;
+}
 interface Props {
     onSearchTerm: Function;
     onFilterSubmit: Function;
@@ -66,6 +71,9 @@ interface Props {
 interface State {
     searchWord: string;
     filterShow: Boolean;
+    chip: Chip;
+    chips: any;
+
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -73,7 +81,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         super(props);
         this.state = {
             searchWord: '',
-            filterShow: false
+            filterShow: false,
+            chip: undefined,
+            chips: []
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -98,9 +108,61 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.props.onFilterSubmit(filteredMetadata);
         this.setState({ filterShow: false });
     }
+    createChip(filteredMetadata, cat) {
+        const chip: Chip = { cat: cat, data: filteredMetadata };
+        let geneChips,
+            consequenceChips,
+            clinicalSignificanceChips,
+            alleleCountChips,
+            alleleNumberChips,
+            alleleFrequencyChips;
+
+
+            if (Array.isArray(this.state.chips)){
+        switch (cat.field) {
+
+            case 'gene':
+                // this.setState({chips: this.state.chips.push(chip)});
+                geneChips = chip;
+                break;
+            case 'consequence':
+                // this.setState({chips: this.state.chips.push(chip)});
+                consequenceChips = chip;
+                break;
+            case 'clinicalSignificance':
+                // this.setState({chips: this.state.chips.push(chip)});
+                clinicalSignificanceChips = chip;
+                break;
+            case 'alleleCount':
+                // this.setState({chips: this.state.chips.push(chip)});
+                alleleCountChips = chip;
+                break;
+            case 'alleleNumber':
+                alleleNumberChips = chip;
+                // this.setState({chips: this.state.chips.push(chip)});
+                break;
+            case 'alleleFrequency':
+                // this.setState({chips: this.state.chips.push(chip)});
+                alleleFrequencyChips = chip;
+                break;
+        }
+    }
+
+    this.setState({chips:[geneChips,
+        consequenceChips,
+        clinicalSignificanceChips,
+        alleleCountChips,
+        alleleNumberChips,
+        alleleFrequencyChips]})
+
+console.log(this.state.chips,'state liogg');
+
+
+    }
+
 
     render() {
-        const { searchWord, filterShow } = this.state;
+        const { searchWord, filterShow, chip,chips } = this.state;
         const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
@@ -117,18 +179,22 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
+            {this.state.chips &&
+                <VariantFilterChips
+                    chips={chips} />}
             {(!loading && variantListSize && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
-            { environment.genoFilters && <div style={styles.filterContainer}>
+            {environment.genoFilters && <div style={styles.filterContainer}>
                 {(!loading && filterShow) && <VariantFilterComponent
                     filterMetadata={filterMetadata}
-                    onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
+                    onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
+                    onFilterChange={(filteredMetadata: GenomicFilters, cat: Cat) => this.createChip(filteredMetadata, cat)} />}
             </div>
-    }
+            }
 
         </React.Fragment>;
     }
