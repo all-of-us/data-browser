@@ -69,10 +69,9 @@ interface Props {
     loading: boolean;
 }
 interface State {
+    filteredMetadata: GenomicFilters
     searchWord: string;
     filterShow: Boolean;
-    chip: Chip;
-    chips: any;
 
 }
 
@@ -82,8 +81,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.state = {
             searchWord: '',
             filterShow: false,
-            chip: undefined,
-            chips: []
+            filteredMetadata: undefined
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -108,61 +106,15 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.props.onFilterSubmit(filteredMetadata);
         this.setState({ filterShow: false });
     }
-    createChip(filteredMetadata, cat) {
-        const chip: Chip = { cat: cat, data: filteredMetadata };
-        let geneChips,
-            consequenceChips,
-            clinicalSignificanceChips,
-            alleleCountChips,
-            alleleNumberChips,
-            alleleFrequencyChips;
 
-
-            if (Array.isArray(this.state.chips)){
-        switch (cat.field) {
-
-            case 'gene':
-                // this.setState({chips: this.state.chips.push(chip)});
-                geneChips = chip;
-                break;
-            case 'consequence':
-                // this.setState({chips: this.state.chips.push(chip)});
-                consequenceChips = chip;
-                break;
-            case 'clinicalSignificance':
-                // this.setState({chips: this.state.chips.push(chip)});
-                clinicalSignificanceChips = chip;
-                break;
-            case 'alleleCount':
-                // this.setState({chips: this.state.chips.push(chip)});
-                alleleCountChips = chip;
-                break;
-            case 'alleleNumber':
-                alleleNumberChips = chip;
-                // this.setState({chips: this.state.chips.push(chip)});
-                break;
-            case 'alleleFrequency':
-                // this.setState({chips: this.state.chips.push(chip)});
-                alleleFrequencyChips = chip;
-                break;
-        }
-    }
-
-    this.setState({chips:[geneChips,
-        consequenceChips,
-        clinicalSignificanceChips,
-        alleleCountChips,
-        alleleNumberChips,
-        alleleFrequencyChips]})
-
-console.log(this.state.chips,'state liogg');
-
+    handleChipChange(changes) {
+        // console.log(changes,'changesss');
+        // console.log(this.mergeArrays(this.state.chips,changes),'merged?')
 
     }
-
 
     render() {
-        const { searchWord, filterShow, chip,chips } = this.state;
+        const { searchWord, filterShow, filteredMetadata } = this.state;
         const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
@@ -179,9 +131,10 @@ console.log(this.state.chips,'state liogg');
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
-            {this.state.chips &&
+            {filterMetadata &&
                 <VariantFilterChips
-                    chips={chips} />}
+                    filteredMetadata={filteredMetadata}
+                    onChange={(changes) => this.handleChipChange(changes)} />}
             {(!loading && variantListSize && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
@@ -192,7 +145,7 @@ console.log(this.state.chips,'state liogg');
                 {(!loading && filterShow) && <VariantFilterComponent
                     filterMetadata={filterMetadata}
                     onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
-                    onFilterChange={(filteredMetadata: GenomicFilters, cat: Cat) => this.createChip(filteredMetadata, cat)} />}
+                    onFilterChange={(filteredMetadata: GenomicFilters) => this.setState({filteredMetadata: filteredMetadata})} />}
             </div>
             }
 

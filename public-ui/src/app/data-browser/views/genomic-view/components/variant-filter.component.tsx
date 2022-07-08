@@ -67,9 +67,6 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        // this.props.filterMetadata.gene.filter(el=> el.checked=false);
-        // this.props.filterMetadata.consequence.filter(el=> el.checked=false);
-        // this.props.filterMetadata.clinicalSignificance.filter(el=> el.checked=false);
         this.state = {
             filterCats: [
                 { display: 'Gene', field: 'gene' },
@@ -83,11 +80,11 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         };
     }
 
-    handleFilterChange(filteredItem: GenomicFilters, cat: any) {
-    
-        this.props.filterMetadata[cat.field] = filteredItem;
-        this.setState({ filteredMetadata : this.props.filterMetadata });
-        this.props.onFilterChange(this.state.filteredMetadata[cat.field], cat)
+    handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
+        const filterMetadataChange = this.props.filterMetadata;
+        filterMetadataChange[cat.field] = filteredItem
+        this.setState({ filteredMetadata: filterMetadataChange });
+        this.props.onFilterChange(filteredItem)
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
