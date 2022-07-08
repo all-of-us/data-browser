@@ -6,7 +6,7 @@ import { GenomicFilters } from 'publicGenerated';
 
 interface Props {
     filteredMetadata: GenomicFilters;
-    onChange:Function;
+    onChange: Function;
 }
 interface State {
     chips: Array<any>;
@@ -19,21 +19,42 @@ export class VariantFilterChips extends React.Component<Props, State> {
             chips: []
         }
     }
+    formatChips(filteredMetadata: GenomicFilters): Array<any> {
+        let displayArr = [];
+        for (const key in filteredMetadata) {
+            if (Object.prototype.hasOwnProperty.call(filteredMetadata, key)) {
+                const el = filteredMetadata[key];
+                displayArr.push({ cat: key, data: el });
 
- componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
-    console.log(this.props.filteredMetadata,'end of the line');
-   
-    
- }
+            }
+        }
+        return displayArr;
+    }
+
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        if (prevProps != this.props) {
+            this.setState({ chips: this.formatChips(this.props.filteredMetadata) })
+        }
+        console.log(this.state);
+
+    }
 
 
     render() {
+        const { chips } = this.state;
         return <div>
-            {/* {Array.isArray(chips) && chips.map((el, i) => {
-                if (el) {
-                    return <li key={i}>zxc{el.cat.display}</li>
+            {chips.length > 0 && chips.map((el, i) => {
+                if (Array.isArray(el.data)) {
+                    return <div key={i}>Y{el.cat}
+                        {el.data.map((item, i) => {
+                           return <li key={i}>suoppp</li>
+                        })}
+                    </div>
+                } else {
+                    return <div key={i}>N{el.cat}</div>
                 }
-            })} */}
+
+            })}
         </div>
     }
 }
