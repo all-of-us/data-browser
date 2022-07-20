@@ -5,18 +5,18 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-52">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-82">
     <validCheckSum>ANY</validCheckSum>
     <preConditions onFail="MARK_RAN">
         <tableExists tableName="cb_criteria"></tableExists>
       <not>
-        <indexExists tableName="cb_criteria" indexName="name_code_index"></indexExists>
+        <indexExists tableName="cb_criteria" indexName="full_text_index"></indexExists>
       </not>
     </preConditions>
     <sql dbms="mysql">
       ALTER TABLE cb_criteria
-      ADD FULLTEXT INDEX name_code_index
-      (name,code);
+      ADD FULLTEXT INDEX full_text_index
+      (full_text);
     </sql>
   </changeSet>
 

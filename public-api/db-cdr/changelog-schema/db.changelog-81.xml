@@ -5,17 +5,16 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-80">
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-81">
   <validCheckSum>ANY</validCheckSum>
   <preConditions onFail="MARK_RAN">
     <not>
-      <columnExists tableName="survey_metadata" columnName="parent_question_concept_id"/>
-      <columnExists tableName="survey_metadata" columnName="parent_answer_concept_id"/>
+      <columnExists tableName="cb_criteria" columnName="full_text"/>
     </not>
   </preConditions>
-  <addColumn tableName="survey_metadata">
-    <column name="parent_question_concept_id" type="BIGINT" />
-    <column name="parent_answer_concept_id" type="BIGINT" />
+  <addColumn tableName="cb_criteria">
+    <column name="full_text" type="clob" />
+    <constraints nullable="false"/>
   </addColumn>
   </changeSet>
 
