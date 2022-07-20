@@ -45,13 +45,14 @@ export class VariantFilterChips extends React.Component<Props, State> {
         return <div>
             {chips.length > 0 && chips.map((el, i) => {
                 if (Array.isArray(el.data)) {
-                    return <div key={i}>Y{el.cat}
+                    return <span> {el.data.some((p) => p.checked) && <div style={{ border: '1px solid' }} key={i}>{el.cat}
                         {el.data.map((item, i) => {
-                           return <li key={i}>suoppp</li>
+                            return <div>{item.checked && <span key={i}>{item.option}</span>}</div>
                         })}
-                    </div>
+                    </div>}
+                    </span>
                 } else {
-                    return <div key={i}>N{el.cat}</div>
+                    return <span>{el.checked && <div key={i}>{el.cat}</div>}</span>
                 }
 
             })}

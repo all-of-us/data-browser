@@ -82,12 +82,30 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
     handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
         const filterMetadataChange = this.props.filterMetadata;
-        filterMetadataChange[cat.field] = filteredItem;
+        filterMetadataChange[cat.field.toString()] = filteredItem;
         this.setState({ filteredMetadata: filterMetadataChange });
         this.props.onFilterChange(filterMetadataChange);
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
+        console.log(filteredMetadata,'sup');
+        
+        for (const key in filteredMetadata) {
+            const filterItem = filteredMetadata[key];
+            const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
+            if (Array.isArray(filterItem)) {
+                if (!touched) {
+                    filteredMetadata[key] = filterItem.forEach((item) => {
+                        item.checked = false;
+                    })
+                    filteredMetadata[key] = filterItem;
+                }
+            }
+
+
+        }
+        console.log(filteredMetadata, 'endsssed');
+
         filteredMetadata = this.state.filteredMetadata;
         this.props.onFilterSubmit(filteredMetadata);
     }
