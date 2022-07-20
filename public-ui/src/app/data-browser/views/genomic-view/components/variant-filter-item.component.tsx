@@ -92,9 +92,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         };
     }
 
-    componentDidMount() {
-
-    }
 
     filterClick() {
 

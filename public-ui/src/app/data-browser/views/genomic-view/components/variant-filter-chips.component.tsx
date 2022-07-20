@@ -35,24 +35,22 @@ export class VariantFilterChips extends React.Component<Props, State> {
         if (prevProps != this.props) {
             this.setState({ chips: this.formatChips(this.props.filteredMetadata) })
         }
-        console.log(this.state);
-
     }
 
 
     render() {
         const { chips } = this.state;
         return <div>
-            {chips.length > 0 && chips.map((el, i) => {
+            {chips.length > 0 && chips.map((el, count) => {
                 if (Array.isArray(el.data)) {
-                    return <span> {el.data.some((p) => p.checked) && <div style={{ border: '1px solid' }} key={i}>{el.cat}
+                    return <span key={count}> {el.data.some((p) => p.checked) && <div style={{ border: '1px solid' }}>{el.cat}
                         {el.data.map((item, i) => {
-                            return <div>{item.checked && <span key={i}>{item.option}</span>}</div>
+                            return <div key={i}>{item.checked && <span >{item.option}</span>}</div>
                         })}
                     </div>}
                     </span>
                 } else {
-                    return <span>{el.checked && <div key={i}>{el.cat}</div>}</span>
+                    // return <span key={count}>{(el.data.checked && el.data.checked) && <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</span>
                 }
 
             })}

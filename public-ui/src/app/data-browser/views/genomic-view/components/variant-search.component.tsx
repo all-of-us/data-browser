@@ -142,10 +142,11 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
             {environment.genoFilters && <div style={styles.filterContainer}>
-                {(!loading && filterShow) && <VariantFilterComponent
-                    filterMetadata={filterMetadata}
-                    onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
-                    onFilterChange={(filteredMetadata: GenomicFilters) => this.setState({filteredMetadata: filteredMetadata})} />}
+                {(!loading && filterShow) &&
+                    <VariantFilterComponent
+                        filterMetadata={filterMetadata}
+                        onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
+                        onFilterChange={(filteredMetadata: GenomicFilters) => this.setState({ filteredMetadata: filteredMetadata })} />}
             </div>
             }
 
