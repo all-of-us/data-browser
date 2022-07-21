@@ -13,8 +13,9 @@
     </not>
   </preConditions>
   <addColumn tableName="cb_criteria">
-    <column name="full_text" type="clob" />
-    <constraints nullable="false"/>
+    <column name="full_text" type="clob">
+      <constraints nullable="false"/>
+    </column>
   </addColumn>
   </changeSet>
 
