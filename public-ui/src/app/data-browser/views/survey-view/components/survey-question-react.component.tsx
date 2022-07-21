@@ -126,7 +126,6 @@ export class SurveyQuestionReactComponent extends React.Component<Props, State> 
     render() {
         const { question, searchTerm, isCopeSurvey, participantCount, versionAnalysis, surveyName } = this.props;
         const { showAnswers, questionWithResults, surveyCountAnalysis } = this.state;
-        console.log('Test');
         return <div>
             <span style={{ fontFamily: showAnswers && 'GothamBold', cursor: 'pointer' }}
                 onClick={() => this.showAnswers()} onKeyPress={(e) => this.showAnswers(e)}>

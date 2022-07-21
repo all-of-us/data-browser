@@ -26,7 +26,8 @@ public class CriteriaService {
     }
 
     public CriteriaParentResponse getRolledUpCounts(String conceptId, String domainId) {
-        List<DbCriteria> criteriaList = criteriaDao.findParentCounts(conceptId, domainId.toUpperCase(), new String(domainId+"_rank1"));
+        String matchWord = "+[" + domainId + "_rank1]";
+        List<DbCriteria> criteriaList = criteriaDao.findParentCounts(conceptId, domainId.toUpperCase(), matchWord);
         Multimap<String, DbCriteria> criteriaRowsByConcept = Multimaps.index(criteriaList, DbCriteria::getConceptId);
         CriteriaParentResponse response = new CriteriaParentResponse();
         if (criteriaList.size() > 0) {
