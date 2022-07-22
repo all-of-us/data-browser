@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:16-alpine
 
 # We set the UID to the host's UID to ensure written files get proper permissions. The default UID
 # for node is 1000, which conflicts with some of our host machines.
