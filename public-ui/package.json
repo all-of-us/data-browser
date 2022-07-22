@@ -2,6 +2,9 @@
   "name": "aou-public-ui-angular",
   "version": "0.0.2",
   "license": "BSD",
+  "engines": {
+    "node": ">=16.10.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -73,7 +76,7 @@
     "@types/google.analytics": "0.0.36",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.3",
-    "@types/node": "^ 7.0.0",
+    "@types/node": "^10.12.11",
     "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "codelyzer": "^6.0.0",
