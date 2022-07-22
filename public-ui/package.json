@@ -2,9 +2,6 @@
   "name": "aou-public-ui-angular",
   "version": "0.0.2",
   "license": "BSD",
-  "engines": {
-    "node": ">=16.10.0"
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -51,7 +48,6 @@
     "moment": "^2.20.1",
     "mutationobserver-shim": "^0.3.2",
     "ngx-pagination": "^5.0.0",
-    "node": "16.10.0",
     "nouislider": "10.0.0",
     "nyc": "^15.1.0",
     "portable-fetch": "^3.0.0",

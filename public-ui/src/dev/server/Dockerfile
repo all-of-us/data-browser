@@ -1,4 +1,4 @@
-FROM node:14-alpine
+FROM node:16-alpine
 
 # We set the UID to the host's UID to ensure written files get proper permissions. The default UID
 # for node is 1000, which conflicts with some of our host machines.
@@ -10,13 +10,13 @@ RUN groupmod -g 666 node \
 # https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/alpine/Dockerfile
 #
 
-ENV CLOUD_SDK_VERSION 217.0.0
+ENV CLOUD_SDK_VERSION 392.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
 RUN apk --no-cache add \
         curl \
-        python2 \
+        python3 \
         py-crcmod \
         bash \
         libc6-compat \
