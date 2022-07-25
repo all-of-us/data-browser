@@ -28,6 +28,7 @@
     "@angular/platform-browser": "^13.3.11",
     "@angular/platform-browser-dynamic": "^13.3.11",
     "@angular/router": "^13.3.11",
+    "@cds/core": "^6.1.0",
     "@clr/angular": "^13.5.0",
     "@clr/core": "^4.0.15",
     "@clr/icons": "^13.0.2",
@@ -59,6 +60,7 @@
     "rxjs-compat": "^6.0.0-rc.0",
     "stackdriver-errors-js": "^0.4.0",
     "stacktrace-js": "^2.0.0",
+    "url": "^0.11.0",
     "yarn": "^1.22.10",
     "zone.js": "~0.11.4"
   },
