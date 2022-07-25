@@ -18,6 +18,8 @@ RUN apk --no-cache add \
         curl \
         python3 \
         py-crcmod \
+        node-js \
+        npm \
         bash \
         libc6-compat \
         openssh-client \
@@ -32,6 +34,10 @@ RUN apk --no-cache add \
 
 # Java for Swagger client generation
 RUN apk --no-cache add openjdk8-jre
+
+RUN npm install --global yarn n
+# Upgrade to Node 14, above installs 10.
+RUN n 16
 
 # We touch yarn's config file here so that we can explicitly make sure
 # yarn has permission to read/write to it, even though its empty.
