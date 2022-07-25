@@ -2,7 +2,7 @@ version: 2
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:buildimage-0.0.20
+    - image: allofustest/workbench:buildimage-0.0.24
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -18,7 +18,7 @@ java_defaults: &java_defaults
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:buildimage-0.0.20
+      - image: allofustest/workbench:buildimage-0.0.24
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
@@ -148,15 +148,6 @@ jobs:
           name: Download Swagger CLI
           command: |
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
-      - run:
-          name: Get and install node version manager.
-          command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-      - run:
-          name: Install Node version 16 using NVM
-          command: nvm install 16
-      - run:
-          name: Use Node version 16
-          command: nvm use 16
       - restore_cache:
           keys:
           - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
