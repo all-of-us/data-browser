@@ -43,7 +43,7 @@
     "highcharts-angular": "^2.9.0",
     "highcharts-react-official": "3.0.0",
     "immutable": "^4.0.0-rc.9",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "mutationobserver-shim": "^0.3.2",
     "ngx-pagination": "^5.0.0",
     "nouislider": "10.0.0",
