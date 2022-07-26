@@ -56,9 +56,8 @@ def build(cmd_name, args)
   if Set['staging', 'stable', 'prod'].include?(options.env)
     optimize = "--optimization"
   end
-
-  react_opts = "REACT_APP_ENVIRONMENT=#{options.env}"
-  common.run_inline "#{react_opts} yarn run build #{optimize} --no-watch --no-progress"
+  common.run_inline %W{yarn run build
+      #{optimize} --configuration=#{options.env} --no-watch --no-progress}
 end
 
 class CommonUiDevStart
