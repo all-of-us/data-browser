@@ -3,7 +3,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',
-    'jest',
     'prefer-arrow',
     'prettier',
     'react',
@@ -129,8 +128,5 @@ module.exports = {
       }
     ],
     'spaced-comment': 'warn',
-
-    /* Jest */
-    'jest/no-focused-tests': 'warn',
   },
 };
