@@ -80,7 +80,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='SNOMED' and r.domain_id='CONDITION' and r.synonyms like '%condition_rank1%' and is_standard = 1
+where r.type='SNOMED' and r.domain_id='CONDITION' and r.full_text like '%condition_rank1%' and is_standard = 1
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
 
@@ -88,7 +88,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='SNOMED' and r.domain_id='CONDITION' and r.synonyms like '%condition_rank1%' and is_standard = 0
+where r.type='SNOMED' and r.domain_id='CONDITION' and r.full_text like '%condition_rank1%' and is_standard = 0
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
 
@@ -96,7 +96,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.synonyms like '%procedure_rank1%' and is_standard=1
+where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.full_text like '%procedure_rank1%' and is_standard=1
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
 
@@ -104,7 +104,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.synonyms like '%procedure_rank1%' and is_standard=0
+where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.full_text like '%procedure_rank1%' and is_standard=0
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
 
@@ -112,7 +112,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count, c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='ICD9CM' and r.domain_id='CONDITION' and r.synonyms like '%condition_rank1%'
+where r.type='ICD9CM' and r.domain_id='CONDITION' and r.full_text like '%condition_rank1%'
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='ICD9CM' "
 
@@ -120,7 +120,7 @@ bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count, c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
-where r.type='ICD10CM' and r.domain_id='CONDITION' and r.synonyms like '%condition_rank1%'
+where r.type='ICD10CM' and r.domain_id='CONDITION' and r.full_text like '%condition_rank1%'
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='ICD10CM' "
 

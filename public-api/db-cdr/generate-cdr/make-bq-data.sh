@@ -204,8 +204,8 @@ if [[ $tables =~ $cb_cri_table_check ]]; then
     echo "Inserting criteria"
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-     (id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms)
-     SELECT id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms
+     (id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms, full_text)
+     SELECT id, parent_id, domain_id, type, subtype, is_standard, code, name, value, is_group, is_selectable, est_count, concept_id, has_attribute, has_hierarchy, has_ancestor_data, path, synonyms, full_text
      FROM \`$BQ_PROJECT.$BQ_DATASET.cb_criteria\`"
 fi
 
@@ -614,7 +614,7 @@ INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
 select concept_id_2, string_agg(distinct replace(c.name,'|','||'),'|' order by replace(c.name,'|','||') asc) as drug_brand_names from
 \`$BQ_PROJECT.$BQ_DATASET.cb_criteria_relationship\` cr join
 \`$BQ_PROJECT.$BQ_DATASET.cb_criteria\` c on cr.concept_id_1=c.concept_id
-and c.domain_id='DRUG' and c.type='BRAND' and c.synonyms like '%drug_rank1%'
+and c.domain_id='DRUG' and c.type='BRAND' and c.full_text like '%drug_rank1%'
 group by concept_id_2
 "
 
