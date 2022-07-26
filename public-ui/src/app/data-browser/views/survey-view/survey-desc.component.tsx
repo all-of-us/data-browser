@@ -1,26 +1,27 @@
-import { Component, Input } from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { reactStyles } from 'app/utils';
-import * as React from 'react';
+import * as React from "react";
+
+import { Component, Input } from "@angular/core";
+import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
+import { reactStyles } from "app/utils";
 
 const styles = reactStyles({
-    pageHeader: {
-        padding: '18px'
-    },
-    titleContainer: {
-        width: '100%',
-        paddingRight: '18px',
-        margin: '0',
-        lineHeight: '1em'
-    },
-    disclaimerBtn: {
-        padding: '0.5rem',
-        marginTop: '1rem'
-    },
-    descContainer: {
-        flexWrap: 'wrap',
-        alignItems: 'center'
-    }
+  pageHeader: {
+    padding: "18px",
+  },
+  titleContainer: {
+    width: "100%",
+    paddingRight: "18px",
+    margin: "0",
+    lineHeight: "1em",
+  },
+  disclaimerBtn: {
+    padding: "0.5rem",
+    marginTop: "1rem",
+  },
+  descContainer: {
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
 });
 
 const cssStyles = `
@@ -64,49 +65,66 @@ p {
 }
 `;
 
-export const SurveyDescReactComponent =
-    (props) => {
-    return <React.Fragment>
-           <style>{cssStyles}</style>
-           <div className='page-header' style={styles.pageHeader}>
-               <div className='title-container' style={styles.titleContainer}>
-                 <h1> {props.surveyName} </h1>
-                 {
-                 props.isCopeSurvey ?
-                 <p className='body-default help-text survey-desc'>This optional survey was released to participants for
-                  completion at multiple time points during the
-                 COVID-19 pandemic. As a result, a participant may have multiple data points if they completed more than one
-                   survey. Even though most of the content is consistent between survey versions, some questions were modified.
-                 </p>
-                         : null
-                 }
-                 <div className='desc-container' style={styles.descContainer}>
-                   <p className='body-default help-text survey-desc'>{props.surveyDescription} Survey questions appear in the order in
-                     which participants took the survey.</p>
-                 </div>
-               </div>
-               <div className='survey-note'> <span className='bold-note-heading'>Note</span>: The data on this page are:
-                 <ul className='survey-note'>
-                   <li>Gathered directly from participants through electronic surveys</li>
-                   <li>Grouped into bins of 20 to protect privacy</li>
-                 </ul>
-                 For more information about this survey, please visit the <a target='_blank'
-                   href='https://www.researchallofus.org/data-sources/survey-explorer' rel='noopener noreferrer'>Survey
-                   Explorer</a>
-               </div>
-             </div>
-             </React.Fragment>;
-    };
+export const SurveyDescReactComponent = (props) => {
+  return (
+    <React.Fragment>
+      <style>{cssStyles}</style>
+      <div className="page-header" style={styles.pageHeader}>
+        <div className="title-container" style={styles.titleContainer}>
+          <h1> {props.surveyName} </h1>
+          {props.isCopeSurvey ? (
+            <p className="body-default help-text survey-desc">
+              This optional survey was released to participants for completion
+              at multiple time points during the COVID-19 pandemic. As a result,
+              a participant may have multiple data points if they completed more
+              than one survey. Even though most of the content is consistent
+              between survey versions, some questions were modified.
+            </p>
+          ) : null}
+          <div className="desc-container" style={styles.descContainer}>
+            <p className="body-default help-text survey-desc">
+              {props.surveyDescription} Survey questions appear in the order in
+              which participants took the survey.
+            </p>
+          </div>
+        </div>
+        <div className="survey-note">
+          {" "}
+          <span className="bold-note-heading">Note</span>: The data on this page
+          are:
+          <ul className="survey-note">
+            <li>
+              Gathered directly from participants through electronic surveys
+            </li>
+            <li>Grouped into bins of 20 to protect privacy</li>
+          </ul>
+          For more information about this survey, please visit the{" "}
+          <a
+            target="_blank"
+            href="https://www.researchallofus.org/data-sources/survey-explorer"
+            rel="noopener noreferrer"
+          >
+            Survey Explorer
+          </a>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
 
 @Component({
-    selector: 'app-survey-desc',
-    template: `<div #root></div>`
+  selector: "app-survey-desc",
+  template: `<div #root></div>`,
 })
 export class SurveyDescWrapperComponent extends BaseReactWrapper {
-    @Input() public surveyName: string;
-    @Input() public isCopeSurvey: boolean;
-    @Input() public surveyDescription: string;
-    constructor() {
-        super(SurveyDescReactComponent, ['surveyName', 'isCopeSurvey', 'surveyDescription']);
-    }
+  @Input() public surveyName: string;
+  @Input() public isCopeSurvey: boolean;
+  @Input() public surveyDescription: string;
+  constructor() {
+    super(SurveyDescReactComponent, [
+      "surveyName",
+      "isCopeSurvey",
+      "surveyDescription",
+    ]);
+  }
 }

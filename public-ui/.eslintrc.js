@@ -26,7 +26,7 @@ module.exports = {
     },
   },
 
-  // Some of these rules were ported over from our common-ui/tslint.json file
+  // Some of these rules were ported over from our ui/tslint.json file
   // The rules found here were ported and categorized using the tslint migration roadmap:
   // https://github.com/typescript-eslint/typescript-eslint/blob/master/packages/eslint-plugin/ROADMAP.md
 
@@ -72,7 +72,6 @@ module.exports = {
     '@typescript-eslint/no-misused-new': 'warn',
     '@typescript-eslint/no-non-null-assertion': 'warn',
     '@typescript-eslint/no-shadow': 'warn',
-    '@typescript-eslint/prefer-optional-chain': 'warn',
     '@typescript-eslint/unified-signatures': 'warn',
     // '@typescript-eslint/member-ordering': ['warn', { 'classExpressions': ['method', 'field'] }],
     // '@typescript-eslint/prefer-function-type': 'warn',
@@ -91,7 +90,7 @@ module.exports = {
     'max-len': [
       'warn',
       {
-        code: 140,
+        code: 150,
         ignorePattern: '^import |^export\\{(.*?)\\}',
         ignoreComments: true,
       },

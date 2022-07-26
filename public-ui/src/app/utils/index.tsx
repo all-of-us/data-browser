@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 type ReactStyles<T> = {
   readonly [P in keyof T]: React.CSSProperties;
@@ -25,7 +25,8 @@ type ReactStyles<T> = {
  *   style2: {color: 'blue', position: 'relative'} as React.CssProperties
  * };
  */
-export function reactStyles<T extends {[key: string]: React.CSSProperties }>(t: T): ReactStyles<T> {
+export function reactStyles<T extends { [key: string]: React.CSSProperties }>(
+  t: T
+): ReactStyles<T> {
   return t;
 }
-

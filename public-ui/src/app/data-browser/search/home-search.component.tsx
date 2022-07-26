@@ -1,17 +1,18 @@
-import { TooltipReactComponent } from 'app/data-browser/components/tooltip/tooltip-react.component';
-import { reactStyles } from 'app/utils';
-import { ClrIcon } from 'app/utils/clr-icon';
-import * as React from 'react';
+import * as React from "react";
+
+import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
+import { reactStyles } from "app/utils";
+import { ClrIcon } from "app/utils/clr-icon";
 
 const styles = reactStyles({
-    searchTitle: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    toolTipContainer: {
-        paddingLeft: '1em'
-    }
+  searchTitle: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  toolTipContainer: {
+    paddingLeft: "1em",
+  },
 });
 
 const searchStyle = `
@@ -120,43 +121,69 @@ const homeSearchStyle = `
 }`;
 
 interface SearchProps {
-    value: string;
-    searchTitle: string;
-    domain: string;
-    placeholderText: string;
-    onChange: Function;
-    onClear: Function;
+  value: string;
+  searchTitle: string;
+  domain: string;
+  placeholderText: string;
+  onChange: Function;
+  onClear: Function;
 }
 
-export const SearchComponent = (class extends React.Component<SearchProps, {}> {
-    constructor(props) {
-        super(props);
-    }
+export const SearchComponent = class extends React.Component<SearchProps, {}> {
+  constructor(props) {
+    super(props);
+  }
 
-    render() {
-        const {onChange, onClear, value, searchTitle, domain, placeholderText} = this.props;
-        const iconShape = 'search';
-        const iconClass = 'is-info search-icon';
-        const headingClassName = (domain === 'genomics') ? 'genomics-search-heading-display' : 'secondary-display';
-        const placeholder = placeholderText ? placeholderText : 'Keyword Search';
-        return (
-            <React.Fragment>
-            <style>{searchStyle}</style>
-            {searchTitle && <style>{homeSearchStyle}</style>}
-            <div className='search-title' style={styles.searchTitle}>
-                <div className={headingClassName}>{searchTitle}</div>
-                {searchTitle && domain !== 'genomics' && <div style={styles.toolTipContainer}><TooltipReactComponent label='Homepage Tooltip Hover' searchTerm={value}
-                                                action='Tooltip Homepage search across data' tooltipKey='Search Across Data Types'/></div>}
+  render() {
+    const { onChange, onClear, value, searchTitle, domain, placeholderText } =
+      this.props;
+    const iconShape = "search";
+    const iconClass = "is-info search-icon";
+    const headingClassName =
+      domain === "genomics"
+        ? "genomics-search-heading-display"
+        : "secondary-display";
+    const placeholder = placeholderText ? placeholderText : "Keyword Search";
+    return (
+      <React.Fragment>
+        <style>{searchStyle}</style>
+        {searchTitle && <style>{homeSearchStyle}</style>}
+        <div className="search-title" style={styles.searchTitle}>
+          <div className={headingClassName}>{searchTitle}</div>
+          {searchTitle && domain !== "genomics" && (
+            <div style={styles.toolTipContainer}>
+              <TooltipReactComponent
+                label="Homepage Tooltip Hover"
+                searchTerm={value}
+                action="Tooltip Homepage search across data"
+                tooltipKey="Search Across Data Types"
+              />
             </div>
-            <div id='db-search-bar'>
-            <ClrIcon shape={iconShape} className={iconClass} />
-            <input type='text' aria-label='Main Search' id='search-db'
-            placeholder={placeholder} name='searchText'
-            onChange={(e) => {onChange(e.target.value); }} value={value}/>
-            <div className='clear-icon' onClick={(e) => {onClear(); }}>
-            <i className='far fa-times fa-1x clear-search-icon'></i></div>
-            </div>
-            </React.Fragment>
-        );
-      }
-});
+          )}
+        </div>
+        <div id="db-search-bar">
+          <ClrIcon shape={iconShape} className={iconClass} />
+          <input
+            type="text"
+            aria-label="Main Search"
+            id="search-db"
+            placeholder={placeholder}
+            name="searchText"
+            onChange={(e) => {
+              onChange(e.target.value);
+            }}
+            value={value}
+          />
+          <div
+            className="clear-icon"
+            onClick={(e) => {
+              onClear();
+            }}
+          >
+            <i className="far fa-times fa-1x clear-search-icon"></i>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+};

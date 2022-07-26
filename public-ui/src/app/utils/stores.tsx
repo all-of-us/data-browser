@@ -1,5 +1,5 @@
-import { BreadcrumbType } from 'app/utils/navigation';
-import {atom} from 'app/utils/subscribable';
+import { BreadcrumbType } from "app/utils/navigation";
+import { atom } from "app/utils/subscribable";
 
 export interface RouteDataStore {
   title?: string;

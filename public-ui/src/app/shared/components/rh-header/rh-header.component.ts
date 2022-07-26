@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { HeaderFooterService } from 'app/shared/services/header-footer.service';
-import { environment } from 'environments/environment';
+import { environment } from "environments/environment";
+import { Component, Input, OnInit } from "@angular/core";
+import { HeaderFooterService } from "app/shared/services/header-footer.service";
 @Component({
-  selector: 'app-rh-header',
-  templateUrl: './rh-header.component.html',
-  styleUrls: ['./rh-header.component.css', '../../../styles/template.css']
+  selector: "app-rh-header",
+  templateUrl: "./rh-header.component.html",
+  styleUrls: ["./rh-header.component.css", "../../../styles/template.css"],
 })
 export class RhHeaderComponent implements OnInit {
   @Input() noMenu = false;
@@ -20,15 +20,14 @@ export class RhHeaderComponent implements OnInit {
   subTitle: boolean;
   showSub: boolean;
   menuModel = {};
-  constructor(public hFService: HeaderFooterService) { }
+  constructor(public hFService: HeaderFooterService) {}
 
   ngOnInit() {
     this.menuItems = this.hFService.menu;
-    this.menuItems.forEach(item => {
+    this.menuItems.forEach((item) => {
       this.menuModel[item.title] = false;
     });
     this.allOfUsUrl = environment.researchAllOfUsUrl;
-
   }
 
   public searchHub(form) {
@@ -44,6 +43,4 @@ export class RhHeaderComponent implements OnInit {
       this.showSub = !this.showSub;
     }
   }
-
-
 }

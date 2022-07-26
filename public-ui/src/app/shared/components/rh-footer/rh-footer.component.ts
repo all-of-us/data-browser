@@ -1,20 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { HeaderFooterService } from 'app/shared/services/header-footer.service';
-import { environment } from 'environments/environment';
+import { environment } from "environments/environment";
+import { Component, OnInit } from "@angular/core";
+import { HeaderFooterService } from "app/shared/services/header-footer.service";
 
 @Component({
-  selector: 'app-rh-footer',
-  templateUrl: './rh-footer.component.html',
-  styleUrls: ['./rh-footer.component.css', '../../../styles/template.css']
+  selector: "app-rh-footer",
+  templateUrl: "./rh-footer.component.html",
+  styleUrls: ["./rh-footer.component.css", "../../../styles/template.css"],
 })
 export class RhFooterComponent implements OnInit {
   menuItems: any;
   allOfUsUrl: any;
-  constructor(public hFService: HeaderFooterService) { }
+  constructor(public hFService: HeaderFooterService) {}
 
   ngOnInit() {
-  this.menuItems = this.hFService.menu;
-  this.allOfUsUrl = environment.researchAllOfUsUrl;
+    this.menuItems = this.hFService.menu;
+    this.allOfUsUrl = environment.researchAllOfUsUrl;
   }
-
 }

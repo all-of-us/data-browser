@@ -4,20 +4,20 @@ import {
   Input,
   OnChanges,
   OnInit,
-  ViewChild
-} from '@angular/core';
+  ViewChild,
+} from "@angular/core";
 
 @Component({
-  selector: 'app-page-template-signed-out',
-  templateUrl: './page-template-signed-out.component.html',
-  styleUrls: ['./page-template-signed-out.component.css']
+  selector: "app-page-template-signed-out",
+  templateUrl: "./page-template-signed-out.component.html",
+  styleUrls: ["./page-template-signed-out.component.css"],
 })
 export class PageTemplateSignedOutComponent implements OnChanges, OnInit {
-  @Input() imageSrc = '';
-  @Input() smallerImageSrc = '';
-  headerImg = '/assets/db-images/All_Of_Us_Logo.svg';
-  dbHeaderImg = '/assets/db-images/Data_Browser_Logo.svg';
-  @ViewChild('template') template: ElementRef;
+  @Input() imageSrc = "";
+  @Input() smallerImageSrc = "";
+  headerImg = "/assets/db-images/All_Of_Us_Logo.svg";
+  dbHeaderImg = "/assets/db-images/Data_Browser_Logo.svg";
+  @ViewChild("template") template: ElementRef;
   constructor() {}
 
   ngOnInit() {
@@ -30,9 +30,14 @@ export class PageTemplateSignedOutComponent implements OnChanges, OnInit {
 
   updateImages(): void {
     if (this.template !== undefined) {
-      this.template.nativeElement.style
-          .setProperty('--smaller-image', `url("${this.smallerImageSrc}")`);
-      this.template.nativeElement.style.setProperty('--larger-image', `url("${this.imageSrc}")`);
+      this.template.nativeElement.style.setProperty(
+        "--smaller-image",
+        `url("${this.smallerImageSrc}")`
+      );
+      this.template.nativeElement.style.setProperty(
+        "--larger-image",
+        `url("${this.imageSrc}")`
+      );
     }
   }
 }

@@ -1,15 +1,12 @@
-import {
-  Component,
-  Input,
-  ViewEncapsulation
-} from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { getTooltip } from 'app/data-browser/services/tooltip.service';
-import { ClrIcon } from 'app/utils/clr-icon';
-import { triggerEvent } from 'app/utils/google_analytics';
-import * as React from 'react';
+import * as React from "react";
 
-const containerElementName = 'root';
+import { Component, Input, ViewEncapsulation } from "@angular/core";
+import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
+import { getTooltip } from "app/data-browser/services/tooltip.service";
+import { ClrIcon } from "app/utils/clr-icon";
+import { triggerEvent } from "app/utils/google_analytics";
+
+const containerElementName = "root";
 
 export const tooltipCss = `
 .tooltip {
@@ -66,44 +63,63 @@ interface Props {
 }
 
 export class TooltipReactComponent extends React.Component<Props, {}> {
-
   constructor(props: Props) {
     super(props);
   }
 
   tooltipHover() {
-    triggerEvent('tooltipsHover', 'Tooltips', 'Hover', this.props.label,
-      this.props.searchTerm, this.props.action);
+    triggerEvent(
+      "tooltipsHover",
+      "Tooltips",
+      "Hover",
+      this.props.label,
+      this.props.searchTerm,
+      this.props.action
+    );
   }
 
   render() {
     const tabIndex = 0;
-    const iconShape = 'info-standard';
-    const iconClass = 'is-solid info-icon';
-    return <React.Fragment><style>{tooltipCss}</style><div tabIndex={tabIndex}
-      className='tooltip' onFocus={() => this.tooltipHover()}
-      onMouseEnter={() => this.tooltipHover()}>
-      <ClrIcon shape={iconShape} className={iconClass}
-        style={{ width: 18, height: 18 }} />
-      <span className='tooltiptext'>
-        {
-          getTooltip(this.props.tooltipKey).map((tooltip, index) => {
-            if (index === 1 || index === 3) {
-              return <span className='allofus-italics' key={index}> {tooltip} </span>;
-            } else {
-              return tooltip;
-            }
-          })
-        }
-      </span>
-    </div></React.Fragment>;
+    const iconShape = "info-standard";
+    const iconClass = "is-solid info-icon";
+    return (
+      <React.Fragment>
+        <style>{tooltipCss}</style>
+        <div
+          tabIndex={tabIndex}
+          className="tooltip"
+          onFocus={() => this.tooltipHover()}
+          onMouseEnter={() => this.tooltipHover()}
+        >
+          <ClrIcon
+            shape={iconShape}
+            className={iconClass}
+            style={{ width: 18, height: 18 }}
+          />
+          <span className="tooltiptext">
+            {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
+              if (index === 1 || index === 3) {
+                return (
+                  <span className="allofus-italics" key={index}>
+                    {" "}
+                    {tooltip}{" "}
+                  </span>
+                );
+              } else {
+                return tooltip;
+              }
+            })}
+          </span>
+        </div>
+      </React.Fragment>
+    );
   }
 }
 
 @Component({
-  selector: 'app-tooltip-react',
+  selector: "app-tooltip-react",
   template: `<span #${containerElementName}></span>`,
-  styleUrls: ['./tooltip.component.css', '../../../styles/page.css'],
+  styleUrls: ["./tooltip.component.css", "../../../styles/page.css"],
   encapsulation: ViewEncapsulation.None,
 })
 export class TooltipWrapperComponent extends BaseReactWrapper {
@@ -113,6 +129,12 @@ export class TooltipWrapperComponent extends BaseReactWrapper {
   @Input() public tooltipKey: string;
 
   constructor() {
-    super(TooltipReactComponent, ['label', 'searchTerm', 'action', 'tooltipKey', 'onHover']);
+    super(TooltipReactComponent, [
+      "label",
+      "searchTerm",
+      "action",
+      "tooltipKey",
+      "onHover",
+    ]);
   }
 }
