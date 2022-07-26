@@ -56,7 +56,6 @@ def build(cmd_name, args)
   if Set['staging', 'stable', 'prod'].include?(options.env)
     optimize = "--optimization"
   end
-  common.run_inline %W{yarn run build tsc --version}
   common.run_inline %W{yarn run build
       #{optimize} --configuration=#{options.env} --no-watch --no-progress}
 end
