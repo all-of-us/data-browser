@@ -11,11 +11,10 @@ import * as React from "react";
 import { SurveyViewReactComponent } from "./data-browser/views/survey-view/survey-react-view.component";
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
-
   return (
-  <AppRouter>
-    <AppRoute
-      path='/'
+    <AppRouter>
+      <AppRoute
+        path='/'
       component={() => dBHomeComponent(
         {
           routeData: {
