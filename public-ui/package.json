@@ -101,6 +101,6 @@
     "prettier": "2.7.1",
     "protractor": "~7.0.0",
     "ts-node": "~3.0.4",
-    "typescript": "4.6.4"
+    "typescript": "^4.6.4"
   }
 }
