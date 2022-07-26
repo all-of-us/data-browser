@@ -12,7 +12,8 @@ import { SurveyViewReactComponent } from "./data-browser/views/survey-view/surve
 
 export const AppRoutingComponent: React.FunctionComponent = () => {
 
-  return (<AppRouter>
+  return (
+  <AppRouter>
     <AppRoute
       path='/'
       component={() => dBHomeComponent(
