@@ -51,6 +51,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_procedure.csv" encoding="UTF-8"
@@ -73,6 +74,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_drug.csv" encoding="UTF-8" quotchar='"'>
@@ -94,6 +96,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_measurement.csv" encoding="UTF-8"
@@ -116,6 +119,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_person.csv" encoding="UTF-8"
@@ -138,6 +142,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_physical_measurement.csv"
@@ -160,6 +165,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_survey.csv" encoding="UTF-8"
@@ -182,6 +188,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria" file="csv/cb_criteria_visit.csv" encoding="UTF-8"
@@ -204,6 +211,7 @@
       <column name="has_ancestor_data" type="BOOLEAN"/>
       <column name="path" type="STRING"/>
       <column name="synonyms" type="STRING"/>
+      <column name="full_text" type="STRING"/>
     </loadData>
 
     <loadData tableName="cb_criteria_ancestor" file="csv/cb_criteria_ancestor.csv" encoding="UTF-8"
