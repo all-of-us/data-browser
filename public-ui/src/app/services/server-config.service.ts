@@ -1,14 +1,12 @@
-import {Injectable} from '@angular/core';
-import {ConfigResponse, ConfigService} from 'publicGenerated';
-import {Observable} from 'rxjs/Observable';
-import {ReplaySubject} from 'rxjs/ReplaySubject';
+import { Injectable } from "@angular/core";
+import { ConfigResponse, ConfigService } from "publicGenerated";
+import { Observable } from "rxjs/Observable";
+import { ReplaySubject } from "rxjs/ReplaySubject";
 
 @Injectable()
 export class ServerConfigService {
   private configObs: Observable<ConfigResponse>;
-  constructor(
-    private configService: ConfigService
-  ) {}
+  constructor(private configService: ConfigService) {}
 
   public getConfig(): Observable<ConfigResponse> {
     if (!this.configObs) {

@@ -1,33 +1,32 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ErrorHandler, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { environment } from 'environments/environment';
+import * as StackTrace from "stacktrace-js";
+
+import { environment } from "environments/environment";
+import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { ErrorHandler, NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterModule } from "@angular/router";
 /* Our Modules */
-import {
-  ApiModule,
-  Configuration
-} from 'publicGenerated';
-import * as StackTrace from 'stacktrace-js';
-import { DataBrowserModule } from './data-browser/data-browser.module';
-import { TooltipService } from './data-browser/services/tooltip.service';
-import { ErrorReporterService } from './services/error-reporter.service';
-import { FetchModule} from './services/fetch.module';
-import { ServerConfigService } from './services/server-config.service';
-import { SharedModule } from './shared/shared.module';
-import { AppComponent } from './views/app/app.component';
+import { ApiModule, Configuration } from "publicGenerated";
+
+import { DataBrowserModule } from "./data-browser/data-browser.module";
+import { TooltipService } from "./data-browser/services/tooltip.service";
+import { ErrorReporterService } from "./services/error-reporter.service";
+import { FetchModule } from "./services/fetch.module";
+import { ServerConfigService } from "./services/server-config.service";
+import { SharedModule } from "./shared/shared.module";
+import { AppComponent } from "./views/app/app.component";
 // Unfortunately stackdriver-errors-js doesn't properly declare dependencies, so
 // we need to explicitly load its StackTrace dep:
 // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/2
 (<any>window).StackTrace = StackTrace;
-import { ConfigService } from 'publicGenerated';
-import { DbConfigService } from './utils/db-config.service';
+import { ConfigService } from "publicGenerated";
+
+import { DbConfigService } from "./utils/db-config.service";
 
 function getPublicBasePath() {
-  return  environment.publicApiUrl;
+  return environment.publicApiUrl;
 }
-
 
 // "Configuration" means Swagger API Client configuration.
 export function getConfiguration(): Configuration {
@@ -51,18 +50,16 @@ export function getConfigService(http: HttpClient) {
     HttpClientModule,
     FetchModule,
   ],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   providers: [
     {
       provide: ConfigService,
       useFactory: getConfigService,
-      deps: [HttpClient]
+      deps: [HttpClient],
     },
     {
       provide: Configuration,
-      useFactory: getConfiguration
+      useFactory: getConfiguration,
     },
     DbConfigService,
     TooltipService,
@@ -71,10 +68,9 @@ export function getConfigService(http: HttpClient) {
       provide: ErrorHandler,
       deps: [ServerConfigService],
       useClass: ErrorReporterService,
-    }
+    },
   ],
   // This specifies the top-level components, to load first.
-  bootstrap: [AppComponent]
-
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

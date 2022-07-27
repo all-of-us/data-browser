@@ -1,37 +1,36 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class ChartService {
-  barColor = '#2691D0';
+  barColor = "#2691D0";
   barWidth = 0;
-  backgroundColor = 'trasnparent';
+  backgroundColor = "trasnparent";
   mainTitle = {
-    text: '',
+    text: "",
     style: {
-      color: '#666',
-      fontSize: '12px',
-    }
+      color: "#666",
+      fontSize: "12px",
+    },
   };
   xAxisTitle = {
-    text: '',
+    text: "",
     style: {
-      color: '#262262',
-      fontWeight: 'bold',
-      whiteSpace: 'wrap',
-      textOverflow: 'ellipsis'
-    }
+      color: "#262262",
+      fontWeight: "bold",
+      whiteSpace: "wrap",
+      textOverflow: "ellipsis",
+    },
   };
   yAxisTitle = {
-    text: '',
+    text: "",
     style: {
-      color: '#262262',
-      fontSize: '12px',
-      whiteSpace: 'wrap',
-      textOverflow: 'ellipsis'
-    }
+      color: "#262262",
+      fontSize: "12px",
+      whiteSpace: "wrap",
+      textOverflow: "ellipsis",
+    },
   };
   notEnabled = { enabled: false };
 
-  constructor() { }
-
+  constructor() {}
 }

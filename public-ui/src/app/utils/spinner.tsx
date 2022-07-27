@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 export const spinnerContainerCss = `
 a:link,a:visited,a{
@@ -49,23 +49,27 @@ animation-delay: 1s;
 `;
 
 export const Spinner = () => {
-    return <React.Fragment>
-            <style>{spinnerCss}</style>
-            <div className='spinner-container'>
-            <span className='spinner'></span>
-           </div>
-           </React.Fragment>;
+  return (
+    <React.Fragment>
+      <style>{spinnerCss}</style>
+      <div className="spinner-container">
+        <span className="spinner"></span>
+      </div>
+    </React.Fragment>
+  );
 };
 
 export const LoadingDots = () => {
-    return <React.Fragment>
-            <style>{loadingCss}</style>
-            <style>{spinnerContainerCss}</style>
-            <div className='loading-dots'>
-            <div className='dot'></div>
-                <div className='dot'></div>
-                <div className='dot'></div>
-                <div className='dot'></div>
-           </div>
-           </React.Fragment>;
+  return (
+    <React.Fragment>
+      <style>{loadingCss}</style>
+      <style>{spinnerContainerCss}</style>
+      <div className="loading-dots">
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+        <div className="dot"></div>
+      </div>
+    </React.Fragment>
+  );
 };

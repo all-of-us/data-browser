@@ -1,15 +1,18 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
 
-import { TreeHighlightService } from './tree-highlight.service';
+import { TreeHighlightService } from "./tree-highlight.service";
 
-describe('TreeHighlightService', () => {
+describe("TreeHighlightService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [TreeHighlightService]
+      providers: [TreeHighlightService],
     });
   });
 
-  it('should be created', inject([TreeHighlightService], (service: TreeHighlightService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [TreeHighlightService],
+    (service: TreeHighlightService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

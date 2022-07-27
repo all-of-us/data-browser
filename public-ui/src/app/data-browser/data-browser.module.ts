@@ -1,64 +1,67 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { ClarityModule } from '@clr/angular';
+import "highcharts/highcharts-more";
+
+import { HighchartsChartModule } from "highcharts-angular";
+
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { ClarityModule } from "@clr/angular";
 /* Components */
-import { DbNoResultsComponent } from 'app/components/db-no-results/db-no-results.component';
-import { NoResultSearchWrapperComponent } from 'app/components/db-no-results/no-results-search.component';
-import { ValueChartWrapperComponent } from 'app/data-browser/charts/chart-measurement-values/chart-value-react.component';
-import { SourcesWrapperComponent } from 'app/data-browser/charts/chart-sources/chart-sources-react.component';
-import { TopResultsChartWrapperComponent } from 'app/data-browser/charts/chart-top-results/chart-top-results-react.component';
-import { ConceptChartWrapperComponent } from 'app/data-browser/views/concept-chart/concept-chart-react.component';
-import { ConceptRowWrapperComponent } from 'app/data-browser/views/ehr-view/components/concept-row-react.component';
-import { SurveyChartWrapperComponent } from 'app/data-browser/views/survey-chart/survey-chart-react.component';
-import { SurveyDescWrapperComponent } from 'app/data-browser/views/survey-view/survey-desc.component';
-import { BreadCrumbWrapperComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
-import { HighlightWrapperComponent } from 'app/shared/components/highlight-search/HighlightReactComponent';
-import { PopUpWrapperComponent } from 'app/shared/components/pop-up/PopUpReactComponent';
-import { SharedModule } from 'app/shared/shared.module';
-import { HighchartsChartModule } from 'highcharts-angular';
-import 'highcharts/highcharts-more';
-import { CdrVersionWrapperComponent } from './cdr-version/cdr-version-info';
-import { ChartComponent } from './chart/chart.component';
-import { AgeWrapperComponent } from './charts/chart-age/chart-age-react.component';
-import { ChartAgeComponent } from './charts/chart-age/chart-age.component';
-import { ChartBaseComponent } from './charts/chart-base/chart-base.component';
-import { BioSexWrapperComponent } from './charts/chart-biosex/chart-biosex-react.component';
-import { ChartBiosexComponent } from './charts/chart-biosex/chart-biosex.component';
-import { ChartFitbitComponent } from './charts/chart-fitbit/chart-fitbit.component';
-import { ChartSurveyAnswersComponent } from './charts/chart-survey-answers/chart-survey-answers.component';
-import { ChartTopResultsComponent } from './charts/chart-top-results/chart-top-results.component';
-import { VersionChartWrapperComponent } from './charts/chart-version/chart-version-react.component';
-import { ChartService } from './charts/chart.service';
-import { RecursiveTreeComponent } from './components/recursive-tree/recursive-tree.component';
-import { SourceTreeWrapperComponent } from './components/source-tree/source-tree-react.component';
-import { SourceTreeComponent } from './components/source-tree/source-tree.component';
-import { SurveyVersionWrapperComponent } from './components/survey-version-table/survey-version-table-react.component';
-import { SurveyVersionTableComponent } from './components/survey-version-table/survey-version-table.component';
-import { TooltipWrapperComponent } from './components/tooltip/tooltip-react.component';
-import { TooltipComponent } from './components/tooltip/tooltip.component';
-import { ConceptChartsComponent } from './concept-charts/concept-charts.component';
-import { DataBrowserRoutingModule } from './databrowser-routing.module';
-import { TooltipService } from './services/tooltip.service';
-import { TreeHighlightService } from './services/tree-highlight.service';
-import { VideoService } from './services/video.service';
-import { SourcesComponent } from './sources/sources.component';
-import { EhrViewComponent } from './views/ehr-view/ehr-view.component';
-import { ErrorMessageWrapperComponent } from './views/error-message/error-message-react.component';
-import { ErrorMessageComponent } from './views/error-message/error-message.component';
-import { FitbitViewComponent } from './views/fitbit-view/fitbit-view.component';
-import { IntroVidsComponent } from './views/intro-vids/intro-vids.component';
-import { PhysicalMeasurementsComponent } from './views/pm/pm.component';
-import { QuickSearchComponent } from './views/quick-search/quick-search.component';
-import { SurveyChartComponent } from './views/survey-chart/survey-chart.component';
-import { SurveyAnswerWrapperComponent } from './views/survey-view/components/survey-answer-react.component';
-import { SurveyQuestionWrapperComponent } from './views/survey-view/components/survey-question-react.component';
+import { DbNoResultsComponent } from "app/components/db-no-results/db-no-results.component";
+import { NoResultSearchWrapperComponent } from "app/components/db-no-results/no-results-search.component";
+import { ValueChartWrapperComponent } from "app/data-browser/charts/chart-measurement-values/chart-value-react.component";
+import { SourcesWrapperComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
+import { TopResultsChartWrapperComponent } from "app/data-browser/charts/chart-top-results/chart-top-results-react.component";
+import { ConceptChartWrapperComponent } from "app/data-browser/views/concept-chart/concept-chart-react.component";
+import { ConceptRowWrapperComponent } from "app/data-browser/views/ehr-view/components/concept-row-react.component";
+import { SurveyChartWrapperComponent } from "app/data-browser/views/survey-chart/survey-chart-react.component";
+import { SurveyDescWrapperComponent } from "app/data-browser/views/survey-view/survey-desc.component";
+import { BreadCrumbWrapperComponent } from "app/shared/components/breadcrumb/breadcrumb-react.component";
+import { HighlightWrapperComponent } from "app/shared/components/highlight-search/HighlightReactComponent";
+import { PopUpWrapperComponent } from "app/shared/components/pop-up/PopUpReactComponent";
+import { SharedModule } from "app/shared/shared.module";
+
+import { CdrVersionWrapperComponent } from "./cdr-version/cdr-version-info";
+import { ChartComponent } from "./chart/chart.component";
+import { ChartService } from "./charts/chart.service";
+import { ChartAgeComponent } from "./charts/chart-age/chart-age.component";
+import { AgeWrapperComponent } from "./charts/chart-age/chart-age-react.component";
+import { ChartBaseComponent } from "./charts/chart-base/chart-base.component";
+import { ChartBiosexComponent } from "./charts/chart-biosex/chart-biosex.component";
+import { BioSexWrapperComponent } from "./charts/chart-biosex/chart-biosex-react.component";
+import { ChartFitbitComponent } from "./charts/chart-fitbit/chart-fitbit.component";
+import { ChartSurveyAnswersComponent } from "./charts/chart-survey-answers/chart-survey-answers.component";
+import { ChartTopResultsComponent } from "./charts/chart-top-results/chart-top-results.component";
+import { VersionChartWrapperComponent } from "./charts/chart-version/chart-version-react.component";
+import { RecursiveTreeComponent } from "./components/recursive-tree/recursive-tree.component";
+import { SourceTreeComponent } from "./components/source-tree/source-tree.component";
+import { SourceTreeWrapperComponent } from "./components/source-tree/source-tree-react.component";
+import { SurveyVersionTableComponent } from "./components/survey-version-table/survey-version-table.component";
+import { SurveyVersionWrapperComponent } from "./components/survey-version-table/survey-version-table-react.component";
+import { TooltipComponent } from "./components/tooltip/tooltip.component";
+import { TooltipWrapperComponent } from "./components/tooltip/tooltip-react.component";
+import { ConceptChartsComponent } from "./concept-charts/concept-charts.component";
+import { DataBrowserRoutingModule } from "./databrowser-routing.module";
+import { TooltipService } from "./services/tooltip.service";
+import { TreeHighlightService } from "./services/tree-highlight.service";
+import { VideoService } from "./services/video.service";
+import { SourcesComponent } from "./sources/sources.component";
+import { EhrViewComponent } from "./views/ehr-view/ehr-view.component";
+import { ErrorMessageComponent } from "./views/error-message/error-message.component";
+import { ErrorMessageWrapperComponent } from "./views/error-message/error-message-react.component";
+import { FitbitViewComponent } from "./views/fitbit-view/fitbit-view.component";
+import { IntroVidsComponent } from "./views/intro-vids/intro-vids.component";
+import { PhysicalMeasurementsComponent } from "./views/pm/pm.component";
+import { QuickSearchComponent } from "./views/quick-search/quick-search.component";
+import { SurveyChartComponent } from "./views/survey-chart/survey-chart.component";
+import { SurveyAnswerWrapperComponent } from "./views/survey-view/components/survey-answer-react.component";
+import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/survey-question-react.component";
 @NgModule({
   imports: [
     DataBrowserRoutingModule,
     CommonModule,
     HighchartsChartModule,
     ClarityModule,
-    SharedModule
+    SharedModule,
   ],
   declarations: [
     DbNoResultsComponent,
@@ -102,7 +105,7 @@ import { SurveyQuestionWrapperComponent } from './views/survey-view/components/s
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,
-    BreadCrumbWrapperComponent
+    BreadCrumbWrapperComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -141,16 +144,10 @@ import { SurveyQuestionWrapperComponent } from './views/survey-view/components/s
     VersionChartWrapperComponent,
     ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,
-    BreadCrumbWrapperComponent
+    BreadCrumbWrapperComponent,
   ],
-  providers: [
-    ChartService,
-    TreeHighlightService,
-    VideoService,
-    TooltipService
-  ]
+  providers: [ChartService, TreeHighlightService, VideoService, TooltipService],
 })
-
 export class DataBrowserModule {
-  constructor() { }
+  constructor() {}
 }

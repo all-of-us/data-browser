@@ -1,15 +1,18 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
 
-import { HeaderFooterService } from './header-footer.service';
+import { HeaderFooterService } from "./header-footer.service";
 
-describe('HeaderFooterService', () => {
+describe("HeaderFooterService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HeaderFooterService]
+      providers: [HeaderFooterService],
     });
   });
 
-  it('should be created', inject([HeaderFooterService], (service: HeaderFooterService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [HeaderFooterService],
+    (service: HeaderFooterService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

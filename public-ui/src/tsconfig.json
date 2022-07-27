@@ -6,10 +6,10 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "sourceMap": true,
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [ "es2015", "dom" ],
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": ["./src/types", "./types"]
   }
 }
