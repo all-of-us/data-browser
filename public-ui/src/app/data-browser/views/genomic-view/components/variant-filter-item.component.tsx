@@ -119,6 +119,7 @@ componentDidMount(): void {
     
 }
     filterClick() {
+
         this.setState({ filterItemOpen: !this.state.filterItemOpen });
     }
 
@@ -134,8 +135,9 @@ componentDidMount(): void {
     }
 
 
-
     handleCheck(filteredItem) {
+        console.log(filteredItem,'chick');
+        
         const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
         this.setState({
             filterItemState: filtered,

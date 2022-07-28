@@ -192,7 +192,6 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
             query: searchTerm,
             filterMetadata: this.state.filterMetadata
         };
-
         genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
             result => {
                 this.setState({
@@ -208,6 +207,9 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     getFilterMetadata(searchTerm: string) {
         genomicsApi().getGenomicFilterOptions(searchTerm).then(
             result => {
+                result.gene.forEach(el => { el.checked = false; });
+                result.consequence.forEach(el => { el.checked = false; });
+                result.clinicalSignificance.forEach(el => { el.checked = false; });
                 this.setState({ filterMetadata: result });
             }
         ).catch(e => {
@@ -380,6 +382,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
+        this.setState({ loadingResults: true });
         this.filterGenomics(filteredMetadata);
         this.setState({ loadingResults: false });
         this.getSearchSize(this.state.searchTerm, true);
@@ -424,7 +427,7 @@ export const GenomicViewComponent = withRouteData(class extends React.Component<
                                 onRowCountChange={(info) => { this.handleRowCountChange(info); }}
                                 onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
                                 onFilterSubmit={(filteredMetadata: GenomicFilters) => {
-                                    this.setState({ loadingResults: true }); this.handleFilterSubmit(filteredMetadata);
+                                    this.handleFilterSubmit(filteredMetadata);
                                 }}
                                 currentPage={currentPage}
                                 rowCount={rowCount}
