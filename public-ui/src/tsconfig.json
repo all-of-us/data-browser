@@ -10,6 +10,7 @@
     "lib": [ "es2015", "dom" ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "typeRoots": ["./src/types", "./types"]
+    "typeRoots": ["./src/types", "./types"],
+    "allowSyntheticDefaultImports": true
   }
 }
