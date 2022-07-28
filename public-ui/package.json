@@ -50,6 +50,7 @@
     "nyc": "^15.1.0",
     "portable-fetch": "^3.0.0",
     "react": "^16.12.0",
+    "react-compound-slider": "^3.4.0",
     "react-dom": "^16.12.0",
     "react-paginate": "^7.1.3",
     "react-router-dom": "^5.2.0",

@@ -55,12 +55,12 @@ export interface Cat {
 
 interface Props {
     filterMetadata: GenomicFilters;
+    onFilterChange: Function;
     onFilterSubmit: Function;
 }
 interface State {
     filterCats: Cat[];
     filteredMetadata: any;
-
 }
 
 export class VariantFilterComponent extends React.Component<Props, State> {
@@ -79,13 +79,42 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             filteredMetadata: this.props.filterMetadata
         };
     }
-    handleFilterChange(filteredItem: GenomicFilters, cat) {
-        this.props.filterMetadata[cat.field] = filteredItem;
-        this.setState({ filteredMetadata: this.props.filterMetadata });
+
+    handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
+        const filterMetadataChange = this.props.filterMetadata;
+        filterMetadataChange[cat.field.toString()] = filteredItem;
+        this.setState({ filteredMetadata: filterMetadataChange });
+        this.props.onFilterChange(filterMetadataChange);
     }
+
     submitFilter(filteredMetadata: GenomicFilters) {
+        console.log(filteredMetadata, 'sup');
+
+        for (const key in filteredMetadata) {
+            const filterItem = filteredMetadata[key];
+            const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
+
+
+            if (Array.isArray(filterItem)) {
+                if (!touched) {
+                    filteredMetadata[key] = filterItem.forEach((item) => {
+                        item.checked = true;
+                    })
+                    filteredMetadata[key] = filterItem;
+                }
+            }
+        }
         filteredMetadata = this.state.filteredMetadata;
         this.props.onFilterSubmit(filteredMetadata);
+    }
+
+    clear() {
+        this.state.filterCats.forEach(item => {
+            if (Array.isArray(this.state.filteredMetadata[item.field.toString()])) {
+                this.state.filteredMetadata[item.field.toString()].forEach(item => item.checked = false);
+                this.props.onFilterChange(this.state.filteredMetadata);
+            }
+        })
     }
 
     render() {
@@ -99,13 +128,15 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                         return filterMetadata &&
                             <VariantFilterItemComponent
                                 onFilterChange={(e) => this.handleFilterChange(e, cat)}
-                                key={key} category={cat}
-                                filterItem={filterMetadata[cat.field.toString()]} />;
+                                key={key}
+                                category={cat}
+                                ogFilterItem={filterMetadata[cat.field.toString()]}
+                                filterItem={filteredMetadata[cat.field.toString()]} />;
                     }
                 })
                 }
                 <div style={styles.actionBtnContainer}>
-                    <button style={styles.clearBtn}>Clear</button>
+                    <button onClick={() => this.clear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
             </div>

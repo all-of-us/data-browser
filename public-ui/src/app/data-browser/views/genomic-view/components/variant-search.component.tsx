@@ -1,11 +1,12 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
+import { Cat, VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
 import { environment } from 'environments/environment';
 import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
+import { VariantFilterChips } from './variant-filter-chips.component';
 
 const styles = reactStyles({
     searchBar: {
@@ -55,6 +56,10 @@ const css = `
 }
 `;
 
+export interface Chip {
+    cat: any;
+    data: GenomicFilters;
+}
 interface Props {
     onSearchTerm: Function;
     onFilterSubmit: Function;
@@ -64,16 +69,23 @@ interface Props {
     loading: boolean;
 }
 interface State {
+    filteredMetadata: GenomicFilters
+    filteredMetaMap: GenomicFilters
     searchWord: string;
-    filterShow: boolean;
+    filterShow: Boolean;
+
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
+        console.log(this.props.filterMetadata,'filterMetadata');
+        
         this.state = {
             searchWord: '',
-            filterShow: false
+            filterShow: false,
+            filteredMetadata: undefined,
+            filteredMetaMap: undefined
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -96,10 +108,17 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
         this.props.onFilterSubmit(filteredMetadata);
+        this.setState({ filterShow: false });
+    }
+
+    handleChipChange(changes) {
+        // console.log(changes,'changesss');
+        // console.log(this.mergeArrays(this.state.chips,changes),'merged?')
+
     }
 
     render() {
-        const { searchWord, filterShow } = this.state;
+        const { searchWord, filterShow, filteredMetaMap } = this.state;
         const { variantListSize, loading, filterMetadata } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
@@ -116,18 +135,24 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
-            {(!loading && variantListSize && environment.genoFilters) && <div onClick={() => this.showFilter()}
+            {filterMetadata &&
+                <VariantFilterChips
+                    filteredMetadata={filteredMetaMap}
+                    onChange={(changes) => this.handleChipChange(changes)} />}
+             {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
                     <Spinner /></span>} results</strong>}
-            { environment.genoFilters && <div style={styles.filterContainer}>
-                {(!loading && filterShow) && <VariantFilterComponent
-                    filterMetadata={filterMetadata}
-                    onFilterSubmit={(filteredMetadata) => this.handleFilterSubmit(filteredMetadata)} />}
+            {environment.genoFilters && <div style={styles.filterContainer}>
+                {(!loading && filterShow) &&
+                    <VariantFilterComponent
+                        filterMetadata={filterMetadata}
+                        onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
+                        onFilterChange={(filteredMetadata: GenomicFilters) => this.setState({ filteredMetaMap: filteredMetadata })} />}
             </div>
-    }
+            }
 
         </React.Fragment>;
     }
