@@ -114,8 +114,9 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     handleChipChange(changes) {
         console.log(changes,'changesss');
         this.setState({filteredMetaMap : changes});
-        // console.log(this.mergeArrays(this.state.chips,changes),'merged?')
-
+        if (!this.state.filterShow) {
+            this.handleFilterSubmit(changes);
+        }
     }
 
     render() {
