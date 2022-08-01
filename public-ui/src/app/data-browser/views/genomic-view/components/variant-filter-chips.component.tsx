@@ -68,28 +68,8 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 item.checked = false;
             }
             return el
-            
         });
-        // console.log(newChips,this.formatChips(newChips),'did what did');
-        
-        // this.setState({chips: this.formatChips(newChips)});
         this.props.onChipChange(this.props.filteredMetadata);
-        // const newChips = this.props.chips.filter((el)=>{
-        //     if (el.cat == cat && Array.isArray(el.data)) {
-        //         el.data.forEach(element =>{
-        //             if (element == item) {
-        //                 element.checked = false;
-        //             }
-        //         })
-        //     }
-        //     return el
-        // })
-        // console.log(newChips,'this is the test');
-
-        // console.log(this.props.filteredMetadata,this.props.filteredMetadata[cat.toString()]);
-        
-        // this.setState({chips:newChips});
-        // this.props.onChipChange(this.state.chips);
     }
 
 
