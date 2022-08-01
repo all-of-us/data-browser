@@ -34,6 +34,7 @@
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
+            "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true
@@ -86,7 +87,8 @@
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
-              "vendorChunk": false
+              "vendorChunk": false,
+              "buildOptimizer": true
             }
           },
           "defaultConfiguration": ""
