@@ -6,7 +6,7 @@ import { GenomicFilters } from 'publicGenerated';
 
 interface Props {
     filteredMetadata: GenomicFilters;
-    onChange: Function;
+    onChipChange: Function;
 }
 interface State {
     chips: Array<any>;
@@ -37,7 +37,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
             chips: []
         }
     }
-    formatChips(filteredMetadata: GenomicFilters): Array<any> {
+    formatChips(filteredMetadata): Array<any> {
         let displayArr = [];
         for (const key in filteredMetadata) {
             if (Object.prototype.hasOwnProperty.call(filteredMetadata, key)) {
@@ -54,8 +54,42 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
         if (prevProps != this.props) {
+            // alert();
+           console.log(this.props,'susususu');
+           
             this.setState({ chips: this.formatChips(this.props.filteredMetadata) })
         }
+    }
+
+    removeChip(item,cat){
+        this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].filter(el=>{
+            console.log(el,'elelelelel');
+            if (item == el) {
+                item.checked = false;
+            }
+            return el
+            
+        });
+        // console.log(newChips,this.formatChips(newChips),'did what did');
+        
+        // this.setState({chips: this.formatChips(newChips)});
+        this.props.onChipChange(this.props.filteredMetadata);
+        // const newChips = this.props.chips.filter((el)=>{
+        //     if (el.cat == cat && Array.isArray(el.data)) {
+        //         el.data.forEach(element =>{
+        //             if (element == item) {
+        //                 element.checked = false;
+        //             }
+        //         })
+        //     }
+        //     return el
+        // })
+        // console.log(newChips,'this is the test');
+
+        // console.log(this.props.filteredMetadata,this.props.filteredMetadata[cat.toString()]);
+        
+        // this.setState({chips:newChips});
+        // this.props.onChipChange(this.state.chips);
     }
 
 
@@ -65,9 +99,9 @@ export class VariantFilterChips extends React.Component<Props, State> {
             {chips.length > 0 && chips.map((el, count) => {
                 if (Array.isArray(el.data)) {
                     return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{el.cat}
-                        {el.data.map((item, i) => {
+                        {el.data.map((item,i) => {
                             return <div style={{display:'flex', justifyContent:'space-between'}} key={i}> {item.checked && <div style={styles.chip} > <span >{item.option}</span>
-                            <i style={{paddingLeft:'.5rem'}} className="far fa-times fa-1x clear-search-icon" aria-hidden="true"></i></div> }
+                            <i style={{paddingLeft:'.5rem',cursor:'pointer'}} onClick={()=>this.removeChip(item,el.cat)} className="far fa-times fa-1x clear-search-icon" aria-hidden="true"></i></div> }
                         </div>})}
                     </div>}
                     </div>

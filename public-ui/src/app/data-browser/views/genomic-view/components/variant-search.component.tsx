@@ -112,7 +112,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleChipChange(changes) {
-        // console.log(changes,'changesss');
+        console.log(changes,'changesss');
+        this.setState({filteredMetaMap : changes});
         // console.log(this.mergeArrays(this.state.chips,changes),'merged?')
 
     }
@@ -138,7 +139,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             {filterMetadata &&
                 <VariantFilterChips
                     filteredMetadata={filteredMetaMap}
-                    onChange={(changes) => this.handleChipChange(changes)} />}
+                    onChipChange={(changes) => this.handleChipChange(changes)} />}
              {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
