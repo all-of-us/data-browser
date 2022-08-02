@@ -11,11 +11,22 @@ interface State {
 
 }
 
+const lables = {
+    gene: 'Gene',
+    consequence: 'Consequence',
+    clinicalSignificance: 'Clinical Significance',
+    alleleNumber: 'Allele Number',
+    alleleFrequency: 'Allele Frequency',
+    alleleCount: 'Allele Count'
+}
+
 const styles = reactStyles({
 
     chipCat: {
         display: 'flex',
-        alignItems: 'center'
+        flexWrap:'wrap',
+        alignItems: 'center',
+        paddingLeft:'0.25rem'
     },
     chip: {
         display: 'flex',
@@ -26,6 +37,11 @@ const styles = reactStyles({
         borderRadius: '15px',
         fontFamily: 'GothamBold',
         margin: '.25rem .25rem'
+    },
+    chipFormat: {
+        fontSize: '.8em',
+        display: 'flex',
+        flexWrap: 'wrap'
     }
 });
 export class VariantFilterChips extends React.Component<Props, State> {
@@ -76,10 +92,10 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
     render() {
         const { chips } = this.state;
-        return <div style={{ fontSize: '.8em' }}>
+        return <div style={styles.chipFormat}>
             {chips.length > 0 && chips.map((el, count) => {
                 if (Array.isArray(el.data)) {
-                    return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{el.cat}
+                    return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
                         {el.data.map((item, i) => {
                             return <div style={{ display: 'flex', justifyContent: 'space-between' }} key={i}>
                                 {item.checked && <div style={styles.chip} > <span >{item.option}</span>
