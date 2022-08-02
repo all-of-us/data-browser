@@ -18,15 +18,15 @@ const lables = {
     alleleNumber: 'Allele Number',
     alleleFrequency: 'Allele Frequency',
     alleleCount: 'Allele Count'
-}
+};
 
 const styles = reactStyles({
 
     chipCat: {
         display: 'flex',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
         alignItems: 'center',
-        paddingLeft:'0.25rem'
+        paddingLeft: '0.25rem'
     },
     chip: {
         display: 'flex',
@@ -81,11 +81,11 @@ export class VariantFilterChips extends React.Component<Props, State> {
             return el;
         });
         const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
-        this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
+            this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
         console.log(allFalse, 'allfase');
 
         if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
-            this.props.filteredMetadata[cat.toString()].forEach(item =>item.checked = true);
+            this.props.filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
         this.props.onChipChange(this.props.filteredMetadata);
     }

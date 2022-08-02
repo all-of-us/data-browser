@@ -103,7 +103,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.setState({ searchWord: searchTerm });
         }
     }
-    
+
     showFilter() {
         this.setState({ filterShow: !this.state.filterShow });
     }
