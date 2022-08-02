@@ -103,9 +103,11 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.setState({ searchWord: searchTerm });
         }
     }
+    
     showFilter() {
         this.setState({ filterShow: !this.state.filterShow });
     }
+
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
         this.props.onFilterSubmit(filteredMetadata);
         this.setState({ filterShow: false });

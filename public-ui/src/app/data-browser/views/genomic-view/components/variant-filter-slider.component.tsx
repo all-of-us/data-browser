@@ -12,7 +12,7 @@ const styles = reactStyles({
     sliderFormat: { display: 'flex' }
 });
 
-export class VariantFilterSliderComponent extends React.Component<Props, State> {
+export class VariantFilterSliderComponent extends React.Component<Props,{}> {
     constructor(props: Props) {
         super(props);
     }

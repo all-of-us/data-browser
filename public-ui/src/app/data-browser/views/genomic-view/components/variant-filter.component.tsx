@@ -89,8 +89,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
     submitFilter(filteredMetadata: GenomicFilters) {
           // tslint:disable-next-line: forin
-        for (const key in Object.keys(filteredMetadata)) {
-            if (filteredMetadata.hasOwnProperty(key)) {
+        for (const key in filteredMetadata) {
                 const filterItem = filteredMetadata[key];
                 const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
                 if (Array.isArray(filterItem)) {
@@ -101,7 +100,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                         filteredMetadata[key] = filterItem;
                     }
                 }
-            }
+            
             filteredMetadata = this.state.filteredMetadata;
             this.props.onFilterSubmit(filteredMetadata);
         }
