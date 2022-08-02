@@ -64,6 +64,13 @@ export class VariantFilterChips extends React.Component<Props, State> {
             }
             return el;
         });
+        const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
+        this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
+        console.log(allFalse, 'allfase');
+
+        if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
+            this.props.filteredMetadata[cat.toString()].forEach(item =>item.checked = true);
+        }
         this.props.onChipChange(this.props.filteredMetadata);
     }
 
@@ -87,7 +94,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
                     </div>;
                 } else {
                     return <span key={count}>{(el.data.checked && el.data.checked) &&
-                    <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</span>;
+                        <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</span>;
                 }
 
             })}
