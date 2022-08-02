@@ -74,7 +74,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
         this.props.onChipChange(this.props.filteredMetadata);
     }
 
-
     render() {
         const { chips } = this.state;
         return <div style={{ fontSize: '.8em' }}>
