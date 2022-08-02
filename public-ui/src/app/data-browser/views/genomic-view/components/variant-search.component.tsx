@@ -1,5 +1,5 @@
 import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { Cat, VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
+import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
 import { Spinner } from 'app/utils/spinner';
@@ -69,8 +69,8 @@ interface Props {
     loading: boolean;
 }
 interface State {
-    filteredMetadata: GenomicFilters
-    filteredMetaMap: GenomicFilters
+    filteredMetadata: GenomicFilters;
+    filteredMetaMap: GenomicFilters;
     searchWord: string;
     filterShow: Boolean;
 
@@ -79,8 +79,8 @@ interface State {
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        console.log(this.props.filterMetadata,'filterMetadata');
-        
+        console.log(this.props.filterMetadata, 'filterMetadata');
+
         this.state = {
             searchWord: '',
             filterShow: false,
@@ -112,8 +112,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleChipChange(changes) {
-        console.log(changes,'changesss');
-        this.setState({filteredMetaMap : changes});
+        console.log(changes, 'changesss');
+        this.setState({ filteredMetaMap: changes });
         if (!this.state.filterShow) {
             this.handleFilterSubmit(changes);
         }
@@ -141,7 +141,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <VariantFilterChips
                     filteredMetadata={filteredMetaMap}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-             {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
+            {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :

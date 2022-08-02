@@ -1,88 +1,86 @@
-import * as React from "react";
-
-import { reactStyles } from "app/utils";
-import { GenomicFilters, Variant } from "publicGenerated";
-
-import { VariantSearchComponent } from "./variant-search.component";
-import { VariantTableComponent } from "./variant-table.component";
+import { reactStyles } from 'app/utils';
+import { GenomicFilters, Variant } from 'publicGenerated';
+import * as React from 'react';
+import { VariantSearchComponent } from './variant-search.component';
+import { VariantTableComponent } from './variant-table.component';
 
 const styles = reactStyles({
-  border: {
-    background: "white",
-    padding: "2em",
-    paddingTop: "1em",
-  },
-  titleBox: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
-  boxHeading: {
-    margin: 0,
-    fontFamily: "GothamBook, Arial, sans-serif",
-    fontWeight: 100,
-    fontStyle: "normal",
-    fontSize: ".8em",
-    fontStretch: "normal",
-    lineHeight: "1.47em",
-    letterSpacing: "normal",
-    textAlign: "left",
-    color: "#262262",
-  },
+    border: {
+        background: 'white',
+        padding: '2em',
+        paddingTop: '1em',
+    },
+    titleBox: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+    },
+    boxHeading: {
+        margin: 0,
+        fontFamily: 'GothamBook, Arial, sans-serif',
+        fontWeight: 100,
+        fontStyle: 'normal',
+        fontSize: '.8em',
+        fontStretch: 'normal',
+        lineHeight: '1.47em',
+        letterSpacing: 'normal',
+        textAlign: 'left',
+        color: '#262262',
+    },
 });
 
 interface Props {
-  onSearchInput: Function;
-  onPageChange: Function;
-  onRowCountChange: Function;
-  onSortClick: Function;
-  onFilterSubmit: Function;
-  variantListSize: number;
-  loadingVariantListSize: boolean;
-  loadingResults: boolean;
-  searchResults: Variant[];
-  currentPage: number;
-  rowCount: number;
-  participantCount: string;
-  searchTerm: string;
-  filterMetadata: GenomicFilters;
+    onSearchInput: Function;
+    onPageChange: Function;
+    onRowCountChange: Function;
+    onSortClick: Function;
+    onFilterSubmit: Function;
+    variantListSize: number;
+    loadingVariantListSize: boolean;
+    loadingResults: boolean;
+    searchResults: Variant[];
+    currentPage: number;
+    rowCount: number;
+    participantCount: string;
+    searchTerm: string;
+    filterMetadata: GenomicFilters;
 }
 
 interface State {
-  searchTerm: string;
+    searchTerm: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
-  scrollDiv: any;
-  constructor(props: Props) {
-    super(props);
-    this.scrollDiv = React.createRef();
-    this.state = {
-      searchTerm: null,
-    };
-  }
-
-  componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm } = this.props;
-    if (prevProps.searchTerm !== searchTerm) {
-      this.setState({ searchTerm: searchTerm });
+    scrollDiv: any;
+    constructor(props: Props) {
+        super(props);
+        this.scrollDiv = React.createRef();
+        this.state = {
+            searchTerm: null,
+        };
     }
-  }
 
-  handlePageChange(info) {
-    this.props.onPageChange(info);
-    this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
-  }
+    componentDidUpdate(prevProps: Readonly<Props>) {
+        const { searchTerm } = this.props;
+        if (prevProps.searchTerm !== searchTerm) {
+            this.setState({ searchTerm: searchTerm });
+        }
+    }
 
-  handleRowCountChange(info) {
-    this.props.onRowCountChange(info);
-    this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
-  }
+    handlePageChange(info) {
+        this.props.onPageChange(info);
+        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    handleRowCountChange(info) {
+        this.props.onRowCountChange(info);
+        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
+    }
 
     handleSortClick(sortMetadata) {
         this.props.onSortClick(sortMetadata);
     }
-    handleFilterSubmit(filteredMetadata) {        
+    handleFilterSubmit(filteredMetadata) {
         this.props.onFilterSubmit(filteredMetadata);
     }
 
@@ -90,7 +88,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         const { searchTerm } = this.state;
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
             rowCount, filterMetadata } = this.props;
-            
+
         return <React.Fragment>
             <div style={styles.titleBox}>
                 <p style={styles.boxHeading} ref={this.scrollDiv}>
@@ -99,7 +97,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
             </div>
             <VariantSearchComponent
                 onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-                onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit( filteredMetadata); }}
+                onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit(filteredMetadata); }}
                 loading={loadingVariantListSize}
                 searchTerm={searchTerm}
                 variantListSize={variantListSize}

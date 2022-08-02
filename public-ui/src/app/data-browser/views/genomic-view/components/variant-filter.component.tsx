@@ -88,33 +88,34 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
-        console.log(filteredMetadata, 'sup');
-
-        for (const key in filteredMetadata) {
-            const filterItem = filteredMetadata[key];
-            const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
-
-
-            if (Array.isArray(filterItem)) {
-                if (!touched) {
-                    filteredMetadata[key] = filterItem.forEach((item) => {
-                        item.checked = true;
-                    })
-                    filteredMetadata[key] = filterItem;
+          // tslint:disable-next-line: forin
+        for (const key in Object.keys(filteredMetadata)) {
+            if (filteredMetadata.hasOwnProperty(key)) {
+                const filterItem = filteredMetadata[key];
+                const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
+                if (Array.isArray(filterItem)) {
+                    if (!touched) {
+                        filteredMetadata[key] = filterItem.forEach((item) => {
+                            item.checked = true;
+                        });
+                        filteredMetadata[key] = filterItem;
+                    }
                 }
             }
+            filteredMetadata = this.state.filteredMetadata;
+            this.props.onFilterSubmit(filteredMetadata);
         }
-        filteredMetadata = this.state.filteredMetadata;
-        this.props.onFilterSubmit(filteredMetadata);
     }
 
     clear() {
         this.state.filterCats.forEach(item => {
             if (Array.isArray(this.state.filteredMetadata[item.field.toString()])) {
-                this.state.filteredMetadata[item.field.toString()].forEach(item => item.checked = false);
+                this.state.filteredMetadata[item.field.toString()].forEach(el => {
+                    el.checked = false;
+                });
                 this.props.onFilterChange(this.state.filteredMetadata);
             }
-        })
+        });
     }
 
     render() {
