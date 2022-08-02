@@ -32,6 +32,7 @@
               "node_modules/@clr/icons/clr-icons.min.js"
             ],
             "aot": false,
+            "buildOptimizer": false,
             "vendorChunk": true,
             "extractLicenses": false,
             "sourceMap": true,
@@ -85,6 +86,7 @@
               "sourceMap": false,
               "namedChunks": false,
               "aot": true,
+              "buildOptimizer": false,
               "extractLicenses": true,
               "vendorChunk": false
             }
