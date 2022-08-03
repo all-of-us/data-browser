@@ -12,13 +12,19 @@ RUN groupmod -g 666 node \
 
 ENV CLOUD_SDK_VERSION 392.0.0
 
+ENV LD_LIBRARY_PATH=/lib64
+
 ENV PATH /google-cloud-sdk/bin:$PATH
+
+RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+RUN apk add libc6-compat
 
 RUN apk --no-cache add \
         curl \
         python3 \
         py-crcmod \
-        node-js \
+        nodejs \
         npm \
         bash \
         libc6-compat \
@@ -35,9 +41,8 @@ RUN apk --no-cache add \
 # Java for Swagger client generation
 RUN apk --no-cache add openjdk8-jre
 
-RUN npm install --global yarn n
-# Upgrade to Node 14, above installs 10.
-RUN n 16
+RUN npm install --global --force yarn n
+# Upgrade to Node 16, above installs 10.
 
 # We touch yarn's config file here so that we can explicitly make sure
 # yarn has permission to read/write to it, even though its empty.
