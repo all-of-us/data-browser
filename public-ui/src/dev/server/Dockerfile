@@ -44,6 +44,8 @@ RUN apk --no-cache add openjdk8-jre
 RUN npm install --global --force yarn n
 # Upgrade to Node 16, above installs 10.
 
+Run n 16
+
 # We touch yarn's config file here so that we can explicitly make sure
 # yarn has permission to read/write to it, even though its empty.
 # Without this yarn will complain it can't open its config file.
