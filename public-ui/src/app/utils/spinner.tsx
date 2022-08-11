@@ -1,25 +1,17 @@
 import * as React from "react";
 
-export const spinnerContainerCss = `
-a:link,a:visited,a{
-    color:#2aa3d8;
-}
-@keyframes load {
-    from{background:transparent}
-    to{background:#302c70}
-}`;
 
-export const spinnerCss = `
-.spinner-container {
-    width:100%;
-    display: flex;
-    height: auto;
-    align-content: center;
-    align-items: center;
-    justify-content: center;
-}`;
+
 
 export const loadingCss = `
+a:link,a:visited,a{
+  color:#2aa3d8;
+}
+@keyframes load {
+  from{background:transparent}
+  to{background:#302c70}
+}
+
 .loading-dots {
     width:2rem;
     display:flex;
@@ -46,14 +38,65 @@ animation-delay: .75s;
 .loading-dots .dot:nth-of-type(4){
 animation-delay: 1s;
 }
+
+.spinner-container {
+  width:100%;
+  display: flex;
+  height: auto;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  padding:1rem;
+}
+
+#circle2 {
+  z-index:100;
+  display: block;
+  top: 50%;
+  left: 50%;
+  height: 50px;
+  width: 50px;
+  margin: -25px 0 0 -25px;
+  border: 4px rgba(0, 0, 0, 0.2) solid;
+  border-top: 4px rgb(0, 121, 184) solid;
+  border-radius: 50%;
+  -webkit-animation: spin2 1s infinite linear;
+          animation: spin2 1s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+@keyframes spin2 {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
 `;
 
 export const Spinner = () => {
   return (
     <React.Fragment>
-      <style>{spinnerCss}</style>
+      <style>{loadingCss}</style>
       <div className="spinner-container">
-        <span className="spinner"></span>
+        <div id="circle2"></div>
       </div>
     </React.Fragment>
   );
@@ -63,7 +106,6 @@ export const LoadingDots = () => {
   return (
     <React.Fragment>
       <style>{loadingCss}</style>
-      <style>{spinnerContainerCss}</style>
       <div className="loading-dots">
         <div className="dot"></div>
         <div className="dot"></div>
