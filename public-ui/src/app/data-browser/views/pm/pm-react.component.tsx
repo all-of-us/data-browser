@@ -28,6 +28,15 @@ const styles = reactStyles({
   btnLink: {
     fontSize: "14px",
     color: "#0077b7",
+    textAlign: 'left',
+    textTransform:'uppercase',
+    fontFamily:'GothamBook, Arial, sans-serif',
+    padding: '0 0.5rem',
+    height: '1.5rem',
+    letterSpacing:'.12em'
+  },
+  btnList: {
+    width:'14rem',
   },
   bsTitle: {
     paddingTop: "1em",
@@ -488,7 +497,7 @@ export const PMReactComponent = withRouteData(
                       <div className="button-item" key={index}>
                         <button
                           className={buttonClass}
-                          style={styles.btnLink}
+                          style={{...styles.btnLink, ...styles.btnList}}
                           onClick={() =>
                             this.showMeasurement(
                               pmConceptGroup,
