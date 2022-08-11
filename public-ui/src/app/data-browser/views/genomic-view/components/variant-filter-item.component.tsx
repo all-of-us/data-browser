@@ -1,3 +1,4 @@
+import { VariantFilterSliderComponent } from 'app/data-browser/views/genomic-view/components/slider-filter/variant-filter-slider.component';
 import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
 import { reactStyles } from 'app/utils';
 import { ClrIcon } from 'app/utils/clr-icon';
@@ -175,12 +176,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
             </div>
             {(filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
-                {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
-                <div style={styles.selectContainer}>
-                    <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
-                    <span>|</span>
-                    <button style={styles.selectBtn} onClick={() => this.selecting(false)} >None</button>
-                </div> */}
                 {filterItemState.map((item: any, index: number) => {
                     const key = 'option' + index;
                     return <span style={styles.filterItemOption} key={key}>
@@ -206,7 +201,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 //             onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
                 //     </div>}
                 // </div>
-                <div></div>}
+                <span>{filterItemOpen && <VariantFilterSliderComponent onSliderChange={()=>this.filterClick()} min={this.min} max={this.max} />}</span>}
         </React.Fragment>;
     }
 
