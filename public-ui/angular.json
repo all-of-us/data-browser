@@ -137,10 +137,10 @@
               "node_modules/@clr/icons/clr-icons.min.js"
             ],
             "styles": [
-              "node_modules/@clr/icons/clr-icons.min.css",
-              "node_modules/@clr/ui/clr-ui.min.css",
+              "src/styles.css",
               "node_modules/nouislider/distribute/nouislider.min.css",
-              "src/styles.css"
+              "node_modules/@clr/icons/clr-icons.min.css",
+              "node_modules/@clr/ui/clr-ui.min.css"
             ],
             "assets": [
               "src/assets",
