@@ -16,7 +16,6 @@ const styles = reactStyles({
     padding: "14px",
   },
   mainMenuItem: {
-    color: "red",
     fontSize: "0.9rem",
     width: "100%",
     marginTop: "0.5rem",
@@ -92,12 +91,14 @@ const css = `
     grid-template-columns: repeat(auto-fill, minmax(10%, 25%));
     width: 100%;
     margin-top: 0.5rem;
-    padding-right: 1rem;
+    // padding-right: 1rem;
+    padding:0;
   }
   footer .sub-menu {
     margin-top: 1rem;
     margin-left: 0;
     display: block;
+    padding-left: 0;
     flex-wrap: wrap;
   }
   footer .sub-menu li > a {
@@ -110,6 +111,7 @@ const css = `
   footer ul {
     list-style: none;
   }
+
   @media only screen and (max-width: 770px) {
     footer .footer-layout {
         flex-direction: column;
@@ -119,6 +121,7 @@ const css = `
         flex-direction: column;
         margin: 0;
         margin-top: 0.5rem;
+        padding:0;
     }
     footer .main-menu li {
         padding: 0;
