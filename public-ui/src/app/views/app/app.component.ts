@@ -1,24 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { environment } from "environments/environment";
+import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import {
   ActivatedRoute,
   Event as RouterEvent,
   NavigationEnd,
   Router,
-} from '@angular/router';
-import {initializeAnalytics} from 'app/utils/google_analytics';
-import {queryParamsStore, routeConfigDataStore, urlParamsStore} from 'app/utils/navigation';
-import { environment } from 'environments/environment';
-import {filter} from 'rxjs/operators';
+} from "@angular/router";
+import { initializeAnalytics } from "app/utils/google_analytics";
+import {
+  queryParamsStore,
+  routeConfigDataStore,
+  urlParamsStore,
+} from "app/utils/navigation";
+import { filter } from "rxjs/operators";
 
-export const overriddenUrlKey = 'allOfUsApiUrlOverride';
-export const overriddenPublicUrlKey = 'publicApiUrlOverride';
-
+export const overriddenUrlKey = "allOfUsApiUrlOverride";
+export const overriddenPublicUrlKey = "publicApiUrlOverride";
 
 @Component({
-  selector: 'app-public-aou',
-  styleUrls: ['./app.component.css'],
-  templateUrl: './app.component.html'
+  selector: "app-public-aou",
+  styleUrls: ["./app.component.css"],
+  templateUrl: "./app.component.html",
 })
 export class AppComponent implements OnInit {
   overriddenUrl: string = null;
@@ -31,19 +34,20 @@ export class AppComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.testReact = environment.testReact;
-    localStorage.removeItem('searchText');
-    localStorage.removeItem('treeHighlight');
+    localStorage.removeItem("searchText");
+    localStorage.removeItem("treeHighlight");
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
 
-
-    window['setPublicApiUrl'] = (url: string) => {
+    window.setPublicApiUrl = (url: string) => {
       if (url) {
         if (!url.match(/^https?:[/][/][a-z0-9.:-]+$/)) {
-          throw new Error('URL should be of the form "http[s]://host.example.com[:port]"');
+          throw new Error(
+            'URL should be of the form "http[s]://host.example.com[:port]"'
+          );
         }
         localStorage.setItem(overriddenPublicUrlKey, url);
       } else {
@@ -60,21 +64,25 @@ export class AppComponent implements OnInit {
     // naming the current environment.
     this.baseTitle = this.titleService.getTitle();
     if (environment.displayTag) {
-      this.baseTitle = (environment.displayTag.toLowerCase() === 'prod') ?
-      `${this.baseTitle}` : `[${environment.displayTag}] ${this.baseTitle}`;
+      this.baseTitle =
+        environment.displayTag.toLowerCase() === "prod"
+          ? `${this.baseTitle}`
+          : `[${environment.displayTag}] ${this.baseTitle}`;
       this.titleService.setTitle(this.baseTitle);
     }
 
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd))
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: RouterEvent) => {
         // Set the db header no menu if we are on home page
         // Not sure why an instance of RouteConfigLoadStart comes in here when we filter
-        if (event instanceof NavigationEnd && event.url === '/') {
+        if (event instanceof NavigationEnd && event.url === "/") {
           this.noHeaderMenu = true;
         }
         if (event instanceof NavigationEnd) {
-          const {snapshot: {params, queryParams, routeConfig}} = this.getLeafRoute();
+          const {
+            snapshot: { params, queryParams, routeConfig },
+          } = this.getLeafRoute();
           urlParamsStore.next(params);
           queryParamsStore.next(queryParams);
           routeConfigDataStore.next(routeConfig.data);
@@ -97,9 +105,10 @@ export class AppComponent implements OnInit {
     while (currentRoute.firstChild) {
       currentRoute = currentRoute.firstChild;
     }
-    if (currentRoute.outlet === 'primary') {
-      currentRoute.data.subscribe(value =>
-        this.titleService.setTitle(`${value.title} | ${this.baseTitle}`));
+    if (currentRoute.outlet === "primary") {
+      currentRoute.data.subscribe((value) =>
+        this.titleService.setTitle(`${value.title} | ${this.baseTitle}`)
+      );
     }
   }
 

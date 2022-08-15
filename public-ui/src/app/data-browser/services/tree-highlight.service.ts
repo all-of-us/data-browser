@@ -1,12 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable()
 export class TreeHighlightService {
-
-  constructor() { }
+  constructor() {}
 
   getHighlightId() {
-    return localStorage.getItem('treeHighlight');
+    return localStorage.getItem("treeHighlight");
   }
-
 }

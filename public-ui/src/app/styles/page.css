@@ -189,6 +189,10 @@ p {
   font-size: 18px;
 }
 
+#db-search-bar input:focus {
+  outline:none;
+}
+
 .search-icon {
   width: 20px;
   height: 20px;

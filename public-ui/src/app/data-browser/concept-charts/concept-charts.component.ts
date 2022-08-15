@@ -1,26 +1,26 @@
-import { Component, Input, OnChanges, OnDestroy } from '@angular/core';
-import { DbConfigService } from 'app/utils/db-config.service';
-import { GraphType } from 'app/utils/enum-defs';
-import { environment } from 'environments/environment';
-import { DataBrowserService } from 'publicGenerated/api/dataBrowser.service';
-import { AchillesResult } from 'publicGenerated/model/achillesResult';
-import { Analysis } from 'publicGenerated/model/analysis';
-import { Concept } from 'publicGenerated/model/concept';
-import { ConceptAnalysis } from 'publicGenerated/model/conceptAnalysis';
-import { Subscription as ISubscription } from 'rxjs/internal/Subscription';
+import { environment } from "environments/environment";
+import { Component, Input, OnChanges, OnDestroy } from "@angular/core";
+import { DbConfigService } from "app/utils/db-config.service";
+import { GraphType } from "app/utils/enum-defs";
+import { DataBrowserService } from "publicGenerated/api/dataBrowser.service";
+import { AchillesResult } from "publicGenerated/model/achillesResult";
+import { Analysis } from "publicGenerated/model/analysis";
+import { Concept } from "publicGenerated/model/concept";
+import { ConceptAnalysis } from "publicGenerated/model/conceptAnalysis";
+import { Subscription as ISubscription } from "rxjs/internal/Subscription";
 
 @Component({
-  selector: 'app-concept-charts',
-  templateUrl: './concept-charts.component.html',
-  styleUrls: ['./concept-charts.component.css', '../../styles/page.css']
+  selector: "app-concept-charts",
+  templateUrl: "./concept-charts.component.html",
+  styleUrls: ["./concept-charts.component.css", "../../styles/page.css"],
 })
 export class ConceptChartsComponent implements OnChanges, OnDestroy {
   @Input() concept: Concept;
-  @Input() backgroundColor = 'transparent'; // background color to pass to the chart component
+  @Input() backgroundColor = "transparent"; // background color to pass to the chart component
   @Input() showGraph = GraphType.None;
   // @Input() showRace = false;
   // @Input() showEthnicity = false;
-  @Input() searchTerm = '';
+  @Input() searchTerm = "";
 
   private subscriptions: ISubscription[] = [];
   loadingStack: any = [];
@@ -30,11 +30,11 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   intersexGenderResult: AchillesResult;
   noneGenderResult: AchillesResult;
   otherGenderResult: AchillesResult;
-  maleGenderChartTitle = '';
-  femaleGenderChartTitle = '';
-  intersexGenderChartTitle = '';
-  noneGenderChartTitle = '';
-  otherGenderChartTitle = '';
+  maleGenderChartTitle = "";
+  femaleGenderChartTitle = "";
+  intersexGenderChartTitle = "";
+  noneGenderChartTitle = "";
+  otherGenderChartTitle = "";
   sourceConcepts: Concept[] = null;
   analyses: ConceptAnalysis;
   unitNames: string[] = [];
@@ -45,7 +45,7 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   displayGraphErrorMessage = false;
   toDisplayMeasurementGenderCountAnalysis: Analysis;
   graphType = GraphType;
-  subUnitValuesFilter = ['No Unit (Text)', 'No Unit (Numeric)'];
+  subUnitValuesFilter = ["No Unit (Text)", "No Unit (Numeric)"];
   mixtureOfValues = false;
   selectedMeasurementType: string;
   toDisplayGenderAnalysis: Analysis;
@@ -69,15 +69,20 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
     if (this.showGraph === GraphType.Values && this.analyses.genderAnalysis) {
       this.genderResults = this.analyses.genderAnalysis.results;
     }
-    const chartGenderOrder = ['8507', '8532', '0'];
+    const chartGenderOrder = ["8507", "8532", "0"];
     this.genderResults.sort((a, b) => {
-              return chartGenderOrder.indexOf(a.stratum2) - chartGenderOrder.indexOf(b.stratum2);
-            }
-    );
+      return (
+        chartGenderOrder.indexOf(a.stratum2) -
+        chartGenderOrder.indexOf(b.stratum2)
+      );
+    });
     this.unitNames = [];
     const unitCounts = [];
-    if (this.analyses && this.analyses.measurementValueGenderAnalysis
-      && this.showGraph === GraphType.Values) {
+    if (
+      this.analyses &&
+      this.analyses.measurementValueGenderAnalysis &&
+      this.showGraph === GraphType.Values
+    ) {
       this.displayMeasurementGraphs = true;
       if (this.analyses.measurementGenderCountAnalysis) {
         for (const aa of this.analyses.measurementGenderCountAnalysis) {
@@ -85,16 +90,19 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
           for (const ar of aa.results) {
             sumCount = sumCount + ar.countValue;
           }
-          unitCounts.push({ name: aa.unitName, count : sumCount});
+          unitCounts.push({ name: aa.unitName, count: sumCount });
         }
       }
       unitCounts.sort((a, b) => {
-          return a.count - b.count;
-        }
+        return a.count - b.count;
+      });
+      this.unitNames = unitCounts.map((d) => d.name);
+      const noUnit = this.unitNames.filter(
+        (n) => n.toLowerCase() === "no unit"
       );
-      this.unitNames = unitCounts.map(d => d.name);
-      const noUnit = this.unitNames.filter(n => n.toLowerCase() === 'no unit');
-      this.unitNames = this.unitNames.filter(n => n.toLowerCase() !== 'no unit');
+      this.unitNames = this.unitNames.filter(
+        (n) => n.toLowerCase() !== "no unit"
+      );
       if (noUnit.length > 0) {
         this.unitNames.push(noUnit[0]);
       }
@@ -107,45 +115,52 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   ngOnChanges() {
     // Get chart results for concept
     this.loadingStack.push(true);
-    const conceptIdStr = '' + this.concept.conceptId.toString();
+    const conceptIdStr = "" + this.concept.conceptId.toString();
     this.conceptName = this.concept.conceptName;
-    this.subscriptions.push(this.api.getConceptAnalysisResults([conceptIdStr],
-      this.concept.domainId).subscribe(
-      {
-        next: results => {
-          this.results = results.items;
-          this.analyses = results.items[0];
-          this.selectedMeasurementType = 'No unit (Text)';
-          this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
-          this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
-          // this.organizeGenders(this.analyses.genderAnalysis);
-          this.fetchMeasurementGenderResults();
-          // Set this var to make template simpler.
-          // We can just loop through the results and show bins
-          this.loadingStack.pop();
-          this.displayGraphErrorMessage = false;
-        },
-        error: err => {
-          const errorBody = JSON.parse(err._body);
-          this.displayGraphErrorMessage = true;
-          console.log('Error searching: ', errorBody.message);
-        }
-      }));
+    this.subscriptions.push(
+      this.api
+        .getConceptAnalysisResults([conceptIdStr], this.concept.domainId)
+        .subscribe({
+          next: (results) => {
+            this.results = results.items;
+            this.analyses = results.items[0];
+            this.selectedMeasurementType = "No unit (Text)";
+            this.toDisplayGenderAnalysis = this.analyses.genderAnalysis;
+            this.toDisplayAgeAnalysis = this.analyses.ageAnalysis;
+            // this.organizeGenders(this.analyses.genderAnalysis);
+            this.fetchMeasurementGenderResults();
+            // Set this var to make template simpler.
+            // We can just loop through the results and show bins
+            this.loadingStack.pop();
+            this.displayGraphErrorMessage = false;
+          },
+          error: (err) => {
+            const errorBody = JSON.parse(err._body);
+            this.displayGraphErrorMessage = true;
+            console.log("Error searching: ", errorBody.message);
+          },
+        })
+    );
     this.loadingStack.push(true);
-    this.subscriptions.push(this.api.getSourceConcepts(this.concept.conceptId).subscribe(
-      results => {
-        this.sourceConcepts = results.items;
-        if (this.sourceConcepts.length > 10) {
-          this.sourceConcepts = this.sourceConcepts.slice(0, 10);
-        }
-        this.loadingStack.pop();
-      }));
+    this.subscriptions.push(
+      this.api
+        .getSourceConcepts(this.concept.conceptId)
+        .subscribe((results) => {
+          this.sourceConcepts = results.items;
+          if (this.sourceConcepts.length > 10) {
+            this.sourceConcepts = this.sourceConcepts.slice(0, 10);
+          }
+          this.loadingStack.pop();
+        })
+    );
 
-    this.subscriptions.push(this.api.getCountAnalysis(this.concept.domainId, 'ehr').subscribe(
-      results => {
-        this.domainCountAnalysis = results;
-      }
-    ));
+    this.subscriptions.push(
+      this.api
+        .getCountAnalysis(this.concept.domainId, "ehr")
+        .subscribe((results) => {
+          this.domainCountAnalysis = results;
+        })
+    );
     if (this.showGraph !== GraphType.Values) {
       this.displayMeasurementGraphs = false;
     } else {
@@ -163,12 +178,12 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
   // Organize genders and set the chart title for the gender charts for simple display
   organizeGenders(analysis: Analysis) {
     // No need to do anything if only one gender
-    if (!analysis ||  analysis.results.length <= 1) {
+    if (!analysis || analysis.results.length <= 1) {
       return;
     }
     for (const g of analysis.results) {
-      const chartTitle = g.analysisStratumName
-        + ' - ' + g.countValue.toLocaleString();
+      const chartTitle =
+        g.analysisStratumName + " - " + g.countValue.toLocaleString();
       if (g.stratum2 === this.dbc.MALE_GENDER_ID) {
         this.maleGenderResult = g;
         this.maleGenderChartTitle = chartTitle;
@@ -217,39 +232,61 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   showMeasurementGenderHistogram(unit: string) {
     this.selectedUnit = unit;
-    if (this.selectedUnit.toLowerCase() === 'no unit') {
-      const unitResults = this.analyses.measurementValueGenderAnalysis.find
-                                (aa => aa.unitName === unit);
-      if (unitResults && unitResults.results && unitResults.results.length > 0) {
-        const numericResults = unitResults.results.filter(r => r.measurementValueType === 'numeric');
-        const textResults = unitResults.results.filter(r => r.measurementValueType === 'text');
-        if (numericResults && numericResults.length > 0 && textResults && textResults.length > 0) {
-                this.mixtureOfValues = true;
+    if (this.selectedUnit.toLowerCase() === "no unit") {
+      const unitResults = this.analyses.measurementValueGenderAnalysis.find(
+        (aa) => aa.unitName === unit
+      );
+      if (
+        unitResults &&
+        unitResults.results &&
+        unitResults.results.length > 0
+      ) {
+        const numericResults = unitResults.results.filter(
+          (r) => r.measurementValueType === "numeric"
+        );
+        const textResults = unitResults.results.filter(
+          (r) => r.measurementValueType === "text"
+        );
+        if (
+          numericResults &&
+          numericResults.length > 0 &&
+          textResults &&
+          textResults.length > 0
+        ) {
+          this.mixtureOfValues = true;
         } else {
-                this.mixtureOfValues = false;
+          this.mixtureOfValues = false;
         }
       }
     } else {
       this.mixtureOfValues = false;
     }
-    this.toDisplayMeasurementGenderAnalysis = { ...this.analyses.measurementValueGenderAnalysis.find
-      (aa => aa.unitName === unit) };
+    this.toDisplayMeasurementGenderAnalysis = {
+      ...this.analyses.measurementValueGenderAnalysis.find(
+        (aa) => aa.unitName === unit
+      ),
+    };
     if (this.analyses.measurementGenderCountAnalysis) {
-      this.toDisplayMeasurementGenderCountAnalysis = this.analyses.measurementGenderCountAnalysis.
-      find(aa => aa.unitName === unit);
+      this.toDisplayMeasurementGenderCountAnalysis =
+        this.analyses.measurementGenderCountAnalysis.find(
+          (aa) => aa.unitName === unit
+        );
     }
     if (this.mixtureOfValues) {
       this.toDisplayMeasurementGenderAnalysis.results =
-        this.toDisplayMeasurementGenderAnalysis.results.
-      filter(r => r.measurementValueType === 'text');
-      this.selectedMeasurementType = 'No Unit (Text)';
+        this.toDisplayMeasurementGenderAnalysis.results.filter(
+          (r) => r.measurementValueType === "text"
+        );
+      this.selectedMeasurementType = "No Unit (Text)";
     }
   }
 
   public fetchChartTitle(gender: any) {
     if (this.toDisplayMeasurementGenderCountAnalysis) {
-      const genderResults = this.toDisplayMeasurementGenderCountAnalysis.results
-        .filter(r => r.stratum3 === gender.stratum2)[0];
+      const genderResults =
+        this.toDisplayMeasurementGenderCountAnalysis.results.filter(
+          (r) => r.stratum3 === gender.stratum2
+        )[0];
       if (genderResults) {
         return genderResults.countValue;
       } else {
@@ -262,29 +299,37 @@ export class ConceptChartsComponent implements OnChanges, OnDestroy {
 
   public showSpecificMeasurementTypeValues(su) {
     this.selectedMeasurementType = su;
-    if (su.toLowerCase().indexOf('text') >= 0) {
+    if (su.toLowerCase().indexOf("text") >= 0) {
       this.toDisplayMeasurementGenderAnalysis = {
-        ...this.analyses.measurementValueGenderAnalysis.find
-        (aa => aa.unitName === 'No unit')};
+        ...this.analyses.measurementValueGenderAnalysis.find(
+          (aa) => aa.unitName === "No unit"
+        ),
+      };
       this.toDisplayMeasurementGenderAnalysis.results =
-        this.toDisplayMeasurementGenderAnalysis.results.filter
-      (r => r.measurementValueType === 'text');
+        this.toDisplayMeasurementGenderAnalysis.results.filter(
+          (r) => r.measurementValueType === "text"
+        );
       if (this.analyses.measurementGenderCountAnalysis) {
         this.toDisplayMeasurementGenderCountAnalysis =
-          this.analyses.measurementGenderCountAnalysis.find
-        (aa => aa.unitName === 'No unit');
+          this.analyses.measurementGenderCountAnalysis.find(
+            (aa) => aa.unitName === "No unit"
+          );
       }
     } else {
       this.toDisplayMeasurementGenderAnalysis = {
         ...this.analyses.measurementValueGenderAnalysis.find(
-          aa => aa.unitName === 'No unit')};
+          (aa) => aa.unitName === "No unit"
+        ),
+      };
       this.toDisplayMeasurementGenderAnalysis.results =
-        this.toDisplayMeasurementGenderAnalysis.results.filter
-      (r => r.measurementValueType === 'numeric');
+        this.toDisplayMeasurementGenderAnalysis.results.filter(
+          (r) => r.measurementValueType === "numeric"
+        );
       if (this.analyses.measurementGenderCountAnalysis) {
         this.toDisplayMeasurementGenderCountAnalysis =
-          this.analyses.measurementGenderCountAnalysis.find
-        (aa => aa.unitName === 'No unit');
+          this.analyses.measurementGenderCountAnalysis.find(
+            (aa) => aa.unitName === "No unit"
+          );
       }
     }
   }

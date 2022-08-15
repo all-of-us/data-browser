@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync as  } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ChartComponent} from 'app/data-browser/chart/chart.component';
 import { ConceptChartsComponent } from './concept-charts.component';

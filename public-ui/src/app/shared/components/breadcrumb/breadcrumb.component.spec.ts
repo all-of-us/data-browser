@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync as  } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {Router, Routes} from '@angular/router';
 import {RouterTestingModule} from '@angular/router/testing';
 

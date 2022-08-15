@@ -1,15 +1,15 @@
 export const environment = {
-  displayTag: 'Stable',
-  publicApiUrl: 'https://public.api.stable.fake-research-aou.org',
-  researchAllOfUsUrl: 'https://researchallofus.org',
+  displayTag: "Stable",
+  publicApiUrl: "https://public.api.stable.fake-research-aou.org",
+  researchAllOfUsUrl: "https://researchallofus.org",
   debug: false,
-  gaId: 'UA-116298798-5',
-  gtmId: 'GTM-NQ9XDTW',
-  gtmAuth: '87R8_4UCXpVCroAA7bGkAg',
-  gtmPreview: 'env-27',
+  gaId: "UA-116298798-5",
+  gtmId: "GTM-NQ9XDTW",
+  gtmAuth: "87R8_4UCXpVCroAA7bGkAg",
+  gtmPreview: "env-27",
   reactSurveyTable: false,
   ehrReact: false,
   testReact: false,
   geno: true,
-  genoFilters: false
+  genoFilters: false,
 };

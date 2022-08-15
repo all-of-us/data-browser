@@ -1,56 +1,58 @@
-import { VariantFilterItemComponent } from 'app/data-browser/views/genomic-view/components/variant-filter-item.component';
-import { reactStyles } from 'app/utils';
-import { GenomicFilters } from 'publicGenerated';
-import * as React from 'react';
+import * as React from "react";
+
+import { VariantFilterItemComponent } from "app/data-browser/views/genomic-view/components/variant-filter-item.component";
+import { reactStyles } from "app/utils";
+import { GenomicFilters } from "publicGenerated";
 
 const styles = reactStyles({
-    filterBox: {
-        top: '.5rem',
-        position: 'absolute',
-        padding: '.5rem',
-        zIndex: 10,
-        borderRadius: '0 6px 6px 0',
-        backgroundColor: '#FFFFFF',
-        boxShadow: '0 1px 3px 0 rgba(0,0,0,0.15), 0 0 2px 0 rgba(0,0,0,0.25), 0 2px 2px 0 rgba(0,0,0,0.15)',
-        width: '264px',
-        height: '421px'
-    },
-    filterItemHandleClosed: {
-        transform: 'rotate(90deg)'
-    },
-    actionBtnContainer: {
-        position: 'absolute',
-        bottom: '.5rem',
-        width: '100%',
-        display: 'flex',
-        fontSize: '1.1em'
-    },
-    clearBtn: {
-        textTransform: 'uppercase',
-        borderRadius: '2px',
-        padding: '1rem',
-        border: 'none',
-        background: 'transparent',
-        width: '45%',
-    },
-    applyBtn: {
-        textTransform: 'uppercase',
-        borderRadius: '2px',
-        padding: '1rem',
-        border: 'none',
-        background: '#262262',
-        color: 'white',
-        width: '45%'
-    },
-    filterItems: {
-        maxHeight: '340px',
-        overflowY: 'scroll'
-    }
+  filterBox: {
+    top: ".5rem",
+    position: "absolute",
+    padding: ".5rem",
+    zIndex: 10,
+    borderRadius: "0 6px 6px 0",
+    backgroundColor: "#FFFFFF",
+    boxShadow:
+      "0 1px 3px 0 rgba(0,0,0,0.15), 0 0 2px 0 rgba(0,0,0,0.25), 0 2px 2px 0 rgba(0,0,0,0.15)",
+    width: "264px",
+    height: "421px",
+  },
+  filterItemHandleClosed: {
+    transform: "rotate(90deg)",
+  },
+  actionBtnContainer: {
+    position: "absolute",
+    bottom: ".5rem",
+    width: "100%",
+    display: "flex",
+    fontSize: "1.1em",
+  },
+  clearBtn: {
+    textTransform: "uppercase",
+    borderRadius: "2px",
+    padding: "1rem",
+    border: "none",
+    background: "transparent",
+    width: "45%",
+  },
+  applyBtn: {
+    textTransform: "uppercase",
+    borderRadius: "2px",
+    padding: "1rem",
+    border: "none",
+    background: "#262262",
+    color: "white",
+    width: "45%",
+  },
+  filterItems: {
+    maxHeight: "340px",
+    overflowY: "scroll",
+  },
 });
 
 export interface Cat {
-    display: String;
-    field: String;
+  display: String;
+  field: String;
 }
 
 interface Props {
@@ -88,19 +90,19 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
-        // tslint:disable-next-line: forin
+          // tslint:disable-next-line: forin
         for (const key in filteredMetadata) {
-            const filterItem = filteredMetadata[key];
-            const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
-            if (Array.isArray(filterItem)) {
-                if (!touched) {
-                    filteredMetadata[key] = filterItem.forEach((item) => {
-                        item.checked = true;
-                    });
-                    filteredMetadata[key] = filterItem;
+                const filterItem = filteredMetadata[key];
+                const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
+                if (Array.isArray(filterItem)) {
+                    if (!touched) {
+                        filteredMetadata[key] = filterItem.forEach((item) => {
+                            item.checked = true;
+                        });
+                        filteredMetadata[key] = filterItem;
+                    }
                 }
-            }
-
+            
             filteredMetadata = this.state.filteredMetadata;
             this.props.onFilterSubmit(filteredMetadata);
         }

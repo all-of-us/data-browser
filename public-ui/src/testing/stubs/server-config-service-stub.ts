@@ -1,7 +1,6 @@
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Observable} from 'rxjs/Observable';
-
-import {ConfigResponse} from 'publicGenerated';
+import { ConfigResponse } from "publicGenerated";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from "rxjs/Observable";
 
 export class ServerConfigServiceStub {
   constructor(public config: ConfigResponse) {}

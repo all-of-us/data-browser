@@ -1,69 +1,68 @@
-import { Cat } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
-import { reactStyles } from 'app/utils';
-import { ClrIcon } from 'app/utils/clr-icon';
-import * as React from 'react';
+import * as React from "react";
+
+import { Cat } from "app/data-browser/views/genomic-view/components/variant-filter.component";
+import { reactStyles } from "app/utils";
+import { ClrIcon } from "app/utils/clr-icon";
 
 const styles = reactStyles({
-    filterItem: {
-        width: '100%',
-        padding: '.5rem',
-        paddingBottom: '0',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        color: '#262262',
-        fontSize: '.8em',
-        letterSpacing: 0,
-        lineHeight: '16px',
-
-    },
-    filterItemClosed: {
-        transform: 'rotate(90deg)'
-    },
-    filterItemOpen: {
-        transform: 'rotate(180deg)'
-    },
-    selectContainer: {
-        width: '100%',
-        display: 'flex',
-
-    },
-    textFilter: {
-        border: 'solid rgba(74,74,74,0.4) 1px',
-    },
-    selectBtn: {
-        border: 'none',
-        background: 'transparent',
-        color: '#216FB4'
-    },
-    selectNoBtn: {
-        border: 'none',
-        background: 'transparent',
-        color: '#216FB4'
-    },
-    filterItemForm: {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingLeft: '1rem',
-        maxHeight: '10rem',
-        overflowY: 'scroll'
-    },
-    filterItemOption: {
-        fontSize: '.8em',
-        display: 'flex'
-    },
-    filterItemCheck: {
-        marginRight: '.25rem',
-        height: '.8rem',
-        width: '.8rem',
-        marginTop: '0.1rem'
-    },
-    filterItemLabel: {
-        wordWrap: 'break-word'
-    },
-    filterSlider: {
-        padding: '1rem 0',
-    }
+  filterItem: {
+    width: "100%",
+    padding: ".5rem",
+    paddingBottom: "0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    color: "#262262",
+    fontSize: ".8em",
+    letterSpacing: 0,
+    lineHeight: "16px",
+  },
+  filterItemClosed: {
+    transform: "rotate(90deg)",
+  },
+  filterItemOpen: {
+    transform: "rotate(180deg)",
+  },
+  selectContainer: {
+    width: "100%",
+    display: "flex",
+  },
+  textFilter: {
+    border: "solid rgba(74,74,74,0.4) 1px",
+  },
+  selectBtn: {
+    border: "none",
+    background: "transparent",
+    color: "#216FB4",
+  },
+  selectNoBtn: {
+    border: "none",
+    background: "transparent",
+    color: "#216FB4",
+  },
+  filterItemForm: {
+    display: "flex",
+    flexDirection: "column",
+    paddingLeft: "1rem",
+    maxHeight: "10rem",
+    overflowY: "scroll",
+  },
+  filterItemOption: {
+    fontSize: ".8em",
+    display: "flex",
+  },
+  filterItemCheck: {
+    marginRight: ".25rem",
+    height: ".8rem",
+    width: ".8rem",
+    marginTop: "0.1rem",
+  },
+  filterItemLabel: {
+    wordWrap: "break-word",
+  },
+  filterSlider: {
+    padding: "1rem 0",
+  },
 });
 
 const css = `
@@ -122,16 +121,18 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         this.setState({ filterItemOpen: !this.state.filterItemOpen });
     }
 
-    filterBySearch(e) {
-        if (e.target.value) {
-            this.setState({
-                filterItemState: this.state.filterItemState
-                    .filter(item => item.option && item.option.toLowerCase().startsWith(e.target.value))
-            });
-        } else {
-            this.setState({ filterItemState: this.state.filterCheckMap });
-        }
+  filterBySearch(e) {
+    if (e.target.value) {
+      this.setState({
+        filterItemState: this.state.filterItemState.filter(
+          (item) =>
+            item.option && item.option.toLowerCase().startsWith(e.target.value)
+        ),
+      });
+    } else {
+      this.setState({ filterItemState: this.state.filterCheckMap });
     }
+  }
 
 
     handleCheck(filteredItem) {
@@ -163,7 +164,10 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         }
         this.state.filterItemState.checked = true;
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
+        this.state.filterItemState.checked = true;
+        this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
+  
 
     render(): React.ReactNode {
         const { category } = this.props;

@@ -1,43 +1,42 @@
-import { SearchComponent } from 'app/data-browser/search/home-search.component';
-import { VariantFilterComponent } from 'app/data-browser/views/genomic-view/components/variant-filter.component';
-import { reactStyles } from 'app/utils';
-import { ClrIcon } from 'app/utils/clr-icon';
-import { Spinner } from 'app/utils/spinner';
-import { environment } from 'environments/environment';
-import { GenomicFilters } from 'publicGenerated';
-import * as React from 'react';
-import { VariantFilterChips } from './variant-filter-chips.component';
+import * as React from "react";
+import {VariantFilterChips} from './variant-filter-chips.component'
+import { environment } from "environments/environment";
+import { SearchComponent } from "app/data-browser/search/home-search.component";
+import { VariantFilterComponent } from "app/data-browser/views/genomic-view/components/variant-filter.component";
+import { reactStyles } from "app/utils";
+import { ClrIcon } from "app/utils/clr-icon";
+import { Spinner } from "app/utils/spinner";
+import { GenomicFilters } from "publicGenerated";
 
 const styles = reactStyles({
-    searchBar: {
-        paddingRight: '2rem',
-        width: '35em'
-    },
-    searchHelpText: {
-        paddingTop: '2em',
-        lineHeight: '1.3em',
-        fontSize: '0.75em'
-    },
-    loading: {
-        transform: 'scale(.3)',
-        marginLeft: '-0.5rem',
-        width: '2rem'
-    },
-    resultSize: {
-        display: 'flex',
-        alignItems: 'center',
-        height: '1rem'
-    },
-    filterBtn: {
-        fontFamily: 'gothamBold',
-        color: '#216FB4',
-        paddingBottom: '1rem',
-        cursor: 'Pointer'
-
-    },
-    filterContainer: {
-        position: 'relative'
-    }
+  searchBar: {
+    paddingRight: "2rem",
+    width: "35em",
+  },
+  searchHelpText: {
+    paddingTop: "2em",
+    lineHeight: "1.3em",
+    fontSize: "0.75em",
+  },
+  loading: {
+    transform: "scale(.3)",
+    marginLeft: "-0.5rem",
+    width: "2rem",
+  },
+  resultSize: {
+    display: "flex",
+    alignItems: "center",
+    height: "1rem",
+  },
+  filterBtn: {
+    fontFamily: "gothamBold",
+    color: "#216FB4",
+    paddingBottom: "1rem",
+    cursor: "Pointer",
+  },
+  filterContainer: {
+    position: "relative",
+  },
 });
 
 const css = `
@@ -61,12 +60,12 @@ export interface Chip {
     data: GenomicFilters;
 }
 interface Props {
-    onSearchTerm: Function;
-    onFilterSubmit: Function;
-    searchTerm: string;
-    variantListSize: number;
-    filterMetadata: GenomicFilters;
-    loading: boolean;
+  onSearchTerm: Function;
+  onFilterSubmit: Function;
+  searchTerm: string;
+  variantListSize: number;
+  filterMetadata: GenomicFilters;
+  loading: boolean;
 }
 interface State {
     filteredMetadata: GenomicFilters;
@@ -91,11 +90,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.props.onSearchTerm(this.state.searchWord);
         }
     }
+  
 
-    handleChange(val: string) {
-        this.setState({ searchWord: val });
-        this.props.onSearchTerm(val);
-    }
+  handleChange(val: string) {
+    this.setState({ searchWord: val });
+    this.props.onSearchTerm(val);
+  }
 
     componentDidUpdate(prevProps: Readonly<Props>) {
         const { searchTerm } = this.props;
@@ -103,7 +103,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.setState({ searchWord: searchTerm });
         }
     }
-
+    
     showFilter() {
         this.setState({ filterShow: !this.state.filterShow });
     }
