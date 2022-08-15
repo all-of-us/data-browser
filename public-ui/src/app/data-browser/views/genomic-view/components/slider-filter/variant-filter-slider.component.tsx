@@ -1,32 +1,38 @@
-import { reactStyles } from 'app/utils';
+import * as React from "react";
+import { render } from "react-dom";
 import { Slider, Rail, Handles, Tracks, Ticks } from "react-compound-slider";
-import { SliderRail, Handle, Track, Tick } from "./slider-components"; 
+import { SliderRail, Handle, Track, Tick } from "./slider-components"; // example render components - source below
 import { view, trbl, dims } from "./slider-constants";
-import * as React from 'react';
+import Surface from "./Surface";
+import { number } from "prop-types";
 
+const sliderProps = {
+  width: dims[0],
+  height: dims[1],
+  fill: "none",
+  opacity: 0.5,
+  stroke: "red"
+};
 interface Props {
-    min: Number;
-    max: Number;
-    onSliderChange: Function;
+  min: number,
+  max: number,
+  onSliderChange: Function
 }
+
 const domain = [100, 500];
 const defaultValues = [150, 300];
-const styles = reactStyles({
-    sliderFormat: { display: 'flex' }
-});
 
-export class VariantFilterSliderComponent extends React.Component<Props, {}> {
-    constructor(props: Props) {
-        super(props);
-    }
+export const VariantFilterSliderComponent = (class extends React.Component<Props, {}> {
+  constructor(props:Props){
+    super(props);
+  }
+  onUpdate(vals) {
+    console.log(vals);
+  }
 
-
-    render(): React.ReactNode {
-        const { min, max } = this.props;
-        // const {sliderValue} = this.state
-
-        return <React.Fragment>
-            <div style={{ maxWidth: 600, textAlign: "center" }}>
+  render() {
+    return <div style={{ maxWidth: 600, textAlign: "center" }}>
+        <Surface view={view} trbl={trbl}>
           <Slider
             mode={1}
             step={1}
@@ -41,10 +47,10 @@ export class VariantFilterSliderComponent extends React.Component<Props, {}> {
               {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
             </Rail>
             <Ticks>
-              {({ ticks, getHandleProps }) => (
+              {({ ticks }) => (
                 <g transform={`translate(0,${dims[1]})`}>
                   {ticks.map(tick => (
-                    <Tick key={tick.id} tick={tick} />
+                    <Tick count={2} key={tick.id} tick={tick} />
                   ))}
                 </g>
               )}
@@ -78,8 +84,7 @@ export class VariantFilterSliderComponent extends React.Component<Props, {}> {
               )}
             </Handles>
           </Slider>
+        </Surface>
       </div>
-        </React.Fragment>;
-    }
-
-}
+  }
+})
