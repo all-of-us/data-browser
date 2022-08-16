@@ -110,7 +110,7 @@ end
 def ensure_docker(cmd_name, args)
   unless Workbench.in_docker?
     ensure_docker_sync()
-    exec(*(%W{docker-compose run --rm scripts ./project.rb #{cmd_name}} + args))
+    docker_run(%W{./project.rb #{cmd_name}} + args)
   end
 end
 
@@ -680,7 +680,7 @@ def cloudsql_import(cmd_name, *args)
   ServiceAccountContext.new(op.opts.project).run do
     common = Common.new
     #common.run_inline %W{docker-compose run db-cloudsql-import} + args
-    common.run_inline %W{docker-compose run db-cloudsql-import
+    common.run_inline %W{docker-compose run --rm db-cloudsql-import
           --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
           --bucket #{op.opts.bucket}}
   end
@@ -750,7 +750,7 @@ def local_mysql_import(cmd_name, *args)
   op.parse.validate
 
   common = Common.new
-  common.run_inline %W{docker-compose run db-local-mysql-import
+  common.run_inline %W{docker-compose run --rm db-local-mysql-import
         --sql-dump-file #{op.opts.file} --bucket #{op.opts.bucket}}
 end
 Common.register_command({

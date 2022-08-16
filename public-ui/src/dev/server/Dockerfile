@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 # We set the UID to the host's UID to ensure written files get proper permissions. The default UID
 # for node is 1000, which conflicts with some of our host machines.
@@ -42,7 +42,6 @@ RUN apk --no-cache add \
 RUN apk --no-cache add openjdk8-jre
 
 RUN npm install --global --force yarn n
-# Upgrade to Node 16, above installs 10.
 
 Run n 16
 
