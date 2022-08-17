@@ -8,7 +8,6 @@ fi
 
 if [[ ! -d ~/data-browser/.git ]]; then
   sudo git clone https://github.com/all-of-us/data-browser ~/data-browser
-  sudo chown -R circleci ~/data-browser
 fi
 cd ~/data-browser
 
