@@ -16,6 +16,9 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+       apt-get -y install sudo
+
 RUN npm install --global yarn n
 # Upgrade to Node 16, above installs 10.
 RUN n 16

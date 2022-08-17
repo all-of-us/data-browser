@@ -6,13 +6,6 @@ if [[ -z "${DATA_BROWSER_VERSION}" ]]; then
   exit 1
 fi
 
-# Coerce some of the volume permissions to be available to our docker user
-# "circleci" (group "circleci"). Use group for this creds file as the calling
-# script will want to maintain ownership to delete it afterwards.
-sudo chgrp circleci /creds/sa-key.json
-sudo chmod g+r /creds/sa-key.json
-sudo chown -R circleci /.gradle
-
 if [[ ! -d ~/data-browser/.git ]]; then
   sudo git clone https://github.com/all-of-us/data-browser ~/data-browser
   sudo chown -R circleci ~/data-browser
