@@ -207,7 +207,7 @@ dependencies {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
-  compile("org.springframework.boot:spring-boot-starter-data-jpa") {
+  compile("org.springframework.boot:spring-boot-starter-data-jpa:1.5.11.RELEASE") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'com.zaxxer', module: 'HikariCP'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
@@ -222,7 +222,7 @@ dependencies {
 
   compile "org.springframework.retry:spring-retry"
   compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
-  compile "org.springframework.security:spring-security-web"
+  compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.5.6'
 
   compile 'org.hibernate:hibernate-core:5.2.10.Final'
 
@@ -275,7 +275,7 @@ dependencies {
   // For Swagger generation. These should include dependencies found in the Swagger codegen
   // example here:
   // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
-  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest"
+  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:1.5.9.RELEASE"
   generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
   generatedCompile 'io.springfox:springfox-swagger2:2.6.1'
   generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
