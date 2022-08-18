@@ -467,7 +467,6 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
-      // why does this happen 7 times?
       this.filterGenomics(filteredMetadata);
       this.getSearchSize(this.state.searchTerm, true);
       alert();
