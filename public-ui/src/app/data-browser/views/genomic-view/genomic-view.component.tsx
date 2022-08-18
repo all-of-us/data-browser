@@ -467,10 +467,10 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
-      this.setState({ loadingResults: true });
+      // why does this happen 7 times?
       this.filterGenomics(filteredMetadata);
-      this.setState({ loadingResults: false });
       this.getSearchSize(this.state.searchTerm, true);
+      alert();
     }
 
     render() {
@@ -496,42 +496,6 @@ export const GenomicViewComponent = withRouteData(
               })
               }
             </div>
-            <div style={styles.innerContainer} id='childView'>
-              {selectionId === 1 &&
-                <GenomicOverviewComponent
-                  participantCount={participantCount}
-                  chartData={chartData}
-                />}
-              {selectionId === 2 &&
-                <GenomicSearchComponent
-                  onSearchInput={(searchWord: string) => {
-                    this.handleSearchTerm(searchWord);
-                    this.setState({ searchTerm: searchWord });
-                  }}
-                  onPageChange={(info) => { this.handlePageChange(info); }}
-                  onRowCountChange={(info) => { this.handleRowCountChange(info); }}
-                  onSortClick={(sortMetadata) => { this.handleSortClick(sortMetadata); }}
-                  onFilterSubmit={(filteredMetadata: GenomicFilters) => {
-                    this.handleFilterSubmit(filteredMetadata);
-                  }}
-                  currentPage={currentPage}
-                  rowCount={rowCount}
-                  variantListSize={variantListSize}
-                  loadingVariantListSize={loadingVariantListSize}
-                  loadingResults={loadingResults}
-                  searchResults={searchResults}
-                  participantCount={participantCount}
-                  searchTerm={searchTerm}
-                  filterMetadata={filterMetadata} />}
-
-              {selectionId === 3 &&
-                <GenomicFaqComponent closed={() => this.handleFaqClose()} />}
-              <div style={styles.faqHeading}>
-                <div className='faq-heading-text'>Questions about genomics?
-                  <span style={styles.faqLink} onClick={() => this.topBarClick(3)}>Learn More</span>
-                </div>
-              </div>
-            </div>
           </div>
           <div style={styles.innerContainer} id="childView">
             {selectionId === 1 && (
@@ -556,7 +520,6 @@ export const GenomicViewComponent = withRouteData(
                   this.handleSortClick(sortMetadata);
                 }}
                 onFilterSubmit={(filteredMetadata: GenomicFilters) => {
-                  this.setState({ loadingResults: true });
                   this.handleFilterSubmit(filteredMetadata);
                 }}
                 currentPage={currentPage}
