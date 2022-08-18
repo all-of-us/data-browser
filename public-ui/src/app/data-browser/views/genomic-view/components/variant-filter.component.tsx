@@ -56,70 +56,91 @@ export interface Cat {
 }
 
 interface Props {
-  filterMetadata: GenomicFilters;
-  onFilterSubmit: Function;
+    filterMetadata: GenomicFilters;
+    onFilterChange: Function;
+    onFilterSubmit: Function;
 }
 interface State {
-  filterCats: Cat[];
-  filteredMetadata: any;
+    filterCats: Cat[];
+    filteredMetadata: any;
 }
 
 export class VariantFilterComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      filterCats: [
-        { display: "Gene", field: "gene" },
-        { display: "Consequence", field: "consequence" },
-        { display: "Clinical Significance", field: "clinicalSignificance" },
-        { display: "Allele Count", field: "alleleCount" },
-        { display: "Allele Number", field: "alleleNumber" },
-        { display: "Allele Frequency", field: "alleleFrequency" },
-      ],
-      filteredMetadata: this.props.filterMetadata,
-    };
-  }
-  handleFilterChange(filteredItem: GenomicFilters, cat) {
-    this.props.filterMetadata[cat.field] = filteredItem;
-    this.setState({ filteredMetadata: this.props.filterMetadata });
-  }
-  submitFilter(filteredMetadata: GenomicFilters) {
-    filteredMetadata = this.state.filteredMetadata;
-    this.props.onFilterSubmit(filteredMetadata);
-  }
 
-  render() {
-    const { filterMetadata } = this.props;
-    const { filterCats, filteredMetadata } = this.state;
-    return (
-      <div style={styles.filterBox}>
-        <div style={styles.filterItems}>
-          {filterCats.map((cat, index) => {
-            const key = "cat" + index;
-            {
-              return (
-                filterMetadata && (
-                  <VariantFilterItemComponent
-                    onFilterChange={(e) => this.handleFilterChange(e, cat)}
-                    key={key}
-                    category={cat}
-                    filterItem={filterMetadata[cat.field.toString()]}
-                  />
-                )
-              );
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            filterCats: [
+                { display: 'Gene', field: 'gene' },
+                { display: 'Consequence', field: 'consequence' },
+                { display: 'Clinical Significance', field: 'clinicalSignificance' },
+                { display: 'Allele Count', field: 'alleleCount' },
+                { display: 'Allele Number', field: 'alleleNumber' },
+                { display: 'Allele Frequency', field: 'alleleFrequency' },
+            ],
+            filteredMetadata: this.props.filterMetadata
+        };
+    }
+
+    handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
+        const filterMetadataChange = this.props.filterMetadata;
+        filterMetadataChange[cat.field.toString()] = filteredItem;
+        this.setState({ filteredMetadata: filterMetadataChange });
+        this.props.onFilterChange(filterMetadataChange);
+    }
+
+    submitFilter(filteredMetadata: GenomicFilters) {
+          // tslint:disable-next-line: forin
+        for (const key in filteredMetadata) {
+                const filterItem = filteredMetadata[key];
+                const touched = Array.isArray(filterItem) && filterItem.some((t => t.checked));
+                if (Array.isArray(filterItem)) {
+                    if (!touched) {
+                        filteredMetadata[key] = filterItem.forEach((item) => {
+                            item.checked = true;
+                        });
+                        filteredMetadata[key] = filterItem;
+                    }
+                }            
+        }
+        filteredMetadata = this.state.filteredMetadata;
+        this.props.onFilterSubmit(filteredMetadata);
+    }
+
+    clear() {
+        this.state.filterCats.forEach(item => {
+            if (Array.isArray(this.state.filteredMetadata[item.field.toString()])) {
+                this.state.filteredMetadata[item.field.toString()].forEach(el => {
+                    el.checked = false;
+                });
+                this.props.onFilterChange(this.state.filteredMetadata);
             }
-          })}
-          <div style={styles.actionBtnContainer}>
-            <button style={styles.clearBtn}>Clear</button>
-            <button
-              onClick={() => this.submitFilter(filteredMetadata)}
-              style={styles.applyBtn}
-            >
-              Apply
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        });
+    }
+
+    render() {
+        const { filterMetadata } = this.props;
+        const { filterCats, filteredMetadata } = this.state;
+        return <div style={styles.filterBox}>
+            <div style={styles.filterItems}>
+                {filterCats.map((cat, index) => {
+                    const key = 'cat' + index;
+                    {
+                        return filterMetadata &&
+                            <VariantFilterItemComponent
+                                onFilterChange={(e) => this.handleFilterChange(e, cat)}
+                                key={key}
+                                category={cat}
+                                ogFilterItem={filterMetadata[cat.field.toString()]}
+                                filterItem={filteredMetadata[cat.field.toString()]} />;
+                    }
+                })
+                }
+                <div style={styles.actionBtnContainer}>
+                    <button onClick={() => this.clear()} style={styles.clearBtn}>Clear</button>
+                    <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
+                </div>
+            </div>
+        </div>;
+    }
 }

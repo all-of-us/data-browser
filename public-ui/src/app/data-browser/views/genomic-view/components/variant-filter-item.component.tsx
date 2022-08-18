@@ -65,33 +65,61 @@ const styles = reactStyles({
   },
 });
 
+const css = `
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 25px;
+        background: transparent;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+      }
+`;
+
 interface Props {
-  filterItem: any;
-  category: Cat;
-  onFilterChange: Function;
+    filterItem: any;
+    ogFilterItem: any;
+    category: Cat;
+    onFilterChange: Function;
 }
 
 interface State {
-  filterItemOpen: Boolean;
-  filterItemState: any;
-  filterCheckMap: any;
+    filterItemOpen: Boolean;
+    filterItemState: any;
+    filterItemMax: number;
+    filterItemMin: number;
+    filterCheckMap: any;
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
-  min: number;
-  max: number;
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      filterItemOpen: false,
-      filterItemState: props.filterItem || "",
-      filterCheckMap: props.filterItem || "",
-    };
-  }
+    min = 1;
+    max = this.props.filterItem.max;
+    filterMax = this.props.filterItem.max;
+    filterMin = this.props.filterItem.min;
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            filterItemOpen: false,
+            filterItemState: props.filterItem || '',
+            filterCheckMap: props.filterItem || '',
+            filterItemMin: undefined,
+            filterItemMax: undefined
+        };
+    }
 
-  filterClick() {
-    this.setState({ filterItemOpen: !this.state.filterItemOpen });
-  }
+    componentDidMount(): void {
+        if (Array.isArray(this.state.filterCheckMap) && this.state.filterCheckMap.every(t => t.checked)) {
+            this.state.filterCheckMap.forEach(i => i.checked = false);
+        }
+        console.log(this.state.filterCheckMap);
+
+    }
+    filterClick() {
+
+        this.setState({ filterItemOpen: !this.state.filterItemOpen });
+    }
 
   filterBySearch(e) {
     if (e.target.value) {
@@ -106,127 +134,84 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     }
   }
 
-  selecting(value: boolean) {
-    this.state.filterItemState.forEach((el) => {
-      el.checked = value;
-    });
-    this.setState({ filterItemState: this.state.filterItemState });
 
-    this.props.onFilterChange(this.state.filterItemState, this.props.category);
-  }
-  handleCheck(filteredItem) {
-    const filtered = this.state.filterItemState.map((el) =>
-      el === filteredItem ? { ...el, checked: !filteredItem.checked } : el
-    );
-    this.setState({
-      filterItemState: filtered,
-      filterCheckMap: filtered,
-    });
-    this.props.onFilterChange(filtered, this.props.category);
-  }
+    handleCheck(filteredItem) {
+        console.log(filteredItem, 'chick');
 
-  handleRangeSelect(event, isMax) {
-    const sliderValue = event.target.value;
-    if (isMax) {
-      this.max = Math.floor((sliderValue / 100) * this.props.filterItem.max);
-      this.state.filterItemState.max = this.max;
-    } else {
-      this.min = Math.floor((sliderValue / 100) * this.props.filterItem.max);
-      this.state.filterItemState.min = this.min;
+        const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
+        this.setState({
+            filterItemState: filtered,
+            filterCheckMap: filtered
+        });
+        this.props.onFilterChange(filtered, this.props.category);
     }
-    this.state.filterItemState.checked = true;
-    this.props.onFilterChange(this.state.filterItemState, this.props.category);
-  }
 
-  render(): React.ReactNode {
-    const { category } = this.props;
-    const { filterItemOpen, filterItemState } = this.state;
+    handleRangeSelect(event, isMax) {
+        console.log(this.state.filterItemState, 'this.state.filterItemState');
 
-    return (
-      <React.Fragment>
-        <div onClick={() => this.filterClick()} style={styles.filterItem}>
-          <span>{category.display}</span>
-          <div>
-            <ClrIcon
-              style={
-                !filterItemOpen
-                  ? { ...styles.filterItemClosed }
-                  : { ...styles.filterItemOpen }
-              }
-              shape="angle"
-            />
-          </div>
-        </div>
-        {filterItemOpen && Array.isArray(filterItemState) ? (
-          <div style={styles.filterItemForm}>
-            <input
-              style={styles.textFilter}
-              type="input"
-              onChange={(e) => this.filterBySearch(e)}
-            />
-            <div style={styles.selectContainer}>
-              <span>Select</span>
-              <button
-                style={styles.selectBtn}
-                onClick={() => this.selecting(true)}
-              >
-                {" "}
-                All
-              </button>
-              <span>|</span>
-              <button
-                style={styles.selectBtn}
-                onClick={() => this.selecting(false)}
-              >
-                None
-              </button>
+        const maxSliderValue = isMax && event.target.value;
+        const minSliderValue = !isMax && event.target.value;
+        console.log('max', this.max, maxSliderValue, this.min, 'min', minSliderValue);
+
+        if (isMax) {
+            console.log(this.props.filterItem.max, maxSliderValue, 'this is max');
+            this.max = maxSliderValue;
+            this.state.filterItemState.max = this.max;
+        } else {
+            console.log(this.props.filterItem.min, minSliderValue, 'this is min');
+            // this.min = minSliderValue;
+            this.setState({ filterItemMin: this.min });
+        }
+        this.state.filterItemState.checked = true;
+        this.props.onFilterChange(this.state.filterItemState, this.props.category);
+        this.state.filterItemState.checked = true;
+        this.props.onFilterChange(this.state.filterItemState, this.props.category);
+    }
+  
+
+    render(): React.ReactNode {
+        const { category } = this.props;
+        const { filterItemOpen, filterItemState } = this.state;
+        return <React.Fragment >
+            <style>{css}</style>
+            <div onClick={() => this.filterClick()} style={styles.filterItem}>
+                <span>{category.display}</span>
+                <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
             </div>
-            {filterItemState.map((item: any, index: number) => {
-              const key = "option" + index;
-              return (
-                <span style={styles.filterItemOption} key={key}>
-                  <input
-                    onChange={() => this.handleCheck(item)}
-                    id={item.option}
-                    style={styles.filterItemCheck}
-                    type="checkbox"
-                    name={item.option}
-                    checked={item.checked}
-                  />
-                  <label style={styles.filterItemLabel} htmlFor={item.option}>
-                    {item.option}
-                  </label>
-                </span>
-              );
-            })}
-          </div>
-        ) : (
-          <div>
-            {filterItemOpen && (
-              <div style={styles.filterItemForm}>
-                <label>min {this.min} </label>
-                <input
-                  style={styles.filterSlider}
-                  type="range"
-                  defaultValue={0}
-                  onChange={(e) => this.handleRangeSelect(e, false)}
-                  id={filterItemState.option}
-                  name={"slider"}
-                />
-                <label>max {this.max}</label>
-                <input
-                  style={styles.filterSlider}
-                  type="range"
-                  defaultValue={100}
-                  onChange={(e) => this.handleRangeSelect(e, true)}
-                  id={filterItemState.option}
-                  name={"slider"}
-                />
-              </div>
-            )}
-          </div>
-        )}
-      </React.Fragment>
-    );
-  }
+            {(filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
+                {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
+                <div style={styles.selectContainer}>
+                    <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
+                    <span>|</span>
+                    <button style={styles.selectBtn} onClick={() => this.selecting(false)} >None</button>
+                </div> */}
+                {filterItemState.map((item: any, index: number) => {
+                    const key = 'option' + index;
+                    return <span style={styles.filterItemOption} key={key}>
+                        <input onChange={() => this.handleCheck(item)}
+                            id={item.option} style={styles.filterItemCheck} type='checkbox' name={item.option} checked={item.checked} />
+                        <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
+                    </span>;
+                })}
+            </div> :
+                // <React.Fragment>
+                // {filterItemOpen && <VariantFilterSliderComponent onSliderChange={(event,isMax)=>{this.handleRangeSelect(event,isMax)}}
+                // ogFilterItem={ogFilterItem} min={this.min} max={this.props.filterItem.max}  />}</React.Fragment>
+                // <div>
+                //     {filterItemOpen && <div style={styles.filterItemForm}>
+                //         <label>min {this.min} </label>
+                //         <input className='slider' style={styles.filterSlider} type='range'
+                //             defaultValue={0}
+                //             max={this.max}
+                //             onChange={(e) => this.handleRangeSelect(e, false)} id={filterItemState.option} name={'slider'} />
+                //         <label>max {this.max}</label>
+                //         <input style={styles.filterSlider} type='range'
+                //             defaultValue={100}
+                //             onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
+                //     </div>}
+                // </div>
+                <div></div>}
+        </React.Fragment>;
+    }
+
 }
