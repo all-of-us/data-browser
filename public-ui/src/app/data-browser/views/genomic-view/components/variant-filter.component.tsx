@@ -101,11 +101,10 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                         });
                         filteredMetadata[key] = filterItem;
                     }
-                }
-            
-            filteredMetadata = this.state.filteredMetadata;
-            this.props.onFilterSubmit(filteredMetadata);
+                }            
         }
+        filteredMetadata = this.state.filteredMetadata;
+        this.props.onFilterSubmit(filteredMetadata);
     }
 
     clear() {
