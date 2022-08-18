@@ -412,7 +412,6 @@ export const GenomicViewComponent = withRouteData(
         rowCount: rowCount,
         sortMetadata: sortMetadataObj,
       };
-      // console.log(searchRequest,"searchRequest222");
 
       genomicsApi()
         .searchVariants(searchRequest)
@@ -432,8 +431,6 @@ export const GenomicViewComponent = withRouteData(
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
       };
-      console.log(searchRequest.filterMetadata, "this is what will go");
-
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
