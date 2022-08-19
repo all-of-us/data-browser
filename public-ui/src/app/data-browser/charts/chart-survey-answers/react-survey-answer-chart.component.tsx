@@ -183,7 +183,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<
 
       }
     }
-    console.log(tempArr);
     this.setState({ chartSeries: tempArr, categoryArr: categoryArr }, () => {
       this.buildChartData(surveyConceptId);
     });
@@ -243,7 +242,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       return this.point.toolTipHelpText;
     };
     newBaseOptions.colors = colors;
-    console.log(newBaseOptions);
     this.setState({ options: newBaseOptions });
   }
 
