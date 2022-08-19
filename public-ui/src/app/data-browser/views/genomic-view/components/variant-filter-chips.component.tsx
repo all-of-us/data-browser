@@ -108,8 +108,9 @@ export class VariantFilterChips extends React.Component<Props, State> {
                     </div>}
                     </div>;
                 } else {
-                    return <span key={count}>{(el.data.checked && el.data.checked) &&
-                        <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</span>;
+                    return <React.Fragment>{el.data.checked && <div style={styles.chipCat}><div style={styles.chip} ><div key={count}>{(el.data.checked && el.data.checked) &&
+                        <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</div></div></div>}
+                    </React.Fragment>;
                 }
 
             })}
