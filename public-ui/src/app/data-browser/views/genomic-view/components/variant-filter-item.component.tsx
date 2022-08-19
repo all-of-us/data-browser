@@ -3,6 +3,7 @@ import * as React from "react";
 import { Cat } from "app/data-browser/views/genomic-view/components/variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
+import { VariantFilterSliderComponent } from './slider-filter/variant-filter-slider.component'
 
 const styles = reactStyles({
   filterItem: {
@@ -167,7 +168,10 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         this.state.filterItemState.checked = true;
         this.props.onFilterChange(this.state.filterItemState, this.props.category);
     }
-  
+    
+    handleSliderChange() {
+
+    }
 
     render(): React.ReactNode {
         const { category } = this.props;
@@ -210,7 +214,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 //             onChange={(e) => this.handleRangeSelect(e, true)} id={filterItemState.option} name={'slider'} />
                 //     </div>}
                 // </div>
-                <div>sup</div>}
+                <div>{filterItemOpen && <VariantFilterSliderComponent min={1} max={20} onSliderChange={()=>this.handleSliderChange()} />}</div>}
         </React.Fragment>;
     }
 
