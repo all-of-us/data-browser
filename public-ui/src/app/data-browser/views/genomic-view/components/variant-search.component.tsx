@@ -109,6 +109,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
+        console.log(filteredMetadata,'filteredMetadata from submit filter');
+        
         this.props.onFilterSubmit(filteredMetadata);
         this.setState({ filterShow: false });
     }
