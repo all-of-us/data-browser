@@ -53,18 +53,18 @@ export const menuItems = [
         submenu: [],
       },
       {
-        title: "Data Methodology",
+        title: "Data Methods",
         url: "https://www.researchallofus.org/data-tools/methods/",
-        submenu: [],
-      },
-      {
-        title: "Researcher Workbench",
-        url: "https://www.researchallofus.org/workbench/",
         submenu: [],
       },
       {
         title: "Survey Explorer",
         url: "https://www.researchallofus.org/data-sources/survey-explorer/",
+        submenu: [],
+      },
+      {
+        title: "Researcher Workbench",
+        url: "https://www.researchallofus.org/workbench/",
         submenu: [],
       },
     ],
@@ -188,18 +188,18 @@ export class HeaderFooterService {
             submenu: false,
           },
           {
-            title: "Data Methodology",
+            title: "Data Methods",
             url: "https://www.researchallofus.org/data-tools/methods/",
-            submenu: false,
-          },
-          {
-            title: "Researcher Workbench",
-            url: "https://www.researchallofus.org/workbench/",
             submenu: false,
           },
           {
             title: "Survey Explorer",
             url: "https://www.researchallofus.org/data-sources/survey-explorer/",
+            submenu: false,
+          },
+          {
+            title: "Researcher Workbench",
+            url: "https://www.researchallofus.org/workbench/",
             submenu: false,
           },
         ],

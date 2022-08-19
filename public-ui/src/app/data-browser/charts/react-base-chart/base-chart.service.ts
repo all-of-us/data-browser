@@ -206,6 +206,7 @@ export const baseOptions = {
       shadow: false,
       borderColor: null,
       colorByPoint: true,
+      minPointLength: 3,
       groupPadding: 0,
       pointPadding: 0,
       dataLabels: {
