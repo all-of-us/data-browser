@@ -201,7 +201,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<
     );
     newBaseOptions.series = chartSeries;
     newBaseOptions.yAxis.title.text = "Participant Count";
-    newBaseOptions.yAxis.type = "logarithmic";
     newBaseOptions.yAxis.title.style.fontSize = "16px";
     newBaseOptions.xAxis.labels.style.fontSize = "14px";
     newBaseOptions.yAxis.labels.style.fontSize = "16px";

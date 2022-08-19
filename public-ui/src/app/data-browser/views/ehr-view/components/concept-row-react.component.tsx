@@ -276,11 +276,17 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
   }
 
   shareConcept(e: any) {
-    const { concept } = this.props;
+    const { concept, searchTerm } = this.props;
+    console.log(window.location);
+    console.log(searchTerm);
+    let path = window.location.pathname;
+    if (searchTerm && (searchTerm.length > 0) && path.indexOf(searchTerm) > 0) {
+        path = path.substring(0, path.lastIndexOf("/"));
+    }
     navigator.clipboard.writeText(
       window.location.origin +
-        window.location.pathname +
-        "?search=" +
+        path +
+        "/" +
         concept.conceptId
     );
     this.setState({
