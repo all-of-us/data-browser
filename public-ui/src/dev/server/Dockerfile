@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:18-alpine
 
 # We set the UID to the host's UID to ensure written files get proper permissions. The default UID
 # for node is 1000, which conflicts with some of our host machines.
@@ -10,14 +10,22 @@ RUN groupmod -g 666 node \
 # https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/alpine/Dockerfile
 #
 
-ENV CLOUD_SDK_VERSION 217.0.0
+ENV CLOUD_SDK_VERSION 392.0.0
+
+ENV LD_LIBRARY_PATH=/lib64
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
+RUN apk add --update bash && rm -rf /var/cache/apk/*
+
+RUN apk add libc6-compat
+
 RUN apk --no-cache add \
         curl \
-        python2 \
+        python3 \
         py-crcmod \
+        nodejs \
+        npm \
         bash \
         libc6-compat \
         openssh-client \
@@ -32,6 +40,10 @@ RUN apk --no-cache add \
 
 # Java for Swagger client generation
 RUN apk --no-cache add openjdk8-jre
+
+RUN npm install --global --force yarn n
+
+Run n 16
 
 # We touch yarn's config file here so that we can explicitly make sure
 # yarn has permission to read/write to it, even though its empty.

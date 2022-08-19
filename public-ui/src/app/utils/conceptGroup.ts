@@ -1,4 +1,4 @@
-import {ConceptWithAnalysis} from './conceptWithAnalysis';
+import { ConceptWithAnalysis } from "./conceptWithAnalysis";
 
 export class ConceptGroup {
   group: string;

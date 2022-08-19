@@ -1,12 +1,10 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
-import { BaseReactWrapper } from 'app/data-browser/base-react/base-react.wrapper';
-import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-chart.service';
-import * as highCharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
-import * as React from 'react';
+import * as React from "react";
+import * as highCharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+
+import { Component, Input } from "@angular/core";
+import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
+import { getBaseOptions } from "app/data-browser/charts/react-base-chart/base-chart.service";
 
 const cssStyle = `
 .standard-chart {
@@ -18,35 +16,37 @@ const cssStyle = `
 `;
 
 interface State {
-    options: any;
+  options: any;
 }
 
 interface Props {
-    concepts: any;
-    onClick: Function;
+  concepts: any;
+  onClick: Function;
 }
 
-export class TopResultsChartReactComponent extends React.Component<Props, State> {
-
+export class TopResultsChartReactComponent extends React.Component<
+  Props,
+  State
+> {
   constructor(props) {
     super(props);
-    this.state = {options: null};
+    this.state = { options: null };
   }
 
   componentDidMount() {
-      this.getChartOptions();
+    this.getChartOptions();
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     if (prevProps.concepts !== this.props.concepts) {
-        this.getChartOptions();
+      this.getChartOptions();
     }
   }
 
   getChartOptions() {
-     const {concepts} = this.props;
-     const {categories, series} = this.prepCategoriesAndData(concepts);
-     this.setChartOptions(categories, series);
+    const { concepts } = this.props;
+    const { categories, series } = this.prepCategoriesAndData(concepts);
+    this.setChartOptions(categories, series);
   }
 
   public barClick(e) {
@@ -54,43 +54,58 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
   }
 
   setChartOptions(categories: any, series: any) {
-      const newBaseOptions = getBaseOptions();
-      newBaseOptions.plotOptions.series.pointWidth = 20;
-      newBaseOptions.yAxis.title.text = 'Participant Count';
-      newBaseOptions.xAxis.title.text = 'Top Concepts';
-      newBaseOptions.yAxis.labels.style.fontSize = '12px';
-      newBaseOptions.xAxis.labels.style.fontSize = '12px';
-      newBaseOptions.xAxis.labels.style.width = '200px';
-      const longest = Math.max(...(categories.map(el => el.length)));
-      if (longest > 200) {
-        newBaseOptions.xAxis.labels.style.width = '300px';
-      }
-      newBaseOptions.xAxis.labels.formatter = function() {
-        return '<div style="text-overflow: ellipsis; overflow: hidden;">' + this.value + '</div>';
-      };
-      newBaseOptions.chart.type = 'bar';
-      newBaseOptions.yAxis.gridLineColor = '#ECF1F4';
-      newBaseOptions.title.style.color = '#262262';
-      newBaseOptions.title.style.fontSize = '12px';
-      newBaseOptions.color = '#2691D0';
-      newBaseOptions.xAxis.categories = categories;
-      newBaseOptions.plotOptions.bar.events = {
-        click: (event) => this.barClick(event)
-      };
-      newBaseOptions.series = series;
-      this.setState({options: newBaseOptions});
+    const newBaseOptions = getBaseOptions();
+    newBaseOptions.plotOptions.series.pointWidth = 20;
+    newBaseOptions.yAxis.title.text = "Participant Count";
+    newBaseOptions.xAxis.title.text = "Top Concepts";
+    newBaseOptions.yAxis.labels.style.fontSize = "12px";
+    newBaseOptions.xAxis.labels.style.fontSize = "12px";
+    newBaseOptions.xAxis.labels.style.width = "200px";
+    const longest = Math.max(...categories.map((el) => el.length));
+    if (longest > 200) {
+      newBaseOptions.xAxis.labels.style.width = "300px";
+    }
+    newBaseOptions.xAxis.labels.formatter = function () {
+      return (
+        '<div style="text-overflow: ellipsis; overflow: hidden;">' +
+        this.value +
+        "</div>"
+      );
+    };
+    newBaseOptions.chart.type = "bar";
+    newBaseOptions.yAxis.gridLineColor = "#ECF1F4";
+    newBaseOptions.title.style.color = "#262262";
+    newBaseOptions.title.style.fontSize = "12px";
+    newBaseOptions.color = "#2691D0";
+    newBaseOptions.xAxis.categories = categories;
+    newBaseOptions.plotOptions.bar.events = {
+      click: (event) => this.barClick(event),
+    };
+    newBaseOptions.series = series;
+    this.setState({ options: newBaseOptions });
   }
 
   public toolTip(concept: any) {
-    let count = '';
+    let count = "";
     if (concept.countValue <= 20) {
-        count = '&le; 20';
+      count = "&le; 20";
     } else {
-        count = concept.countValue.toString();
+      count = concept.countValue.toString();
     }
-    const toolTipText = '<div class="chart-tooltip">' + concept.conceptName +
-      ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ' +
-      '<br/>' + 'Participant Count: ' + '<strong>' + count + '</strong>' + '</div>';
+    const toolTipText =
+      '<div class="chart-tooltip">' +
+      concept.conceptName +
+      " (" +
+      concept.vocabularyId +
+      "-" +
+      concept.conceptCode +
+      ") " +
+      "<br/>" +
+      "Participant Count: " +
+      "<strong>" +
+      count +
+      "</strong>" +
+      "</div>";
     return toolTipText;
   }
 
@@ -98,38 +113,52 @@ export class TopResultsChartReactComponent extends React.Component<Props, State>
     const data = [];
     const cats = [];
     for (const concept of concepts) {
-          data.push({
-            toolTipHelpText: this.toolTip(concept),
-            name: concept.conceptName + ' (' + concept.vocabularyId + '-' + concept.conceptCode + ') ',
-            y: concept.countValue,
-            concept: concept,
-            analysisId: 'topConcepts'
-          });
-          cats.push(concept.conceptName);
+      data.push({
+        toolTipHelpText: this.toolTip(concept),
+        name:
+          concept.conceptName +
+          " (" +
+          concept.vocabularyId +
+          "-" +
+          concept.conceptCode +
+          ") ",
+        y: concept.countValue,
+        concept: concept,
+        analysisId: "topConcepts",
+      });
+      cats.push(concept.conceptName);
     }
     const series = [{ data: data }];
-    return { categories: cats, series: series};
+    return { categories: cats, series: series };
   }
 
   render() {
-      const {options} = this.state;
-      return <div>
+    const { options } = this.state;
+    return (
+      <div>
         <style>{cssStyle}</style>
-        {options && <HighchartsReact highcharts={highCharts} options={options} className='standard-chart'
-        updateArgs={[true]}/>}
-      </div>;
-    }
+        {options && (
+          <HighchartsReact
+            highcharts={highCharts}
+            options={options}
+            className="standard-chart"
+            updateArgs={[true]}
+          />
+        )}
+      </div>
+    );
+  }
 }
 
 @Component({
-  selector: 'app-top-results-chart-react',
-  template: `<span #root></span>`
+  selector: "app-top-results-chart-react",
+  template: `<span #root></span>`,
 })
 export class TopResultsChartWrapperComponent extends BaseReactWrapper {
   @Input() concepts: any;
-  @Input('onClick') onClick: Function;
+  @Input("onClick") onClick: Function;
 
   constructor() {
-    super(TopResultsChartReactComponent, ['concepts', 'onClick']);
+    super(TopResultsChartReactComponent, ["concepts", "onClick"]);
   }
 }

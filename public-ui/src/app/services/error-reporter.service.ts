@@ -1,9 +1,8 @@
-import {ErrorHandler, Injectable} from '@angular/core';
-import {StackdriverErrorReporter} from 'stackdriver-errors-js';
-
-import {ServerConfigService} from 'app/services/server-config.service';
-import {environment} from 'environments/environment';
-import {ConfigResponse} from 'publicGenerated';
+import { environment } from "environments/environment";
+import { ErrorHandler, Injectable } from "@angular/core";
+import { ServerConfigService } from "app/services/server-config.service";
+import { ConfigResponse } from "publicGenerated";
+import { StackdriverErrorReporter } from "stackdriver-errors-js";
 
 @Injectable()
 export class ErrorReporterService extends ErrorHandler {
@@ -50,7 +49,7 @@ export class ErrorReporterService extends ErrorHandler {
       // Note: this does not detect non-200 responses from Stackdriver:
       // https://github.com/GoogleCloudPlatform/stackdriver-errors-js/issues/32
       if (e) {
-        console.log('failed to send error report: ' + e);
+        console.log("failed to send error report: " + e);
       }
     });
   }

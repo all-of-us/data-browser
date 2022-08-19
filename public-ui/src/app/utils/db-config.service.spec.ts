@@ -1,15 +1,18 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
 
-import { DbConfigService } from './db-config.service';
+import { DbConfigService } from "./db-config.service";
 
-describe('DbConstantsService', () => {
+describe("DbConstantsService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DbConfigService]
+      providers: [DbConfigService],
     });
   });
 
-  it('should be created', inject([DbConfigService], (service: DbConfigService) => {
-    expect(service).toBeTruthy();
-  }));
+  it("should be created", inject(
+    [DbConfigService],
+    (service: DbConfigService) => {
+      expect(service).toBeTruthy();
+    }
+  ));
 });

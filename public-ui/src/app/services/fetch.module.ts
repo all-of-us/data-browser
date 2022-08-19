@@ -1,14 +1,12 @@
-import { NgModule } from '@angular/core';
-
-import {bindApiClients} from 'app/services/swagger-fetch-clients';
-import {environment} from 'environments/environment';
-import {Configuration} from 'publicGenerated/fetch';
-
+import { environment } from "environments/environment";
+import { NgModule } from "@angular/core";
+import { bindApiClients } from "app/services/swagger-fetch-clients";
+import { Configuration } from "publicGenerated/fetch";
 
 // "Configuration" means Swagger API Client configuration.
 export function getConfiguration(): Configuration {
   return new Configuration({
-    basePath: environment.publicApiUrl
+    basePath: environment.publicApiUrl,
   });
 }
 
@@ -19,14 +17,16 @@ export function getConfiguration(): Configuration {
  * added to the Swagger interfaces.
  */
 @NgModule({
-  imports:      [],
+  imports: [],
   declarations: [],
-  exports:      [],
-  providers: [{
-    provide: Configuration,
-    deps: [],
-    useFactory: getConfiguration
-  }]
+  exports: [],
+  providers: [
+    {
+      provide: Configuration,
+      deps: [],
+      useFactory: getConfiguration,
+    },
+  ],
 })
 export class FetchModule {
   constructor(conf: Configuration) {

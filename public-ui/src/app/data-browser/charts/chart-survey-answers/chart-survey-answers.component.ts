@@ -1,21 +1,25 @@
-import { Component, Injector, Input, OnChanges } from '@angular/core';
-import { ChartBaseComponent } from 'app/data-browser/charts/chart-base/chart-base.component';
-import * as Highcharts from 'highcharts';
+import * as Highcharts from "highcharts";
+
+import { Component, Injector, Input, OnChanges } from "@angular/core";
+import { ChartBaseComponent } from "app/data-browser/charts/chart-base/chart-base.component";
 
 @Component({
   // tslint:disable-next-line: component-selector
-  selector: 'chart-survey-answers',
-  templateUrl: './chart-survey-answers.component.html',
-  styleUrls: ['./chart-survey-answers.component.css']
+  selector: "chart-survey-answers",
+  templateUrl: "./chart-survey-answers.component.html",
+  styleUrls: ["./chart-survey-answers.component.css"],
 })
-export class ChartSurveyAnswersComponent extends ChartBaseComponent implements OnChanges {
+export class ChartSurveyAnswersComponent
+  extends ChartBaseComponent
+  implements OnChanges
+{
   Highcharts = Highcharts;
   chartOptions: any;
   chartSeries: any[];
   colors: any[];
   answers: any;
   answerChartInfo: any[];
-  monthOrder = ['May', 'June', 'July/August'];
+  monthOrder = ["May", "June", "July/August"];
   @Input() versionAnalysis: any[];
   @Input() countAnalysis: any[];
   constructor(injector: Injector) {
@@ -26,73 +30,72 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
 
   ngOnChanges() {
     this.answerChartInfo = [];
-    this.countAnalysis.forEach(aCount => {
-        this.answerChartInfo.push({
-          color: aCount.color,
-          totalCount: aCount.countValue,
-          answerId: aCount.stratum3,
-          answserValue: aCount.stratum4
-        });
+    this.countAnalysis.forEach((aCount) => {
+      this.answerChartInfo.push({
+        color: aCount.color,
+        totalCount: aCount.countValue,
+        answerId: aCount.stratum3,
+        answserValue: aCount.stratum4,
+      });
     });
-    this.answerChartInfo.forEach(info => {
+    this.answerChartInfo.forEach((info) => {
       this.colors.push(info.color);
     });
     this.sortAnswers(this.versionAnalysis);
     this.buildChart();
   }
 
-
   public buildChart() {
     this.chartObj = {
-      type: 'column',
-      backgroundColor: 'transparent'
+      type: "column",
+      backgroundColor: "transparent",
     };
     this.pointData = [];
     this.chartOptions = this.getChartOptions();
     this.chartOptions.xAxis.categories = this.categoryArr;
     this.chartOptions.series = this.chartSeries;
-    this.chartOptions.yAxis.title.text = 'Participant Count';
-    this.chartOptions.yAxis.title.style.fontSize = '16px';
+    this.chartOptions.yAxis.title.text = "Participant Count";
+    this.chartOptions.yAxis.title.style.fontSize = "16px";
     const labelStyle = {
       style: {
-        fontSize: '16px',
-        fontFamily: 'GothamBook',
-        color: '#262262'
-      }
+        fontSize: "16px",
+        fontFamily: "GothamBook",
+        color: "#262262",
+      },
     };
     this.chartOptions.xAxis.labels = labelStyle;
     this.chartOptions.yAxis.labels = labelStyle;
     this.chartOptions.yAxis.title.margin = 35;
     this.chartOptions.yAxis.title.style = {
-      fontFamily: 'GothamBook',
-      padding: '1rem',
-      color: '#262262'
+      fontFamily: "GothamBook",
+      padding: "1rem",
+      color: "#262262",
     };
 
     this.chartOptions.plotOptions = {
       column: {
-        stacking: 'normal',
+        stacking: "normal",
         pointWidth: 50,
-        borderWidth: 0
+        borderWidth: 0,
       },
       series: {
         animation: false,
-        fontSize: '14px',
+        fontSize: "14px",
       },
     };
     this.chartOptions.legend = {
-      enabled: false
+      enabled: false,
     };
     this.chartOptions.tooltip = {
       followPointer: true,
       useHTML: true,
-      backgroundColor: 'transparent',
+      backgroundColor: "transparent",
       borderWidth: 0,
       padding: 0,
-      color: '#262262',
+      color: "#262262",
       shadow: false,
-      formatter: function() {
-        const count = (this.point.y <= 20) ? '&le; 20' : this.point.y;
+      formatter: function () {
+        const count = this.point.y <= 20 ? "&le; 20" : this.point.y;
         const percentage = ((count / this.point.total) * 100).toFixed();
         this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
@@ -101,29 +104,29 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
             <span>${percentage}% of all participants who took this version of survey</span>
             <span>${this.point.total} Total </div></span>`;
         return this.point.toolTipHelpText;
-      }
+      },
     };
     this.chartOptions.colors = this.colors;
   }
 
   public sortAnswers(answers: any[]) {
     const result = answers.reduce((r, a) => {
-      r[a.stratum7] = [...r[a.stratum7] || [], a];
+      r[a.stratum7] = [...(r[a.stratum7] || []), a];
       return r;
     }, {});
     const payload = {};
-    Object.keys(result).sort((a, b) => {
-      return this.monthOrder.indexOf(a) - this.monthOrder.indexOf(b);
-    }).forEach(key => {
-      payload[key] = result[key];
-    });
+    Object.keys(result)
+      .sort((a, b) => {
+        return this.monthOrder.indexOf(a) - this.monthOrder.indexOf(b);
+      })
+      .forEach((key) => {
+        payload[key] = result[key];
+      });
     this.conceptDist(payload);
   }
 
   public mapOrder(array: any[], order: any[], key: string) {
-    array.sort((a, b) =>
-     order.indexOf(a[key]) - order.indexOf(b[key])
-    );
+    array.sort((a, b) => order.indexOf(a[key]) - order.indexOf(b[key]));
   }
 
   public conceptDist(sortedAnswers: any) {
@@ -131,25 +134,26 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     for (const prop in sortedAnswers) {
       if (sortedAnswers.hasOwnProperty(prop)) {
         this.categoryArr.push(prop);
-        const answerOrder = this.answerChartInfo.map(p => p.answerId);
-        this.mapOrder(sortedAnswers[prop], answerOrder, 'stratum3');
-        sortedAnswers[prop].forEach(answer => {
+        const answerOrder = this.answerChartInfo.map((p) => p.answerId);
+        this.mapOrder(sortedAnswers[prop], answerOrder, "stratum3");
+        sortedAnswers[prop].forEach((answer) => {
           tempArr.push({
             name: answer.stratum4,
-            data: []
+            data: [],
           });
         });
       }
     }
 
     // remove duplicates
-    tempArr =
-      Array.from(new Set(tempArr.map(x => JSON.stringify(x)))).map(x => JSON.parse(x));
+    tempArr = Array.from(new Set(tempArr.map((x) => JSON.stringify(x)))).map(
+      (x) => JSON.parse(x)
+    );
 
     for (const prop in sortedAnswers) {
       if (sortedAnswers.hasOwnProperty(prop)) {
-        tempArr.forEach(stack => {
-          sortedAnswers[prop].forEach(answer => {
+        tempArr.forEach((stack) => {
+          sortedAnswers[prop].forEach((answer) => {
             if (stack.name === answer.stratum4) {
               stack.data.push(answer.countValue);
             }
@@ -159,5 +163,4 @@ export class ChartSurveyAnswersComponent extends ChartBaseComponent implements O
     }
     this.chartSeries = tempArr;
   }
-
 }

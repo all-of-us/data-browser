@@ -1,8 +1,10 @@
-import { reactStyles } from 'app/utils';
-import { GenomicFilters, Variant } from 'publicGenerated';
-import * as React from 'react';
-import { VariantSearchComponent } from './variant-search.component';
-import { VariantTableComponent } from './variant-table.component';
+import * as React from "react";
+
+import { reactStyles } from "app/utils";
+import { GenomicFilters, Variant } from "publicGenerated";
+
+import { VariantSearchComponent } from "./variant-search.component";
+import { VariantTableComponent } from "./variant-table.component";
 
 const styles = reactStyles({
     border: {
@@ -30,59 +32,59 @@ const styles = reactStyles({
 });
 
 interface Props {
-    onSearchInput: Function;
-    onPageChange: Function;
-    onRowCountChange: Function;
-    onSortClick: Function;
-    onFilterSubmit: Function;
-    variantListSize: number;
-    loadingVariantListSize: boolean;
-    loadingResults: boolean;
-    searchResults: Variant[];
-    currentPage: number;
-    rowCount: number;
-    participantCount: string;
-    searchTerm: string;
-    filterMetadata: GenomicFilters;
+  onSearchInput: Function;
+  onPageChange: Function;
+  onRowCountChange: Function;
+  onSortClick: Function;
+  onFilterSubmit: Function;
+  variantListSize: number;
+  loadingVariantListSize: boolean;
+  loadingResults: boolean;
+  searchResults: Variant[];
+  currentPage: number;
+  rowCount: number;
+  participantCount: string;
+  searchTerm: string;
+  filterMetadata: GenomicFilters;
 }
 
 interface State {
-    searchTerm: string;
+  searchTerm: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
-    scrollDiv: any;
-    constructor(props: Props) {
-        super(props);
-        this.scrollDiv = React.createRef();
-        this.state = {
-            searchTerm: null,
-        };
-    }
+  scrollDiv: any;
+  constructor(props: Props) {
+    super(props);
+    this.scrollDiv = React.createRef();
+    this.state = {
+      searchTerm: null,
+    };
+  }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
-        const { searchTerm } = this.props;
-        if (prevProps.searchTerm !== searchTerm) {
-            this.setState({ searchTerm: searchTerm });
-        }
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { searchTerm } = this.props;
+    if (prevProps.searchTerm !== searchTerm) {
+      this.setState({ searchTerm: searchTerm });
     }
+  }
 
-    handlePageChange(info) {
-        this.props.onPageChange(info);
-        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
-    }
+  handlePageChange(info) {
+    this.props.onPageChange(info);
+    this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+  }
 
-    handleRowCountChange(info) {
-        this.props.onRowCountChange(info);
-        this.scrollDiv.current.scrollIntoView({ behavior: 'smooth' });
-    }
+  handleRowCountChange(info) {
+    this.props.onRowCountChange(info);
+    this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+  }
 
-    handleSortClick(sortMetadata) {
-        this.props.onSortClick(sortMetadata);
-    }
-    handleFilterSubmit(filteredMetadata) {
-        this.props.onFilterSubmit(filteredMetadata);
-    }
+  handleSortClick(sortMetadata) {
+    this.props.onSortClick(sortMetadata);
+  }
+  handleFilterSubmit(filteredMetadata) {
+    this.props.onFilterSubmit(filteredMetadata);
+  }
 
     render() {
         const { searchTerm } = this.state;

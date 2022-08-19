@@ -1,15 +1,15 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { inject, TestBed } from "@angular/core/testing";
 
-import { ChartService } from './chart.service';
+import { ChartService } from "./chart.service";
 
-describe('ChartService', () => {
+describe("ChartService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ChartService]
+      providers: [ChartService],
     });
   });
 
-  it('should be created', inject([ChartService], (service: ChartService) => {
+  it("should be created", inject([ChartService], (service: ChartService) => {
     expect(service).toBeTruthy();
   }));
 });
