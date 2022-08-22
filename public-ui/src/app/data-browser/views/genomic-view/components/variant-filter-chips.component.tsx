@@ -87,7 +87,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 return el;
             });
         } else {
-            this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].checked = false;
+            this.props.filteredMetadata[cat.toString()].checked = false;
         }
         const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
             this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
@@ -96,8 +96,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
         if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
             this.props.filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
-        console.log(this.props.filteredMetadata,'this is aftererererer gone');
-        
         this.props.onChipChange(this.props.filteredMetadata);
     }
 
@@ -124,7 +122,11 @@ export class VariantFilterChips extends React.Component<Props, State> {
                     return <div key={count}>{el.data.checked && <div style={styles.chipCat}>
                         {el.data.checked &&
                             <div style={styles.chipLayout}>{el.cat}
-                                <div style={styles.chip}> Min:{el.data.min} Max:{el.data.max}
+                                <div style={styles.chip}> 
+                                <span style={{fontFamily:'GothamBook'}}>Min&nbsp;</span>
+                                <span>{el.data.min} </span>
+                                <span style={{fontFamily:'GothamBook'}}>&nbsp;|&nbsp;Max&nbsp;</span>
+                                <span>{el.data.max}</span>
                                     <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                         onClick={() => this.removeChip(el, el.cat)}
                                         className='far fa-times fa-1x clear-search-icon'

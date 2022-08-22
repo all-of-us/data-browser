@@ -227,16 +227,15 @@ export const GenomicViewComponent = withRouteData(
           this.setState({ filterMetadata: result });
           localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
         }
-        ).catch(e => {
-          console.log(e, 'error');
-        });
-        console.log(this.state);
+      ).catch(e => {
+        console.log(e, 'error');
+      });
     }
 
     getVariantSearch(searchTerm: string) {
       this.getSearchSize(searchTerm, false);
       // this.getFilterMetadata(searchTerm);
-      
+
       localStorage.setItem("searchWord", searchTerm);
       if (searchTerm !== "") {
         triggerEvent(
