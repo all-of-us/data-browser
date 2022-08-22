@@ -235,6 +235,8 @@ export const GenomicViewComponent = withRouteData(
 
     getVariantSearch(searchTerm: string) {
       this.getSearchSize(searchTerm, false);
+      // this.getFilterMetadata(searchTerm);
+      
       localStorage.setItem("searchWord", searchTerm);
       if (searchTerm !== "") {
         triggerEvent(
