@@ -225,15 +225,16 @@ export const GenomicViewComponent = withRouteData(
           result.consequence.forEach(el => { el.checked = false; });
           result.clinicalSignificance.forEach(el => { el.checked = false; });
           this.setState({ filterMetadata: result });
+          localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
         }
-      ).catch(e => {
-        console.log(e, 'error');
-      });
+        ).catch(e => {
+          console.log(e, 'error');
+        });
+        console.log(this.state);
     }
 
     getVariantSearch(searchTerm: string) {
       this.getSearchSize(searchTerm, false);
-      this.getFilterMetadata(searchTerm);
       localStorage.setItem("searchWord", searchTerm);
       if (searchTerm !== "") {
         triggerEvent(
@@ -502,7 +503,7 @@ export const GenomicViewComponent = withRouteData(
                 chartData={chartData}
               />
             )}
-            {selectionId === 2 && (
+            {(selectionId === 2 && filterMetadata) && (
               <GenomicSearchComponent
                 onSearchInput={(searchWord: string) => {
                   this.handleSearchTerm(searchWord);

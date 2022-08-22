@@ -15,8 +15,9 @@ const sliderProps = {
   stroke: "red"
 };
 interface Props {
-  filterItem: any,
-  onSliderChange: Function
+  filterItem: any;
+  ogFilterItem:any;
+  onSliderChange: Function;
 }
 
 interface State {
@@ -29,14 +30,13 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
   constructor(props: Props) {
     super(props);
     this.state = {
-      domain: [this.props.filterItem.min, this.props.filterItem.max],
-      defaultValues: [this.props.filterItem.min, this.props.filterItem.max]
+      domain: [this.props.ogFilterItem.min, this.props.ogFilterItem.max],
+      defaultValues: [this.props.filterItem.min, this.props.filterItem.max], 
     }
   }
-  
-  onUpdate(vals) {
-    this.props.onSliderChange(vals)
 
+  onUpdate(vals) {    
+    this.props.onSliderChange(vals);
   }
 
   render() {

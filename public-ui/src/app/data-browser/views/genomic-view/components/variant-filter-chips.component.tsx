@@ -42,6 +42,11 @@ const styles = reactStyles({
         fontSize: '.8em',
         display: 'flex',
         flexWrap: 'wrap'
+    },
+    chipLayout: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 });
 export class VariantFilterChips extends React.Component<Props, State> {
@@ -74,12 +79,16 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     removeChip(item, cat) {
-        this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].filter(el => {
-            if (item === el) {
-                item.checked = false;
-            }
-            return el;
-        });
+        if (Array.isArray(this.props.filteredMetadata[cat.toString()])) {
+            this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].filter(el => {
+                if (item === el) {
+                    item.checked = false;
+                }
+                return el;
+            });
+        } else {
+            this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].checked = false;
+        }
         const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
             this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
         console.log(allFalse, 'allfase');
@@ -87,6 +96,8 @@ export class VariantFilterChips extends React.Component<Props, State> {
         if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
             this.props.filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
+        console.log(this.props.filteredMetadata,'this is aftererererer gone');
+        
         this.props.onChipChange(this.props.filteredMetadata);
     }
 
@@ -97,20 +108,31 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 if (Array.isArray(el.data)) {
                     return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
                         {el.data.map((item, i) => {
-                            return <div style={{ display: 'flex', justifyContent: 'space-between' }} key={i}>
-                                {item.checked && <div style={styles.chip} > <span >{item.option}</span>
+                            return <div style={styles.chipLayout} key={i}>
+                                {item.checked && <div style={styles.chip} >
+                                    <span >{item.option}</span>
                                     <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                         onClick={() => this.removeChip(item, el.cat)}
                                         className='far fa-times fa-1x clear-search-icon'
-                                        caria-hidden='true'></i></div>}
+                                        caria-hidden='true'></i>
+                                </div>}
                             </div>;
                         })}
                     </div>}
                     </div>;
                 } else {
-                    return <React.Fragment>{el.data.checked && <div style={styles.chipCat}><div style={styles.chip} ><div key={count}>{(el.data.checked && el.data.checked) &&
-                        <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</div></div></div>}
-                    </React.Fragment>;
+                    return <div key={count}>{el.data.checked && <div style={styles.chipCat}>
+                        {el.data.checked &&
+                            <div style={styles.chipLayout}>{el.cat}
+                                <div style={styles.chip}> Min:{el.data.min} Max:{el.data.max}
+                                    <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
+                                        onClick={() => this.removeChip(el, el.cat)}
+                                        className='far fa-times fa-1x clear-search-icon'
+                                        caria-hidden='true'></i>
+                                </div>
+                            </div>}
+                    </div>}
+                    </div>;
                 }
 
             })}

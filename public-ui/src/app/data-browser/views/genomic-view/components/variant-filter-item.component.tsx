@@ -85,11 +85,11 @@ interface Props {
   category: Cat;
   onFilterChange: Function;
 }
-
 interface State {
   filterItemOpen: Boolean;
   filterItemState: any;
   filterCheckMap: any;
+  ogFilterMetaData: string;
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
@@ -99,6 +99,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemOpen: false,
       filterItemState: props.filterItem || '',
       filterCheckMap: props.filterItem || '',
+      ogFilterMetaData:  JSON.parse(localStorage.getItem("originalFilterMetadata")|| '{}')[this.props.category.field.toString()]
     };
   }
 
@@ -167,7 +168,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
   render(): React.ReactNode {
     const { category } = this.props;
-    const { filterItemOpen, filterItemState } = this.state;
+    const { filterItemOpen, filterItemState,ogFilterMetaData } = this.state;
     return <React.Fragment>
       <style>{css}</style>
       <div onClick={() => this.filterClick()} style={styles.filterItem}>
@@ -196,6 +197,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         <div>{filterItemOpen &&
           <VariantFilterSliderComponent
             filterItem={filterItemState}
+            ogFilterItem={ogFilterMetaData}
             onSliderChange={(e) => this.handleSliderChange(e,filterItemState)} />}
         </div>}
     </React.Fragment>;
