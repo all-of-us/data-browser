@@ -505,7 +505,7 @@ export const GenomicViewComponent = withRouteData(
                 chartData={chartData}
               />
             )}
-            {(selectionId === 2 && filterMetadata) && (
+            {(selectionId === 2) && (
               <GenomicSearchComponent
                 onSearchInput={(searchWord: string) => {
                   this.handleSearchTerm(searchWord);
