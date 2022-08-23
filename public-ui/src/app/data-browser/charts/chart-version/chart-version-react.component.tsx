@@ -101,7 +101,6 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
         Number(VERSION_STRATUM_MAP[b.stratum7])
       );
     });
-    console.log(genderAnalysisResults);
     // LOOP CREATES DYNAMIC CHART VARS
     for (const a of genderAnalysisResults) {
       // For normal Gender Analysis , the stratum2 is the gender . For ppi it is stratum5;
@@ -113,7 +112,6 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
       const version = surveyVersionAnalysis.filter(
         (va) => va.versionNum === a.stratum7
       )[0];
-      console.log(version);
       const percentage = (
         (a.countValue / version.participants) *
         100
