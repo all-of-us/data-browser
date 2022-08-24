@@ -98,9 +98,6 @@ const css = `
     display: flex;
     flex-direction: column;
     width: calc(((100% / 12) * 3) - 18px);
-    // max-width:378px;
-    // min-width:290px;
-    // max-width: 378px;
     margin-right: 18px;
     margin-bottom: 18px;
     border-radius: 5px;
@@ -302,6 +299,7 @@ interface ResultLinkProps {
   microarrayParticipantCount: number;
   variantListSize: number;
   loadingVariantListSize: boolean;
+  typing: boolean;
 }
 
 export const ResultLinksComponent = class extends React.Component<ResultLinkProps> {
@@ -401,11 +399,12 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       microarrayParticipantCount,
       variantListSize,
       loadingVariantListSize,
+      typing
     } = this.props;
     return (
       <div style={{
-        maxWidth: searchWord !== '' ? '378px' : 'inherent',
-        width: searchWord !== '' ? '100%' : 'inherent'
+        maxWidth: (searchWord && !typing) ? '378px' : 'inherent',
+        width: (searchWord && !typing) ? '100%' : 'inherent'
       }} onClick={() => this.resultClick(this.props)} className="result-box">
         <div style={styles.resultBoxTitle}>
           <div>{name}</div>
@@ -565,6 +564,7 @@ interface State {
 
 export const dBHomeComponent = withRouteData(
   class extends React.Component<{}, State> {
+    typing = false;
     constructor(props: State) {
       super(props);
       this.state = {
@@ -583,13 +583,15 @@ export const dBHomeComponent = withRouteData(
     }
 
     search = _.debounce((val) => {
+      this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
     }, 1000);
 
     handleChange(val) {
-      this.setState({ searchWord: val });
+      this.setState({ searchWord: val});
       this.search(val);
+      this.typing = false;
     }
     iconClickEvent(iconString: string) {
       if (iconString === "introductory-videos") {
@@ -629,7 +631,6 @@ export const dBHomeComponent = withRouteData(
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({ loadingVariantListSize: true });
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
@@ -815,6 +816,7 @@ export const dBHomeComponent = withRouteData(
                       const key = "domain" + index;
                       return (
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key={key}
                           searchWord={searchWord}
                           {...domain}
@@ -843,6 +845,7 @@ export const dBHomeComponent = withRouteData(
                       </h5>
                       <div className="genomic-box">
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key="genomics-tile"
                           searchWord={searchWord}
                           {...genomicInfo}
@@ -854,7 +857,7 @@ export const dBHomeComponent = withRouteData(
                     </div>
                   )}
                 {physicalMeasurementsInfo.length > 0 && (
-                  <div style={{ paddingLeft: this.state.searchWord ? '0' : 'inherent' }} className="pm-boxes">
+                  <div style={{ paddingLeft: this.state.searchWord && !this.typing ? '0' : 'inherent' }} className="pm-boxes">
                     <h5
                       style={{
                         ...globalStyles.secondaryDisplay,
@@ -869,6 +872,7 @@ export const dBHomeComponent = withRouteData(
                           const key = "phyMeasurements" + index;
                           return (
                             <ResultLinksComponent
+                              typing={!this.typing}
                               key={key}
                               searchWord={searchWord}
                               {...phyMeasurements}
@@ -899,6 +903,7 @@ export const dBHomeComponent = withRouteData(
                       const key = "survey" + index;
                       return (
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key={key}
                           searchWord={searchWord}
                           {...survey}
