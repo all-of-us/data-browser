@@ -46,7 +46,7 @@ const styles = reactStyles({
     flexDirection: "column",
     paddingLeft: "1rem",
     maxHeight: "10rem",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
   filterItemOption: {
     fontSize: ".8em",
