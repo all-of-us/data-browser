@@ -198,7 +198,7 @@ export const GenomicViewComponent = withRouteData(
     }
 
     getSearchSize(searchTerm: string, filtered: boolean) {
-      this.setState({ loadingVariantListSize: true, filterMetadata: null });
+      this.setState({ loadingVariantListSize: true });
       if (!filtered) {
         this.getFilterMetadata(searchTerm);
       }
@@ -450,7 +450,7 @@ export const GenomicViewComponent = withRouteData(
 
     handleSearchTerm(searchTerm: string) {
       if (this.state.searchTerm !== searchTerm) {
-        this.search(searchTerm);
+        this.setState({ filterMetadata: null }, () => this.search(searchTerm));
       }
     }
 
