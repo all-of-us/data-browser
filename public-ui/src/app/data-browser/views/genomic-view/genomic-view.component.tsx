@@ -198,7 +198,7 @@ export const GenomicViewComponent = withRouteData(
     }
 
     getSearchSize(searchTerm: string, filtered: boolean) {
-      this.setState({ loadingVariantListSize: true });
+      this.setState({ loadingVariantListSize: true, filterMetadata: null });
       if (!filtered) {
         this.getFilterMetadata(searchTerm);
       }
@@ -234,8 +234,6 @@ export const GenomicViewComponent = withRouteData(
 
     getVariantSearch(searchTerm: string) {
       this.getSearchSize(searchTerm, false);
-      // this.getFilterMetadata(searchTerm);
-
       localStorage.setItem("searchWord", searchTerm);
       if (searchTerm !== "") {
         triggerEvent(
