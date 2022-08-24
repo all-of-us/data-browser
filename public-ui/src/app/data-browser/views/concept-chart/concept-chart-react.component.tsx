@@ -428,6 +428,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         this.setState({
           selectedTreeNode: selectedNode,
           selectedTreeConcept: id,
+          sourceConcepts: results.items.length > 10 ? results.items.slice(0, 10) : results.items
         });
       })
       .catch((e) => {
@@ -640,7 +641,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                           href={
                             "/ehr/" +
                             selectedTreeNode.domainId.toLowerCase() +
-                            "s?search=" +
+                            "s/" +
                             selectedTreeNode.conceptId
                           }
                           style={styles.exploreConceptLink}

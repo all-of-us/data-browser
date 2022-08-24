@@ -69,6 +69,7 @@ interface State {
 interface Props {
   versionAnalysis: any;
   countAnalysis: any;
+  surveyVersions: any;
 }
 
 export class SurveyAnswerChartReactComponent extends React.Component<
@@ -151,6 +152,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       tempArr.push({
         name: val,
         data: [],
+        tooltip: []
       });
     }
     // remove duplicates
@@ -161,12 +163,24 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       if (sortedAnswers.hasOwnProperty(prop)) {
         categoryArr.push(prop);
         tempArr.forEach((stack) => {
+
+          let filterAnswer = sortedAnswers[prop].filter( a => a['stratum4'] === stack.name );
+          if (filterAnswer.length > 0) {
+            stack.data.push(filterAnswer[0].countValue);
+            stack.tooltip.push('');
+          } else {
+            stack.data.push(0);
+            stack.tooltip.push('Not present in this version of the survey');
+          }
+          /*
           sortedAnswers[prop].forEach((answer) => {
             if (stack.name === answer.stratum4) {
               stack.data.push(answer.countValue);
             }
           });
+          */
         });
+
       }
     }
     this.setState({ chartSeries: tempArr, categoryArr: categoryArr }, () => {
@@ -176,6 +190,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
 
   buildChartData(surveyConceptId: any) {
     const { categoryArr, chartSeries, colors } = this.state;
+    const { surveyVersions, versionAnalysis } = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
     newBaseOptions.xAxis.categories = categoryArr.map((item) =>
@@ -190,6 +205,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
     newBaseOptions.yAxis.labels.style.fontSize = "16px";
     newBaseOptions.yAxis.title.style.padding = "1rem";
     newBaseOptions.plotOptions.column.stacking = "normal";
+    newBaseOptions.plotOptions.column.minPointLength = 3;
     newBaseOptions.plotOptions.column.colorByPoint = false;
     newBaseOptions.plotOptions.column.pointWidth = 50;
     newBaseOptions.plotOptions.column.borderWidth = 0;
@@ -205,13 +221,23 @@ export class SurveyAnswerChartReactComponent extends React.Component<
     newBaseOptions.tooltip.backgroundColor = "transparent";
     newBaseOptions.tooltip.formatter = function () {
       const count = this.point.y <= 20 ? "&le; 20" : this.point.y;
-      const percentage = ((count / this.point.total) * 100).toFixed();
+      let cat = this.point.category.split(' ');
+      let toolTipText = this.point.series.name;
+      const surveyVersion = surveyVersions.find((obj) => {
+        return (obj.monthName === cat[0] && obj.year === cat[1]);
+      });
+      const surveyVersionParticipantCounts = surveyVersion ? surveyVersion.participants : 0;
+      let percentage = (this.point.y <= 20) ? ((20 / surveyVersionParticipantCounts) * 100).toFixed() :
+        ((count / surveyVersionParticipantCounts) * 100).toFixed();
+      if (this.point.y == 0 && this.point.series.name.toLowerCase() !== 'did not answer') {
+        toolTipText += '\n This option was not available in this version of the survey';
+      }
       this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
-              <strong>${this.point.series.name}</strong>
+              <strong>${toolTipText}</strong>
               <span>${count} Participants </span>
               <span>${percentage}% of all participants who took this version of survey</span>
-              <span>${this.point.total} Total </span>
+              <span>${surveyVersionParticipantCounts} Total </span>
             </div>`;
       return this.point.toolTipHelpText;
     };

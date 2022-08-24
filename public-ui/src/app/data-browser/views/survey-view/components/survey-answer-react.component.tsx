@@ -404,6 +404,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
           <SurveyAnswerChartReactComponent
             countAnalysis={question.countAnalysis.results}
             versionAnalysis={question.versionAnalysis.results}
+            surveyVersions={surveyVersions}
           />
         )}
         <div className="survey-tbl">

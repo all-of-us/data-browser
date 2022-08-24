@@ -52,6 +52,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=0
+and ob_ext.survey_version_concept_id in (2100000002, 2100000003, 2100000004, 2100000005, 2100000006, 2100000007)
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc),
 sub_questions_count as
@@ -66,6 +67,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1
+and ob_ext.survey_version_concept_id in (2100000002, 2100000003, 2100000004, 2100000005, 2100000006, 2100000007)
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
@@ -97,6 +99,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=0
+and ob_ext.survey_version_concept_id in (765936, 905047, 905055)
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path,9
 order by CAST(sq.order_number as int64) asc),
 sub_questions_count as
@@ -110,6 +113,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_
 join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on o.observation_id=ob_ext.observation_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1
+and ob_ext.survey_version_concept_id in (765936, 905047, 905055)
 and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
