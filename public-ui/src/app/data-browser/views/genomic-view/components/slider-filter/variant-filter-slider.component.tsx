@@ -12,17 +12,18 @@ const sliderProps = {
   height: dims[1],
   fill: "none",
   opacity: 0.5,
-  stroke: "red"
 };
 interface Props {
   filterItem: any;
-  ogFilterItem:any;
+  ogFilterItem: any;
   onSliderChange: Function;
 }
 
 interface State {
   domain: Array<any>;
   defaultValues: Array<any>;
+  min: Number;
+  max: Number;
 }
 
 export const VariantFilterSliderComponent = (class extends React.Component<Props, State> {
@@ -31,17 +32,27 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
     super(props);
     this.state = {
       domain: [this.props.ogFilterItem.min, this.props.ogFilterItem.max],
-      defaultValues: [this.props.filterItem.min, this.props.filterItem.max], 
+      defaultValues: [this.props.filterItem.min, this.props.filterItem.max],
+      min: this.props.filterItem.min,
+      max: this.props.filterItem.max
     }
   }
 
-  onUpdate(vals) {    
+  onUpdate(vals) {
     this.props.onSliderChange(vals);
+    this.setState({
+      min: vals[0],
+      max: vals[1]
+    });
+
   }
 
   render() {
     const { domain, defaultValues } = this.state;
-    return <div style={{ maxWidth: 600, textAlign: "center" }}>
+    return <div style={{
+      maxWidth: 600, textAlign: "center", display: "flex",
+      justifyContent: "center",
+    }}>
       <Surface view={view} trbl={trbl}>
         <Slider
           mode={1}
@@ -49,13 +60,13 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
           flatten
           domain={domain}
           component="rect"
-          onUpdate={(e)=>{this.onUpdate(e)}}
+          onUpdate={(e) => { this.onUpdate(e) }}
           rootProps={sliderProps}
           values={defaultValues}>
           <Rail>
             {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
           </Rail>
-          <Ticks>
+          {/* <Ticks>
             {({ ticks }) => (
               <g transform={`translate(0,${dims[1]})`}>
                 {ticks.map(tick => (
@@ -63,7 +74,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
                 ))}
               </g>
             )}
-          </Ticks>
+          </Ticks> */}
           <Tracks left={false} right={false}>
             {({ tracks, getTrackProps }) => (
               <g transform={`translate(0,${dims[1] / 2})`}>
@@ -80,6 +91,8 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
           </Tracks>
           <Handles>
             {({ handles, getHandleProps }) => (
+              console.log(handles),
+
               <g transform={`translate(0,${dims[1] / 2})`}>
                 {handles.map(handle => (
                   <Handle

@@ -12,19 +12,19 @@ export default function Surface(props) {
       style={{
         ...style,
         position: "relative",
-        width: "100%",
+        width: "90%",
         height: "0px",
-        paddingBottom
+        padding:"11% 0"
       }}
       {...other}
     >
       <svg
-        viewBox={`0 0 ${view[0]} ${view[1]}`}
+        viewBox={`0 0 ${view[0] + 50} ${view[1]}`}
         style={{
+          overflow:"visible",
           position: "absolute",
           width: "100%",
           height: "100%",
-          border: "1px solid rgba(0,0,0,0.2)",
           left: 0,
           top: 0
         }}
@@ -59,6 +59,6 @@ Surface.propTypes = {
 };
 
 Surface.defaultProps = {
-  view: [1000, 350],
+  view: [1000, 500],
   trbl: [10, 10, 10, 10]
 };

@@ -40,12 +40,14 @@ SliderRail.propTypes = {
 // *******************************************************
 // HANDLE COMPONENT
 // *******************************************************
-export function Handle({ handle: { id, percent }, getHandleProps }) {
+export function Handle({ handle: { id, percent, value }, getHandleProps }) {
   const r0 = dims[1] * 0.4; // inner - visible
   const r1 = dims[1] * 0.6; // outer - invisible w/ events
 
-  return (
+  return (    
+    <React.Fragment>
     <g className="handle">
+    <text fontSize='3rem' text-anchor="middle"  x={dims[0] * ((percent) / 100)} y="-50" fill="#262262">{value}</text>
       <rect
         width={r0}
         height={r0}
@@ -66,6 +68,7 @@ export function Handle({ handle: { id, percent }, getHandleProps }) {
         {...getHandleProps(id)}
       />
     </g>
+    </React.Fragment>
   );
 }
 
