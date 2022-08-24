@@ -121,7 +121,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 } else {
                     return <div key={count}>{el.data.checked && <div style={styles.chipCat}>
                         {el.data.checked &&
-                            <div style={styles.chipLayout}>{el.cat}
+                            <div style={styles.chipLayout}>{lables[el.cat.toString()]}
                                 <div style={styles.chip}> 
                                 <span style={{fontFamily:'GothamBook'}}>Min&nbsp;</span>
                                 <span>{el.data.min} </span>
