@@ -46,7 +46,7 @@ const styles = reactStyles({
   },
   filterItems: {
     maxHeight: "340px",
-    overflowY: "scroll",
+    overflowY: "auto",
   },
 });
 
