@@ -1,11 +1,8 @@
 import * as React from "react";
-import { render } from "react-dom";
-import { Slider, Rail, Handles, Tracks, Ticks } from "react-compound-slider";
-import { SliderRail, Handle, Track, Tick } from "./slider-components"; // example render components - source below
-import { view, trbl, dims } from "./slider-constants";
+import { Handles, Rail, Slider, Tracks } from "react-compound-slider";
+import { Handle, SliderRail, Track } from "./slider-components"; // example render components - source below
+import { dims, trbl, view } from "./slider-constants";
 import Surface from "./Surface";
-import { number } from "prop-types";
-import { Cat } from "../variant-filter.component";
 
 const sliderProps = {
   width: dims[0],
