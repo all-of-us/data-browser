@@ -79,24 +79,25 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     removeChip(item, cat) {
-        if (Array.isArray(this.props.filteredMetadata[cat.toString()])) {
-            this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].filter(el => {
+        const {filteredMetadata} = this.props;
+        if (Array.isArray(filteredMetadata[cat.toString()])) {
+            filteredMetadata[cat.toString()] = filteredMetadata[cat.toString()].filter(el => {
                 if (item === el) {
                     item.checked = false;
                 }
                 return el;
             });
         } else {
-            this.props.filteredMetadata[cat.toString()].checked = false;
+            filteredMetadata[cat.toString()].checked = false;
         }
-        const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
-            this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
+        const allFalse = Array.isArray(filteredMetadata[cat.toString()]) &&
+            filteredMetadata[cat.toString()].every(t => t.checked === false);
         console.log(allFalse, 'allfase');
 
-        if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
-            this.props.filteredMetadata[cat.toString()].forEach(el => el.checked = true);
+        if (allFalse && Array.isArray(filteredMetadata[cat.toString()])) {
+            filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
-        this.props.onChipChange(this.props.filteredMetadata);
+        this.props.onChipChange(filteredMetadata);
     }
 
     render() {
