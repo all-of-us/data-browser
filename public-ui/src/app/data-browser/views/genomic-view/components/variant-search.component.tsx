@@ -72,19 +72,19 @@ interface State {
     filteredMetaMap: GenomicFilters;
     searchWord: string;
     filterShow: Boolean;
-
+    filterMetadata: GenomicFilters;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        console.log(this.props.filterMetadata, 'filterMetadata');
 
         this.state = {
             searchWord: '',
             filterShow: false,
             filteredMetadata: undefined,
-            filteredMetaMap: undefined
+            filteredMetaMap: undefined,
+            filterMetadata: this.props.filterMetadata
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -93,30 +93,30 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   
 
   handleChange(val: string) {
-    this.setState({ searchWord: val });
+    this.setState({ searchWord: val, filteredMetaMap: null });
     this.props.onSearchTerm(val);
   }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
-        const { searchTerm } = this.props;
-        if (prevProps.searchTerm !== searchTerm) {
-            this.setState({ searchWord: searchTerm });
-        }
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { searchTerm, filterMetadata } = this.props;
+    if (prevProps.searchTerm !== searchTerm) {
+        this.setState({ searchWord: searchTerm });
     }
+    if (prevProps.filterMetadata !== filterMetadata) {
+        this.setState({ filterMetadata: filterMetadata});
+    }
+  }
     
     showFilter() {
         this.setState({ filterShow: !this.state.filterShow });
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters) {
-        console.log(filteredMetadata,'filteredMetadata from submit filter');
-        
         this.props.onFilterSubmit(filteredMetadata);
         this.setState({ filterShow: false });
     }
 
     handleChipChange(changes) {
-        console.log(changes, 'changesss');
         this.setState({ filteredMetaMap: changes });
         if (!this.state.filterShow) {
             this.handleFilterSubmit(changes);
@@ -124,8 +124,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { searchWord, filterShow, filteredMetaMap } = this.state;
-        const { variantListSize, loading, filterMetadata } = this.props;
+        const { searchWord, filterShow, filteredMetaMap, filterMetadata } = this.state;
+        const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <style>{css}</style>

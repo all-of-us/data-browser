@@ -126,7 +126,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 {filterCats.map((cat, index) => {
                     const key = 'cat' + index;
                     {
-                        return filterMetadata &&
+                        return filterMetadata && filteredMetadata &&
                             <VariantFilterItemComponent
                                 onFilterChange={(e) => this.handleFilterChange(e, cat)}
                                 key={key}
