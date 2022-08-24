@@ -14,14 +14,14 @@ export default function Surface(props) {
         position: "relative",
         width: "90%",
         height: "0px",
-        padding:"11% 0"
+        padding: "11% 0"
       }}
       {...other}
     >
       <svg
         viewBox={`0 0 ${view[0] + 50} ${view[1]}`}
         style={{
-          overflow:"visible",
+          overflow: "visible",
           position: "absolute",
           width: "100%",
           height: "100%",
@@ -31,6 +31,16 @@ export default function Surface(props) {
       >
         <g transform={`translate(${trbl[3]} ,${trbl[0]})`}>{children}</g>
       </svg>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: '0.8em',
+        width: '100%',
+        paddingTop: '0.25rem'
+      }}>
+        <span>Min</span>
+        <span>Max</span>
+      </div>
     </div>
   );
 }
