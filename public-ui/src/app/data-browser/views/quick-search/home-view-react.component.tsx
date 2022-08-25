@@ -74,7 +74,6 @@ const css = `
 }
 .genomic-box {
   height:87.5%;
-  // width: calc((100% / 12) * 3);
 }
 .genomic-box .result-box{
     width:100%;
@@ -132,17 +131,22 @@ const css = `
         padding-left:0;
     }
     .genomic-boxes {
-        padding-right:0;
-        margin-bottom:2rem;
+      width: 100%;
+      padding-right:0;
+      margin-bottom:2rem;
     }
-    .result-box, .genomic-boxes {
+    .genomic-box .result-box {
+      width: calc(((100% / 12) * 5) - 18px);
+    }
+    .result-box {
         height: auto;
-        min-width: calc(((100% / 12) * 6) - 18px);
+        min-width: calc((100% / 12) * 5);
     }
     .result-box {
         margin-bottom:18px;
     }
     .genomic-box {
+        width:100%;
         height:auto;
     }
     .result-box:nth-of-type(2) {
@@ -403,8 +407,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
     } = this.props;
     return (
       <div style={{
-        maxWidth: (searchWord && !typing) ? '378px' : 'inherent',
-        width: (searchWord && !typing) ? '100%' : 'inherent'
+        width: (searchWord && !typing) ? '378px' : 'inherent'
       }} onClick={() => this.resultClick(this.props)} className="result-box">
         <div style={styles.resultBoxTitle}>
           <div>{name}</div>
@@ -589,7 +592,7 @@ export const dBHomeComponent = withRouteData(
     }, 1000);
 
     handleChange(val) {
-      this.setState({ searchWord: val});
+      this.setState({ searchWord: val });
       this.search(val);
       this.typing = false;
     }
