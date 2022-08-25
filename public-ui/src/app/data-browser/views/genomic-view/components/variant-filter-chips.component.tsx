@@ -42,6 +42,11 @@ const styles = reactStyles({
         fontSize: '.8em',
         display: 'flex',
         flexWrap: 'wrap'
+    },
+    chipLayout: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     }
 });
 export class VariantFilterChips extends React.Component<Props, State> {
@@ -74,20 +79,25 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     removeChip(item, cat) {
-        this.props.filteredMetadata[cat.toString()] = this.props.filteredMetadata[cat.toString()].filter(el => {
-            if (item === el) {
-                item.checked = false;
-            }
-            return el;
-        });
-        const allFalse = Array.isArray(this.props.filteredMetadata[cat.toString()]) &&
-            this.props.filteredMetadata[cat.toString()].every(t => t.checked === false);
+        const {filteredMetadata} = this.props;
+        if (Array.isArray(filteredMetadata[cat.toString()])) {
+            filteredMetadata[cat.toString()] = filteredMetadata[cat.toString()].filter(el => {
+                if (item === el) {
+                    item.checked = false;
+                }
+                return el;
+            });
+        } else {
+            filteredMetadata[cat.toString()].checked = false;
+        }
+        const allFalse = Array.isArray(filteredMetadata[cat.toString()]) &&
+            filteredMetadata[cat.toString()].every(t => t.checked === false);
         console.log(allFalse, 'allfase');
 
-        if (allFalse && Array.isArray(this.props.filteredMetadata[cat.toString()])) {
-            this.props.filteredMetadata[cat.toString()].forEach(el => el.checked = true);
+        if (allFalse && Array.isArray(filteredMetadata[cat.toString()])) {
+            filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
-        this.props.onChipChange(this.props.filteredMetadata);
+        this.props.onChipChange(filteredMetadata);
     }
 
     render() {
@@ -97,19 +107,35 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 if (Array.isArray(el.data)) {
                     return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
                         {el.data.map((item, i) => {
-                            return <div style={{ display: 'flex', justifyContent: 'space-between' }} key={i}>
-                                {item.checked && <div style={styles.chip} > <span >{item.option}</span>
+                            return <div style={styles.chipLayout} key={i}>
+                                {item.checked && <div style={styles.chip} >
+                                    <span >{item.option}</span>
                                     <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                         onClick={() => this.removeChip(item, el.cat)}
                                         className='far fa-times fa-1x clear-search-icon'
-                                        caria-hidden='true'></i></div>}
+                                        caria-hidden='true'></i>
+                                </div>}
                             </div>;
                         })}
                     </div>}
                     </div>;
                 } else {
-                    return <span key={count}>{(el.data.checked && el.data.checked) &&
-                        <div>{el.cat}<div>{el.data.min}+{el.data.max}</div></div>}</span>;
+                    return <div key={count}>{el.data.checked && <div style={styles.chipCat}>
+                        {el.data.checked &&
+                            <div style={styles.chipLayout}>{lables[el.cat.toString()]}
+                                <div style={styles.chip}> 
+                                <span style={{fontFamily:'GothamBook'}}>Min&nbsp;</span>
+                                <span>{el.data.min} </span>
+                                <span style={{fontFamily:'GothamBook'}}>&nbsp;|&nbsp;Max&nbsp;</span>
+                                <span>{el.data.max}</span>
+                                    <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
+                                        onClick={() => this.removeChip(el, el.cat)}
+                                        className='far fa-times fa-1x clear-search-icon'
+                                        caria-hidden='true'></i>
+                                </div>
+                            </div>}
+                    </div>}
+                    </div>;
                 }
 
             })}

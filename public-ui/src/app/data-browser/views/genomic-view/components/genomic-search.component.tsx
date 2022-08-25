@@ -50,6 +50,7 @@ interface Props {
 
 interface State {
   searchTerm: string;
+  filterMetadata: GenomicFilters;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -59,13 +60,17 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     this.scrollDiv = React.createRef();
     this.state = {
       searchTerm: null,
+      filterMetadata: this.props.filterMetadata
     };
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm } = this.props;
+    const { searchTerm, filterMetadata } = this.props;
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
+    }
+    if (prevProps.filterMetadata !== filterMetadata) {
+        this.setState({filterMetadata: filterMetadata});
     }
   }
 
@@ -87,9 +92,9 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
     render() {
-        const { searchTerm } = this.state;
+        const { searchTerm, filterMetadata } = this.state;
         const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
-            rowCount, filterMetadata } = this.props;
+            rowCount } = this.props;
 
         return <React.Fragment>
             <div style={styles.titleBox}>
