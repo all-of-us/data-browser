@@ -277,8 +277,6 @@ dependencies {
 
   compile "org.hibernate:hibernate-core:$project.ext.HIBERNATE_VERSION"
 
-  compile 'joda-time:joda-time:2.10.14'
-
   compile('org.apache.tomcat:tomcat-jdbc:10.0.20')
   compile("org.springframework.boot:spring-boot-starter-tomcat:$project.ext.SPRING_BOOT_VERSION")
   compile("org.springframework.boot:spring-boot-starter-jdbc:$project.ext.SPRING_BOOT_VERSION") {
