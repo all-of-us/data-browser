@@ -25,6 +25,10 @@ buildscript {
   }
 
   repositories {
+    jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
     mavenCentral()
   }
 }
