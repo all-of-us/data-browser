@@ -110,7 +110,10 @@ repositories {   // repositories for Jar's you access in your code
 dependencies {
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
   compile 'commons-io:commons-io:2.6'
-  compile 'joda-time:joda-time:2.10'
+
+  // https://mvnrepository.com/artifact/joda-time/joda-time
+  implementation 'joda-time:joda-time:2.10.14'
+
 }
 
 
