@@ -260,7 +260,8 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-core:3.11.2'
-  testCompile 'com.google.truth:truth:${GOOGLE_TRUTH_VERSION}'
+  testCompile "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
+
 
   testCompile("org.springframework.boot:spring-boot-starter-test") {
     exclude group: 'org.junit', module: 'junit'
