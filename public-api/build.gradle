@@ -194,20 +194,20 @@ ext {
 dependencies {
   // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
   providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
-  compile 'mysql:mysql-connector-java:8.0.13'
+  compile 'mysql:mysql-connector-java:8.0.29'
 
   // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
   compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
-  compile 'com.google.guava:guava:26.0-jre'
+  compile 'com.google.guava:guava:30.0-jre'
 
-  compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
+  compile 'com.google.cloud.sql:mysql-socket-factory:1.6.3'
   compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-  compile("org.springframework.boot:spring-boot-starter-web") {
+  compile("org.springframework.boot:spring-boot-starter-web:2.5.14") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
-  compile("org.springframework.boot:spring-boot-starter-data-jpa:2.5.11") {
+  compile("org.springframework.boot:spring-boot-starter-data-jpa:2.6.9") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'com.zaxxer', module: 'HikariCP'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
@@ -215,7 +215,7 @@ dependencies {
 
   compile 'com.google.code.gson:gson:2.8.5'
   compile 'com.google.api-client:google-api-client:1.30.5'
-  compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
+  compile("org.springframework.boot:spring-boot-starter-actuator:2.5.14") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
@@ -224,7 +224,7 @@ dependencies {
   compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
   compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.5.7'
 
-  compile 'org.hibernate:hibernate-core:5.2.10.Final'
+  compile 'org.hibernate:hibernate-core:5.4.24.Final'
 
   compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
   compile("org.springframework.boot:spring-boot-starter-tomcat")
@@ -241,7 +241,7 @@ dependencies {
   compile 'javax.inject:javax.inject:1'
   compile 'io.swagger:swagger-annotations:1.5.16'
   compile 'org.apache.commons:commons-lang3:3.0'
-  compile 'com.google.guava:guava:26.0-jre'
+  compile 'com.google.guava:guava:30.0-jre'
   compile "com.google.cloud:google-cloud-bigquery:1.122.2"
 
   implementation "org.mapstruct:mapstruct:${mapstructVersion}"
@@ -255,33 +255,33 @@ dependencies {
   compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
 
   // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
-  compile 'org.json:json:20160810'
+  compile 'org.json:json:20180130'
   compile 'org.springframework.boot:spring-boot-starter-validation'
 
-  testCompile 'junit:junit:4.12'
+  testCompile 'junit:junit:4.13.1'
   testCompile 'org.mockito:mockito-core:3.11.2'
-  testCompile 'com.google.truth:truth:0.42'
+  testCompile 'com.google.truth:truth:1.1'
 
-  testCompile("org.springframework.boot:spring-boot-starter-test") {
+  testCompile("org.springframework.boot:spring-boot-starter-test:2.6.0") {
     exclude group: 'org.junit', module: 'junit'
     exclude group: 'org.mockito', module: 'mockito-core'
     exclude group: 'org.mockito', module: 'mockito-all'
   }
 
-  testCompile 'com.h2database:h2:1.4.194'
-  testCompile 'org.liquibase:liquibase-core:3.10.0'
+  testCompile 'com.h2database:h2:2.1.210'
+  testCompile 'org.liquibase:liquibase-core:4.8.0'
   testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
   // For Swagger generation. These should include dependencies found in the Swagger codegen
   // example here:
   // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
-  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:1.5.9.RELEASE"
+  generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:2.6.9"
   generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
-  generatedCompile 'io.springfox:springfox-swagger2:2.6.1'
-  generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
+  generatedCompile 'io.springfox:springfox-swagger2:2.10.0'
+  generatedCompile 'io.springfox:springfox-swagger-ui:2.10.0'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  generatedCompile 'com.google.code.gson:gson:2.8.5'
+  generatedCompile 'com.google.code.gson:gson:2.8.9'
   generatedCompile 'joda-time:joda-time:2.10'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }
