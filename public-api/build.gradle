@@ -241,7 +241,6 @@ dependencies {
   compile "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
   compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
   compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
-  compile "com.fasterxml.jackson.module:jackson-module-kotlin:${JACKSON_VERSION}"
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
   compile 'joda-time:joda-time:2.10'
