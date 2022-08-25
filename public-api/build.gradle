@@ -92,10 +92,10 @@ configurations {
 buildscript {    // Configuration for building
 
   ext {
-    GAE_VERSION = '1.9.64'
-    SPRING_BOOT_VERSION = '2.5.12'
+    GAE_VERSION = '2.0.5'
+    SPRING_BOOT_VERSION = '2.7.1'
     SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
-    JACKSON_VERSION = '2.13.1'
+    JACKSON_VERSION = '2.13.3'
   }
 
   repositories {
@@ -115,18 +115,29 @@ buildscript {    // Configuration for building
   }
 }
 
-ext['hibernate.version'] = '5.4.31.Final'
+ext['hibernate.version'] = '5.6.9.Final'
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.hidetake.swagger.generator'
-apply plugin: 'org.owasp.dependencycheck'
-apply plugin: 'net.ltgt.apt-idea'
-apply plugin: 'io.spring.dependency-management'
+
+plugins {
+  id 'eclipse'
+  id 'idea'
+  id 'java'
+  id 'war'
+
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+  id 'com.diffplug.spotless' version '5.12.5'
+  id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.4.2'
+  id 'net.ltgt.apt-idea' version '0.21'
+  // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
+  // implicit dependencies: (1) the set of "generatedCompile" Gradle dependencies need to be updated
+  // to match the modules imported by the Swagger codegen templates, and (2) some template files
+  // are overridden with forked templates within this repo; they will likely need to be re-copied from
+  // the newer release version and have AoU-specific modifications re-applied.
+  id 'org.hidetake.swagger.generator' version '2.18.2'
+  id 'org.owasp.dependencycheck' version '6.0.1'
+  id 'org.springframework.boot' version '2.3.12.RELEASE'
+}
 
 sourceSets {
   generated {
@@ -188,7 +199,7 @@ repositories {   // repositories for Jar's you access in your code
 }
 
 ext {
-  mapstructVersion = '1.3.1.Final'
+  mapstructVersion = '1.4.2.Final'
 }
 
 dependencies {
@@ -196,24 +207,23 @@ dependencies {
   providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
   compile 'mysql:mysql-connector-java:8.0.29'
 
-  // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-  compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
-  compile 'com.google.guava:guava:30.0-jre'
+  compile 'com.google.guava:guava:31.0-jre'
 
   compile 'com.google.cloud.sql:mysql-socket-factory:1.6.3'
   compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-  compile("org.springframework.boot:spring-boot-starter-web:2.5.14") {
+  compile("org.springframework.boot:spring-boot-starter-web:$project.ext.SPRING_BOOT_VERSION") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
-  compile("org.springframework.boot:spring-boot-starter-data-jpa:2.6.9") {
+
+  compile("org.springframework.boot:spring-boot-starter-data-jpa:$project.ext.SPRING_BOOT_VERSION") {
     exclude module: 'spring-boot-starter-tomcat'
     exclude group: 'com.zaxxer', module: 'HikariCP'
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
 
-  compile 'com.google.code.gson:gson:2.8.5'
+  compile 'com.google.code.gson:gson:2.9.0'
   compile 'com.google.api-client:google-api-client:1.30.5'
   compile("org.springframework.boot:spring-boot-starter-actuator:2.5.14") {
     exclude module: 'spring-boot-starter-tomcat'
@@ -224,17 +234,18 @@ dependencies {
   compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
   compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.5.7'
 
-  compile 'org.hibernate:hibernate-core:5.4.24.Final'
+  compile 'org.hibernate:hibernate-core:5.6.9.Final'
 
-  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
+  compile('org.apache.tomcat:tomcat-jdbc:10.0.20')
   compile("org.springframework.boot:spring-boot-starter-tomcat")
   compile("org.springframework.boot:spring-boot-starter-jdbc") {
     exclude group: 'com.zaxxer', module: 'HikariCP'
   }
 
+  compile 'ch.qos.logback:logback-classic:1.2.11'
   compile "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
   compile "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-  compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
+  compile "com.fasterxml.jackson.core:jackson-databind:2.13.3"
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
   compile 'joda-time:joda-time:2.10'
@@ -269,7 +280,7 @@ dependencies {
   }
 
   testCompile 'com.h2database:h2:2.1.210'
-  testCompile 'org.liquibase:liquibase-core:4.8.0'
+  testCompile 'org.liquibase:liquibase-core:4.12.0'
   testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
   // For Swagger generation. These should include dependencies found in the Swagger codegen
@@ -278,10 +289,10 @@ dependencies {
   generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:2.6.9"
   generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
   generatedCompile 'io.springfox:springfox-swagger2:3.0.0'
-  generatedCompile 'io.springfox:springfox-swagger-ui:2.10.0'
+  generatedCompile 'io.springfox:springfox-swagger-ui:3.0.0'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  generatedCompile 'com.google.code.gson:gson:2.8.9'
+  generatedCompile 'com.google.code.gson:gson:2.9.0'
   generatedCompile 'joda-time:joda-time:2.10'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }
