@@ -202,7 +202,6 @@ dependencies {
   compile 'com.google.guava:guava:26.0-jre'
 
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
-  compile "com.google.appengine:appengine:${GAE_VERSION}"
   compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
   compile("org.springframework.boot:spring-boot-starter-web") {
     exclude module: 'spring-boot-starter-tomcat'
