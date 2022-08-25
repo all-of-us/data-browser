@@ -349,9 +349,6 @@ dependencies {
   // war plugin. Add this to scope of the compile configuration, but do not include in .war file.
   providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.1.0'
 
-  __tools__Compile 'commons-cli:commons-cli:1.5.0'
-  __tools__Compile 'com.opencsv:opencsv:5.6'
-
   testCompile 'org.mockito:mockito-core:2.28.2'
   testCompile "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
   testCompile "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
