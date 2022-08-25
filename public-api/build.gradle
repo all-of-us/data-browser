@@ -39,7 +39,6 @@ buildscript {
     classpath 'io.swagger:swagger-codegen:2.2.3'
     classpath 'org.owasp:dependency-check-gradle:6.0.1'
     classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
-    classpath "io.spring.gradle:dependency-management-plugin:$project.ext.SPRING_DEPENDENCY_MANAGEMENT_VERSION"
   }
 
 }
