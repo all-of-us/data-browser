@@ -1,9 +1,9 @@
 // Gradle targets for tools, used by Ruby commands and docker-compose.
 
 ext {
-  SPRING_BOOT_VERSION = '2.5.12'
+  SPRING_BOOT_VERSION = '2.7.1'
   SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
-  HIBERNATE_VERSION = '5.2.10.Final'
+  HIBERNATE_VERSION = '5.6.9.Final'
 }
 
 apply plugin: 'java'
@@ -110,21 +110,7 @@ repositories {   // repositories for Jar's you access in your code
 dependencies {
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
   compile 'commons-io:commons-io:2.6'
-  compile 'joda-time:joda-time:2.10'
-  compile 'com.github.fge:json-patch:1.9'
-  compile 'io.swagger:swagger-annotations:1.5.9'
-  compile 'com.google.cloud.sql:mysql-socket-factory:1.0.9'
-  compile 'org.apache.commons:commons-lang3:3.0'
-  compile 'com.google.code.gson:gson:2.8.5'
-  compile 'org.hibernate:hibernate-validator:5.3.5.Final'
-  compile 'com.squareup.okhttp:okhttp:2.7.5'
-  compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  compile 'org.hibernate:hibernate-core:5.2.10.Final'
-  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
-  compile("org.springframework.boot:spring-boot-starter-tomcat")
-  compile("org.springframework.boot:spring-boot-starter-jdbc") {
-    exclude group: 'com.zaxxer', module: 'HikariCP'
-  }
+  compile 'org.hibernate:hibernate-validator:5.6.9.Final'
 }
 
 
