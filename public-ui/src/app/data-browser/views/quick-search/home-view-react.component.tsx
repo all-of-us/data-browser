@@ -65,22 +65,24 @@ const css = `
 }
 .geno-pm-container {
     display:flex;
+    justify-content: flex-start;
     margin-bottom: 2rem;
+    flex-grow: 1;
 }
 .genomic-boxes {
-    width: calc(((100% / 12) * 4) - 18px);
-    padding-right:.5rem;
+  width: calc(((100% / 12) * 4));
 }
 .genomic-box {
-    height:87.5%;
+  height:87.5%;
 }
 .genomic-box .result-box{
     width:100%;
     height:101.5%;
     margin-bottom:0;
+    width: calc(((100% / 12) * 12) - 18px);
 }
 .pm-boxes{
-    padding-left:.5rem;
+    // padding-left:.5rem;
     width:100%;
 }
 .pm-box{
@@ -105,7 +107,7 @@ const css = `
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    width: calc(((100% / 12) * 3) - 18px);
+    width: calc(((100% / 12) * 1) - 18px);
     margin-bottom: 18px;
     border-radius: 5px;
     background-color: #ffffff;
@@ -129,17 +131,22 @@ const css = `
         padding-left:0;
     }
     .genomic-boxes {
-        padding-right:0;
-        margin-bottom:2rem;
+      width: 100%;
+      padding-right:0;
+      margin-bottom:2rem;
     }
-    .result-box, .genomic-boxes {
+    .genomic-box .result-box {
+      width: calc(((100% / 12) * 5) - 18px);
+    }
+    .result-box {
         height: auto;
-        min-width: calc(((100% / 12) * 6) - 18px);
+        min-width: calc((100% / 12) * 5);
     }
     .result-box {
         margin-bottom:18px;
     }
     .genomic-box {
+        width:100%;
         height:auto;
     }
     .result-box:nth-of-type(2) {
@@ -296,6 +303,7 @@ interface ResultLinkProps {
   microarrayParticipantCount: number;
   variantListSize: number;
   loadingVariantListSize: boolean;
+  typing: boolean;
 }
 
 export const ResultLinksComponent = class extends React.Component<ResultLinkProps> {
@@ -348,16 +356,16 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
         case 43528895:
           url = this.props.searchWord
             ? "survey/health-care-access-and-utilization/" +
-              this.props.searchWord
+            this.props.searchWord
             : "survey/health-care-access-and-utilization";
           NavStore.navigateByUrl(url);
           break;
         default:
           url = this.props.searchWord
             ? "survey/" +
-              info.name.replaceAll(" ", "-").toLowerCase() +
-              "/" +
-              this.props.searchWord
+            info.name.replaceAll(" ", "-").toLowerCase() +
+            "/" +
+            this.props.searchWord
             : "survey/" + info.name.replaceAll(" ", "-").toLowerCase();
           NavStore.navigateByUrl(url);
           break;
@@ -395,9 +403,12 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       microarrayParticipantCount,
       variantListSize,
       loadingVariantListSize,
+      typing
     } = this.props;
     return (
-      <div onClick={() => this.resultClick(this.props)} className="result-box">
+      <div style={{
+        width: (searchWord && !typing) ? '378px' : 'inherent'
+      }} onClick={() => this.resultClick(this.props)} className="result-box">
         <div style={styles.resultBoxTitle}>
           <div>{name}</div>
           <div>
@@ -556,6 +567,7 @@ interface State {
 
 export const dBHomeComponent = withRouteData(
   class extends React.Component<{}, State> {
+    typing = false;
     constructor(props: State) {
       super(props);
       this.state = {
@@ -574,6 +586,7 @@ export const dBHomeComponent = withRouteData(
     }
 
     search = _.debounce((val) => {
+      this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
     }, 1000);
@@ -581,6 +594,7 @@ export const dBHomeComponent = withRouteData(
     handleChange(val) {
       this.setState({ searchWord: val });
       this.search(val);
+      this.typing = false;
     }
     iconClickEvent(iconString: string) {
       if (iconString === "introductory-videos") {
@@ -620,7 +634,6 @@ export const dBHomeComponent = withRouteData(
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({ loadingVariantListSize: true });
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
@@ -801,12 +814,12 @@ export const dBHomeComponent = withRouteData(
                   >
                     EHR Domains
                   </h5>
-
                   <div className="result-boxes">
                     {domainInfo.map((domain, index) => {
                       const key = "domain" + index;
                       return (
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key={key}
                           searchWord={searchWord}
                           {...domain}
@@ -835,6 +848,7 @@ export const dBHomeComponent = withRouteData(
                       </h5>
                       <div className="genomic-box">
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key="genomics-tile"
                           searchWord={searchWord}
                           {...genomicInfo}
@@ -846,7 +860,7 @@ export const dBHomeComponent = withRouteData(
                     </div>
                   )}
                 {physicalMeasurementsInfo.length > 0 && (
-                  <div className="pm-boxes">
+                  <div style={{ paddingLeft: this.state.searchWord && !this.typing ? '0' : 'inherent' }} className="pm-boxes">
                     <h5
                       style={{
                         ...globalStyles.secondaryDisplay,
@@ -861,6 +875,7 @@ export const dBHomeComponent = withRouteData(
                           const key = "phyMeasurements" + index;
                           return (
                             <ResultLinksComponent
+                              typing={!this.typing}
                               key={key}
                               searchWord={searchWord}
                               {...phyMeasurements}
@@ -891,6 +906,7 @@ export const dBHomeComponent = withRouteData(
                       const key = "survey" + index;
                       return (
                         <ResultLinksComponent
+                          typing={!this.typing}
                           key={key}
                           searchWord={searchWord}
                           {...survey}
