@@ -95,6 +95,7 @@ buildscript {    // Configuration for building
     GAE_VERSION = '2.0.5'
     GOOGLE_TRUTH_VERSION = '1.1.3'
     GSON_VERSION = '2.9.0'
+    HIBERNATE_VERSION = '5.6.9.Final'
     SPRING_BOOT_VERSION = '2.5.12'
     SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
     JACKSON_VERSION = '2.13.1'
@@ -117,7 +118,7 @@ buildscript {    // Configuration for building
   }
 }
 
-ext['hibernate.version'] = '5.4.31.Final'
+ext['hibernate.version'] = '5.6.9.Final'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -225,7 +226,7 @@ dependencies {
   compile group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.1'
   compile group: 'org.springframework.security', name: 'spring-security-web', version: '5.5.7'
 
-  compile 'org.hibernate:hibernate-core:5.2.10.Final'
+  compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
   compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
   compile("org.springframework.boot:spring-boot-starter-tomcat")
