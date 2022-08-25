@@ -111,6 +111,15 @@ dependencies {
   compile 'org.springframework.boot:spring-boot-starter-data-jpa'
   compile 'commons-io:commons-io:2.6'
   compile 'joda-time:joda-time:2.10'
+  compile "com.github.java-json-tools:json-patch:1.13"
+  compile 'io.swagger:swagger-annotations:1.6.6'
+  compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
+  compile 'org.apache.commons:commons-lang3:3.12.0'
+  compile 'com.google.code.gson:gson:2.9.0'
+  compile 'org.hibernate:hibernate-validator:5.3.5.Final'
+  compile 'com.squareup.okhttp:okhttp:2.7.5'
+  compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
+  compile 'org.hibernate:hibernate-core:5.6.9.Final'
 }
 
 
