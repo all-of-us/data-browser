@@ -94,6 +94,7 @@ buildscript {    // Configuration for building
   ext {
     GAE_VERSION = '2.0.5'
     GOOGLE_TRUTH_VERSION = '1.1.3'
+    GSON_VERSION = '2.9.0'
     SPRING_BOOT_VERSION = '2.5.12'
     SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
     JACKSON_VERSION = '2.13.1'
@@ -213,7 +214,7 @@ dependencies {
     exclude group: 'org.slf4j', module: 'jul-to-slf4j'
   }
 
-  compile 'com.google.code.gson:gson:2.8.5'
+  compile "com.google.code.gson:gson:${GSON_VERSION}"
   compile 'com.google.api-client:google-api-client:1.30.5'
   compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
     exclude module: 'spring-boot-starter-tomcat'
@@ -282,7 +283,7 @@ dependencies {
   generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
   generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
   generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  generatedCompile 'com.google.code.gson:gson:2.8.5'
+  generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
   generatedCompile 'joda-time:joda-time:2.10'
   generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }
