@@ -92,7 +92,8 @@ configurations {
 buildscript {    // Configuration for building
 
   ext {
-    GAE_VERSION = '1.9.64'
+    GAE_VERSION = '2.0.5'
+    GOOGLE_TRUTH_VERSION = '1.1.3'
     SPRING_BOOT_VERSION = '2.5.12'
     SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.11.RELEASE'
     JACKSON_VERSION = '2.13.1'
@@ -260,7 +261,7 @@ dependencies {
 
   testCompile 'junit:junit:4.12'
   testCompile 'org.mockito:mockito-core:3.11.2'
-  testCompile 'com.google.truth:truth:0.42'
+  testCompile 'com.google.truth:truth:${GOOGLE_TRUTH_VERSION}'
 
   testCompile("org.springframework.boot:spring-boot-starter-test") {
     exclude group: 'org.junit', module: 'junit'
