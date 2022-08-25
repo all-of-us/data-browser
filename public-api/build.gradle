@@ -37,7 +37,7 @@ plugins {
 
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
   id 'com.diffplug.spotless' version '5.12.5'
-  id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.4.2'
+  id 'com.google.cloud.tools.appengine-standard' version '2.4.2'
   id 'net.ltgt.apt-idea' version '0.21'
   // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
   // implicit dependencies: (1) the set of "generatedCompile" Gradle dependencies need to be updated
