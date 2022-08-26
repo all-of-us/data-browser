@@ -72,7 +72,7 @@ public class CdrDbConfig {
         int slashIndex = originalDbUrl.lastIndexOf('/');
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
-                        + cdrVersion.getCdrDbName()
+                        + cdrVersion.getPublicDbName()
                         + "?useSSL=false";
         DataSource dataSource =
                 DataSourceBuilder.create()
@@ -104,7 +104,7 @@ public class CdrDbConfig {
           log.warning("not using Tomcat pool or initializing pool configuration; " +
               "this should only happen within tests");
         }
-        cdrVersionDataSourceMap.put(dbCdrVersion.getCdrVersionId(), dataSource);
+        cdrVersionDataSourceMap.put(cdrVersion.getCdrVersionId(), dataSource);
       }
       setTargetDataSources(cdrVersionDataSourceMap);
       afterPropertiesSet();
