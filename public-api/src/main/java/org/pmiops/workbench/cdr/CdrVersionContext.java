@@ -32,7 +32,7 @@ public class CdrVersionContext {
 
   @Nonnull
   public static DbCdrVersion getCdrVersion() {
-    DbCdrVersion version = cdrVersion.get();
+    DbCdrVersion version = dbCdrVersion.get();
     if (version == null) {
       throw new ServerErrorException("No CDR version specified!");
     }
