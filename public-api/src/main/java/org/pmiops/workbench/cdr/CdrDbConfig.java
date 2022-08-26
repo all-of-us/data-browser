@@ -1,19 +1,14 @@
 package org.pmiops.workbench.cdr;
 
-import com.google.common.cache.LoadingCache;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.pmiops.workbench.config.CacheSpringConfiguration;
-import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.DbCdrVersion;
-import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +17,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -49,10 +42,6 @@ public class CdrDbConfig {
 
   @Service
   public static class CdrDataSource extends AbstractRoutingDataSource {
-
-    private boolean finishedInitialization = false;
-
-    private final Long defaultCdrVersionId;
 
     @Autowired
     public CdrDataSource(CdrVersionDao cdrVersionDao,
