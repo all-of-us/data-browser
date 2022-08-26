@@ -121,7 +121,7 @@ buildscript {    // Configuration for building
     classpath 'io.swagger:swagger-codegen:2.2.3'
     classpath 'org.owasp:dependency-check-gradle:6.0.1'
     classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
-    classpath "io.spring.gradle:dependency-management-plugin:$project.ext.SPRING_DEPENDENCY_MANAGEMENT_VERSION"
+    classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
   }
 }
 
@@ -233,7 +233,21 @@ dependencies {
   compile "org.springframework.security:spring-security-core"
   compile "org.springframework.security:spring-security-web"
 
+  // https://security.snyk.io/vuln/SNYK-JAVA-ORGBOUNCYCASTLE-2841508
+  compile 'org.bouncycastle:bcprov-jdk15on:1.70'
+  compile "org.springframework:spring-aop:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-aspects:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-context:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-core:${SPRING_FRAMEWORK_VERSION}"
   compile "org.springframework:spring-expression:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-jcl:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-jdbc:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-orm:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-test:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-tx:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-web:${SPRING_FRAMEWORK_VERSION}"
+  compile "org.springframework:spring-webmvc:${SPRING_FRAMEWORK_VERSION}"
 
   compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
