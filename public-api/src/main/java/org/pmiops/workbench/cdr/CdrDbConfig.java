@@ -148,13 +148,15 @@ public class CdrDbConfig {
   }
 
   @Bean(name = "cdrDataSource")
-  public DataSource cdrDataSource(@Lazy CdrDataSource cdrDataSource) {
+  @PostConstruct
+  public DataSource cdrDataSource(CdrDataSource cdrDataSource) {
     return cdrDataSource;
   }
 
 
 
   @Bean(name = "cdrEntityManagerFactory")
+  @PostConstruct
   public LocalContainerEntityManagerFactoryBean getCdrEntityManagerFactory(
       EntityManagerFactoryBuilder builder,
       @Qualifier("cdrDataSource") DataSource dataSource) {
@@ -167,12 +169,14 @@ public class CdrDbConfig {
   }
 
   @Bean(name = "cdrTransactionManager")
+  @PostConstruct
   public PlatformTransactionManager cdrTransactionManager(
       @Qualifier("cdrEntityManagerFactory") EntityManagerFactory cdrEntityManagerFactory) {
     return new JpaTransactionManager(cdrEntityManagerFactory);
   }
 
   @Bean(name = "cdrPoolConfiguration")
+  @PostConstruct
   @ConfigurationProperties(prefix = "cdr.datasource")
   public PoolConfiguration poolConfig() {
     return new PoolProperties();
