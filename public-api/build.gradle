@@ -105,6 +105,7 @@ buildscript {    // Configuration for building
     OKHTTP_VERSION = '2.7.5'
     SPRINGFOX_VERSION = '3.0.0'
     LIQUIBASE_VERSION = '4.12.0'
+    SPRING_FRAMEWORK_VERSION = '5.3.21'
   }
 
   repositories {
@@ -232,6 +233,8 @@ dependencies {
   compile "org.springframework.security:spring-security-core"
   compile "org.springframework.security:spring-security-web"
 
+  compile "org.springframework:spring-expression:${SPRING_FRAMEWORK_VERSION}"
+
   compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
   compile('org.apache.tomcat:tomcat-jdbc:10.0.20')
@@ -256,6 +259,7 @@ dependencies {
   compile 'io.swagger:swagger-annotations:1.6.6'
   compile 'org.apache.commons:commons-lang3:3.12.0'
   compile 'com.google.guava:guava:31.0-jre'
+  compile 'io.netty:netty-common:4.1.77.Final'
   compile "com.google.cloud:google-cloud-bigquery:2.13.2"
 
   implementation "org.mapstruct:mapstruct:${mapstructVersion}"
