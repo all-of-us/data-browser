@@ -301,7 +301,7 @@ dependencies {
     exclude group: 'org.mockito', module: 'mockito-all'
   }
 
-  testCompile 'com.h2database:h2:2.1.210'
+  testCompile 'com.h2database:h2:1.4.194'
   testCompile "org.liquibase:liquibase-core:${LIQUIBASE_VERSION}"
   testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
