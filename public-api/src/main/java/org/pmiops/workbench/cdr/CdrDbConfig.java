@@ -31,6 +31,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 @EnableTransactionManagement
@@ -54,7 +55,6 @@ public class CdrDbConfig {
     private final Long defaultCdrVersionId;
 
     @Autowired
-    @Qualifier("cdrDataSource")
     public CdrDataSource(CdrVersionDao cdrVersionDao,
         @Qualifier("poolConfiguration") PoolConfiguration basePoolConfig,
         @Qualifier("cdrPoolConfiguration") PoolConfiguration cdrPoolConfig,
@@ -146,6 +146,13 @@ public class CdrDbConfig {
       return dbCdrVersion.getCdrVersionId();
     }
   }
+
+  @Bean(name = "cdrDataSource")
+  public DataSource cdrDataSource(@Lazy CdrDataSource cdrDataSource) {
+    return cdrDataSource;
+  }
+
+
 
   @Bean(name = "cdrEntityManagerFactory")
   public LocalContainerEntityManagerFactoryBean getCdrEntityManagerFactory(
