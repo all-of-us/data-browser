@@ -1,19 +1,14 @@
 package org.pmiops.workbench.cdr;
 
-import com.google.common.cache.LoadingCache;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.logging.Logger;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.pmiops.workbench.config.CacheSpringConfiguration;
-import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.db.dao.CdrVersionDao;
 import org.pmiops.workbench.db.model.DbCdrVersion;
-import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,8 +17,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -31,6 +24,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 @EnableTransactionManagement
@@ -49,16 +43,10 @@ public class CdrDbConfig {
   @Service
   public static class CdrDataSource extends AbstractRoutingDataSource {
 
-    private boolean finishedInitialization = false;
-
-    private final Long defaultCdrVersionId;
-
     @Autowired
     public CdrDataSource(CdrVersionDao cdrVersionDao,
-        @Qualifier("poolConfiguration") PoolConfiguration basePoolConfig,
-        @Qualifier("cdrPoolConfiguration") PoolConfiguration cdrPoolConfig,
-        @Qualifier("configCache") LoadingCache<String, Object> configCache) throws ExecutionException {
-      WorkbenchConfig workbenchConfig = CacheSpringConfiguration.lookupWorkbenchConfig(configCache);
+                         @Qualifier("poolConfiguration") PoolConfiguration basePoolConfig,
+                         @Qualifier("cdrPoolConfiguration") PoolConfiguration cdrPoolConfig) {
       String dbUser = cdrPoolConfig.getUsername();
       String dbPassword = cdrPoolConfig.getPassword();
       String originalDbUrl = cdrPoolConfig.getUrl();
@@ -68,22 +56,23 @@ public class CdrDbConfig {
       // server in order for it to be used.
       // TODO: find a way to make sure CDR versions aren't shown in the UI until they are in use by
       // all servers.
-      Long defaultId = null;
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
-      for (DbCdrVersion dbCdrVersion : cdrVersionDao.findAll()) {
-        String dbName = "public".equals(dbUser) ? dbCdrVersion.getPublicDbName() : null;
+      for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
-        String dbUrl = originalDbUrl.substring(0, slashIndex + 1) + dbName + "?useSSL=false";
+        String dbUrl =
+                originalDbUrl.substring(0, slashIndex + 1)
+                        + cdrVersion.getPublicDbName()
+                        + "?useSSL=false";
         DataSource dataSource =
-            DataSourceBuilder.create()
-            .driverClassName(basePoolConfig.getDriverClassName())
-            .username(dbUser)
-            .password(dbPassword)
-            .url(dbUrl)
-            .build();
+                DataSourceBuilder.create()
+                        .driverClassName(basePoolConfig.getDriverClassName())
+                        .username(dbUser)
+                        .password(dbPassword)
+                        .url(dbUrl)
+                        .build();
         if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
           org.apache.tomcat.jdbc.pool.DataSource tomcatSource =
-              (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
+                  (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
           // A Tomcat DataSource implements PoolConfiguration, therefore these pool parameters can
           // normally be populated via @ConfigurationProperties. Since we are directly initializing
           // DataSources here without a hook to @ConfigurationProperties, we instead need to
@@ -99,64 +88,32 @@ public class CdrDbConfig {
 
           // The Spring autowiring is a bit of a maze here, log something concrete which will allow
           // verification that the DB settings in application.properties are actually being loaded.
-          log.info("using Tomcat pool for CDR data source, with minIdle: " +
-            cdrPool.getMinIdle());
+          log.info("using Tomcat pool for CDR data source, with minIdle: " + cdrPool.getMinIdle());
         } else {
           log.warning("not using Tomcat pool or initializing pool configuration; " +
               "this should only happen within tests");
         }
-        cdrVersionDataSourceMap.put(dbCdrVersion.getCdrVersionId(), dataSource);
-        if (dbCdrVersion.getIsDefault()) {
-          if (defaultId != null) {
-            throw new ServerErrorException(String.format(
-                "Multiple CDR versions are marked as the default: %d, %d",
-                defaultId, dbCdrVersion.getCdrVersionId()));
-          }
-          defaultId = dbCdrVersion.getCdrVersionId();
-        }
+        cdrVersionDataSourceMap.put(cdrVersion.getCdrVersionId(), dataSource);
       }
-      if (defaultId == null) {
-        throw new ServerErrorException("Default CDR version not found!");
-      }
-      this.defaultCdrVersionId = defaultId;
       setTargetDataSources(cdrVersionDataSourceMap);
       afterPropertiesSet();
     }
 
-    @EventListener
-    public void handleContextRefresh(ContextRefreshedEvent event) {
-      finishedInitialization = true;
-    }
-
     @Override
     protected Object determineCurrentLookupKey() {
-      DbCdrVersion dbCdrVersion = CdrVersionContext.getCdrVersion();
-      if (dbCdrVersion == null) {
-        if (finishedInitialization) {
-          throw new ServerErrorException("No CDR version specified!");
-        }
-        // While Spring beans are being initialized, this method can be called
-        // in the course of attempting to determine metadata about the data source.
-        // Return the the default CDR version for configuring metadata.
-        // After Spring beans are finished being initialized, init() will
-        // be called and we will start requiring clients to specify a CDR version.
-        return defaultCdrVersionId;
-      }
-      return dbCdrVersion.getCdrVersionId();
+      return CdrVersionContext.getCdrVersion().getCdrVersionId();
     }
   }
 
-  @Bean("cdrDataSource")
+  @Bean(name = "cdrDataSource")
   public DataSource cdrDataSource(CdrDataSource cdrDataSource) {
     return cdrDataSource;
   }
 
   @Bean(name = "cdrEntityManagerFactory")
   public LocalContainerEntityManagerFactoryBean getCdrEntityManagerFactory(
-      EntityManagerFactoryBuilder builder,
-      @Qualifier("cdrDataSource") DataSource dataSource) {
-    return
-        builder
+          EntityManagerFactoryBuilder builder, @Qualifier("cdrDataSource") DataSource dataSource) {
+    return builder
             .dataSource(dataSource)
             .packages("org.pmiops.workbench.cdr")
             .persistenceUnit("cdr")
@@ -165,7 +122,7 @@ public class CdrDbConfig {
 
   @Bean(name = "cdrTransactionManager")
   public PlatformTransactionManager cdrTransactionManager(
-      @Qualifier("cdrEntityManagerFactory") EntityManagerFactory cdrEntityManagerFactory) {
+          @Qualifier("cdrEntityManagerFactory") EntityManagerFactory cdrEntityManagerFactory) {
     return new JpaTransactionManager(cdrEntityManagerFactory);
   }
 
