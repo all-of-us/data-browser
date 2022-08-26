@@ -54,6 +54,7 @@ public class CdrDbConfig {
     private final Long defaultCdrVersionId;
 
     @Autowired
+    @Qualifier("cdrDataSource")
     public CdrDataSource(CdrVersionDao cdrVersionDao,
         @Qualifier("poolConfiguration") PoolConfiguration basePoolConfig,
         @Qualifier("cdrPoolConfiguration") PoolConfiguration cdrPoolConfig,
@@ -144,11 +145,6 @@ public class CdrDbConfig {
       }
       return dbCdrVersion.getCdrVersionId();
     }
-  }
-
-  @Bean("cdrDataSource")
-  public DataSource cdrDataSource(CdrDataSource cdrDataSource) {
-    return cdrDataSource;
   }
 
   @Bean(name = "cdrEntityManagerFactory")
