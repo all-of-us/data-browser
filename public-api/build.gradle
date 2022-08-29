@@ -95,7 +95,7 @@ buildscript {    // Configuration for building
     GAE_VERSION = '2.0.5'
     GOOGLE_TRUTH_VERSION = '1.1.3'
     GSON_VERSION = '2.9.0'
-    HIBERNATE_VERSION = '5.6.9.Final'
+    HIBERNATE_VERSION = '6.1.0.Final'
     SPRING_BOOT_VERSION = '2.7.1'
     SPRING_FRAMEWORK_VERSION = '5.3.21'
     JACKSON_DATABIND_VERSION = '2.13.3'
@@ -125,7 +125,7 @@ buildscript {    // Configuration for building
   }
 }
 
-ext['hibernate.version'] = '5.6.9.Final'
+ext['hibernate.version'] = '6.1.0.Final'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -290,7 +290,7 @@ dependencies {
   compile 'org.json:json:20220320'
   compile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
 
-  testCompile 'junit:junit:4.12'
+  testCompile 'junit:junit:4.13.1'
   testCompile 'org.mockito:mockito-core:3.11.2'
   testCompile "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
 
@@ -301,7 +301,7 @@ dependencies {
     exclude group: 'org.mockito', module: 'mockito-all'
   }
 
-  testCompile 'com.h2database:h2:1.4.194'
+  testCompile 'com.h2database:h2:2.1.212'
   testCompile "org.liquibase:liquibase-core:${LIQUIBASE_VERSION}"
   testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 

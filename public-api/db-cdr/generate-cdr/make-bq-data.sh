@@ -596,6 +596,13 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 set stratum_4=REGEXP_REPLACE(stratum_4, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where stratum_4 like '%Sex At Birth: Sex At Birth%' "
 
+# TODO This is temporary please remove if this bug is no longer in the next dataset
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
+where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
+"
+
 #Create temp table to store drug brand names
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
