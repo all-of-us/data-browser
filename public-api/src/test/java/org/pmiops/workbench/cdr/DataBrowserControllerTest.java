@@ -452,13 +452,13 @@ public class DataBrowserControllerTest {
                 surveyModuleService, achillesResultService, achillesAnalysisService);
     }
 
-    /*
-
     @Test
     public void testGetSourceConcepts() throws Exception {
         ResponseEntity<ConceptListResponse> response = dataBrowserController.getSourceConcepts(7890L, 15);
         assertThat(response.getBody().getItems()).containsExactly(CLIENT_CONCEPT_4, CLIENT_CONCEPT_2);
     }
+
+    /*
 
     @Test
     public void testAllConceptSearchEmptyQuery() throws Exception{
