@@ -1,5 +1,5 @@
 
-version: "3.4"
+version: "4"
 
 # x- indicates an "extension", so docker-compose will ignore the attribute. The
 # name is not important, it's just the necessary syntax to create a YAML anchor
