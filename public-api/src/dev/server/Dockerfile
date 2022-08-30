@@ -4,11 +4,16 @@ FROM alpine:3.13
 # Java for Gradle
 #
 
-RUN apk --no-cache add openjdk-11-jdk
-
 #
 # https://github.com/GoogleCloudPlatform/cloud-sdk-docker/blob/master/alpine/Dockerfile
 #
+
+RUN apt-get update && \
+    apt-get install --no-install-recommends -y \
+         ruby \
+         openjdk-11-jdk \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 ENV CLOUD_SDK_VERSION 217.0.0
 
