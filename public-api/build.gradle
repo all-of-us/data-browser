@@ -44,7 +44,7 @@ task generateApiClient {
             'sourceFolder'     : swaggerTargetFolder,
             'library'          : 'okhttp-gson',
             'serializableModel': 'true',
-            'dateLibrary'      : 'java8'
+            'dateLibrary'      : 'java11'
     ])
     new DefaultGenerator().opts(config.toClientOptInput()).generate()
   }
@@ -69,7 +69,7 @@ task generateWorkbenchClient {
             'sourceFolder'     : swaggerTargetFolder,
             'library'          : 'okhttp-gson',
             'serializableModel': 'true',
-            'dateLibrary'      : 'java8'
+            'dateLibrary'      : 'java11'
     ])
     new DefaultGenerator().opts(config.toClientOptInput()).generate()
   }
