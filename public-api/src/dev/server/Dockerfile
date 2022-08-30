@@ -10,8 +10,10 @@ FROM alpine:3.13
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-         ruby \
-         openjdk-11-jdk \
+     ruby \
+     ruby-dev \
+     ruby-json \
+     openjdk-11-jdk \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
