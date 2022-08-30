@@ -248,7 +248,7 @@ def start_local_public_api()
   common = Common.new
   Dir.chdir('../public-api') do
     common.status "Starting public API server..."
-    common.run_inline %W{./gradlew appengineStart}
+    common.run_inline %W{./gradlew bootRun}
   end
 end
 
@@ -263,7 +263,7 @@ def stop_local_public_api()
   common = Common.new
   Dir.chdir('../public-api') do
     common.status "Stopping public API server..."
-    common.run_inline %W{./gradlew appengineStop}
+    common.run_inline %W{./gradlew -stop}
   end
 end
 

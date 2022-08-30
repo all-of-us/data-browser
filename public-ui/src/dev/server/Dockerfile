@@ -39,7 +39,7 @@ RUN apk --no-cache add \
     gcloud config set metrics/environment github_docker_image
 
 # Java for Swagger client generation
-RUN apk --no-cache add openjdk8-jre
+RUN apk --no-cache add adoptopenjdk-11-hotspot-jre
 
 RUN npm install --global --force yarn n
 
