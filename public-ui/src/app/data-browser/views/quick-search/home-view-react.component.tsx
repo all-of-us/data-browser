@@ -49,6 +49,7 @@ const css = `
     color:#2b266d;
 }
 .result-bottom-link {
+    white-space: pre;
     font-size: 15px;
     color: #337ab7;
     cursor: pointer;
