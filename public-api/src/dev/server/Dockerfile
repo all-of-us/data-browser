@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 #
 # Development requirements
@@ -7,10 +7,9 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y \
      openjdk-11-jdk \
      curl \
-     python \
+     python2 \
+     python3 \
      gcc \
-     python-dev \
-     python-setuptools \
      bash \
      libc6-i386 \
      openssh-client \
@@ -21,6 +20,7 @@ RUN apt-get update && \
      ruby \
      ruby-dev \
      ruby-json \
+     ruby-io-console \
      make \
      unzip \
      wait-for-it \
@@ -30,7 +30,7 @@ RUN apt-get update && \
 
 ENV JAVA_HOME /usr/lib/jvm/java-11-openjdk-amd64
 
-ENV CLOUD_SDK_VERSION 321.0.0
+ENV CLOUD_SDK_VERSION 392.0.0
 ENV PATH /google-cloud-sdk/bin:$PATH
 
 RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
@@ -50,6 +50,9 @@ RUN gcloud components install app-engine-java
 RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
   > /usr/local/bin/cloud_sql_proxy && chmod +x /usr/local/bin/cloud_sql_proxy
 
+RUN curl https://raw.githubusercontent.com/mrako/wait-for/d9699cb9fe8a4622f05c4ee32adf2fd93239d005/wait-for \
+  > /usr/local/bin/wait-for && chmod +x /usr/local/bin/wait-for
+
 # Create a gradle cache directory as a volume that can be read/written by any
 # container (including containers running as any user -- hence the a+rwx)
 RUN mkdir /.gradle && chmod a+rwx -R /.gradle
@@ -66,13 +69,7 @@ RUN unzip gradle.zip && rm gradle.zip \
 ENV PATH="$PATH:/gradle/bin"
 WORKDIR /
 
-RUN gem install --no-document io-console
-
 RUN gem install --no-document googleauth
-
-RUN curl -O https://bin.equinox.io/c/htRtQZagtfg/rainforest-cli-stable-linux-amd64.tgz && \
-  tar -xvf rainforest-cli-stable-linux-amd64.tgz && rm rainforest-cli-stable-linux-amd64.tgz && \
-  mv rainforest /usr/local/bin
 
 # Prevent bq interactively asking us to choose a default project
 RUN touch .bigqueryrc

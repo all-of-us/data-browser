@@ -187,8 +187,12 @@ def dev_up()
   common.status "Starting database..."
   common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
+  Dir.chdir('db') do
+    common.run_inline %W{./run-migrations.sh main}
+  end
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
+  end
 
   common.status "Updating CDR versions..."
   common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
@@ -545,9 +549,9 @@ Common.register_command({
 def run_local_data_migrations()
   ensure_docker_sync()
   common = Common.new
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
-  common.run_inline %W{docker-compose run db-public-data-migration}
+  common.run_inline %W{./run-migrations.sh main}
+  common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
+  common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public --run-list data --context localn}
 end
 
 Common.register_command({
