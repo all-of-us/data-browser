@@ -47,6 +47,7 @@ const styles = reactStyles({
     overflow: 'hidden',
     flexDirection: "column",
     paddingLeft: "1rem",
+    paddingBottom:".5rem"
   },
   filterItemOption: {
     fontSize: ".8em",
@@ -176,7 +177,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     return <React.Fragment>
       <style>{css}</style>
       <div onClick={() => this.filterClick()} style={styles.filterItem}>
-        <span>{category.display}</span>
+        <span style={{fontFamily:'gothamBold'}}>{category.display}</span>
         <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
       </div>
       {(filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
