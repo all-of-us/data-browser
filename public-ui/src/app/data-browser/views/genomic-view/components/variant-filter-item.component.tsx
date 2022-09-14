@@ -47,7 +47,7 @@ const styles = reactStyles({
     overflow: 'hidden',
     flexDirection: "column",
     paddingLeft: "1rem",
-    paddingBottom:".5rem"
+    paddingTop:".25rem"
   },
   filterItemOption: {
     fontSize: ".8em",
