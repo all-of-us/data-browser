@@ -640,7 +640,7 @@ export const dBHomeComponent = withRouteData(
         .then((result) => {
           this.setState({
             variantListSize: result,
-            loadingVariantListSize: false,
+            loadingVariantListSize: false
           });
         })
         .catch((e) => {
