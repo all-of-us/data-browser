@@ -45,9 +45,7 @@ const styles = reactStyles({
   filterItemForm: {
     display: "flex",
     flexDirection: "column",
-    paddingLeft: "1rem",
-    maxHeight: "10rem",
-    overflowY: "auto",
+    paddingLeft: "1rem"
   },
   filterItemOption: {
     fontSize: ".8em",
