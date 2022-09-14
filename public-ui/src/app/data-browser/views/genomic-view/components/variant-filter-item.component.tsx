@@ -44,8 +44,9 @@ const styles = reactStyles({
   },
   filterItemForm: {
     display: "flex",
+    overflow: 'hidden',
     flexDirection: "column",
-    paddingLeft: "1rem"
+    paddingLeft: "1rem",
   },
   filterItemOption: {
     fontSize: ".8em",
@@ -58,7 +59,11 @@ const styles = reactStyles({
     marginTop: "0.1rem",
   },
   filterItemLabel: {
-    wordWrap: "break-word",
+    width: '80%',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    overflow:'hidden'
+    // wordWrap: "break-word",
   },
   filterSlider: {
     padding: "1rem 0",
@@ -98,7 +103,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemOpen: false,
       filterItemState: props.filterItem || '',
       filterCheckMap: props.filterItem || '',
-      ogFilterMetaData:  JSON.parse(localStorage.getItem("originalFilterMetadata")|| '{}')[this.props.category.field.toString()]
+      ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}')[this.props.category.field.toString()]
     };
   }
 
@@ -132,7 +137,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemState: filtered,
       filterCheckMap: filtered
     });
-  this.props.onFilterChange(filtered, this.props.category);
+    this.props.onFilterChange(filtered, this.props.category);
   }
 
   // handleRangeSelect(event, isMax) {
@@ -157,17 +162,17 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   //     this.props.onFilterChange(this.state.filterItemState, this.props.category);
   // }
 
-  handleSliderChange(vals,filterItem) {
+  handleSliderChange(vals, filterItem) {
     const updatedFilterItem = filterItem;
     updatedFilterItem.min = vals[0];
     updatedFilterItem.max = vals[1];
     updatedFilterItem.checked = true;
-    this.props.onFilterChange(updatedFilterItem,this.props.category);
+    this.props.onFilterChange(updatedFilterItem, this.props.category);
   }
 
   render(): React.ReactNode {
     const { category } = this.props;
-    const { filterItemOpen, filterItemState,ogFilterMetaData } = this.state;
+    const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
     return <React.Fragment>
       <style>{css}</style>
       <div onClick={() => this.filterClick()} style={styles.filterItem}>
@@ -183,7 +188,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 </div> */}
         {filterItemState.map((item: any, index: number) => {
           const key = 'option' + index;
-          return <span style={styles.filterItemOption} key={key}>
+          return <span title={item.option} style={styles.filterItemOption} key={key}>
             <input onChange={() => this.handleCheck(item)}
               id={item.option}
               style={styles.filterItemCheck}
@@ -197,7 +202,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
           <VariantFilterSliderComponent
             filterItem={filterItemState}
             ogFilterItem={ogFilterMetaData}
-            onSliderChange={(e) => this.handleSliderChange(e,filterItemState)} />}
+            onSliderChange={(e) => this.handleSliderChange(e, filterItemState)} />}
         </div>}
     </React.Fragment>;
   }
