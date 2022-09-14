@@ -187,7 +187,9 @@ def dev_up()
   common.status "Starting database..."
   common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."
-  common.run_inline %W{docker-compose run db-migration}
+  common.run_inline %W{
+    docker-compose run --rm db-scripts ./run-migrations.sh main
+  }
   common.run_inline %W{docker-compose run db-public-migration}
 
   common.status "Updating CDR versions..."

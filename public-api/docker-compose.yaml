@@ -43,6 +43,13 @@ services:
       - 8083:8083
       - 8084:8002
 
+  db-scripts:
+    <<: *api-defaults
+    depends_on:
+      - db
+    working_dir: /w/public-api/db
+    entrypoint: [ 'with-uid.sh', 'wait-for-it', 'db:3306', '-t', '30', -- ]
+
   db-migration:
     depends_on:
       - db
