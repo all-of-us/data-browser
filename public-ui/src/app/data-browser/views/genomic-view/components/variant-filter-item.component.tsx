@@ -17,6 +17,7 @@ const styles = reactStyles({
     fontSize: ".8em",
     letterSpacing: 0,
     lineHeight: "16px",
+    cursor: "pointer"
   },
   filterItemClosed: {
     transform: "rotate(90deg)",
