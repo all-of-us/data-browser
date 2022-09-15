@@ -60,6 +60,11 @@ const styles = reactStyles({
     background: "white",
     padding: "18px",
   },
+  dropdownToggle: {
+    background: "transparent",
+    border: "none",
+    marginLeft: "0.2em"
+  }
 });
 
 const cssStyles = `
@@ -67,6 +72,34 @@ const cssStyles = `
     .results-grid {
         overflow-x: scroll;
     }
+}
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  margin-top: 0.6em;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
 
 .domain-info-layout {
@@ -238,7 +271,9 @@ h5.secondary-display {
 
 .checkbox-input {
     margin-left: 0.5em;
-    margin-right: 1em;
+    margin-right: 0.5em;
+    margin-bottom: 1em;
+    text-align: left;
 }
 .checkbox-label {
     margin-left: 0.3em;
@@ -507,6 +542,18 @@ export const EhrViewReactComponent = withRouteData(
       this.setState({ selectedConcept: null });
     }
 
+    flipMeasurementTypeFilter() {
+        const {selectedMeasurementTypeFilter} = this.state;
+        this.setState({ selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter });
+    }
+
+    getDropdownDisplayStyle() {
+        if (this.state.selectedMeasurementTypeFilter) {
+            return {display: "block"};
+        }
+        return {display: "none"};
+    }
+
     render() {
       const {
         title,
@@ -556,7 +603,9 @@ export const EhrViewReactComponent = withRouteData(
             />
           </div>
           {loading && <Spinner />}
-          {domain && !loading && concepts && concepts.length > 0 && (
+          {domain && !loading && ((concepts && concepts.length > 0) ||
+            (domain.domain.toLowerCase() === "measurement" && !measurementTestFilter && !measurementOrderFilter))
+           && (
             <div className="results" style={styles.results}>
               <a
                 className="btn btn-link btn-sm main-search-link"
@@ -736,90 +785,82 @@ export const EhrViewReactComponent = withRouteData(
                                 action="Percentage of participant count tooltip hover"
                               />
                             </div>
+
                             {domain.domain.toLowerCase() === "measurement" && (
                               <div className="tbl-d body-lead info-text">
                                 Data Type
-                                <div className={dropdownClass}>
-                                  <button className="dropdown-toggle">
-                                    <ClrIcon
-                                      shape="filter-grid"
-                                      className={filterIconClass}
-                                      onClick={() =>
-                                        this.setState({
-                                          selectedMeasurementTypeFilter:
-                                            !selectedMeasurementTypeFilter,
-                                        })
-                                      }
-                                    />
-                                  </button>
-                                  <div className="dropdown-menu">
-                                    <div className="clr-checkbox-wrapper">
-                                      <div className="checkbox-input">
-                                        <input
-                                          type="checkbox"
-                                          id="checkbox1"
-                                          className="clr-checkbox"
-                                          onClick={() =>
-                                            this.setState(
-                                              {
-                                                measurementTestFilter:
-                                                  !measurementTestFilter,
-                                              },
-                                              () => {
-                                                this.getDomainTotals();
-                                                this.getTopConcepts();
-                                              }
-                                            )
-                                          }
-                                          defaultChecked={measurementTestFilter}
-                                        />
-                                        <label
-                                          htmlFor="checkbox1"
-                                          className="checkbox-label"
-                                        >
-                                          <i
-                                            className="fas fa-vial fa-rotate-45"
-                                            style={{
-                                              transform: "rotate(315deg)",
-                                            }}
-                                          />
-                                          Tests
-                                        </label>
-                                      </div>
+                                 <div className="dropdown">
+                                         <button className="dropbtn" style={styles.dropdownToggle}>
+                                           <ClrIcon
+                                             shape="filter-grid"
+                                             className={filterIconClass}
+                                             onClick={() => this.flipMeasurementTypeFilter()}
+                                           />
+                                         </button>
+                                    <div className="dropdown-content" style={this.getDropdownDisplayStyle()}>
+                                                  <div className="checkbox-input">
+                                                    <input
+                                                      type="checkbox"
+                                                      id="checkbox1"
+                                                      className="clr-checkbox"
+                                                      onClick={() =>
+                                                        this.setState(
+                                                          {
+                                                            measurementTestFilter:
+                                                              !measurementTestFilter,
+                                                          },
+                                                          () => {
+                                                            this.getDomainTotals();
+                                                            this.getTopConcepts();
+                                                          }
+                                                        )
+                                                      }
+                                                      defaultChecked={measurementTestFilter}
+                                                    />
+                                                    <label
+                                                      htmlFor="checkbox1"
+                                                      className="checkbox-label"
+                                                    >
+                                                      <i
+                                                        className="fas fa-vial fa-rotate-45"
+                                                        style={{
+                                                          transform: "rotate(315deg)",
+                                                        }}
+                                                      />
+                                                      Tests
+                                                    </label>
+                                                  </div>
+                                        <div className="checkbox-input">
+                                                    <input
+                                                      type="checkbox"
+                                                      id="checkbox2"
+                                                      className="clr-checkbox"
+                                                      onClick={() =>
+                                                        this.setState(
+                                                          {
+                                                            measurementOrderFilter:
+                                                              !measurementOrderFilter,
+                                                          },
+                                                          () => {
+                                                            this.getDomainTotals();
+                                                            this.getTopConcepts();
+                                                          }
+                                                        )
+                                                      }
+                                                      defaultChecked={
+                                                        measurementOrderFilter
+                                                      }
+                                                    />
+                                                    <label
+                                                      htmlFor="checkbox2"
+                                                      className="checkbox-label"
+                                                    >
+                                                      <i className="far fa-file-signature" />{" "}
+                                                      Orders
+                                                    </label>
+                                                  </div>
                                     </div>
-                                    <div className="clr-checkbox-wrapper">
-                                      <div className="checkbox-input">
-                                        <input
-                                          type="checkbox"
-                                          id="checkbox2"
-                                          className="clr-checkbox"
-                                          onClick={() =>
-                                            this.setState(
-                                              {
-                                                measurementOrderFilter:
-                                                  !measurementOrderFilter,
-                                              },
-                                              () => {
-                                                this.getDomainTotals();
-                                                this.getTopConcepts();
-                                              }
-                                            )
-                                          }
-                                          defaultChecked={
-                                            measurementOrderFilter
-                                          }
-                                        />
-                                        <label
-                                          htmlFor="checkbox2"
-                                          className="checkbox-label"
-                                        >
-                                          <i className="far fa-file-signature" />{" "}
-                                          Orders
-                                        </label>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                                 </div>
                               </div>
                             )}
                           </div>
@@ -860,10 +901,10 @@ export const EhrViewReactComponent = withRouteData(
                       </div>
                     </section>
                   </div>
-                  {concepts && numPages && numPages > 1 && (
+                  {concepts && numPages && (numPages > 1) && (
                     <ReactPaginate
-                      previousLabel={"Previous"}
-                      nextLabel={"Next"}
+                      previousLabel={"< Previous"}
+                      nextLabel={"Next >"}
                       breakLabel={"..."}
                       breakClassName={"break-me"}
                       activeClassName={"active"}
