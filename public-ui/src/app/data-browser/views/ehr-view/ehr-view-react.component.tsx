@@ -648,8 +648,8 @@ export const EhrViewReactComponent = withRouteData(
                                   id="domain-name"
                                   className="primary-display"
                                 >
-                                  Showing top
-                                  {(currentPage - 1) * 50 + 1} -{" "}
+                                  Showing top{" "}
+                                  {(currentPage - 1) * 50 + 1}-
                                   {concepts.length + (currentPage - 1) * 50} of{" "}
                                   {totalResults}
                                   {searchWord ? (
