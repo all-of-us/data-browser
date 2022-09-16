@@ -645,6 +645,13 @@ GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.strat
 where q.concept_id=q2.concept_id and q.path=q2.path
 and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040);"
 
+# TODO This is temporary please remove if this bug is no longer in the next dataset DB-1166 for reference
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"
+delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
+where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
+"
+
 #######################
 # Drop views created #
 #######################

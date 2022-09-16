@@ -239,7 +239,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   <span style={styles.catInfo}>{variant.genes}</span>
                 </div>
                 <div>
-                  <span style={styles.catHeading}>Clinical Significance:</span>
+                  <span style={styles.catHeading}>ClinVar Significance:</span>
                   <br />
                   <span style={styles.catInfo}>
                     {variant.clinicalSignificance}

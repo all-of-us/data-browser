@@ -8,6 +8,7 @@ import { ValueReactChartComponent } from "app/data-browser/charts/chart-measurem
 import { SourcesChartReactComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
 import { SourceTreeComponent } from "app/data-browser/components/source-tree/source-tree-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
+import { TooltipNoIconReactComponent } from "app/data-browser/components/tooltip/tooltip-no-icon-react.component";
 import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
@@ -120,6 +121,7 @@ interface State {
   genderResults: any;
   node: any;
   sourcesLoading: boolean;
+  showConceptCopyAlert: boolean;
 }
 
 interface Props {
@@ -162,6 +164,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       node: undefined,
       selectedTreeConcept: undefined,
       selectedTreeNode: undefined,
+      showConceptCopyAlert: false,
     };
   }
 
@@ -229,6 +232,26 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       });
 
     this.loadSourceTree(concept);
+  }
+
+  selectConceptCode() {
+      const { concept, searchTerm } = this.props;
+      let path = window.location.pathname;
+      if (searchTerm && (searchTerm.length > 0) && path.indexOf(searchTerm) > 0) {
+          path = path.substring(0, path.lastIndexOf("/"));
+      }
+      navigator.clipboard.writeText(
+        window.location.origin +
+          path +
+          "/" +
+          concept.conceptId
+      );
+      this.setState({
+        showConceptCopyAlert: true,
+      });
+      setTimeout(() => {
+        this.setState({ showConceptCopyAlert: false });
+      }, 500);
   }
 
   selectGraphType(g) {
@@ -462,6 +485,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       selectedTreeConcept,
       selectedTreeNode,
       sourcesLoading,
+      showConceptCopyAlert,
     } = this.state;
     const tabIndex = 0;
     return (
@@ -609,6 +633,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   style={styles.sourcesChart}
                   key="sources-chart"
                 >
+                {showConceptCopyAlert && ( <div style={{ margin: "-20px -20px 0 0", position: "absolute" }} >
+                <div className="copy-alert">Link copied to clipboard</div>
+                </div> )}
                   <div className="concept-box" style={styles.conceptBox}>
                     <div
                       className="concept-box-info"
@@ -621,20 +648,26 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                             : concept.conceptName}
                         </strong>
                       </p>
-                      <p style={styles.conceptBoxInfoP}>
+                      <div style={styles.conceptBoxInfoP}  onClick={(e) => {e.stopPropagation();
+                      this.selectConceptCode(); }}>
+                      <React.Fragment>
                         {selectedTreeNode
                           ? selectedTreeNode.type
                           : concept.vocabularyId}
                         Code:{" "}
                         {selectedTreeNode
                           ? selectedTreeNode.code
-                          : concept.conceptCode}
-                      </p>
-                      <p style={styles.conceptBoxInfoP}>
+                          : <TooltipNoIconReactComponent tooltipKey='conceptCopyHelpText'
+                            text={concept.conceptCode}></TooltipNoIconReactComponent>
+                          }
+                          </React.Fragment>
+                      </div>
+                      <p style={styles.conceptBoxInfoP} onClick={(e) => {e.stopPropagation(); this.selectConceptCode(); }}>
                         OMOP Concept Id:{" "}
                         {selectedTreeNode
                           ? selectedTreeNode.conceptId
-                          : concept.conceptId}
+                          : <TooltipNoIconReactComponent tooltipKey='conceptCopyHelpText'
+                            text={concept.conceptId}></TooltipNoIconReactComponent>}
                       </p>
                       {selectedTreeNode && selectedTreeNode.canSelect === 1 && (
                         <a
