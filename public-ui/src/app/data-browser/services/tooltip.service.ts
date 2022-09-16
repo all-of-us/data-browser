@@ -21,6 +21,9 @@ export const tooltips = {
       `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`,
     ],
   },
+  conceptCopyHelpText: {
+    texts: [`Click to copy`]
+  },
   conceptCodeHelpText: {
     texts: [
       "The concept code is an additional piece of information that\n" +
@@ -262,6 +265,9 @@ export class TooltipService {
                  a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`,
         `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`,
       ],
+    },
+    conceptCopyHelpText: {
+        texts: [`Click to copy`]
     },
     conceptCodeHelpText: {
       texts: [
