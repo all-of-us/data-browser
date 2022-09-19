@@ -22,7 +22,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -105,7 +104,7 @@ public class UpdateCdrVersions {
         if (!dryRun) {
           // Note: this will fail if the database still has references to the CDR version being
           // deleted.
-          cdrVersionDao.deleteById(dbCdrVersion.getCdrVersionId());
+          cdrVersionDao.delete(dbCdrVersion.getCdrVersionId());
         }
       }
     };

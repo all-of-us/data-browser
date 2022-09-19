@@ -218,8 +218,8 @@ public class ConceptService {
                     return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
                 };
         // Return up to limit results, sorted in descending count value order.
-        Pageable pageable = PageRequest.of(page, limit,
-                Sort.by(Direction.DESC, "countValue"));
+        Pageable pageable = new PageRequest(page, limit,
+                new Sort(Direction.DESC, "countValue"));
         NoCountFindAllDao<DbConcept, Long> conceptDao = new NoCountFindAllDao<>(DbConcept.class,
                 entityManager);
         return conceptDao.findAll(conceptSpecification, pageable);
@@ -229,7 +229,7 @@ public class ConceptService {
         ImmutableList.Builder<Long> standardConceptIds = ImmutableList.builder();
         ImmutableList.Builder<Long> sourceConceptIds = ImmutableList.builder();
 
-        Iterable<DbConcept> concepts = conceptDao.findAllById(conceptIds);
+        Iterable<DbConcept> concepts = conceptDao.findAll(conceptIds);
         for (DbConcept concept : concepts) {
             if (ConceptService.STANDARD_CONCEPT_CODE.equals(concept.getStandardConcept())
                     || ConceptService.CLASSIFICATION_CONCEPT_CODE.equals(concept.getStandardConcept())) {

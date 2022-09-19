@@ -1,16 +1,10 @@
 // Gradle targets for tools, used by Ruby commands and docker-compose.
 
-ext {
-  SPRING_BOOT_VERSION = '2.7.1'
-  GSON_VERSION = '2.9.0'
-  SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-  HIBERNATE_VERSION = '5.6.9.Final'
-}
+ext['hibernate.version'] = '5.2.10.Final'
 
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
 
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
@@ -18,12 +12,12 @@ def meta_db_user = System.getenv("META_DB_USER")
 def meta_db_password = System.getenv("META_DB_PASSWORD")
 
 def dbProperties = [
-  'spring.datasource.driver-class-name': 'com.mysql.jdbc.Driver',
-  // Our database isn't configured to allow outside connections (which is good), so our connections
-  // are either local or through the proxy, which encrypts all traffic.
-  'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
-  'spring.datasource.username': '${meta_db_user}',
-  'spring.datasource.password': '${meta_db_password}'
+        'spring.datasource.driver-class-name': 'com.mysql.jdbc.Driver',
+        // Our database isn't configured to allow outside connections (which is good), so our connections
+        // are either local or through the proxy, which encrypts all traffic.
+        'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
+        'spring.datasource.username': '${meta_db_user}',
+        'spring.datasource.password': '${meta_db_password}'
 ]
 
 // Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
@@ -49,8 +43,7 @@ buildscript {    // Configuration for building
     jcenter()    // Bintray's repository - a fast Maven Central mirror & more
   }
   dependencies {
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-    classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.22.RELEASE'
   }
 }
 
@@ -116,24 +109,19 @@ dependencies {
   compile 'io.swagger:swagger-annotations:1.5.9'
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.9'
   compile 'org.apache.commons:commons-lang3:3.0'
-  compile "com.google.code.gson:gson:${GSON_VERSION}"
-  compile 'org.hibernate:hibernate-validator:6.0.17.Final'
+  compile 'com.google.code.gson:gson:2.8.5'
+  compile 'org.hibernate:hibernate-validator:5.3.5.Final'
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-  compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
-  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
-  compile("org.springframework.boot:spring-boot-starter-tomcat")
-  compile("org.springframework.boot:spring-boot-starter-jdbc") {
-    exclude group: 'com.zaxxer', module: 'HikariCP'
-  }
+  compile 'org.hibernate:hibernate-core:5.2.10.Final'
 }
 
 
 gradle.taskGraph.afterTask { Task task, TaskState state ->
   if (state.failure && task.path == ":tools:compileJava") {
     logger.warn(
-      "\n\n*** Tools compilation failed. ***\nIf the failure is due to a missing class, ensure" +
-      " the class is included in the sourceSets section of tools/build.gradle.\n"
+            "\n\n*** Tools compilation failed. ***\nIf the failure is due to a missing class, ensure" +
+                    " the class is included in the sourceSets section of tools/build.gradle.\n"
     )
   }
 }

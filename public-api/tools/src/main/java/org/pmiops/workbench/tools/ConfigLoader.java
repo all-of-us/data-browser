@@ -19,7 +19,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.boot.WebApplicationType;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -68,7 +67,7 @@ public class ConfigLoader {
         log.info(marshalledDiff.toString());
         System.exit(1);
       }
-      Config existingConfig = configDao.findById(configKey).orElse(null);
+      Config existingConfig = configDao.findOne(configKey);
       if (existingConfig == null) {
         log.info("No configuration exists, creating one.");
         Config config = new Config();

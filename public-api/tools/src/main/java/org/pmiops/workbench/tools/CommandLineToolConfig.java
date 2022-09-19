@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.WebApplicationType;
 
 @Configuration
 @EnableAutoConfiguration
@@ -14,7 +13,7 @@ import org.springframework.boot.WebApplicationType;
 public class CommandLineToolConfig {
     public static void runCommandLine(Class<?> cliConfig, String[] args) {
         new SpringApplicationBuilder(CommandLineToolConfig.class, cliConfig)
-                .web(WebApplicationType.NONE)
+                .web(false)
                 .run(args)
                 .close();
     }
