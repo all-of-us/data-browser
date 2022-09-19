@@ -47,7 +47,7 @@ export function Handle({ handle: { id, percent, value }, getHandleProps }) {
   return (    
     <React.Fragment>
     <g className="handle">
-    <text fontSize='3rem' text-anchor="middle"  x={dims[0] * ((percent) / 100)} y="-50" fill="#262262">{value}</text>
+    <text fontSize='3rem' textAnchor="middle"  x={dims[0] * ((percent) / 100)} y="-50" fill="#262262">{value}</text>
       <rect
         width={r0}
         height={r0}

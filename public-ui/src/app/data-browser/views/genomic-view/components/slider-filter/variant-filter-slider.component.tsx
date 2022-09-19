@@ -88,8 +88,6 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
           </Tracks>
           <Handles>
             {({ handles, getHandleProps }) => (
-              console.log(handles),
-
               <g transform={`translate(0,${dims[1] / 2})`}>
                 {handles.map(handle => (
                   <Handle

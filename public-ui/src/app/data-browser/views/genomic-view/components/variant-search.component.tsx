@@ -27,11 +27,11 @@ const styles = reactStyles({
     display: "flex",
     alignItems: "center",
     height: "1rem",
+    paddingTop:".5rem"
   },
   filterBtn: {
     fontFamily: "gothamBold",
     color: "#216FB4",
-    paddingBottom: "1rem",
     cursor: "Pointer",
     width:"fit-content"
   },
@@ -142,12 +142,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
+            {(!loading && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div> : <div style={{height:'1rem'}}></div>}
             {filterMetadata &&
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-            {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
-                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
