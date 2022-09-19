@@ -512,7 +512,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             variantListSize > 0 && (
               <React.Fragment>
                 <span style={styles.resultBodyItem}>
-                  <div style={styles.resultStat}>{variantListSize}</div>{" "}
+                  <div style={styles.resultStat}>{variantListSize.toLocaleString()}</div>{" "}
                   matching genomic variants
                 </span>
                 <span style={styles.resultBodyItem}>
