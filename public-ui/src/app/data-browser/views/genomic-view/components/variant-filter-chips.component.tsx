@@ -26,7 +26,7 @@ const styles = reactStyles({
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
-        paddingLeft: '0.25rem'
+        paddingRight: '0.25rem'
     },
     chip: {
         display: 'flex',

@@ -113,6 +113,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 });
             }
         });
+        this.setState({filteredMetadata: this.state.filteredMetadata});
     }
 
     render() {
