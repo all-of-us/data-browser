@@ -101,7 +101,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     render() {
-        const { chips } = this.state;
+        const { chips } = this.state;       
         return <div style={styles.chipFormat}>
             {chips.length > 0 && chips.map((el, count) => {
                 if (Array.isArray(el.data)) {

@@ -431,6 +431,8 @@ export const GenomicViewComponent = withRouteData(
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
       };
+      
+      
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {

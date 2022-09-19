@@ -108,7 +108,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount(): void {
+  componentDidMount(): void {    
     if (Array.isArray(this.state.filterCheckMap) && this.state.filterCheckMap.every(t => t.checked)) {
       this.state.filterCheckMap.forEach(i => i.checked = false);
     }
@@ -141,27 +141,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     this.props.onFilterChange(filtered, this.props.category);
   }
 
-  // handleRangeSelect(event, isMax) {
-  //     console.log(this.state.filterItemState, 'this.state.filterItemState');
-
-  //     const maxSliderValue = isMax && event.target.value;
-  //     const minSliderValue = !isMax && event.target.value;
-  //     console.log('max', this.max, maxSliderValue, this.min, 'min', minSliderValue);
-
-  //     if (isMax) {
-  //         console.log(this.props.filterItem.max, maxSliderValue, 'this is max');
-  //         this.max = maxSliderValue;
-  //         this.state.filterItemState.max = this.max;
-  //     } else {
-  //         console.log(this.props.filterItem.min, minSliderValue, 'this is min');
-  //         // this.min = minSliderValue;
-  //         this.setState({ filterItemMin: this.min });
-  //     }
-  //     this.state.filterItemState.checked = true;
-  //     this.props.onFilterChange(this.state.filterItemState, this.props.category);
-  //     this.state.filterItemState.checked = true;
-  //     this.props.onFilterChange(this.state.filterItemState, this.props.category);
-  // }
 
   handleSliderChange(vals, filterItem) {
     const updatedFilterItem = filterItem;
