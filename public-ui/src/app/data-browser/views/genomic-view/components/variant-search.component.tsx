@@ -33,6 +33,7 @@ const styles = reactStyles({
     color: "#216FB4",
     paddingBottom: "1rem",
     cursor: "Pointer",
+    width:"fit-content"
   },
   filterContainer: {
     position: "relative",
