@@ -254,6 +254,8 @@ dependencies {
 
     compile 'joda-time:joda-time:2.10'
 
+    compile 'com.google.protobuf:protobuf-java:3.19.2'
+
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
