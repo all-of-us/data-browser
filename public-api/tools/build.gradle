@@ -110,7 +110,7 @@ repositories {   // repositories for Jar's you access in your code
 
 dependencies {
   compile "org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}"
-  compile "org.yaml:snakeyaml:1.31"
+  compile "org.yaml:snakeyaml:1.32"
   compile 'commons-io:commons-io:2.6'
   compile 'com.github.fge:json-patch:1.9'
   compile 'io.swagger:swagger-annotations:1.5.9'
