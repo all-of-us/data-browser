@@ -207,7 +207,7 @@ dependencies {
     compile 'mysql:mysql-connector-java:8.0.28'
 
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
     compile 'com.google.guava:guava:26.0-jre'
 
     compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
@@ -221,6 +221,8 @@ dependencies {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
+
+    compile 'org.springframework:spring-context:5.3.19'
 
     compile "com.google.code.gson:gson:${GSON_VERSION}"
     compile 'com.google.api-client:google-api-client:1.35.1'
@@ -242,7 +244,7 @@ dependencies {
     compile 'javax.inject:javax.inject:1'
     compile 'io.swagger:swagger-annotations:1.5.16'
     compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.google.guava:guava:26.0-jre'
+    compile 'com.google.guava:guava:30.0-jre'
 
     compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
         exclude group: 'com.google.protobuf', module: 'protobuf-java'
