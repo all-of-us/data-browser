@@ -93,8 +93,19 @@ buildscript {    // Configuration for building
 
     ext {
         GAE_VERSION = '1.9.64'
-        SPRING_BOOT_VERSION = '1.5.22.RELEASE'
-        JACKSON_VERSION = '2.9.9'
+        GOOGLE_TRUTH_VERSION = '1.1.3'
+        GSON_VERSION = '2.9.0'
+        HIBERNATE_VERSION = '5.6.9.Final'
+        SPRING_BOOT_VERSION = '2.7.1'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
+        JACKSON_DATABIND_VERSION = '2.13.3'
+        JACKSON_VERSION = '2.13.3'
+        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
+        JACKSON_VERSION = '2.13.1'
+        OKHTTP_VERSION = '2.7.5'
+        SPRINGFOX_VERSION = '3.0.0'
+        LIQUIBASE_VERSION = '4.12.0'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
     }
 
     repositories {
@@ -110,10 +121,11 @@ buildscript {    // Configuration for building
         classpath 'io.swagger:swagger-codegen:2.2.3'
         classpath 'org.owasp:dependency-check-gradle:6.0.1'
         classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
+        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
     }
 }
 
-ext['hibernate.version'] = '5.2.10.Final'
+ext['hibernate.version'] = '5.6.9.Final'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -124,6 +136,7 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'io.spring.dependency-management'
 
 sourceSets {
     generated {
@@ -194,10 +207,10 @@ dependencies {
     compile 'mysql:mysql-connector-java:8.0.13'
 
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '4.1.1.RELEASE'
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.2'
     compile 'com.google.guava:guava:26.0-jre'
 
-    compile 'com.google.cloud.sql:mysql-socket-factory:1.0.10'
+    compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
     compile "com.google.appengine:appengine:${GAE_VERSION}"
     compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
     compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
@@ -209,42 +222,47 @@ dependencies {
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
 
-    compile 'com.google.code.gson:gson:2.8.5'
-    compile 'com.google.api-client:google-api-client:1.30.5'
+    compile "com.google.code.gson:gson:${GSON_VERSION}"
+    compile 'com.google.api-client:google-api-client:1.35.1'
     compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
-    compile 'org.springframework.security:spring-security-web:4.2.2.RELEASE'
-    compile 'org.hibernate:hibernate-core:5.2.10.Final'
+    compile 'org.springframework.security:spring-security-web:5.6.2'
+    compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
     compile "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
     compile "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-    compile 'joda-time:joda-time:2.10'
+    compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:${JACKSON_VERSION}"
+    compile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
+    compile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
     compile 'javax.inject:javax.inject:1'
     compile 'io.swagger:swagger-annotations:1.5.16'
     compile 'org.apache.commons:commons-lang3:3.0'
     compile 'com.google.guava:guava:26.0-jre'
-    compile "com.google.cloud:google-cloud-bigquery:1.122.2"
+    compile "com.google.cloud:google-cloud-bigquery:2.13.2"
+    compile "org.apache.tomcat:tomcat-jdbc:10.0.20"
+
+    compile 'joda-time:joda-time:2.10'
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-    compile 'com.google.api-client:google-api-client:1.30.10'
-    compile 'com.auth0:java-jwt:3.10.3'
+    compile 'com.google.api-client:google-api-client:1.35.1'
+    compile 'com.auth0:java-jwt:3.19.2'
 
 // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
     compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
 
     // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
     compile 'org.json:json:20160810'
+    compile 'org.springframework.boot:spring-boot-starter-validation'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.mockito:mockito-core:3.11.2'
 
     testCompile("org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}") {
         exclude group: 'org.junit', module: 'junit'
@@ -262,11 +280,12 @@ dependencies {
     // example here:
     // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest"
+    generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
     generatedCompile 'io.springfox:springfox-swagger2:2.6.1'
     generatedCompile 'io.springfox:springfox-swagger-ui:2.6.1'
-    generatedCompile 'com.squareup.okhttp:okhttp:2.7.5'
-    generatedCompile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-    generatedCompile 'com.google.code.gson:gson:2.8.5'
+    generatedCompile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
+    generatedCompile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
+    generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }

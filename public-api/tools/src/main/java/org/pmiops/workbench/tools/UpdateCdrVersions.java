@@ -104,7 +104,7 @@ public class UpdateCdrVersions {
         if (!dryRun) {
           // Note: this will fail if the database still has references to the CDR version being
           // deleted.
-          cdrVersionDao.delete(dbCdrVersion.getCdrVersionId());
+          cdrVersionDao.deleteById(dbCdrVersion.getCdrVersionId());
         }
       }
     };
