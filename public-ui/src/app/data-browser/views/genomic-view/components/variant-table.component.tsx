@@ -408,7 +408,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   }}
                   title="Click to sort"
                 >
-                  Clinical Significance
+                  ClinVar Significance
                 </span>
                 {sortMetadata.clinical_significance.sortActive && (
                   <React.Fragment>

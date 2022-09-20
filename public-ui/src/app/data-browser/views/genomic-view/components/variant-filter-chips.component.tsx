@@ -14,7 +14,7 @@ interface State {
 const lables = {
     gene: 'Gene',
     consequence: 'Consequence',
-    clinicalSignificance: 'Clinical Significance',
+    clinicalSignificance: 'ClinVar Significance',
     alleleNumber: 'Allele Number',
     alleleFrequency: 'Allele Frequency',
     alleleCount: 'Allele Count'
