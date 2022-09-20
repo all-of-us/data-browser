@@ -247,6 +247,9 @@ dependencies {
 
     compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
         exclude group: 'org.json', module: 'json'
+    }
+
+    compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
         exclude group: 'com.google.protobuf', module: 'protobuf-java'
     }
 
