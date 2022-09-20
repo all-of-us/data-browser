@@ -246,11 +246,8 @@ dependencies {
     compile 'com.google.guava:guava:26.0-jre'
 
     compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
+        exclude group: 'com.google', module: 'protobuf-java'
         exclude group: 'org.json', module: 'json'
-    }
-
-    compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
     }
 
     compile "org.apache.tomcat:tomcat-jdbc:10.0.20"
@@ -258,11 +255,6 @@ dependencies {
     compile 'joda-time:joda-time:2.10'
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-
-    implementation('com.google.cloud:google-cloud-bigquery:2.13.2') {
-        exclude group: 'com.google.protobuf' , module: 'protobuf-java'
-        exclude group: 'org.json', module: 'json'
-    }
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
