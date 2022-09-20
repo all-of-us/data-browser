@@ -246,8 +246,8 @@ dependencies {
     compile 'com.google.guava:guava:26.0-jre'
 
     compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
         exclude group: 'org.json', module: 'json'
+        exclude group: 'com.google.protobuf', module: 'protobuf-java'
     }
 
     compile "org.apache.tomcat:tomcat-jdbc:10.0.20"
