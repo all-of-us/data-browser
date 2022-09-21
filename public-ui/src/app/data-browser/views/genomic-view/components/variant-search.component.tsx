@@ -27,12 +27,13 @@ const styles = reactStyles({
     display: "flex",
     alignItems: "center",
     height: "1rem",
+    paddingTop:".5rem"
   },
   filterBtn: {
     fontFamily: "gothamBold",
     color: "#216FB4",
-    paddingBottom: "1rem",
     cursor: "Pointer",
+    width:"fit-content"
   },
   filterContainer: {
     position: "relative",
@@ -99,6 +100,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchTerm, filterMetadata } = this.props;
+    
     if (prevProps.searchTerm !== searchTerm) {
         this.setState({ searchWord: searchTerm });
     }
@@ -117,14 +119,13 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleChipChange(changes) {
-        this.setState({ filteredMetaMap: changes });
-        if (!this.state.filterShow) {
-            this.handleFilterSubmit(changes);
-        }
+        // this.setState({ filteredMetaMap: changes });
+        this.handleFilterSubmit(changes);
     }
 
     render() {
-        const { searchWord, filterShow, filteredMetaMap, filterMetadata } = this.state;
+        const { searchWord, filterShow } = this.state;
+        const {filterMetadata} = this.props
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
@@ -141,12 +142,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
+            {(!loading && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div> : <div style={{height:'1rem'}}></div>}
             {filterMetadata &&
                 <VariantFilterChips
-                    filteredMetadata={filteredMetaMap}
+                    filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-            {(!loading && (variantListSize > 0) && environment.genoFilters) && <div onClick={() => this.showFilter()}
-                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div>}
             {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
                 <span style={styles.loading}><Spinner /></span>} variants found</strong> :
                 <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
@@ -155,8 +156,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 {(!loading && filterShow) &&
                     <VariantFilterComponent
                         filterMetadata={filterMetadata}
-                        onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)}
-                        onFilterChange={(filteredMetadata: GenomicFilters) => this.setState({ filteredMetaMap: filteredMetadata })} />}
+                        onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)} />}
             </div>
             }
 
