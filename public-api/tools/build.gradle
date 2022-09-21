@@ -18,12 +18,12 @@ def meta_db_user = System.getenv("META_DB_USER")
 def meta_db_password = System.getenv("META_DB_PASSWORD")
 
 def dbProperties = [
-  'spring.datasource.driver-class-name': 'com.mysql.jdbc.Driver',
-  // Our database isn't configured to allow outside connections (which is good), so our connections
-  // are either local or through the proxy, which encrypts all traffic.
-  'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
-  'spring.datasource.username': '${meta_db_user}',
-  'spring.datasource.password': '${meta_db_password}'
+        'spring.datasource.driver-class-name': 'com.mysql.jdbc.Driver',
+        // Our database isn't configured to allow outside connections (which is good), so our connections
+        // are either local or through the proxy, which encrypts all traffic.
+        'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
+        'spring.datasource.username': '${meta_db_user}',
+        'spring.datasource.password': '${meta_db_password}'
 ]
 
 // Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
@@ -109,31 +109,28 @@ repositories {   // repositories for Jar's you access in your code
 
 
 dependencies {
-  compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+  compile "org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}"
+  compile "org.yaml:snakeyaml:1.32"
   compile 'commons-io:commons-io:2.6'
-  compile 'joda-time:joda-time:2.10'
   compile 'com.github.fge:json-patch:1.9'
   compile 'io.swagger:swagger-annotations:1.5.9'
   compile 'com.google.cloud.sql:mysql-socket-factory:1.0.9'
   compile 'org.apache.commons:commons-lang3:3.0'
-  compile "com.google.code.gson:gson:${GSON_VERSION}"
-  compile 'org.hibernate:hibernate-validator:6.0.17.Final'
+  compile 'com.google.code.gson:gson:2.8.9'
+  compile "org.hibernate:hibernate-validator:5.3.6.Final"
   compile 'com.squareup.okhttp:okhttp:2.7.5'
   compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
   compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
-  compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
-  compile("org.springframework.boot:spring-boot-starter-tomcat")
-  compile("org.springframework.boot:spring-boot-starter-jdbc") {
-    exclude group: 'com.zaxxer', module: 'HikariCP'
-  }
+  compile "org.apache.tomcat:tomcat-jdbc:8.0.51"
+  compile 'joda-time:joda-time:2.10'
 }
 
 
 gradle.taskGraph.afterTask { Task task, TaskState state ->
   if (state.failure && task.path == ":tools:compileJava") {
     logger.warn(
-      "\n\n*** Tools compilation failed. ***\nIf the failure is due to a missing class, ensure" +
-      " the class is included in the sourceSets section of tools/build.gradle.\n"
+            "\n\n*** Tools compilation failed. ***\nIf the failure is due to a missing class, ensure" +
+                    " the class is included in the sourceSets section of tools/build.gradle.\n"
     )
   }
 }
