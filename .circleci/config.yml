@@ -2,7 +2,7 @@ version: 3
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:buildimage-0.0.21
+    - image: allofustest/workbench:buildimage-0.0.24
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
