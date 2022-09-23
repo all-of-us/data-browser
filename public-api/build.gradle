@@ -1,11 +1,84 @@
 import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
 
+buildscript {    // Configuration for building
+
+    ext {
+        GAE_VERSION = '1.9.64'
+        GOOGLE_TRUTH_VERSION = '1.1.3'
+        GSON_VERSION = '2.9.0'
+        HIBERNATE_VERSION = '5.6.9.Final'
+        SPRING_BOOT_VERSION = '2.7.1'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
+        JACKSON_DATABIND_VERSION = '2.13.3'
+        JACKSON_VERSION = '2.13.3'
+        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
+        JACKSON_VERSION = '2.13.4'
+        OKHTTP_VERSION = '2.7.5'
+        SPRINGFOX_VERSION = '3.0.0'
+        LIQUIBASE_VERSION = '4.12.0'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
+    }
+
+    project.ext['hibernate.version'] = '5.6.9.Final'
+
+    repositories {
+        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
+        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
+        classpath 'io.swagger:swagger-codegen:2.2.3'
+        classpath 'org.owasp:dependency-check-gradle:6.0.1'
+        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
+        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.hidetake.swagger.generator'
+apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'net.ltgt.apt-idea'
+apply plugin: 'io.spring.dependency-management'
+
 def swaggerTemplateDir = 'src/main/resources'
 def swaggerSourceFile = 'src/main/resources/public-api.yaml'
 def swaggerTargetFolder = 'src/generated/java'
 
+sourceSets {
+    generated {
+        compileClasspath = configurations.generatedCompile
+    }
+    main {
+        compileClasspath += generated.output
+        runtimeClasspath += generated.output
+    }
+    test {
+        compileClasspath += generated.output
+        runtimeClasspath += generated.output
+    }
+    integration {
+        java {
+            compileClasspath += main.output + test.output + generated.output
+            runtimeClasspath += main.output + test.output + generated.output
+            srcDir file('src/integration/java')
+        }
+    }
+}
+
 task generateApi {
+    group 'swagger-codegen'
+    description 'Generates the Spring controllers and API model classes in Java.'
+    dependsOn tasks.validateSwagger
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
     doLast {
@@ -75,7 +148,7 @@ task generateWorkbenchClient {
     }
 }
 
-task generate_local_appengine_web_xml(type: Exec) {
+task generate_appengine_web_xml(type: Exec) {
     executable "bash"
     args "libproject/generate_appengine_web_xml.sh"
 }
@@ -89,87 +162,19 @@ configurations {
     }
 }
 
-buildscript {    // Configuration for building
+classes.dependsOn 'generatedClasses'
 
-    ext {
-        GAE_VERSION = '1.9.64'
-        GOOGLE_TRUTH_VERSION = '1.1.3'
-        GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.13.3'
-        JACKSON_VERSION = '2.13.3'
-        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-        JACKSON_VERSION = '2.13.4'
-        OKHTTP_VERSION = '2.7.5'
-        SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-    }
+def swaggerCodegenTasks = ['generateApi', 'generateApiClient', 'generateWorkbenchClient']
 
-    repositories {
-        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
-        classpath 'org.owasp:dependency-check-gradle:6.0.1'
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
-        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
-    }
+project.tasks.ideaModule.dependsOn(swaggerCodegenTasks)
+project.tasks.compileGeneratedJava.dependsOn(swaggerCodegenTasks)
+
+project.tasks.bootWar.dependsOn(['compileGeneratedJava', 'generate_appengine_web_xml'])
+
+tasks.compileJava {
+    dependsOn 'compileGeneratedJava'
+    options.compilerArgs << '-Xlint:unchecked'
 }
-
-ext['hibernate.version'] = '5.6.9.Final'
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.hidetake.swagger.generator'
-apply plugin: 'org.owasp.dependencycheck'
-apply plugin: 'net.ltgt.apt-idea'
-apply plugin: 'io.spring.dependency-management'
-
-sourceSets {
-    generated {
-        compileClasspath = configurations.generatedCompile
-    }
-    main {
-        compileClasspath += generated.output
-        runtimeClasspath += generated.output
-    }
-    test {
-        compileClasspath += generated.output
-        runtimeClasspath += generated.output
-    }
-    integration {
-        java {
-            compileClasspath += main.output + test.output + generated.output
-            runtimeClasspath += main.output + test.output + generated.output
-            srcDir file('src/integration/java')
-        }
-    }
-}
-
-generateApi.dependsOn validateSwagger
-ideaModule.dependsOn generateApi
-compileGeneratedJava.dependsOn generateApi
-ideaModule.dependsOn generateApiClient
-compileGeneratedJava.dependsOn generateApiClient
-ideaModule.dependsOn generateWorkbenchClient
-compileGeneratedJava.dependsOn generateWorkbenchClient
-classes.dependsOn generatedClasses
-compileJava.dependsOn compileGeneratedJava
-
-war.dependsOn generate_local_appengine_web_xml
 
 task integration(type: Test) {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
