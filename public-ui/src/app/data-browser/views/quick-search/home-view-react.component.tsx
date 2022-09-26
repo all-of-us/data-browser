@@ -57,10 +57,16 @@ const css = `
 .result-bottom-link:hover {
     color: #262262;
 }
+
+.survey-result-boxes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(239px, 1fr));
+  column-gap:1rem;
+  row-gap:1rem;
+}
 .result-boxes {
   display: grid;
-  // grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-columns: repeat(auto-fill, minmax(239px, 1fr));
+  grid-template-columns: repeat(4, minmax(239px, 1fr));
   grid-template-areas: 
   '. . . .'
   'gHeading pmHeading pmHeading pmHeading'
@@ -118,8 +124,19 @@ const css = `
     padding-left:1em;
     justify-content: 'flex-start';
 }
+.pm-boxes {
+  display:grid;
+  grid-template-columns: repeat(3, minmax(239px, 1fr));
+  column-gap:1rem;
+}
+.result-box:last-of-type {
+  margin-right: 0;
+}
+
 @media (max-width: 1048px) {
+
   .result-boxes {
+    grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
     ' . .'
     ' . .'
@@ -128,22 +145,24 @@ const css = `
     'pmHeading pmHeading'
     'pmBoxes pmBoxes ';
 }
-.genomic-boxes{
-  grid-template-columns: 1fr 1fr;
-}
-  .pm-boxes {
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap:1rem;
+  .genomic-boxes {
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
-.result-box:last-of-type {
-    margin-right: 0;
+  .pm-boxes {
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
+  }
+
+  .cope-preview {
+      justify-content: flex-start;
+  }
+  .tooltip-container {
+      padding-left: 1em;
+  }
 }
-.cope-preview {
-    justify-content: flex-start;
-}
-.tooltip-container {
-    padding-left: 1em;
+@media (max-width: 766px) {
+  .result-boxes, .survey-result-boxes{
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
+  }
 }
     `;
 const styles = reactStyles({
@@ -869,9 +888,9 @@ export const dBHomeComponent = withRouteData(
                         ...styles.resultHeading,
                       }}
                     >
-                      Survey Questions{" "}
+                      Survey Questions
                     </h5>
-                    <div style={styles.resultBoxes}>
+                    <div className="survey-result-boxes">
                       {surveyInfo.map((survey, index) => {
                         const key = "survey" + index;
                         return (
