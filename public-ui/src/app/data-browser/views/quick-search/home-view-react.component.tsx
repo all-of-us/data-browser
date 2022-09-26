@@ -58,48 +58,46 @@ const css = `
     color: #262262;
 }
 .result-boxes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-bottom: 2rem;
-    flex-grow: 1;
+  display: grid;
+  // grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(239px, 1fr));
+  grid-template-areas: 
+  '. . . .'
+  'gHeading pmHeading pmHeading pmHeading'
+  ' gBoxes pmBoxes pmBoxes pmBoxes';
+  
+  grid-template-rows: 1fr;
+  column-gap: 1rem;
+  row-gap:1rem;
+  margin-bottom: 2rem;
 }
-.geno-pm-container {
-    display:flex;
-    justify-content: flex-start;
-    margin-bottom: 2rem;
-    flex-grow: 1;
-}
+
 .genomic-boxes {
-  width: calc(((100% / 12) * 4));
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-area: gBoxes;
+  column-gap: 1rem;
 }
-.genomic-box {
-  height:87.5%;
-}
-.genomic-box .result-box{
-    width:100%;
-    height:101.5%;
-    margin-bottom:0;
-    width: calc(((100% / 12) * 12) - 18px);
-}
+
 .pm-boxes{
-    // padding-left:.5rem;
-    width:100%;
+  grid-area: pmBoxes;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  column-gap:1rem;
+
+
 }
-.pm-box{
-    display:flex;
-}
-.pm-box .result-box{
-    width: calc(((100% / 12) * 4) - 18px);
-    margin-bottom:0;
+.pm-boxes .result-box{
+    // margin-right:1rem;
 }
 .result-box {
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    width: calc(((100% / 12) * 3) - 18px);
-    margin-right: 18px;
-    margin-bottom: 18px;
+    min-width:239px;
+    // display: flex;
+    // flex-direction: column;
+    display:grid;
+    grid-template-rows: 20% 55% 1fr;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
@@ -108,7 +106,6 @@ const css = `
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    width: calc(((100% / 12) * 1) - 18px);
     margin-bottom: 18px;
     border-radius: 5px;
     background-color: #ffffff;
@@ -121,39 +118,24 @@ const css = `
     padding-left:1em;
     justify-content: 'flex-start';
 }
-@media (max-width: 1000px) {
-    .iconlinks {
-        margin-bottom: -13em;
-    }
-    .geno-pm-container {
-        flex-direction:column;
-    }
-    .pm-boxes{
-        padding-left:0;
-    }
-    .genomic-boxes {
-      width: 100%;
-      padding-right:0;
-      margin-bottom:2rem;
-    }
-    .genomic-box .result-box {
-      width: calc(((100% / 12) * 5) - 18px);
-    }
-    .result-box {
-        height: auto;
-        min-width: calc((100% / 12) * 5);
-    }
-    .result-box {
-        margin-bottom:18px;
-    }
-    .genomic-box {
-        width:100%;
-        height:auto;
-    }
-    .result-box:nth-of-type(2) {
-        margin-right: 0;
-    }
+@media (max-width: 1048px) {
+  .result-boxes {
+    grid-template-areas:
+    ' . .'
+    ' . .'
+    'gHeading gHeading'
+    ' gBoxes gBoxes'
+    'pmHeading pmHeading'
+    'pmBoxes pmBoxes ';
 }
+.genomic-boxes{
+  grid-template-columns: 1fr 1fr;
+}
+  .pm-boxes {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap:1rem;
+  }
 .result-box:last-of-type {
     margin-right: 0;
 }
@@ -187,7 +169,7 @@ const styles = reactStyles({
     cursor: "pointer",
     display: "flex",
     flexDirection: "column",
-    width: "calc(((100% / 12) * 3) - 18px)",
+    // width: "calc(((100% / 12) * 3) - 18px)",
     marginRight: "18px",
     marginBottom: "18px",
     borderRadius: "5px",
@@ -202,7 +184,6 @@ const styles = reactStyles({
     paddingBottom: "3px",
     margin: "0",
     fontSize: "16px",
-    height: "4.5rem",
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -214,7 +195,6 @@ const styles = reactStyles({
     paddingTop: "0px",
     display: "flex",
     flexDirection: "column",
-    height: "60%",
   },
   genDesc: {
     marginBottom: "1em",
@@ -222,17 +202,6 @@ const styles = reactStyles({
   genomicTile: {
     display: "flex",
     flexDirection: "row",
-  },
-  genomicParticipantMetadata: {
-    display: "flex",
-    flexDirection: "column",
-    color: "#302c71",
-    fontFamily: "GothamBook, Arial, sans-serif",
-    fontSize: "14px",
-    padding: "18px",
-    paddingTop: "0px",
-    height: "60%",
-    width: "70%",
   },
   participantText: {
     display: "block",
@@ -245,7 +214,7 @@ const styles = reactStyles({
     fontSize: "23px",
     margin: "0",
     paddingTop: "9px",
-    paddingBottom: "9px",
+    // paddingBottom: "9px",
     paddingLeft: "0",
   },
   resultBodyItem: {
@@ -286,7 +255,6 @@ const styles = reactStyles({
     color: "#2b266d",
   },
   resultBodyDescription: {
-    height: "7em",
   },
 });
 
@@ -805,9 +773,7 @@ export const dBHomeComponent = withRouteData(
           {(loading || loadingVariantListSize) && <Spinner />}
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
-              {domainInfo.length > 0 && (
-                <React.Fragment>
-                  <h5
+                    <h5
                     style={{
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
@@ -815,7 +781,9 @@ export const dBHomeComponent = withRouteData(
                   >
                     EHR Domains
                   </h5>
-                  <div className="result-boxes">
+              <div className="result-boxes">
+                {domainInfo.length > 0 && (
+                  <React.Fragment>
                     {domainInfo.map((domain, index) => {
                       const key = "domain" + index;
                       return (
@@ -830,106 +798,107 @@ export const dBHomeComponent = withRouteData(
                         />
                       );
                     })}
-                  </div>
-                </React.Fragment>
-              )}
-              <div className="geno-pm-container">
+                  </React.Fragment>
+                )}
                 {environment.geno &&
                   genomicInfo &&
                   !loadingVariantListSize &&
-                  variantListSize > 0 && (
+                  variantListSize > 0 && (<React.Fragment>
+                    <h5
+                      style={{
+                        ...globalStyles.secondaryDisplay,
+                        ...styles.resultHeading,
+                        gridArea: 'gHeading',
+                        marginBottom:'-1rem',
+                      }}
+                    >
+                      Genomics
+                    </h5>
                     <div className="genomic-boxes">
-                      <h5
-                        style={{
-                          ...globalStyles.secondaryDisplay,
-                          ...styles.resultHeading,
-                        }}
-                      >
-                        Genomics
-                      </h5>
-                      <div className="genomic-box">
-                        <ResultLinksComponent
-                          typing={!this.typing}
-                          key="genomics-tile"
-                          searchWord={searchWord}
-                          {...genomicInfo}
-                          domainType="genomics"
-                          variantListSize={variantListSize}
-                          loadingVariantListSize={loadingVariantListSize}
-                        />
-                      </div>
+
+
+                      <ResultLinksComponent
+                        typing={!this.typing}
+                        key="genomics-tile"
+                        searchWord={searchWord}
+                        {...genomicInfo}
+                        domainType="genomics"
+                        variantListSize={variantListSize}
+                        loadingVariantListSize={loadingVariantListSize}
+                      />
                     </div>
+                  </React.Fragment>
                   )}
-                {physicalMeasurementsInfo.length > 0 && (
-                  <div style={{ paddingLeft: this.state.searchWord && !this.typing ? '0' : 'inherent' }} className="pm-boxes">
+                {physicalMeasurementsInfo.length > 0 && (<React.Fragment>
+                  <h5
+                    style={{
+                      ...globalStyles.secondaryDisplay,
+                      ...styles.resultHeading,
+                      gridArea: 'pmHeading',
+                      marginBottom:'-1rem',
+                    }}
+                  >
+                    Physical Measurements and Wearables
+                  </h5>
+                  <div className="pm-boxes">
+                    {physicalMeasurementsInfo.map(
+                      (phyMeasurements, index) => {
+                        const key = "phyMeasurements" + index;
+                        return (
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key={key}
+                            searchWord={searchWord}
+                            {...phyMeasurements}
+                            domainType="pmw"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                        );
+                      }
+                    )}
+                  </div>
+                </React.Fragment>
+                )}
+                </div>
+                {surveyInfo.length > 0 && (
+                  <React.Fragment>
                     <h5
                       style={{
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
                       }}
                     >
-                      Physical Measurements and Wearables{" "}
+                      Survey Questions{" "}
                     </h5>
-                    <div className="pm-box">
-                      {physicalMeasurementsInfo.map(
-                        (phyMeasurements, index) => {
-                          const key = "phyMeasurements" + index;
-                          return (
-                            <ResultLinksComponent
-                              typing={!this.typing}
-                              key={key}
-                              searchWord={searchWord}
-                              {...phyMeasurements}
-                              domainType="pmw"
-                              variantListSize={variantListSize}
-                              loadingVariantListSize={loadingVariantListSize}
-                            />
-                          );
-                        }
-                      )}
+                    <div style={styles.resultBoxes}>
+                      {surveyInfo.map((survey, index) => {
+                        const key = "survey" + index;
+                        return (
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key={key}
+                            searchWord={searchWord}
+                            {...survey}
+                            domainType="survey"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                        );
+                      })}
                     </div>
-                  </div>
+                  </React.Fragment>
                 )}
-              </div>
-
-              {surveyInfo.length > 0 && (
-                <React.Fragment>
+                {noResults && (
                   <h5
                     style={{
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                     }}
                   >
-                    Survey Questions{" "}
+                    0 results
                   </h5>
-                  <div style={styles.resultBoxes}>
-                    {surveyInfo.map((survey, index) => {
-                      const key = "survey" + index;
-                      return (
-                        <ResultLinksComponent
-                          typing={!this.typing}
-                          key={key}
-                          searchWord={searchWord}
-                          {...survey}
-                          domainType="survey"
-                          variantListSize={variantListSize}
-                          loadingVariantListSize={loadingVariantListSize}
-                        />
-                      );
-                    })}
-                  </div>
-                </React.Fragment>
-              )}
-              {noResults && (
-                <h5
-                  style={{
-                    ...globalStyles.secondaryDisplay,
-                    ...styles.resultHeading,
-                  }}
-                >
-                  0 results
-                </h5>
-              )}
+                )}
             </section>
           )}
           {popUp && (
