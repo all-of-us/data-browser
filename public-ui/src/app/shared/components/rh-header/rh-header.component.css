@@ -1,17 +1,17 @@
 /* default is when the screen is the smallest */
 .wrapper {
-  padding:.5rem;
-  background:white;
+  padding: 0.5rem;
+  background: white;
   border-bottom: #2b266d 1px solid;
 }
-.site-header{
+.site-header {
   /* height: 2rem */
 }
 .cta-bar .login-btn {
   display: none;
 }
 
-.logo{
+.logo {
   padding: 1rem 0 0 1rem;
 }
 li > ul {
@@ -20,9 +20,9 @@ li > ul {
 }
 
 header a:hover,
-header  a:link,
+header a:link,
 header a:visited,
-header  a:active,
+header a:active,
 a {
   text-decoration: none;
   color: #2b266d;
@@ -60,8 +60,6 @@ li.flip::before {
   transform: rotate(0) scale(0.4);
   cursor: pointer;
 }
-
-
 
 #nav-icon span {
   display: block;
@@ -155,11 +153,10 @@ li.flip::before {
   transition: background 150ms ease-in-out, color 150ms ease-in-out;
 }
 
-
 .headwrap {
   /* display: flex; */
   /* margin: 0; */
-  background: #ffffff;  
+  background: #ffffff;
   /* align-items: flex-end; */
   /* justify-content: space-between; */
 }
@@ -547,17 +544,17 @@ li.active-menu:before {
 
 /* large screens */
 @media only screen and (min-width: 1530px) {
-
 }
 @media only screen and (min-width: 1168px) {
   .cta-bar .login-btn {
     display: inline-block;
   }
-  .wrapper{
+  .wrapper {
     padding: 0 10%;
   }
-  .site-header{
-    height:3.05rem  }
+  .site-header {
+    height: 3.05rem;
+  }
 
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
     width: 22px;
@@ -605,7 +602,6 @@ li.active-menu:before {
 /* when medium */
 
 @media only screen and (min-width: 969px) {
-
   .cta-bar .login-btn {
     width: auto;
   }
