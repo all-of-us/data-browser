@@ -138,17 +138,19 @@ const css = `
   .result-boxes {
     grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
-    ' . .'
-    ' . .'
-    'gHeading gHeading'
-    ' gBoxes gBoxes'
-    'pmHeading pmHeading'
-    'pmBoxes pmBoxes ';
+    ' .       .'
+    ' .       .'
+    'gHeading pmHeading'
+    'gBoxes pmBoxes ';
+}
+.survey-result-boxes{
+  grid-template-columns: repeat(3, minmax(239px, 1fr));
 }
   .genomic-boxes {
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
+    grid-template-columns: repeat(1, minmax(239px, 1fr));
   }
   .pm-boxes {
+    width: calc((100vw)/1.57);
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
 
@@ -160,7 +162,24 @@ const css = `
   }
 }
 @media (max-width: 766px) {
+  .result-boxes {
+    grid-template-areas:
+    ' . .'
+    ' . .'
+    'gHeading gHeading'
+    ' gBoxes gBoxes'
+    'pmHeading pmHeading'
+    'pmBoxes pmBoxes ';
+
+}
   .result-boxes, .survey-result-boxes{
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
+  }
+  .pm-boxes {
+    width:auto;
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
+  }
+  .genomic-boxes{
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
 }
@@ -792,14 +811,14 @@ export const dBHomeComponent = withRouteData(
           {(loading || loadingVariantListSize) && <Spinner />}
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
-                    <h5
-                    style={{
-                      ...globalStyles.secondaryDisplay,
-                      ...styles.resultHeading,
-                    }}
-                  >
-                    EHR Domains
-                  </h5>
+              <h5
+                style={{
+                  ...globalStyles.secondaryDisplay,
+                  ...styles.resultHeading,
+                }}
+              >
+                EHR Domains
+              </h5>
               <div className="result-boxes">
                 {domainInfo.length > 0 && (
                   <React.Fragment>
@@ -828,7 +847,7 @@ export const dBHomeComponent = withRouteData(
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
                         gridArea: 'gHeading',
-                        marginBottom:'-1rem',
+                        marginBottom: '-1rem',
                       }}
                     >
                       Genomics
@@ -854,7 +873,8 @@ export const dBHomeComponent = withRouteData(
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                       gridArea: 'pmHeading',
-                      marginBottom:'-1rem',
+                      marginBottom: '-1rem',
+                      whiteSpace:'nowrap'
                     }}
                   >
                     Physical Measurements and Wearables
@@ -879,45 +899,45 @@ export const dBHomeComponent = withRouteData(
                   </div>
                 </React.Fragment>
                 )}
-                </div>
-                {surveyInfo.length > 0 && (
-                  <React.Fragment>
-                    <h5
-                      style={{
-                        ...globalStyles.secondaryDisplay,
-                        ...styles.resultHeading,
-                      }}
-                    >
-                      Survey Questions
-                    </h5>
-                    <div className="survey-result-boxes">
-                      {surveyInfo.map((survey, index) => {
-                        const key = "survey" + index;
-                        return (
-                          <ResultLinksComponent
-                            typing={!this.typing}
-                            key={key}
-                            searchWord={searchWord}
-                            {...survey}
-                            domainType="survey"
-                            variantListSize={variantListSize}
-                            loadingVariantListSize={loadingVariantListSize}
-                          />
-                        );
-                      })}
-                    </div>
-                  </React.Fragment>
-                )}
-                {noResults && (
+              </div>
+              {surveyInfo.length > 0 && (
+                <React.Fragment>
                   <h5
                     style={{
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                     }}
                   >
-                    0 results
+                    Survey Questions
                   </h5>
-                )}
+                  <div className="survey-result-boxes">
+                    {surveyInfo.map((survey, index) => {
+                      const key = "survey" + index;
+                      return (
+                        <ResultLinksComponent
+                          typing={!this.typing}
+                          key={key}
+                          searchWord={searchWord}
+                          {...survey}
+                          domainType="survey"
+                          variantListSize={variantListSize}
+                          loadingVariantListSize={loadingVariantListSize}
+                        />
+                      );
+                    })}
+                  </div>
+                </React.Fragment>
+              )}
+              {noResults && (
+                <h5
+                  style={{
+                    ...globalStyles.secondaryDisplay,
+                    ...styles.resultHeading,
+                  }}
+                >
+                  0 results
+                </h5>
+              )}
             </section>
           )}
           {popUp && (
