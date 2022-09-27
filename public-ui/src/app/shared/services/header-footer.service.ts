@@ -96,8 +96,8 @@ export const menuItems = [
     ],
   },
   {
-    title: "FAQ",
-    url: environment.researchAllOfUsUrl + "/frequently-asked-questions/",
+    title: "SUPPORT",
+    url: "https://aousupporthelp.zendesk.com/hc/en-us",
     submenu: [],
   },
 ];
