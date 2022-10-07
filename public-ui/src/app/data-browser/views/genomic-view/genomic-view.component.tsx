@@ -160,7 +160,7 @@ export const GenomicViewComponent = withRouteData(
         loadingResults: null,
         variantListSize: null,
         loadingVariantListSize: null,
-        searchTerm: "",
+        searchTerm: " ",
         currentPage: null,
         rowCount: 10,
         participantCount: null,
@@ -412,7 +412,7 @@ export const GenomicViewComponent = withRouteData(
         rowCount: rowCount,
         sortMetadata: sortMetadataObj,
       };
-
+      
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
@@ -431,6 +431,8 @@ export const GenomicViewComponent = withRouteData(
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
       };
+      
+      
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {

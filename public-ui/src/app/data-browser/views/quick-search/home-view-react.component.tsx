@@ -49,6 +49,7 @@ const css = `
     color:#2b266d;
 }
 .result-bottom-link {
+    white-space: pre;
     font-size: 15px;
     color: #337ab7;
     cursor: pointer;
@@ -407,7 +408,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
     } = this.props;
     return (
       <div style={{
-        width: (searchWord && !typing) ? '378px' : 'inherent'
+        width: (searchWord && !typing) ? '378px' : ''
       }} onClick={() => this.resultClick(this.props)} className="result-box">
         <div style={styles.resultBoxTitle}>
           <div>{name}</div>
@@ -511,7 +512,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             variantListSize > 0 && (
               <React.Fragment>
                 <span style={styles.resultBodyItem}>
-                  <div style={styles.resultStat}>{variantListSize}</div>{" "}
+                  <div style={styles.resultStat}>{variantListSize.toLocaleString()}</div>{" "}
                   matching genomic variants
                 </span>
                 <span style={styles.resultBodyItem}>
@@ -639,7 +640,7 @@ export const dBHomeComponent = withRouteData(
         .then((result) => {
           this.setState({
             variantListSize: result,
-            loadingVariantListSize: false,
+            loadingVariantListSize: false
           });
         })
         .catch((e) => {
