@@ -300,7 +300,7 @@ dependencies {
     compile 'com.google.guava:guava:26.0-jre'
 
     compile "org.yaml:snakeyaml:1.32"
-    compile 'commons-io:commons-io:2.6'
+    compile 'commons-io:commons-io:2.7'
     compile 'com.github.fge:json-patch:1.9'
     compile "org.hibernate:hibernate-validator:5.3.6.Final"
 
