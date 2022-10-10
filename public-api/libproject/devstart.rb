@@ -232,9 +232,9 @@ def run_local_migrations()
   Dir.chdir('db-cdr') do
     common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
   end
-  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
-  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
-  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['../config/cdr_versions_local.json',false]}
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
+  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['config/cdr_versions_local.json',false]}
 end
 
 Common.register_command({
