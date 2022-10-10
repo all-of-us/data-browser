@@ -196,12 +196,12 @@ def dev_up()
   common.status "Updating workbench configuration..."
   common.run_inline %W{
     docker-compose run update-config
-    -Pconfig_file=../config/config_local.json
+    -Pconfig_key=main -Pconfig_file=config/config_local.json
   }
   common.status "Updating CDR schema configuration..."
   common.run_inline %W{
     docker-compose run update-config
-    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json
+    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json
   }
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
 end
@@ -232,9 +232,9 @@ def run_local_migrations()
   Dir.chdir('db-cdr') do
     common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
   end
-  common.run_inline %W{./gradlew :tools:loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
-  common.run_inline %W{./gradlew :tools:loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
-  common.run_inline %W{./gradlew :tools:updateCdrVersions -PappArgs=['../config/cdr_versions_local.json',false]}
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
+  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['../config/cdr_versions_local.json',false]}
 end
 
 Common.register_command({
@@ -919,12 +919,10 @@ def update_cdr_version_options(cmd_name, args)
 end
 
 def update_cdr_versions_for_project(versions_file, dry_run)
-  Dir.chdir("tools") do
-    common = Common.new
-    common.run_inline %W{
+   common = Common.new
+   common.run_inline %W{
       ../gradlew --info updateCdrVersions
      -PappArgs=['#{versions_file}',#{dry_run}]}
-  end
 end
 
 def update_cdr_versions(cmd_name, *args)
@@ -1094,10 +1092,8 @@ def load_config(project, dry_run = false)
 
   common = Common.new
   common.status "Loading #{config_json} into database..."
-  Dir.chdir("tools") do
-    run_inline_or_log(dry_run, %W{../gradlew --info loadConfig -Pconfig_key=main -Pconfig_file=../config/#{config_json}})
-    run_inline_or_log(dry_run, %W{../gradlew --info loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json})
-  end
+  run_inline_or_log(dry_run, %W{gradle --info loadConfig -Pconfig_key=main -Pconfig_file=config/#{config_json}})
+  run_inline_or_log(dry_run, %W{gradle --info loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json})
 end
 
 def with_cloud_proxy_and_db(gcc, service_account = nil, key_file = nil)
@@ -1168,7 +1164,7 @@ def deploy(cmd_name, args)
     migrate_database(op.opts.dry_run)
     load_config(ctx.project, op.opts.dry_run)
     versions_file = get_cdr_versions_file(ctx.project)
-    update_cdr_versions_for_project("../config/#{versions_file}", op.opts.dry_run)
+    update_cdr_versions_for_project("config/#{versions_file}", op.opts.dry_run)
 
     # Keep the cloud proxy context open for the service account credentials.
     deploy_public_api(cmd_name, %W{
