@@ -33,17 +33,8 @@ export class RhHeader extends React.Component<{}, State> {
     const { menuOpen, searchTerms, submenusOpen } = this.state;
     return (
       <React.Fragment>
-        <div className="cta-bar">
-          <a
-            className="login-btn"
-            href="https://workbench.researchallofus.org/login"
-            style={{ width: "auto" }}
-          >
-            RESEARCHER LOGIN
-          </a>
-        </div>
-        <div id="masthead" className="site-header">
-          <div className="headwrap">
+        <div className="wrapper">
+          <div className="cta-bar">
             <div className="site-branding-container">
               <div className="site-branding">
                 <div className="logo">
@@ -74,171 +65,182 @@ export class RhHeader extends React.Component<{}, State> {
                 </div>
               </div>
             </div>
-            <div className="site-nav-container">
-              <nav
-                id="site-navigation"
-                className="main-navigation"
-                aria-label="Top Menu"
-              >
-                <div className="menu-primary-container">
-                  <ul className="main-menu">
-                    {menuItems.map((menu, m) => (
-                      <li
-                        key={m}
-                        className="main-menu-item menu-item-has-children"
-                      >
-                        <a href={menu.url}> {menu.title}</a>
-                        {menu.submenu.length > 0 && (
-                          <ul className="sub-menu">
-                            {menu.submenu.map((sub, s) => (
-                              <li key={s}>
-                                <a
-                                  className={
-                                    sub.title === "Data Browser"
-                                      ? "active-menu"
-                                      : ""
-                                  }
-                                  href={sub.url}
-                                >
-                                  {sub.title}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </li>
-                    ))}
-                    <li
-                      tabIndex={0}
-                      className="icon_search main-menu-item menu-item-has-children"
-                    >
-                      <a>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="22"
-                          height="22"
-                          viewBox="0 0 22 22"
-                          fill="none"
-                          fillRule="evenodd"
-                          stroke="#262262"
-                          strokeLinejoin="round"
-                          strokeWidth="3"
+            <a
+              className="login-btn"
+              href="https://workbench.researchallofus.org/login"
+              style={{ width: "auto" }}
+            >
+              RESEARCHER LOGIN
+            </a>
+          </div>
+          <div id="masthead" className="site-header">
+            <div className="headwrap">
+
+              <div className="site-nav-container">
+                <nav
+                  id="site-navigation"
+                  className="main-navigation"
+                  aria-label="Top Menu"
+                >
+                  <div className="menu-primary-container">
+                    <ul className="main-menu">
+                      {menuItems.map((menu, m) => (
+                        <li
+                          key={m}
+                          className="main-menu-item menu-item-has-children"
                         >
-                          <path
-                            fill="none"
-                            d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            d="M13.848 13.848l5.84 5.84"
-                          />
-                        </svg>
-                      </a>
-                      <ul className="sub-menu">
-                        <li className="menu-item">
-                          <form
-                            name="searchText"
-                            id="searchform"
-                            action={environment.researchAllOfUsUrl}
-                          >
-                            <input
-                              aria-label="Help Search"
-                              type="text"
-                              name="s"
-                              id="s"
-                              placeholder="Search..."
-                              autoComplete="off"
-                              onChange={(e) =>
-                                this.setState({ searchTerms: e.target.value })
-                              }
-                              value={searchTerms}
-                            />
-                            <input type="submit" id="searchsubmit" value="" />
-                          </form>
+                          <a href={menu.url}> {menu.title}</a>
+                          {menu.submenu.length > 0 && (
+                            <ul className="sub-menu">
+                              {menu.submenu.map((sub, s) => (
+                                <li key={s}>
+                                  <a
+                                    className={
+                                      sub.title === "Data Browser"
+                                        ? "active-menu"
+                                        : ""
+                                    }
+                                    href={sub.url}
+                                  >
+                                    {sub.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
                         </li>
-                      </ul>
-                    </li>
-                    <li className="nav_apply">
-                      <a href="https://www.researchallofus.org/register/">
-                        REGISTER
-                      </a>
-                    </li>
-                  </ul>
-                  <div className="mobile-nav">
-                    <div
-                      className={menuOpen ? "clicked" : ""}
-                      onClick={() => this.setState({ menuOpen: !menuOpen })}
-                      id="nav-icon"
-                    >
-                      <span></span>
-                      <span></span>
-                      <span></span>
+                      ))}
+                      <li
+                        tabIndex={0}
+                        className="icon_search main-menu-item menu-item-has-children"
+                      >
+                        <a>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="22"
+                            height="22"
+                            viewBox="0 0 22 22"
+                            fill="none"
+                            fillRule="evenodd"
+                            stroke="#262262"
+                            strokeLinejoin="round"
+                            strokeWidth="3"
+                          >
+                            <path
+                              fill="none"
+                              d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              d="M13.848 13.848l5.84 5.84"
+                            />
+                          </svg>
+                        </a>
+                        <ul className="sub-menu">
+                          <li className="menu-item">
+                            <form
+                              name="searchText"
+                              id="searchform"
+                              action={environment.researchAllOfUsUrl}
+                            >
+                              <input
+                                aria-label="Help Search"
+                                type="text"
+                                name="s"
+                                id="s"
+                                placeholder="Search..."
+                                autoComplete="off"
+                                onChange={(e) =>
+                                  this.setState({ searchTerms: e.target.value })
+                                }
+                                value={searchTerms}
+                              />
+                              <input type="submit" id="searchsubmit" value="" />
+                            </form>
+                          </li>
+                        </ul>
+                      </li>
+                      <li className="nav_apply">
+                        <a href="https://www.researchallofus.org/register/">
+                          REGISTER
+                        </a>
+                      </li>
+                    </ul>
+                    <div className="mobile-nav">
+                      <div
+                        className={menuOpen ? "clicked" : ""}
+                        onClick={() => this.setState({ menuOpen: !menuOpen })}
+                        id="nav-icon"
+                      >
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </nav>
+                </nav>
+              </div>
             </div>
-          </div>
-          {menuOpen && (
-            <ul id="menu-mobile">
-              {menuItems.map((menu, m) => (
-                <li
-                  className={`main-menu-item menu-item-has-children ${
-                    menu.title
-                  } ${submenusOpen.includes(menu.title) ? "flip" : ""}`}
-                  onClick={() => this.toggleMobileSubmenu(menu.title)}
-                >
-                  <a href={menu.url} style={{ color: "#2b266d" }}>
-                    {menu.title}
-                  </a>
-                  {submenusOpen.includes(menu.title) &&
-                    menu.submenu.length > 0 && (
-                      <ul className="sub-menu">
-                        {menu.submenu.map((sub, s) => (
-                          <li key={s} className="menu-item">
-                            <a href={sub.url} style={{ color: "#2b266d" }}>
-                              {sub.title}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+            {menuOpen && (
+              <ul id="menu-mobile">
+                {menuItems.map((menu, m) => (
+                  <li
+                    className={`main-menu-item menu-item-has-children ${menu.title
+                      } ${submenusOpen.includes(menu.title) ? "flip" : ""}`}
+                    onClick={() => this.toggleMobileSubmenu(menu.title)}
+                  >
+                    <a href={menu.url} style={{ color: "#2b266d" }}>
+                      {menu.title}
+                    </a>
+                    {submenusOpen.includes(menu.title) &&
+                      menu.submenu.length > 0 && (
+                        <ul className="sub-menu">
+                          {menu.submenu.map((sub, s) => (
+                            <li key={s} className="menu-item">
+                              <a href={sub.url} style={{ color: "#2b266d" }}>
+                                {sub.title}
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                  </li>
+                ))}
+                <li className="main-menu-item search">
+                  <form
+                    name="searchText"
+                    id="searchform"
+                    action={environment.researchAllOfUsUrl}
+                  >
+                    <input
+                      aria-label="Help Search"
+                      type="text"
+                      name="s"
+                      id="s"
+                      placeholder="Search..."
+                      autoComplete="off"
+                      onChange={(e) =>
+                        this.setState({ searchTerms: e.target.value })
+                      }
+                      value={searchTerms}
+                    />
+                    <input type="submit" id="searchsubmit" value="" />
+                  </form>
                 </li>
-              ))}
-              <li className="main-menu-item search">
-                <form
-                  name="searchText"
-                  id="searchform"
-                  action={environment.researchAllOfUsUrl}
-                >
-                  <input
-                    aria-label="Help Search"
-                    type="text"
-                    name="s"
-                    id="s"
-                    placeholder="Search..."
-                    autoComplete="off"
-                    onChange={(e) =>
-                      this.setState({ searchTerms: e.target.value })
-                    }
-                    value={searchTerms}
-                  />
-                  <input type="submit" id="searchsubmit" value="" />
-                </form>
-              </li>
-              <li className="nav_apply">
-                <a href="https://www.researchallofus.org/apply/">APPLY</a>
-              </li>
-              <li className="cta-bar">
-                <a
-                  href="https://workbench.researchallofus.org/login"
-                  className="login-btn"
-                >
-                  RESEARCHER LOGIN
-                </a>
-              </li>
-            </ul>
-          )}
+                <li className="nav_apply">
+                  <a href="https://www.researchallofus.org/apply/">APPLY</a>
+                </li>
+                <li className="cta-bar">
+                  <a
+                    href="https://workbench.researchallofus.org/login"
+                    className="login-btn"
+                  >
+                    RESEARCHER LOGIN
+                  </a>
+                </li>
+              </ul>
+            )}
+          </div>
         </div>
       </React.Fragment>
     );
