@@ -234,17 +234,13 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     this.loadSourceTree(concept);
   }
 
-  selectConceptCode() {
+  selectConceptCode(attrType: string) {
       const { concept, searchTerm } = this.props;
-      let path = window.location.pathname;
-      if (searchTerm && (searchTerm.length > 0) && path.indexOf(searchTerm) > 0) {
-          path = path.substring(0, path.lastIndexOf("/"));
-      }
+      const selectedConcept = this.state.selectedTreeNode ? this.state.selectedTreeNode : concept;
+      const selectedText = (attrType === 'id') ? selectedConcept.conceptId :
+        (selectedConcept.conceptCode ? selectedConcept.conceptCode : selectedConcept.code);
       navigator.clipboard.writeText(
-        window.location.origin +
-          path +
-          "/" +
-          concept.conceptId
+        selectedText
       );
       this.setState({
         showConceptCopyAlert: true,
@@ -649,7 +645,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                         </strong>
                       </p>
                       <div style={styles.conceptBoxInfoP}  onClick={(e) => {e.stopPropagation();
-                      this.selectConceptCode(); }}>
+                      this.selectConceptCode("code"); }}>
                       <React.Fragment>
                         {selectedTreeNode
                           ? selectedTreeNode.type
@@ -662,7 +658,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                           }
                           </React.Fragment>
                       </div>
-                      <p style={styles.conceptBoxInfoP} onClick={(e) => {e.stopPropagation(); this.selectConceptCode(); }}>
+                      <p style={styles.conceptBoxInfoP} onClick={(e) => {e.stopPropagation(); this.selectConceptCode("id"); }}>
                         OMOP Concept Id:{" "}
                         {selectedTreeNode
                           ? selectedTreeNode.conceptId
