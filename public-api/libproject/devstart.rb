@@ -218,8 +218,8 @@ def setup_local_environment()
   ENV.update(Workbench.read_vars_file("db/vars.env"))
   ENV["DB_HOST"] = "127.0.0.1"
   ENV["MYSQL_ROOT_PASSWORD"] = root_password
-  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser?useSSL=false"
-  ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
+  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser"
+  ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public"
 end
 
 def run_local_migrations()

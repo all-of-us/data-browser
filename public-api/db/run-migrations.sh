@@ -31,6 +31,7 @@ function run_mysql() {
     echo "Outside docker: invoking mysql via docker for portability"
     docker run --rm --network host --entrypoint '' \
       --platform linux/amd64 \
+      --default-authentication-plugin=mysql_native_password \
       mysql:8.0.27 \
       mysql $@
   fi
