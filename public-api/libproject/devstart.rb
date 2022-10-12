@@ -17,7 +17,7 @@ require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
-INSTANCE_NAME = "databrowsermaindb"
+INSTANCE_NAME = "databrowsermaindb-8"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
               compute.googleapis.com admin.googleapis.com appengine.googleapis.com
@@ -31,43 +31,43 @@ TEST_GAE_VARS = {
 
 ENVIRONMENTS = {
   TEST_PROJECT => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb-8",
     :config_json => "config_test.json",
     :cdr_versions_json => "cdr_versions_test.json",
     :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowsermaindb-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-staging" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb-8",
     :config_json => "config_staging.json",
     :cdr_versions_json => "cdr_versions_staging.json",
     :api_base_path => "https://api-dot-aou-db-staging.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowsermaindb-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-stable" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb-8",
     :config_json => "config_stable.json",
     :cdr_versions_json => "cdr_versions_stable.json",
     :api_base_path => "https://public.api.stable.fake-research-aou.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowsermaindb-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-prod" => {
-    :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb-8",
     :config_json => "config_prod.json",
     :cdr_versions_json => "cdr_versions_prod.json",
     :api_base_path => "https://public.api.researchallofus.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowsermaindb-8",
     :gae_vars => {
       "GAE_MIN_IDLE_INSTANCES" => "1",
       "GAE_MAX_INSTANCES" => "64"
@@ -1233,7 +1233,7 @@ def create_project_resources(gcc)
   common.status "Waiting for database instance to become ready..."
   loop do
     sleep 3.0
-    db_status = `gcloud sql instances describe databrowsermaindb --project #{gcc.project} | grep state`
+    db_status = `gcloud sql instances describe databrowsermaindb-8 --project #{gcc.project} | grep state`
     common.status "DB status: #{db_status}"
     break if db_status.include? "RUNNABLE"
   end
