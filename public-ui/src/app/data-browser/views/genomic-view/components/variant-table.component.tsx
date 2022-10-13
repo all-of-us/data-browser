@@ -56,7 +56,7 @@ const styles = reactStyles({
     display: "flex",
     height: "100%",
     margin: "0 auto",
-    width: "60%",
+    width: "70%",
     justifyContent: "center",
     alignItems: "flex-start",
     flexDirection: "column",
@@ -583,8 +583,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
               (searchResults && searchResults.length === 0)) && (
               <div style={styles.helpTextContainer}>
                 <div style={styles.helpText}>
-                  Enter a search query in the search bar above or get started
-                  with an example query:
+                  Enter a query in the search bar or get started with an example query:
                 </div>
                 <div style={styles.helpText}>
                   <strong>Gene:</strong>{" "}
@@ -602,6 +601,15 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     style={styles.helpSearchDiv}
                   >
                     13-32355250-T-C
+                  </div>
+                </div>
+                <div style={styles.helpText}>
+                  <strong>RS Number:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("rs169547")}
+                    style={styles.helpSearchDiv}
+                  >
+                    rs169547
                   </div>
                 </div>
                 <div style={styles.helpText}>
