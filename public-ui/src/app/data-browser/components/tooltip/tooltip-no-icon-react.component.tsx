@@ -31,7 +31,7 @@ export const tooltipNoIconCss = `
     content: " ";
     position: absolute;
     top: 100%;
-    left: 75%;
+    left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;

@@ -1,6 +1,6 @@
 {
   "server": {
-    "workbenchApiBaseUrl": "https:\/\/api-dot-all-of-us-rw-staging.appspot.com",
+    "workbenchApiBaseUrl": "https:\/\/api.staging.fake-research-aou.org",
     "publicApiKeyForErrorReports": "AIzaSyAkMIMIzUwv02RBK-A7cE1PbPpDJ2MTNtk",
     "debugEndpoints": false,
     "projectId": "aou-db-staging",
