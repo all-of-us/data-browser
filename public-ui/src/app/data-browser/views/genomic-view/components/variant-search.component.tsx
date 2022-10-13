@@ -128,6 +128,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const {filterMetadata} = this.props
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
+        console.log(searchWord);
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
@@ -150,10 +151,13 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
-                    <Spinner /></span>} results</strong>}
+            {searchWord && <React.Fragment>{
+                variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
+                                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                                <strong style={styles.resultSize} >{!loading ? <React.Fragment>{variantListSizeDisplay} results</React.Fragment>
+                                    : <span style={styles.loading}>
+                                    <Spinner /></span>}</strong>
+                }</React.Fragment>}
             {environment.genoFilters && <div style={styles.filterContainer}>
                 {(!loading && filterShow) &&
                     <VariantFilterComponent
