@@ -24,8 +24,21 @@ trap finish EXIT
 envsubst < create_db.sql > $CREATE_DB_FILE
 envsubst < grant_permissions.sql > $GRANT_PERMISSIONS_FILE
 
+function run_mysql() {
+  if [ -x "$(command -v mysql)" ]; then
+    mysql $@
+  else
+    echo "Outside docker: invoking mysql via docker for portability"
+    docker run --rm --network host --entrypoint '' \
+      --platform linux/amd64 \
+      --default-authentication-plugin=mysql_native_password \
+      mysql:8.0.27 \
+      mysql $@
+  fi
+}
+
 echo "Creating database if it does not exist..."
-mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < ${CREATE_DB_FILE}
+cat "${CREATE_DB_FILE}" | run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}" --ssl-mode=DISABLED --default-auth=mysql_native_password
 
 echo "Upgrading database..."
 ../gradlew update $activity $context

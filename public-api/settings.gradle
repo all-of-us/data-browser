@@ -1,2 +1,0 @@
-include ':tools'
-project(':tools').projectDir = new File(settingsDir, 'tools')
