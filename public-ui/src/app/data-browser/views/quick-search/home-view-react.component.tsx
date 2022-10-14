@@ -413,9 +413,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       typing
     } = this.props;
     return (
-      <div style={{
-        width: (searchWord && !typing) ? '378px' : ''
-      }} onClick={() => this.resultClick(this.props)} className="result-box">
+      <div onClick={() => this.resultClick(this.props)} className="result-box">
         <div style={styles.resultBoxTitle}>
           <div>{name}</div>
           <div>
