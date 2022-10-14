@@ -921,7 +921,7 @@ end
 def update_cdr_versions_for_project(versions_file, dry_run)
    common = Common.new
    common.run_inline %W{
-      ../gradlew --info updateCdrVersions
+      ./gradlew --info updateCdrVersions
      -PappArgs=['#{versions_file}',#{dry_run}]}
 end
 
