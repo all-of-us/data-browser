@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 defaults: &defaults
   docker:
@@ -18,7 +18,7 @@ java_defaults: &java_defaults
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:buildimage-0.0.24
+      - image: allofustest/workbench:buildimage-0.0.21
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
@@ -60,7 +60,18 @@ jobs:
           key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-build-test:
-    <<: *java_defaults
+    docker:
+      - image: allofustest/workbench:buildimage-0.0.21
+      - image: mysql:5.7
+        environment:
+          - MYSQL_ROOT_PASSWORD=ubuntu
+          - MYSQL_USER=ubuntu
+          - MYSQL_PASSWORD=ubuntu
+    working_directory: ~/data-browser
+    environment:
+      JAVA_TOOL_OPTIONS: -Xmx3g
+      TERM: dumb
+      MYSQL_ROOT_PASSWORD: ubuntu
     steps:
       - checkout
       - run:

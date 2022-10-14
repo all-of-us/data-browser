@@ -35,10 +35,12 @@ services:
       - db/vars.env
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
 
   public-api:
     <<: *api-defaults
-    command: ./gradlew :appengineRun
+    command: ./gradlew :bootRun
     ports:
       - 8083:8083
       - 8084:8002
@@ -260,7 +262,7 @@ services:
     volumes:
       - ..:/w:cached
       - gradle-cache:/.gradle
-    entrypoint: wait-for db:3306 -- ./gradlew :tools:loadConfig
+    entrypoint: wait-for db:3306 -- ./gradlew :loadConfig
     env_file:
       - db/vars.env
   update-cdr-versions:
@@ -273,7 +275,7 @@ services:
       volumes:
         - ..:/w:cached
         - gradle-cache:/.gradle
-      entrypoint: wait-for db:3306 -- ./gradlew :tools:updateCdrVersions
+      entrypoint: wait-for db:3306 -- ./gradlew :updateCdrVersions
       env_file:
         - db/vars.env
 volumes:
