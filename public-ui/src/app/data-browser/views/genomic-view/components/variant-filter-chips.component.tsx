@@ -92,8 +92,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
         }
         const allFalse = Array.isArray(filteredMetadata[cat.toString()]) &&
             filteredMetadata[cat.toString()].every(t => t.checked === false);
-        console.log(allFalse, 'allfase');
-
         if (allFalse && Array.isArray(filteredMetadata[cat.toString()])) {
             filteredMetadata[cat.toString()].forEach(el => el.checked = true);
         }
