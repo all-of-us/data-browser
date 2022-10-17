@@ -37,25 +37,6 @@ public class WorkbenchDbConfig {
   @Bean(name = "dataSourceProperties")
   @ConfigurationProperties(prefix = "spring.datasource")
   public DataSourceProperties dataSourceProperties() {
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println("~~~~~~!!!!!!!");
-    System.out.println(System.getProperties());
-    System.out.println("~~~~~~!!!!!!!2222");
-    System.out.println("~~~~~~!!!!!!!2222");
-    System.out.println("~~~~~~!!!!!!!2222");
-    System.out.println("~~~~~~!!!!!!!22222");
-    System.out.println(System.getenv("DB_DRIVER"));
-    System.out.println(System.getenv("DB_CONNECTION_STRING"));
-    System.out.println(System.getenv("META_DB_USER"));
-    System.out.println(System.getenv("META_DB_PASSWORD"));
-    System.out.println(System.getenv("PUBLIC_DB_CONNECTION_STRING"));
-    System.out.println(System.getenv("PUBLIC_DB_USER"));
-    System.out.println(System.getenv("PUBLIC_DB_PASSWORD"));
     return new DataSourceProperties();
   }
 
