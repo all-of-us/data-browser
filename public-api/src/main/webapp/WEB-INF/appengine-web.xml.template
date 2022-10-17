@@ -18,8 +18,8 @@
   </system-properties>
 
   <automatic-scaling>
-    <min-idle-instances>${GAE_MIN_IDLE_INSTANCES}</min-idle-instances>
-    <max-instances>${GAE_MAX_INSTANCES}</max-instances>
+    <min-idle-instances>1</min-idle-instances>
+    <max-instances>10</max-instances>
   </automatic-scaling>
 </appengine-web-app>
 

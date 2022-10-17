@@ -59,6 +59,7 @@ public class CdrDbConfig {
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
+        // String dbUrl = "jdbc:mysql:///databrowsermaindb?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory";
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
                         + cdrVersion.getPublicDbName()
@@ -85,6 +86,11 @@ public class CdrDbConfig {
           cdrPool.setPassword(dbPassword);
           cdrPool.setUrl(dbUrl);
           tomcatSource.setPoolProperties(cdrPool);
+
+          log.info("********************************** ---------------------------- ******************************");
+          log.info(dbUrl);
+          log.info("Test");
+          log.info("********************************** ---------------------------- ******************************");
 
           // The Spring autowiring is a bit of a maze here, log something concrete which will allow
           // verification that the DB settings in application.properties are actually being loaded.
