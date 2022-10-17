@@ -59,14 +59,20 @@ public class CdrDbConfig {
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
-        String dbUrl = "jdbc:mysql:///databrowsermaindb?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory;";
-        /*
+
+        System.out.println("**************************************");
+        System.out.println("Test url");
+        System.out.println(originalDbUrl);
+        System.out.println("**************************************");
+
+
+
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
                         + cdrVersion.getPublicDbName()
                         + "?useSSL=false";
 
-         */
+
         DataSource dataSource =
                 DataSourceBuilder.create()
                         .driverClassName(basePoolConfig.getDriverClassName())
