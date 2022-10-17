@@ -59,7 +59,7 @@ public class CdrDbConfig {
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
-        String dbUrl = "jdbc:mysql:///databrowsermaindb?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory";
+        String dbUrl = "jdbc:mysql:///databrowsermaindb?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory;";
         /*
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
