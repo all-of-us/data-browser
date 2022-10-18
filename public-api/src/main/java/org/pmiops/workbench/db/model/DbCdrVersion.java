@@ -24,6 +24,7 @@ public class DbCdrVersion {
   private String bigqueryDataset;
   private String genomicsProject;
   private String genomicsDataset;
+  private String sqlInstance;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,6 +77,11 @@ public class DbCdrVersion {
   public String getPublicDbName() { return publicDbName; }
 
   public void setPublicDbName(String publicDbName) { this.publicDbName = publicDbName; }
+
+  @Column(name = "sql_instance")
+  public String getSqlInstance() { return sqlInstance; }
+
+  public void setSqlInstance(String sqlInstance) { this.sqlInstance = sqlInstance; }
 
   @Override
   public int hashCode() {

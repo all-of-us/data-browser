@@ -69,9 +69,6 @@ public class CdrDbConfig {
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
                         + cdrVersion.getPublicDbName();
-        System.out.println("**************************************");
-        System.out.println(sqlInstanceName);
-        System.out.println("**************************************");
 
         if (!StringUtils.isEmpty(sqlInstanceName)) {
           dbUrl += "?cloudSqlInstance=" + sqlInstanceName;
