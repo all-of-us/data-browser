@@ -43,11 +43,10 @@ SliderRail.propTypes = {
 export function Handle({ handle: { id, percent, value }, getHandleProps }) {
   const r0 = dims[1] * 0.4; // inner - visible
   const r1 = dims[1] * 0.6; // outer - invisible w/ events
-
   return (    
     <React.Fragment>
     <g className="handle">
-    <text fontSize='3rem' textAnchor="middle"  x={dims[0] * ((percent) / 100)} y="-50" fill="#262262">{value}</text>
+    <text fontSize='3rem' textAnchor="middle"  x={id == '$$-1' ? dims[0]:0} y="-50" fill="#262262">{value}</text>
       <rect
         width={r0}
         height={r0}
