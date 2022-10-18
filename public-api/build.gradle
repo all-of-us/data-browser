@@ -304,7 +304,7 @@ dependencies {
     compile 'com.github.fge:json-patch:1.9'
     compile "org.hibernate:hibernate-validator:5.3.6.Final"
 
-    compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
+    compile 'com.google.cloud.sql:mysql-socket-factory-connector-j-8:1.7.0'
     compile "com.google.appengine:appengine:${GAE_VERSION}"
     compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
     compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {

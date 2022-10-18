@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.context.annotation.Lazy;
+import org.apache.commons.lang3.StringUtils;
 
 @Configuration
 @EnableTransactionManagement
@@ -51,6 +52,11 @@ public class CdrDbConfig {
       String dbPassword = cdrPoolConfig.getPassword();
       String originalDbUrl = cdrPoolConfig.getUrl();
 
+      //jdbc:mysql://db/public?useSSL=false
+      //jdbc:mysql:///<DB_NAME>?cloudSqlInstance=<INSTANCE_CONNECTION_NAME>&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+      //jdbc:mysql:///databrowser?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+      //jdbc:mysql:///public?cloudSqlInstance=aou-db-test:us-central1:databrowsermaindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+
       // Build a map of CDR version ID -> DataSource for use later, based on all the entries in the
       // cdr_version table. Note that if new CDR versions are inserted, we need to restart the
       // server in order for it to be used.
@@ -59,10 +65,21 @@ public class CdrDbConfig {
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
+        String sqlInstanceName = cdrVersion.getSqlInstance();
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
-                        + cdrVersion.getPublicDbName()
-                        + "?useSSL=false";
+                        + cdrVersion.getPublicDbName();
+        System.out.println("**************************************");
+        System.out.println(sqlInstanceName);
+        System.out.println("**************************************");
+
+        if (!StringUtils.isEmpty(sqlInstanceName)) {
+          dbUrl += "?cloudSqlInstance=" + sqlInstanceName;
+          dbUrl += "&socketFactory=com.google.cloud.sql.mysql.SocketFactory";
+        } else {
+          dbUrl += "?useSSL=false";
+        }
+
         DataSource dataSource =
                 DataSourceBuilder.create()
                         .driverClassName(basePoolConfig.getDriverClassName())

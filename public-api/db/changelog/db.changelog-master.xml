@@ -14,4 +14,5 @@
   <include file="changelog/db.changelog-48-default-cdr.xml"/>
   <include file="changelog/db.changelog-5.xml"/>
   <include file="changelog/db.changelog-6.xml"/>
+  <include file="changelog/db.changelog-7.xml"/>
 </databaseChangeLog>
