@@ -17,6 +17,8 @@
     <property name="cdr.datasource.password" value="${PUBLIC_DB_PASSWORD}"/>
   </system-properties>
 
+   <use-google-connector-j>true</use-google-connector-j>
+
   <automatic-scaling>
     <min-idle-instances>${GAE_MIN_IDLE_INSTANCES}</min-idle-instances>
     <max-instances>${GAE_MAX_INSTANCES}</max-instances>
