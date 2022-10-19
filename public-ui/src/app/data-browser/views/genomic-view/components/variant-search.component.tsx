@@ -11,11 +11,11 @@ import { GenomicFilters } from "publicGenerated";
 const styles = reactStyles({
   searchBar: {
     paddingRight: "2rem",
-    width: "35em",
+    width: "42em",
   },
   searchHelpText: {
     paddingTop: "2em",
-    lineHeight: "1.3em",
+    lineHeight: "1.2em",
     fontSize: "0.75em",
   },
   loading: {
@@ -48,7 +48,7 @@ const css = `
     align-items: flex-end;
     flex-direction: row;
 }
-@media (max-width: 1096px) {
+@media (max-width: 1220px) {
     .search-container {
         flex-direction: column;
         align-items: flex-start;
@@ -91,7 +91,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             this.props.onSearchTerm(this.state.searchWord);
         }
     }
-  
+
 
   handleChange(val: string) {
     this.setState({ searchWord: val, filteredMetaMap: null });
@@ -100,7 +100,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchTerm, filterMetadata } = this.props;
-    
+
     if (prevProps.searchTerm !== searchTerm) {
         this.setState({ searchWord: searchTerm });
     }
@@ -108,7 +108,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.setState({ filterMetadata: filterMetadata});
     }
   }
-    
+
     showFilter() {
         this.setState({ filterShow: !this.state.filterShow });
     }
@@ -128,17 +128,20 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const {filterMetadata} = this.props
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
+        console.log(searchWord);
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, or genomic region' />
+                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, rs number or genomic region' />
                 </div>
                 <div style={styles.searchHelpText}>
-                    Examples: <br></br>
-                    <strong>Gene:</strong> BRCA2, <strong>Variant:</strong> 13-32355250-T-C, <br></br>
+                    Examples by query type: <br></br>
+                    <strong>Gene:</strong> BRCA2 <br></br>
+                    <strong>Variant:</strong> 13-32355250-T-C <br></br>
+                    <strong>RS Number:</strong> rs169547 <br></br>
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
@@ -148,10 +151,13 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-            {variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay : <span style={styles.loading}>
-                    <Spinner /></span>} results</strong>}
+            {searchWord && <React.Fragment>{
+                variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
+                                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+                                <strong style={styles.resultSize} >{!loading ? <React.Fragment>{variantListSizeDisplay} results</React.Fragment>
+                                    : <span style={styles.loading}>
+                                    <Spinner /></span>}</strong>
+                }</React.Fragment>}
             {environment.genoFilters && <div style={styles.filterContainer}>
                 {(!loading && filterShow) &&
                     <VariantFilterComponent
