@@ -579,7 +579,7 @@ export const dBHomeComponent = withRouteData(
         surveyInfo: [],
         domainInfo: [],
         genomicInfo: null,
-        variantListSize: 593597983,
+        variantListSize: null,
         loadingVariantListSize: false,
         physicalMeasurementsInfo: [],
         searchWord: localStorage.getItem("searchText")
@@ -610,6 +610,7 @@ export const dBHomeComponent = withRouteData(
     // life cycle hook
     componentDidMount() {
       this.getDomainInfos();
+      this.getVariantResultSize();
       this.getGenomicParticipantCounts();
     }
 
@@ -639,6 +640,7 @@ export const dBHomeComponent = withRouteData(
         query: searchWord,
         filterMetadata: null,
       };
+      this.setState({loadingVariantListSize: true});
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {

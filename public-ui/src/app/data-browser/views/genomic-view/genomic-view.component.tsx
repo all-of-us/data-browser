@@ -208,6 +208,9 @@ export const GenomicViewComponent = withRouteData(
       };
       genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
         result => {
+
+        console.log('Am i here ???????', result);
+
           this.setState({
             variantListSize: searchTerm !== '' ? result : 0,
             loadingVariantListSize: false
