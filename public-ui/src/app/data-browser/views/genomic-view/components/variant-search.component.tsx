@@ -20,8 +20,7 @@ const styles = reactStyles({
   },
   loading: {
     transform: "scale(.3)",
-    marginLeft: "-0.5rem",
-    width: "2rem",
+    marginLeft: "-1rem",
   },
   resultSize: {
     display: "flex",
