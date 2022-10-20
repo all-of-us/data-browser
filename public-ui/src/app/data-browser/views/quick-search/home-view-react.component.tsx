@@ -516,8 +516,12 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             variantListSize > 0 && (
               <React.Fragment>
                 <span style={styles.resultBodyItem}>
+                {(typing || loadingVariantListSize) && <Spinner />}
+                {(!typing && !loadingVariantListSize) &&
+                <React.Fragment>
                   <div style={styles.resultStat}>{variantListSize.toLocaleString()}</div>{" "}
-                  matching genomic variants
+                </React.Fragment>}
+                matching genomic variants
                 </span>
                 <span style={styles.resultBodyItem}>
                   <div style={styles.resultStat}>
@@ -636,11 +640,11 @@ export const dBHomeComponent = withRouteData(
 
     getVariantResultSize() {
       const { searchWord } = this.state;
+      this.setState({loadingVariantListSize: true});
       const variantSizeRequest = {
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({loadingVariantListSize: true});
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
