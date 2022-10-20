@@ -12,6 +12,7 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
+  <use-google-connector-j>true</use-google-connector-j>
   <session-config>
     <cookie-config>
       <http-only>true</http-only>
