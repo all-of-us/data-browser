@@ -151,13 +151,10 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
-            {searchWord && <React.Fragment>{
-                variantListSize ? <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
-                                <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-                                <strong style={styles.resultSize} >{!loading ? <React.Fragment>{variantListSizeDisplay} results</React.Fragment>
-                                    : <span style={styles.loading}>
-                                    <Spinner /></span>}</strong>
-                }</React.Fragment>}
+            <React.Fragment>{
+                (!loading && searchWord) && <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
+                                <span style={styles.loading}><Spinner /></span>} variants found</strong>
+                }</React.Fragment>
             {environment.genoFilters && <div style={styles.filterContainer}>
                 {(!loading && filterShow) &&
                     <VariantFilterComponent
