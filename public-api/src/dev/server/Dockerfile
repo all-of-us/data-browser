@@ -27,7 +27,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CLOUD_SDK_VERSION 260.0.0
+ENV CLOUD_SDK_VERSION 392.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -69,7 +69,6 @@ RUN unzip gradle.zip && rm gradle.zip \
 ENV PATH="$PATH:/gradle/bin"
 WORKDIR /
 
-COPY with-mysql-login.sh /usr/local/bin
 COPY with-uid.sh /usr/local/bin
 
 ENTRYPOINT ["with-uid.sh"]

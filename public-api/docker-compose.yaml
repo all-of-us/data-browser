@@ -30,11 +30,15 @@ services:
   scripts:
     <<: *api-defaults
   db:
-    image: mysql:5.7
+    platform: linux/amd64
+    image: mysql:8.0.27
+    command: --default-authentication-plugin=mysql_native_password
     env_file:
       - db/vars.env
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
 
   public-api:
     <<: *api-defaults
@@ -239,12 +243,13 @@ services:
       - ~/.gsutil:/.gsutil:cached
     command: |
       cloud_sql_proxy
-        -instances all-of-us-db-test:us-central1:databrowsermaindb=tcp:0.0.0.0:3307
+        -instances all-of-us-db-test:us-central1:databrowser-main-db-8=tcp:0.0.0.0:3307
         -credential_file=/w/sa-key.json
   mysql-cloud:
     depends_on:
       - cloud-sql-proxy
-    image: mysql:5.7
+    platform: linux/amd64
+    image: mysql:8.0.27
     user: ${UID}
     working_dir: /w
     volumes:

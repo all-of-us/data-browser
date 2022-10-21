@@ -4,7 +4,7 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 import org.hibernate.dialect.function.StandardSQLFunction;
 import org.hibernate.type.StandardBasicTypes;
 
-public class MySQLDialect extends org.hibernate.dialect.MySQL57InnoDBDialect {
+public class MySQLDialect extends org.hibernate.dialect.MySQL8Dialect {
 
   public MySQLDialect() {
     super();
