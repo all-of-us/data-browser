@@ -1746,9 +1746,9 @@ union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
 union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
-union distinct
+union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
-union distinct
+union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
 ),
 min_dates as
