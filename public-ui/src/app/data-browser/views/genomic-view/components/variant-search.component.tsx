@@ -93,8 +93,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
 
   handleChange(val: string) {
-    this.setState({ searchWord: val, filteredMetaMap: null });
-    this.props.onSearchTerm(val);
+      this.props.onSearchTerm(val);
+      this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
