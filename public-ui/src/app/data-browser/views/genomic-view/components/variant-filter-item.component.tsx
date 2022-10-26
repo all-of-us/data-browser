@@ -86,9 +86,9 @@ const css = `
 
 interface Props {
   filterItem: any;
-  ogFilterItem: any;
   category: Cat;
   onFilterChange: Function;
+  cleared: Boolean;
 }
 interface State {
   filterItemOpen: Boolean;
@@ -105,7 +105,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemState: props.filterItem || '',
       filterCheckMap: props.filterItem || '',
       ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}')[this.props.category.field.toString()]
-    };
+    };    
   }
 
   componentDidMount(): void {    
@@ -151,7 +151,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const { category } = this.props;
+    const { category,cleared } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
     return <React.Fragment>
       <style>{css}</style>
@@ -159,7 +159,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         <span style={{fontFamily:'gothamBold'}}>{category.display}</span>
         <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
       </div>
-      {(filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
+      {(cleared && filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
         {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
                 <div style={styles.selectContainer}>
                     <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
