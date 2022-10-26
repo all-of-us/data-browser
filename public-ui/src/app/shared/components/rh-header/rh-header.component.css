@@ -156,7 +156,7 @@ li.flip::before {
 .headwrap {
   /* display: flex; */
   /* margin: 0; */
-  background: #ffffff;
+  background: transparent;
   /* align-items: flex-end; */
   /* justify-content: space-between; */
 }
