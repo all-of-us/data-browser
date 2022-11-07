@@ -11,7 +11,6 @@ RUN apt-get update && \
      python3 \
      gcc \
      bash \
-     libc6-i386 \
      openssh-client \
      git \
      gettext \
