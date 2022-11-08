@@ -102,7 +102,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           Use the Variant Search to explore allele frequencies for a gene or genomic region. Drill down into
           specific variants to view select annotations and genetic ancestry associations.
           Variants are called against the GRCh38/hg38 genome reference and stored with associated metadata via a&#32;
-          <a style={{color:'#1f79b8'}}href='https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table'>
+          <a style={{color:'#1f79b8'}} target="_blank" href='https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table'>
           Variant Annotation Table.
           </a>
         </p>
