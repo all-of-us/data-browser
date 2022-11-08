@@ -382,7 +382,7 @@ dependencies {
 
     testCompile 'com.google.truth:truth:0.42'
     testCompile "org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}"
-    testCompile 'com.h2database:h2:2.1.210'
+    testCompile 'com.h2database:h2:1.4.194'
     testCompile 'org.liquibase:liquibase-core:3.5.3'
     testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
