@@ -211,7 +211,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (conFilters != null && conFilters.size() > 0) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
-                    if (!filter.getChecked()) {
+                    if (filter.getChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CON_IN += "\"" + filter.getOption() + "\",";
                         } else {
@@ -467,7 +467,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (conFilters != null && conFilters.size() > 0) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
-                    if (!filter.getChecked()) {
+                    if (filter.getChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CON_IN += "\"" + filter.getOption() + "\",";
                         } else {
