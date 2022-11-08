@@ -48,7 +48,7 @@ export const menuItems = [
         submenu: [],
       },
       {
-        title: "Data Access & Use",
+        title: "Data Access Tiers",
         url: "https://www.researchallofus.org/data-tools/data-access/",
         submenu: [],
       },
@@ -84,7 +84,7 @@ export const menuItems = [
         submenu: [],
       },
       {
-        title: "Spotlight",
+        title: "Spotlights",
         url: "https://www.researchallofus.org/spotlight/",
         submenu: [],
       },
@@ -188,7 +188,7 @@ export class HeaderFooterService {
 //             submenu: false,
 //           },
 //           {
-//             title: "Data Access & Use",
+//             title: "Data Access Tiers",
 //             url: "https://www.researchallofus.org/data-tools/data-access/",
 //             submenu: false,
 //           },
