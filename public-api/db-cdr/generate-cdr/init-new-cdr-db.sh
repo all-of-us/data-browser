@@ -56,6 +56,7 @@ function run_mysql() {
     echo "Outside docker: invoking mysql via docker for portability"
     docker run --rm --network host --entrypoint '' \
       -v "${CREATE_DB_FILE}:${CREATE_DB_FILE}" \
+      --platform linux/amd64 \
       mysql:5.7.27 \
       mysql $@
   fi
