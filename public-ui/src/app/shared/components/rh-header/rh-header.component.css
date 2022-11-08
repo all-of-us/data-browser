@@ -543,6 +543,10 @@ li.active-menu:before {
 #menu-mobile li.main-menu-item.FAQ::before {
   display: none;
 }
+li.nav_apply {
+  position: relative;
+  bottom: 2px;
+}
 
 /* large screens */
 @media only screen and (min-width: 1530px) {
