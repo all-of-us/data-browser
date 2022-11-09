@@ -52,15 +52,7 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
             "(?1) and a.generate_counts=0 order by b.id asc")
     List<DbSurveyMetadata> getMatchingFMHTopics(List<Long> questionConceptIds);
 
-    @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 1), '.', -1)=?1 and \n" +
-            "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 2), '.', -1)=?2 and survey_concept_id=?3 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=2")
-    List<DbSurveyMetadata> getSubQuestionsLevel1(String questionConceptId, String answerConceptId, String surveyConceptId);
-
-    @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 3), '.', -1)=?1 and \n" +
-            "SUBSTRING_INDEX(SUBSTRING_INDEX(path, '.', 4), '.', -1)=?2 and LENGTH(path) - LENGTH(REPLACE(path, '.', ''))=4")
-    List<DbSurveyMetadata> getSubQuestionsLevel2(String questionConceptId, String answerConceptId);
-
     @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and survey_concept_id=?1 and \n" +
         "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
-    List<DbSurveyMetadata> getSubQuestionsMultiLevel(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path);
+    List<DbSurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path);
 }
