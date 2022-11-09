@@ -686,7 +686,7 @@ export const PMReactComponent = withRouteData(
                                  </div>
                                </div>
                              </div>
-                             : <div>0 Results</div>}
+                             : <div>0 results</div>}
 
             </React.Fragment>}
           </div>
