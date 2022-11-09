@@ -41,7 +41,7 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                   "ON d.domain_id = c.domain_id where d.domain not in (4, 8, 10)" +
                   "    UNION DISTINCT " +
                   "    select domain,domain_id,name,description,concept_id,8 as all_concept_count," +
-                  "    (select count(*) from achilles_results where analysis_id=100 and stratum_2 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
+                  "    (select count(*) from achilles_results where analysis_id=100 and (stratum_2 like CONCAT('%', ?2, '%') or stratum_3 like CONCAT('%', ?2, '%'))) as standard_concept_count,participant_count" +
                   "    from domain_info where domain=8" +
                   "    UNION DISTINCT " +
                   "    select domain,domain_id,name,description,concept_id,4 as all_concept_count," +
