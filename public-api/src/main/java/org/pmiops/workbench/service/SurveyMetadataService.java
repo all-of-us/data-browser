@@ -42,19 +42,6 @@ public class SurveyMetadataService {
         return matchingQuestions;
     }
 
-    public List<SurveyMetadata> getFMHQuestions(List<String> conceptIds) {
-        return surveyMetadataDao.getFMHQuestions(conceptIds).stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
-    public List<SurveyMetadata> getMatchingFMHQuestions(List<String> conceptIds, String searchWord) {
-        return surveyMetadataDao.getMatchingFMHQuestions(conceptIds, searchWord)
-                .stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
     public List<SurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path){
         return surveyMetadataDao.getSubQuestions(surveyConceptId, questionConceptId, answerConceptId, path)
                 .stream()

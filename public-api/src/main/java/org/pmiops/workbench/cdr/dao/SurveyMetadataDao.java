@@ -27,31 +27,6 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
             "against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and a.generate_counts=1 order by b.id asc;")
     List<DbSurveyMetadata> getMatchingSurveyQuestionTopics(Long surveyConceptId, String searchWord);
 
-    @Query(nativeQuery=true, value="select distinct * from survey_metadata c where concept_id in (?1)")
-    List<DbSurveyMetadata> getFMHQuestions(List<String> questionConceptIds);
-
-    @Query(nativeQuery=true, value="select distinct c.* from survey_metadata c where concept_id in (?1) and (match(concept_name) against(?2 in boolean mode) > 0 or match(question_string) against(?2 in boolean mode) > 0)\n" +
-            "union distinct\n" +
-            "select distinct c.* from survey_metadata c join \n" +
-            "achilles_results ar1 on c.concept_id=ar1.stratum_2\n" +
-            "join survey_metadata ar2 on ar1.stratum_3=ar2.concept_id\n" +
-            "where ar1.stratum_2 in (?1) and ar1.analysis_id=3110 \n" +
-            "and (match(ar2.concept_name) against(?2 in boolean mode) > 0 or match(ar2.question_string) against(?2 in boolean mode) > 0);")
-    List<DbSurveyMetadata> getMatchingFMHQuestions(List<String> questionConceptIds, String search_word);
-
-    @Query(nativeQuery=true, value="select distinct b.* from survey_metadata a \n" +
-            "JOIN survey_metadata b\n" +
-            "    ON b.id =\n" +
-            "       ( SELECT c.id\n" +
-            "         FROM survey_metadata c\n" +
-            "         WHERE c.id < a.id and c.survey_concept_id = a.survey_concept_id and c.type='TOPIC'\n" +
-            "         ORDER BY c.id DESC\n" +
-            "         LIMIT 1\n" +
-            "       ) \n" +
-            "where a.concept_id in \n" +
-            "(?1) and a.generate_counts=0 order by b.id asc")
-    List<DbSurveyMetadata> getMatchingFMHTopics(List<Long> questionConceptIds);
-
     @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and survey_concept_id=?1 and \n" +
         "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
     List<DbSurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path);
