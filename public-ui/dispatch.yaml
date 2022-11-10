@@ -1,8 +1,8 @@
 dispatch:
-  - url: "aou-db-staging.appspot.com/v1/*"
+  - url: "public.api.staging.fake-research-aou.org/v1/*"
     service: api
   - url: "*/favicon.ico"
     service: default
-  - url: "aou-db-staging.appspot.com/"
+  - url: "databrowser.staging.fake-research-aou.org/"
     service: default
 
