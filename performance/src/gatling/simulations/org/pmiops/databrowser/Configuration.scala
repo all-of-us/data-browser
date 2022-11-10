@@ -14,7 +14,7 @@ object Configuration {
     env match {
       case "prod" => "https://public.api.researchallofus.org"
       case "stable" => "https://public.api.stable.fake-research-aou.org"
-      case "staging" => "https://api-dot-aou-db-staging.appspot.com"
+      case "staging" => "https://public.api.staging.fake-research-aou.org"
       case "test" => "https://api-dot-aou-db-test.appspot.com"
       case "local" => "http://localhost:8083"
       case _ => "https://public.api.stable.fake-research-aou.org"
