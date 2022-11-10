@@ -1,6 +1,6 @@
 export const environment = {
   displayTag: "Staging",
-  publicApiUrl: "https://aou-db-staging.appspot.com",
+  publicApiUrl: "https://public.api.staging.fake-research-aou.org",
   researchAllOfUsUrl: "https://researchallofus.org",
   debug: false,
   gaId: "UA-116298798-4",
