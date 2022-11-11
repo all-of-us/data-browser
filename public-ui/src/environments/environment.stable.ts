@@ -11,5 +11,5 @@ export const environment = {
   ehrReact: false,
   testReact: false,
   geno: true,
-  genoFilters: false,
+  genoFilters: true,
 };
