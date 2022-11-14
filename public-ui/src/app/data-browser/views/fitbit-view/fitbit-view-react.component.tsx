@@ -146,6 +146,8 @@ export const FitbitReactComponent = withRouteData(
         "Heart rate (minute-level)",
         "Activity (daily summary)",
         "Activity intraday steps (minute-level)",
+        "Sleep Daily Summary",
+        "Sleep Level (Sequence by level)"
       ];
       dataBrowserApi()
         .getFitbitAnalysisResults(FITBIT_MEASUREMENTS)

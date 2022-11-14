@@ -83,6 +83,20 @@ export const fitbitConcepts = [
     icon: "fa-walking",
     tooltipKey: "fitbitActivityStepsHelpText",
   },
+  {
+  id: 6,
+  displayName: "sleep daily summary",
+  conceptName: "sleep daily summary",
+  icon: "fa-bed",
+  tooltipKey: "sleepDailySummaryHelpText"
+  },
+  {
+  id: 7,
+  displayName: "sleep level (sequence by level)",
+  conceptName: "Sleep Level (Sequence by level)",
+  icon: "fa-bed",
+  tooltipKey: "sleepLevelHelpText"
+  }
 ];
 
 export const VARIANT_POPULATION_DETAILS = [
