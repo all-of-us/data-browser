@@ -189,7 +189,7 @@ export const FitbitReactComponent = withRouteData(
     }
 
     getCountData() {
-      console.log("testing new eoute change trigger");
+      console.log("testing new route change trigger");
       dataBrowserApi()
         .getCountAnalysis("Fitbit", "fitbit")
         .then((result) => {
