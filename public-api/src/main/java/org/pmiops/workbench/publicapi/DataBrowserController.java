@@ -221,13 +221,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
 
         List<SurveyMetadata> questions = new ArrayList<>();
 
-        if (level == 1) {
-            questions = surveyMetadataService.getSubQuestionsLevel1(String.valueOf(conceptId), String.valueOf(answerConceptId), String.valueOf(surveyConceptId));
-        } else if (level == 2) {
-            questions = surveyMetadataService.getSubQuestionsLevel2(String.valueOf(conceptId), String.valueOf(answerConceptId));
-        } else {
-            questions = surveyMetadataService.getSubQuestionsMultiLevel(surveyConceptId, conceptId, answerConceptId, path);
-        }
+        questions = surveyMetadataService.getSubQuestions(surveyConceptId, conceptId, answerConceptId, path);
 
         List<String> questionIds = new ArrayList<>();
 

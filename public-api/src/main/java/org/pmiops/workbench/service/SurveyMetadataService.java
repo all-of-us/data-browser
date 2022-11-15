@@ -42,35 +42,8 @@ public class SurveyMetadataService {
         return matchingQuestions;
     }
 
-    public List<SurveyMetadata> getFMHQuestions(List<String> conceptIds) {
-        return surveyMetadataDao.getFMHQuestions(conceptIds).stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
-    public List<SurveyMetadata> getMatchingFMHQuestions(List<String> conceptIds, String searchWord) {
-        return surveyMetadataDao.getMatchingFMHQuestions(conceptIds, searchWord)
-                .stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
-    public List<SurveyMetadata> getSubQuestionsLevel1(String conceptId, String answerConceptId, String surveyConceptId) {
-        return surveyMetadataDao.getSubQuestionsLevel1(conceptId, answerConceptId, surveyConceptId)
-                .stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
-    public List<SurveyMetadata> getSubQuestionsLevel2(String questionConceptId, String answerConceptId){
-        return surveyMetadataDao.getSubQuestionsLevel2(questionConceptId, answerConceptId)
-                .stream()
-                .map(surveyMetadataMapper::dbModelToClient)
-                .collect(Collectors.toList());
-    }
-
-    public List<SurveyMetadata> getSubQuestionsMultiLevel(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path){
-        return surveyMetadataDao.getSubQuestionsMultiLevel(surveyConceptId, questionConceptId, answerConceptId, path)
+    public List<SurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path){
+        return surveyMetadataDao.getSubQuestions(surveyConceptId, questionConceptId, answerConceptId, path)
                 .stream()
                 .map(surveyMetadataMapper::dbModelToClient)
                 .collect(Collectors.toList());
