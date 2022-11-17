@@ -8,4 +8,5 @@ export const testEnvironmentBase = {
   testReact: true,
   geno: true,
   genoFilters: true,
+  fitbitCDRUpdate: true
 };

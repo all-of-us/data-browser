@@ -1,3 +1,7 @@
+import { environment } from "environments/environment";
+
+const fitbitUpdateFlag = environment.fitbitCDRUpdate;
+
 export const domainToRoute = {
   condition: "conditions",
   drug: "drug-exposures",
@@ -47,7 +51,7 @@ export const PM_CONCEPTS = [
   "903120",
 ];
 
-export const fitbitConcepts = [
+export let fitbitConcepts = [
   {
     id: 1,
     displayName: "any Fitbit data",
@@ -82,8 +86,26 @@ export const fitbitConcepts = [
     conceptName: "Activity intraday steps (minute-level)",
     icon: "fa-walking",
     tooltipKey: "fitbitActivityStepsHelpText",
-  },
+  }
 ];
+
+if (fitbitUpdateFlag) {
+fitbitConcepts.push({
+  id: 6,
+  displayName: "sleep daily summary",
+  conceptName: "sleep daily summary",
+  icon: "fa-bed",
+  tooltipKey: "sleepDailySummaryHelpText"
+});
+
+fitbitConcepts.push({
+  id: 7,
+  displayName: "sleep level (sequence by level)",
+  conceptName: "Sleep Level (Sequence by level)",
+  icon: "fa-bed",
+  tooltipKey: "sleepLevelHelpText"
+});
+}
 
 export const VARIANT_POPULATION_DETAILS = [
   {
