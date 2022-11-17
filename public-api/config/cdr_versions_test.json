@@ -87,5 +87,19 @@
     "releaseNumber": 6,
     "numParticipants": 372380,
     "publicDbName": "p_2022q2_7"
+  },
+  {
+    "cdrVersionId": 9,
+    "isDefault": true,
+    "name": "All of Us Dataset v5 rc8",
+    "dataAccessLevel": 1,
+    "bigqueryProject": "aou-res-curation-prod",
+    "bigqueryDataset": "2022q4r3_combined_release",
+    "genomicsProject": "aou-db-prod",
+    "genomicsDataset": "genomics_v1",
+    "creationTime": "2022-09-30 13:05:03Z",
+    "releaseNumber": 9,
+    "numParticipants": 413640,
+    "publicDbName": "p_2022q4_Test_2"
   }
 ]
