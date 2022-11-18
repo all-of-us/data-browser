@@ -365,6 +365,7 @@ else concat(cast(c.concept_id as string), '|', c.concept_name) end) as synonyms,
 and (select flag from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\` where concept_id = c.concept_id)=0) then 0 else 1 end) as can_select,
 0 as has_select
 from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c left outer join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id
+where cs.language_concept_id=4180186
 group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code, cs.concept_id"
 
 # Update counts and prevalence in concept
@@ -512,7 +513,8 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept_synonym\`
  (id, concept_id, concept_synonym_name)
 SELECT 0, c.concept_id, c.concept_synonym_name
-FROM \`$BQ_PROJECT.$BQ_DATASET.concept_synonym\` c"
+FROM \`$BQ_PROJECT.$BQ_DATASET.concept_synonym\` c
+where language_concept_id=4180186;"
 
 ###########################
 # Domain_Vocabulary_Info #
