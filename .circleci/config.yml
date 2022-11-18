@@ -16,6 +16,31 @@ java_defaults: &java_defaults
     TERM: dumb
 
 jobs:
+  gcloud-auth-login:
+    description: "Activate CircleCI service account credential"
+    parameters:
+      with_application_default_credentials:
+        description: |
+          Whether to apply these credentials for Application Default Credentials (ADC).
+          This may be necessary to simulate certain local or server-side auth flows.
+          This is applied in addition to the normal behavior of this command, which activates
+          credentials e.g. for gcloud or gsutil commands.
+        type: boolean
+        default: false
+    steps:
+      - run:
+          working_directory: ~/databrowser
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+      - when:
+          condition: << parameters.with_application_default_credentials >>
+          steps:
+            - run:
+                name: Export application default credentials
+                command: |
+                  echo 'export GOOGLE_APPLICATION_CREDENTIALS=~/databrowser/public-api/circle-sa-key.json' >> $BASH_ENV
+                  source $BASH_ENV
+                working_directory: ~/databrowser
+
   public-api-local-test:
     docker:
       - image: allofustest/workbench:aou-db-image-1
@@ -148,6 +173,7 @@ jobs:
           name: Download Swagger CLI
           command: |
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
+      - gcloud-auth-login
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
           working_directory: ~/databrowser
