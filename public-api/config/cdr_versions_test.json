@@ -76,7 +76,6 @@
   },
   {
     "cdrVersionId": 8,
-    "isDefault": true,
     "name": "All of Us Dataset v5 rc4",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
