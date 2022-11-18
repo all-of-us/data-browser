@@ -148,6 +148,10 @@ jobs:
           name: Download Swagger CLI
           command: |
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
+      - run:
+          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
+          working_directory: ~/databrowser
+          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
       - restore_cache:
           keys:
           - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}

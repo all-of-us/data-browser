@@ -3,6 +3,7 @@
 *~
 .classpath
 .project
+.npmrc
 .externalToolBuilders
 .settings
 /public-api/?/

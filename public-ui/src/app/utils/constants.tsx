@@ -56,7 +56,7 @@ export let fitbitConcepts = [
     id: 1,
     displayName: "any Fitbit data",
     conceptName: "Any Fitbit Data",
-    icon: "fa fa-watch-fitness",
+    icon: "fa-solid fa-watch-fitness",
     tooltipKey: "fitbitAllDataHelpText",
   },
   {
@@ -70,7 +70,7 @@ export let fitbitConcepts = [
     id: 3,
     displayName: "heart rate (minute-level)",
     conceptName: "Heart rate (minute-level)",
-    icon: "fa fa-monitor-heart-rate",
+    icon: "fa-solid fa-monitor-waveform",
     tooltipKey: "fitbitHeartRateHelpText",
   },
   {
@@ -102,7 +102,7 @@ fitbitConcepts.push({
   id: 7,
   displayName: "sleep level (sequence by level)",
   conceptName: "Sleep Level (Sequence by level)",
-  icon: "fa fa-bed-pulse",
+  icon: "fa-duotone fa-bed-pulse",
   tooltipKey: "sleepLevelHelpText"
 });
 }
