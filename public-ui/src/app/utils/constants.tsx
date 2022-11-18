@@ -94,7 +94,7 @@ fitbitConcepts.push({
   id: 6,
   displayName: "sleep daily summary",
   conceptName: "sleep daily summary",
-  icon: "fa fa-procedures",
+  icon: "fa-solid fa-bed-pulse",
   tooltipKey: "sleepDailySummaryHelpText"
 });
 
@@ -102,7 +102,7 @@ fitbitConcepts.push({
   id: 7,
   displayName: "sleep level (sequence by level)",
   conceptName: "Sleep Level (Sequence by level)",
-  icon: "fa fa-procedures",
+  icon: "fa fa-bed-pulse",
   tooltipKey: "sleepLevelHelpText"
 });
 }
