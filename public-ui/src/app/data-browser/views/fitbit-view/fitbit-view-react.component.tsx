@@ -233,7 +233,7 @@ export const FitbitReactComponent = withRouteData(
                 <div className="fm-menu">
                   {concepts &&
                     concepts.map((concept, index) => {
-                      const iconClass = "fas " + concept.icon;
+                      const iconClass = concept.icon;
                       const conceptClass =
                         selectedDisplay.toLowerCase() ===
                         concept.displayName.toLowerCase()
