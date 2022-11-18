@@ -88,7 +88,7 @@
     "publicDbName": "p_2022q2_7"
   },
   {
-    "cdrVersionId": 9,
+    "cdrVersionId": 13,
     "isDefault": true,
     "name": "All of Us Dataset v5 rc8",
     "dataAccessLevel": 1,
