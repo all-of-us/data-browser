@@ -364,8 +364,7 @@ else concat(cast(c.concept_id as string), '|', c.concept_name) end) as synonyms,
 (case when (c.concept_id in (select distinct concept_id from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\`)
 and (select flag from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\` where concept_id = c.concept_id)=0) then 0 else 1 end) as can_select,
 0 as has_select
-from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c left outer join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id
-where cs.language_concept_id=4180186
+from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c left outer join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id and cs.language_concept_id=4180186
 group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code, cs.concept_id"
 
 # Update counts and prevalence in concept
