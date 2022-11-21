@@ -267,6 +267,63 @@ SELECT vocabulary_id, vocabulary_name, vocabulary_reference, vocabulary_version,
 FROM \`$BQ_PROJECT.$BQ_DATASET.vocabulary\`"
 
 ####################
+# updating concept DB-1143 #
+####################
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Indian Health Service' where concept_id=43529111; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Insurance purchased directly from an insurance company (by you or another family member)'
+where concept_id=43529119; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Insurance through a current or former employer or union (by you or another family member)'
+where concept_id=43529120; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Medicare, for people 65 and older or people with certain disabilities'
+where concept_id=43529210; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Medicaid, Medical Assistance, or any kind of government-assistance plan for those with low incomes or disability'
+where concept_id=43529209; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='TRICARE or other military health care'
+where concept_id=43529920; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Veterans Affairs (VA) (including those who have ever used or enrolled for VA health care)'
+where concept_id=43529926; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='Any other type of health insurance or health coverage plan'
+where concept_id=43528423; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+set concept_name='I don’ t have health insurance, self-pay'
+where concept_id=43529095; "
+
+
+####################
 # achilles queries #
 ####################
 # Run achilles count queries to fill achilles_results
