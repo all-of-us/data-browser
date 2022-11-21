@@ -115,6 +115,8 @@ export const tooltips = {
                                    including medical conditions.`,
   "family health history": `This survey collects information about the medical history of
                                 participants' immediate biological family members`,
+  "personal and family health history": `This survey collects information about the medical history of
+                                                          participant and their immediate biological family members`,
   "health care access & utilization": `This survey asks questions about participants' access
                                            to and use of health care.`,
   "covid-19 participant experience (cope)":
@@ -361,6 +363,8 @@ export class TooltipService {
                                    including medical conditions.`,
     "family health history": `This survey collects information about the medical history of
                                 participants' immediate biological family members`,
+    "personal and family health history": `This survey collects information about the medical history of
+                                                          participant and their immediate biological family members`,
     "health care access & utilization": `This survey asks questions about participants' access
                                            to and use of health care.`,
     "covid-19 participant experience (cope)":
