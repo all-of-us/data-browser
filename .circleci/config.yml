@@ -22,6 +22,32 @@ commands:
       - checkout
       - run:
           command: git submodule update --init --recursive
+
+  gcloud-auth-login:
+    description: "Activate CircleCI service account credential"
+    parameters:
+      with_application_default_credentials:
+        description: |
+          Whether to apply these credentials for Application Default Credentials (ADC).
+          This may be necessary to simulate certain local or server-side auth flows.
+          This is applied in addition to the normal behavior of this command, which activates
+          credentials e.g. for gcloud or gsutil commands.
+        type: boolean
+        default: false
+    steps:
+      - run:
+          working_directory: ~/data-browser
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+      - when:
+          condition: << parameters.with_application_default_credentials >>
+          steps:
+            - run:
+                name: Export application default credentials
+                command: |
+                  echo 'export GOOGLE_APPLICATION_CREDENTIALS=~/data-browser/public-api/circle-sa-key.json' >> $BASH_ENV
+                  source $BASH_ENV
+                working_directory: ~/data-browser
+
 jobs:
   public-api-local-test:
     docker:
