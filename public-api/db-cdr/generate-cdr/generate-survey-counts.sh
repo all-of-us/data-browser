@@ -141,7 +141,7 @@ CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
 and sq.sub=0
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path
@@ -152,7 +152,7 @@ CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` o join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140 and c.domain_id != 'Meas Value')
 and sq.sub=1
 and (exists
