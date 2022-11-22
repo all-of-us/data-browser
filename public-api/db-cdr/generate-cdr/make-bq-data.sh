@@ -290,6 +290,63 @@ else
     exit 1
 fi
 
+
+####################
+# updating concept DB-1143 #
+####################
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Indian Health Service' where stratum_3='43529111'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Insurance purchased directly from an insurance company (by you or another family member)'
+where stratum_3='43529119'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Insurance through a current or former employer or union (by you or another family member)'
+where stratum_3='43529120'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Medicare, for people 65 and older or people with certain disabilities'
+where stratum_3='43529210'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Medicaid, Medical Assistance, or any kind of government-assistance plan for those with low incomes or disability'
+where stratum_3='43529209'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='TRICARE or other military health care'
+where stratum_3='43529920'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Veterans Affairs (VA) (including those who have ever used or enrolled for VA health care)'
+where stratum_3='43529926'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='Any other type of health insurance or health coverage plan'
+where stratum_3='43528423'; "
+
+# Set the survey participant count on the concept
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
+set stratum_4='I don’ t have health insurance, self-pay'
+where stratum_3='43529095'; "
+
 ##################################################################
 # Add survey participant count by question addition date
 ##################################################################
