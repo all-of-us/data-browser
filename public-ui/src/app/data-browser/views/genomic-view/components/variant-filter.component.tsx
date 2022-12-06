@@ -1,8 +1,10 @@
 import * as React from "react";
 
 import { VariantFilterItemComponent } from "app/data-browser/views/genomic-view/components/variant-filter-item.component";
+import { VariantSortItemComponent } from "app/data-browser/views/genomic-view/components/variant-sort-item.component";
 import { reactStyles } from "app/utils";
 import { GenomicFilters } from "publicGenerated";
+import { SortMetadata } from "publicGenerated/fetch";
 
 const styles = reactStyles({
     filterBox: {
@@ -19,6 +21,10 @@ const styles = reactStyles({
     },
     filterItemHandleClosed: {
         transform: "rotate(90deg)",
+    },
+    sortByContainer: {
+        paddingTop: ".5rem",
+        paddingBottom: ".5rem",
     },
     actionBtnContainer: {
         position: "absolute",
@@ -57,15 +63,16 @@ export interface Cat {
 
 interface Props {
     filterMetadata: GenomicFilters;
+    sortMetadata: SortMetadata;
     onFilterSubmit: Function;
-
+    onSortChange: Function;
 }
 interface State {
     filterCats: Cat[];
     filteredMetadata: any;
     cleared: Boolean;
     ogFilterMetaData: any;
-    
+    sortMetadata: SortMetadata;
 }
 
 export class VariantFilterComponent extends React.Component<Props, State> {
@@ -83,7 +90,8 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             ],
             filteredMetadata: this.props.filterMetadata,
             cleared:true,
-            ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}')
+            ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}'),
+            sortMetadata: this.props.sortMetadata,
         };
     }
 
@@ -91,6 +99,10 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         const filterMetadataChange = this.props.filterMetadata;
         filterMetadataChange[cat.field.toString()] = filteredItem;
         this.setState({ filteredMetadata: filterMetadataChange });
+    }
+
+    handleSortChange(sortedItem: SortMetadata) {
+        this.setState({sortMetadata: sortedItem});
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
@@ -108,7 +120,8 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             }
         }
         filteredMetadata = this.state.filteredMetadata;
-        this.props.onFilterSubmit(filteredMetadata);
+        const sortMetadata = this.state.sortMetadata;
+        this.props.onFilterSubmit(filteredMetadata, sortMetadata);
     }
 
     handleClear() {
@@ -122,7 +135,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
     render() {
         const { filterMetadata } = this.props;
-        const { filterCats, filteredMetadata, cleared } = this.state;
+        const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
         return <div style={styles.filterBox}>
             <div style={styles.filterItems}>
                 {filterCats.map((cat, index) => {
@@ -138,6 +151,9 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                     }
                 })
                 }
+                <div style={styles.sortByContainer}>
+                    {<VariantSortItemComponent cleared = {cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
+                </div>
                 <div style={styles.actionBtnContainer}>
                     <button onClick={() => this.handleClear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
