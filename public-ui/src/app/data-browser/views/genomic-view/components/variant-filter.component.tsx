@@ -130,7 +130,13 @@ export class VariantFilterComponent extends React.Component<Props, State> {
          for (const key in this.state.filteredMetadata) {
             this.state.filteredMetadata[key] = ogFilterMetaData[key];
          }
-         this.setState({cleared:false,filteredMetadata: this.state.filteredMetadata},()=>this.setState({cleared:true}));
+
+        const { sortMetadata } = this.state;
+        for (const smKey in sortMetadata) {
+            sortMetadata[smKey].sortActive = false;
+            sortMetadata[smKey].sortDirection = "asc";
+        }
+         this.setState({cleared:false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata},()=>this.setState({cleared:true}));
     }
 
     render() {

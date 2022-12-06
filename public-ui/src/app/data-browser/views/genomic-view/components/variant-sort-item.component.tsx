@@ -101,6 +101,22 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
   render(): React.ReactNode {
     const { cleared } = this.props;
     const { sortItemOpen, sortMetadata } = this.state;
+
+    let sortMetadataFlags = {'gene': {'asc': false, 'desc': false},
+    'consequence': {'asc': false, 'desc': false},
+    'proteinChange': {'asc': false, 'desc': false},
+    'clinicalSignificance': {'asc': false, 'desc': false},
+    'alleleCount': {'asc': false, 'desc': false},
+    'alleleNumber': {'asc': false, 'desc': false},
+    'alleleFrequency': {'asc': false, 'desc': false},
+    };
+
+    for (const smKey in sortMetadata) {
+        if (sortMetadata[smKey].sortActive) {
+            sortMetadataFlags[smKey][sortMetadata[smKey].sortDirection] = true;
+        }
+    }
+
     return <React.Fragment>
           <div onClick={() => this.sortClick()} style={styles.sortItem}>
           <span style={{fontFamily:'gothamBold'}}>Sort By</span>
@@ -109,59 +125,73 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
           {(cleared && sortItemOpen) &&
                     <div style={styles.sortItemForm}  onChange={(e) => this.onSortClick(e)}>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="gene_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="gene_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['gene']['asc']} />
                                 <label style={styles.sortItemLabel}>Gene Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="gene_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="gene_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['gene']['desc']} />
                                 <label style={styles.sortItemLabel}>Gene Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="consequence_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="consequence_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['consequence']['asc']} />
                                 <label style={styles.sortItemLabel}>Consequence Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="consequence_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="consequence_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['consequence']['desc']}/>
                                 <label style={styles.sortItemLabel}>Consequence Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="proteinChange_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="proteinChange_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['proteinChange']['asc']} />
                                 <label style={styles.sortItemLabel}>Protein Change Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="proteinChange_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="proteinChange_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['proteinChange']['desc']} />
                                 <label style={styles.sortItemLabel}>Protein Change Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="clinicalSignificance_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="clinicalSignificance_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['clinicalSignificance']['asc']} />
                                 <label style={styles.sortItemLabel}>Clinical Significance Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="clinicalSignificance_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="clinicalSignificance_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['clinicalSignificance']['desc']}/>
                                 <label style={styles.sortItemLabel}>Clinical Significance Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleCount_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleCount_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleCount']['asc']} />
                                 <label style={styles.sortItemLabel}>Allele Count Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleCount_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleCount_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleCount']['desc']} />
                                 <label style={styles.sortItemLabel}>Allele Count Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleNumber_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleNumber_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleNumber']['asc']} />
                                 <label style={styles.sortItemLabel}>Allele Number Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleNumber_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleNumber_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleNumber']['desc']} />
                                 <label style={styles.sortItemLabel}>Allele Number Desc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleFrequency_asc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleFrequency_asc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleFrequency']['asc']} />
                                 <label style={styles.sortItemLabel}>Allele Frequency Asc</label>
                             </span>
                             <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleFrequency_desc" name="sortBy" style={styles.sortItemCheck} />
+                                <input type="radio" value="alleleFrequency_desc" name="sortBy" style={styles.sortItemCheck}
+                                checked={sortMetadataFlags['alleleFrequency']['desc']} />
                                 <label style={styles.sortItemLabel}>Allele Frequency Desc</label>
                             </span>
                     </div>}

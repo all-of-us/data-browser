@@ -194,9 +194,19 @@ export const GenomicViewComponent = withRouteData(
     title = "Genomic Variants";
 
     search = _.debounce((searchTerm: string) => {
+      this.clearSortMetadata();
       this.getVariantSearch(searchTerm);
       this.changeUrl();
     }, 1000);
+
+    clearSortMetadata() {
+        const { sortMetadata } = this.state;
+        for (const smKey in sortMetadata) {
+            sortMetadata[smKey].sortActive = false;
+            sortMetadata[smKey].sortDirection = "asc";
+        }
+        this.setState({sortMetadata: sortMetadata});
+    }
 
     changeUrl() {
       const { searchTerm } = this.state;
