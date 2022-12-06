@@ -398,6 +398,8 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+      console.log('Am i here ??');
+      console.log(filteredMetadata);
       this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }
