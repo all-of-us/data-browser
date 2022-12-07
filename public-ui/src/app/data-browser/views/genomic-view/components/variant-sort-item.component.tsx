@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import { Cat } from "./variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
@@ -29,7 +29,7 @@ const styles = reactStyles({
     overflow: 'hidden',
     flexDirection: "column",
     paddingLeft: "1rem",
-    paddingTop:".25rem"
+    paddingTop: ".25rem"
   },
   sortItemOption: {
     fontSize: ".8em",
@@ -45,7 +45,7 @@ const styles = reactStyles({
     width: '80%',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    overflow:'hidden'
+    overflow: 'hidden'
     // wordWrap: "break-word",
   }
 });
@@ -53,25 +53,46 @@ const styles = reactStyles({
 const css = `
 `;
 
+const lables = {
+  gene: 'Gene',
+  consequence: 'Consequence',
+  clinicalSignificance: 'ClinVar Significance',
+  alleleNumber: 'Allele Number',
+  alleleFrequency: 'Allele Frequency',
+  alleleCount: 'Allele Count'
+};
+
 interface Props {
-    cleared: Boolean;
-    onSortChange: Function;
-    sortMetadata: SortMetadata;
+  cleared: Boolean;
+  onSortChange: Function;
+  sortMetadata: SortMetadata;
 }
 
 interface State {
   sortItemOpen: Boolean;
   sortMetadata: SortMetadata;
+  cats: Cat[];
 }
 
 export class VariantSortItemComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-        sortItemOpen: false,
-        sortMetadata: props.sortMetadata,
+      sortItemOpen: false,
+      sortMetadata: props.sortMetadata,
+      cats: [
+        { display: 'Gene', field: 'gene' },
+        { display: 'Consequence', field: 'consequence' },
+        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
+        { display: 'Allele Count', field: 'alleleCount' },
+        { display: 'Allele Number', field: 'alleleNumber' },
+        { display: 'Allele Frequency', field: 'alleleFrequency' },
+      ]
     };
+
+    console.log(props.sortMetadata);
   }
+
 
   sortClick() {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
@@ -81,8 +102,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     const { sortMetadata } = this.state;
     let event_split = event.target.value.split('_');
     const key = event_split[0];
-    const direction = event_split[1];
-
+    const direction = event_split[1];    
     sortMetadata[key].sortActive = true;
     sortMetadata[key].sortDirection = direction;
 
@@ -100,36 +120,51 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
 
   render(): React.ReactNode {
     const { cleared } = this.props;
-    const { sortItemOpen, sortMetadata } = this.state;
+    const { sortItemOpen, sortMetadata, cats } = this.state;
 
-    let sortMetadataFlags = {'gene': {'asc': false, 'desc': false},
-    'consequence': {'asc': false, 'desc': false},
-    'proteinChange': {'asc': false, 'desc': false},
-    'clinicalSignificance': {'asc': false, 'desc': false},
-    'alleleCount': {'asc': false, 'desc': false},
-    'alleleNumber': {'asc': false, 'desc': false},
-    'alleleFrequency': {'asc': false, 'desc': false},
+    let sortMetadataFlags = {
+      'gene': { 'asc': false, 'desc': false },
+      'consequence': { 'asc': false, 'desc': false },
+      'proteinChange': { 'asc': false, 'desc': false },
+      'clinicalSignificance': { 'asc': false, 'desc': false },
+      'alleleCount': { 'asc': false, 'desc': false },
+      'alleleNumber': { 'asc': false, 'desc': false },
+      'alleleFrequency': { 'asc': false, 'desc': false },
     };
 
     for (const smKey in sortMetadata) {
-        if (sortMetadata[smKey].sortActive) {
-            sortMetadataFlags[smKey][sortMetadata[smKey].sortDirection] = true;
-        }
+      if (sortMetadata[smKey].sortActive) {
+        sortMetadataFlags[smKey][sortMetadata[smKey].sortDirection] = true;
+      }
     }
 
     return <React.Fragment>
-          <div onClick={() => this.sortClick()} style={styles.sortItem}>
-          <span style={{fontFamily:'gothamBold'}}>Sort By</span>
-            <div><ClrIcon style={!sortItemOpen ? { ...styles.sortItemClosed } : { ...styles.sortItemOpen }} shape='angle' /></div>
-          </div>
-          {(cleared && sortItemOpen) &&
-                    <div style={styles.sortItemForm}  onChange={(e) => this.onSortClick(e)}>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="gene_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['gene']['asc']} />
-                                <label style={styles.sortItemLabel}>Gene Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
+      <div onClick={() => this.sortClick()} style={styles.sortItem}>
+        <span style={{ fontFamily: 'gothamBold' }}>Sort By</span>
+        <div><ClrIcon style={!sortItemOpen ? { ...styles.sortItemClosed } : { ...styles.sortItemOpen }} shape='angle' /></div>
+      </div>
+      {(cleared && sortItemOpen) &&
+        <div style={styles.sortItemForm} onChange={(e) => this.onSortClick(e)}>
+          {cats && cats.map((cat, index) => {
+            return <div key={index}>
+              <span>{cat.display}</span>
+              <span style={styles.sortItemOption}>
+                <input type="radio" value={cat.field + '_asc'} name="sortBy" style={styles.sortItemCheck}
+                  defaultChecked={sortMetadataFlags[cat.field.toString()]['asc']} />
+              </span>
+              <span style={styles.sortItemOption}>
+                <input type="radio" value={cat.field + '_desc'} name="sortBy" style={styles.sortItemCheck}
+                  defaultChecked={sortMetadataFlags[cat.field.toString()]['desc']} />
+              </span>
+            </div>
+
+          })}
+          {/* <span style={styles.sortItemOption}>
+            <input type="radio" value="gene_asc" name="sortBy" style={styles.sortItemCheck}
+              defaultChecked={sortMetadataFlags['gene']['asc']} />
+            <label style={styles.sortItemLabel}>Gene Asc</label>
+          </span> */}
+          {/* <span style={styles.sortItemOption}>
                                 <input type="radio" value="gene_desc" name="sortBy" style={styles.sortItemCheck}
                                 checked={sortMetadataFlags['gene']['desc']} />
                                 <label style={styles.sortItemLabel}>Gene Desc</label>
@@ -193,8 +228,8 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
                                 <input type="radio" value="alleleFrequency_desc" name="sortBy" style={styles.sortItemCheck}
                                 checked={sortMetadataFlags['alleleFrequency']['desc']} />
                                 <label style={styles.sortItemLabel}>Allele Frequency Desc</label>
-                            </span>
-                    </div>}
+                            </span> */}
+        </div>}
     </React.Fragment>;
   }
 }

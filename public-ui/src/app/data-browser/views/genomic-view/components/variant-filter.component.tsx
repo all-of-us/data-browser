@@ -12,7 +12,7 @@ const styles = reactStyles({
         position: "absolute",
         padding: ".5rem",
         zIndex: 10,
-        borderRadius: "0 6px 6px 0",
+        borderRadius: "0 1px 1px 0",
         backgroundColor: "#FFFFFF",
         boxShadow:
             "0 1px 3px 0 rgba(0,0,0,0.15), 0 0 2px 0 rgba(0,0,0,0.25), 0 2px 2px 0 rgba(0,0,0,0.15)",
@@ -89,7 +89,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
             filteredMetadata: this.props.filterMetadata,
-            cleared:true,
+            cleared: true,
             ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}'),
             sortMetadata: this.props.sortMetadata,
         };
@@ -102,7 +102,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     }
 
     handleSortChange(sortedItem: SortMetadata) {
-        this.setState({sortMetadata: sortedItem});
+        this.setState({ sortMetadata: sortedItem });
     }
 
     submitFilter(filteredMetadata: GenomicFilters) {
@@ -126,17 +126,17 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
     handleClear() {
         const ogFilterMetaData = JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}');
-         // tslint:disable-next-line: forin
-         for (const key in this.state.filteredMetadata) {
+        // tslint:disable-next-line: forin
+        for (const key in this.state.filteredMetadata) {
             this.state.filteredMetadata[key] = ogFilterMetaData[key];
-         }
+        }
 
         const { sortMetadata } = this.state;
         for (const smKey in sortMetadata) {
             sortMetadata[smKey].sortActive = false;
             sortMetadata[smKey].sortDirection = "asc";
         }
-         this.setState({cleared:false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata},()=>this.setState({cleared:true}));
+        this.setState({ cleared: false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata }, () => this.setState({ cleared: true }));
     }
 
     render() {
@@ -152,19 +152,19 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                                 onFilterChange={(e) => this.handleFilterChange(e, cat)}
                                 key={key}
                                 category={cat}
-                                cleared = {cleared}
+                                cleared={cleared}
                                 filterItem={filteredMetadata[cat.field.toString()]} />;
                     }
                 })
                 }
                 <div style={styles.sortByContainer}>
-                    {<VariantSortItemComponent cleared = {cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
+                    {<VariantSortItemComponent cleared={cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
                 </div>
+            </div>
                 <div style={styles.actionBtnContainer}>
                     <button onClick={() => this.handleClear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
-            </div>
         </div>;
     }
 }
