@@ -75,6 +75,21 @@ const styles = reactStyles({
   noSources: {
     paddingBottom: "1em",
   },
+  valuesChart: {
+    fontSize: '0.8em'
+  },
+  unitPanel: {
+    display: 'flex',
+    flexDirection: "row",
+    gap: '1em',
+    justifyContent: 'center'
+  },
+  noUnitPanel: {
+    display: 'flex',
+    flexDirection: "row",
+    gap: '1em',
+    justifyContent: 'center'
+  }
 });
 
 const cssStyles = `
@@ -307,8 +322,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         }
       }
       unitCounts.sort((a, b) => {
-        return a.count - b.count;
+        return b.count - a.count;
       });
+
       let unitNames = unitCounts.map((d) => d.name);
       const noUnit = unitNames.filter((n) => n.toLowerCase() === "no unit");
       unitNames = unitNames.filter((n) => n.toLowerCase() !== "no unit");
@@ -549,7 +565,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               </div>
             ) : (
               graphToShow === "Values" && (
-                <div className="chart" key="values-chart">
+                <div className="chart" key="values-chart" style={styles.valuesChart}>
+                 <div style={styles.unitPanel}>
                   {unitNames.map((unit, index) => {
                     return (
                       <div
@@ -568,7 +585,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                       </div>
                     );
                   })}
-                  <div>
+                  </div>
+                  <div style={styles.noUnitPanel}>
                     {mixtureOfValues &&
                       noUnitValueButtons.map((noUnit, index) => {
                         return (

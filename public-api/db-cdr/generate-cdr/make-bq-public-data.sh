@@ -11,7 +11,7 @@ USAGE="./generate-clousql-cdr/make-bq-public-data.sh --public-project <PROJECT> 
 
 while [ $# -gt 0 ]; do
   echo "1 is $1"
-  case "$1" in
+  case "$1" inz
     --public-project) PUBLIC_PROJECT=$2; shift 2;;
     --public-dataset) PUBLIC_DATASET=$2; shift 2;;
     --bin-size) BIN_SIZE=$2; shift 2;;
