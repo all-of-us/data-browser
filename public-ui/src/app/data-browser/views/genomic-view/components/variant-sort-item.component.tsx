@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Cat } from "./variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
@@ -47,6 +46,9 @@ const styles = reactStyles({
     textOverflow: 'ellipsis',
     overflow: 'hidden'
     // wordWrap: "break-word",
+  },
+  activeSort: {
+    fontFamily: 'gothamBold'
   }
 });
 
@@ -71,7 +73,7 @@ interface Props {
 interface State {
   sortItemOpen: Boolean;
   sortMetadata: SortMetadata;
-  cats: Cat[];
+  cats: any[];
 }
 
 export class VariantSortItemComponent extends React.Component<Props, State> {
@@ -98,24 +100,23 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
   }
 
-  onSortClick(event) {
-    const { sortMetadata } = this.state;
-    let event_split = event.target.value.split('_');
-    const key = event_split[0];
-    const direction = event_split[1];    
-    sortMetadata[key].sortActive = true;
-    sortMetadata[key].sortDirection = direction;
+ 
 
-    for (const sKey in sortMetadata) {
-      if (sKey !== key) {
-        sortMetadata[sKey].sortActive = false;
-        sortMetadata[sKey].sortDirection = "asc";
+  clickToSort(field) {
+    this.state.sortMetadata[field].sortActive = true;
+    if (this.state.sortMetadata[field].sortDirection === 'asc') {
+      this.state.sortMetadata[field].sortDirection = 'desc'
+    } else {
+      this.state.sortMetadata[field].sortDirection = 'asc'
+    }
+    if (this.state.sortMetadata[field].sortActive) {
+      for (const item in this.state.sortMetadata) {
+        if (item !== field) {
+          this.state.sortMetadata[item].sortActive = false;
+        }
       }
     }
-
-    this.setState({ sortMetadata: sortMetadata }, () => {
-      this.props.onSortChange(this.state.sortMetadata);
-    });
+    this.setState({ sortMetadata: this.state.sortMetadata });
   }
 
   render(): React.ReactNode {
@@ -144,91 +145,14 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
         <div><ClrIcon style={!sortItemOpen ? { ...styles.sortItemClosed } : { ...styles.sortItemOpen }} shape='angle' /></div>
       </div>
       {(cleared && sortItemOpen) &&
-        <div style={styles.sortItemForm} onChange={(e) => this.onSortClick(e)}>
+        <div style={styles.sortItemForm}>
           {cats && cats.map((cat, index) => {
             return <div key={index}>
-              <span>{cat.display}</span>
-              <span style={styles.sortItemOption}>
-                <input type="radio" value={cat.field + '_asc'} name="sortBy" style={styles.sortItemCheck}
-                  defaultChecked={sortMetadataFlags[cat.field.toString()]['asc']} />
-              </span>
-              <span style={styles.sortItemOption}>
-                <input type="radio" value={cat.field + '_desc'} name="sortBy" style={styles.sortItemCheck}
-                  defaultChecked={sortMetadataFlags[cat.field.toString()]['desc']} />
-              </span>
+              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}} onClick={(e) => this.clickToSort(cat.field)}>{cat.display}</span>
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <span> asc</span>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <span> desc</span>}
             </div>
-
           })}
-          {/* <span style={styles.sortItemOption}>
-            <input type="radio" value="gene_asc" name="sortBy" style={styles.sortItemCheck}
-              defaultChecked={sortMetadataFlags['gene']['asc']} />
-            <label style={styles.sortItemLabel}>Gene Asc</label>
-          </span> */}
-          {/* <span style={styles.sortItemOption}>
-                                <input type="radio" value="gene_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['gene']['desc']} />
-                                <label style={styles.sortItemLabel}>Gene Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="consequence_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['consequence']['asc']} />
-                                <label style={styles.sortItemLabel}>Consequence Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="consequence_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['consequence']['desc']}/>
-                                <label style={styles.sortItemLabel}>Consequence Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="proteinChange_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['proteinChange']['asc']} />
-                                <label style={styles.sortItemLabel}>Protein Change Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="proteinChange_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['proteinChange']['desc']} />
-                                <label style={styles.sortItemLabel}>Protein Change Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="clinicalSignificance_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['clinicalSignificance']['asc']} />
-                                <label style={styles.sortItemLabel}>Clinical Significance Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="clinicalSignificance_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['clinicalSignificance']['desc']}/>
-                                <label style={styles.sortItemLabel}>Clinical Significance Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleCount_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleCount']['asc']} />
-                                <label style={styles.sortItemLabel}>Allele Count Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleCount_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleCount']['desc']} />
-                                <label style={styles.sortItemLabel}>Allele Count Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleNumber_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleNumber']['asc']} />
-                                <label style={styles.sortItemLabel}>Allele Number Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleNumber_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleNumber']['desc']} />
-                                <label style={styles.sortItemLabel}>Allele Number Desc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleFrequency_asc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleFrequency']['asc']} />
-                                <label style={styles.sortItemLabel}>Allele Frequency Asc</label>
-                            </span>
-                            <span style={styles.sortItemOption}>
-                                <input type="radio" value="alleleFrequency_desc" name="sortBy" style={styles.sortItemCheck}
-                                checked={sortMetadataFlags['alleleFrequency']['desc']} />
-                                <label style={styles.sortItemLabel}>Allele Frequency Desc</label>
-                            </span> */}
         </div>}
     </React.Fragment>;
   }
