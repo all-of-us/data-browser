@@ -54,7 +54,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -82,7 +82,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -110,7 +110,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -138,7 +138,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -166,7 +166,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -194,7 +194,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
@@ -222,7 +222,7 @@ ORDER BY person_id
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` where observation_source_concept_id in (
     SELECT DISTINCT concept_id
     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
