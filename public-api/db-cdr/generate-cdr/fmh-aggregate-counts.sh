@@ -483,7 +483,7 @@ value_source_concept_id, value_source_value, questionnaire_response_id)
 select observation_id, person_id, 836781, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, 'CancerCondition_SkinCancer_yes', 836781, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
-where observation_source_concept_id in (43528512, 43528510, 43528513, 43528509, 43528514, 43528511)
+  where observation_source_concept_id in (43528512, 43528510, 43528513, 43528509, 43528514, 43528511)
 and value_source_concept_id in (43529821, 43529819, 43529820, 43529822, 43529818, 43529823);
 "
 
