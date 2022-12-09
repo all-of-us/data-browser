@@ -20,8 +20,8 @@ while [ $# -gt 0 ]; do
 done
 
 #####################
-# TODO : Clean this code once the issue is fixed
-Remove the null questionnaire_response_id participants from the surveys
+# TODO : Clean this code once the issue is fixed #
+# Remove the null questionnaire_response_id participants from the surveys #
 #####################
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
