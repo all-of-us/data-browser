@@ -21,7 +21,7 @@ done
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -34,7 +34,7 @@ and value_source_concept_id in (43528469, 43528467, 43528470, 43528471, 43528468
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -47,7 +47,7 @@ and value_source_concept_id in (43528469, 43528467, 43528470, 43528471, 43528468
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -60,7 +60,7 @@ and value_source_concept_id in (43528481, 43528482, 43528483, 43528484, 43528485
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -73,7 +73,7 @@ and value_source_concept_id in (43528481, 43528482, 43528483, 43528484, 43528485
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -86,7 +86,7 @@ and value_source_concept_id in (43530273, 43528478, 43528476, 43530277, 43530278
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -99,7 +99,7 @@ and value_source_concept_id in (43530273, 43528478, 43528476, 43530277, 43530278
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -112,7 +112,7 @@ and value_source_concept_id in (43528497, 43528496, 43528493, 43528498, 43528495
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -125,7 +125,7 @@ and value_source_concept_id in (43528497, 43528496, 43528493, 43528498, 43528495
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -138,7 +138,7 @@ and value_source_concept_id in (43528506, 43528502, 43528503, 43528505, 43528504
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -151,7 +151,7 @@ and value_source_concept_id in (43528506, 43528502, 43528503, 43528505, 43528504
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -164,7 +164,7 @@ and value_source_concept_id in (43528543, 43528542, 43528540, 43528544);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -177,7 +177,7 @@ and value_source_concept_id in (43528543, 43528542, 43528540, 43528544);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -190,7 +190,7 @@ and value_source_concept_id in (43528570, 43528567, 43528569, 43528568, 43528571
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -203,7 +203,7 @@ and value_source_concept_id in (43528570, 43528567, 43528569, 43528568, 43528571
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -216,7 +216,7 @@ and value_source_concept_id in (43528670, 43530420, 43528671, 43528669, 43528672
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -229,7 +229,7 @@ and value_source_concept_id in (43528670, 43530420, 43528671, 43528669, 43528672
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -242,7 +242,7 @@ and value_source_concept_id in (43530421, 43530423, 43528648, 43530424);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -255,7 +255,7 @@ and value_source_concept_id in (43530421, 43530423, 43528648, 43530424);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -268,7 +268,7 @@ and value_source_concept_id in (43530429, 43530427, 43530428, 43528694, 43530426
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -281,7 +281,7 @@ and value_source_concept_id in (43530429, 43530427, 43530428, 43528694, 43530426
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -294,7 +294,7 @@ and value_source_concept_id in (43530434, 43528697, 43530432, 43530433, 43528696
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -307,7 +307,7 @@ and value_source_concept_id in (43530434, 43528697, 43530432, 43530433, 43528696
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -320,7 +320,7 @@ and value_source_concept_id in (43528889, 43528890, 43528888, 43528892, 43528891
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -333,7 +333,7 @@ and value_source_concept_id in (43528889, 43528890, 43528888, 43528892, 43528891
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -346,7 +346,7 @@ and value_source_concept_id in (43529139, 43529138, 43529141, 43529140, 43529137
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -359,7 +359,7 @@ and value_source_concept_id in (43529139, 43529138, 43529141, 43529140, 43529137
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -372,7 +372,7 @@ and value_source_concept_id in (43529189, 43529186, 43529190, 43529185, 43529188
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -385,7 +385,7 @@ and value_source_concept_id in (43529189, 43529186, 43529190, 43529185, 43529188
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -398,7 +398,7 @@ and value_source_concept_id in (43529679, 43529678, 43529677, 43529680);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -411,7 +411,7 @@ and value_source_concept_id in (43529679, 43529678, 43529677, 43529680);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -424,7 +424,7 @@ and value_source_concept_id in (43529683, 43530574, 43530573, 43530571, 43530572
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -437,7 +437,7 @@ and value_source_concept_id in (43529683, 43530574, 43530573, 43530571, 43530572
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -450,7 +450,7 @@ and value_source_concept_id in (43529738, 43529739, 43529735, 43529736);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -463,7 +463,7 @@ and value_source_concept_id in (43529738, 43529739, 43529735, 43529736);
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -476,7 +476,7 @@ and value_source_concept_id in (43529821, 43529819, 43529820, 43529822, 43529818
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -489,7 +489,7 @@ and value_source_concept_id in (43529821, 43529819, 43529820, 43529822, 43529818
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -502,7 +502,7 @@ and value_source_concept_id in (43529869, 43529870, 43529873, 43529868, 43529871
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -515,7 +515,7 @@ and value_source_concept_id in (43529869, 43529870, 43529873, 43529868, 43529871
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -528,7 +528,7 @@ and value_source_concept_id in (43529912, 43529915, 43529913, 43529914, 43529911
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -541,7 +541,7 @@ and value_source_concept_id in (43529912, 43529915, 43529913, 43529914, 43529911
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -554,7 +554,7 @@ and value_source_concept_id in (43529627, 43529629, 43529630, 43529626, 43529628
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -567,7 +567,7 @@ and value_source_concept_id in (43529627, 43529629, 43529630, 43529626, 43529628
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -580,7 +580,7 @@ and value_source_concept_id in (43528402, 43528403, 43528404, 43528405, 43528407
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -593,7 +593,7 @@ and value_source_concept_id in (43528402, 43528403, 43528404, 43528405, 43528407
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -606,7 +606,7 @@ and value_source_concept_id in (1384397, 1384504, 1384834, 43528424, 43528425, 4
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -619,7 +619,7 @@ and value_source_concept_id in (1384397, 1384504, 1384834, 43528424, 43528425, 4
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -632,7 +632,7 @@ and value_source_concept_id in (43528444, 43528445, 43528446, 43528447, 43528448
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -646,7 +646,7 @@ and value_source_concept_id in (43528444, 43528445, 43528446, 43528447, 43528448
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -659,7 +659,7 @@ and value_source_concept_id in (702790, 43528581, 43528582, 43528583, 43528584, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -672,7 +672,7 @@ and value_source_concept_id in (702790, 43528581, 43528582, 43528583, 43528584, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -685,7 +685,7 @@ and value_source_concept_id in (702789, 43528591, 43528592, 43528593, 43528594, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -698,7 +698,7 @@ and value_source_concept_id in (702789, 43528591, 43528592, 43528593, 43528594, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -711,7 +711,7 @@ and value_source_concept_id in (43528911, 43528912, 43528913, 43528914, 43528915
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -724,7 +724,7 @@ and value_source_concept_id in (43528911, 43528912, 43528913, 43528914, 43528915
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -737,7 +737,7 @@ and value_source_concept_id in (43528919, 43528920, 43528921, 43528922, 43528923
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -750,7 +750,7 @@ and value_source_concept_id in (43528919, 43528920, 43528921, 43528922, 43528923
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -763,7 +763,7 @@ and value_source_concept_id in (43528929, 43528930, 43528931, 43528932, 43528933
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -776,7 +776,7 @@ and value_source_concept_id in (43528929, 43528930, 43528931, 43528932, 43528933
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -789,7 +789,7 @@ and value_source_concept_id in (43528937, 43528938, 43528939, 43528940, 43528941
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -802,7 +802,7 @@ and value_source_concept_id in (43528937, 43528938, 43528939, 43528940, 43528941
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -815,7 +815,7 @@ and value_source_concept_id in (43529704, 43529705, 43529706, 43529707, 43529708
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -828,7 +828,7 @@ and value_source_concept_id in (43529704, 43529705, 43529706, 43529707, 43529708
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -841,7 +841,7 @@ and value_source_concept_id in (43529750, 43529751, 43529752, 43529753, 43529754
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -855,7 +855,7 @@ and value_source_concept_id in (43529750, 43529751, 43529752, 43529753, 43529754
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -868,7 +868,7 @@ and value_source_concept_id in (43529797, 43529798, 43529799, 43529800, 43529801
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -882,7 +882,7 @@ and value_source_concept_id in (43529797, 43529798, 43529799, 43529800, 43529801
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -895,7 +895,7 @@ and value_source_concept_id in (43529876, 43529877, 43529878, 43529879, 43529880
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -908,7 +908,7 @@ and value_source_concept_id in (43529876, 43529877, 43529878, 43529879, 43529880
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -921,7 +921,7 @@ and value_source_concept_id in (1384455, 43529882, 43529883, 43529884, 43529885,
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -934,7 +934,7 @@ and value_source_concept_id in (1384455, 43529882, 43529883, 43529884, 43529885,
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -947,7 +947,7 @@ and value_source_concept_id in (43528347, 43528350, 43528351, 43528352, 43528353
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -960,7 +960,7 @@ and value_source_concept_id in (43528347, 43528350, 43528351, 43528352, 43528353
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -973,7 +973,7 @@ and value_source_concept_id in (43528532, 43528533, 43528534, 43528535, 43528536
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -986,7 +986,7 @@ and value_source_concept_id in (43528532, 43528533, 43528534, 43528535, 43528536
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -999,7 +999,7 @@ and value_source_concept_id in (1384575, 43528573, 43528574, 43528575, 43528576,
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1012,7 +1012,7 @@ and value_source_concept_id in (1384575, 43528573, 43528574, 43528575, 43528576,
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1025,7 +1025,7 @@ and value_source_concept_id in (43528597, 43528600, 43528601, 43528602, 43528603
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1038,7 +1038,7 @@ and value_source_concept_id in (43528597, 43528600, 43528601, 43528602, 43528603
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1051,7 +1051,7 @@ and value_source_concept_id in (43528637, 43528639, 43528640, 43528641, 43528642
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1064,7 +1064,7 @@ and value_source_concept_id in (43528637, 43528639, 43528640, 43528641, 43528642
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1077,7 +1077,7 @@ and value_source_concept_id in (43528720, 43528721, 43528722, 43528723, 43528724
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1090,7 +1090,7 @@ and value_source_concept_id in (43528720, 43528721, 43528722, 43528723, 43528724
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1103,7 +1103,7 @@ and value_source_concept_id in (43529123, 43529126, 43529127, 43529128, 43529129
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1116,7 +1116,7 @@ and value_source_concept_id in (43529123, 43529126, 43529127, 43529128, 43529129
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1129,7 +1129,7 @@ and value_source_concept_id in (43529168, 43529171, 43529173, 43529175, 43529177
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1142,7 +1142,7 @@ and value_source_concept_id in (43529168, 43529171, 43529173, 43529175, 43529177
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1155,7 +1155,7 @@ and value_source_concept_id in (43529697, 43529698, 43529699, 43529700, 43529701
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1168,7 +1168,7 @@ and value_source_concept_id in (43529697, 43529698, 43529699, 43529700, 43529701
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1181,7 +1181,7 @@ and value_source_concept_id in (43529940, 43529943, 43529944, 43529945, 43529946
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1194,7 +1194,7 @@ and value_source_concept_id in (43529940, 43529943, 43529944, 43529945, 43529946
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1207,7 +1207,7 @@ and value_source_concept_id in (43529067, 43529071, 43529064, 43529068, 43529072
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1220,7 +1220,7 @@ and value_source_concept_id in (43529067, 43529071, 43529064, 43529068, 43529072
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1233,7 +1233,7 @@ and value_source_concept_id in (43529073, 43529081, 43529079, 43529080, 43529076
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1246,7 +1246,7 @@ and value_source_concept_id in (43529073, 43529081, 43529079, 43529080, 43529076
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1259,7 +1259,7 @@ and value_source_concept_id in (43529927, 43529931, 43529924, 43529930, 43529928
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1272,7 +1272,7 @@ and value_source_concept_id in (43529927, 43529931, 43529924, 43529930, 43529928
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1285,7 +1285,7 @@ and value_source_concept_id in (43529936, 43529935, 43529937, 43529939, 43529938
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1298,7 +1298,7 @@ and value_source_concept_id in (43529936, 43529935, 43529937, 43529939, 43529938
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1311,7 +1311,7 @@ and value_source_concept_id in (43529672, 43529675, 43529669, 43529671, 43529674
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1324,7 +1324,7 @@ and value_source_concept_id in (43529672, 43529675, 43529669, 43529671, 43529674
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1337,7 +1337,7 @@ and value_source_concept_id in (43529146, 43529148, 43529144, 43529145, 43529147
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1350,7 +1350,7 @@ and value_source_concept_id in (43529146, 43529148, 43529144, 43529145, 43529147
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1363,7 +1363,7 @@ and value_source_concept_id in (43529160, 43529165, 43529166, 43529164, 43529159
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1376,7 +1376,7 @@ and value_source_concept_id in (43529160, 43529165, 43529166, 43529164, 43529159
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1389,7 +1389,7 @@ and value_source_concept_id in (43528435, 43528440, 43528441, 43528437, 43528436
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1402,7 +1402,7 @@ and value_source_concept_id in (43528435, 43528440, 43528441, 43528437, 43528436
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1415,7 +1415,7 @@ and value_source_concept_id in (43528555, 43528549, 43528554, 43528550, 702791, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1428,7 +1428,7 @@ and value_source_concept_id in (43528555, 43528549, 43528554, 43528550, 702791, 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1441,7 +1441,7 @@ and value_source_concept_id in (43529838, 43529833, 43529839, 43529834, 43529832
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "
-insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1453,7 +1453,7 @@ and value_source_concept_id in (43529838, 43529833, 43529839, 43529834, 43529832
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1465,7 +1465,7 @@ and value_source_concept_id in (43528610, 43528616, 43528613, 43528615, 43528612
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1477,7 +1477,7 @@ and value_source_concept_id in (43528610, 43528616, 43528613, 43528615, 43528612
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1489,7 +1489,7 @@ and value_source_concept_id in (43528688, 43528689, 43528692, 43528691, 43528686
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1501,7 +1501,7 @@ and value_source_concept_id in (43528688, 43528689, 43528692, 43528691, 43528686
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1513,7 +1513,7 @@ and value_source_concept_id in (702793, 43528399, 43528393, 702794, 43528398, 43
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1525,7 +1525,7 @@ and value_source_concept_id in (702793, 43528399, 43528393, 702794, 43528398, 43
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1537,7 +1537,7 @@ and value_source_concept_id in (43529227, 43529221, 43529223, 43529228, 43529222
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1549,7 +1549,7 @@ and value_source_concept_id in (43529227, 43529221, 43529223, 43529228, 43529222
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1561,7 +1561,7 @@ and value_source_concept_id in (43529245, 43529247, 43529251, 43529250, 43529244
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1573,7 +1573,7 @@ and value_source_concept_id in (43529245, 43529247, 43529251, 43529250, 43529244
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1585,7 +1585,7 @@ and value_source_concept_id in (43529254, 43529253, 43529252, 43529255, 43529257
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1597,7 +1597,7 @@ and value_source_concept_id in (43529254, 43529253, 43529252, 43529255, 43529257
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1609,7 +1609,7 @@ and value_source_concept_id in (43529264, 1384477, 43529260, 1385434, 43529261, 
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1621,7 +1621,7 @@ and value_source_concept_id in (43529264, 1384477, 43529260, 1385434, 43529261, 
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1633,7 +1633,7 @@ and value_source_concept_id in (43529273, 43529274, 43529279, 43529278, 43529275
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1645,7 +1645,7 @@ and value_source_concept_id in (43529273, 43529274, 43529279, 43529278, 43529275
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1657,7 +1657,7 @@ and value_source_concept_id in (43529688, 43529690, 43529694, 43529689, 43529687
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1669,7 +1669,7 @@ and value_source_concept_id in (43529688, 43529690, 43529694, 43529689, 43529687
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1681,7 +1681,7 @@ and value_source_concept_id in (43529770, 1384400, 43529771, 1385319, 1384457, 4
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1693,7 +1693,7 @@ and value_source_concept_id in (43529770, 1384400, 43529771, 1385319, 1384457, 4
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1705,7 +1705,7 @@ and value_source_concept_id in (43528376, 43528372, 43528371, 43528374, 43528375
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1717,7 +1717,7 @@ and value_source_concept_id in (43528376, 43528372, 43528371, 43528374, 43528375
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1729,7 +1729,7 @@ and value_source_concept_id in (43528422, 43528417, 43528416, 43528415, 43528421
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1742,7 +1742,7 @@ and value_source_concept_id in (43528422, 43528417, 43528416, 43528415, 43528421
 
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1754,7 +1754,7 @@ and value_source_concept_id in (43528454, 43528457, 43528456, 43528453, 43528452
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1766,7 +1766,7 @@ and value_source_concept_id in (43528454, 43528457, 43528456, 43528453, 43528452
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1778,7 +1778,7 @@ and value_source_concept_id in (43528461, 43528459, 43528460, 43528465, 43528466
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1790,7 +1790,7 @@ and value_source_concept_id in (43528461, 43528459, 43528460, 43528465, 43528466
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1802,7 +1802,7 @@ and value_source_concept_id in (43528619, 43528624, 43528623, 43528618, 43528622
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1814,7 +1814,7 @@ and value_source_concept_id in (43528619, 43528624, 43528623, 43528618, 43528622
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1826,7 +1826,7 @@ and value_source_concept_id in (43528657, 43528654, 43528658, 43528656, 43528653
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1838,7 +1838,7 @@ and value_source_concept_id in (43528657, 43528654, 43528658, 43528656, 43528653
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1850,7 +1850,7 @@ and value_source_concept_id in (43529787, 43529784, 43529783, 43529788, 43529782
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1862,7 +1862,7 @@ and value_source_concept_id in (43529787, 43529784, 43529783, 43529788, 43529782
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1874,7 +1874,7 @@ and value_source_concept_id in (43528708, 43528707, 43528711, 43528710, 43528709
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1886,7 +1886,7 @@ and value_source_concept_id in (43528708, 43528707, 43528711, 43528710, 43528709
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1898,7 +1898,7 @@ and value_source_concept_id in (43528738, 43528737, 43528743, 43528740, 43528739
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1910,7 +1910,7 @@ and value_source_concept_id in (43528738, 43528737, 43528743, 43528740, 43528739
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1922,7 +1922,7 @@ and value_source_concept_id in (43529606, 43529604, 43529608, 43529603, 43529607
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1934,7 +1934,7 @@ and value_source_concept_id in (43529606, 43529604, 43529608, 43529603, 43529607
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1946,7 +1946,7 @@ and value_source_concept_id in (43529611, 43529613, 43529612, 43529614, 43529617
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1958,7 +1958,7 @@ and value_source_concept_id in (43529611, 43529613, 43529612, 43529614, 43529617
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1970,7 +1970,7 @@ and value_source_concept_id in (443529745, 43529744, 43529740, 43529743, 4352974
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1982,7 +1982,7 @@ and value_source_concept_id in (443529745, 43529744, 43529740, 43529743, 4352974
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -1994,7 +1994,7 @@ and value_source_concept_id in (43529777, 43529774, 43529775, 43529773, 43529776
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2006,7 +2006,7 @@ and value_source_concept_id in (443529777, 43529774, 43529775, 43529773, 4352977
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2018,7 +2018,7 @@ and value_source_concept_id in (43529888, 43529889, 43529892, 43529894, 43529891
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2030,7 +2030,7 @@ and value_source_concept_id in (43529888, 43529889, 43529892, 43529894, 43529891
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2042,7 +2042,7 @@ and value_source_concept_id in (43529858, 43529859, 43529862, 43529861, 43529860
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2054,7 +2054,7 @@ and value_source_concept_id in (43529858, 43529859, 43529862, 43529861, 43529860
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2066,7 +2066,7 @@ and value_source_concept_id in (43528531, 43528527, 43528526, 43528529, 43528530
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2078,7 +2078,7 @@ and value_source_concept_id in (43528531, 43528527, 43528526, 43528529, 43528530
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2090,7 +2090,7 @@ and value_source_concept_id in (43528729, 43528733, 43528728, 43528732, 43528730
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2102,7 +2102,7 @@ and value_source_concept_id in (43528729, 43528733, 43528728, 43528732, 43528730
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2114,7 +2114,7 @@ and value_source_concept_id in (43529194, 43529198, 43529197, 43529193, 43529195
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2126,7 +2126,7 @@ and value_source_concept_id in (43529194, 43529198, 43529197, 43529193, 43529195
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2138,7 +2138,7 @@ and value_source_concept_id in (43528899, 43528902, 43528907, 43529790, 43529792
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2150,7 +2150,7 @@ and value_source_concept_id in (43528899, 43528902, 43528907, 43529790, 43529792
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2162,7 +2162,7 @@ and value_source_concept_id in (43528378, 43528380, 43528381, 43528382, 43528383
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2174,7 +2174,7 @@ and value_source_concept_id in (43528378, 43528380, 43528381, 43528382, 43528383
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2186,7 +2186,7 @@ and value_source_concept_id in (43528680, 43528681, 43528682, 43528683);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2198,7 +2198,7 @@ and value_source_concept_id in (43528680, 43528681, 43528682, 43528683);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2210,7 +2210,7 @@ and value_source_concept_id in (43528703, 43528704, 43528705, 43528706);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2222,7 +2222,7 @@ and value_source_concept_id in (43528703, 43528704, 43528705, 43528706);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2234,7 +2234,7 @@ and value_source_concept_id in (43529589, 43529591, 43529592, 43529593, 43529595
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2246,7 +2246,7 @@ and value_source_concept_id in (43529589, 43529591, 43529592, 43529593, 43529595
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2258,7 +2258,7 @@ and value_source_concept_id in (43529722, 43529723, 43529724, 43529725);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2270,7 +2270,7 @@ and value_source_concept_id in (43529722, 43529723, 43529724, 43529725);
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2282,7 +2282,7 @@ and value_source_concept_id in (43529756, 43529757, 43530576, 43530577, 43530578
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2294,7 +2294,7 @@ and value_source_concept_id in (43529756, 43529757, 43530576, 43530577, 43530578
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2306,7 +2306,7 @@ and value_source_concept_id in (43529824, 43529826, 43529827, 43529828, 43529829
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2318,7 +2318,7 @@ and value_source_concept_id in (43529824, 43529826, 43529827, 43529828, 43529829
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)
@@ -2330,7 +2330,7 @@ and value_source_concept_id in (43529618, 43529619, 43529620, 43529621, 43529622
 "
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
 (observation_id, person_id, observation_concept_id, observation_date, observation_datetime, observation_type_concept_id, value_as_number, value_as_string, value_as_concept_id,
 qualifier_concept_id, unit_concept_id, provider_id, visit_occurrence_id, observation_source_value, observation_source_concept_id, unit_source_value, qualifier_source_value,
 value_source_concept_id, value_source_value, questionnaire_response_id)

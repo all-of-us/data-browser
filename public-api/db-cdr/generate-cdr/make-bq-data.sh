@@ -733,3 +733,6 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_observation\`"
