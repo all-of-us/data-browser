@@ -147,10 +147,10 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       {(cleared && sortItemOpen) &&
         <div style={styles.sortItemForm}>
           {cats && cats.map((cat, index) => {
-            return <div key={index}>
+            return <div style={{cursor:'pointer'}} key={index}>
               <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}} onClick={(e) => this.clickToSort(cat.field)}>{cat.display}</span>
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <span> asc</span>}
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <span> desc</span>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <i className="fas fa-arrow-up" aria-hidden="true" style={{color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer'}}></i>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <i className="fas fa-arrow-down" aria-hidden="true" style={{color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer'}}></i>}
             </div>
           })}
         </div>}
