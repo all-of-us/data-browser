@@ -332,58 +332,58 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
             if (geneColumnSortMetadata != null && geneColumnSortMetadata.getSortActive()) {
-                if (geneColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY genes DESC";
-                } else {
+                if (geneColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY genes ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY genes DESC";
                 }
             }
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.getSortActive()) {
-                if (consequenceColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
-                } else {
+                if (consequenceColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
                 }
             }
             SortColumnDetails proteinChangeColumnSortMetadata = sortMetadata.getProteinChange();
             if (proteinChangeColumnSortMetadata != null && proteinChangeColumnSortMetadata.getSortActive()) {
-                if (proteinChangeColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY protein_change DESC";
-                } else {
+                if (proteinChangeColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY protein_change ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY protein_change DESC";
                 }
             }
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
             if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.getSortActive()) {
-                if (clinSigColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) DESC";
-                } else {
+                if (clinSigColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) DESC";
                 }
             }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
             if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
-                if (alleleCountColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
-                } else {
+                if (alleleCountColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
                 }
             }
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
             if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.getSortActive()) {
-                if (alleleNumberColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
-                } else {
+                if (alleleNumberColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
                 }
             }
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
             if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.getSortActive()) {
-                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
-                } else {
+                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
                 }
             }
         }
