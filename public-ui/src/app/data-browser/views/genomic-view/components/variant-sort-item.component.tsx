@@ -85,6 +85,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       cats: [
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
+        { display: 'Protein Change', field: 'proteinChange'},
         { display: 'ClinVar Significance', field: 'clinicalSignificance' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
