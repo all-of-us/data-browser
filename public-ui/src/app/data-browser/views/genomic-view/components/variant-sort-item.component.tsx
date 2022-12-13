@@ -6,13 +6,12 @@ import { SortMetadata } from "publicGenerated/fetch";
 const styles = reactStyles({
   sortItem: {
     width: "100%",
-    padding: ".5rem",
-    paddingBottom: "0",
+    paddingLeft: ".5rem",
+    fontSize: "0.8em",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     color: "#262262",
-    fontSize: ".8em",
     letterSpacing: 0,
     lineHeight: "16px",
     cursor: "pointer"
@@ -24,6 +23,7 @@ const styles = reactStyles({
     transform: "rotate(180deg)",
   },
   sortItemForm: {
+    fontSize:"0.8em",
     display: "flex",
     overflow: 'hidden',
     flexDirection: "column",
@@ -91,10 +91,15 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
         { display: 'Allele Frequency', field: 'alleleFrequency' },
       ]
     };
-
-    console.log(props.sortMetadata);
   }
 
+  componentDidMount(): void {
+    const {sortMetadata} = this.state;
+    for (const smKey in sortMetadata) {
+      sortMetadata[smKey].sortDirection = 'desc'
+    }
+    this.setState({sortMetadata: this.state.sortMetadata})
+  }
 
   sortClick() {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
@@ -122,22 +127,6 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
   render(): React.ReactNode {
     const { cleared } = this.props;
     const { sortItemOpen, sortMetadata, cats } = this.state;
-
-    let sortMetadataFlags = {
-      'gene': { 'asc': false, 'desc': false },
-      'consequence': { 'asc': false, 'desc': false },
-      'proteinChange': { 'asc': false, 'desc': false },
-      'clinicalSignificance': { 'asc': false, 'desc': false },
-      'alleleCount': { 'asc': false, 'desc': false },
-      'alleleNumber': { 'asc': false, 'desc': false },
-      'alleleFrequency': { 'asc': false, 'desc': false },
-    };
-
-    for (const smKey in sortMetadata) {
-      if (sortMetadata[smKey].sortActive) {
-        sortMetadataFlags[smKey][sortMetadata[smKey].sortDirection] = true;
-      }
-    }
 
     return <React.Fragment>
       <div onClick={() => this.sortClick()} style={styles.sortItem}>

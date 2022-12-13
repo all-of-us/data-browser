@@ -24,7 +24,7 @@ const styles = reactStyles({
     },
     sortByContainer: {
         paddingTop: ".5rem",
-        paddingBottom: ".5rem",
+        paddingRight: ".5rem",
     },
     actionBtnContainer: {
         position: "absolute",
