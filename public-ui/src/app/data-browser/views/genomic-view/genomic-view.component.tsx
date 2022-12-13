@@ -169,14 +169,14 @@ export const GenomicViewComponent = withRouteData(
         filterMetadata: null,
         filteredMetadata: undefined,
         sortMetadata: new SortMetadataClass(
-                    new SortColumnDetailsClass(false, "asc", 1),
-                    new SortColumnDetailsClass(false, "asc", 2),
-                    new SortColumnDetailsClass(false, "asc", 3),
-                    new SortColumnDetailsClass(false, "asc", 4),
-                    new SortColumnDetailsClass(false, "asc", 5),
-                    new SortColumnDetailsClass(false, "asc", 6),
-                    new SortColumnDetailsClass(false, "asc", 7),
-                    new SortColumnDetailsClass(false, "asc", 8),
+                    new SortColumnDetailsClass(false, "desc", 1),
+                    new SortColumnDetailsClass(false, "desc", 2),
+                    new SortColumnDetailsClass(false, "desc", 3),
+                    new SortColumnDetailsClass(false, "desc", 4),
+                    new SortColumnDetailsClass(false, "desc", 5),
+                    new SortColumnDetailsClass(false, "desc", 6),
+                    new SortColumnDetailsClass(false, "desc", 7),
+                    new SortColumnDetailsClass(false, "desc", 8),
         ),
       };
     }
@@ -203,7 +203,7 @@ export const GenomicViewComponent = withRouteData(
         const { sortMetadata } = this.state;
         for (const smKey in sortMetadata) {
             sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "asc";
+            sortMetadata[smKey].sortDirection = "desc";
         }
         this.setState({sortMetadata: sortMetadata});
     }
@@ -398,8 +398,6 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
-      console.log('Am i here ??');
-      console.log(filteredMetadata);
       this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }

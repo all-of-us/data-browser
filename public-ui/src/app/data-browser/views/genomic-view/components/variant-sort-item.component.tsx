@@ -85,6 +85,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       cats: [
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
+        { display: 'Protein Change', field: 'proteinChange'},
         { display: 'ClinVar Significance', field: 'clinicalSignificance' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
@@ -108,19 +109,32 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
  
 
   clickToSort(field) {
-    this.state.sortMetadata[field].sortActive = true;
-    if (this.state.sortMetadata[field].sortDirection === 'asc') {
-      this.state.sortMetadata[field].sortDirection = 'desc'
-    } else {
-      this.state.sortMetadata[field].sortDirection = 'asc'
-    }
-    if (this.state.sortMetadata[field].sortActive) {
-      for (const item in this.state.sortMetadata) {
-        if (item !== field) {
-          this.state.sortMetadata[item].sortActive = false;
+    const { sortMetadata } = this.state;
+
+    if (sortMetadata[field].sortActive) {
+        if (sortMetadata[field].sortDirection === 'asc') {
+          sortMetadata[field].sortDirection = 'desc'
+        } else {
+          sortMetadata[field].sortDirection = 'asc'
         }
-      }
+
+        for (const item in sortMetadata) {
+            if (item !== field) {
+                sortMetadata[item].sortActive = false;
+                sortMetadata[item].sortDirection = 'desc';
+            }
+        }
+    } else {
+        sortMetadata[field].sortActive = true;
+
+        for (const item in sortMetadata) {
+            if (item !== field) {
+                sortMetadata[item].sortActive = false;
+                sortMetadata[item].sortDirection = 'desc';
+            }
+        }
     }
+
     this.setState({ sortMetadata: this.state.sortMetadata });
   }
 
