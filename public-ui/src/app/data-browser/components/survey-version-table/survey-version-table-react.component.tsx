@@ -79,7 +79,6 @@ export class SurveyVersionTableReactComponent extends React.Component<
           <div className="version-box-body">
             {!!surveyVersions &&
               surveyVersions.map((survey) => {
-                console.log(survey);
                 if (survey.monthName== 'New Year') {
                     survey.pdfLink = survey.pdfLink.replace(' ', '_');
                 }
