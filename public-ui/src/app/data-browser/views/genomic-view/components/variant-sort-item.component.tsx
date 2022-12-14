@@ -23,7 +23,7 @@ const styles = reactStyles({
     transform: "rotate(180deg)",
   },
   sortItemForm: {
-    fontSize:"0.8em",
+    fontSize: "0.8em",
     display: "flex",
     overflow: 'hidden',
     flexDirection: "column",
@@ -85,7 +85,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       cats: [
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
-        { display: 'Protein Change', field: 'proteinChange'},
+        { display: 'Protein Change', field: 'proteinChange' },
         { display: 'ClinVar Significance', field: 'clinicalSignificance' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
@@ -95,46 +95,45 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    const {sortMetadata} = this.state;
+    const { sortMetadata } = this.state;
     for (const smKey in sortMetadata) {
-      sortMetadata[smKey].sortDirection = 'desc'
+      sortMetadata[smKey].sortDirection = 'asc'
+      // console.log(sortMetadata[smKey].sortDirection,'sortMetadata[smKey].sortDirection');
+      
     }
-    this.setState({sortMetadata: this.state.sortMetadata})
+    this.setState({ sortMetadata: this.state.sortMetadata })
   }
 
   sortClick() {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
   }
 
- 
+
 
   clickToSort(field) {
     const { sortMetadata } = this.state;
-
+    
     if (sortMetadata[field].sortActive) {
-        if (sortMetadata[field].sortDirection === 'asc') {
-          sortMetadata[field].sortDirection = 'desc'
-        } else {
-          sortMetadata[field].sortDirection = 'asc'
+      if (sortMetadata[field].sortDirection === 'asc') {
+        sortMetadata[field].sortDirection = 'desc'
+      } else {
+        sortMetadata[field].sortDirection = 'asc'
+      }
+      for (const item in sortMetadata) {
+        if (item !== field) {
+          sortMetadata[item].sortActive = false;
+          sortMetadata[item].sortDirection = 'desc';
         }
-
-        for (const item in sortMetadata) {
-            if (item !== field) {
-                sortMetadata[item].sortActive = false;
-                sortMetadata[item].sortDirection = 'desc';
-            }
-        }
+      }
     } else {
-        sortMetadata[field].sortActive = true;
-
-        for (const item in sortMetadata) {
-            if (item !== field) {
-                sortMetadata[item].sortActive = false;
-                sortMetadata[item].sortDirection = 'desc';
-            }
+      sortMetadata[field].sortActive = true;
+      for (const item in sortMetadata) {
+        if (item !== field) {
+          sortMetadata[item].sortActive = false;
+          sortMetadata[item].sortDirection = 'asc';
         }
+      }
     }
-
     this.setState({ sortMetadata: this.state.sortMetadata });
   }
 
@@ -150,10 +149,10 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       {(cleared && sortItemOpen) &&
         <div style={styles.sortItemForm}>
           {cats && cats.map((cat, index) => {
-            return <div style={{cursor:'pointer'}} key={index}>
+            return <div style={{ cursor: 'pointer' }} key={index}>
               <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}} onClick={(e) => this.clickToSort(cat.field)}>{cat.display}</span>
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <i className="fas fa-arrow-up" aria-hidden="true" style={{color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer'}}></i>}
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <i className="fas fa-arrow-down" aria-hidden="true" style={{color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer'}}></i>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <i className="fas fa-arrow-up" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <i className="fas fa-arrow-down" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
             </div>
           })}
         </div>}
