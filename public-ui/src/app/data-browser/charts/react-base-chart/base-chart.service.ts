@@ -38,6 +38,7 @@ export const VERSION_NAME_MAP_COPE_MINUTE = {
   "1": "Summer 2021",
   "2": "Fall 2021",
   "3": "Winter 2021",
+  "4": "New Year 2022",
 };
 
 export const AGE_STRATUM_MAP = {
