@@ -7,6 +7,7 @@ import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { Spinner } from "app/utils/spinner";
 import { GenomicFilters } from "publicGenerated";
+import { SortMetadata } from "publicGenerated/fetch";
 
 const styles = reactStyles({
   searchBar: {
@@ -65,6 +66,8 @@ interface Props {
   searchTerm: string;
   variantListSize: number;
   filterMetadata: GenomicFilters;
+  sortMetadata: SortMetadata;
+  onSortChange: Function;
   loading: boolean;
 }
 interface State {
@@ -73,6 +76,7 @@ interface State {
     searchWord: string;
     filterShow: Boolean;
     filterMetadata: GenomicFilters;
+    sortMetadata: SortMetadata;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -84,7 +88,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             filterShow: false,
             filteredMetadata: undefined,
             filteredMetaMap: undefined,
-            filterMetadata: this.props.filterMetadata
+            filterMetadata: this.props.filterMetadata,
+            sortMetadata: this.props.sortMetadata,
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
@@ -112,22 +117,27 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         this.setState({ filterShow: !this.state.filterShow });
     }
 
-    handleFilterSubmit(filteredMetadata: GenomicFilters) {
-        this.props.onFilterSubmit(filteredMetadata);
+    handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+        this.props.onFilterSubmit(filteredMetadata, sortMetadata);
         this.setState({ filterShow: false });
     }
 
     handleChipChange(changes) {
         // this.setState({ filteredMetaMap: changes });
-        this.handleFilterSubmit(changes);
+        const sortMetadata = this.state.sortMetadata;
+        this.handleFilterSubmit(changes, sortMetadata);
+    }
+
+    handleSortChange(sortChange: any) {
+        this.setState({sortMetadata: sortChange});
+        this.props.onSortChange(sortChange);
     }
 
     render() {
-        const { searchWord, filterShow } = this.state;
+        const { searchWord, filterShow, sortMetadata } = this.state;
         const {filterMetadata} = this.props
         const { variantListSize, loading } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-        console.log(searchWord);
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
@@ -158,7 +168,10 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 {(!loading && filterShow) &&
                     <VariantFilterComponent
                         filterMetadata={filterMetadata}
-                        onFilterSubmit={(filteredMetadata: GenomicFilters) => this.handleFilterSubmit(filteredMetadata)} />}
+                        sortMetadata={sortMetadata}
+                        onFilterSubmit={(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) => this.handleFilterSubmit(filteredMetadata, sortMetadata)}
+                        onSortChange={(e) => this.handleSortChange(e)}
+                        />}
             </div>
             }
 

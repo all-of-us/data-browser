@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { reactStyles } from "app/utils";
 import { GenomicFilters, Variant } from "publicGenerated";
+import { SortMetadata } from "publicGenerated/fetch";
 
 import { VariantSearchComponent } from "./variant-search.component";
 import { VariantTableComponent } from "./variant-table.component";
@@ -46,11 +47,13 @@ interface Props {
   participantCount: string;
   searchTerm: string;
   filterMetadata: GenomicFilters;
+  sortMetadata: SortMetadata;
 }
 
 interface State {
   searchTerm: string;
   filterMetadata: GenomicFilters;
+  sortMetadata: SortMetadata;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -60,7 +63,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     this.scrollDiv = React.createRef();
     this.state = {
       searchTerm: null,
-      filterMetadata: this.props.filterMetadata
+      filterMetadata: this.props.filterMetadata,
+      sortMetadata: this.props.sortMetadata,
     };
   }
 
@@ -87,12 +91,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   handleSortClick(sortMetadata) {
     this.props.onSortClick(sortMetadata);
   }
-  handleFilterSubmit(filteredMetadata) {
-    this.props.onFilterSubmit(filteredMetadata);
+
+  handleFilterSubmit(filteredMetadata, sortMetadata) {
+    this.props.onFilterSubmit(filteredMetadata, sortMetadata);
   }
 
   render() {
-    const { searchTerm, filterMetadata } = this.state;
+    const { searchTerm, filterMetadata, sortMetadata } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
       rowCount } = this.props;
 
@@ -109,11 +114,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       </div>
       <VariantSearchComponent
         onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
-        onFilterSubmit={(filteredMetadata) => { this.handleFilterSubmit(filteredMetadata); }}
+        onFilterSubmit={(filteredMetadata, sortMetadata) => { this.handleFilterSubmit(filteredMetadata, sortMetadata); }}
         loading={loadingVariantListSize}
         searchTerm={searchTerm}
         variantListSize={variantListSize}
-        filterMetadata={filterMetadata} />
+        filterMetadata={filterMetadata}
+        sortMetadata={sortMetadata}
+        onSortChange={(e) => this.handleSortClick(e)} />
       <VariantTableComponent
         loadingResults={loadingResults}
         loadingVariantListSize={loadingVariantListSize}
@@ -125,7 +132,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         onPageChange={(info: any) => this.handlePageChange(info)}
         onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
         currentPage={currentPage}
-        rowCount={rowCount} />
+        rowCount={rowCount}
+        sortMetadata={sortMetadata} />
     </React.Fragment>;
   }
 }

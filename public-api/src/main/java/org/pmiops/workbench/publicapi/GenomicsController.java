@@ -276,6 +276,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_CON_NULL;
             }
             finalSql += ") ";
+        } else {
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
+            }
         }
         if (clinFilterFlag) {
             finalSql += WHERE_CLIN_IN;
@@ -283,6 +287,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_CLIN_NULL;
             }
             finalSql += ") ";
+        } else {
+            if (WHERE_CLIN_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(clinical_significance) = 0";
+            }
         }
         if (ALLELE_COUNT_FILTER.length() > 0) {
             finalSql += ALLELE_COUNT_FILTER;
@@ -532,13 +540,22 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_CON_NULL;
             }
             finalSql += ") ";
+        } else {
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
+            }
         }
+
         if (clinFilterFlag) {
             finalSql += WHERE_CLIN_IN;
             if (WHERE_CLIN_NULL.length() > 0) {
                 finalSql += WHERE_CLIN_NULL;
             }
             finalSql += ") ";
+        } else {
+            if (WHERE_CLIN_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(clinical_significance) = 0";
+            }
         }
         if (ALLELE_COUNT_FILTER.length() > 0) {
             finalSql += ALLELE_COUNT_FILTER;

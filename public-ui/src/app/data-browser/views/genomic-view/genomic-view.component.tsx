@@ -12,6 +12,7 @@ import {
   SearchVariantsRequest,
   Variant,
 } from "publicGenerated";
+
 import { SortColumnDetails, SortMetadata } from "publicGenerated/fetch";
 
 import { GenomicFaqComponent } from "./components/genomic-faq.component";
@@ -99,7 +100,7 @@ interface State {
   rowCount: number;
   participantCount: string;
   chartData: any;
-  sortMetadata: any;
+  sortMetadata: SortMetadata;
   filterMetadata: GenomicFilters;
   filteredMetadata: GenomicFilters;
 }
@@ -165,9 +166,18 @@ export const GenomicViewComponent = withRouteData(
         rowCount: 10,
         participantCount: null,
         chartData: null,
-        sortMetadata: null,
         filterMetadata: null,
         filteredMetadata: undefined,
+        sortMetadata: new SortMetadataClass(
+                    new SortColumnDetailsClass(false, "desc", 1),
+                    new SortColumnDetailsClass(false, "desc", 2),
+                    new SortColumnDetailsClass(false, "desc", 3),
+                    new SortColumnDetailsClass(false, "desc", 4),
+                    new SortColumnDetailsClass(false, "desc", 5),
+                    new SortColumnDetailsClass(false, "desc", 6),
+                    new SortColumnDetailsClass(false, "desc", 7),
+                    new SortColumnDetailsClass(false, "desc", 8),
+        ),
       };
     }
 
@@ -184,9 +194,19 @@ export const GenomicViewComponent = withRouteData(
     title = "Genomic Variants";
 
     search = _.debounce((searchTerm: string) => {
+      this.clearSortMetadata();
       this.getVariantSearch(searchTerm);
       this.changeUrl();
     }, 1000);
+
+    clearSortMetadata() {
+        const { sortMetadata } = this.state;
+        for (const smKey in sortMetadata) {
+            sortMetadata[smKey].sortActive = false;
+            sortMetadata[smKey].sortDirection = "desc";
+        }
+        this.setState({sortMetadata: sortMetadata});
+    }
 
     changeUrl() {
       const { searchTerm } = this.state;
@@ -314,103 +334,12 @@ export const GenomicViewComponent = withRouteData(
 
     fetchVariantData() {
       const { searchTerm, currentPage, sortMetadata, rowCount } = this.state;
-      let variantSortMetadata = new SortColumnDetailsClass(false, "asc", 1);
-      let geneSortMetadata = new SortColumnDetailsClass(false, "asc", 1);
-      let consequenceSortMetadata = new SortColumnDetailsClass(false, "asc", 1);
-      let proteinChangeSortMetadata = new SortColumnDetailsClass(
-        false,
-        "asc",
-        1
-      );
-      let clinicalSignificanceSortMetadata = new SortColumnDetailsClass(
-        false,
-        "asc",
-        1
-      );
-      let alleleCountSortMetadata = new SortColumnDetailsClass(false, "asc", 1);
-      let alleleNumberSortMetadata = new SortColumnDetailsClass(
-        false,
-        "asc",
-        1
-      );
-      let alleleFrequencySortMetadata = new SortColumnDetailsClass(
-        false,
-        "asc",
-        1
-      );
-      if (sortMetadata) {
-        if (sortMetadata.variant_id) {
-          variantSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.variant_id.sortActive,
-            sortMetadata.variant_id.sortDirection,
-            sortMetadata.variant_id.sortOrder
-          );
-        }
-        if (sortMetadata.gene) {
-          geneSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.gene.sortActive,
-            sortMetadata.gene.sortDirection,
-            sortMetadata.gene.sortOrder
-          );
-        }
-        if (sortMetadata.consequence) {
-          consequenceSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.consequence.sortActive,
-            sortMetadata.consequence.sortDirection,
-            sortMetadata.consequence.sortOrder
-          );
-        }
-        if (sortMetadata.protein_change) {
-          proteinChangeSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.protein_change.sortActive,
-            sortMetadata.protein_change.sortDirection,
-            sortMetadata.protein_change.sortOrder
-          );
-        }
-        if (sortMetadata.clinical_significance) {
-          clinicalSignificanceSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.clinical_significance.sortActive,
-            sortMetadata.clinical_significance.sortDirection,
-            sortMetadata.clinical_significance.sortOrder
-          );
-        }
-        if (sortMetadata.allele_count) {
-          alleleCountSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.allele_count.sortActive,
-            sortMetadata.allele_count.sortDirection,
-            sortMetadata.allele_count.sortOrder
-          );
-        }
-        if (sortMetadata.allele_number) {
-          alleleNumberSortMetadata = new SortColumnDetailsClass(
-            sortMetadata.allele_number.sortActive,
-            sortMetadata.allele_number.sortDirection,
-            sortMetadata.allele_number.sortOrder
-          );
-        }
-        if (sortMetadata.allele_frequency) {
-          alleleFrequencySortMetadata = new SortColumnDetailsClass(
-            sortMetadata.allele_frequency.sortActive,
-            sortMetadata.allele_frequency.sortDirection,
-            sortMetadata.allele_frequency.sortOrder
-          );
-        }
-      }
-      const sortMetadataObj = new SortMetadataClass(
-        variantSortMetadata,
-        geneSortMetadata,
-        consequenceSortMetadata,
-        proteinChangeSortMetadata,
-        clinicalSignificanceSortMetadata,
-        alleleCountSortMetadata,
-        alleleNumberSortMetadata,
-        alleleFrequencySortMetadata
-      );
+
       const searchRequest: SearchVariantsRequest = {
         query: searchTerm,
         pageNumber: currentPage,
         rowCount: rowCount,
-        sortMetadata: sortMetadataObj,
+        sortMetadata: sortMetadata,
       };
       
       genomicsApi()
@@ -423,16 +352,16 @@ export const GenomicViewComponent = withRouteData(
         });
     }
 
-    filterGenomics(filteredMetadata: GenomicFilters) {
+    filterGenomics(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
       const { searchTerm, currentPage, rowCount } = this.state;
       const searchRequest = {
         query: searchTerm,
         pageNumber: currentPage,
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
+        sortMetadata: sortMetadata,
       };
-      
-      
+
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
@@ -468,14 +397,15 @@ export const GenomicViewComponent = withRouteData(
       this.getGenomicChartData();
     }
 
-    handleFilterSubmit(filteredMetadata: GenomicFilters) {
-      this.filterGenomics(filteredMetadata);
+    handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+      this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }
 
     render() {
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount, searchTerm, filterMetadata } = this.state;
+        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata } = this.state;
+
       return <React.Fragment>
         <style>{css}</style>
         <div style={styles.pageHeader}>
@@ -519,8 +449,8 @@ export const GenomicViewComponent = withRouteData(
                 onSortClick={(sortMetadata) => {
                   this.handleSortClick(sortMetadata);
                 }}
-                onFilterSubmit={(filteredMetadata: GenomicFilters) => {
-                  this.handleFilterSubmit(filteredMetadata);
+                onFilterSubmit={(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) => {
+                  this.handleFilterSubmit(filteredMetadata, sortMetadata);
                 }}
                 currentPage={currentPage}
                 rowCount={rowCount}
@@ -531,6 +461,7 @@ export const GenomicViewComponent = withRouteData(
                 participantCount={participantCount}
                 searchTerm={searchTerm}
                 filterMetadata={filterMetadata}
+                sortMetadata={sortMetadata}
               />
             )}
 
