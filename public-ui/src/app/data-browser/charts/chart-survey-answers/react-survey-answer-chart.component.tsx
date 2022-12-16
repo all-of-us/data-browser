@@ -222,6 +222,10 @@ export class SurveyAnswerChartReactComponent extends React.Component<
     newBaseOptions.tooltip.formatter = function () {
       const count = this.point.y <= 20 ? "&le; 20" : this.point.y;
       let cat = this.point.category.split(' ');
+      if (this.point.category === 'New Year 2022') {
+        cat[0] = 'New Year';
+        cat[1] = '2022';
+      }
       let toolTipText = this.point.series.name;
       const surveyVersion = surveyVersions.find((obj) => {
         return (obj.monthName === cat[0] && obj.year === cat[1]);
