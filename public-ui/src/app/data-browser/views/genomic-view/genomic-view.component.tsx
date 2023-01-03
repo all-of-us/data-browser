@@ -312,7 +312,6 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handlePageChange(info) {
-      console.log('Changing page ...');
       this.setState(
         { loadingResults: true, currentPage: info.selectedPage },
         () => {
