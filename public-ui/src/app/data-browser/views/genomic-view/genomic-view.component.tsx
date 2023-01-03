@@ -333,13 +333,14 @@ export const GenomicViewComponent = withRouteData(
     }
 
     fetchVariantData() {
-      const { searchTerm, currentPage, sortMetadata, rowCount } = this.state;
+      const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
 
       const searchRequest: SearchVariantsRequest = {
         query: searchTerm,
         pageNumber: currentPage,
         rowCount: rowCount,
         sortMetadata: sortMetadata,
+        filterMetadata: filterMetadata,
       };
       
       genomicsApi()
