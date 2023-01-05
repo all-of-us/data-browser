@@ -9,8 +9,8 @@ export interface Tooltip {
 export const tooltips = {
   "Search Across Data Types": {
     texts: [
-      `Search across all non-genomic data types by using common keywords and/or billing or data standards codes
-        (i.e., SNOMED, CPT, ICD). Searchable genomic variant data are available within the Genomic Variants section.`,
+      `Search across all data types by using common keywords or billing/data standards codes (i.e., SNOMED, CPT, ICD).
+       Advanced genomic variant search is available within the Genomic Variants section`,
     ],
   },
   raceEthnicityQuestionHelpText: {
