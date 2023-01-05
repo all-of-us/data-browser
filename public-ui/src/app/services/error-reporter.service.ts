@@ -15,7 +15,6 @@ export class ErrorReporterService extends ErrorHandler {
       return;
     }
     serverConfigService.getConfig().subscribe((config: ConfigResponse) => {
-      console.log('Am i here c');
       if (!config.publicApiKeyForErrorReports) {
         return;
       }
