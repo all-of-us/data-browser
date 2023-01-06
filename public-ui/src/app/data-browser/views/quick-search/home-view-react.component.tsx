@@ -597,7 +597,7 @@ export const dBHomeComponent = withRouteData(
       };
     }
 
-    search = _.debounce((val) => {
+    search = _.debounce((_val) => {
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
