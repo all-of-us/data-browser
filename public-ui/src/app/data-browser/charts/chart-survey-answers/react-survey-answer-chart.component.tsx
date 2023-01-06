@@ -190,7 +190,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
 
   buildChartData(surveyConceptId: any) {
     const { categoryArr, chartSeries, colors } = this.state;
-    const { surveyVersions, _versionAnalysis } = this.props;
+    const { surveyVersions } = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
     newBaseOptions.xAxis.categories = categoryArr.map((item) =>
