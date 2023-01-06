@@ -45,6 +45,18 @@ const apiCtors: (new () => BaseAPI)[] = [];
 const registry: Map<new () => BaseAPI, BaseAPI> = new Map();
 
 /**
+ * Registers an API client implementation. Can be used to bind a non-standard
+ * API implementation, e.g. for testing.
+ */
+export function registerApiClient<T extends BaseAPI>(
+  ctor: new () => T,
+  impl: T
+) {
+  checkFrozen();
+  registry.set(ctor, impl);
+}
+
+/**
  * Convenience function to minimize boilerplate below per-service while
  * maintaining the API client type. Also registers the constructor for standard
  * client initialization later.
@@ -95,18 +107,6 @@ export function bindApiClients(conf: Configuration) {
     );
   }
   frozen = true;
-}
-
-/**
- * Registers an API client implementation. Can be used to bind a non-standard
- * API implementation, e.g. for testing.
- */
-export function registerApiClient<T extends BaseAPI>(
-  ctor: new () => T,
-  impl: T
-) {
-  checkFrozen();
-  registry.set(ctor, impl);
 }
 
 /**

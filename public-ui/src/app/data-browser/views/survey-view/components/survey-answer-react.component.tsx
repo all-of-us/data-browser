@@ -156,7 +156,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
         }
         return 0;
       });
-      q.countAnalysis.results.forEach((aCount, i) => {
+      q.countAnalysis.results.forEach((aCount, _i) => {
         if (aCount.stratum7 && aCount.stratum7 === "1") {
           aCount.subQuestionFetchComplete = false;
         }

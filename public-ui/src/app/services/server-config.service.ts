@@ -1,9 +1,6 @@
-import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { ConfigResponse, ConfigService } from "publicGenerated";
-import { throwError } from "rxjs";
 import { Observable } from "rxjs/Observable";
-import { catchError } from "rxjs/operators";
 import { ReplaySubject } from "rxjs/ReplaySubject";
 
 @Injectable()

@@ -261,7 +261,7 @@ export const SurveyViewReactComponent = withRouteData(
           .getSurveyVersionCounts(surveyConceptId.toString())
           .then((result) => {
             result.analyses.items.map((r) =>
-              r.results.map((item, i) => {
+              r.results.map((item, _i) => {
                 if (item.analysisId === 3400) {
                   surveyVersions.push({
                     monthName: item.stratum3,
