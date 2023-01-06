@@ -6,7 +6,7 @@ import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper
 export function highlightSearchTerm(
   searchTerm: string,
   text: string,
-  highlightColor: string
+  _highlightColor: string
 ) {
   let words = [];
   let matchString: RegExp;

@@ -17,7 +17,7 @@ export class PopUpComponent {
   @Output() closed: EventEmitter<any> = new EventEmitter();
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
-    event: KeyboardEvent
+    _event: KeyboardEvent
   ) {
     this.close();
   }

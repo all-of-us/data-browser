@@ -1,3 +1,12 @@
+export function countPercentage(answerCount: number, countValue: number) {
+  if (!answerCount || answerCount <= 0) {
+    return 0;
+  }
+  let percent: number = answerCount / countValue;
+  percent = parseFloat(percent.toFixed(4));
+  return percent * 100;
+}
+
 export function addDidNotAnswerResult(
   questionConceptId: any,
   results: any[],
@@ -24,13 +33,4 @@ export function addDidNotAnswerResult(
     stratum6: result.stratum6,
   };
   return didNotAnswerResult;
-}
-
-export function countPercentage(answerCount: number, countValue: number) {
-  if (!answerCount || answerCount <= 0) {
-    return 0;
-  }
-  let percent: number = answerCount / countValue;
-  percent = parseFloat(percent.toFixed(4));
-  return percent * 100;
 }

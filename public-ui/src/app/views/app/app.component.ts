@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
   /**
    * Uses the title service to set the page title after nagivation events
    */
-  private setTitleFromRoute(event: RouterEvent): void {
+  private setTitleFromRoute(_event: RouterEvent): void {
     let currentRoute = this.activatedRoute;
     while (currentRoute.firstChild) {
       currentRoute = currentRoute.firstChild;

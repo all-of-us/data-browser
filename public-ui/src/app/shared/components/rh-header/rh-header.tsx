@@ -182,7 +182,7 @@ export class RhHeader extends React.Component<{}, State> {
             </div>
             {menuOpen && (
               <ul id="menu-mobile">
-                {menuItems.map((menu, m) => (
+                {menuItems.map((menu, _m) => (
                   <li
                     className={`main-menu-item menu-item-has-children ${
                       menu.title

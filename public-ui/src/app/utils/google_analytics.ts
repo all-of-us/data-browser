@@ -13,7 +13,7 @@ export function triggerEvent(
   eventAction: string,
   eventLabel: string,
   searchTerm: string,
-  tooltipAction: string
+  _tooltipAction: string
 ) {
   if (window.gtag) {
     gtag("event", eventName, {
