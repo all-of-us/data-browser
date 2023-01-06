@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import { Component, Input, ViewEncapsulation } from "@angular/core";
-
 export const tooltipNoIconCss = `
 .tooltip-no-icon {
     position: relative;

@@ -113,7 +113,7 @@ export class DbNoResultsComponent implements OnChanges, OnDestroy {
     );
   }
 
-  public goToPMResult(r) {
+  public goToPMResult(_r) {
     this.router.navigateByUrl(
       "physical-measurements/" + "/" + this.searchText.value
     );

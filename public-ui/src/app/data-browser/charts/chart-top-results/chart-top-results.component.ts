@@ -79,14 +79,13 @@ export class ChartTopResultsComponent
   }
 
   public toolTip(concept: Concept) {
-    let toolTipText;
     let count = "";
     if (concept.countValue <= 20) {
       count = "&le; 20";
     } else {
       count = concept.countValue.toString();
     }
-    toolTipText =
+    const toolTipText =
       '<div class="chart-tooltip">' +
       concept.conceptName +
       " (" +

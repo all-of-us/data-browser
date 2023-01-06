@@ -175,6 +175,6 @@ export class DataBrowserRoutingModule {
       this.router.navigate(commands, extras);
     NavStore.navigateByUrl = (url, extras) =>
       this.router.navigateByUrl(url, extras);
-    this.router.events.subscribe((event) => {});
+    this.router.events.subscribe((_event) => {});
   }
 }

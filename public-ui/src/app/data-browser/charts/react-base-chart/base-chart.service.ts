@@ -79,7 +79,7 @@ export const baseOptions = {
     followPointer: true,
     outside: false,
     hideDelay: 0,
-    formatter: function (tooltip) {
+    formatter: function (_tooltip) {
       if (this.point.y <= 20) {
         if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
           this.point.toolTipHelpText = this.point.toolTipHelpText.replace(

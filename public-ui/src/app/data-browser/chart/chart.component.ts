@@ -45,7 +45,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     });
   }
   // Render new chart on changes
-  ngOnChanges(changes) {
+  ngOnChanges(_changes) {
     if (
       (this.analysis &&
         this.analysis.results &&
@@ -111,7 +111,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: {
         followPointer: true,
         outside: true,
-        formatter: function (tooltip) {
+        formatter: function (_tooltip) {
           return (
             '<div class="tooltip-container" style="position: relative; z-index: 200;">' +
             this.point.toolTipHelpText +
@@ -361,12 +361,12 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       this.analysis
     );
   }
-  seriesClick(event) {
+  seriesClick(_event) {
     // Todo handle click and log events in analytics
     // console.log('Global series clicked ', this.analysis, 'Clicked analysis', event.point);
   }
 
-  public makeCountChartOptions(results: any, analysisName: string) {
+  public makeCountChartOptions(results: any, _analysisName: string) {
     let data = [];
     let cats = [];
     for (const a of results) {
@@ -575,9 +575,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let bsResult = null;
       let color = null;
       let percentage = null;
-      let count;
       let totalCount;
-      count = a.countValue <= 20 ? "&le; 20" : a.countValue;
+      const count = a.countValue <= 20 ? "&le; 20" : a.countValue;
       if (analysisId === this.dbc.GENDER_ANALYSIS_ID) {
         bsResult = this.domainCountAnalysis.genderCountAnalysis.results.filter(
           (x) => x.stratum4 === a.stratum2
@@ -729,9 +728,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       let analysisStratumName = null;
       let toolTipHelpText = null;
       let color = null;
-      let count;
 
-      count = a.countValue <= 20 ? "&le; 20" : a.countValue;
+      const count = a.countValue <= 20 ? "&le; 20" : a.countValue;
       color = this.dbc.COLUMN_COLOR;
       analysisStratumName = a.stratum7;
       if (analysisStratumName === null) {
@@ -843,9 +841,8 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     for (const a of results) {
       let toolTipHelpText = null;
       let ageResult = null;
-      let count;
       let totalCount;
-      count = a.countValue <= 20 ? "&le; 20" : a.countValue;
+      const count = a.countValue <= 20 ? "&le; 20" : a.countValue;
       if (analysisId === this.dbc.AGE_ANALYSIS_ID) {
         ageHelpText = seriesName;
         legendText = seriesName + ", Medical Concept";

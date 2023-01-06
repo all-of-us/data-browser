@@ -190,7 +190,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
 
   buildChartData(surveyConceptId: any) {
     const { categoryArr, chartSeries, colors } = this.state;
-    const { surveyVersions, versionAnalysis } = this.props;
+    const { surveyVersions, _versionAnalysis } = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
     newBaseOptions.xAxis.categories = categoryArr.map((item) =>
@@ -238,7 +238,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
           ? ((20 / surveyVersionParticipantCounts) * 100).toFixed()
           : ((count / surveyVersionParticipantCounts) * 100).toFixed();
       if (
-        this.point.y == 0 &&
+        this.point.y === 0 &&
         this.point.series.name.toLowerCase() !== "did not answer"
       ) {
         toolTipText +=
