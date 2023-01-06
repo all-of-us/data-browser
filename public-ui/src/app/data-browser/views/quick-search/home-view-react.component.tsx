@@ -6,6 +6,7 @@ import { withRouteData } from "app/components/app-router";
 import { CdrVersionReactComponent } from "app/data-browser/cdr-version/cdr-version-info";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
+import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import {
   dataBrowserApi,
   genomicsApi,
@@ -57,7 +58,6 @@ const css = `
 .result-bottom-link:hover {
     color: #262262;
 }
-
 .survey-result-boxes {
   display: grid;
   grid-template-columns: repeat(4, minmax(239px, 1fr));
@@ -67,32 +67,28 @@ const css = `
 .result-boxes {
   display: grid;
   grid-template-columns: repeat(4, minmax(239px, 1fr));
-  grid-template-areas: 
+  grid-template-areas:
   '. . . .'
   'gHeading pmHeading pmHeading pmHeading'
   ' gBoxes pmBoxes pmBoxes pmBoxes';
-  
+
   grid-template-rows: 1fr;
   column-gap: 1rem;
   row-gap:1rem;
   margin-bottom: 2rem;
 }
-
 .genomic-boxes {
   display: grid;
   grid-template-columns: 1fr;
   grid-area: gBoxes;
   column-gap: 1rem;
 }
-
 .pm-boxes{
   grid-area: pmBoxes;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   column-gap:1rem;
-
-
 }
 .pm-boxes .result-box{
     // margin-right:1rem;
@@ -132,9 +128,7 @@ const css = `
 .result-box:last-of-type {
   margin-right: 0;
 }
-
 @media (max-width: 1048px) {
-
   .result-boxes {
     grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
@@ -153,7 +147,6 @@ const css = `
     width: calc((100vw)/1.57);
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
-
   .cope-preview {
       justify-content: flex-start;
   }
@@ -170,7 +163,6 @@ const css = `
     ' gBoxes gBoxes'
     'pmHeading pmHeading'
     'pmBoxes pmBoxes ';
-
 }
   .result-boxes, .survey-result-boxes{
     grid-template-columns: repeat(2, minmax(239px, 1fr));
@@ -292,8 +284,7 @@ const styles = reactStyles({
     width: "100%",
     color: "#2b266d",
   },
-  resultBodyDescription: {
-  },
+  resultBodyDescription: {},
 });
 
 interface ResultLinkProps {
@@ -363,16 +354,16 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
         case 43528895:
           url = this.props.searchWord
             ? "survey/health-care-access-and-utilization/" +
-            this.props.searchWord
+              this.props.searchWord
             : "survey/health-care-access-and-utilization";
           NavStore.navigateByUrl(url);
           break;
         default:
           url = this.props.searchWord
             ? "survey/" +
-            info.name.replaceAll(" ", "-").toLowerCase() +
-            "/" +
-            this.props.searchWord
+              info.name.replaceAll(" ", "-").toLowerCase() +
+              "/" +
+              this.props.searchWord
             : "survey/" + info.name.replaceAll(" ", "-").toLowerCase();
           NavStore.navigateByUrl(url);
           break;
@@ -410,7 +401,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       microarrayParticipantCount,
       variantListSize,
       loadingVariantListSize,
-      typing
+      typing,
     } = this.props;
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
@@ -516,12 +507,15 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             variantListSize > 0 && (
               <React.Fragment>
                 <span style={styles.resultBodyItem}>
-                {(typing || loadingVariantListSize) && <Spinner />}
-                {(!typing && !loadingVariantListSize) &&
-                <React.Fragment>
-                  <div style={styles.resultStat}>{variantListSize.toLocaleString()}</div>{" "}
-                </React.Fragment>}
-                matching genomic variants
+                  {(typing || loadingVariantListSize) && <Spinner />}
+                  {!typing && !loadingVariantListSize && (
+                    <React.Fragment>
+                      <div style={styles.resultStat}>
+                        {variantListSize.toLocaleString()}
+                      </div>{" "}
+                    </React.Fragment>
+                  )}
+                  matching genomic variants
                 </span>
                 <span style={styles.resultBodyItem}>
                   <div style={styles.resultStat}>
@@ -594,7 +588,7 @@ export const dBHomeComponent = withRouteData(
       };
     }
 
-    search = _.debounce((val) => {
+    search = _.debounce((_val) => {
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
@@ -640,18 +634,18 @@ export const dBHomeComponent = withRouteData(
 
     getVariantResultSize() {
       const { searchWord } = this.state;
-      this.setState({loadingVariantListSize: true});
+      this.setState({ loadingVariantListSize: true });
       const variantSizeRequest = {
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({loadingVariantListSize: true});
+      this.setState({ loadingVariantListSize: true });
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
           this.setState({
             variantListSize: result,
-            loadingVariantListSize: false
+            loadingVariantListSize: false,
           });
         })
         .catch((e) => {
@@ -730,6 +724,10 @@ export const dBHomeComponent = withRouteData(
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0 &&
         variantListSize === 0;
+      const noConceptData =
+        domainInfo.length === 0 &&
+        physicalMeasurementsInfo.length === 0 &&
+        surveyInfo.length === 0;
       return (
         <React.Fragment>
           <style>{css}</style>
@@ -816,17 +814,19 @@ export const dBHomeComponent = withRouteData(
           {(loading || loadingVariantListSize) && <Spinner />}
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
-              <h5
-                style={{
-                  ...globalStyles.secondaryDisplay,
-                  ...styles.resultHeading,
-                }}
-              >
-                EHR Domains
-              </h5>
+              {noConceptData && <ErrorMessageReactComponent dataType="data" />}
               <div className="result-boxes">
                 {domainInfo.length > 0 && (
                   <React.Fragment>
+                    <h5
+                      style={{
+                        ...globalStyles.secondaryDisplay,
+                        ...styles.resultHeading,
+                      }}
+                    >
+                      {" "}
+                      EHR Domains{" "}
+                    </h5>
                     {domainInfo.map((domain, index) => {
                       const key = "domain" + index;
                       return (
@@ -846,63 +846,63 @@ export const dBHomeComponent = withRouteData(
                 {environment.geno &&
                   genomicInfo &&
                   !loadingVariantListSize &&
-                  variantListSize > 0 && (<React.Fragment>
+                  variantListSize > 0 && (
+                    <React.Fragment>
+                      <h5
+                        style={{
+                          ...globalStyles.secondaryDisplay,
+                          ...styles.resultHeading,
+                          gridArea: "gHeading",
+                          marginBottom: "-1rem",
+                        }}
+                      >
+                        Genomics
+                      </h5>
+                      <div className="genomic-boxes">
+                        <ResultLinksComponent
+                          typing={!this.typing}
+                          key="genomics-tile"
+                          searchWord={searchWord}
+                          {...genomicInfo}
+                          domainType="genomics"
+                          variantListSize={variantListSize}
+                          loadingVariantListSize={loadingVariantListSize}
+                        />
+                      </div>
+                    </React.Fragment>
+                  )}
+                {physicalMeasurementsInfo.length > 0 && (
+                  <React.Fragment>
                     <h5
                       style={{
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
-                        gridArea: 'gHeading',
-                        marginBottom: '-1rem',
+                        gridArea: "pmHeading",
+                        marginBottom: "-1rem",
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      Genomics
+                      Physical Measurements and Wearables
                     </h5>
-                    <div className="genomic-boxes">
-
-
-                      <ResultLinksComponent
-                        typing={!this.typing}
-                        key="genomics-tile"
-                        searchWord={searchWord}
-                        {...genomicInfo}
-                        domainType="genomics"
-                        variantListSize={variantListSize}
-                        loadingVariantListSize={loadingVariantListSize}
-                      />
+                    <div className="pm-boxes">
+                      {physicalMeasurementsInfo.map(
+                        (phyMeasurements, index) => {
+                          const key = "phyMeasurements" + index;
+                          return (
+                            <ResultLinksComponent
+                              typing={!this.typing}
+                              key={key}
+                              searchWord={searchWord}
+                              {...phyMeasurements}
+                              domainType="pmw"
+                              variantListSize={variantListSize}
+                              loadingVariantListSize={loadingVariantListSize}
+                            />
+                          );
+                        }
+                      )}
                     </div>
                   </React.Fragment>
-                  )}
-                {physicalMeasurementsInfo.length > 0 && (<React.Fragment>
-                  <h5
-                    style={{
-                      ...globalStyles.secondaryDisplay,
-                      ...styles.resultHeading,
-                      gridArea: 'pmHeading',
-                      marginBottom: '-1rem',
-                      whiteSpace:'nowrap'
-                    }}
-                  >
-                    Physical Measurements and Wearables
-                  </h5>
-                  <div className="pm-boxes">
-                    {physicalMeasurementsInfo.map(
-                      (phyMeasurements, index) => {
-                        const key = "phyMeasurements" + index;
-                        return (
-                          <ResultLinksComponent
-                            typing={!this.typing}
-                            key={key}
-                            searchWord={searchWord}
-                            {...phyMeasurements}
-                            domainType="pmw"
-                            variantListSize={variantListSize}
-                            loadingVariantListSize={loadingVariantListSize}
-                          />
-                        );
-                      }
-                    )}
-                  </div>
-                </React.Fragment>
                 )}
               </div>
               {surveyInfo.length > 0 && (
