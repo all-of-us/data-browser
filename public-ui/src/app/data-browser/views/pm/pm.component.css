@@ -1,174 +1,173 @@
 @media (max-width: 978px) {
-
-    body {
-        padding: 0;
-    }
+  body {
+    padding: 0;
+  }
 }
 
 @media only screen and (min-width: 1168px) {
-    .breadcrumbs {
-        margin: 0 calc(10%);
-        padding: 0 0.7rem;
-    }
-    /* outside container desktop */
-    .db-container {
-        margin: 0 calc(10%);
-    }
+  .breadcrumbs {
+    margin: 0 calc(10%);
+    padding: 0 0.7rem;
+  }
+  /* outside container desktop */
+  .db-container {
+    margin: 0 calc(10%);
+  }
 }
 
 :host {
-    padding: 1em;
-    display: block;
+  padding: 1em;
+  display: block;
 }
 
 .pm-layout {
-    display: flex;
+  display: flex;
 }
 
 .db-card {
-    width: 100%;
+  width: 100%;
 }
 
 .db-card-header {
-    align-items: baseline;
-    width: 100%;
-    flex-wrap: wrap;
+  align-items: baseline;
+  width: 100%;
+  flex-wrap: wrap;
 }
 
 .db-card-header div button {
-    padding: 0 9px;
+  padding: 0 9px;
 }
 
 .stacked-chart-item {
-    margin-left: 4%;
+  margin-left: 4%;
 }
 
 .group-name {
-    font-size: 1.4em;
-    white-space: nowrap;
-    width: fit-content;
-    padding: 1em;
-    padding-top: .5em;
+  font-size: 1.4em;
+  white-space: nowrap;
+  width: fit-content;
+  padding: 1em;
+  padding-top: 0.5em;
 }
 
 .group-option {
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 .bs-title {
-    padding-left: 1.5em;
+  padding-left: 1.5em;
 }
 
 .db-card-header div button.active {
-    border-bottom: 4px solid #216fb4;
+  border-bottom: 4px solid #216fb4;
 }
 
 .chart-layout {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1em;
 }
 
 .chart-item {
-    width: calc((50%) - 18px);
-    height: auto;
-    flex-grow: 1;
+  width: calc((50%) - 18px);
+  height: auto;
+  flex-grow: 1;
 }
 
 .bs-chart-item {
-    width: calc((33.3%) - 18px);
-    height: auto;
-    flex-grow: 1;
+  width: calc((33.3%) - 18px);
+  height: auto;
+  flex-grow: 1;
 }
 
 .age-chart {
-    padding: 1em;
-    padding-left: 1.5em;
-    margin: 0;
+  padding: 1em;
+  padding-left: 1.5em;
+  margin: 0;
 }
 
 .chart-item:last-of-type {
-    width: 100%;
-    max-width: calc((100%) - 18px);
-    min-width: 20rem;
+  width: 100%;
+  max-width: calc((100%) - 18px);
+  min-width: 20rem;
 }
 
 .chart-title {
-    text-align: center;
+  text-align: center;
 }
 
 button {
-    text-align: left;
-    padding: 0;
-    font-family: GothamBook, Arial, sans-serif;
+  text-align: left;
+  padding: 0;
+  font-family: GothamBook, Arial, sans-serif;
 }
 
 .participant-count {
-    width: 100%;
-    text-align: center;
-    padding-bottom: 18px
+  width: 100%;
+  text-align: center;
+  padding-bottom: 18px;
 }
 
 .active {
-    font-family: GothamBold, Arial, Helvetica, sans-serif;
-    font-weight: 900;
+  font-family: GothamBold, Arial, Helvetica, sans-serif;
+  font-weight: 900;
 }
 
 aside {
-    padding-right: 18px;
+  padding-right: 18px;
 }
 
 aside .button-item button {
-    font-size: 0.8em;
+  font-size: 0.8em;
 }
 
 @media (max-width: 1168px) {
-    .pm-layout {
-        padding: 18px;
-    }
-    h1 {
-        padding: 18px;
-    }
+  .pm-layout {
+    padding: 18px;
+  }
+  h1 {
+    padding: 18px;
+  }
 }
 
 @media (max-width: 978px) {
-    .pm-layout {
-        flex-direction: column;
-    }
-    aside {
-        flex-wrap: wrap;
-        display: flex;
-        justify-content: space-between;
-        margin: -1em;
-        margin-bottom: 0px
-    }
-    aside .button-item {
-        padding: 18px;
-        padding-top: 0;
-    }
-    .chart-item {
-        width: 100%;
-        height: auto;
-    }
+  .pm-layout {
+    flex-direction: column;
+  }
+  aside {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    margin: -1em;
+    margin-bottom: 0px;
+  }
+  aside .button-item {
+    padding: 18px;
+    padding-top: 0;
+  }
+  .chart-item {
+    width: 100%;
+    height: auto;
+  }
 }
 @media (max-width: 550px) {
-    .db-card {
-        overflow-x: scroll;
-    }
+  .db-card {
+    overflow-x: scroll;
+  }
 }
 
 .group-unit {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .unit-button {
-    padding-right: 0.5em;
+  padding-right: 0.5em;
 }
 
 .unit-button.active {
-    border-bottom: 4px solid #216fb4;
+  border-bottom: 4px solid #216fb4;
 }

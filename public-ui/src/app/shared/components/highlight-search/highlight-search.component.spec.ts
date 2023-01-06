@@ -1,15 +1,14 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HighlightSearchComponent } from './highlight-search.component';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
+import { HighlightSearchComponent } from "./highlight-search.component";
 
-describe('HighlightSearchComponent', () => {
+describe("HighlightSearchComponent", () => {
   let component: HighlightSearchComponent;
   let fixture: ComponentFixture<HighlightSearchComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HighlightSearchComponent ]
-    })
-    .compileComponents();
+      declarations: [HighlightSearchComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -18,7 +17,7 @@ describe('HighlightSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

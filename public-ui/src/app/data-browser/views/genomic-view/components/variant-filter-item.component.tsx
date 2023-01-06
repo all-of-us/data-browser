@@ -3,7 +3,7 @@ import * as React from "react";
 import { Cat } from "app/data-browser/views/genomic-view/components/variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { VariantFilterSliderComponent } from './slider-filter/variant-filter-slider.component'
+import { VariantFilterSliderComponent } from "./slider-filter/variant-filter-slider.component";
 
 const styles = reactStyles({
   filterItem: {
@@ -17,7 +17,7 @@ const styles = reactStyles({
     fontSize: ".8em",
     letterSpacing: 0,
     lineHeight: "16px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   filterItemClosed: {
     transform: "rotate(90deg)",
@@ -44,10 +44,10 @@ const styles = reactStyles({
   },
   filterItemForm: {
     display: "flex",
-    overflow: 'hidden',
+    overflow: "hidden",
     flexDirection: "column",
     paddingLeft: "1rem",
-    paddingTop:".25rem"
+    paddingTop: ".25rem",
   },
   filterItemOption: {
     fontSize: ".8em",
@@ -60,10 +60,10 @@ const styles = reactStyles({
     marginTop: "0.1rem",
   },
   filterItemLabel: {
-    width: '80%',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow:'hidden'
+    width: "80%",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
     // wordWrap: "break-word",
   },
   filterSlider: {
@@ -102,15 +102,20 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       filterItemOpen: false,
-      filterItemState: props.filterItem || '',
-      filterCheckMap: props.filterItem || '',
-      ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}')[this.props.category.field.toString()]
-    };    
+      filterItemState: props.filterItem || "",
+      filterCheckMap: props.filterItem || "",
+      ogFilterMetaData: JSON.parse(
+        localStorage.getItem("originalFilterMetadata") || "{}"
+      )[this.props.category.field.toString()],
+    };
   }
 
-  componentDidMount(): void {    
-    if (Array.isArray(this.state.filterCheckMap) && this.state.filterCheckMap.every(t => t.checked)) {
-      this.state.filterCheckMap.forEach(i => i.checked = false);
+  componentDidMount(): void {
+    if (
+      Array.isArray(this.state.filterCheckMap) &&
+      this.state.filterCheckMap.every((t) => t.checked)
+    ) {
+      this.state.filterCheckMap.forEach((i) => (i.checked = false));
     }
   }
 
@@ -131,16 +136,16 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   //   }
   // }
 
-
   handleCheck(filteredItem) {
-    const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
+    const filtered = this.state.filterItemState.map((el) =>
+      el === filteredItem ? { ...el, checked: !filteredItem.checked } : el
+    );
     this.setState({
       filterItemState: filtered,
-      filterCheckMap: filtered
+      filterCheckMap: filtered,
     });
     this.props.onFilterChange(filtered, this.props.category);
   }
-
 
   handleSliderChange(vals, filterItem) {
     const updatedFilterItem = filterItem;
@@ -151,39 +156,69 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const { category,cleared } = this.props;
+    const { category, cleared } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
-    return <React.Fragment>
-      <style>{css}</style>
-      <div onClick={() => this.filterClick()} style={styles.filterItem}>
-        <span style={{fontFamily:'gothamBold'}}>{category.display}</span>
-        <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
-      </div>
-      {(cleared && filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
-        {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
+    return (
+      <React.Fragment>
+        <style>{css}</style>
+        <div onClick={() => this.filterClick()} style={styles.filterItem}>
+          <span style={{ fontFamily: "gothamBold" }}>{category.display}</span>
+          <div>
+            <ClrIcon
+              style={
+                !filterItemOpen
+                  ? { ...styles.filterItemClosed }
+                  : { ...styles.filterItemOpen }
+              }
+              shape="angle"
+            />
+          </div>
+        </div>
+        {cleared && filterItemOpen && Array.isArray(filterItemState) ? (
+          <div style={styles.filterItemForm}>
+            {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
                 <div style={styles.selectContainer}>
                     <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
                     <span>|</span>
                     <button style={styles.selectBtn} onClick={() => this.selecting(false)} >None</button>
                 </div> */}
-        {filterItemState.map((item: any, index: number) => {
-          const key = 'option' + index;
-          return <span title={item.option} style={styles.filterItemOption} key={key}>
-            <input onChange={() => this.handleCheck(item)}
-              id={item.option}
-              style={styles.filterItemCheck}
-              type='checkbox' name={item.option}
-              checked={item.checked} />
-            <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
-          </span>;
-        })}
-      </div> :
-        <div>{filterItemOpen &&
-          <VariantFilterSliderComponent
-            filterItem={filterItemState}
-            ogFilterItem={ogFilterMetaData}
-            onSliderChange={(e) => this.handleSliderChange(e, filterItemState)} />}
-        </div>}
-    </React.Fragment>;
+            {filterItemState.map((item: any, index: number) => {
+              const key = "option" + index;
+              return (
+                <span
+                  title={item.option}
+                  style={styles.filterItemOption}
+                  key={key}
+                >
+                  <input
+                    onChange={() => this.handleCheck(item)}
+                    id={item.option}
+                    style={styles.filterItemCheck}
+                    type="checkbox"
+                    name={item.option}
+                    checked={item.checked}
+                  />
+                  <label style={styles.filterItemLabel} htmlFor={item.option}>
+                    {item.option}
+                  </label>
+                </span>
+              );
+            })}
+          </div>
+        ) : (
+          <div>
+            {filterItemOpen && (
+              <VariantFilterSliderComponent
+                filterItem={filterItemState}
+                ogFilterItem={ogFilterMetaData}
+                onSliderChange={(e) =>
+                  this.handleSliderChange(e, filterItemState)
+                }
+              />
+            )}
+          </div>
+        )}
+      </React.Fragment>
+    );
   }
 }

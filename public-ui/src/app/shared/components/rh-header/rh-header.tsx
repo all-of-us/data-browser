@@ -75,7 +75,6 @@ export class RhHeader extends React.Component<{}, State> {
           </div>
           <div id="masthead" className="site-header">
             <div className="headwrap">
-
               <div className="site-nav-container">
                 <nav
                   id="site-navigation"
@@ -185,8 +184,9 @@ export class RhHeader extends React.Component<{}, State> {
               <ul id="menu-mobile">
                 {menuItems.map((menu, m) => (
                   <li
-                    className={`main-menu-item menu-item-has-children ${menu.title
-                      } ${submenusOpen.includes(menu.title) ? "flip" : ""}`}
+                    className={`main-menu-item menu-item-has-children ${
+                      menu.title
+                    } ${submenusOpen.includes(menu.title) ? "flip" : ""}`}
                     onClick={() => this.toggleMobileSubmenu(menu.title)}
                   >
                     <a href={menu.url} style={{ color: "#2b266d" }}>

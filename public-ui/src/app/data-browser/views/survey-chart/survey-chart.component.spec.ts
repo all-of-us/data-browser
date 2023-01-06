@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { SurveyChartComponent } from './survey-chart.component';
+import { SurveyChartComponent } from "./survey-chart.component";
 
-describe('SurveyChartComponent', () => {
+describe("SurveyChartComponent", () => {
   let component: SurveyChartComponent;
   let fixture: ComponentFixture<SurveyChartComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SurveyChartComponent ]
-    })
-    .compileComponents();
+      declarations: [SurveyChartComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SurveyChartComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,19 +1,20 @@
 .ehr-m-chart-layout {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1em;
 }
 .ehr-m-chart-item {
-    width: calc((33.3%) - 18px);
-    height: auto;
-    flex-grow: 1;
+  width: calc((33.3%) - 18px);
+  height: auto;
+  flex-grow: 1;
 }
-.no-source-concepts, .no-values{
-    margin-top:1rem;
-    margin-left: 50%;
-    transform: translateX(-50%);
-    width: fit-content;
-    white-space: nowrap;
+.no-source-concepts,
+.no-values {
+  margin-top: 1rem;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  width: fit-content;
+  white-space: nowrap;
 }

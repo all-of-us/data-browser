@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { ChartBiosexComponent } from './chart-biosex.component';
+import { ChartBiosexComponent } from "./chart-biosex.component";
 
-describe('ChartBiosexComponent', () => {
+describe("ChartBiosexComponent", () => {
   let component: ChartBiosexComponent;
   let fixture: ComponentFixture<ChartBiosexComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartBiosexComponent ]
-    })
-    .compileComponents();
+      declarations: [ChartBiosexComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ChartBiosexComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

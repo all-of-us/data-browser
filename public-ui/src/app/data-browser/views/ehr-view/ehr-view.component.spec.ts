@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { EhrViewComponent } from './ehr-view.component';
+import { EhrViewComponent } from "./ehr-view.component";
 
-describe('EhrViewComponent', () => {
+describe("EhrViewComponent", () => {
   let component: EhrViewComponent;
   let fixture: ComponentFixture<EhrViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EhrViewComponent ]
-    })
-    .compileComponents();
+      declarations: [EhrViewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('EhrViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { SurveyVersionTableComponent } from './survey-version-table.component';
+import { SurveyVersionTableComponent } from "./survey-version-table.component";
 
-describe('SurveyVersionTableComponent', () => {
+describe("SurveyVersionTableComponent", () => {
   let component: SurveyVersionTableComponent;
   let fixture: ComponentFixture<SurveyVersionTableComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SurveyVersionTableComponent ]
-    })
-    .compileComponents();
+      declarations: [SurveyVersionTableComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SurveyVersionTableComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

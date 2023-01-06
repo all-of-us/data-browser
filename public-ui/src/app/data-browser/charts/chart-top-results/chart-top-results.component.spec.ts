@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { ChartTopResultsComponent } from './chart-top-results.component';
+import { ChartTopResultsComponent } from "./chart-top-results.component";
 
-describe('ChartTopResultsComponent', () => {
+describe("ChartTopResultsComponent", () => {
   let component: ChartTopResultsComponent;
   let fixture: ComponentFixture<ChartTopResultsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartTopResultsComponent ]
-    })
-    .compileComponents();
+      declarations: [ChartTopResultsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ChartTopResultsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

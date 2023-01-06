@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { FitbitViewComponent } from './fitbit-view.component';
+import { FitbitViewComponent } from "./fitbit-view.component";
 
-describe('FitbitViewComponent', () => {
+describe("FitbitViewComponent", () => {
   let component: FitbitViewComponent;
   let fixture: ComponentFixture<FitbitViewComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FitbitViewComponent ]
-    })
-    .compileComponents();
+      declarations: [FitbitViewComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('FitbitViewComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

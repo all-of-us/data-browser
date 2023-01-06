@@ -1,39 +1,39 @@
 :host {
-    display: block;
-    padding:1rem 3rem;
+  display: block;
+  padding: 1rem 3rem;
 }
 .answer-chart-layout {
-    display:flex;
-    justify-content: center;
-    align-items: flex-end;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 .legend {
-    padding:1rem;
-    padding-bottom: 2rem;
-    max-width: 15rem;
+  padding: 1rem;
+  padding-bottom: 2rem;
+  max-width: 15rem;
 }
 
 .legend-inner {
-    display:flex;
-    flex-direction: column;
-    align-items: flex-start;
-    overflow-y: auto;
-    max-height: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: auto;
+  max-height: 20rem;
 }
 .legend-item {
-    display: grid;
-    grid-template-columns: 1rem 1fr;
-    font-size:.8em;
-    padding-bottom: .5em;
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  font-size: 0.8em;
+  padding-bottom: 0.5em;
 }
 
 .legend-item span {
-    text-align: left;
+  text-align: left;
 }
 
 .standard-chart {
-    display: block;
-    background-size: contain;
-    height: auto;
-    width: 75%;
+  display: block;
+  background-size: contain;
+  height: auto;
+  width: 75%;
 }

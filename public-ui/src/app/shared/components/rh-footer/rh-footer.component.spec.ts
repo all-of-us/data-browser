@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync  } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { RhFooterComponent } from './rh-footer.component';
+import { RhFooterComponent } from "./rh-footer.component";
 
-describe('RhFooterComponent', () => {
+describe("RhFooterComponent", () => {
   let component: RhFooterComponent;
   let fixture: ComponentFixture<RhFooterComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RhFooterComponent ]
-    })
-    .compileComponents();
+      declarations: [RhFooterComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('RhFooterComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

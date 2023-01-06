@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 import * as PropTypes from "prop-types";
 export default function Surface(props) {
@@ -14,7 +14,7 @@ export default function Surface(props) {
         position: "relative",
         width: "90%",
         height: "0px",
-        padding: "11% 0"
+        padding: "11% 0",
       }}
       {...other}
     >
@@ -26,18 +26,20 @@ export default function Surface(props) {
           width: "100%",
           height: "100%",
           left: 0,
-          top: 0
+          top: 0,
         }}
       >
         <g transform={`translate(${trbl[3]} ,${trbl[0]})`}>{children}</g>
       </svg>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        fontSize: '0.8em',
-        width: '100%',
-        paddingTop: '0.25rem'
-      }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: "0.8em",
+          width: "100%",
+          paddingTop: "0.25rem",
+        }}
+      >
         <span>Min</span>
         <span>Max</span>
       </div>
@@ -65,10 +67,10 @@ Surface.propTypes = {
   /**
    * Width and height attributes of the SVG view box.
    */
-  view: PropTypes.array
+  view: PropTypes.array,
 };
 
 Surface.defaultProps = {
   view: [1000, 500],
-  trbl: [10, 10, 10, 10]
+  trbl: [10, 10, 10, 10],
 };

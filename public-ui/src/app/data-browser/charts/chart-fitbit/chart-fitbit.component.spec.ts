@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { ChartFitbitComponent } from './chart-fitbit.component';
+import { ChartFitbitComponent } from "./chart-fitbit.component";
 
-describe('ChartFitbitComponent', () => {
+describe("ChartFitbitComponent", () => {
   let component: ChartFitbitComponent;
   let fixture: ComponentFixture<ChartFitbitComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChartFitbitComponent ]
-    })
-    .compileComponents();
+      declarations: [ChartFitbitComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ChartFitbitComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

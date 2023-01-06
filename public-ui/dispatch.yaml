@@ -5,4 +5,3 @@ dispatch:
     service: default
   - url: "databrowser.staging.fake-research-aou.org/"
     service: default
-

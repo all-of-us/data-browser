@@ -2,7 +2,7 @@ import "rxjs/add/operator/mergeMap";
 
 import { environment } from "environments/environment";
 import { Injectable } from "@angular/core";
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from "@angular/common/http";
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -13,8 +13,8 @@ import {
 import { ServerConfigService } from "app/services/server-config.service";
 import { Observable } from "rxjs/Observable";
 import { from as observableFrom } from "rxjs/observable/from";
-import { throwError} from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { throwError } from "rxjs";
+import { catchError } from "rxjs/operators";
 
 declare const gapi: any;
 

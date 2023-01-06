@@ -1,15 +1,15 @@
-.primary-display{
-    text-align: center;
-    padding:1rem;
+.primary-display {
+  text-align: center;
+  padding: 1rem;
 }
 .vid-container {
-    width: 100%;
-    text-align: center;
-    padding:1rem;
-    padding-bottom: 2rem;
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  padding-bottom: 2rem;
 }
 .vid-container video {
-    width: calc((100%/12)*10);
-    height:auto;
-    outline: none;
+  width: calc((100% / 12) * 10);
+  height: auto;
+  outline: none;
 }

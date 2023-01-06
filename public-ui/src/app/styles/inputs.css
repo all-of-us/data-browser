@@ -1,12 +1,12 @@
-input[type=date]:not([readonly]),
-input[type=datetime-local]:not([readonly]),
-input[type=email]:not([readonly]),
-input[type=number]:not([readonly]),
-input[type=password]:not([readonly]),
-input[type=tel]:not([readonly]),
-input[type=text]:not([readonly]),
-input[type=time]:not([readonly]),
-input[type=url]:not([readonly]) {
+input[type="date"]:not([readonly]),
+input[type="datetime-local"]:not([readonly]),
+input[type="email"]:not([readonly]),
+input[type="number"]:not([readonly]),
+input[type="password"]:not([readonly]),
+input[type="tel"]:not([readonly]),
+input[type="text"]:not([readonly]),
+input[type="time"]:not([readonly]),
+input[type="url"]:not([readonly]) {
   border: none;
   background-color: inherit;
   width: 80%;
@@ -16,19 +16,15 @@ input[type=url]:not([readonly]) {
 
 .search-input-big {
   padding: 0;
-  margin-left:-24px;
+  margin-left: -24px;
 }
 
 .search-wrapper {
   padding: 9px 0;
-
 }
-.search-wrapper input[type="text"]
-{
-  font-size:1rem;
+.search-wrapper input[type="text"] {
+  font-size: 1rem;
 }
-
-
 
 .input-icon {
   position: relative;
@@ -39,12 +35,8 @@ input[type=url]:not([readonly]) {
 
 .input-icon-absolute {
   position: absolute;
-  top:12px;
+  top: 12px;
   left: 12px;
   width: 24px;
   height: 24px;
 }
-
-
-
-

@@ -1,56 +1,119 @@
 <div class="cta-bar">
-  <a href="https://workbench.researchallofus.org/login" class="login-btn"> RESEARCHER LOGIN</a>
+  <a href="https://workbench.researchallofus.org/login" class="login-btn">
+    RESEARCHER LOGIN</a
+  >
 </div>
 <div id="masthead" class="site-header">
-  <div class="headwrap" [ngClass]="openTopMenu?'no-border':''">
+  <div class="headwrap" [ngClass]="openTopMenu ? 'no-border' : ''">
     <div class="site-branding-container">
       <div class="site-branding">
         <div class="logo">
-          <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img width="4356" height="528"
-                src="/assets/db-images/allofus_research-hub_color.png" class="custom-logo" alt="All of Us Research Hub"
-                itemprop="logo" /></a>
+          <div class="site-logo">
+            <a href="{{ allOfUsUrl }}/" class="custom-logo-link"
+              ><img
+                width="4356"
+                height="528"
+                src="/assets/db-images/allofus_research-hub_color.png"
+                class="custom-logo"
+                alt="All of Us Research Hub"
+                itemprop="logo"
+            /></a>
           </div>
-          <div class="divider">
-          </div>
+          <div class="divider"></div>
           <div class="nih-logo">
             <a href="https://allofus.nih.gov/" target="_blank">
-              <img alt="National Institute of Health All of Us Research Program" class="nih_header"
-                src="/assets/db-images/nih_allofus_color.png" />
+              <img
+                alt="National Institute of Health All of Us Research Program"
+                class="nih_header"
+                src="/assets/db-images/nih_allofus_color.png"
+              />
             </a>
           </div>
-        </div><!-- .logo -->
-      </div><!-- .site-branding -->
-    </div><!-- .site-branding-container -->
+        </div>
+        <!-- .logo -->
+      </div>
+      <!-- .site-branding -->
+    </div>
+    <!-- .site-branding-container -->
 
     <div class="site-nav-container">
       <nav id="site-navigation" class="main-navigation" aria-label="Top Menu">
         <div class="menu-primary-container">
           <ul class="main-menu">
-            <li class={{menu.class}} *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
-              <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
+            <li
+              class="{{ menu.class }}"
+              *ngFor="let menu of menuItems"
+              class="main-menu-item menu-item-has-children"
+            >
+              <a tabindex="0" href="{{ menu.url }}"> {{ menu.title }}</a>
               <ul *ngIf="menu.submenu" class="sub-menu">
-                <li [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1 && subTitle == sub.title}"
-                  *ngFor="let sub of menu.sub0">
-                  <a class={{sub.class}} tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
+                <li
+                  [ngClass]="{
+                    'menu-item-has-children': sub.submenu,
+                    flip: showSub1 && subTitle == sub.title
+                  }"
+                  *ngFor="let sub of menu.sub0"
+                >
+                  <a
+                    class="{{ sub.class }}"
+                    tabindex="0"
+                    href="{{ sub.url }}"
+                    >{{ sub.title }}</a
+                  >
                   <ul *ngIf="showSub1">
                     <li *ngFor="let sub1 of sub.sub1">
-                      <a href="{{sub1.url}}">{{sub1.title}}</a>
+                      <a href="{{ sub1.url }}">{{ sub1.title }}</a>
                     </li>
                   </ul>
                 </li>
               </ul>
             </li>
-            <li tabindex="0" class="icon_search main-menu-item menu-item-has-children">
-              <a><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none"
-                  fill-rule="evenodd" stroke="#262262" stroke-linejoin="round" stroke-width="3">
-                  <path fill="none" d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z" />
-                  <path stroke-linecap="round" d="M13.848 13.848l5.84 5.84" /></svg></a>
+            <li
+              tabindex="0"
+              class="icon_search main-menu-item menu-item-has-children"
+            >
+              <a
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 22 22"
+                  fill="none"
+                  fill-rule="evenodd"
+                  stroke="#262262"
+                  stroke-linejoin="round"
+                  stroke-width="3"
+                >
+                  <path
+                    fill="none"
+                    d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    d="M13.848 13.848l5.84 5.84"
+                  /></svg
+              ></a>
               <ul class="sub-menu">
                 <li class="menu-item">
-                  <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
-                    action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search"
-                      type="text" value="" name="s" id="s" placeholder="search..." size="35" autocomplete="off" /><input
-                      type="submit" id="searchsubmit" value="" /></form>
+                  <form
+                    #f="ngForm"
+                    (ngSubmit)="searchHub(f)"
+                    name="searchText"
+                    id="searchform"
+                    action="https://www.staging.researchallofus.org/"
+                  >
+                    <input
+                      ngModel
+                      aria-label="Help Search"
+                      type="text"
+                      value=""
+                      name="s"
+                      id="s"
+                      placeholder="search..."
+                      size="35"
+                      autocomplete="off"
+                    /><input type="submit" id="searchsubmit" value="" />
+                  </form>
                 </li>
               </ul>
             </li>
@@ -60,37 +123,69 @@
           </ul>
           <!-- ** Mobile Menu **-->
           <div class="mobile-nav">
-            <div [ngClass]="openTopMenu?'clicked':''" (click)="toggleTopMenu()" id="nav-icon">
+            <div
+              [ngClass]="openTopMenu ? 'clicked' : ''"
+              (click)="toggleTopMenu()"
+              id="nav-icon"
+            >
               <span></span>
               <span></span>
               <span></span>
             </div>
-          </div><!-- .mobile-nav -->
-        </div><!-- .menu-primary-container -->
-      </nav><!-- .main-navigation -->
-    </div><!-- .site-nav-container -->
-  </div><!-- .headwrap -->
+          </div>
+          <!-- .mobile-nav -->
+        </div>
+        <!-- .menu-primary-container -->
+      </nav>
+      <!-- .main-navigation -->
+    </div>
+    <!-- .site-nav-container -->
+  </div>
+  <!-- .headwrap -->
   <ul *ngIf="openTopMenu" id="menu-mobile">
-    <li *ngFor="let menu of menuItems; let i = index" [ngClass]="menuModel[menu.title]?'flip':''"
-      (click)="menuModel[menu.title] =!menuModel[menu.title]" class="main-menu-item menu-item-has-children {{menu.title}}">
-      <a href="{{menu.url}}">{{menu.title}}</a>
+    <li
+      *ngFor="let menu of menuItems; let i = index"
+      [ngClass]="menuModel[menu.title] ? 'flip' : ''"
+      (click)="menuModel[menu.title] = !menuModel[menu.title]"
+      class="main-menu-item menu-item-has-children {{ menu.title }}"
+    >
+      <a href="{{ menu.url }}">{{ menu.title }}</a>
       <ul *ngIf="menuModel[menu.title]" class="sub-menu">
         <li *ngFor="let sub of menu.sub0" class="menu-item">
-          <a href="{{sub.url}}">{{sub.title}}</a>
+          <a href="{{ sub.url }}">{{ sub.title }}</a>
         </li>
       </ul>
     </li>
     <li tabindex="0" class="main-menu-item search">
-      <form #f="ngForm" (ngSubmit)="searchHub(f)" name="searchText" id="searchform"
-        action="https://www.staging.researchallofus.org/"><input ngModel aria-label="Help Search" type="text" value=""
-          name="s" id="s" placeholder="search..." size="35" autocomplete="off" /><input type="submit" id="searchsubmit"
-          value="" /></form>
+      <form
+        #f="ngForm"
+        (ngSubmit)="searchHub(f)"
+        name="searchText"
+        id="searchform"
+        action="https://www.staging.researchallofus.org/"
+      >
+        <input
+          ngModel
+          aria-label="Help Search"
+          type="text"
+          value=""
+          name="s"
+          id="s"
+          placeholder="search..."
+          size="35"
+          autocomplete="off"
+        /><input type="submit" id="searchsubmit" value="" />
+      </form>
     </li>
     <li class="nav_apply">
       <a href="https://www.researchallofus.org/apply/">APPLY</a>
     </li>
     <li class="cta-bar">
-      <a href="https://workbench.researchallofus.org/login" class="login-btn"> RESEARCHER LOGIN</a>
+      <a href="https://workbench.researchallofus.org/login" class="login-btn">
+        RESEARCHER LOGIN</a
+      >
     </li>
-  </ul><!-- #mobile-menu -->
-</div><!-- #masthead -->
+  </ul>
+  <!-- #mobile-menu -->
+</div>
+<!-- #masthead -->

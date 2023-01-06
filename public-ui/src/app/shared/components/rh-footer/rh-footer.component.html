@@ -3,40 +3,60 @@
     <div class="site-branding-container">
       <div class="site-branding">
         <div class="logo">
-          <div class="site-logo"><a href="{{allOfUsUrl}}/" class="custom-logo-link"><img
-                src="/assets/db-images/allofus_research-hub_white.png" class="custom-logo"
-                alt="All of Us Research Hub" itemprop="logo" /></a>
+          <div class="site-logo">
+            <a href="{{ allOfUsUrl }}/" class="custom-logo-link"
+              ><img
+                src="/assets/db-images/allofus_research-hub_white.png"
+                class="custom-logo"
+                alt="All of Us Research Hub"
+                itemprop="logo"
+            /></a>
           </div>
           <div class="nih-logo">
             <a href="https://allofus.nih.gov/" target="_blank">
-              <img alt="National Institute of Health All of Us Research Program" class="nih_header"
-                src="/assets/db-images/nih_allofus_white.png" />
+              <img
+                alt="National Institute of Health All of Us Research Program"
+                class="nih_header"
+                src="/assets/db-images/nih_allofus_white.png"
+              />
             </a>
           </div>
           <div></div>
           <div></div>
-        </div><!-- .logo -->
-      </div><!-- .site-branding -->
-    </div><!-- .site-branding-container -->
+        </div>
+        <!-- .logo -->
+      </div>
+      <!-- .site-branding -->
+    </div>
+    <!-- .site-branding-container -->
     <div class="footer-layout">
       <ul class="main-menu">
-        <li *ngFor="let menu of menuItems" class="main-menu-item menu-item-has-children">
-          <a tabindex="0" href="{{menu.url}}"> {{menu.title}}</a>
+        <li
+          *ngFor="let menu of menuItems"
+          class="main-menu-item menu-item-has-children"
+        >
+          <a tabindex="0" href="{{ menu.url }}"> {{ menu.title }}</a>
           <ul *ngIf="menu.submenu" class="sub-menu">
-            <li (click)="toggleSub(sub.title); showSub1 = !showSub1"
-              [ngClass]="{'menu-item-has-children':sub.submenu, 'flip':showSub1}" *ngFor="let sub of menu.sub0">
-              <a tabindex="0" href="{{sub.url}}">{{sub.title}}</a>
+            <li
+              (click)="toggleSub(sub.title); showSub1 = !showSub1"
+              [ngClass]="{
+                'menu-item-has-children': sub.submenu,
+                flip: showSub1
+              }"
+              *ngFor="let sub of menu.sub0"
+            >
+              <a tabindex="0" href="{{ sub.url }}">{{ sub.title }}</a>
               <ul *ngIf="sub.submenu">
                 <li *ngFor="let sub1 of sub.sub1">
-                  <a href="">{{sub1.title}}</a>
+                  <a href="">{{ sub1.title }}</a>
                 </li>
               </ul>
             </li>
             <li *ngFor="let sub2 of menu.sub1" class="sub-menu">
-              <a tabindex="0" href="{{sub2.url}}">{{sub2.title}}</a>
+              <a tabindex="0" href="{{ sub2.url }}">{{ sub2.title }}</a>
             </li>
             <li *ngFor="let sub2 of menu.sub2" class="sub-menu">
-              <a tabindex="0" href="{{sub2.url}}">{{sub2.title}}</a>
+              <a tabindex="0" href="{{ sub2.url }}">{{ sub2.title }}</a>
             </li>
           </ul>
         </li>
@@ -60,8 +80,9 @@
           <a href="https://www.researchallofus.org/apply/">APPLY</a>
         </li>
         <li class="login-btn">
-          <a href="https://workbench.researchallofus.org/login"> RESEARCHER
-            LOGIN</a>
+          <a href="https://workbench.researchallofus.org/login">
+            RESEARCHER LOGIN</a
+          >
         </li>
       </ul>
     </div>

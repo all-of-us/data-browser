@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { PhysicalMeasurementsComponent } from './pm.component';
+import { PhysicalMeasurementsComponent } from "./pm.component";
 
-describe('PhysicalMeasurementsComponent', () => {
+describe("PhysicalMeasurementsComponent", () => {
   let component: PhysicalMeasurementsComponent;
   let fixture: ComponentFixture<PhysicalMeasurementsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhysicalMeasurementsComponent ]
-    })
-    .compileComponents();
+      declarations: [PhysicalMeasurementsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('PhysicalMeasurementsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

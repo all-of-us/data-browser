@@ -20,7 +20,11 @@ h6 {
   font-size: 16px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: #302C71;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #302c71;
 }
-

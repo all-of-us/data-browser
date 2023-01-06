@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { DbNoResultsComponent } from './db-no-results.component';
+import { DbNoResultsComponent } from "./db-no-results.component";
 
-describe('DbNoResultsComponent', () => {
+describe("DbNoResultsComponent", () => {
   let component: DbNoResultsComponent;
   let fixture: ComponentFixture<DbNoResultsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DbNoResultsComponent ]
-    })
-    .compileComponents();
+      declarations: [DbNoResultsComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('DbNoResultsComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { SourceTreeComponent } from './source-tree.component';
+import { SourceTreeComponent } from "./source-tree.component";
 
-describe('SourceTreeComponent', () => {
+describe("SourceTreeComponent", () => {
   let component: SourceTreeComponent;
   let fixture: ComponentFixture<SourceTreeComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SourceTreeComponent ]
-    })
-    .compileComponents();
+      declarations: [SourceTreeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('SourceTreeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

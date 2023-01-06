@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { RecursiveTreeComponent } from './recursive-tree.component';
+import { RecursiveTreeComponent } from "./recursive-tree.component";
 
-describe('RecursiveTreeComponent', () => {
+describe("RecursiveTreeComponent", () => {
   let component: RecursiveTreeComponent;
   let fixture: ComponentFixture<RecursiveTreeComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RecursiveTreeComponent ]
-    })
-    .compileComponents();
+      declarations: [RecursiveTreeComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('RecursiveTreeComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

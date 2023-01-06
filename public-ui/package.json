@@ -103,7 +103,7 @@
     "karma-jasmine-html-reporter": "^1.5.0",
     "karma-webdriver-launcher": "^1.0.8",
     "lint": "^0.8.19",
-    "prettier": "2.7.1",
+    "prettier": "^2.7.1",
     "protractor": "~7.0.0",
     "ts-node": "~3.0.4",
     "typescript": "4.5.5"

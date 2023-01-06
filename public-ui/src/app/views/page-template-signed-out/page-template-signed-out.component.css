@@ -9,14 +9,14 @@
 }
 
 .headerImage {
-  height:1.75rem;
+  height: 1.75rem;
   margin-left: 1rem;
   margin-top: 1rem;
 }
 
 .logoImage {
-  width:33rem;
-  height:auto;
+  width: 33rem;
+  height: auto;
 }
 
 @media all and (max-width: 900px) {
@@ -29,10 +29,8 @@
   .template {
     background-image: var(--smaller-image);
     background-position: bottom right;
-
   }
 }
-
 
 .signed-out-content {
   flex: 0 0 41.66667%;

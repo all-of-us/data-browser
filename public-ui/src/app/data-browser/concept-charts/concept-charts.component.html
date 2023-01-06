@@ -1,75 +1,134 @@
 <div class="db-page-spinner" *ngIf="loading() && !displayGraphErrorMessage">
-  <span class="spinner">
-    Loading...
-  </span>
+  <span class="spinner"> Loading... </span>
 </div>
 <div class="graph-error-message" *ngIf="displayGraphErrorMessage">
   <app-error-message-react [dataType]="'chart'"></app-error-message-react>
 </div>
 <ng-container *ngIf="!displayGraphErrorMessage">
-<div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
-  <div *ngFor="let u of unitNames.slice(0,10)" [ngClass]="{'active':selectedUnit === u}"
-    (click)="showMeasurementGenderHistogram(u)" class="btn btn-link unit-choice">{{u}} </div>
-  <app-tooltip-react [tooltipKey]="'histogramUnitChartText'"></app-tooltip-react>
-  <div *ngIf="mixtureOfValues">
-    <div *ngFor="let su of subUnitValuesFilter" [ngClass]="{'active':selectedMeasurementType === su}"
-         (click)="showSpecificMeasurementTypeValues(su)" class="btn btn-link measurement-filter-choice">{{su}}</div>
+  <div *ngIf="unitNames.length > 1 && displayMeasurementGraphs" class="col-md">
+    <div
+      *ngFor="let u of unitNames.slice(0, 10)"
+      [ngClass]="{ active: selectedUnit === u }"
+      (click)="showMeasurementGenderHistogram(u)"
+      class="btn btn-link unit-choice"
+    >
+      {{ u }}
+    </div>
+    <app-tooltip-react
+      [tooltipKey]="'histogramUnitChartText'"
+    ></app-tooltip-react>
+    <div *ngIf="mixtureOfValues">
+      <div
+        *ngFor="let su of subUnitValuesFilter"
+        [ngClass]="{ active: selectedMeasurementType === su }"
+        (click)="showSpecificMeasurementTypeValues(su)"
+        class="btn btn-link measurement-filter-choice"
+      >
+        {{ su }}
+      </div>
+    </div>
   </div>
-</div>
 
-<div *ngIf="!loading()" class="concept-charts">
-  <!-- show measurements binned by gender if we want -->
-  <!-- Loop through the genders we have measurement results for  for showing the graph
+  <div *ngIf="!loading()" class="concept-charts">
+    <!-- show measurements binned by gender if we want -->
+    <!-- Loop through the genders we have measurement results for  for showing the graph
   <!-- Loop through the genders we have measurement results for  for showing the graph
    This looping variable is set if showMeasurements is passed in to the component-->
 
-  <ng-container class="chart-container" *ngIf="displayMeasurementGraphs">
+    <ng-container class="chart-container" *ngIf="displayMeasurementGraphs">
       <div class="ehr-m-chart-layout">
         <div class="ehr-m-chart-item" *ngFor="let gender of genderResults">
           <app-value-chart-react
-                  *ngIf="[dbc.FEMALE_GENDER_ID, dbc.MALE_GENDER_ID, dbc.INTERSEX_GENDER_ID, dbc.NONE_GENDER_ID, dbc.OTHER_GENDER_ID].includes(gender.stratum2) &&
-toDisplayMeasurementGenderAnalysis && toDisplayMeasurementGenderAnalysis.results && toDisplayMeasurementGenderAnalysis.results.length > 0"
-                  [genderId]="gender.stratum2" [chartTitle]="gender.analysisStratumName + ' - ' + fetchChartTitle(gender)"
-                  [valueAnalysis]="toDisplayMeasurementGenderAnalysis" [backgroundColor]="'#f6f6f8'"
-                  [chartTitle]="gender.analysisStratumName + ' - ' + (gender.countValue <= 20 ? '&le; ' : '') + gender.countValue.toLocaleString()"
-                  [conceptId]="conceptId"></app-value-chart-react>
+            *ngIf="
+              [
+                dbc.FEMALE_GENDER_ID,
+                dbc.MALE_GENDER_ID,
+                dbc.INTERSEX_GENDER_ID,
+                dbc.NONE_GENDER_ID,
+                dbc.OTHER_GENDER_ID
+              ].includes(gender.stratum2) &&
+              toDisplayMeasurementGenderAnalysis &&
+              toDisplayMeasurementGenderAnalysis.results &&
+              toDisplayMeasurementGenderAnalysis.results.length > 0
+            "
+            [genderId]="gender.stratum2"
+            [chartTitle]="
+              gender.analysisStratumName + ' - ' + fetchChartTitle(gender)
+            "
+            [valueAnalysis]="toDisplayMeasurementGenderAnalysis"
+            [backgroundColor]="'#f6f6f8'"
+            [chartTitle]="
+              gender.analysisStratumName +
+              ' - ' +
+              (gender.countValue <= 20 ? '&le; ' : '') +
+              gender.countValue.toLocaleString()
+            "
+            [conceptId]="conceptId"
+          ></app-value-chart-react>
         </div>
-        <div class="no-values" *ngIf="toDisplayMeasurementGenderAnalysis === undefined">
+        <div
+          class="no-values"
+          *ngIf="toDisplayMeasurementGenderAnalysis === undefined"
+        >
           No Values Available
         </div>
       </div>
-  </ng-container>
-  <!-- show gender totals  if we want -->
-  <!-- BIOLOGICAL P CHART -->
-  <ng-container *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis">
-    <div class="chart">
-      <app-biosex-chart-react [domain]="'ehr'" [genderAnalysis]="toDisplayGenderAnalysis"
-                              [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"></app-biosex-chart-react>
-    </div>
-  </ng-container>
-  <!-- IDENTITY COLUMN CHART -->
-  <!-- show age totals  if we want -->
-  <!-- AGE COLUMN CHART -->
-  <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
-    <div class="chart">
-      <app-age-chart-react [domain]="'ehr'" [ageAnalysis]="toDisplayAgeAnalysis"
-                           [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"></app-age-chart-react>
-    </div>
-  </ng-container>
-
-  <!-- show sources totals  if we want -->
-  <!-- SOURCE COLUMN CHART -->
-  <ng-container class="chart-container" *ngIf="showGraph === graphType.Sources">
-    <div class="source-chart" *ngIf="sourceConcepts && sourceConcepts.length > 0; else NoSourceConcepts;">
-      <app-chart [concepts]="sourceConcepts" [sources]="true" [pointWidth]="20" [chartTitle]="'Sources'" *ngIf="!reactChart">
-      </app-chart>
-      <app-sources-chart-react [concepts]="sourceConcepts" *ngIf="reactChart"></app-sources-chart-react>
-    </div>
-    <ng-template #NoSourceConcepts>
-      <div class="no-source-concepts">
-        No Source Concepts
+    </ng-container>
+    <!-- show gender totals  if we want -->
+    <!-- BIOLOGICAL P CHART -->
+    <ng-container
+      *ngIf="showGraph === graphType.BiologicalSex && analyses.genderAnalysis"
+    >
+      <div class="chart">
+        <app-biosex-chart-react
+          [domain]="'ehr'"
+          [genderAnalysis]="toDisplayGenderAnalysis"
+          [genderCountAnalysis]="domainCountAnalysis.genderCountAnalysis"
+        ></app-biosex-chart-react>
       </div>
-    </ng-template>
-  </ng-container>
-</div>
+    </ng-container>
+    <!-- IDENTITY COLUMN CHART -->
+    <!-- show age totals  if we want -->
+    <!-- AGE COLUMN CHART -->
+    <ng-container *ngIf="showGraph === graphType.Age && analyses.ageAnalysis">
+      <div class="chart">
+        <app-age-chart-react
+          [domain]="'ehr'"
+          [ageAnalysis]="toDisplayAgeAnalysis"
+          [ageCountAnalysis]="domainCountAnalysis.ageCountAnalysis"
+        ></app-age-chart-react>
+      </div>
+    </ng-container>
+
+    <!-- show sources totals  if we want -->
+    <!-- SOURCE COLUMN CHART -->
+    <ng-container
+      class="chart-container"
+      *ngIf="showGraph === graphType.Sources"
+    >
+      <div
+        class="source-chart"
+        *ngIf="
+          sourceConcepts && sourceConcepts.length > 0;
+          else NoSourceConcepts
+        "
+      >
+        <app-chart
+          [concepts]="sourceConcepts"
+          [sources]="true"
+          [pointWidth]="20"
+          [chartTitle]="'Sources'"
+          *ngIf="!reactChart"
+        >
+        </app-chart>
+        <app-sources-chart-react
+          [concepts]="sourceConcepts"
+          *ngIf="reactChart"
+        ></app-sources-chart-react>
+      </div>
+      <ng-template #NoSourceConcepts>
+        <div class="no-source-concepts">No Source Concepts</div>
+      </ng-template>
+    </ng-container>
+  </div>
 </ng-container>

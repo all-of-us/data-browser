@@ -32,7 +32,7 @@
   font-weight: 400;
   color: #262262;
   content: "  > ";
-  padding-left: 0.15rem
+  padding-left: 0.15rem;
 }
 
 .breadcrumb-last a {

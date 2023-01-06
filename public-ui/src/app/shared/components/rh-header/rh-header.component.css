@@ -226,27 +226,47 @@ li.flip::before {
   list-style: none;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu.open {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu.open {
   display: flex;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li {
   /* padding-right: 1rem;
   margin-top: 1rem;
   margin-bottom: 0.5rem; */
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  > li {
   border-bottom: 1px solid #d7d7d7;
   padding-bottom: 0.5rem;
   /* margin-right: 2rem; */
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:last-child {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  > li:last-child {
   border: none;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li a {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li
+  a {
   text-decoration: none;
   text-transform: uppercase;
   color: #262262;
@@ -258,12 +278,22 @@ li.flip::before {
   text-transform: capitalize !important;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu,
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li
+  ul.sub-menu,
 .sub-menu li ul {
   list-style: none;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container > ul.main-menu > li > ul.sub-menu {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  > ul.main-menu
+  > li
+  > ul.sub-menu {
   list-style: none;
   padding-left: 1rem;
   padding-bottom: 0.5rem;
@@ -271,16 +301,29 @@ li.flip::before {
   position: absolute;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li
+  ul.sub-menu.open {
   display: block;
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.flip:before {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li.flip:before {
   transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
 }
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li.menu-item-has-children:before,
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  > li.menu-item-has-children:before,
 .site-nav-container
   nav.main-navigation
   .menu-primary-container
@@ -304,7 +347,13 @@ li.flip::before {
 
 /* search in nav */
 
-.site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg {
+.site-nav-container
+  nav.main-navigation
+  .menu-primary-container
+  ul.main-menu
+  li.icon_search
+  a
+  svg {
   stroke: #262262;
 }
 
@@ -562,13 +611,24 @@ li.nav_apply {
     /* height: 3.05rem; */
   }
 
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a svg:first-child {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search
+    a
+    svg:first-child {
     width: 22px;
     vertical-align: text-bottom;
     cursor: pointer;
     display: inline-block;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search ul.sub-menu {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search
+    ul.sub-menu {
     display: none;
   }
   .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu {
@@ -578,8 +638,18 @@ li.nav_apply {
     margin-block-end: 0;
     width: 100%;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:hover
+    ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:focus
+    + ul.sub-menu {
     display: flex;
     position: absolute;
     right: 0;
@@ -614,23 +684,42 @@ li.nav_apply {
   .cta-bar aside p {
     white-space: nowrap;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li {
     border: none;
     /* margin: 14px 0; */
     padding: 0;
     position: relative;
     /* top: 5px; */
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li > a {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li
+    > a {
     padding: 0.7rem 1.4rem 0.8rem;
     position: relative;
     white-space: nowrap;
     /* top: -2px; */
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search a:hover svg {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search
+    a:hover
+    svg {
     stroke: #ffffff !important;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li.menu-item-has-children:before {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li.menu-item-has-children:before {
     content: none;
   }
   .site-nav-container
@@ -642,23 +731,74 @@ li.nav_apply {
     > li.menu-item-has-children:before {
     color: #262262;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu.open {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li
+    ul.sub-menu.open {
     display: inherit;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus + ul.sub-menu {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:hover
+    ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:focus
+    + ul.sub-menu {
     display: flex;
     position: absolute;
     right: 0px;
     top: 38px;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li > a:focus + ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li > ul.sub-menu.open,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:hover > ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:focus > ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:hover > ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:focus + ul.sub-menu,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li > .sub-menu:focus-within {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li
+    > a:focus
+    + ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li
+    > ul.sub-menu.open,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:hover
+    > ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:focus
+    > ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:hover
+    > ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:focus
+    + ul.sub-menu,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li
+    > .sub-menu:focus-within {
     display: block;
     position: absolute;
     padding-left: 0;
@@ -667,40 +807,122 @@ li.nav_apply {
     top: 37px;
     width: 300px;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > .icon_search > .sub-menu {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > .icon_search
+    > .sub-menu {
     right: 0;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > .icon_search a {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > .icon_search
+    a {
     background: transparent;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > .icon_search a svg {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > .icon_search
+    a
+    svg {
     stroke: #262262 !important;
   }
 
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li
+    ul.sub-menu
+    li {
     padding-left: 1em;
-    padding-top:0.5rem;
+    padding-top: 0.5rem;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li ul.sub-menu li ul.sub-menu {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li
+    ul.sub-menu
+    li
+    ul.sub-menu {
     padding-left: 0;
     margin-bottom: 0;
   }
   /* hover first tier nav */
   /* .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:hover, */
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:hover > a,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li a:focus,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:focus > a {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:hover
+    > a,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li
+    a:focus,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:focus
+    > a {
     background-color: #262262;
     color: #fff;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover a svg,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:hover > a svg,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus a svg,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu li.icon_search:focus > a svg {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:hover
+    a
+    svg,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:hover
+    > a
+    svg,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:focus
+    a
+    svg,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    li.icon_search:focus
+    > a
+    svg {
     stroke: #ffffff;
   }
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:hover > ul.sub-menu li a:hover,
-  .site-nav-container nav.main-navigation .menu-primary-container ul.main-menu > li:focus > ul.sub-menu li a:focus {
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:hover
+    > ul.sub-menu
+    li
+    a:hover,
+  .site-nav-container
+    nav.main-navigation
+    .menu-primary-container
+    ul.main-menu
+    > li:focus
+    > ul.sub-menu
+    li
+    a:focus {
     background: transparent;
     color: #262262;
     padding-bottom: 5px;

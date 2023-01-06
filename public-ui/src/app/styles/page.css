@@ -1,6 +1,5 @@
 /* primary display */
 
-
 .alert,
 .alert-box,
 .error-message {
@@ -99,7 +98,6 @@ p {
   color: #262262;
 }
 
-
 #db-title {
   text-align: center;
   margin: 0;
@@ -190,7 +188,7 @@ p {
 }
 
 #db-search-bar input:focus {
-  outline:none;
+  outline: none;
 }
 
 .search-icon {
@@ -412,7 +410,6 @@ p {
   min-width: 666px;
 }
 
-
 .survey-tbl-exp-r:last-of-type {
   border-bottom: 1px solid #cccccc;
 }
@@ -437,5 +434,3 @@ p {
   background: #262262;
   color: #fff;
 }
-
-

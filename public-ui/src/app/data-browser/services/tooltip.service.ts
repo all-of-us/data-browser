@@ -22,7 +22,7 @@ export const tooltips = {
     ],
   },
   conceptCopyHelpText: {
-    texts: [`Click to copy`]
+    texts: [`Click to copy`],
   },
   conceptCodeHelpText: {
     texts: [
@@ -271,7 +271,7 @@ export class TooltipService {
       ],
     },
     conceptCopyHelpText: {
-        texts: [`Click to copy`]
+      texts: [`Click to copy`],
     },
     conceptCodeHelpText: {
       texts: [

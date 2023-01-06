@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { ErrorMessageComponent } from './error-message.component';
+import { ErrorMessageComponent } from "./error-message.component";
 
-describe('ErrorMessageComponent', () => {
+describe("ErrorMessageComponent", () => {
   let component: ErrorMessageComponent;
   let fixture: ComponentFixture<ErrorMessageComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ErrorMessageComponent ]
-    })
-    .compileComponents();
+      declarations: [ErrorMessageComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('ErrorMessageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,16 +1,15 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
-import { QuickSearchComponent } from './quick-search.component';
+import { QuickSearchComponent } from "./quick-search.component";
 
-describe('QuickSearchComponent', () => {
+describe("QuickSearchComponent", () => {
   let component: QuickSearchComponent;
   let fixture: ComponentFixture<QuickSearchComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuickSearchComponent ]
-    })
-    .compileComponents();
+      declarations: [QuickSearchComponent],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -19,7 +18,7 @@ describe('QuickSearchComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });
