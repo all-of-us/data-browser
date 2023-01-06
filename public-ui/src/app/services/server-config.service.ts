@@ -1,10 +1,10 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { HttpErrorResponse } from '@angular/common/http';
 import { ConfigResponse, ConfigService } from "publicGenerated";
+import { throwError } from "rxjs";
 import { Observable } from "rxjs/Observable";
+import { catchError } from "rxjs/operators";
 import { ReplaySubject } from "rxjs/ReplaySubject";
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 @Injectable()
 export class ServerConfigService {
@@ -26,7 +26,7 @@ export class ServerConfigService {
         },
       });
 
-      //this.configService.getConfig().subscribe(subject);
+      // this.configService.getConfig().subscribe(subject);
     }
     return this.configObs;
   }

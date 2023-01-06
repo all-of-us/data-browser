@@ -29,15 +29,15 @@ const styles = reactStyles({
   btnLink: {
     fontSize: "14px",
     color: "#0077b7",
-    textAlign: 'left',
-    textTransform:'uppercase',
-    fontFamily:'GothamBook, Arial, sans-serif',
-    padding: '0 0.5rem',
-    height: '1.5rem',
-    letterSpacing:'.12em'
+    textAlign: "left",
+    textTransform: "uppercase",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    padding: "0 0.5rem",
+    height: "1.5rem",
+    letterSpacing: ".12em",
   },
   btnList: {
-    width:'14rem',
+    width: "14rem",
   },
   bsTitle: {
     paddingTop: "1em",
@@ -306,23 +306,27 @@ export const PMReactComponent = withRouteData(
             }
           }
           if (search) {
-
             let filteredConcept;
 
             if (isNumeric(search)) {
-                const filteredGroup = pmGroups.filter(a => a.concepts.some(t => t.conceptId.includes(search)));
-                if (filteredGroup && filteredGroup.length > 0) {
-                    filteredConcept = filteredGroup[0];
-                }
+              const filteredGroup = pmGroups.filter((a) =>
+                a.concepts.some((t) => t.conceptId.includes(search))
+              );
+              if (filteredGroup && filteredGroup.length > 0) {
+                filteredConcept = filteredGroup[0];
+              }
             } else {
-                const filteredGroup = pmGroups.filter((conceptgroup) =>
-                    conceptgroup.groupName.toLowerCase().includes(search.toLowerCase()));
-                if (filteredGroup && filteredGroup.length > 0) {
-                    filteredConcept = filteredGroup[0];
-                }
+              const filteredGroup = pmGroups.filter((conceptgroup) =>
+                conceptgroup.groupName
+                  .toLowerCase()
+                  .includes(search.toLowerCase())
+              );
+              if (filteredGroup && filteredGroup.length > 0) {
+                filteredConcept = filteredGroup[0];
+              }
             }
 
-            this.setState({selectedGroup: filteredConcept});
+            this.setState({ selectedGroup: filteredConcept });
           } else {
             this.setState({ selectedGroup: pmGroups[0] });
           }
@@ -494,201 +498,221 @@ export const PMReactComponent = withRouteData(
           <style>{styleCss}</style>
           <div style={styles.pmContainer}>
             <h1>Browse Program Physical Measurements</h1>
-            {loading ? (<Spinner /> ) :
-            <React.Fragment>
-              {selectedGroup ?
-                <div className="pm-layout" style={styles.pmLayout}>
-                               <aside style={styles.aside}>
-                                 {pmGroups.map((pmConceptGroup, index) => {
-                                   const buttonClass =
-                                     selectedGroup === pmConceptGroup
-                                       ? "btn btn-link group-button active"
-                                       : "btn btn-link group-button";
-                                   return (
-                                     <div className="button-item" key={index}>
-                                       <button
-                                         className={buttonClass}
-                                         style={{...styles.btnLink, ...styles.btnList}}
-                                         onClick={() =>
-                                           this.showMeasurement(
-                                             pmConceptGroup,
-                                             pmConceptGroup.concepts[0]
-                                           )
-                                         }
-                                       >
-                                         {" "}
-                                         {pmConceptGroup.groupName}
-                                       </button>
-                                     </div>
-                                   );
-                                 })}
-                               </aside>
-                               <div className="db-card" style={styles.dbCard}>
-                                 <div className="db-card-inner">
-                                   <div className="db-card-header">
-                                     <div className="group-name">
-                                       {selectedGroup.groupName}
-                                     </div>
-                                     {selectedConcept &&
-                                     selectedConcept.analyses &&
-                                     selectedConcept.analyses
-                                       .measurementValueGenderAnalysis ? (
-                                       <div className="bs-title" style={styles.bsTitle}>
-                                         Sex Assigned At Birth
-                                         <TooltipReactComponent
-                                           tooltipKey="pmValueChartHelpText"
-                                           label="Physical Measurements tooltip hover"
-                                           searchTerm="TODO replace search text in here"
-                                           action={
-                                             "Hover on pm biological sex chart of concept" +
-                                             selectedConcept.conceptName
-                                           }
-                                         />
-                                       </div>
-                                     ) : null}
-                                     {selectedGroup &&
-                                     selectedGroup.concepts &&
-                                     selectedGroup.concepts.length > 1 ? (
-                                       <div className="group-option">
-                                         {selectedGroup.concepts.map((concept, index) => {
-                                           const btnClass =
-                                             selectedConcept === concept
-                                               ? "btn btn-link concept-button active"
-                                               : "btn-link btn concept-button";
-                                           return (
-                                             <button
-                                               className={btnClass}
-                                               key={index}
-                                               onClick={() =>
-                                                 this.showMeasurement(selectedGroup, concept)
-                                               }
-                                               style={styles.btnLink}
-                                             >
-                                               {concept.conceptName}
-                                             </button>
-                                           );
-                                         })}
-                                       </div>
-                                     ) : null}
-                                   </div>
-                                   {unitNames && unitNames.length > 1 ? (
-                                     <div className="group-unit">
-                                       {unitNames.map((unit, index) => {
-                                         const btnClass =
-                                           selectedConceptUnit === unit
-                                             ? "btn btn-link unit-button active"
-                                             : "btn btn-link unit-button";
-                                         return (
-                                           <button
-                                             className={btnClass}
-                                             key={index}
-                                             onClick={() => this.setConceptUnit(unit)}
-                                             style={styles.btnLink}
-                                           >
-                                             {unit}
-                                           </button>
-                                         );
-                                       })}
-                                     </div>
-                                   ) : null}
-                                   {selectedConcept &&
-                                   (selectedConcept.conceptId === "903111" ||
-                                     selectedConcept.conceptId === "903120") ? (
-                                     selectedConcept.analyses.countAnalysis.results[0]
-                                       .countValue > 20 ? (
-                                       <div className="participant-count">
-                                         Total Participant count:{" "}
-                                         {
-                                           selectedConcept.analyses.countAnalysis.results[0]
-                                             .countValue
-                                         }
-                                       </div>
-                                     ) : (
-                                       <div className="participant-count">
-                                         Total Participant count: &le;{" "}
-                                         {
-                                           selectedConcept.analyses.countAnalysis.results[0]
-                                             .countValue
-                                         }
-                                       </div>
-                                     )
-                                   ) : null}
-                                   <div className="chart-layout" style={styles.chartLayout}>
-                                     {selectedConcept &&
-                                     selectedConcept.analyses &&
-                                     selectedConcept.analyses
-                                       .measurementGenderCountAnalysis ? (
-                                       selectedConcept.conceptId !== "903111" &&
-                                       selectedConcept.conceptId !== "903120" &&
-                                       selectedConceptUnit ? (
-                                         <React.Fragment>
-                                           {this.getCountAnalysis().map((gender, index) => {
-                                             const chartKey = gender.stratum3 + "-" + index;
-                                             return (
-                                               <div className="bs-chart-item" key={chartKey}>
-                                                 <ValueReactChartComponent
-                                                   conceptId={selectedConcept.conceptId}
-                                                   valueAnalysis={this.getValueAnalysis()}
-                                                   genderId={gender.stratum3}
-                                                   chartTitle={
-                                                     gender.analysisStratumName +
-                                                     " - " +
-                                                     (gender.countValue <= 20 ? "&le; " : "") +
-                                                     gender.countValue.toLocaleString()
-                                                   }
-                                                   key={chartKey}
-                                                 />
-                                               </div>
-                                             );
-                                           })}
-                                         </React.Fragment>
-                                       ) : selectedConcept.analyses
-                                           .measurementValueGenderAnalysis ? (
-                                         <div className="chart-item stacked-chart-item">
-                                           <ValueReactChartComponent
-                                             conceptId={selectedConcept.conceptId}
-                                             valueAnalysis={
-                                               selectedConcept.analyses
-                                                 .measurementValueGenderAnalysis[0]
-                                             }
-                                             genderId="stacked gender"
-                                             chartTitle="stacked chart"
-                                           />
-                                         </div>
-                                       ) : null
-                                     ) : null}
-                                     {selectedConcept.analyses &&
-                                     selectedConcept.analyses.ageAnalysis ? (
-                                       <div className="chart-item age-chart">
-                                         <div className="bs-title" style={styles.bsTitle}>
-                                           Age When Physical Measurement Was Taken
-                                           <TooltipReactComponent
-                                             tooltipKey="pmAgeChartHelpText"
-                                             label="Physical Measurements tooltip hover"
-                                             searchTerm="TODO replace search text in here"
-                                             action={
-                                               "Hover on pm age chart of concept " +
-                                               selectedConcept.conceptName
-                                             }
-                                           />
-                                         </div>
-                                         <AgeChartReactComponent
-                                           ageAnalysis={selectedConcept.analyses.ageAnalysis}
-                                           ageCountAnalysis={
-                                             domainCountAnalysis.ageCountAnalysis
-                                           }
-                                           domain="pm"
-                                           selectedResult=""
-                                         />
-                                       </div>
-                                     ) : null}
-                                   </div>
-                                 </div>
-                               </div>
-                             </div>
-                             : <div>0 Results</div>}
-
-            </React.Fragment>}
+            {loading ? (
+              <Spinner />
+            ) : (
+              <React.Fragment>
+                {selectedGroup ? (
+                  <div className="pm-layout" style={styles.pmLayout}>
+                    <aside style={styles.aside}>
+                      {pmGroups.map((pmConceptGroup, index) => {
+                        const buttonClass =
+                          selectedGroup === pmConceptGroup
+                            ? "btn btn-link group-button active"
+                            : "btn btn-link group-button";
+                        return (
+                          <div className="button-item" key={index}>
+                            <button
+                              className={buttonClass}
+                              style={{ ...styles.btnLink, ...styles.btnList }}
+                              onClick={() =>
+                                this.showMeasurement(
+                                  pmConceptGroup,
+                                  pmConceptGroup.concepts[0]
+                                )
+                              }
+                            >
+                              {" "}
+                              {pmConceptGroup.groupName}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </aside>
+                    <div className="db-card" style={styles.dbCard}>
+                      <div className="db-card-inner">
+                        <div className="db-card-header">
+                          <div className="group-name">
+                            {selectedGroup.groupName}
+                          </div>
+                          {selectedConcept &&
+                          selectedConcept.analyses &&
+                          selectedConcept.analyses
+                            .measurementValueGenderAnalysis ? (
+                            <div className="bs-title" style={styles.bsTitle}>
+                              Sex Assigned At Birth
+                              <TooltipReactComponent
+                                tooltipKey="pmValueChartHelpText"
+                                label="Physical Measurements tooltip hover"
+                                searchTerm="TODO replace search text in here"
+                                action={
+                                  "Hover on pm biological sex chart of concept" +
+                                  selectedConcept.conceptName
+                                }
+                              />
+                            </div>
+                          ) : null}
+                          {selectedGroup &&
+                          selectedGroup.concepts &&
+                          selectedGroup.concepts.length > 1 ? (
+                            <div className="group-option">
+                              {selectedGroup.concepts.map((concept, index) => {
+                                const btnClass =
+                                  selectedConcept === concept
+                                    ? "btn btn-link concept-button active"
+                                    : "btn-link btn concept-button";
+                                return (
+                                  <button
+                                    className={btnClass}
+                                    key={index}
+                                    onClick={() =>
+                                      this.showMeasurement(
+                                        selectedGroup,
+                                        concept
+                                      )
+                                    }
+                                    style={styles.btnLink}
+                                  >
+                                    {concept.conceptName}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          ) : null}
+                        </div>
+                        {unitNames && unitNames.length > 1 ? (
+                          <div className="group-unit">
+                            {unitNames.map((unit, index) => {
+                              const btnClass =
+                                selectedConceptUnit === unit
+                                  ? "btn btn-link unit-button active"
+                                  : "btn btn-link unit-button";
+                              return (
+                                <button
+                                  className={btnClass}
+                                  key={index}
+                                  onClick={() => this.setConceptUnit(unit)}
+                                  style={styles.btnLink}
+                                >
+                                  {unit}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        ) : null}
+                        {selectedConcept &&
+                        (selectedConcept.conceptId === "903111" ||
+                          selectedConcept.conceptId === "903120") ? (
+                          selectedConcept.analyses.countAnalysis.results[0]
+                            .countValue > 20 ? (
+                            <div className="participant-count">
+                              Total Participant count:{" "}
+                              {
+                                selectedConcept.analyses.countAnalysis
+                                  .results[0].countValue
+                              }
+                            </div>
+                          ) : (
+                            <div className="participant-count">
+                              Total Participant count: &le;{" "}
+                              {
+                                selectedConcept.analyses.countAnalysis
+                                  .results[0].countValue
+                              }
+                            </div>
+                          )
+                        ) : null}
+                        <div
+                          className="chart-layout"
+                          style={styles.chartLayout}
+                        >
+                          {selectedConcept &&
+                          selectedConcept.analyses &&
+                          selectedConcept.analyses
+                            .measurementGenderCountAnalysis ? (
+                            selectedConcept.conceptId !== "903111" &&
+                            selectedConcept.conceptId !== "903120" &&
+                            selectedConceptUnit ? (
+                              <React.Fragment>
+                                {this.getCountAnalysis().map(
+                                  (gender, index) => {
+                                    const chartKey =
+                                      gender.stratum3 + "-" + index;
+                                    return (
+                                      <div
+                                        className="bs-chart-item"
+                                        key={chartKey}
+                                      >
+                                        <ValueReactChartComponent
+                                          conceptId={selectedConcept.conceptId}
+                                          valueAnalysis={this.getValueAnalysis()}
+                                          genderId={gender.stratum3}
+                                          chartTitle={
+                                            gender.analysisStratumName +
+                                            " - " +
+                                            (gender.countValue <= 20
+                                              ? "&le; "
+                                              : "") +
+                                            gender.countValue.toLocaleString()
+                                          }
+                                          key={chartKey}
+                                        />
+                                      </div>
+                                    );
+                                  }
+                                )}
+                              </React.Fragment>
+                            ) : selectedConcept.analyses
+                                .measurementValueGenderAnalysis ? (
+                              <div className="chart-item stacked-chart-item">
+                                <ValueReactChartComponent
+                                  conceptId={selectedConcept.conceptId}
+                                  valueAnalysis={
+                                    selectedConcept.analyses
+                                      .measurementValueGenderAnalysis[0]
+                                  }
+                                  genderId="stacked gender"
+                                  chartTitle="stacked chart"
+                                />
+                              </div>
+                            ) : null
+                          ) : null}
+                          {selectedConcept.analyses &&
+                          selectedConcept.analyses.ageAnalysis ? (
+                            <div className="chart-item age-chart">
+                              <div className="bs-title" style={styles.bsTitle}>
+                                Age When Physical Measurement Was Taken
+                                <TooltipReactComponent
+                                  tooltipKey="pmAgeChartHelpText"
+                                  label="Physical Measurements tooltip hover"
+                                  searchTerm="TODO replace search text in here"
+                                  action={
+                                    "Hover on pm age chart of concept " +
+                                    selectedConcept.conceptName
+                                  }
+                                />
+                              </div>
+                              <AgeChartReactComponent
+                                ageAnalysis={
+                                  selectedConcept.analyses.ageAnalysis
+                                }
+                                ageCountAnalysis={
+                                  domainCountAnalysis.ageCountAnalysis
+                                }
+                                domain="pm"
+                                selectedResult=""
+                              />
+                            </div>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div>0 Results</div>
+                )}
+              </React.Fragment>
+            )}
           </div>
         </React.Fragment>
       );

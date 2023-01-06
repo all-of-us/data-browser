@@ -146,7 +146,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.state = {
       loading: props.loadingResults,
       searchResults: props.searchResults,
-      sortMetadata: props.sortMetadata
+      sortMetadata: props.sortMetadata,
     };
   }
 
@@ -560,7 +560,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
               (searchResults && searchResults.length === 0)) && (
               <div style={styles.helpTextContainer}>
                 <div style={styles.helpText}>
-                  Enter a query in the search bar or get started with an example query:
+                  Enter a query in the search bar or get started with an example
+                  query:
                 </div>
                 <div style={styles.helpText}>
                   <strong>Gene:</strong>{" "}

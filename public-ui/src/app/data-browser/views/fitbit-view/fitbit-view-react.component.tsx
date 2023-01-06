@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-age-react.component";
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
@@ -10,7 +11,6 @@ import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
 import { urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
-import { environment } from "environments/environment";
 
 const styles = reactStyles({
   fmLayout: {
@@ -147,11 +147,11 @@ export const FitbitReactComponent = withRouteData(
         "Heart Rate (Summary)",
         "Heart rate (minute-level)",
         "Activity (daily summary)",
-        "Activity intraday steps (minute-level)"
+        "Activity intraday steps (minute-level)",
       ];
       if (fitbitUpdateFlag) {
-        FITBIT_MEASUREMENTS.push('Sleep Daily Summary');
-        FITBIT_MEASUREMENTS.push('Sleep Level (Sequence by level)');
+        FITBIT_MEASUREMENTS.push("Sleep Daily Summary");
+        FITBIT_MEASUREMENTS.push("Sleep Level (Sequence by level)");
       }
       dataBrowserApi()
         .getFitbitAnalysisResults(FITBIT_MEASUREMENTS)

@@ -12,7 +12,6 @@ import {
   SearchVariantsRequest,
   Variant,
 } from "publicGenerated";
-
 import { SortColumnDetails, SortMetadata } from "publicGenerated/fetch";
 
 import { GenomicFaqComponent } from "./components/genomic-faq.component";
@@ -169,14 +168,14 @@ export const GenomicViewComponent = withRouteData(
         filterMetadata: null,
         filteredMetadata: undefined,
         sortMetadata: new SortMetadataClass(
-                    new SortColumnDetailsClass(false, "desc", 1),
-                    new SortColumnDetailsClass(false, "desc", 2),
-                    new SortColumnDetailsClass(false, "desc", 3),
-                    new SortColumnDetailsClass(false, "desc", 4),
-                    new SortColumnDetailsClass(false, "desc", 5),
-                    new SortColumnDetailsClass(false, "desc", 6),
-                    new SortColumnDetailsClass(false, "desc", 7),
-                    new SortColumnDetailsClass(false, "desc", 8),
+          new SortColumnDetailsClass(false, "desc", 1),
+          new SortColumnDetailsClass(false, "desc", 2),
+          new SortColumnDetailsClass(false, "desc", 3),
+          new SortColumnDetailsClass(false, "desc", 4),
+          new SortColumnDetailsClass(false, "desc", 5),
+          new SortColumnDetailsClass(false, "desc", 6),
+          new SortColumnDetailsClass(false, "desc", 7),
+          new SortColumnDetailsClass(false, "desc", 8)
         ),
       };
     }
@@ -200,12 +199,12 @@ export const GenomicViewComponent = withRouteData(
     }, 1000);
 
     clearSortMetadata() {
-        const { sortMetadata } = this.state;
-        for (const smKey in sortMetadata) {
-            sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "desc";
-        }
-        this.setState({sortMetadata: sortMetadata});
+      const { sortMetadata } = this.state;
+      for (const smKey in sortMetadata) {
+        sortMetadata[smKey].sortActive = false;
+        sortMetadata[smKey].sortDirection = "desc";
+      }
+      this.setState({ sortMetadata: sortMetadata });
     }
 
     changeUrl() {
@@ -224,32 +223,43 @@ export const GenomicViewComponent = withRouteData(
       }
       const variantSizeRequest = {
         query: searchTerm,
-        filterMetadata: this.state.filterMetadata
+        filterMetadata: this.state.filterMetadata,
       };
-      genomicsApi().getVariantSearchResultSize(variantSizeRequest).then(
-        result => {
+      genomicsApi()
+        .getVariantSearchResultSize(variantSizeRequest)
+        .then((result) => {
           this.setState({
-            variantListSize: searchTerm !== '' ? result : 0,
-            loadingVariantListSize: false
+            variantListSize: searchTerm !== "" ? result : 0,
+            loadingVariantListSize: false,
           });
-        }
-      ).catch(e => {
-        console.log(e, 'error');
-      });
+        })
+        .catch((e) => {
+          console.log(e, "error");
+        });
     }
 
     getFilterMetadata(searchTerm: string) {
-      genomicsApi().getGenomicFilterOptions(searchTerm).then(
-        result => {
-          result.gene.forEach(el => { el.checked = false; });
-          result.consequence.forEach(el => { el.checked = false; });
-          result.clinicalSignificance.forEach(el => { el.checked = false; });
+      genomicsApi()
+        .getGenomicFilterOptions(searchTerm)
+        .then((result) => {
+          result.gene.forEach((el) => {
+            el.checked = false;
+          });
+          result.consequence.forEach((el) => {
+            el.checked = false;
+          });
+          result.clinicalSignificance.forEach((el) => {
+            el.checked = false;
+          });
           this.setState({ filterMetadata: result });
-          localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
-        }
-      ).catch(e => {
-        console.log(e, 'error');
-      });
+          localStorage.setItem(
+            "originalFilterMetadata",
+            JSON.stringify(result)
+          );
+        })
+        .catch((e) => {
+          console.log(e, "error");
+        });
     }
 
     getVariantSearch(searchTerm: string) {
@@ -333,7 +343,13 @@ export const GenomicViewComponent = withRouteData(
     }
 
     fetchVariantData() {
-      const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
+      const {
+        searchTerm,
+        currentPage,
+        sortMetadata,
+        rowCount,
+        filterMetadata,
+      } = this.state;
 
       const searchRequest: SearchVariantsRequest = {
         query: searchTerm,
@@ -342,7 +358,7 @@ export const GenomicViewComponent = withRouteData(
         sortMetadata: sortMetadata,
         filterMetadata: filterMetadata,
       };
-      
+
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
@@ -353,7 +369,10 @@ export const GenomicViewComponent = withRouteData(
         });
     }
 
-    filterGenomics(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+    filterGenomics(
+      filteredMetadata: GenomicFilters,
+      sortMetadata: SortMetadata
+    ) {
       const { searchTerm, currentPage, rowCount } = this.state;
       const searchRequest = {
         query: searchTerm,
@@ -398,11 +417,15 @@ export const GenomicViewComponent = withRouteData(
       this.getGenomicChartData();
     }
 
-    handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
-
-      if (filteredMetadata['alleleFrequency']['checked']) {
-              filteredMetadata['alleleFrequency']['maxFreq'] = filteredMetadata['alleleFrequency']['max'];
-              filteredMetadata['alleleFrequency']['minFreq'] = filteredMetadata['alleleFrequency']['min'];
+    handleFilterSubmit(
+      filteredMetadata: GenomicFilters,
+      sortMetadata: SortMetadata
+    ) {
+      if (filteredMetadata.alleleFrequency.checked) {
+        filteredMetadata.alleleFrequency.maxFreq =
+          filteredMetadata.alleleFrequency.max;
+        filteredMetadata.alleleFrequency.minFreq =
+          filteredMetadata.alleleFrequency.min;
       }
 
       this.filterGenomics(filteredMetadata, sortMetadata);
@@ -410,85 +433,108 @@ export const GenomicViewComponent = withRouteData(
     }
 
     render() {
-      const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata } = this.state;
+      const {
+        currentPage,
+        selectionId,
+        loadingVariantListSize,
+        variantListSize,
+        loadingResults,
+        searchResults,
+        participantCount,
+        chartData,
+        rowCount,
+        searchTerm,
+        filterMetadata,
+        sortMetadata,
+      } = this.state;
 
-      return <React.Fragment>
-        <style>{css}</style>
-        <div style={styles.pageHeader}>
-          <div style={styles.titleContainer}>
-            <h1 style={styles.title}>{this.title}</h1>
-          </div>
-          <div style={styles.viewLayout}>
-            <div style={styles.topBarLayout} id='topBar'>
-              {this.topBarItems.map((item, index) => {
-                return <div key={index} style={styles.topBarItemContainer}>
-                  <div onClick={() => this.topBarClick(item.id)}
-                    style={{ ...selectionId === item.id && { ...styles.topBarItemSelected }, ...styles.topBarItem }}>
-                    <span style={styles.topBarItemText}>
-                      {item.label}
-                    </span>
-                  </div>
-                </div>;
-              })
-              }
+      return (
+        <React.Fragment>
+          <style>{css}</style>
+          <div style={styles.pageHeader}>
+            <div style={styles.titleContainer}>
+              <h1 style={styles.title}>{this.title}</h1>
             </div>
-          </div>
-          <div style={styles.innerContainer} id="childView">
-            {selectionId === 1 && (
-              <GenomicOverviewComponent
-                participantCount={participantCount}
-                chartData={chartData}
-              />
-            )}
-            {(selectionId === 2) && (
-              <GenomicSearchComponent
-                onSearchInput={(searchWord: string) => {
-                  this.handleSearchTerm(searchWord);
-                  this.setState({ searchTerm: searchWord });
-                }}
-                onPageChange={(info) => {
-                  this.handlePageChange(info);
-                }}
-                onRowCountChange={(info) => {
-                  this.handleRowCountChange(info);
-                }}
-                onSortClick={(sortMetadata) => {
-                  this.handleSortClick(sortMetadata);
-                }}
-                onFilterSubmit={(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) => {
-                  this.handleFilterSubmit(filteredMetadata, sortMetadata);
-                }}
-                currentPage={currentPage}
-                rowCount={rowCount}
-                variantListSize={variantListSize}
-                loadingVariantListSize={loadingVariantListSize}
-                loadingResults={loadingResults}
-                searchResults={searchResults}
-                participantCount={participantCount}
-                searchTerm={searchTerm}
-                filterMetadata={filterMetadata}
-                sortMetadata={sortMetadata}
-              />
-            )}
+            <div style={styles.viewLayout}>
+              <div style={styles.topBarLayout} id="topBar">
+                {this.topBarItems.map((item, index) => {
+                  return (
+                    <div key={index} style={styles.topBarItemContainer}>
+                      <div
+                        onClick={() => this.topBarClick(item.id)}
+                        style={{
+                          ...(selectionId === item.id && {
+                            ...styles.topBarItemSelected,
+                          }),
+                          ...styles.topBarItem,
+                        }}
+                      >
+                        <span style={styles.topBarItemText}>{item.label}</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={styles.innerContainer} id="childView">
+              {selectionId === 1 && (
+                <GenomicOverviewComponent
+                  participantCount={participantCount}
+                  chartData={chartData}
+                />
+              )}
+              {selectionId === 2 && (
+                <GenomicSearchComponent
+                  onSearchInput={(searchWord: string) => {
+                    this.handleSearchTerm(searchWord);
+                    this.setState({ searchTerm: searchWord });
+                  }}
+                  onPageChange={(info) => {
+                    this.handlePageChange(info);
+                  }}
+                  onRowCountChange={(info) => {
+                    this.handleRowCountChange(info);
+                  }}
+                  onSortClick={(sortMetadata) => {
+                    this.handleSortClick(sortMetadata);
+                  }}
+                  onFilterSubmit={(
+                    filteredMetadata: GenomicFilters,
+                    sortMetadata: SortMetadata
+                  ) => {
+                    this.handleFilterSubmit(filteredMetadata, sortMetadata);
+                  }}
+                  currentPage={currentPage}
+                  rowCount={rowCount}
+                  variantListSize={variantListSize}
+                  loadingVariantListSize={loadingVariantListSize}
+                  loadingResults={loadingResults}
+                  searchResults={searchResults}
+                  participantCount={participantCount}
+                  searchTerm={searchTerm}
+                  filterMetadata={filterMetadata}
+                  sortMetadata={sortMetadata}
+                />
+              )}
 
-            {selectionId === 3 && (
-              <GenomicFaqComponent closed={() => this.handleFaqClose()} />
-            )}
-            <div style={styles.faqHeading}>
-              <div className="faq-heading-text">
-                Questions about genomics?
-                <span
-                  style={styles.faqLink}
-                  onClick={() => this.topBarClick(3)}
-                >
-                  Learn More
-                </span>
+              {selectionId === 3 && (
+                <GenomicFaqComponent closed={() => this.handleFaqClose()} />
+              )}
+              <div style={styles.faqHeading}>
+                <div className="faq-heading-text">
+                  Questions about genomics?
+                  <span
+                    style={styles.faqLink}
+                    onClick={() => this.topBarClick(3)}
+                  >
+                    Learn More
+                  </span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </React.Fragment >
+        </React.Fragment>
+      );
     }
   }
 );

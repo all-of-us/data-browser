@@ -60,25 +60,18 @@ export class TooltipNoIconReactComponent extends React.Component<Props, {}> {
     super(props);
   }
 
-  tooltipHover() {
-  }
+  tooltipHover() {}
 
   render() {
     const tabIndex = 0;
     return (
       <React.Fragment>
         <style>{tooltipNoIconCss}</style>
-        <div
-          tabIndex={tabIndex}
-          className="tooltip-no-icon"
-        >
-         {this.props.text}
-          <span className="tooltiptext-no-icon">
-           Click to copy
-          </span>
+        <div tabIndex={tabIndex} className="tooltip-no-icon">
+          {this.props.text}
+          <span className="tooltiptext-no-icon">Click to copy</span>
         </div>
       </React.Fragment>
-      );
+    );
   }
 }
-

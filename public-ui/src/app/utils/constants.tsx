@@ -51,7 +51,7 @@ export const PM_CONCEPTS = [
   "903120",
 ];
 
-export let fitbitConcepts = [
+export const fitbitConcepts = [
   {
     id: 1,
     displayName: "any Fitbit data",
@@ -86,25 +86,25 @@ export let fitbitConcepts = [
     conceptName: "Activity intraday steps (minute-level)",
     icon: "fa fa-walking",
     tooltipKey: "fitbitActivityStepsHelpText",
-  }
+  },
 ];
 
 if (fitbitUpdateFlag) {
-fitbitConcepts.push({
-  id: 6,
-  displayName: "sleep daily summary",
-  conceptName: "sleep daily summary",
-  icon: "fa-solid fa-bed-pulse",
-  tooltipKey: "sleepDailySummaryHelpText"
-});
+  fitbitConcepts.push({
+    id: 6,
+    displayName: "sleep daily summary",
+    conceptName: "sleep daily summary",
+    icon: "fa-solid fa-bed-pulse",
+    tooltipKey: "sleepDailySummaryHelpText",
+  });
 
-fitbitConcepts.push({
-  id: 7,
-  displayName: "sleep level (sequence by level)",
-  conceptName: "Sleep Level (Sequence by level)",
-  icon: "fa-duotone fa-bed-pulse",
-  tooltipKey: "sleepLevelHelpText"
-});
+  fitbitConcepts.push({
+    id: 7,
+    displayName: "sleep level (sequence by level)",
+    conceptName: "Sleep Level (Sequence by level)",
+    icon: "fa-duotone fa-bed-pulse",
+    tooltipKey: "sleepLevelHelpText",
+  });
 }
 
 export const VARIANT_POPULATION_DETAILS = [
