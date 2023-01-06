@@ -6,6 +6,7 @@ import { withRouteData } from "app/components/app-router";
 import { CdrVersionReactComponent } from "app/data-browser/cdr-version/cdr-version-info";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
+import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import {
   dataBrowserApi,
   genomicsApi,
@@ -730,6 +731,9 @@ export const dBHomeComponent = withRouteData(
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0 &&
         variantListSize === 0;
+      const noConceptData = domainInfo.length === 0 &&
+                                    physicalMeasurementsInfo.length === 0 &&
+                                    surveyInfo.length === 0;
       return (
         <React.Fragment>
           <style>{css}</style>
@@ -816,17 +820,11 @@ export const dBHomeComponent = withRouteData(
           {(loading || loadingVariantListSize) && <Spinner />}
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
-              <h5
-                style={{
-                  ...globalStyles.secondaryDisplay,
-                  ...styles.resultHeading,
-                }}
-              >
-                EHR Domains
-              </h5>
+            {noConceptData && <ErrorMessageReactComponent dataType="data" />}
               <div className="result-boxes">
                 {domainInfo.length > 0 && (
                   <React.Fragment>
+                  <h5 style={{...globalStyles.secondaryDisplay, ...styles.resultHeading,}} > EHR Domains </h5>
                     {domainInfo.map((domain, index) => {
                       const key = "domain" + index;
                       return (

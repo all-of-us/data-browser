@@ -1,0 +1,17 @@
+.alert,
+.alert-box,
+.error-message {
+  background-color: #f7981d;
+  border-radius: 5px;
+  border-color: #f7981d;
+  color: white;
+  font-size: 14px;
+}
+
+.alert-icon {
+  color: white;
+}
+
+.alert-text {
+  margin: 1%;
+}

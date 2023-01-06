@@ -1,8 +1,25 @@
 import * as React from "react";
 
-import { Component, Input, ViewEncapsulation } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { ClrIcon } from "app/utils/clr-icon";
+
+const css = `
+.alert,
+.alert-box,
+.error-message {
+  background-color: #f7981d;
+  border-radius: 5px;
+  border-color: #f7981d;
+  color: white;
+  display: inline-block;
+  font-size: 1.25em;
+  padding: 1%;
+}
+
+.alert-icon {
+  color: white;
+}
+`;
 
 interface Props {
   dataType: string;
@@ -16,38 +33,22 @@ export class ErrorMessageReactComponent extends React.Component<Props, {}> {
   render() {
     const { dataType } = this.props;
     return (
+      <React.Fragment>
+      <style>{css}</style>
       <div className="alert alert-box">
-        <div className="alert-items">
-          <div className="alert-item static">
-            <div className="alert-icon-wrapper">
               <ClrIcon
                 shape="alert-icon"
                 className="exclamation-triangle"
                 style={{ width: 26, height: 26 }}
               />
-            </div>
             <span className="alert-text">
               {dataType === "data"
                 ? "Sorry, the data are currently unavailable. Please try refreshing the page or returning home."
                 : "Sorry, the chart cannot be displayed. Please try refreshing the page"}
             </span>
-          </div>
-        </div>
       </div>
+      </React.Fragment>
     );
   }
 }
 
-@Component({
-  selector: "app-error-message-react",
-  template: `<span #root></span>`,
-  styleUrls: ["./error-message.component.css"],
-  encapsulation: ViewEncapsulation.None,
-})
-export class ErrorMessageWrapperComponent extends BaseReactWrapper {
-  @Input() public dataType: string;
-
-  constructor() {
-    super(ErrorMessageReactComponent, ["dataType"]);
-  }
-}
