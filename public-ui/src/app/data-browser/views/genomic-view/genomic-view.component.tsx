@@ -132,7 +132,6 @@ class SortMetadataClass implements SortMetadata {
     this.alleleCount = alleleCount;
     this.alleleNumber = alleleNumber;
     this.alleleFrequency = alleleFrequency;
-    console.log('Test');
   }
 }
 
