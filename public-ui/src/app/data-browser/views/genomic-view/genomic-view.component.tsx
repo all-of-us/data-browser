@@ -413,6 +413,11 @@ export const GenomicViewComponent = withRouteData(
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
         participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata } = this.state;
 
+      var a = 10;
+      let b = 5;
+      const c = 15;
+      console.log('Test');
+
       return <React.Fragment>
         <style>{css}</style>
         <div style={styles.pageHeader}>
