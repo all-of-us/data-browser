@@ -56,6 +56,24 @@ const styles = reactStyles({
     },
 });
 
+const css = `
+::-webkit-scrollbar {
+    width: 8px;
+    background: #f9f9fa;
+  }
+
+  /* Style the thumb */
+  ::-webkit-scrollbar-thumb {
+    // background: #dae6ed;
+    background: #bcc6cc;
+    border-radius: 2px;
+  }
+
+  /* Style the thumb when hovered over */
+  ::-webkit-scrollbar-thumb:hover {
+      background: #216FB4;
+}`;
+
 export interface Cat {
     display: String;
     field: String;
@@ -142,29 +160,32 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     render() {
         const { filterMetadata } = this.props;
         const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
-        return <div style={styles.filterBox}>
-            <div style={styles.filterItems}>
-                {filterCats.map((cat, index) => {
-                    const key = 'cat' + index;
-                    {
-                        return cleared && filterMetadata && filteredMetadata &&
-                            <VariantFilterItemComponent
-                                onFilterChange={(e) => this.handleFilterChange(e, cat)}
-                                key={key}
-                                category={cat}
-                                cleared={cleared}
-                                filterItem={filteredMetadata[cat.field.toString()]} />;
+        return <React.Fragment>
+            <style>{css}</style>
+            <div style={styles.filterBox}>
+                <div style={styles.filterItems}>
+                    {filterCats.map((cat, index) => {
+                        const key = 'cat' + index;
+                        {
+                            return cleared && filterMetadata && filteredMetadata &&
+                                <VariantFilterItemComponent
+                                    onFilterChange={(e) => this.handleFilterChange(e, cat)}
+                                    key={key}
+                                    category={cat}
+                                    cleared={cleared}
+                                    filterItem={filteredMetadata[cat.field.toString()]} />;
+                        }
+                    })
                     }
-                })
-                }
-                <div style={styles.sortByContainer}>
-                    {<VariantSortItemComponent cleared={cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
+                    <div style={styles.sortByContainer}>
+                        {<VariantSortItemComponent cleared={cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
+                    </div>
                 </div>
-            </div>
                 <div style={styles.actionBtnContainer}>
                     <button onClick={() => this.handleClear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
                 </div>
-        </div>;
+            </div>
+        </React.Fragment>;
     }
 }
