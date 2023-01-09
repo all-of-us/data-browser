@@ -12,8 +12,7 @@ import {
 import { ServerConfigService } from "app/services/server-config.service";
 import { Observable } from "rxjs/Observable";
 import { from as observableFrom } from "rxjs/observable/from";
-
-declare const gapi: any;
+import { catchError } from "rxjs/operators";
 
 @Injectable()
 export class IsSafeGuard implements CanActivate, CanActivateChild {
@@ -29,15 +28,25 @@ export class IsSafeGuard implements CanActivate, CanActivateChild {
     if (state.url.indexOf("genomic-variants") > -1 && !environment.geno) {
       this.router.navigate(["/"]);
     }
-    return this.serverConfigService.getConfig().flatMap((config) => {
-      // if true function and normal else show emergency page
-      if (config.dataBrowserIsSafe) {
-        return observableFrom([true]);
-      }
-      this.router.navigate(["/error"]);
-      return observableFrom([false]);
-    });
+    return this.serverConfigService
+      .getConfig()
+      .flatMap((config) => {
+        // if true function and normal else show emergency page
+        if (config.dataBrowserIsSafe) {
+          return observableFrom([true]);
+        }
+        this.router.navigate(["/error"]);
+        return observableFrom([false]);
+      })
+      .pipe(
+        catchError((err) => {
+          console.log(err);
+          this.router.navigate(["/error"]);
+          return observableFrom([false]);
+        })
+      );
   }
+
   canActivateChild(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot

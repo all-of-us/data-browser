@@ -6,6 +6,7 @@ import { withRouteData } from "app/components/app-router";
 import { CdrVersionReactComponent } from "app/data-browser/cdr-version/cdr-version-info";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
+import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import {
   dataBrowserApi,
   genomicsApi,
@@ -57,7 +58,6 @@ const css = `
 .result-bottom-link:hover {
     color: #262262;
 }
-
 .survey-result-boxes {
   display: grid;
   grid-template-columns: repeat(4, minmax(239px, 1fr));
@@ -67,32 +67,28 @@ const css = `
 .result-boxes {
   display: grid;
   grid-template-columns: repeat(4, minmax(239px, 1fr));
-  grid-template-areas: 
+  grid-template-areas:
   '. . . .'
   'gHeading pmHeading pmHeading pmHeading'
   ' gBoxes pmBoxes pmBoxes pmBoxes';
-  
+
   grid-template-rows: 1fr;
   column-gap: 1rem;
   row-gap:1rem;
   margin-bottom: 2rem;
 }
-
 .genomic-boxes {
   display: grid;
   grid-template-columns: 1fr;
   grid-area: gBoxes;
   column-gap: 1rem;
 }
-
 .pm-boxes{
   grid-area: pmBoxes;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
   column-gap:1rem;
-
-
 }
 .pm-boxes .result-box{
     // margin-right:1rem;
@@ -132,9 +128,7 @@ const css = `
 .result-box:last-of-type {
   margin-right: 0;
 }
-
 @media (max-width: 1048px) {
-
   .result-boxes {
     grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
@@ -153,7 +147,6 @@ const css = `
     width: calc((100vw)/1.57);
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
-
   .cope-preview {
       justify-content: flex-start;
   }
@@ -170,7 +163,6 @@ const css = `
     ' gBoxes gBoxes'
     'pmHeading pmHeading'
     'pmBoxes pmBoxes ';
-
 }
   .result-boxes, .survey-result-boxes{
     grid-template-columns: repeat(2, minmax(239px, 1fr));
@@ -730,6 +722,10 @@ export const dBHomeComponent = withRouteData(
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0 &&
         variantListSize === 0;
+      const noConceptData =
+        domainInfo.length === 0 &&
+        physicalMeasurementsInfo.length === 0 &&
+        surveyInfo.length === 0;
       return (
         <React.Fragment>
           <style>{css}</style>
@@ -816,6 +812,8 @@ export const dBHomeComponent = withRouteData(
           {(loading || loadingVariantListSize) && <Spinner />}
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
+              {noConceptData && <ErrorMessageReactComponent dataType="data" />}
+              {domainInfo.length > 0 &&
               <h5
                 style={{
                   ...globalStyles.secondaryDisplay,
@@ -823,7 +821,7 @@ export const dBHomeComponent = withRouteData(
                 }}
               >
                 EHR Domains
-              </h5>
+              </h5>}
               <div className="result-boxes">
                 {domainInfo.length > 0 && (
                   <React.Fragment>
