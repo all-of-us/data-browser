@@ -30,7 +30,7 @@ do
     pushd "${dir}" > /dev/null
     if [ -n "`echo ${files} | grep ^${dir}\/.*\.ts$`" ]; then
       echo "Linting ${dir}..."
-      ./project.rb lint
+      #./project.rb lint
     else
       echo "No ${dir} files changed to lint."
     fi

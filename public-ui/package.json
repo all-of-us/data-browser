@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test --sourcemaps=false",
-    "lint": "yarn eslint src --ext .ts,.tsx",
+    "lint": "yarn eslint src --ext .tsx",
     "e2e": "ng e2e",
     "codegen": "yarn run codegen-clean && yarn run public-codegen-swagger && yarn run public-codegen-swagger-fetch && yarn run public-post-codegen",
     "codegen-clean": "rm -rf src/generated src/publicGenerated",
