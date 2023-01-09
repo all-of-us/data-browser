@@ -433,6 +433,15 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
           {domainType === "genomics" && !searchWord && (
+          <React.Fragment>
+          <span style={styles.resultBodyItem}>
+          <React.Fragment>
+            <div style={styles.resultStat}>
+                {variantListSize.toLocaleString()}
+            </div>
+            <span>Genomic Variants</span>
+          </React.Fragment>
+          </span>
             <span style={styles.resultBodyItem}>
               <React.Fragment>
                 <div style={styles.resultStat}>
@@ -444,6 +453,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 </span>
               </React.Fragment>
             </span>
+            </React.Fragment>
           )}
           {searchWord && domainType === "ehr" && (
             <span style={styles.resultBodyItem}>
