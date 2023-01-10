@@ -111,7 +111,7 @@ if [ "$SEARCH_VAT" = true ]; then
   "DROP TABLE IF EXISTS \`$BQ_PROJECT.$BQ_DATASET.wgs_variant\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE TABLE \`$BQ_PROJECT.$BQ_DATASET.wgs_variant\`
+  "CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`
   cluster by variant_id
   as
   WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
@@ -189,11 +189,11 @@ if [ "$SEARCH_VAT" = true ]; then
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE MATERIALIZED VIEW \`$BQ_PROJECT.$BQ_DATASET.wgs_variant_mv\`
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant_mv\`
   CLUSTER BY contig, position
   AS
   SELECT *
-  FROM \`$BQ_PROJECT.$BQ_DATASET.wgs_variant\`;"
+  FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`;"
 fi
 
 # Populate some tables from cdr data
