@@ -69,8 +69,8 @@ const css = `
   grid-template-columns: repeat(4, minmax(239px, 1fr));
   grid-template-areas:
   '. . . .'
-  'gHeading pmHeading pmHeading pmHeading'
-  ' gBoxes pmBoxes pmBoxes pmBoxes';
+  'gHeading gHeading pmHeading pmHeading'
+  ' gBoxes gBoxes pmBoxes pmBoxes';
 
   grid-template-rows: 1fr;
   column-gap: 1rem;
