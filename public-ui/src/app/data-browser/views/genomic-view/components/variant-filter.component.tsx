@@ -58,7 +58,7 @@ const styles = reactStyles({
 
 const css = `
 ::-webkit-scrollbar {
-    width: 8px;
+    width: .3334rem;
     background: #f9f9fa;
   }
 
@@ -66,7 +66,7 @@ const css = `
   ::-webkit-scrollbar-thumb {
     // background: #dae6ed;
     background: #bcc6cc;
-    border-radius: 2px;
+    border-radius: .3334rem;
   }
 
   /* Style the thumb when hovered over */
