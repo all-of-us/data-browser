@@ -509,13 +509,13 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 where a.sample_name not in ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
 union distinct
 select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
-on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id)
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 union distinct
 select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_longreads_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 union distinct
 select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
-on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id)
 ;"
 
 echo "Getting genomic tile counts"
