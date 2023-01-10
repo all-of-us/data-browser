@@ -105,10 +105,10 @@ done
 
 if [ "$SEARCH_VAT" = true ]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP MATERIALIZED VIEW IF EXISTS \`$BQ_PROJECT.$BQ_DATASET.wgs_variant_mv\`"
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant_mv\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP TABLE IF EXISTS \`$BQ_PROJECT.$BQ_DATASET.wgs_variant\`"
+  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`
