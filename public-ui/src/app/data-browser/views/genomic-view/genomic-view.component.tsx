@@ -257,7 +257,7 @@ export const GenomicViewComponent = withRouteData(
     getFilterMetadata(searchTerm: string) {
       genomicsApi().getGenomicFilterOptions(searchTerm).then(
         result => {
-          result.gene.forEach(el => { el.checked = false; });
+          result.gene.forEach(el => { el.checked = true; });
           result.consequence.forEach(el => { el.checked = false; });
           result.clinicalSignificance.forEach(el => { el.checked = false; });
           this.setState({ filterMetadata: result });
