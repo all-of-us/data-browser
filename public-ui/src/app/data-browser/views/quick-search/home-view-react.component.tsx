@@ -69,8 +69,8 @@ const css = `
   grid-template-columns: repeat(4, minmax(239px, 1fr));
   grid-template-areas:
   '. . . .'
-  'gHeading pmHeading pmHeading pmHeading'
-  ' gBoxes pmBoxes pmBoxes pmBoxes';
+  'gHeading gHeading pmHeading pmHeading'
+  ' gBoxes gBoxes pmBoxes pmBoxes';
 
   grid-template-rows: 1fr;
   column-gap: 1rem;
@@ -258,6 +258,16 @@ const styles = reactStyles({
     fontSize: "35px",
     lineHeight: "1em",
   },
+  genoResultStat: {
+    color: "#302c71",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontStyle: "normal",
+    lineHeight: "1em",
+  },
+  genoParticipantCount: {
+    fontWeight: 400,
+    fontSize: "14px",
+  },
   dBTitle: {
     textAlign: "center",
     margin: 0,
@@ -298,7 +308,9 @@ interface ResultLinkProps {
   participantCount: number;
   searchWord: string;
   domainType: string;
-  wgsParticipantCount: number;
+  wgsSRParticipantCount: number;
+  wgsLRParticipantCount: number;
+  wgsSVParticipantCount: number;
   microarrayParticipantCount: number;
   variantListSize: number;
   loadingVariantListSize: boolean;
@@ -398,7 +410,9 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       participantCount,
       domainType,
       searchWord,
-      wgsParticipantCount,
+      wgsSRParticipantCount,
+      wgsLRParticipantCount,
+      wgsSVParticipantCount,
       microarrayParticipantCount,
       variantListSize,
       loadingVariantListSize,
@@ -442,16 +456,32 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             <span>Genomic Variants</span>
           </React.Fragment>
           </span>
+          {wgsSRParticipantCount > 0 &&
             <span style={styles.resultBodyItem}>
-              <React.Fragment>
-                <div style={styles.resultStat}>
-                  {wgsParticipantCount.toLocaleString()}
-                </div>
-                <span>
-                  {" "}
-                  participants in the Whole Genome Sequencing (WGS) dataset
-                </span>
-              </React.Fragment>
+              <span>
+                <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                participants in the Short-Read Whole Genome Sequencing dataset
+              </span>
+            </span>}
+            {wgsLRParticipantCount > 0 &&
+            <span style={styles.resultBodyItem}>
+              <span>
+                <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                participants in the Long-Read Whole Genome Sequencing dataset
+              </span>
+            </span>}
+            {wgsSVParticipantCount > 0 &&
+            <span style={styles.resultBodyItem}>
+              <span>
+                <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                participants in the Structural Variant dataset
+              </span>
+            </span>}
+            <span style={styles.resultBodyItem}>
+              <span>
+                <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
+                participants in the Genotyping Array dataset
+              </span>
             </span>
             </React.Fragment>
           )}
@@ -504,14 +534,6 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
 
-          {domainType === "genomics" && !searchWord && (
-            <React.Fragment>
-              <div style={styles.resultStat}>
-                {microarrayParticipantCount.toLocaleString()}{" "}
-              </div>{" "}
-              <span>participants in the Genotyping Array dataset</span>
-            </React.Fragment>
-          )}
           {domainType === "genomics" &&
             searchWord &&
             !loadingVariantListSize &&
@@ -624,9 +646,16 @@ export const dBHomeComponent = withRouteData(
       return genomicsApi()
         .getParticipantCounts()
         .then((result) => {
+          console.log(result);
           if (result.results) {
-            genomicTileMetadata.wgsParticipantCount = result.results.filter(
-              (r) => r.stratum4 === "wgs"
+            genomicTileMetadata.wgsSRParticipantCount = result.results.filter(
+              (r) => r.stratum4 === "wgs_shortread"
+            )[0].countValue;
+            genomicTileMetadata.wgsLRParticipantCount = result.results.filter(
+              (r) => r.stratum4 === "wgs_longread"
+            )[0].countValue;
+            genomicTileMetadata.wgsSVParticipantCount = result.results.filter(
+              (r) => r.stratum4 === "wgs_structural_variants"
             )[0].countValue;
             genomicTileMetadata.microarrayParticipantCount =
               result.results.filter(
