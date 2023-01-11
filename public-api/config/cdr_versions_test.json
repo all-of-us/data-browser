@@ -95,10 +95,10 @@
     "bigqueryProject": "aou-res-curation-prod",
     "bigqueryDataset": "2022q4r6_combined_release",
     "genomicsProject": "aou-db-prod",
-    "genomicsDataset": "genomics_v1",
+    "genomicsDataset": "p_2022q4_4_test",
     "creationTime": "2022-12-13 11:09:21Z",
     "releaseNumber": 9,
     "numParticipants": 400760,
-    "publicDbName": "p_2022q4_3"
+    "publicDbName": "p_2022q4_4_test"
   }
 ]
