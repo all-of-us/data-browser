@@ -50,7 +50,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       sexAtBirthData: [],
       currentAgeData: [],
       participantCounts: [],
-      selectedGenotype: 'wgs',
+      selectedGenotype: 'wgs_shortread',
     };
     this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
   }
@@ -130,7 +130,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         <div style={styles.innerContainer}>
               <div style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
                 <input type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'}/> Genotyping Array
-                <input type="radio" value="wgs" name="genotype" defaultChecked={selectedGenotype === 'wgs'}/> Short-read whole genome sequencing(srWGS)
+                <input type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'}/> Short-read whole genome sequencing(srWGS)
+                <input type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'}/> Long-read whole genome sequencing(lrWGS)
+
               </div>
           {!loading && (
             <React.Fragment>

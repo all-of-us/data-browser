@@ -93,14 +93,18 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         result.stratum2 = GENDER_STRATUM_MAP[result.stratum2];
       } else if (AGE_STRATUM_MAP[result.stratum2]) {
         result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
-      }
+      }});
+    let selectedResults = data.results.filter((r) => r.stratum4 === selectedGenotype);
+    this.addMissingDemoResults(selectedResults, data.analysisId);
+    selectedResults.forEach((result) => {
       const percent: any =
          (result.countValue / participantTypeCount) * 100;
+      let resultText = result.countValue <= 20 ? "&le; 20" : result.countValue.toLocaleString();
       toolTipHelpText =
           `<strong>` +
           result.stratum2 +
           `</strong> <br> ` +
-          result.countValue.toLocaleString() +
+          resultText +
           `
                 participants, ` +
           parseFloat(percent).toFixed(2) +
@@ -114,7 +118,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         chartOptions.xAxis.categories.push(result.stratum2);
       }
     });
-    // ordering the catigories to match mockup
+    // ordering the categories to match mockup
     chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort(
       (a, b) => {
         const sortArr =
@@ -128,7 +132,6 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         chartOptions.xAxis.categories.indexOf(b.cat)
       );
     });
-    console.log(selectedData);
     chartOptions.series = [
       {
         name: selectedGenotype,
@@ -166,5 +169,41 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         )}
       </div>
     );
+  }
+
+  public addMissingDemoResults(results: any, analysisId) {
+    const uniqueStratums: string[] = [];
+    let fullStratums = [];
+    if (analysisId === 3501) {
+        fullStratums = ["Other", "Male", "Female"];
+    } else {
+        if (analysisId === 3502) {
+            fullStratums = ['18-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '89+'];
+        } else {
+            fullStratums = ["White", "Asian", "Black, African American, or African", "Hispanic, Latino, or Spanish",
+                "More than one race/ethnicity", "Other", "Prefer Not To Answer"];
+        }
+    }
+    for (const result of results) {
+      if (uniqueStratums.indexOf(result.stratum2) <= -1) {
+        uniqueStratums.push(result.stratum2);
+      }
+    }
+    const missingStratums = fullStratums.filter(
+      (item) => uniqueStratums.indexOf(item) < 0
+    );
+    for (const missingStratum of missingStratums) {
+      if (results.length > 0) {
+        const missingResult = {
+          analysisId: analysisId,
+          countValue: 20,
+          stratum1: results[0].stratum1,
+          stratum2: missingStratum,
+          stratum3: results[0].stratum3,
+          stratum4: results[0].stratum4,
+        };
+        results.push(missingResult);
+      }
+    }
   }
 }
