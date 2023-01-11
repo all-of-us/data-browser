@@ -22,6 +22,11 @@ const styles = reactStyles({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
+  selectGenotypeData: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "0.5em"
+  },
 });
 interface Props {
   participantCount: string;
@@ -33,6 +38,7 @@ interface State {
   sexAtBirthData: any;
   currentAgeData: any;
   participantCounts: any[];
+  selectedGenotype: string;
 }
 
 export class GenomicOverviewComponent extends React.Component<Props, State> {
@@ -44,7 +50,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       sexAtBirthData: [],
       currentAgeData: [],
       participantCounts: [],
+      selectedGenotype: 'wgs',
     };
+    this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
   }
 
   raceEthArr: any[] = [];
@@ -97,44 +105,52 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     });
   }
 
+  onGenotypeSelect(event) {
+    const {
+      raceEthData,
+      sexAtBirthData,
+      currentAgeData,
+      participantCounts,
+    } = this.state;
+    this.setState({selectedGenotype: event.target.value});
+  }
+
   render() {
     const {
       raceEthData,
       sexAtBirthData,
       currentAgeData,
       participantCounts,
+      selectedGenotype,
       loading,
     } = this.state;
     const { participantCount } = this.props;
     return (
       <React.Fragment>
         <div style={styles.innerContainer}>
-          <div style={styles.headingLayout}>
-            <p style={styles.desc}>
-              View the self-reported race/ethnicity, sex assigned at birth, and
-              age of participants whose genomic data are available within the
-              Researcher Workbench.{" "}
-            </p>
-            <div>
-              <span>{participantCount} participants</span>
-            </div>
-          </div>
+              <div style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
+                <input type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'}/> Genotyping Array
+                <input type="radio" value="wgs" name="genotype" defaultChecked={selectedGenotype === 'wgs'}/> Short-read whole genome sequencing(srWGS)
+              </div>
           {!loading && (
             <React.Fragment>
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Race/ethnicity"
                 data={raceEthData}
+                selectedGenotype={selectedGenotype}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Sex assigned at birth"
                 data={sexAtBirthData}
+                selectedGenotype={selectedGenotype}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Current age"
                 data={currentAgeData}
+                selectedGenotype={selectedGenotype}
               />
             </React.Fragment>
           )}

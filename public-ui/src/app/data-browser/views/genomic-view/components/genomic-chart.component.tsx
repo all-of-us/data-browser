@@ -43,10 +43,12 @@ interface Props {
   data: Analysis;
   counts: any;
   title: string;
+  selectedGenotype: string;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
   options: any;
+  selectedGenotype: string;
 }
 
 export class GenomicChartComponent extends React.Component<Props, State> {
@@ -54,11 +56,19 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       options: null,
+      selectedGenotype: props.selectedGenotype,
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selectedGenotype !== this.state.selectedGenotype) {
+      this.setState({ selectedGenotype: nextProps.selectedGenotype }, () => {this.dataToOptions();});
+    }
   }
 
   dataToOptions() {
     const chartOptions = getGenomicOptions();
+    const { selectedGenotype } = this.state;
     const { data, counts } = this.props;
     let toolTipHelpText;
     const sortingDemoArr = [
@@ -71,19 +81,9 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       "Prefer Not To Answer",
     ];
     const sortingSexArr = ["Female", "Male", "Other"];
-    const participantTypeCount = {
-      wsg: "",
-      microArray: "",
-    };
-    counts.results.forEach((item) => {
-      if (item.stratum4 === "wgs") {
-        participantTypeCount.wsg = item.countValue;
-      } else if (item.stratum4 === "micro-array") {
-        participantTypeCount.microArray = item.countValue;
-      }
-    });
-    let wgsData: Array<any> = [],
-      microArrayData: Array<any> = [];
+    let participantTypeCount = 0;
+    participantTypeCount = counts.results.filter((c) => c.stratum4 === selectedGenotype)[0].countValue;
+    let selectedData: Array<any> = [];
     chartOptions.chart.type = data.chartType;
     chartOptions.xAxis.categories = [];
     chartOptions.xAxis.labels.style = { width: "80%" };
@@ -94,10 +94,9 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       } else if (AGE_STRATUM_MAP[result.stratum2]) {
         result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
       }
-      if (result.stratum4 === "wgs") {
-        const percent: any =
-          (result.countValue / parseInt(participantTypeCount.wsg, 10)) * 100;
-        toolTipHelpText =
+      const percent: any =
+         (result.countValue / participantTypeCount) * 100;
+      toolTipHelpText =
           `<strong>` +
           result.stratum2 +
           `</strong> <br> ` +
@@ -106,30 +105,13 @@ export class GenomicChartComponent extends React.Component<Props, State> {
                 participants, ` +
           parseFloat(percent).toFixed(2) +
           `%`;
-        wgsData.push({
+      if (result.stratum4 === selectedGenotype) {
+        selectedData.push({
           cat: result.stratum2,
           y: result.countValue,
           toolTipHelpText: toolTipHelpText,
         });
-      } else if (result.stratum4 === "micro-array") {
-        const percent: any =
-          (result.countValue / parseInt(participantTypeCount.microArray, 10)) *
-          100;
-        toolTipHelpText =
-          `<strong>` +
-          result.stratum2 +
-          `</strong> <br> ` +
-          result.countValue.toLocaleString() +
-          `
-                participants, ` +
-          parseFloat(percent).toFixed(2) +
-          `%`;
         chartOptions.xAxis.categories.push(result.stratum2);
-        microArrayData.push({
-          cat: result.stratum2,
-          y: result.countValue,
-          toolTipHelpText: toolTipHelpText,
-        });
       }
     });
     // ordering the catigories to match mockup
@@ -140,29 +122,19 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         return sortArr.indexOf(a) - sortArr.indexOf(b);
       }
     );
-    wgsData = wgsData.sort((a, b) => {
+    selectedData = selectedData.sort((a, b) => {
       return (
         chartOptions.xAxis.categories.indexOf(a.cat) -
         chartOptions.xAxis.categories.indexOf(b.cat)
       );
     });
-    microArrayData = microArrayData.sort((a, b) => {
-      return (
-        chartOptions.xAxis.categories.indexOf(a.cat) -
-        chartOptions.xAxis.categories.indexOf(b.cat)
-      );
-    });
+    console.log(selectedData);
     chartOptions.series = [
       {
-        name: "wsg",
-        data: wgsData,
-        color: "#216FB4",
-      },
-      {
-        name: "micro-array",
-        data: microArrayData,
+        name: selectedGenotype,
+        data: selectedData,
         color: "#8BC990",
-      },
+      }
     ];
     this.setState({
       options: chartOptions,
@@ -174,17 +146,15 @@ export class GenomicChartComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { options } = this.state;
+    const { options, selectedGenotype } = this.state;
     const { title } = this.props;
     return (
       <div style={styles.chartContainer}>
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
           <div style={styles.legend}>
-            <i className="fas fa-circle" style={{ color: "#216FB4" }}></i>{" "}
-            <span style={styles.legendItem}>Whole Genome Sequencing</span>
             <i className="fas fa-circle" style={{ color: "#8BC990" }}></i>{" "}
-            <span style={styles.legendItem}>Genotyping Arrays</span>
+            <span style={styles.legendItem}>{selectedGenotype}</span>
           </div>
         </div>
         {options && (

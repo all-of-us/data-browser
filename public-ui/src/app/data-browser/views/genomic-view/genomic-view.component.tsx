@@ -70,6 +70,22 @@ const styles = reactStyles({
   genomicsDescText: {
     margin: "0",
   },
+  desc: {
+    color: "#302C71",
+    margin: "0",
+    fontSize: ".8em",
+  },
+  headingLayout: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "1em",
+    marginTop: "1em",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  genomicParticipantCountStyle: {
+    fontWeight: "2em",
+  },
   innerContainer: {
     background: "white",
     padding: "1em",
@@ -434,6 +450,14 @@ export const GenomicViewComponent = withRouteData(
               }
             </div>
           </div>
+          {selectionId === 1 && (
+          <div style={styles.headingLayout}>
+          <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
+          age of participants whose genomic data are available within the
+          Researcher Workbench.{" "}</p>
+          <div><span style={styles.genomicParticipantCountStyle}>{participantCount} </span>participants</div>
+          </div>
+          )}
           <div style={styles.innerContainer} id="childView">
             {selectionId === 1 && (
               <GenomicOverviewComponent
