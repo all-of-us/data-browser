@@ -22,6 +22,12 @@ const styles = reactStyles({
     justifyContent: "space-between",
     alignItems: "flex-start",
   },
+  selectGenotypeData: {
+    display: "flex",
+    flexDirection: "row",
+    gap: "0.5em",
+    marginBottom: "1em",
+  },
 });
 interface Props {
   participantCount: string;
@@ -33,6 +39,7 @@ interface State {
   sexAtBirthData: any;
   currentAgeData: any;
   participantCounts: any[];
+  selectedGenotype: string;
 }
 
 export class GenomicOverviewComponent extends React.Component<Props, State> {
@@ -44,7 +51,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       sexAtBirthData: [],
       currentAgeData: [],
       participantCounts: [],
+      selectedGenotype: 'wgs_shortread',
     };
+    this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
   }
 
   raceEthArr: any[] = [];
@@ -97,44 +106,78 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     });
   }
 
+  onGenotypeSelect(event) {
+    const {
+      raceEthData,
+      sexAtBirthData,
+      currentAgeData,
+      participantCounts,
+    } = this.state;
+    this.setState({selectedGenotype: event.target.value});
+  }
+
   render() {
     const {
       raceEthData,
       sexAtBirthData,
       currentAgeData,
       participantCounts,
+      selectedGenotype,
       loading,
     } = this.state;
     const { participantCount } = this.props;
+    let countResults = [];
+    let wgsSRParticipantCount = 0;
+    let wgsLRParticipantCount = 0;
+    let wgsSVParticipantCount = 0;
+    let arrayParticipantCount = 0;
+
+    if (!loading && participantCounts) {
+        countResults = participantCounts[0].results;
+
+        wgsSRParticipantCount = countResults.filter((r) => r.stratum4 === "wgs_shortread")[0].countValue;
+        wgsLRParticipantCount = countResults.filter((r) => r.stratum4 === "wgs_longread")[0].countValue;
+        wgsSVParticipantCount = countResults.filter((r) => r.stratum4 === "wgs_structural_variants")[0].countValue;
+        arrayParticipantCount = countResults.filter((r) => r.stratum4 === "micro-array")[0].countValue;
+    }
+
     return (
       <React.Fragment>
         <div style={styles.innerContainer}>
-          <div style={styles.headingLayout}>
-            <p style={styles.desc}>
-              View the self-reported race/ethnicity, sex assigned at birth, and
-              age of participants whose genomic data are available within the
-              Researcher Workbench.{" "}
-            </p>
-            <div>
-              <span>{participantCount} participants</span>
-            </div>
-          </div>
+            {!loading && (
+              <div style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
+                {arrayParticipantCount > 0 && (<React.Fragment>
+                <input type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'}/> Genotyping Array
+                </React.Fragment>)}
+                {wgsSVParticipantCount > 0 && (<React.Fragment>
+                <input type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'}/> Structural Variants
+                </React.Fragment>)}
+                {wgsSRParticipantCount > 0 && (<React.Fragment>
+                <input type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'}/> Short-read whole genome sequencing(srWGS)
+                </React.Fragment>)}
+                {wgsLRParticipantCount > 0 && (<React.Fragment>
+                <input type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'}/> Long-read whole genome sequencing(lrWGS)
+                </React.Fragment>)}
+                </div>)}
           {!loading && (
             <React.Fragment>
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Race/ethnicity"
                 data={raceEthData}
+                selectedGenotype={selectedGenotype}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Sex assigned at birth"
                 data={sexAtBirthData}
+                selectedGenotype={selectedGenotype}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Current age"
                 data={currentAgeData}
+                selectedGenotype={selectedGenotype}
               />
             </React.Fragment>
           )}
