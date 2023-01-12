@@ -82,6 +82,8 @@ const styles = reactStyles({
     marginTop: "1em",
     justifyContent: "space-between",
     alignItems: "flex-start",
+    paddingLeft: "0.25em",
+    paddingRight: "0.25em",
   },
   genomicParticipantCountStyle: {
     fontWeight: "2em",
