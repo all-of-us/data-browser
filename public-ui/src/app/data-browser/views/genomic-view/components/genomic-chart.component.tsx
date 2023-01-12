@@ -151,13 +151,17 @@ export class GenomicChartComponent extends React.Component<Props, State> {
   render() {
     const { options, selectedGenotype } = this.state;
     const { title } = this.props;
+    let legendText = selectedGenotype;
+    if (selectedGenotype === 'micro-array') {
+        legendText = 'Array';
+    }
     return (
       <div style={styles.chartContainer}>
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
           <div style={styles.legend}>
             <i className="fas fa-circle" style={{ color: "#8BC990" }}></i>{" "}
-            <span style={styles.legendItem}>{selectedGenotype}</span>
+            <span style={styles.legendItem}>{legendText}</span>
           </div>
         </div>
         {options && (
