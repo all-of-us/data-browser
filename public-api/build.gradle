@@ -347,8 +347,7 @@ dependencies {
         exclude group: 'io.netty', module: 'netty-common'
     }
 
-    compile "org.apache.tomcat:tomcat-jdbc:10.0.20"
-    compile "org.apache.tomcat.embed:tomcat-embed-core:10.1.2"
+    compile "org.apache.tomcat:tomcat-jdbc:10.0.23"
 
     compile 'joda-time:joda-time:2.10'
 
