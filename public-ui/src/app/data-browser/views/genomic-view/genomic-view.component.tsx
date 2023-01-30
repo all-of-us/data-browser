@@ -181,7 +181,7 @@ export const GenomicViewComponent = withRouteData(
         loadingVariantListSize: null,
         searchTerm: " ",
         currentPage: null,
-        rowCount: 10,
+        rowCount: 50,
         participantCount: null,
         chartData: null,
         filterMetadata: null,
@@ -283,7 +283,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 10 },
+          { loadingResults: true, currentPage: 1, rowCount: 50 },
           () => {
             this.fetchVariantData();
           }
