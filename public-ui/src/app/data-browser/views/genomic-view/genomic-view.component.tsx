@@ -209,7 +209,7 @@ export const GenomicViewComponent = withRouteData(
         label: "Participant Demographics",
       },
     ];
-    title = "Genomic Variants";
+    title = "SNP/Indels";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();
