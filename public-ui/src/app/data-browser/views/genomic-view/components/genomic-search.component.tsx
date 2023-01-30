@@ -100,7 +100,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     const { searchTerm, filterMetadata, sortMetadata } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
       rowCount } = this.props;
-
     return <React.Fragment>
       <div style={styles.titleBox}>
         <p style={styles.boxHeading} ref={this.scrollDiv}>
@@ -114,7 +113,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       <VariantSearchComponent
         onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
         onFilterSubmit={(filteredMetadata, sortMetadata) => { this.handleFilterSubmit(filteredMetadata, sortMetadata); }}
-        loading={loadingVariantListSize}
+        loadingResults={loadingResults}
+        loadingVariantListSize={loadingVariantListSize}
         searchTerm={searchTerm}
         variantListSize={variantListSize}
         filterMetadata={filterMetadata}
