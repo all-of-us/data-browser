@@ -393,10 +393,10 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           ? "fitbit/" + this.props.searchWord
           : "fitbit";
         NavStore.navigateByUrl(url);
-      } else if (info.name === "SNP/Indels") {
+      } else if (info.name === "SNP/Indel Variants") {
         const url = this.props.searchWord
-          ? "genomic-variants/" + this.props.searchWord
-          : "genomic-variants";
+          ? "variants/" + this.props.searchWord
+          : "variants";
         NavStore.navigateByUrl(url);
       }
     }
@@ -577,7 +577,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {questionCount ? (
             <a className="result-bottom-link">View Complete Survey</a>
           ) : domain === "Genomics" ? (
-            <a className="result-bottom-link">View SNP/Indels</a>
+            <a className="result-bottom-link">View SNP/Indel Variants</a>
           ) : (
             <a className="result-bottom-link">View {name}</a>
           )}

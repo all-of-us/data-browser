@@ -169,8 +169,8 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
       url += "fitbit";
       localStorage.setItem("searchText", searchValue);
       navigateByUrl(url);
-    } else if (type === "genomic-variants") {
-      url += "genomic-variants";
+    } else if (type === "SNP/Indel variants") {
+      url += "variants";
       url += "/" + searchValue;
       navigateByUrl(url);
     }
@@ -264,17 +264,17 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
               {" "}
               {variantSearchResultSize}{" "}
               {variantSearchResultSize > 1 ? "results " : "result "}
-              available in genomic data:
+              available in SNP/Indel Variant data:
               <a
                 style={styles.domainResult}
                 onClick={() =>
                   this.handleOnClick(
                     variantSearchResultSize,
-                    "genomic-variants"
+                    "SNP/Indel variants"
                   )
                 }
               >
-                genomic-variants
+                SNP/Indel variants
               </a>
             </div>
           )}

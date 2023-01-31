@@ -209,7 +209,7 @@ export const GenomicViewComponent = withRouteData(
         label: "Participant Demographics",
       },
     ];
-    title = "SNP/Indels";
+    title = "SNP/Indel Variants";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();
@@ -228,7 +228,7 @@ export const GenomicViewComponent = withRouteData(
 
     changeUrl() {
       const { searchTerm } = this.state;
-      let url = "genomic-variants";
+      let url = "variants";
       if (searchTerm) {
         url += "/" + searchTerm;
       }
