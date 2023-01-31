@@ -73,7 +73,7 @@ else
   bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
-GENOMICS_DATASET="genomics_v1"
+GENOMICS_DATASET="2022q4r6_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
@@ -105,13 +105,13 @@ done
 
 if [ "$SEARCH_VAT" = true ]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant_mv\`"
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`"
+  "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE TABLE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`
+  "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`
   cluster by variant_id
   as
   WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
@@ -134,12 +134,12 @@ if [ "$SEARCH_VAT" = true ]; then
          END
          ASC
   )  AS row_number
-  FROM \`$BQ_PROJECT.$BQ_DATASET.charlie_vat\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$BQ_PROJECT.$BQ_DATASET.charlie_vat\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
      GROUP BY vid
   )
   SELECT
@@ -189,11 +189,11 @@ if [ "$SEARCH_VAT" = true ]; then
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant_mv\`
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`
   CLUSTER BY contig, position
   AS
   SELECT *
-  FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.wgs_variant\`;"
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
 fi
 
 # Populate some tables from cdr data

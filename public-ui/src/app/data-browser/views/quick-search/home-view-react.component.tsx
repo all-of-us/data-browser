@@ -323,6 +323,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
   }
 
   resultClick(info) {
+    console.log(info);
     if (info.domainConceptId) {
       let url;
       switch (info.domainConceptId) {
@@ -392,7 +393,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           ? "fitbit/" + this.props.searchWord
           : "fitbit";
         NavStore.navigateByUrl(url);
-      } else if (info.name === "Genomic Variants") {
+      } else if (info.name === "SNP/Indels") {
         const url = this.props.searchWord
           ? "genomic-variants/" + this.props.searchWord
           : "genomic-variants";
@@ -576,7 +577,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {questionCount ? (
             <a className="result-bottom-link">View Complete Survey</a>
           ) : domain === "Genomics" ? (
-            <a className="result-bottom-link">View Genomic Variants</a>
+            <a className="result-bottom-link">View SNP/Indels</a>
           ) : (
             <a className="result-bottom-link">View {name}</a>
           )}
@@ -646,7 +647,6 @@ export const dBHomeComponent = withRouteData(
       return genomicsApi()
         .getParticipantCounts()
         .then((result) => {
-          console.log(result);
           if (result.results) {
             genomicTileMetadata.wgsSRParticipantCount = result.results.filter(
               (r) => r.stratum4 === "wgs_shortread"
