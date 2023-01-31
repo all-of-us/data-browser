@@ -826,9 +826,9 @@ def circle_build_cdr_indices(cmd_name, args)
 end
 
 Common.register_command({
-  :invocation => "circle-build-cdr-indices",
+  :invocation => "create-cdr-indices",
   :description => "Build the CDR indices using CircleCi",
-  :fn => ->(*args) { circle_build_cdr_indices("circle-build-cdr-indices", args) }
+  :fn => ->(*args) { circle_build_cdr_indices("create-cdr-indices", args) }
 })
 
 def circle_import_cdr_data(cmd_name, args)

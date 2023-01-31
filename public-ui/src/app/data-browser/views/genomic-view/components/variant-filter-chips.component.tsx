@@ -105,9 +105,10 @@ export class VariantFilterChips extends React.Component<Props, State> {
                 if (Array.isArray(el.data)) {
                     return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
                         {el.data.map((item, i) => {
+                            const chipLabel = item.option ? item.option : '(undefined)';
                             return <div style={styles.chipLayout} key={i}>
                                 {item.checked && <div style={styles.chip} >
-                                    <span >{item.option}</span>
+                                    <span >{chipLabel}</span>
                                     <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                         onClick={() => this.removeChip(item, el.cat)}
                                         className='far fa-times fa-1x clear-search-icon'

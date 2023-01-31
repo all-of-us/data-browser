@@ -86,9 +86,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Genomic Variants",
+              title: "SNP/Indels",
               breadcrumb: {
-                value: "Genomic Variants",
+                value: "SNP/Indels",
               },
             },
           },
@@ -97,9 +97,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Genomic Variants",
+              title: "SNP/Indels",
               breadcrumb: {
-                value: "Genomic Variants",
+                value: "SNP/Indels",
               },
             },
           },

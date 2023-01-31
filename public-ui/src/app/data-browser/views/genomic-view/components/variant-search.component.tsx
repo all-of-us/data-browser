@@ -68,7 +68,8 @@ interface Props {
   filterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   onSortChange: Function;
-  loading: boolean;
+  loadingResults: boolean;
+  loadingVariantListSize: boolean;
 }
 interface State {
     filteredMetadata: GenomicFilters;
@@ -136,7 +137,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     render() {
         const { searchWord, filterShow, sortMetadata } = this.state;
         const {filterMetadata} = this.props
-        const { variantListSize, loading } = this.props;
+        const { variantListSize, loadingResults, loadingVariantListSize } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
         return <React.Fragment>
             <style>{css}</style>
@@ -154,18 +155,18 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                     <strong>Genomic Region:</strong> chr13:32355000-32375000
                 </div>
             </div>
-            {(!loading && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
+            {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
                 style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div> : <div style={{height:'1rem'}}></div>}
             {filterMetadata &&
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
             <React.Fragment>{
-                (!loading && searchWord) && <strong style={styles.resultSize} >{!loading ? variantListSizeDisplay :
+                (!loadingResults && !loadingVariantListSize && searchWord) && <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
                                 <span style={styles.loading}><Spinner /></span>} variants found</strong>
                 }</React.Fragment>
             {environment.genoFilters && <div style={styles.filterContainer}>
-                {(!loading && filterShow) &&
+                {((!loadingResults && !loadingVariantListSize) && filterShow) &&
                     <VariantFilterComponent
                         filterMetadata={filterMetadata}
                         sortMetadata={sortMetadata}

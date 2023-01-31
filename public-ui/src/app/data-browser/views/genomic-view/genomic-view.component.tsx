@@ -181,7 +181,7 @@ export const GenomicViewComponent = withRouteData(
         loadingVariantListSize: null,
         searchTerm: " ",
         currentPage: null,
-        rowCount: 10,
+        rowCount: 50,
         participantCount: null,
         chartData: null,
         filterMetadata: null,
@@ -209,7 +209,7 @@ export const GenomicViewComponent = withRouteData(
         label: "Participant Demographics",
       },
     ];
-    title = "Genomic Variants";
+    title = "SNP/Indels";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();
@@ -236,7 +236,6 @@ export const GenomicViewComponent = withRouteData(
     }
 
     getSearchSize(searchTerm: string, filtered: boolean) {
-      this.setState({ loadingVariantListSize: true });
       if (!filtered) {
         this.getFilterMetadata(searchTerm);
       }
@@ -283,7 +282,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 10 },
+          { loadingResults: true, currentPage: 1, rowCount: 50 },
           () => {
             this.fetchVariantData();
           }
@@ -400,7 +399,7 @@ export const GenomicViewComponent = withRouteData(
 
     handleSearchTerm(searchTerm: string) {
       if (this.state.searchTerm !== searchTerm) {
-        this.setState({ filterMetadata: null }, () => this.search(searchTerm));
+        this.setState({ filterMetadata: null, searchTerm: searchTerm, loadingResults: true, loadingVariantListSize: true }, () => this.search(searchTerm));
       }
     }
 

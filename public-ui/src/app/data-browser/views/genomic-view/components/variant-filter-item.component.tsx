@@ -168,13 +168,14 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 </div> */}
         {filterItemState.map((item: any, index: number) => {
           const key = 'option' + index;
+          const itemLabel = item.option ? item.option : '(undefined)';
           return <span title={item.option} style={styles.filterItemOption} key={key}>
             <input onChange={() => this.handleCheck(item)}
               id={item.option}
               style={styles.filterItemCheck}
               type='checkbox' name={item.option}
               checked={item.checked} />
-            <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
+            <label style={styles.filterItemLabel} htmlFor={item.option}>{itemLabel}</label>
           </span>;
         })}
       </div> :
