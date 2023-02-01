@@ -25,7 +25,7 @@ export class IsSafeGuard implements CanActivate, CanActivateChild {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> {
-    if (state.url.indexOf("genomic-variants") > -1 && !environment.geno) {
+    if (state.url.indexOf("variants") > -1 && !environment.geno) {
       this.router.navigate(["/"]);
     }
     return this.serverConfigService
