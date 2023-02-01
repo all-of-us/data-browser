@@ -171,10 +171,16 @@ const css = `
     grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
     'eHeading eHeading'
+    'eBoxes eBoxes'
+    'gHeading gHeading'
     'gBoxes gBoxes'
-    'gHeading pmHeading'
-    'gBoxes pmBoxes ';
+    'pmHeading pmHeading'
+    'pmBoxes pmBoxes';
 }
+  .ehr-boxes {
+    grid-template-columns: repeat(3, minmax(296px, 1fr));
+    row-gap: 1rem;
+  }
     .survey-result-boxes{
       grid-template-columns: repeat(3, minmax(239px, 1fr));
     }
@@ -200,13 +206,13 @@ const css = `
   .result-boxes {
     grid-template-areas:
     'eHeading eHeading'
-    'gBoxes gBoxes'
+    'eBoxes eBoxes'
     'gHeading gHeading'
     ' gBoxes gBoxes'
     'pmHeading pmHeading'
     'pmBoxes pmBoxes ';
 }
-  .result-boxes, .survey-result-boxes{
+  .result-boxes, .survey-result-boxes, .ehr-boxes{
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
   .pm-boxes {
