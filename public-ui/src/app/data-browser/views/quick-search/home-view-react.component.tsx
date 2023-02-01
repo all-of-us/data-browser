@@ -54,6 +54,8 @@ const css = `
     font-size: 15px;
     color: #337ab7;
     cursor: pointer;
+    position:absolute;
+    bottom:.25rem;
 }
 .result-bottom-link:hover {
     color: #262262;
@@ -68,7 +70,8 @@ const css = `
   display: grid;
   grid-template-columns: repeat(4, minmax(239px, 1fr));
   grid-template-areas:
-  '. . . .'
+  'eHeading eHeading eHeading eHeading'
+  'eBoxes eBoxes eBoxes eBoxes'
   'gHeading gHeading pmHeading pmHeading'
   ' gBoxes gBoxes pmBoxes pmBoxes';
 
@@ -76,6 +79,12 @@ const css = `
   column-gap: 1rem;
   row-gap:1rem;
   margin-bottom: 2rem;
+}
+.ehr-boxes{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(239px, 1fr));
+  grid-area: eBoxes;
+  column-gap: 1rem;
 }
 .genomic-boxes {
   display: grid;
@@ -96,23 +105,49 @@ const css = `
 .result-box {
     cursor: pointer;
     min-width:239px;
-    // display: flex;
-    // flex-direction: column;
-    display:grid;
-    grid-template-rows: 20% 55% 1fr;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+    padding: .5rem 1rem;
+    position: relative;
+  }
+  
+.result-box-title {
+  font-family: GothamBook, Arial, sans-serif;
+  color: #302c71;
+  height: 2.5rem;
+  margin-bottom:1rem;
+  display: flex;
+  justify-content: space-between;
 }
-.genomic-result-box {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 18px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+
+.result-box-body {
+  color: #302c71;
+  font-family: GothamBook, Arial, sans-serif;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom:4rem;
 }
+.result-box-body-item {
+
+}
+
+.result-box-stat-label {
+  padding-bottom:1rem;
+  display:block;
+}
+
+.result-stat {
+  display: block;
+  color: #302c71;
+  font-family: GothamBook, Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 1em;
+}
+
 .search-icon-container {
     display: flex;
     flex-wrap: wrap;
@@ -120,51 +155,64 @@ const css = `
     padding-left:1em;
     justify-content: 'flex-start';
 }
+
 .pm-boxes {
   display:grid;
-  grid-template-columns: repeat(3, minmax(239px, 1fr));
+  grid-template-columns: repeat(2, minmax(239px, 1fr));
   column-gap:1rem;
 }
+
 .result-box:last-of-type {
   margin-right: 0;
 }
+
 @media (max-width: 1048px) {
   .result-boxes {
     grid-template-columns: repeat(3, minmax(239px, 1fr));
     grid-template-areas:
-    ' .       .'
-    ' .       .'
-    'gHeading pmHeading'
-    'gBoxes pmBoxes ';
+    'eHeading eHeading'
+    'eBoxes eBoxes'
+    'gHeading gHeading'
+    'gBoxes gBoxes'
+    'pmHeading pmHeading'
+    'pmBoxes pmBoxes';
 }
-.survey-result-boxes{
-  grid-template-columns: repeat(3, minmax(239px, 1fr));
-}
-  .genomic-boxes {
-    grid-template-columns: repeat(1, minmax(239px, 1fr));
+  .ehr-boxes {
+    grid-template-columns: repeat(3, minmax(296px, 1fr));
+    row-gap: 1rem;
   }
-  .pm-boxes {
-    width: calc((100vw)/1.57);
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
-  }
-  .cope-preview {
-      justify-content: flex-start;
-  }
-  .tooltip-container {
-      padding-left: 1em;
-  }
+    .survey-result-boxes{
+      grid-template-columns: repeat(3, minmax(239px, 1fr));
+    }
+
+    .genomic-boxes {
+      grid-template-columns: repeat(1, minmax(239px, 1fr));
+    }
+
+    .pm-boxes {
+      width: calc((100vw)/1.57);
+      grid-template-columns: repeat(2, minmax(239px, 1fr));
+    }
+
+    .cope-preview {
+        justify-content: flex-start;
+    }
+
+    .tooltip-container {
+        padding-left: 1em;
+    }
 }
 @media (max-width: 766px) {
   .result-boxes {
     grid-template-areas:
-    ' . .'
-    ' . .'
+    'eHeading eHeading'
+    'eBoxes eBoxes'
     'gHeading gHeading'
     ' gBoxes gBoxes'
     'pmHeading pmHeading'
     'pmBoxes pmBoxes ';
 }
-  .result-boxes, .survey-result-boxes{
+  .result-boxes, .survey-result-boxes, .ehr-boxes{
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
   .pm-boxes {
@@ -186,43 +234,29 @@ const styles = reactStyles({
     paddingLeft: "1em",
   },
   results: {
-    padding: "18px",
+    padding: "16px",
   },
-  resultBoxes: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "flex-start",
-    marginBottom: "2rem",
-    flexGrow: 1,
-  },
-  resultBox: {
-    cursor: "pointer",
-    display: "flex",
-    flexDirection: "column",
-    // width: "calc(((100% / 12) * 3) - 18px)",
-    marginRight: "18px",
-    marginBottom: "18px",
-    borderRadius: "5px",
-    backgroundColor: "#ffffff",
-    boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.15)",
-  },
+
+
   resultBoxTitle: {
     color: "#337ab7",
     fontFamily: "Arial, sans-serif",
     display: "flex",
-    padding: "18px",
-    paddingBottom: "3px",
+    // padding: "16px",
+    // paddingBottom: "3px",
     margin: "0",
     fontSize: "16px",
     flexDirection: "row",
+    height: "2rem",
     justifyContent: "space-between",
+    alighItems: "center"
   },
   resultBody: {
     color: "#302c71",
     fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "14px",
-    padding: "18px",
-    paddingTop: "0px",
+    // padding: "16px",
+    // paddingTop: "0px",
     display: "flex",
     flexDirection: "column",
   },
@@ -237,8 +271,11 @@ const styles = reactStyles({
     display: "block",
   },
   resultBoxLink: {
-    padding: "18px",
-    paddingTop: "36px",
+    // padding: "1rem",
+    // display: "flex",
+    // alignItems:"center",
+    // background:"yellow"
+
   },
   resultHeading: {
     fontSize: "23px",
@@ -248,7 +285,7 @@ const styles = reactStyles({
     paddingLeft: "0",
   },
   resultBodyItem: {
-    padding: "6px 0",
+    // padding: "6px 0",
   },
   resultStat: {
     color: "#302c71",
@@ -271,10 +308,10 @@ const styles = reactStyles({
   dBTitle: {
     textAlign: "center",
     margin: 0,
-    padding: "18px",
+    padding: "16px",
   },
   dBDesc: {
-    padding: "18px",
+    padding: "16px",
     paddingBottom: "63px",
     margin: "0 auto",
     lineHeight: "2",
@@ -295,6 +332,7 @@ const styles = reactStyles({
     color: "#2b266d",
   },
   resultBodyDescription: {
+    // paddingBottom:"1rem"
   },
 });
 
@@ -421,8 +459,8 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
     } = this.props;
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
-        <div style={styles.resultBoxTitle}>
-          <div>{name}</div>
+        <div className="result-box-title" >
+          <span>{name}</span>
           <div>
             <TooltipReactComponent
               label="Homepage Tooltip Hover"
@@ -432,106 +470,104 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             />
           </div>
         </div>
-        <div style={styles.resultBody}>
+        <div className="result-box-body">
           {(domainType === "ehr" || domainType === "pmw") && (
-            <span style={styles.resultBodyItem}>
-              <div style={styles.resultStat}>
+            <span className="result-box-body-item">
+              <span className="result-stat" >
                 {standardConceptCount.toLocaleString()}
-              </div>
+              </span>
             </span>
           )}
           {domainType === "survey" && (
-            <span style={styles.resultBodyItem}>
-              <div style={styles.resultStat}>
+            <span className="result-box-body-item">
+              <span className="result-stat" >
                 {questionCount.toLocaleString()}
-              </div>
+              </span>
             </span>
           )}
           {domainType === "genomics" && !searchWord && (
-          <React.Fragment>
-          <span style={styles.resultBodyItem}>
-          <React.Fragment>
-            <div style={styles.resultStat}>
-                {variantListSize.toLocaleString()}
-            </div>
-            <span>Genomic Variants</span>
-          </React.Fragment>
-          </span>
-          {wgsSRParticipantCount > 0 &&
-            <span style={styles.resultBodyItem}>
-              <span>
-                <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                participants in the Short-Read Whole Genome Sequencing dataset
+            <React.Fragment>
+              <span className="result-box-body-item">
+                <React.Fragment>
+                  <span className="result-stat" >
+                    {variantListSize.toLocaleString()}
+                  </span>
+                  <span className="result-box-stat-label">Genomic Variants</span>
+                </React.Fragment>
               </span>
-            </span>}
-            {wgsLRParticipantCount > 0 &&
-            <span style={styles.resultBodyItem}>
-              <span>
-                <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                participants in the Long-Read Whole Genome Sequencing dataset
+              {wgsSRParticipantCount > 0 &&
+                <span className="result-box-body-item">
+                  <span>
+                    <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                    participants in the Short-Read Whole Genome Sequencing dataset
+                  </span>
+                </span>}
+              {wgsLRParticipantCount > 0 &&
+                <span className="result-box-body-item">
+                  <span>
+                    <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                    participants in the Long-Read Whole Genome Sequencing dataset
+                  </span>
+                </span>}
+              {wgsSVParticipantCount > 0 &&
+                <span className="result-box-body-item">
+                  <span>
+                    <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                    participants in the Structural Variant dataset
+                  </span>
+                </span>}
+              <span className="result-box-body-item">
+                <span>
+                  <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
+                  participants in the Genotyping Array dataset
+                </span>
               </span>
-            </span>}
-            {wgsSVParticipantCount > 0 &&
-            <span style={styles.resultBodyItem}>
-              <span>
-                <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                participants in the Structural Variant dataset
-              </span>
-            </span>}
-            <span style={styles.resultBodyItem}>
-              <span>
-                <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                participants in the Genotyping Array dataset
-              </span>
-            </span>
             </React.Fragment>
           )}
           {searchWord && domainType === "ehr" && (
-            <span style={styles.resultBodyItem}>
-              <span>matching medical concepts</span>
+            <span className="result-box-body-item">
+              <span className="result-box-stat-label">matching medical concepts</span>
             </span>
           )}
           {searchWord && domainType === "survey" && (
-            <span style={styles.resultBodyItem}>
+            <span className="result-box-body-item">
               <span>matching survey questions</span>
             </span>
           )}
           {searchWord && name.toLowerCase() === "physical measurements" && (
-            <span style={styles.resultBodyItem}>
+            <span className="result-box-body-item">
               <span>matching Physical Measurements</span>
             </span>
           )}
           {searchWord && name.toLowerCase() === "fitbit" && (
-            <span style={styles.resultBodyItem}>
+            <span className="result-box-body-item">
               <span>matching Fitbit Measurements</span>
             </span>
           )}
           {!searchWord && domainType === "ehr" && (
-            <span style={styles.resultBodyItem}>
-              <span>medical concepts</span>
+            <span className="result-box-body-item">
+              <span className="result-box-stat-label">medical concepts</span>
             </span>
           )}
           {!searchWord && domainType === "survey" && (
-            <span style={styles.resultBodyItem}>
-              <span>questions available</span>
+            <span className="result-box-body-item">
+              <span className="result-box-stat-label">questions available</span>
             </span>
           )}
           {!searchWord && name.toLowerCase() === "physical measurements" && (
-            <span style={styles.resultBodyItem}>
-              <span>Physical Measurements</span>
+            <span className="result-box-body-item">
+              <span className="result-box-stat-label">Physical Measurements</span>
             </span>
           )}
           {!searchWord && name.toLowerCase() === "fitbit" && (
-            <span style={styles.resultBodyItem}>
-              <span>Fitbit Measurements</span>
+            <span className="result-box-body-item">
+              <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
           )}
           {participantCount && !(domainType === "genomics") && (
-            <span style={styles.resultBodyItem}>
-              <span>
-                <strong> {participantCount.toLocaleString()}</strong>{" "}
-                participants in this domain
-              </span>
+            <span className="result-box-body-item">
+              <strong> {participantCount.toLocaleString()}</strong>{" "}
+              participants in this domain
             </span>
           )}
 
@@ -540,18 +576,20 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             !loadingVariantListSize &&
             variantListSize > 0 && (
               <React.Fragment>
-                <span style={styles.resultBodyItem}>
-                {(typing || loadingVariantListSize) && <Spinner />}
-                {(!typing && !loadingVariantListSize) &&
-                <React.Fragment>
-                  <div style={styles.resultStat}>{variantListSize.toLocaleString()}</div>{" "}
-                </React.Fragment>}
-                matching genomic variants
+                <span className="result-box-body-item">
+                  {(typing || loadingVariantListSize) && <Spinner />}
+                  {(!typing && !loadingVariantListSize) &&
+                    <React.Fragment>
+                      <span className="result-stat" >
+                        {variantListSize.toLocaleString()}
+                      </span>{" "}
+                    </React.Fragment>}
+                  matching genomic variants
                 </span>
-                <span style={styles.resultBodyItem}>
-                  <div style={styles.resultStat}>
+                <span className="result-box-body-item">
+                  <span className="result-stat" >
                     {microarrayParticipantCount.toLocaleString()}{" "}
-                  </div>
+                  </span>
                   participants in this domain
                 </span>
               </React.Fragment>
@@ -671,12 +709,12 @@ export const dBHomeComponent = withRouteData(
 
     getVariantResultSize() {
       const { searchWord } = this.state;
-      this.setState({loadingVariantListSize: true});
+      this.setState({ loadingVariantListSize: true });
       const variantSizeRequest = {
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({loadingVariantListSize: true});
+      this.setState({ loadingVariantListSize: true });
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
@@ -852,32 +890,35 @@ export const dBHomeComponent = withRouteData(
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
-              {domainInfo.length > 0 &&
-              <h5
-                style={{
-                  ...globalStyles.secondaryDisplay,
-                  ...styles.resultHeading,
-                }}
-              >
-                EHR Domains
-              </h5>}
               <div className="result-boxes">
+                {domainInfo.length > 0 &&
+                  <h5
+                    style={{
+                      ...globalStyles.secondaryDisplay,
+                      ...styles.resultHeading,
+                      gridArea: 'eHeading',
+                    }}
+                  >
+                    EHR Domains
+                  </h5>}
                 {domainInfo.length > 0 && (
                   <React.Fragment>
-                    {domainInfo.map((domain, index) => {
-                      const key = "domain" + index;
-                      return (
-                        <ResultLinksComponent
-                          typing={!this.typing}
-                          key={key}
-                          searchWord={searchWord}
-                          {...domain}
-                          domainType="ehr"
-                          variantListSize={variantListSize}
-                          loadingVariantListSize={loadingVariantListSize}
-                        />
-                      );
-                    })}
+                    <div className="ehr-boxes">
+                      {domainInfo.map((domain, index) => {
+                        const key = "domain" + index;
+                        return (
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key={key}
+                            searchWord={searchWord}
+                            {...domain}
+                            domainType="ehr"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                        );
+                      })}
+                    </div>
                   </React.Fragment>
                 )}
                 {environment.geno &&
@@ -895,8 +936,6 @@ export const dBHomeComponent = withRouteData(
                       Genomics
                     </h5>
                     <div className="genomic-boxes">
-
-
                       <ResultLinksComponent
                         typing={!this.typing}
                         key="genomics-tile"
@@ -916,7 +955,7 @@ export const dBHomeComponent = withRouteData(
                       ...styles.resultHeading,
                       gridArea: 'pmHeading',
                       marginBottom: '-1rem',
-                      whiteSpace:'nowrap'
+                      whiteSpace: 'nowrap'
                     }}
                   >
                     Physical Measurements and Wearables
