@@ -280,6 +280,7 @@ const styles = reactStyles({
   resultHeading: {
     fontSize: "23px",
     margin: "0",
+    marginBottom:"1rem",
     paddingTop: "9px",
     // paddingBottom: "9px",
     paddingLeft: "0",
@@ -930,7 +931,7 @@ export const dBHomeComponent = withRouteData(
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
                         gridArea: 'gHeading',
-                        marginBottom: '-1rem',
+                        // marginBottom: '-1rem',
                       }}
                     >
                       Genomics
@@ -954,7 +955,7 @@ export const dBHomeComponent = withRouteData(
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                       gridArea: 'pmHeading',
-                      marginBottom: '-1rem',
+                      // marginBottom: '-1rem',
                       whiteSpace: 'nowrap'
                     }}
                   >
