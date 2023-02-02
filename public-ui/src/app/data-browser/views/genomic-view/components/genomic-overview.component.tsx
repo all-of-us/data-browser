@@ -113,6 +113,8 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       currentAgeData,
       participantCounts,
     } = this.state;
+    console.log(event.target.value,'event');
+    
     this.setState({selectedGenotype: event.target.value});
   }
 
@@ -145,20 +147,20 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       <React.Fragment>
         <div style={styles.innerContainer}>
             {!loading && (
-              <div style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
+              <form style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
                 {arrayParticipantCount > 0 && (<React.Fragment>
-                <input type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'}/> Genotyping Array
+                <label> <input type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'}/> Genotyping Array</label>
                 </React.Fragment>)}
                 {wgsSVParticipantCount > 0 && (<React.Fragment>
-                <input type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'}/> Structural Variants
+                <label> <input type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'}/> Structural Variants</label>
                 </React.Fragment>)}
                 {wgsSRParticipantCount > 0 && (<React.Fragment>
-                <input type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'}/> Short-read whole genome sequencing(srWGS)
+                <label> <input type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'}/> Short-read whole genome sequencing(srWGS)</label>
                 </React.Fragment>)}
                 {wgsLRParticipantCount > 0 && (<React.Fragment>
-                <input type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'}/> Long-read whole genome sequencing(lrWGS)
+                <label> <input type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'}/> Long-read whole genome sequencing(lrWGS)</label>
                 </React.Fragment>)}
-                </div>)}
+                </form>)}
           {!loading && (
             <React.Fragment>
               <GenomicChartComponent
