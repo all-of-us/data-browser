@@ -59,10 +59,20 @@ public class CdrDbConfig {
       Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
       for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
         int slashIndex = originalDbUrl.lastIndexOf('/');
+
+        System.out.println("**************************************");
+        System.out.println("Test url");
+        System.out.println(originalDbUrl);
+        System.out.println("**************************************");
+
+
+
         String dbUrl =
                 originalDbUrl.substring(0, slashIndex + 1)
                         + cdrVersion.getPublicDbName()
                         + "?useSSL=false";
+
+
         DataSource dataSource =
                 DataSourceBuilder.create()
                         .driverClassName(basePoolConfig.getDriverClassName())
@@ -85,6 +95,11 @@ public class CdrDbConfig {
           cdrPool.setPassword(dbPassword);
           cdrPool.setUrl(dbUrl);
           tomcatSource.setPoolProperties(cdrPool);
+
+          log.info("********************************** ---------------------------- ******************************");
+          log.info(dbUrl);
+          log.info("Test");
+          log.info("********************************** ---------------------------- ******************************");
 
           // The Spring autowiring is a bit of a maze here, log something concrete which will allow
           // verification that the DB settings in application.properties are actually being loaded.
