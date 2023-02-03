@@ -29,7 +29,6 @@ input[type='radio']:before {
   margin:50%;
   transform: translate(-50%,-50%);
   border-radius: 50%;
-  // background:#FAAF56;
 }
 #radio-orange[type='radio']:checked:before {
   background:#FAAF56;
@@ -93,6 +92,7 @@ interface State {
   currentAgeData: any;
   participantCounts: any[];
   selectedGenotype: string;
+  color: string;
 }
 
 export class GenomicOverviewComponent extends React.Component<Props, State> {
@@ -105,6 +105,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       currentAgeData: [],
       participantCounts: [],
       selectedGenotype: 'wgs_shortread',
+      color:'#6F98A0'
     };
     this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
   }
@@ -120,7 +121,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
   }
 
   getGenomicChartData() {
-    this.props.chartData.forEach((item) => {
+    this.props.chartData.forEach((item) => {      
       switch (item.analysisId) {
         case 3503:
           this.raceEthArr.push(item);
@@ -161,6 +162,23 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
 
   onGenotypeSelect(event) {
     this.setState({ selectedGenotype: event.target.value });
+    switch (event.target.value) {
+      case 'micro-array':
+        this.setState({color:'#FAAF56'});
+        break;
+      case 'wgs_structural_variants':
+        this.setState({color:'#93003A'});
+        break;
+      case 'wgs_shortread':
+        this.setState({color:'#6F98A0'});
+        break;
+      case 'wgs_longread':
+        this.setState({color:'#01429D'});
+        break;
+
+
+    }
+    
   }
 
   render() {
@@ -171,6 +189,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       participantCounts,
       selectedGenotype,
       loading,
+      color
     } = this.state;
     const { participantCount } = this.props;
     let countResults = [];
@@ -214,18 +233,21 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 title="Race/ethnicity"
                 data={raceEthData}
                 selectedGenotype={selectedGenotype}
+                color={color}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Sex assigned at birth"
                 data={sexAtBirthData}
                 selectedGenotype={selectedGenotype}
+                color={color}
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
                 title="Current age"
                 data={currentAgeData}
                 selectedGenotype={selectedGenotype}
+                color={color}
               />
             </React.Fragment>
           )}
