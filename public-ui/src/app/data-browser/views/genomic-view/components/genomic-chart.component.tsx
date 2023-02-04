@@ -44,6 +44,7 @@ interface Props {
   counts: any;
   title: string;
   selectedGenotype: string;
+  color: string;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {
@@ -136,7 +137,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       {
         name: selectedGenotype,
         data: selectedData,
-        color: "#8BC990",
+        color: this.props.color,
       }
     ];
     this.setState({
@@ -150,7 +151,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
 
   render() {
     const { options, selectedGenotype } = this.state;
-    const { title } = this.props;
+    const { title,color } = this.props;
     let legendText = selectedGenotype;
     if (selectedGenotype === 'micro-array') {
         legendText = 'Array';
@@ -160,7 +161,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
           <div style={styles.legend}>
-            <i className="fas fa-circle" style={{ color: "#8BC990" }}></i>{" "}
+            <i className="fas fa-circle" style={{ color: color }}></i>{" "}
             <span style={styles.legendItem}>{legendText}</span>
           </div>
         </div>
