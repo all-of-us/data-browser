@@ -499,27 +499,27 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 <span className="result-box-body-item">
                   <span>
                     <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Short-Read Whole Genome Sequencing dataset
+                    participants in the Short-Read WGS dataset
                   </span>
                 </span>}
               {wgsLRParticipantCount > 0 &&
                 <span className="result-box-body-item">
                   <span>
                     <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Long-Read Whole Genome Sequencing dataset
+                    participants in the Long-Read WGS dataset
                   </span>
                 </span>}
               {wgsSVParticipantCount > 0 &&
                 <span className="result-box-body-item">
                   <span>
                     <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Structural Variant dataset
+                    participants in the Structural Variants dataset
                   </span>
                 </span>}
               <span className="result-box-body-item">
                 <span>
                   <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                  participants in the Genotyping Array dataset
+                  participants in the Genotyping Arrays dataset
                 </span>
               </span>
             </React.Fragment>
