@@ -217,17 +217,17 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         <div style={styles.innerContainer}>
           {!loading && (
             <form style={styles.selectGenotypeData} onChange={this.onGenotypeSelect}>
-              {arrayParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label"> <input id="radio-orange" type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'} /> Genotyping Arrays</label>
-              </React.Fragment>)}
-              {wgsSVParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label"> <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Structural Variants</label>
-              </React.Fragment>)}
               {wgsSRParticipantCount > 0 && (<React.Fragment>
                 <label className="radio-label"> <input id="radio-teal" type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'} /> Short-Read WGS</label>
               </React.Fragment>)}
               {wgsLRParticipantCount > 0 && (<React.Fragment>
                 <label className="radio-label"> <input id="radio-blue" type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'} /> Long-Read WGS</label>
+              </React.Fragment>)}
+              {wgsSVParticipantCount > 0 && (<React.Fragment>
+                <label className="radio-label"> <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Structural Variants</label>
+              </React.Fragment>)}
+              {arrayParticipantCount > 0 && (<React.Fragment>
+                <label className="radio-label"> <input id="radio-orange" type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'} /> Genotyping Arrays</label>
               </React.Fragment>)}
             </form>)}
           {!loading && (
