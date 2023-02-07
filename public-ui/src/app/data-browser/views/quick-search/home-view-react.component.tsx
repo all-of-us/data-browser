@@ -361,7 +361,6 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
   }
 
   resultClick(info) {
-    console.log(info);
     if (info.domainConceptId) {
       let url;
       switch (info.domainConceptId) {
@@ -661,6 +660,7 @@ export const dBHomeComponent = withRouteData(
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
+      
     }, 1000);
 
     handleChange(val) {
@@ -890,7 +890,13 @@ export const dBHomeComponent = withRouteData(
           {!loading && !loadingVariantListSize && (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
-              <div className="result-boxes">
+              <div className="result-boxes" 
+              style={physicalMeasurementsInfo.length > 0 && searchWord && !loadingVariantListSize && this.typing || loadingVariantListSize ?
+               {gridTemplateAreas:`
+                'eHeading eHeading eHeading eHeading'
+                'eBoxes eBoxes eBoxes eBoxes'
+                'pmHeading pmHeading pmHeading pmHeading'
+                ' pmBoxes pmBoxes pmBoxes pmBoxes'`}: {} }>
                 {domainInfo.length > 0 &&
                   <h5
                     style={{
@@ -930,7 +936,6 @@ export const dBHomeComponent = withRouteData(
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
                         gridArea: 'gHeading',
-                        marginBottom: '-1rem',
                       }}
                     >
                       Genomics
@@ -954,13 +959,14 @@ export const dBHomeComponent = withRouteData(
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                       gridArea: 'pmHeading',
-                      marginBottom: '-1rem',
                       whiteSpace: 'nowrap'
                     }}
                   >
                     Physical Measurements and Wearables
                   </h5>
-                  <div className="pm-boxes">
+                  <div className="pm-boxes" 
+                  style={physicalMeasurementsInfo.length > 0 && searchWord && !loadingVariantListSize ? {gridTemplateColumns: "repeat(4, minmax(239px, 1fr))"}:{}
+                  }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
                         const key = "phyMeasurements" + index;
