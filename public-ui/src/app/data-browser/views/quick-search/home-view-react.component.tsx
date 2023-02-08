@@ -886,7 +886,7 @@ export const dBHomeComponent = withRouteData(
               </div>
             </div>
           </div>
-          {(loading || loadingVariantListSize ) ? <Spinner />: (
+          {(loading || loadingVariantListSize ) ? <div style={{height: '15vh',width:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}><Spinner /></div>: (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
               {true && <div className="result-boxes"
