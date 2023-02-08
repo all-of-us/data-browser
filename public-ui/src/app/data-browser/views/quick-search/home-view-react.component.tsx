@@ -133,6 +133,10 @@ const css = `
 
 }
 
+.hgc-count-text {
+    padding-bottom: 0.5em;
+}
+
 .result-box-stat-label {
   padding-bottom:1rem;
   display:block;
@@ -495,27 +499,27 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 </React.Fragment>
               </span>
               {wgsSRParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
                     participants in the Short-Read WGS dataset
                   </span>
                 </span>}
               {wgsLRParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
                     participants in the Long-Read WGS dataset
                   </span>
                 </span>}
               {wgsSVParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
                     participants in the Structural Variants dataset
                   </span>
                 </span>}
-              <span className="result-box-body-item">
+              <span className="result-box-body-item hgc-count-text">
                 <span>
                   <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
                   participants in the Genotyping Arrays dataset
