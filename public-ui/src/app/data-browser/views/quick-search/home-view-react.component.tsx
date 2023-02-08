@@ -73,12 +73,27 @@ const css = `
   'eHeading eHeading eHeading eHeading'
   'eBoxes eBoxes eBoxes eBoxes'
   'gHeading gHeading pmHeading pmHeading'
-  ' gBoxes gBoxes pmBoxes pmBoxes';
-
-  grid-template-rows: 1fr;
+  'gBoxes gBoxes pmBoxes pmBoxes';
+  grid-template-rows: 3rem 1fr 3rem;
   column-gap: 1rem;
   row-gap:1rem;
   margin-bottom: 2rem;
+}
+
+.no-pm {
+  grid-template-areas:
+  'eHeading eHeading eHeading eHeading'
+  'eBoxes eBoxes eBoxes eBoxes'
+  'gHeading gHeading pmHeading pmHeading'
+  'gBoxes gBoxes pmBoxes pmBoxes';
+}
+.has-pm {
+  grid-template-areas:
+  'eHeading eHeading eHeading eHeading'
+  'eBoxes eBoxes eBoxes eBoxes'
+  'pmHeading pmHeading pmHeading pmHeading'
+  'pmBoxes pmBoxes pmBoxes pmBoxes';
+  
 }
 .ehr-boxes{
   display: grid;
@@ -114,7 +129,7 @@ const css = `
   
 .result-box-title {
   font-family: GothamBook, Arial, sans-serif;
-  color: #302c71;
+  color: #3279b7;
   height: 2.5rem;
   margin-bottom:1rem;
   display: flex;
@@ -220,7 +235,7 @@ const css = `
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
   .genomic-boxes{
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
+    grid-template-columns: repeat(1, minmax(239px, 1fr));
   }
 }
     `;
@@ -275,13 +290,10 @@ const styles = reactStyles({
     // display: "flex",
     // alignItems:"center",
     // background:"yellow"
-
   },
   resultHeading: {
     fontSize: "23px",
-    margin: "0",
-    paddingTop: "9px",
-    // paddingBottom: "9px",
+    height: "0rem",
     paddingLeft: "0",
   },
   resultBodyItem: {
@@ -661,9 +673,9 @@ export const dBHomeComponent = withRouteData(
       this.getDomainInfos();
       this.getVariantResultSize();
     }, 1000)
-    
+
     handleChange(val) {
-      this.setState({loading:true});
+      this.setState({ loading: true });
       this.setState({ searchWord: val });
       this.search(val);
       this.typing = false;
@@ -886,24 +898,10 @@ export const dBHomeComponent = withRouteData(
               </div>
             </div>
           </div>
-          {(loading || loadingVariantListSize ) ? <div style={{height: '15vh',width:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}><Spinner /></div>: (
+          {(loading || loadingVariantListSize) ? <div style={{ height: '15vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
-              {true && <div className="result-boxes"
-                style={physicalMeasurementsInfo.length > 0 &&  searchWord ?
-                  {
-                    gridTemplateAreas: `
-                'eHeading eHeading eHeading eHeading'
-                'eBoxes eBoxes eBoxes eBoxes'
-                'pmHeading pmHeading pmHeading pmHeading'
-                ' pmBoxes pmBoxes pmBoxes pmBoxes'`} : {
-                    gridTemplateAreas: `
-                'eHeading eHeading eHeading eHeading'
-                'eBoxes eBoxes eBoxes eBoxes'
-                'gHeading gHeading pmHeading pmHeading'
-                'gBoxes gBoxes pmBoxes pmBoxes'
-                `}
-                }>
+              {true && <div className={`result-boxes ${physicalMeasurementsInfo.length > 0 && searchWord ? 'has-pm' : ''}  `}>
                 {domainInfo.length > 0 &&
                   <h5
                     style={{
@@ -972,7 +970,7 @@ export const dBHomeComponent = withRouteData(
                     Physical Measurements and Wearables
                   </h5>
                   <div className="pm-boxes"
-                    style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : {gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
+                    style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : { gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
                     }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
@@ -1000,6 +998,7 @@ export const dBHomeComponent = withRouteData(
                     style={{
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
+                      marginTop: "3rem"
                     }}
                   >
                     Survey Questions
