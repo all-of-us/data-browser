@@ -566,7 +566,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {participantCount && !(domainType === "genomics") && (
             <span className="result-box-body-item">
               <strong> {participantCount.toLocaleString()}</strong>{" "}
-              participants in this domain
+              participants
             </span>
           )}
 
@@ -589,7 +589,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   <span className="result-stat" >
                     {microarrayParticipantCount.toLocaleString()}{" "}
                   </span>
-                  participants in this domain
+                  participants
                 </span>
               </React.Fragment>
             )}
