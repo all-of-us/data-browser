@@ -361,7 +361,6 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
   }
 
   resultClick(info) {
-    console.log(info);
     if (info.domainConceptId) {
       let url;
       switch (info.domainConceptId) {
@@ -524,42 +523,42 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               </span>
             </React.Fragment>
           )}
-          {searchWord && domainType === "ehr" && (
+          {!typing && searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching medical concepts</span>
             </span>
           )}
-          {searchWord && domainType === "survey" && (
+          {!typing && searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span>matching survey questions</span>
             </span>
           )}
-          {searchWord && name.toLowerCase() === "physical measurements" && (
+          {!typing && searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
-              <span>matching Physical Measurements</span>
+              <span className="result-box-stat-label">matching Physical Measurements</span>
             </span>
           )}
-          {searchWord && name.toLowerCase() === "fitbit" && (
+          {!typing && searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
-              <span>matching Fitbit Measurements</span>
+              <span className="result-box-stat-label">matching Fitbit Measurements</span>
             </span>
           )}
-          {!searchWord && domainType === "ehr" && (
+          {!typing && !searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">medical concepts</span>
             </span>
           )}
-          {!searchWord && domainType === "survey" && (
+          {!typing && !searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">questions available</span>
             </span>
           )}
-          {!searchWord && name.toLowerCase() === "physical measurements" && (
+          {!typing && !searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Physical Measurements</span>
             </span>
           )}
-          {!searchWord && name.toLowerCase() === "fitbit" && (
+          {!typing && !searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
@@ -583,8 +582,8 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                       <span className="result-stat" >
                         {variantListSize.toLocaleString()}
                       </span>{" "}
+                      matching genomic variants
                     </React.Fragment>}
-                  matching genomic variants
                 </span>
                 <span className="result-box-body-item">
                   <span className="result-stat" >
@@ -661,9 +660,10 @@ export const dBHomeComponent = withRouteData(
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
-    }, 1000);
-
+    }, 1000)
+    
     handleChange(val) {
+      this.setState({loading:true});
       this.setState({ searchWord: val });
       this.search(val);
       this.typing = false;
@@ -886,11 +886,24 @@ export const dBHomeComponent = withRouteData(
               </div>
             </div>
           </div>
-          {(loading || loadingVariantListSize) && <Spinner />}
-          {!loading && !loadingVariantListSize && (
+          {(loading || loadingVariantListSize ) ? <div style={{height: '15vh',width:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}><Spinner /></div>: (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
-              <div className="result-boxes">
+              {true && <div className="result-boxes"
+                style={physicalMeasurementsInfo.length > 0 &&  searchWord ?
+                  {
+                    gridTemplateAreas: `
+                'eHeading eHeading eHeading eHeading'
+                'eBoxes eBoxes eBoxes eBoxes'
+                'pmHeading pmHeading pmHeading pmHeading'
+                ' pmBoxes pmBoxes pmBoxes pmBoxes'`} : {
+                    gridTemplateAreas: `
+                'eHeading eHeading eHeading eHeading'
+                'eBoxes eBoxes eBoxes eBoxes'
+                'gHeading gHeading pmHeading pmHeading'
+                'gBoxes gBoxes pmBoxes pmBoxes'
+                `}
+                }>
                 {domainInfo.length > 0 &&
                   <h5
                     style={{
@@ -930,7 +943,6 @@ export const dBHomeComponent = withRouteData(
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
                         gridArea: 'gHeading',
-                        marginBottom: '-1rem',
                       }}
                     >
                       Genomics
@@ -954,13 +966,14 @@ export const dBHomeComponent = withRouteData(
                       ...globalStyles.secondaryDisplay,
                       ...styles.resultHeading,
                       gridArea: 'pmHeading',
-                      marginBottom: '-1rem',
                       whiteSpace: 'nowrap'
                     }}
                   >
                     Physical Measurements and Wearables
                   </h5>
-                  <div className="pm-boxes">
+                  <div className="pm-boxes"
+                    style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : {gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
+                    }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
                         const key = "phyMeasurements" + index;
@@ -980,7 +993,7 @@ export const dBHomeComponent = withRouteData(
                   </div>
                 </React.Fragment>
                 )}
-              </div>
+              </div>}
               {surveyInfo.length > 0 && (
                 <React.Fragment>
                   <h5
@@ -1020,14 +1033,15 @@ export const dBHomeComponent = withRouteData(
                 </h5>
               )}
             </section>
-          )}
+          )
+          }
           {popUp && (
             <PopUpReactComponent
               helpText="HomeViewPopup"
               onClose={() => this.closePopUp()}
             />
           )}
-        </React.Fragment>
+        </React.Fragment >
       );
     }
   }
