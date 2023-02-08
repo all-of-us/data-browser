@@ -660,10 +660,10 @@ export const dBHomeComponent = withRouteData(
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
-
-    }, 1000);
-
+    }, 1000)
+    
     handleChange(val) {
+      this.setState({loading:true});
       this.setState({ searchWord: val });
       this.search(val);
       this.typing = false;
@@ -886,18 +886,24 @@ export const dBHomeComponent = withRouteData(
               </div>
             </div>
           </div>
-          {(loading || loadingVariantListSize) && <Spinner />}
-          {!loading && !loadingVariantListSize && (
+          {(loading || loadingVariantListSize ) ? <Spinner />: (
             <section style={styles.results}>
               {noConceptData && <ErrorMessageReactComponent dataType="data" />}
-              <div className="result-boxes"
-                style={physicalMeasurementsInfo.length > 0 && searchWord && !loadingVariantListSize && this.typing || loadingVariantListSize ?
+              {true && <div className="result-boxes"
+                style={physicalMeasurementsInfo.length > 0 &&  searchWord ?
                   {
                     gridTemplateAreas: `
                 'eHeading eHeading eHeading eHeading'
                 'eBoxes eBoxes eBoxes eBoxes'
                 'pmHeading pmHeading pmHeading pmHeading'
-                ' pmBoxes pmBoxes pmBoxes pmBoxes'`} : {}}>
+                ' pmBoxes pmBoxes pmBoxes pmBoxes'`} : {
+                    gridTemplateAreas: `
+                'eHeading eHeading eHeading eHeading'
+                'eBoxes eBoxes eBoxes eBoxes'
+                'gHeading gHeading pmHeading pmHeading'
+                'gBoxes gBoxes pmBoxes pmBoxes'
+                `}
+                }>
                 {domainInfo.length > 0 &&
                   <h5
                     style={{
@@ -966,7 +972,7 @@ export const dBHomeComponent = withRouteData(
                     Physical Measurements and Wearables
                   </h5>
                   <div className="pm-boxes"
-                    style={physicalMeasurementsInfo.length > 0 && searchWord && !loadingVariantListSize ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : {}
+                    style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : {gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
                     }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
@@ -987,7 +993,7 @@ export const dBHomeComponent = withRouteData(
                   </div>
                 </React.Fragment>
                 )}
-              </div>
+              </div>}
               {surveyInfo.length > 0 && (
                 <React.Fragment>
                   <h5
@@ -1027,14 +1033,15 @@ export const dBHomeComponent = withRouteData(
                 </h5>
               )}
             </section>
-          )}
+          )
+          }
           {popUp && (
             <PopUpReactComponent
               helpText="HomeViewPopup"
               onClose={() => this.closePopUp()}
             />
           )}
-        </React.Fragment>
+        </React.Fragment >
       );
     }
   }
