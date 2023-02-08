@@ -35,7 +35,6 @@ const styles = reactStyles({
   },
   headingLabel: {
     borderBottom: "1px dashed",
-    cursor: "pointer",
   },
   first: {
     paddingLeft: ".5rem",
@@ -222,9 +221,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("variantId");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Variant ID
                 </span>
                 {sortMetadata.variantId.sortActive && (
@@ -262,9 +259,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("gene");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Gene
                 </span>
                 {sortMetadata.gene.sortActive && (
@@ -302,9 +297,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("consequence");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Consequence
                 </span>
                 {sortMetadata.consequence.sortActive && (
@@ -342,9 +335,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("proteinChange");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Protein Change
                 </span>
                 {sortMetadata.proteinChange.sortActive && (
@@ -382,9 +373,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("clinicalSignificance");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   ClinVar Significance
                 </span>
                 {sortMetadata.clinicalSignificance.sortActive && (
@@ -423,9 +412,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("alleleCount");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Allele Count
                 </span>
                 {sortMetadata.alleleCount.sortActive && (
@@ -463,9 +450,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("alleleNumber");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Allele Number
                 </span>
                 {sortMetadata.alleleNumber.sortActive && (
@@ -503,9 +488,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   style={styles.headingLabel}
                   onClick={() => {
                     this.sortClick("alleleFrequency");
-                  }}
-                  title="Click to sort"
-                >
+                  }}>
                   Allele Frequency
                 </span>
                 {sortMetadata.alleleFrequency.sortActive && (

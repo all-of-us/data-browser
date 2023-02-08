@@ -187,7 +187,7 @@ export const GenomicViewComponent = withRouteData(
         filterMetadata: null,
         filteredMetadata: undefined,
         sortMetadata: new SortMetadataClass(
-                    new SortColumnDetailsClass(false, "desc", 1),
+                    new SortColumnDetailsClass(true, "asc", 1),
                     new SortColumnDetailsClass(false, "desc", 2),
                     new SortColumnDetailsClass(false, "desc", 3),
                     new SortColumnDetailsClass(false, "desc", 4),
@@ -223,6 +223,8 @@ export const GenomicViewComponent = withRouteData(
             sortMetadata[smKey].sortActive = false;
             sortMetadata[smKey].sortDirection = "desc";
         }
+        sortMetadata['variantId'].sortActive = true;
+        sortMetadata['variantId'].sortDirection = "asc";
         this.setState({sortMetadata: sortMetadata});
     }
 
