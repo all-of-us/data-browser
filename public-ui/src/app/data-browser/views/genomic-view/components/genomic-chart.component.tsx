@@ -154,8 +154,15 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     const { title,color } = this.props;
     let legendText = selectedGenotype;
     if (selectedGenotype === 'micro-array') {
-        legendText = 'Array';
+        legendText = 'Genotyping Arrays';
+    } else if (selectedGenotype === 'wgs_longread') {
+        legendText = 'Long-Read WGS';
+    } else if (selectedGenotype === 'wgs_shortread') {
+        legendText = 'Short-Read WGS';
+    } else if (selectedGenotype === 'wgs_structural_variants') {
+        legendText = 'Structural Variants';
     }
+
     return (
       <div style={styles.chartContainer}>
         <div style={styles.legendLayout}>

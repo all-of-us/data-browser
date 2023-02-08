@@ -10,7 +10,7 @@ export const tooltips = {
   "Search Across Data Types": {
     texts: [
       `Search across all data types by using common keywords or billing/data standards codes (i.e., SNOMED, CPT, ICD).
-       Advanced genomic variant search is available within the Genomic Variants section`,
+       Advanced genomic variant search is available within the SNP/Indel Variants section`,
     ],
   },
   raceEthnicityQuestionHelpText: {

@@ -148,6 +148,10 @@ const css = `
 
 }
 
+.hgc-count-text {
+    padding-bottom: 0.5em;
+}
+
 .result-box-stat-label {
   padding-bottom:1rem;
   display:block;
@@ -503,34 +507,34 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   <span className="result-stat" >
                     {variantListSize.toLocaleString()}
                   </span>
-                  <span className="result-box-stat-label">Genomic Variants</span>
+                  <span className="result-box-stat-label">SNP/Indel Variants</span>
                 </React.Fragment>
               </span>
               {wgsSRParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Short-Read Whole Genome Sequencing dataset
+                    participants in the Short-Read WGS dataset
                   </span>
                 </span>}
               {wgsLRParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Long-Read Whole Genome Sequencing dataset
+                    participants in the Long-Read WGS dataset
                   </span>
                 </span>}
               {wgsSVParticipantCount > 0 &&
-                <span className="result-box-body-item">
+                <span className="result-box-body-item hgc-count-text">
                   <span>
                     <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Structural Variant dataset
+                    participants in the Structural Variants dataset
                   </span>
                 </span>}
-              <span className="result-box-body-item">
+              <span className="result-box-body-item hgc-count-text">
                 <span>
                   <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                  participants in the Genotyping Array dataset
+                  participants in the Genotyping Arrays dataset
                 </span>
               </span>
             </React.Fragment>
@@ -578,7 +582,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {participantCount && !(domainType === "genomics") && (
             <span className="result-box-body-item">
               <strong> {participantCount.toLocaleString()}</strong>{" "}
-              participants in this domain
+              participants
             </span>
           )}
 
@@ -601,7 +605,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   <span className="result-stat" >
                     {microarrayParticipantCount.toLocaleString()}{" "}
                   </span>
-                  participants in this domain
+                  participants
                 </span>
               </React.Fragment>
             )}
@@ -967,7 +971,7 @@ export const dBHomeComponent = withRouteData(
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    Physical Measurements and Wearables
+                    Measurements and Wearables
                   </h5>
                   <div className="pm-boxes"
                     style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : { gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
