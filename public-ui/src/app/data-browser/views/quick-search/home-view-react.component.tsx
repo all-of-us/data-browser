@@ -491,7 +491,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   <span className="result-stat" >
                     {variantListSize.toLocaleString()}
                   </span>
-                  <span className="result-box-stat-label">Genomic Variants</span>
+                  <span className="result-box-stat-label">SNP/Indel Variants</span>
                 </React.Fragment>
               </span>
               {wgsSRParticipantCount > 0 &&
