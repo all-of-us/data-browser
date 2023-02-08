@@ -31,6 +31,11 @@ const css = `
         grid-template-columns: 25% 25% 25% 25%;
         font-size: 14px;
     }
+.pop-desc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .body {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
@@ -196,23 +201,23 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                 <div>
                   <span style={styles.catHeading}>Consequence:</span>
                   <br />
-                  <span style={styles.catInfo}>{variant.consequence}</span>
+                  <span style={styles.catInfo}>{variant.consequence ? variant.consequence : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>Protein Change:</span>
                   <br />
-                  <span style={styles.catInfo}>{variant.proteinChange}</span>
+                  <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>DNA Change:</span>
                   <br />
-                  <span style={styles.catInfo}>{variantDetails.dnaChange}</span>
+                  <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>Transcript:</span>
                   <br />
                   <span style={styles.catInfo}>
-                    {variantDetails.transcript}
+                    {variantDetails.transcript ? variantDetails.transcript : "-"}
                   </span>
                 </div>
                 <div>
@@ -236,13 +241,13 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                 <div>
                   <span style={styles.catHeading}>Gene:</span>
                   <br />
-                  <span style={styles.catInfo}>{variant.genes}</span>
+                  <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>ClinVar Significance:</span>
                   <br />
                   <span style={styles.catInfo}>
-                    {variant.clinicalSignificance}
+                    {variant.clinicalSignificance ? variant.clinicalSignificance : "-"}
                   </span>
                 </div>
               </div>
@@ -268,7 +273,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                         <div key={index} className="pop-table">
                           <div style={styles.popTableData}>
                             {item.Ancestry !== "Total" ? (
-                              <span>
+                              <span className="pop-desc">
                                 <i
                                   className="fas fa-circle"
                                   style={{
