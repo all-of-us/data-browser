@@ -1,8 +1,7 @@
 import * as React from "react";
-
 import { reactStyles } from "app/utils";
-
 import { GenomicChartComponent } from "./genomic-chart.component";
+
 const css = `
 label {
   display: flex;
@@ -24,9 +23,9 @@ input:focus{
 input[type='radio']:before {
   content: '';
   display: block;
-  width: 60%;
-  height: 60%;
-  margin:50%;
+  width: 50%;
+  height: 50%;
+  margin: 50%;
   transform: translate(-50%,-50%);
   border-radius: 50%;
 }

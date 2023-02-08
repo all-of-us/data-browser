@@ -973,7 +973,7 @@ export const dBHomeComponent = withRouteData(
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    Physical Measurements and Wearables
+                    Measurements and Wearables
                   </h5>
                   <div className="pm-boxes"
                     style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : {gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
