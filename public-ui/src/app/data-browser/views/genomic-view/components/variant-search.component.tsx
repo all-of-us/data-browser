@@ -81,9 +81,9 @@ interface State {
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
+    private filterWrapperRef;
     constructor(props: Props) {
         super(props);
-
         this.state = {
             searchWord: '',
             filterShow: false,
@@ -95,12 +95,31 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
         }
+        this.filterWrapperRef = React.createRef();
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
 
   handleChange(val: string) {
       this.props.onSearchTerm(val);
       this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
+  }
+
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside(event) {
+    const {filterShow} = this.state;
+    if (this.filterWrapperRef && !this.filterWrapperRef.current.contains(event.target)) {
+      if (filterShow) {
+        this.setState({ filterShow: !this.state.filterShow });
+      }
+    }
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
@@ -165,7 +184,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 (!loadingResults && !loadingVariantListSize && searchWord) && <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
                                 <span style={styles.loading}><Spinner /></span>} variants found</strong>
                 }</React.Fragment>
-            {environment.genoFilters && <div style={styles.filterContainer}>
+            {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
                 {((!loadingResults && !loadingVariantListSize) && filterShow) &&
                     <VariantFilterComponent
                         filterMetadata={filterMetadata}
