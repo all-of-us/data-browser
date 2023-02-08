@@ -31,6 +31,11 @@ const css = `
         grid-template-columns: 25% 25% 25% 25%;
         font-size: 14px;
     }
+.pop-desc {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 .body {
     display: grid;
     grid-template-columns: 25% 25% 25% 25%;
@@ -268,7 +273,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                         <div key={index} className="pop-table">
                           <div style={styles.popTableData}>
                             {item.Ancestry !== "Total" ? (
-                              <span>
+                              <span className="pop-desc">
                                 <i
                                   className="fas fa-circle"
                                   style={{
