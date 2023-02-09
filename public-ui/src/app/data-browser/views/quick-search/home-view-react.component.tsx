@@ -914,7 +914,7 @@ export const dBHomeComponent = withRouteData(
                       gridArea: 'eHeading',
                     }}
                   >
-                    EHR Domains
+                    <span style={{position:'relative', bottom:'2px'}}>EHR Domains</span>
                   </h5>}
                 {domainInfo.length > 0 && (
                   <React.Fragment>
@@ -947,7 +947,7 @@ export const dBHomeComponent = withRouteData(
                         gridArea: 'gHeading',
                       }}
                     >
-                      Genomics
+                      <span style={{position:'relative', bottom:'2px'}}>Genomics</span>
                     </h5>
                     <div className="genomic-boxes">
                       <ResultLinksComponent
@@ -971,11 +971,9 @@ export const dBHomeComponent = withRouteData(
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    Measurements and Wearables
+                    <span style={{position:'relative', bottom:'2px'}}>Measurements and Wearables</span>
                   </h5>
-                  <div className="pm-boxes"
-                    style={physicalMeasurementsInfo.length > 0 && searchWord ? { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : { gridTemplateColumns: "repeat(2, minmax(239px, 1fr))" }
-                    }>
+                  <div className="pm-boxes">
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
                         const key = "phyMeasurements" + index;
