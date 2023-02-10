@@ -156,7 +156,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 </div>
             </div>
             {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
-                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div> : <div style={{height:'1rem'}}></div>}
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> : <div style={{height:'1rem'}}></div>}
             {filterMetadata &&
                 <VariantFilterChips
                     filteredMetadata={filterMetadata}
