@@ -120,7 +120,9 @@ interface State {
   chartData: any;
   sortMetadata: SortMetadata;
   filterMetadata: GenomicFilters;
+  submittedFilterMetadata: GenomicFilters;
   filteredMetadata: GenomicFilters;
+  filterChipsShow: boolean;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -184,8 +186,10 @@ export const GenomicViewComponent = withRouteData(
         rowCount: 50,
         participantCount: null,
         chartData: null,
+        filterChipsShow: false,
         filterMetadata: null,
         filteredMetadata: undefined,
+        submittedFilterMetadata: undefined,
         sortMetadata: new SortMetadataClass(
                     new SortColumnDetailsClass(true, "asc", 1),
                     new SortColumnDetailsClass(false, "desc", 2),
@@ -260,10 +264,10 @@ export const GenomicViewComponent = withRouteData(
     getFilterMetadata(searchTerm: string) {
       genomicsApi().getGenomicFilterOptions(searchTerm).then(
         result => {
-          result.gene.forEach(el => { el.checked = true; });
-          result.consequence.forEach(el => { el.checked = false; });
-          result.clinicalSignificance.forEach(el => { el.checked = false; });
-          this.setState({ filterMetadata: result });
+          result.gene.items.forEach(el => { el.checked = false; });
+          result.consequence.items.forEach(el => { el.checked = false; });
+          result.clinicalSignificance.items.forEach(el => { el.checked = false; });
+          this.setState({ filterMetadata: result, submittedFilterMetadata: { ...result} });
           localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
         }
       ).catch(e => {
@@ -418,20 +422,19 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
-
       if (filteredMetadata['alleleFrequency']['checked']) {
               filteredMetadata['alleleFrequency']['maxFreq'] = filteredMetadata['alleleFrequency']['max'];
               filteredMetadata['alleleFrequency']['minFreq'] = filteredMetadata['alleleFrequency']['min'];
       }
 
+      this.setState({submittedFilterMetadata: { ...filteredMetadata} });
       this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }
 
     render() {
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata } = this.state;
-
+        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
       return <React.Fragment>
         <style>{css}</style>
         <div style={styles.pageHeader}>
@@ -495,6 +498,7 @@ export const GenomicViewComponent = withRouteData(
                 participantCount={participantCount}
                 searchTerm={searchTerm}
                 filterMetadata={filterMetadata}
+                submittedFilterMetadata={submittedFilterMetadata}
                 sortMetadata={sortMetadata}
               />
             )}
