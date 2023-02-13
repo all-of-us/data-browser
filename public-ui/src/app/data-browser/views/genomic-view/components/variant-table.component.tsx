@@ -218,10 +218,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("variantId");
-                  }}>
+                  style={styles.headingLabel}>
                   Variant ID
                 </span>
                 {sortMetadata.variantId.sortActive && (
@@ -232,34 +229,21 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("variantId");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("variantId");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("gene");
-                  }}>
+                  style={styles.headingLabel}>
                   Gene
                 </span>
                 {sortMetadata.gene.sortActive && (
@@ -270,34 +254,21 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("gene");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("gene");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("consequence");
-                  }}>
+                  style={styles.headingLabel}>
                   Consequence
                 </span>
                 {sortMetadata.consequence.sortActive && (
@@ -308,34 +279,21 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("consequence");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("consequence");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("proteinChange");
-                  }}>
+                  style={styles.headingLabel}>
                   Protein Change
                 </span>
                 {sortMetadata.proteinChange.sortActive && (
@@ -346,34 +304,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("proteinChange");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("proteinChange");
-                        }}
-                      ></i>
+                          marginLeft: "0.5em",}}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("clinicalSignificance");
-                  }}>
+                  style={styles.headingLabel}>
                   ClinVar Significance
                 </span>
                 {sortMetadata.clinicalSignificance.sortActive && (
@@ -385,34 +329,21 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("clinicalSignificance");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("clinicalSignificance");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("alleleCount");
-                  }}>
+                  style={styles.headingLabel}>
                   Allele Count
                 </span>
                 {sortMetadata.alleleCount.sortActive && (
@@ -423,34 +354,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleCount");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleCount");
-                        }}
-                      ></i>
+                          marginLeft: "0.5em"}}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={styles.headingItem}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("alleleNumber");
-                  }}>
+                  style={styles.headingLabel}>
                   Allele Number
                 </span>
                 {sortMetadata.alleleNumber.sortActive && (
@@ -461,34 +378,21 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleNumber");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleNumber");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
               </div>
               <div style={{ ...styles.headingItem, ...styles.last }}>
                 <span
-                  style={styles.headingLabel}
-                  onClick={() => {
-                    this.sortClick("alleleFrequency");
-                  }}>
+                  style={styles.headingLabel}>
                   Allele Frequency
                 </span>
                 {sortMetadata.alleleFrequency.sortActive && (
@@ -499,24 +403,14 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleFrequency");
-                        }}
-                      ></i>
+                        }}></i>
                     ) : (
                       <i
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
                           marginLeft: "0.5em",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          this.sortClick("alleleFrequency");
-                        }}
-                      ></i>
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
