@@ -468,7 +468,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
             List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            System.out.println(geneFilterList.getFilterActive());
             if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
@@ -576,10 +575,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
-
-        System.out.println("*******************************************************************************************");
-        System.out.println(finalSql);
-        System.out.println("*******************************************************************************************");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
