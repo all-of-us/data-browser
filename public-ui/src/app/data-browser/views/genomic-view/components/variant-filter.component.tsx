@@ -152,8 +152,11 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         const { sortMetadata } = this.state;
         for (const smKey in sortMetadata) {
             sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "asc";
+            sortMetadata[smKey].sortDirection = "desc";
         }
+        sortMetadata['variantId'].sortActive = true;
+        sortMetadata['variantId'].sortDirection = "asc";
+
         this.setState({ cleared: false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata }, () => this.setState({ cleared: true }));
     }
 
