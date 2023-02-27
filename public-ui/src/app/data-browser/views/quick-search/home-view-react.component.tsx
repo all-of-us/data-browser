@@ -585,30 +585,46 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               participants
             </span>
           )}
-
-          {domainType === "genomics" &&
-            searchWord &&
-            !loadingVariantListSize &&
-            variantListSize > 0 && (
-              <React.Fragment>
-                <span className="result-box-body-item">
-                  {(typing || loadingVariantListSize) && <Spinner />}
-                  {(!typing && !loadingVariantListSize) &&
-                    <React.Fragment>
-                      <span className="result-stat" >
-                        {variantListSize.toLocaleString()}
-                      </span>{" "}
-                      matching genomic variants
-                    </React.Fragment>}
-                </span>
-                <span className="result-box-body-item">
-                  <span className="result-stat" >
-                    {microarrayParticipantCount.toLocaleString()}{" "}
-                  </span>
-                  participants
-                </span>
-              </React.Fragment>
-            )}
+          {domainType === "genomics" && searchWord && !loadingVariantListSize &&
+                                                               variantListSize > 0 && (
+                      <React.Fragment>
+                        <span className="result-box-body-item">
+                          <React.Fragment>
+                            <span className="result-stat" >
+                              {variantListSize.toLocaleString()}
+                            </span>
+                            <span className="result-box-stat-label">matching SNP/Indel Variants</span>
+                          </React.Fragment>
+                        </span>
+                        {wgsSRParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Short-Read WGS dataset
+                            </span>
+                          </span>}
+                        {wgsLRParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Long-Read WGS dataset
+                            </span>
+                          </span>}
+                        {wgsSVParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Structural Variants dataset
+                            </span>
+                          </span>}
+                        <span className="result-box-body-item hgc-count-text">
+                          <span>
+                            <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
+                            participants in the Genotyping Arrays dataset
+                          </span>
+                        </span>
+                      </React.Fragment>
+                    )}
           {questionCount && (
             <div style={styles.resultBodyItem}>
               <span>{description}</span>
