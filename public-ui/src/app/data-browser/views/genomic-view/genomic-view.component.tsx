@@ -458,7 +458,6 @@ export const GenomicViewComponent = withRouteData(
           <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
           age of participants whose genomic data are available within the
           Researcher Workbench.{" "}</p>
-          <div><span style={styles.genomicParticipantCountStyle}>{participantCount} </span>participants</div>
           </div>
           )}
           <div style={styles.innerContainer} id="childView">
