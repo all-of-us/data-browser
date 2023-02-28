@@ -54,7 +54,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             " where REGEXP_CONTAINS(rsid, @rs_id)";
     private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
     private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(gene, @genes)";
-    private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
+    // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
@@ -181,8 +181,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     genes = "(?i)" + searchTerm;
                     finalSql += WHERE_GENE;
                 } else {
-                    genes = searchTerm.toLowerCase();
-                    finalSql += WHERE_GENE_EXACT;
+                    // genes = searchTerm.toLowerCase();
+                    genes = "(?i)" + "\\b" + searchTerm.toLowerCase() + "\\b";
+                    finalSql += WHERE_GENE_REGEX;
                 }
             }
         }
@@ -445,8 +446,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     genes = "(?i)" + searchTerm;
                     finalSql += WHERE_GENE;
                 } else {
-                    genes = searchTerm.toLowerCase();
-                    finalSql += WHERE_GENE_EXACT;
+                    // genes = searchTerm.toLowerCase();
+                    genes = "(?i)" + "\\b" + searchTerm.toLowerCase() + "\\b";
+                    finalSql += WHERE_GENE_REGEX;
                 }
             }
         }
@@ -686,11 +688,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                             FILTER_OPTION_SQL_TEMPLATE_UNION;
                 } else {
                     genes = searchTerm.toLowerCase();
-                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_EXACT +
+                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
+                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
+                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
+                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
                             FILTER_OPTION_SQL_TEMPLATE_UNION;
                 }
             }
