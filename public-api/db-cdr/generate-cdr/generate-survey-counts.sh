@@ -429,7 +429,6 @@ CAST(observation_source_concept_id as string) as stratum_6,
 Count(distinct person_id) as count_value, 0 as source_count_value
 from basics_category_rows
 group by observation_source_concept_id, survey_concept_id, order_number, stratum_3, stratum_4
-order by CAST(order_number as int64) asc
 union all
 select 0,3111 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5, path as stratum_6,
@@ -441,8 +440,7 @@ select 0, 3112 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAS
 age_stratum as stratum_5, path as stratum_6,
 COUNT(distinct bcr.PERSON_ID) as count_value,0 as source_count_value
 from basics_category_rows bcr join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=bcr.observation_id
-group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, stratum_5, order_number, path
-order by CAST(order_number as int64) asc"
+group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, stratum_5, order_number, path"
 
 
 # Set the survey answer count for all the survey questions that has value as number and not value as concept id
