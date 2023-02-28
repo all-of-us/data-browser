@@ -454,7 +454,7 @@ CAST(o.value_as_number as string) as stratum_4,cast(sq.order_number as string) s
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id=0)
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null))
 group by o.observation_source_concept_id,o.value_as_number,sq.survey_concept_id,sq.order_number
 order by CAST(sq.order_number as int64) asc"
 
@@ -513,7 +513,7 @@ count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id = 0)
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
@@ -574,7 +574,7 @@ COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id = 0 and o.value_as_number >= 0)
+where (o.observation_source_concept_id > 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null) and o.value_as_number >= 0)
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
