@@ -95,8 +95,6 @@ export class SurveyQuestionReactComponent extends React.Component<
         this.props.question.path
       )
       .then((results) => {
-        console.log('Here ???');
-        console.log(results);
         const questionWithResults = this.props.question;
         questionWithResults.countAnalysis = results.items.filter(
           (a) => a.analysisId === 3110
