@@ -14,6 +14,7 @@ import org.pmiops.workbench.model.Variant;
 import org.pmiops.workbench.model.VariantInfo;
 import org.pmiops.workbench.model.GenomicFilters;
 import org.pmiops.workbench.model.GenomicFilterOption;
+import org.pmiops.workbench.model.GenomicFilterOptionList;
 import org.pmiops.workbench.model.VariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
@@ -186,7 +187,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE_REGEX;
             }
         }
-        String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
+        String WHERE_GENE_IN = " AND lower(genes) in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
@@ -198,17 +199,19 @@ public class GenomicsController implements GenomicsApiDelegate {
         boolean conFilterFlag = false;
         boolean clinFilterFlag = false;
         if (filters != null) {
-            List<GenomicFilterOption> geneFilters = filters.getGene();
-            if (geneFilters != null && geneFilters.size() > 0) {
+            GenomicFilterOptionList geneFilterList = filters.getGene();
+            List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
-                    if (!filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_NOT_IN += "\"" + filter.getOption().toLowerCase() + "\",";
+                    if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
+                        WHERE_GENE_IN += "\"" + filter.getOption().toLowerCase() + "\",";
                     }
                 }
             }
-            List<GenomicFilterOption> conFilters = filters.getConsequence();
-            if (conFilters != null && conFilters.size() > 0) {
+            GenomicFilterOptionList conFilterList = filters.getConsequence();
+            List<GenomicFilterOption> conFilters = conFilterList.getItems();
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
                     if (filter.getChecked()) {
@@ -220,8 +223,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
-            List<GenomicFilterOption> clinFilters = filters.getClinicalSignificance();
-            if (clinFilters != null && clinFilters.size() > 0) {
+            GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
+            List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
                     if (filter.getChecked()) {
@@ -252,10 +256,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
             }
         }
-        if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
+        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
             geneFilterFlag = true;
-            WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
-            WHERE_GENE_NOT_IN += ") ";
+            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
+            WHERE_GENE_IN += ") ";
         }
         if (WHERE_CON_IN.substring(WHERE_CON_IN.length() - 1).equals(",")) {
             conFilterFlag = true;
@@ -268,7 +272,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CLIN_IN += ")) ";
         }
         if (geneFilterFlag) {
-            finalSql += WHERE_GENE_NOT_IN;
+            finalSql += WHERE_GENE_IN;
         }
         if (conFilterFlag) {
             finalSql += WHERE_CON_IN;
@@ -455,7 +459,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE_REGEX;
             }
         }
-        String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
+        String WHERE_GENE_IN = " AND lower(genes) in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
@@ -467,17 +471,19 @@ public class GenomicsController implements GenomicsApiDelegate {
         boolean conFilterFlag = false;
         boolean clinFilterFlag = false;
         if (filters != null) {
-            List<GenomicFilterOption> geneFilters = filters.getGene();
-            if (geneFilters != null && geneFilters.size() > 0) {
+            GenomicFilterOptionList geneFilterList = filters.getGene();
+            List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
-                    if (!filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_NOT_IN += "\"" + filter.getOption().toLowerCase() + "\",";
+                    if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
+                        WHERE_GENE_IN += "\"" + filter.getOption().toLowerCase() + "\",";
                     }
                 }
             }
-            List<GenomicFilterOption> conFilters = filters.getConsequence();
-            if (conFilters != null && conFilters.size() > 0) {
+            GenomicFilterOptionList conFilterList = filters.getConsequence();
+            List<GenomicFilterOption> conFilters = conFilterList.getItems();
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
                     if (filter.getChecked()) {
@@ -489,8 +495,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
-            List<GenomicFilterOption> clinFilters = filters.getClinicalSignificance();
-            if (clinFilters != null && clinFilters.size() > 0) {
+            GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
+            List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
                     if (filter.getChecked()) {
@@ -521,10 +528,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
             }
         }
-        if (WHERE_GENE_NOT_IN.substring(WHERE_GENE_NOT_IN.length() - 1).equals(",")) {
+        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
             geneFilterFlag = true;
-            WHERE_GENE_NOT_IN = WHERE_GENE_NOT_IN.substring(0, WHERE_GENE_NOT_IN.length()-1);
-            WHERE_GENE_NOT_IN += ") ";
+            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
+            WHERE_GENE_IN += ") ";
         }
         if (WHERE_CON_IN.substring(WHERE_CON_IN.length() - 1).equals(",")) {
             conFilterFlag = true;
@@ -537,7 +544,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CLIN_IN += ")) ";
         }
         if (geneFilterFlag) {
-            finalSql += WHERE_GENE_NOT_IN;
+            finalSql += WHERE_GENE_IN;
         }
         if (conFilterFlag) {
             finalSql += WHERE_CON_IN;
@@ -713,9 +720,15 @@ public class GenomicsController implements GenomicsApiDelegate {
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         GenomicFilters genomicFilters = new GenomicFilters();
+        GenomicFilterOptionList geneFilterList = new GenomicFilterOptionList();
+        GenomicFilterOptionList conseqFilterList = new GenomicFilterOptionList();
+        GenomicFilterOptionList clinSigFilterList = new GenomicFilterOptionList();
+
         List<GenomicFilterOption> geneFilters = new ArrayList<>();
         List<GenomicFilterOption> conseqFilters = new ArrayList<>();
         List<GenomicFilterOption> clinSigFilters = new ArrayList<>();
+
+
         GenomicFilterOption alleleCountFilter = new GenomicFilterOption();
         GenomicFilterOption alleleNumberFilter = new GenomicFilterOption();
         for (List<FieldValue> row : result.iterateAll()) {
@@ -732,21 +745,21 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (option.equals("Gene")) {
                 genomicFilterOption.setOption(gene);
                 genomicFilterOption.setCount(geneCount);
-                genomicFilterOption.setChecked(true);
+                genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 geneFilters.add(genomicFilterOption);
             } else if (option.equals("Consequence")) {
                 genomicFilterOption.setOption(conseq);
                 genomicFilterOption.setCount(conCount);
-                genomicFilterOption.setChecked(true);
+                genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 conseqFilters.add(genomicFilterOption);
             } else if (option.equals("Clinical Significance")) {
                 genomicFilterOption.setOption(clinSignificance);
                 genomicFilterOption.setCount(clinCount);
-                genomicFilterOption.setChecked(true);
+                genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 clinSigFilters.add(genomicFilterOption);
@@ -773,9 +786,16 @@ public class GenomicsController implements GenomicsApiDelegate {
         alleleFrequencyFilter.setMin(0L);
         alleleFrequencyFilter.setMax(1L);
 
-        genomicFilters.gene(geneFilters);
-        genomicFilters.consequence(conseqFilters);
-        genomicFilters.clinicalSignificance(clinSigFilters);
+        geneFilterList.setItems(geneFilters);
+        geneFilterList.setFilterActive(false);
+        conseqFilterList.setItems(conseqFilters);
+        conseqFilterList.setFilterActive(false);
+        clinSigFilterList.setItems(clinSigFilters);
+        clinSigFilterList.setFilterActive(false);
+
+        genomicFilters.gene(geneFilterList);
+        genomicFilters.consequence(conseqFilterList);
+        genomicFilters.clinicalSignificance(clinSigFilterList);
         genomicFilters.alleleCount(alleleCountFilter);
         genomicFilters.alleleNumber(alleleNumberFilter);
         genomicFilters.alleleFrequency(alleleFrequencyFilter);
