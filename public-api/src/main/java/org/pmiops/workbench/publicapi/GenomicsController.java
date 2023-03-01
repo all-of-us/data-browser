@@ -45,11 +45,12 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
-    private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
+    private static final String WHERE_CONTIG = " where contig = @contig";
     private static final String AND_POSITION = " and position <= @high and position >= @low";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
-    private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
-            " where REGEXP_CONTAINS(gene, @genes)";
+
+    // private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
+    //         " where REGEXP_CONTAINS(gene, @genes)";
     private static final String WHERE_RS_NUMBER_CONTAINS = ", unnest(rs_number) AS rsid\n" +
             " where REGEXP_CONTAINS(rsid, @rs_id)";
     private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
@@ -135,7 +136,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         String variant_id = "";
         String rs_id = "";
-        String variantSearchTerm = variantResultSizeRequest.getQuery();
+        String variantSearchTerm = variantResultSizeRequest.getQuery().trim();
         GenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
         String searchTerm = variantSearchTerm;
         if (variantSearchTerm.startsWith("~")) {
@@ -149,7 +150,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (searchTerm.contains(":")) {
                     regionTermSplit = searchTerm.split(":");
-                    contig = "(?i)(" + regionTermSplit[0] + ")$";
+                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
                 }
                 finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
@@ -178,13 +179,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
-                    genes = "(?i)" + searchTerm;
-                    finalSql += WHERE_GENE;
+                    genes = searchTerm.toUpperCase();
                 } else {
-                    // genes = searchTerm.toLowerCase();
-                    genes = "(?i)" + "\\b" + searchTerm.toLowerCase() + "\\b";
-                    finalSql += WHERE_GENE_REGEX;
+                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
                 }
+                finalSql += WHERE_GENE_REGEX;
             }
         }
         String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
@@ -303,6 +302,12 @@ public class GenomicsController implements GenomicsApiDelegate {
             finalSql += ALLELE_FREQUENCY_FILTER;
         }
 
+        System.out.println("**************************************************************");
+        System.out.println(contig);
+        System.out.println(genes);
+        System.out.println(finalSql);
+        System.out.println("**************************************************************");
+
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -326,7 +331,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-        String variantSearchTerm = searchVariantsRequest.getQuery();
+        String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
@@ -406,7 +411,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
-        String contig = "(?i)(" + searchTerm + ")$";
+        String contig = searchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -414,7 +419,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (searchTerm.contains(":")) {
                     regionTermSplit = searchTerm.split(":");
-                    contig = "(?i)(" + regionTermSplit[0] + ")$";
+                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
                 }
                 finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
                 if (regionTermSplit.length > 1) {
@@ -443,13 +448,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
-                    genes = "(?i)" + searchTerm;
-                    finalSql += WHERE_GENE;
+                    genes = searchTerm.toUpperCase();
                 } else {
-                    // genes = searchTerm.toLowerCase();
-                    genes = "(?i)" + "\\b" + searchTerm.toLowerCase() + "\\b";
-                    finalSql += WHERE_GENE_REGEX;
+                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
                 }
+                finalSql += WHERE_GENE_REGEX;
             }
         }
         String WHERE_GENE_NOT_IN = " AND lower(genes) not in (";
@@ -572,6 +575,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
         System.out.println("**************************************************************");
+        System.out.println(contig);
         System.out.println(genes);
         System.out.println(finalSql);
         System.out.println("**************************************************************");
@@ -618,11 +622,11 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         String variant_id = "";
         String rs_id = "";
-        String searchTerm = variantSearchTerm;
+        String searchTerm = variantSearchTerm.trim();
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
-        String contig = "(?i)(" + searchTerm + ")$";
+        String contig = searchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
             // Check if the search term matches genomic region search term pattern
@@ -630,7 +634,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] regionTermSplit = new String[0];
                 if (searchTerm.contains(":")) {
                     regionTermSplit = searchTerm.split(":");
-                    contig = "(?i)(" + regionTermSplit[0] + ")$";
+                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
                 }
                 finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG
                         + FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG
@@ -684,22 +688,16 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             } else {// Check if the search term matches gene coding pattern
                 if (variantSearchTerm.startsWith("~")) {
-                    genes = "(?i)" + searchTerm;
-                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE +
-                            FILTER_OPTION_SQL_TEMPLATE_UNION;
+                    genes = searchTerm.toUpperCase();
                 } else {
-                    genes = searchTerm.toLowerCase();
-                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
-                            FILTER_OPTION_SQL_TEMPLATE_UNION;
+                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
                 }
+                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
+                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
+                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
+                        FILTER_OPTION_SQL_TEMPLATE_UNION;
             }
         }
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
