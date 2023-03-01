@@ -539,42 +539,42 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               </span>
             </React.Fragment>
           )}
-          {!typing && searchWord && domainType === "ehr" && (
+          {searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching medical concepts</span>
             </span>
           )}
-          {!typing && searchWord && domainType === "survey" && (
+          {searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span>matching survey questions</span>
             </span>
           )}
-          {!typing && searchWord && name.toLowerCase() === "physical measurements" && (
+          {searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching Physical Measurements</span>
             </span>
           )}
-          {!typing && searchWord && name.toLowerCase() === "fitbit" && (
+          {searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching Fitbit Measurements</span>
             </span>
           )}
-          {!typing && !searchWord && domainType === "ehr" && (
+          {!searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">medical concepts</span>
             </span>
           )}
-          {!typing && !searchWord && domainType === "survey" && (
+          {!searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">questions available</span>
             </span>
           )}
-          {!typing && !searchWord && name.toLowerCase() === "physical measurements" && (
+          {!searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Physical Measurements</span>
             </span>
           )}
-          {!typing && !searchWord && name.toLowerCase() === "fitbit" && (
+          {!searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
