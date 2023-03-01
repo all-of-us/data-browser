@@ -141,6 +141,9 @@ const styles = reactStyles({
     borderBottom: "none",
     borderLeft: "none",
     padding: ".5rem",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center"
   },
   closeIcon: {
     cursor: "pointer",
