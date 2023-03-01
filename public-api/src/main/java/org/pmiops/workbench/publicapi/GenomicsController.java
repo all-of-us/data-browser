@@ -53,7 +53,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_RS_NUMBER_CONTAINS = ", unnest(rs_number) AS rsid\n" +
             " where REGEXP_CONTAINS(rsid, @rs_id)";
     private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
-    private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(gene, @genes)";
+    private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(genes, @genes)";
     // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
@@ -570,6 +570,11 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
+
+        System.out.println("**************************************************************");
+        System.out.println(genes);
+        System.out.println(finalSql);
+        System.out.println("**************************************************************");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
