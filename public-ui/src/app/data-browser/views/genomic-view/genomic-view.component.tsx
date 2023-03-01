@@ -188,13 +188,13 @@ export const GenomicViewComponent = withRouteData(
         filteredMetadata: undefined,
         sortMetadata: new SortMetadataClass(
                     new SortColumnDetailsClass(true, "asc", 1),
-                    new SortColumnDetailsClass(false, "desc", 2),
-                    new SortColumnDetailsClass(false, "desc", 3),
-                    new SortColumnDetailsClass(false, "desc", 4),
-                    new SortColumnDetailsClass(false, "desc", 5),
-                    new SortColumnDetailsClass(false, "desc", 6),
-                    new SortColumnDetailsClass(false, "desc", 7),
-                    new SortColumnDetailsClass(false, "desc", 8),
+                    new SortColumnDetailsClass(false, "asc", 2),
+                    new SortColumnDetailsClass(false, "asc", 3),
+                    new SortColumnDetailsClass(false, "asc", 4),
+                    new SortColumnDetailsClass(false, "asc", 5),
+                    new SortColumnDetailsClass(false, "asc", 6),
+                    new SortColumnDetailsClass(false, "asc", 7),
+                    new SortColumnDetailsClass(false, "asc", 8),
         ),
       };
     }
@@ -221,7 +221,7 @@ export const GenomicViewComponent = withRouteData(
         const { sortMetadata } = this.state;
         for (const smKey in sortMetadata) {
             sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "desc";
+            sortMetadata[smKey].sortDirection = "asc";
         }
         sortMetadata['variantId'].sortActive = true;
         sortMetadata['variantId'].sortDirection = "asc";
@@ -458,7 +458,6 @@ export const GenomicViewComponent = withRouteData(
           <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
           age of participants whose genomic data are available within the
           Researcher Workbench.{" "}</p>
-          <div><span style={styles.genomicParticipantCountStyle}>{participantCount} </span>participants</div>
           </div>
           )}
           <div style={styles.innerContainer} id="childView">
