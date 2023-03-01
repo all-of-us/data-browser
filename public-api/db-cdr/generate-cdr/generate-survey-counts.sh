@@ -465,11 +465,12 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,cast(sq.order_number as string) stratum_5,
+sq.path as stratum_6,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id=0)
-group by o.observation_source_concept_id,o.value_as_number,sq.survey_concept_id,sq.order_number
+group by o.observation_source_concept_id,o.value_as_number,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
 # Survey question answers count by gender for all questions except basics q2 and fmh questions
