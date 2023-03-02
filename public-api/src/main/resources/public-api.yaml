@@ -1586,6 +1586,46 @@ definitions:
         type: boolean
         default: false
 
+  GenomicSearchTermType:
+    type: object
+    properties:
+      variant_id:
+        description: variant property to build sql query
+        type: string
+      whereVariantIdFlag:
+        type: boolean
+      contig:
+        description: contig property to build sql query
+        type: string
+      low:
+        description: position low
+        type: integer
+        format: int64
+      high:
+        description: position high
+        type: integer
+        format: int64
+      whereContigFlag:
+        type: boolean
+      wherePositionFlag:
+        type: boolean
+      rs_id:
+        description: rsnumber property to build sql query
+        type: string
+      whereRsIdFlag:
+        type: boolean
+      genes:
+        description: genes property to build sql query
+        type: string
+      whereGeneFlag:
+        description: flag to determine if the search type is gene
+        type: boolean
+      searchSqlQuery:
+        description: sql query formed
+        type: string
+
+
+
   VariantInfo:
     type: object
     required:

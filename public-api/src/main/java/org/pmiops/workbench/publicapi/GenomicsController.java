@@ -15,6 +15,7 @@ import org.pmiops.workbench.model.VariantInfo;
 import org.pmiops.workbench.model.GenomicFilters;
 import org.pmiops.workbench.model.GenomicFilterOption;
 import org.pmiops.workbench.model.GenomicFilterOptionList;
+import org.pmiops.workbench.model.GenomicSearchTermType;
 import org.pmiops.workbench.model.VariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
@@ -147,47 +148,15 @@ public class GenomicsController implements GenomicsApiDelegate {
         String contig = "(?i)(" + searchTerm + ")$";
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
-            // Check if the search term matches genomic region search term pattern
-            if (searchTerm.matches(genomicRegionRegex)) {
-                String[] regionTermSplit = new String[0];
-                if (searchTerm.contains(":")) {
-                    regionTermSplit = searchTerm.split(":");
-                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
-                }
-                finalSql = COUNT_SQL_TEMPLATE + WHERE_CONTIG;
-                if (regionTermSplit.length > 1) {
-                    String[] rangeSplit = regionTermSplit[1].split("-");
-                    try {
-                        if (rangeSplit.length == 2) {
-                            low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            finalSql += AND_POSITION;
-                        }
-                    } catch(NumberFormatException e) {
-                        System.out.println("Trying to convert bad number.");
-                    }
-                }
-            } else if (searchTerm.matches(variantIdRegex)) {
-                // Check if the search term matches variant id pattern
-                variant_id = searchTerm;
-                finalSql += WHERE_VARIANT_ID;
-            } else if (searchTerm.matches(rsNumberRegex)) {
-                if (variantSearchTerm.startsWith("~")) {
-                    rs_id = "(?i)" + searchTerm;
-                    finalSql += WHERE_RS_NUMBER_CONTAINS;
-                } else {
-                    rs_id = searchTerm;
-                    finalSql += WHERE_RS_NUMBER_EXACT;
-                }
-            } else {// Check if the search term matches gene coding pattern
-                whereGeneFlag = true;
-                if (variantSearchTerm.startsWith("~")) {
-                    genes = searchTerm.toUpperCase();
-                } else {
-                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
-                }
-                finalSql += WHERE_GENE_REGEX;
-            }
+            GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
+            finalSql += searchTermType.getSearchSqlQuery();
+            genes = searchTermType.getGenes();
+            low = searchTermType.getLow();
+            high = searchTermType.getHigh();
+            contig = searchTermType.getContig();
+            variant_id = searchTermType.getVariantId();
+            rs_id = searchTermType.getRsId();
+            whereGeneFlag = searchTermType.getWhereGeneFlag();
         }
         String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
@@ -423,48 +392,17 @@ public class GenomicsController implements GenomicsApiDelegate {
         String contig = searchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
-            // Check if the search term matches genomic region search term pattern
-            if (searchTerm.matches(genomicRegionRegex)) {
-                String[] regionTermSplit = new String[0];
-                if (searchTerm.contains(":")) {
-                    regionTermSplit = searchTerm.split(":");
-                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
-                }
-                finalSql = VARIANT_LIST_SQL_TEMPLATE + WHERE_CONTIG;
-                if (regionTermSplit.length > 1) {
-                    String[] rangeSplit = regionTermSplit[1].split("-");
-                    try {
-                        if (rangeSplit.length == 2) {
-                            low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            finalSql += AND_POSITION;
-                        }
-                    } catch(NumberFormatException e) {
-                        System.out.println("Trying to convert bad number.");
-                    }
-                }
-            } else if (searchTerm.matches(variantIdRegex)) {
-                // Check if the search term matches variant id pattern
-                variant_id = searchTerm;
-                finalSql += WHERE_VARIANT_ID;
-            } else if (searchTerm.matches(rsNumberRegex)) {
-                if (variantSearchTerm.startsWith("~")) {
-                    rs_id = "(?i)" + searchTerm;
-                    finalSql += WHERE_RS_NUMBER_CONTAINS;
-                } else {
-                    rs_id = searchTerm;
-                    finalSql += WHERE_RS_NUMBER_EXACT;
-                }
-            } else {// Check if the search term matches gene coding pattern
-                whereGeneFlag = true;
-                if (variantSearchTerm.startsWith("~")) {
-                    genes = searchTerm.toUpperCase();
-                } else {
-                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
-                }
-                finalSql += WHERE_GENE_REGEX;
-            }
+            GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
+            finalSql += searchTermType.getSearchSqlQuery();
+            genes = searchTermType.getGenes();
+            low = searchTermType.getLow();
+            high = searchTermType.getHigh();
+            contig = searchTermType.getContig();
+            variant_id = searchTermType.getVariantId();
+            rs_id = searchTermType.getRsId();
+            whereGeneFlag = searchTermType.getWhereGeneFlag();
         }
+
         String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
@@ -638,82 +576,79 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variant_id = "";
         String rs_id = "";
         String searchTerm = variantSearchTerm.trim();
+        boolean whereGeneFlag = false;
+        boolean whereContigFlag = false;
+        boolean wherePositionFlag = false;
+        boolean whereRsIdFlag = false;
+        boolean whereVariantIdFlag = false;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
         String contig = searchTerm;
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
-            // Check if the search term matches genomic region search term pattern
-            if (searchTerm.matches(genomicRegionRegex)) {
-                String[] regionTermSplit = new String[0];
-                if (searchTerm.contains(":")) {
-                    regionTermSplit = searchTerm.split(":");
-                    contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
-                }
-                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG
-                        + FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG
-                        + FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG
-                        + FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG
-                        + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG
-                        + FILTER_OPTION_SQL_TEMPLATE_UNION;
-                if (regionTermSplit.length > 1) {
-                    String[] rangeSplit = regionTermSplit[1].split("-");
-                    try {
-                        if (rangeSplit.length == 2) {
-                            low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG + AND_POSITION +
-                                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG + AND_POSITION +
-                                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG + AND_POSITION +
-                                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG + AND_POSITION +
-                                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG + AND_POSITION +
-                                    FILTER_OPTION_SQL_TEMPLATE_UNION;
-                        }
-                    } catch(NumberFormatException e) {
-                        System.out.println("Trying to convert bad number.");
-                    }
-                }
-            } else if (searchTerm.matches(variantIdRegex)) {
-                // Check if the search term matches variant id pattern
-                variant_id = searchTerm;
-                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_VARIANT_ID +
-                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_VARIANT_ID +
-                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_VARIANT_ID +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_VARIANT_ID +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_VARIANT_ID +
+            GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
+            // finalSql += searchTermType.getSearchSqlQuery();
+            genes = searchTermType.getGenes();
+            low = searchTermType.getLow();
+            high = searchTermType.getHigh();
+            contig = searchTermType.getContig();
+            variant_id = searchTermType.getVariantId();
+            rs_id = searchTermType.getRsId();
+            whereGeneFlag = searchTermType.getWhereGeneFlag();
+            whereContigFlag = searchTermType.getWhereContigFlag();
+            wherePositionFlag = searchTermType.getWherePositionFlag();
+            whereRsIdFlag = searchTermType.getWhereRsIdFlag();
+            whereVariantIdFlag = searchTermType.getWhereVariantIdFlag();
+        }
+        if (whereContigFlag) {
+            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG
+                    + FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG
+                    + FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG
+                    + FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG
+                    + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG
+                    + FILTER_OPTION_SQL_TEMPLATE_UNION;
+        }
+        if (wherePositionFlag) {
+            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG + AND_POSITION +
+                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG + AND_POSITION +
+                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG + AND_POSITION +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG + AND_POSITION +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG + AND_POSITION +
+                    FILTER_OPTION_SQL_TEMPLATE_UNION;
+        }
+        if (whereVariantIdFlag) {
+            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_VARIANT_ID +
+                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_VARIANT_ID +
+                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_VARIANT_ID +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_VARIANT_ID +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_VARIANT_ID +
+                    FILTER_OPTION_SQL_TEMPLATE_UNION;
+        }
+        if (whereRsIdFlag) {
+            if (variantSearchTerm.startsWith("~")) {
+                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_CONTAINS +
+                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_CONTAINS +
+                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_CONTAINS +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_CONTAINS +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_CONTAINS +
                         FILTER_OPTION_SQL_TEMPLATE_UNION;
-            } else if (searchTerm.matches(rsNumberRegex)) {
-                if (variantSearchTerm.startsWith("~")) {
-                    rs_id = "(?i)" + searchTerm;
-                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_CONTAINS +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_CONTAINS +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_CONTAINS +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_CONTAINS +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_CONTAINS +
-                            FILTER_OPTION_SQL_TEMPLATE_UNION;
-                } else {
-                    rs_id = searchTerm;
-                    finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_EXACT +
-                            FILTER_OPTION_SQL_TEMPLATE_UNION;
-                }
-            } else {// Check if the search term matches gene coding pattern
-                if (variantSearchTerm.startsWith("~")) {
-                    genes = searchTerm.toUpperCase();
-                } else {
-                    genes = "\\b" + searchTerm.toUpperCase() + "\\b";
-                }
-                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
-                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
-                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
+            } else {
+                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_EXACT +
+                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_EXACT +
+                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_EXACT +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_EXACT +
+                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_EXACT +
                         FILTER_OPTION_SQL_TEMPLATE_UNION;
             }
+        }
+        if (whereGeneFlag) {
+            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
+                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
+                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
+                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
+                    FILTER_OPTION_SQL_TEMPLATE_UNION;
         }
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -873,5 +808,78 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .totalAlleleNumber(bigQueryService.getLong(row, rm.get("total_allele_number")))
                 .totalAlleleFrequency(bigQueryService.getDouble(row, rm.get("total_allele_frequency")));
         return ResponseEntity.ok(variantInfo);
+    }
+
+    public static GenomicSearchTermType getSearchType(String variantSearchTerm, String searchTerm) {
+        GenomicSearchTermType searchTermType = new GenomicSearchTermType();
+        String genes = "";
+        Long low = 0L;
+        Long high = 0L;
+        String variant_id = "";
+        String rs_id = "";
+        boolean whereGeneFlag = false;
+        boolean whereVariantIdFlag = false;
+        boolean whereContigFlag = false;
+        boolean wherePositionFlag = false;
+        boolean whereRsIdFlag = false;
+        String contig = "(?i)(" + searchTerm + ")$";
+        String searchSql = "";
+        if (searchTerm.matches(genomicRegionRegex)) {
+            String[] regionTermSplit = new String[0];
+            if (searchTerm.contains(":")) {
+                regionTermSplit = searchTerm.split(":");
+                contig = regionTermSplit[0].substring(0, 3).toLowerCase() + regionTermSplit[0].substring(3).toUpperCase();
+            }
+            whereContigFlag = true;
+            searchSql = WHERE_CONTIG;
+            if (regionTermSplit.length > 1) {
+                String[] rangeSplit = regionTermSplit[1].split("-");
+                try {
+                    if (rangeSplit.length == 2) {
+                        low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                        high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                        wherePositionFlag = true;
+                        searchSql += AND_POSITION;
+                    }
+                } catch(NumberFormatException e) {
+                    System.out.println("Trying to convert bad number.");
+                }
+            }
+        } else if (searchTerm.matches(variantIdRegex)) {
+            // Check if the search term matches variant id pattern
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID;
+        } else if (searchTerm.matches(rsNumberRegex)) {
+            whereRsIdFlag = true;
+            if (variantSearchTerm.startsWith("~")) {
+                rs_id = "(?i)" + searchTerm;
+                searchSql += WHERE_RS_NUMBER_CONTAINS;
+            } else {
+                rs_id = searchTerm;
+                searchSql += WHERE_RS_NUMBER_EXACT;
+            }
+        } else {// Check if the search term matches gene coding pattern
+            whereGeneFlag = true;
+            if (variantSearchTerm.startsWith("~")) {
+                genes = searchTerm.toUpperCase();
+            } else {
+                genes = "\\b" + searchTerm.toUpperCase() + "\\b";
+            }
+            searchSql += WHERE_GENE_REGEX;
+        }
+        searchTermType.setVariantId(variant_id);
+        searchTermType.setWhereVariantIdFlag(whereVariantIdFlag);
+        searchTermType.setContig(contig);
+        searchTermType.setLow(low);
+        searchTermType.setHigh(high);
+        searchTermType.setWhereContigFlag(whereContigFlag);
+        searchTermType.setWherePositionFlag(wherePositionFlag);
+        searchTermType.setRsId(rs_id);
+        searchTermType.setWhereRsIdFlag(whereRsIdFlag);
+        searchTermType.setGenes(genes);
+        searchTermType.setWhereGeneFlag(whereGeneFlag);
+        searchTermType.setSearchSqlQuery(searchSql);
+        return searchTermType;
     }
 }
