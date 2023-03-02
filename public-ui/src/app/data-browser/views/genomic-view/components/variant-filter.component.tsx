@@ -61,26 +61,6 @@ const styles = reactStyles({
     },
 });
 
-const css = `
-::-webkit-scrollbar {
-    width: .3334rem;
-    background: #f9f9fa;
-  }
-  .scrollbar{
-    background:red;
-  }
-
-  /* Style the thumb */
-  ::-webkit-scrollbar-thumb {
-    // background: #dae6ed;
-    background: #bcc6cc;
-    border-radius: .3334rem;
-  }
-
-  /* Style the thumb when hovered over */
-  ::-webkit-scrollbar-thumb:hover {
-      background: #216FB4;
-}`;
 
 export interface Cat {
     display: String;
@@ -174,8 +154,6 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         const { filterMetadata } = this.props;
         const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
         return <React.Fragment>
-            <style>{css}</style>
-
             <div style={styles.filterBox}>
                 <SimpleBar style={styles.filterItems} >
                     {filterCats.map((cat, index) => {
