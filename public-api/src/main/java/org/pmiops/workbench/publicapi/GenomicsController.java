@@ -585,10 +585,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             searchTerm = variantSearchTerm.substring(1);
         }
         String contig = searchTerm;
+        String searchSqlQuery = "";
         // Make sure the search term is not empty
         if (!Strings.isNullOrEmpty(searchTerm)) {
             GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
-            // finalSql += searchTermType.getSearchSqlQuery();
+            searchSqlQuery += searchTermType.getSearchSqlQuery();
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
@@ -601,55 +602,14 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereRsIdFlag = searchTermType.getWhereRsIdFlag();
             whereVariantIdFlag = searchTermType.getWhereVariantIdFlag();
         }
-        if (whereContigFlag) {
-            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG
-                    + FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG
-                    + FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG
-                    + FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG
-                    + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG
-                    + FILTER_OPTION_SQL_TEMPLATE_UNION;
-        }
-        if (wherePositionFlag) {
-            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_CONTIG + AND_POSITION +
-                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_CONTIG + AND_POSITION +
-                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_CONTIG + AND_POSITION +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_CONTIG + AND_POSITION +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_CONTIG + AND_POSITION +
-                    FILTER_OPTION_SQL_TEMPLATE_UNION;
-        }
-        if (whereVariantIdFlag) {
-            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_VARIANT_ID +
-                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_VARIANT_ID +
-                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_VARIANT_ID +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_VARIANT_ID +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_VARIANT_ID +
-                    FILTER_OPTION_SQL_TEMPLATE_UNION;
-        }
-        if (whereRsIdFlag) {
-            if (variantSearchTerm.startsWith("~")) {
-                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_CONTAINS +
-                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_CONTAINS +
-                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_CONTAINS +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_CONTAINS +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_CONTAINS +
-                        FILTER_OPTION_SQL_TEMPLATE_UNION;
-            } else {
-                finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_RS_NUMBER_EXACT +
-                        FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_RS_NUMBER_EXACT +
-                        FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_RS_NUMBER_EXACT +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_RS_NUMBER_EXACT +
-                        FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_RS_NUMBER_EXACT +
-                        FILTER_OPTION_SQL_TEMPLATE_UNION;
-            }
-        }
-        if (whereGeneFlag) {
-            finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + WHERE_GENE_REGEX +
-                    FILTER_OPTION_SQL_TEMPLATE_CON + WHERE_GENE_REGEX +
-                    FILTER_OPTION_SQL_TEMPLATE_CLIN + WHERE_GENE_REGEX +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + WHERE_GENE_REGEX +
-                    FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + WHERE_GENE_REGEX +
-                    FILTER_OPTION_SQL_TEMPLATE_UNION;
-        }
+
+        finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_CLIN + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_UNION;
+
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -659,6 +619,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
+
+        System.out.println("**************************************************************");
+        System.out.println(finalSql);
+        System.out.println("**************************************************************");
+
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
