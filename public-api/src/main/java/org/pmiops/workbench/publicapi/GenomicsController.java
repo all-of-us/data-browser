@@ -140,6 +140,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variantSearchTerm = variantResultSizeRequest.getQuery().trim();
         GenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
         String searchTerm = variantSearchTerm;
+        boolean whereGeneFlag = false;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
@@ -179,6 +180,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     finalSql += WHERE_RS_NUMBER_EXACT;
                 }
             } else {// Check if the search term matches gene coding pattern
+                whereGeneFlag = true;
                 if (variantSearchTerm.startsWith("~")) {
                     genes = searchTerm.toUpperCase();
                 } else {
@@ -187,7 +189,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE_REGEX;
             }
         }
-        String WHERE_GENE_IN = " AND lower(genes) in (";
+        String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
@@ -205,7 +207,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toLowerCase() + "\",";
+                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
                     }
                 }
             }
@@ -272,6 +274,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CLIN_IN += ")) ";
         }
         if (geneFilterFlag) {
+            if (whereGeneFlag) {
+                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
+                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
+            }
             finalSql += WHERE_GENE_IN;
         }
         if (conFilterFlag) {
@@ -307,8 +313,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
 
         System.out.println("**************************************************************");
-        System.out.println(contig);
-        System.out.println(genes);
         System.out.println(finalSql);
         System.out.println("**************************************************************");
 
@@ -412,6 +416,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variant_id = "";
         String rs_id = "";
         String searchTerm = variantSearchTerm;
+        boolean whereGeneFlag = false;
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
@@ -451,6 +456,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     finalSql += WHERE_RS_NUMBER_EXACT;
                 }
             } else {// Check if the search term matches gene coding pattern
+                whereGeneFlag = true;
                 if (variantSearchTerm.startsWith("~")) {
                     genes = searchTerm.toUpperCase();
                 } else {
@@ -459,7 +465,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += WHERE_GENE_REGEX;
             }
         }
-        String WHERE_GENE_IN = " AND lower(genes) in (";
+        String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
@@ -477,7 +483,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toLowerCase() + "\",";
+                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
                     }
                 }
             }
@@ -544,6 +550,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CLIN_IN += ")) ";
         }
         if (geneFilterFlag) {
+            if (whereGeneFlag) {
+                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
+                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
+            }
             finalSql += WHERE_GENE_IN;
         }
         if (conFilterFlag) {
@@ -582,8 +592,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
         System.out.println("**************************************************************");
-        System.out.println(contig);
-        System.out.println(genes);
         System.out.println(finalSql);
         System.out.println("**************************************************************");
 
