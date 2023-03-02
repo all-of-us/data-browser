@@ -158,6 +158,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.getWhereGeneFlag();
         }
+
         String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
