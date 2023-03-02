@@ -70,6 +70,24 @@ const styles = reactStyles({
   genomicsDescText: {
     margin: "0",
   },
+  desc: {
+    color: "#302C71",
+    margin: "0",
+    fontSize: ".8em",
+  },
+  headingLayout: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: "1em",
+    marginTop: "1em",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    paddingLeft: "0.25em",
+    paddingRight: "0.25em",
+  },
+  genomicParticipantCountStyle: {
+    fontWeight: "2em",
+  },
   innerContainer: {
     background: "white",
     padding: "1em",
@@ -102,7 +120,9 @@ interface State {
   chartData: any;
   sortMetadata: SortMetadata;
   filterMetadata: GenomicFilters;
+  submittedFilterMetadata: GenomicFilters;
   filteredMetadata: GenomicFilters;
+  filterChipsShow: boolean;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -163,20 +183,22 @@ export const GenomicViewComponent = withRouteData(
         loadingVariantListSize: null,
         searchTerm: " ",
         currentPage: null,
-        rowCount: 10,
+        rowCount: 50,
         participantCount: null,
         chartData: null,
+        filterChipsShow: false,
         filterMetadata: null,
         filteredMetadata: undefined,
+        submittedFilterMetadata: undefined,
         sortMetadata: new SortMetadataClass(
-                    new SortColumnDetailsClass(false, "desc", 1),
-                    new SortColumnDetailsClass(false, "desc", 2),
-                    new SortColumnDetailsClass(false, "desc", 3),
-                    new SortColumnDetailsClass(false, "desc", 4),
-                    new SortColumnDetailsClass(false, "desc", 5),
-                    new SortColumnDetailsClass(false, "desc", 6),
-                    new SortColumnDetailsClass(false, "desc", 7),
-                    new SortColumnDetailsClass(false, "desc", 8),
+                    new SortColumnDetailsClass(true, "asc", 1),
+                    new SortColumnDetailsClass(false, "asc", 2),
+                    new SortColumnDetailsClass(false, "asc", 3),
+                    new SortColumnDetailsClass(false, "asc", 4),
+                    new SortColumnDetailsClass(false, "asc", 5),
+                    new SortColumnDetailsClass(false, "asc", 6),
+                    new SortColumnDetailsClass(false, "asc", 7),
+                    new SortColumnDetailsClass(false, "asc", 8),
         ),
       };
     }
@@ -191,7 +213,7 @@ export const GenomicViewComponent = withRouteData(
         label: "Participant Demographics",
       },
     ];
-    title = "Genomic Variants";
+    title = "SNP/Indel Variants";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();
@@ -203,14 +225,16 @@ export const GenomicViewComponent = withRouteData(
         const { sortMetadata } = this.state;
         for (const smKey in sortMetadata) {
             sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "desc";
+            sortMetadata[smKey].sortDirection = "asc";
         }
+        sortMetadata['variantId'].sortActive = true;
+        sortMetadata['variantId'].sortDirection = "asc";
         this.setState({sortMetadata: sortMetadata});
     }
 
     changeUrl() {
       const { searchTerm } = this.state;
-      let url = "genomic-variants";
+      let url = "variants";
       if (searchTerm) {
         url += "/" + searchTerm;
       }
@@ -218,7 +242,6 @@ export const GenomicViewComponent = withRouteData(
     }
 
     getSearchSize(searchTerm: string, filtered: boolean) {
-      this.setState({ loadingVariantListSize: true });
       if (!filtered) {
         this.getFilterMetadata(searchTerm);
       }
@@ -241,10 +264,10 @@ export const GenomicViewComponent = withRouteData(
     getFilterMetadata(searchTerm: string) {
       genomicsApi().getGenomicFilterOptions(searchTerm).then(
         result => {
-          result.gene.forEach(el => { el.checked = false; });
-          result.consequence.forEach(el => { el.checked = false; });
-          result.clinicalSignificance.forEach(el => { el.checked = false; });
-          this.setState({ filterMetadata: result });
+          result.gene.items.forEach(el => { el.checked = false; });
+          result.consequence.items.forEach(el => { el.checked = false; });
+          result.clinicalSignificance.items.forEach(el => { el.checked = false; });
+          this.setState({ filterMetadata: result, submittedFilterMetadata: { ...result} });
           localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
         }
       ).catch(e => {
@@ -265,7 +288,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 10 },
+          { loadingResults: true, currentPage: 1, rowCount: 50 },
           () => {
             this.fetchVariantData();
           }
@@ -382,7 +405,7 @@ export const GenomicViewComponent = withRouteData(
 
     handleSearchTerm(searchTerm: string) {
       if (this.state.searchTerm !== searchTerm) {
-        this.setState({ filterMetadata: null }, () => this.search(searchTerm));
+        this.setState({ filterMetadata: null, searchTerm: searchTerm, loadingResults: true, loadingVariantListSize: true }, () => this.search(searchTerm));
       }
     }
 
@@ -399,20 +422,19 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
-
       if (filteredMetadata['alleleFrequency']['checked']) {
               filteredMetadata['alleleFrequency']['maxFreq'] = filteredMetadata['alleleFrequency']['max'];
               filteredMetadata['alleleFrequency']['minFreq'] = filteredMetadata['alleleFrequency']['min'];
       }
 
+      this.setState({submittedFilterMetadata: { ...filteredMetadata} });
       this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }
 
     render() {
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata } = this.state;
-
+        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
       return <React.Fragment>
         <style>{css}</style>
         <div style={styles.pageHeader}>
@@ -434,6 +456,13 @@ export const GenomicViewComponent = withRouteData(
               }
             </div>
           </div>
+          {selectionId === 1 && (
+          <div style={styles.headingLayout}>
+          <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
+          age of participants whose genomic data are available within the
+          Researcher Workbench.{" "}</p>
+          </div>
+          )}
           <div style={styles.innerContainer} id="childView">
             {selectionId === 1 && (
               <GenomicOverviewComponent
@@ -468,6 +497,7 @@ export const GenomicViewComponent = withRouteData(
                 participantCount={participantCount}
                 searchTerm={searchTerm}
                 filterMetadata={filterMetadata}
+                submittedFilterMetadata={submittedFilterMetadata}
                 sortMetadata={sortMetadata}
               />
             )}

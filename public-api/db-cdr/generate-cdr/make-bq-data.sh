@@ -73,7 +73,7 @@ else
   bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
-GENOMICS_DATASET="genomics_v1"
+GENOMICS_DATASET="2022q4r6_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
@@ -134,12 +134,12 @@ if [ "$SEARCH_VAT" = true ]; then
          END
          ASC
   )  AS row_number
-  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.charlie_vat\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.charlie_vat\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
      GROUP BY vid
   )
   SELECT

@@ -80,8 +80,8 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
     removeChip(item, cat) {
         const {filteredMetadata} = this.props;
-        if (Array.isArray(filteredMetadata[cat.toString()])) {
-            filteredMetadata[cat.toString()] = filteredMetadata[cat.toString()].filter(el => {
+        if (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
+            filteredMetadata[cat.toString()].items = filteredMetadata[cat.toString()].items.filter(el => {
                 if (item === el) {
                     item.checked = false;
                 }
@@ -90,10 +90,11 @@ export class VariantFilterChips extends React.Component<Props, State> {
         } else {
             filteredMetadata[cat.toString()].checked = false;
         }
-        const allFalse = Array.isArray(filteredMetadata[cat.toString()]) &&
-            filteredMetadata[cat.toString()].every(t => t.checked === false);
-        if (allFalse && Array.isArray(filteredMetadata[cat.toString()])) {
-            filteredMetadata[cat.toString()].forEach(el => el.checked = true);
+        const allFalse = (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) &&
+            filteredMetadata[cat.toString()].items.every(t => t.checked === false);
+
+        if (allFalse && filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
+            filteredMetadata[cat.toString()].filterActive = false;
         }
         this.props.onChipChange(filteredMetadata);
     }
@@ -102,12 +103,13 @@ export class VariantFilterChips extends React.Component<Props, State> {
         const { chips } = this.state;       
         return <div style={styles.chipFormat}>
             {chips.length > 0 && chips.map((el, count) => {
-                if (Array.isArray(el.data)) {
-                    return <div key={count}> {el.data.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
-                        {el.data.map((item, i) => {
+                if (el.data.hasOwnProperty("filterActive")) {
+                    return <div key={count}> {el.data.items.some((p) => p.checked) && <div style={styles.chipCat}>{lables[el.cat.toString()]}
+                        {el.data.items.map((item, i) => {
+                            const chipLabel = item.option ? item.option : '(undefined)';
                             return <div style={styles.chipLayout} key={i}>
                                 {item.checked && <div style={styles.chip} >
-                                    <span >{item.option}</span>
+                                    <span >{chipLabel}</span>
                                     <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                         onClick={() => this.removeChip(item, el.cat)}
                                         className='far fa-times fa-1x clear-search-icon'

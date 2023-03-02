@@ -108,9 +108,9 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     };    
   }
 
-  componentDidMount(): void {    
-    if (Array.isArray(this.state.filterCheckMap) && this.state.filterCheckMap.every(t => t.checked)) {
-      this.state.filterCheckMap.forEach(i => i.checked = false);
+  componentDidMount(): void {
+    if (Array.isArray(this.state.filterCheckMap.items) && this.state.filterCheckMap.items.every(t => t.checked)) {
+      this.state.filterCheckMap.items.forEach(i => i.checked = false);
     }
   }
 
@@ -133,12 +133,20 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
 
   handleCheck(filteredItem) {
-    const filtered = this.state.filterItemState.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
+    const {filterItemState, filterCheckMap} = this.state;
+    let newFilterItemState = { ...filterItemState};
+    let newFilterCheckMap = { ...filterCheckMap};
+    const filtered = this.state.filterItemState.items.map(el => el === filteredItem ? { ...el, checked: !filteredItem.checked } : el);
+    const filterCheckedFlag = (filtered.find(x => x.checked === true)) ? true : false;
+    newFilterItemState.items = filtered;
+    newFilterItemState.filterActive = filterCheckedFlag;
+    newFilterCheckMap.items = filtered;
+    newFilterCheckMap.filterActive = filterCheckedFlag;
     this.setState({
-      filterItemState: filtered,
-      filterCheckMap: filtered
+      filterItemState: newFilterItemState,
+      filterCheckMap: newFilterCheckMap
     });
-    this.props.onFilterChange(filtered, this.props.category);
+    this.props.onFilterChange(newFilterItemState, this.props.category);
   }
 
 
@@ -151,7 +159,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const { category,cleared } = this.props;
+    const { category,cleared, filterItem } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
     return <React.Fragment>
       <style>{css}</style>
@@ -159,22 +167,23 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         <span style={{fontFamily:'gothamBold'}}>{category.display}</span>
         <div><ClrIcon style={!filterItemOpen ? { ...styles.filterItemClosed } : { ...styles.filterItemOpen }} shape='angle' /></div>
       </div>
-      {(cleared && filterItemOpen && Array.isArray(filterItemState)) ? <div style={styles.filterItemForm}>
+      {(cleared && filterItemOpen && Array.isArray(filterItemState.items)) ? <div style={styles.filterItemForm}>
         {/* <input style={styles.textFilter} type='input' onChange={(e) => this.filterBySearch(e)} />
                 <div style={styles.selectContainer}>
                     <span>Select</span><button style={styles.selectBtn} onClick={() => this.selecting(true)}> All</button>
                     <span>|</span>
                     <button style={styles.selectBtn} onClick={() => this.selecting(false)} >None</button>
                 </div> */}
-        {filterItemState.map((item: any, index: number) => {
+        {filterItemState.items.map((item: any, index: number) => {
           const key = 'option' + index;
+          const itemLabel = item.option ? item.option : '(undefined)';
           return <span title={item.option} style={styles.filterItemOption} key={key}>
             <input onChange={() => this.handleCheck(item)}
               id={item.option}
               style={styles.filterItemCheck}
               type='checkbox' name={item.option}
               checked={item.checked} />
-            <label style={styles.filterItemLabel} htmlFor={item.option}>{item.option}</label>
+            <label style={styles.filterItemLabel} htmlFor={item.option}>{itemLabel}</label>
           </span>;
         })}
       </div> :

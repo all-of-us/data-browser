@@ -7,7 +7,6 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { HighlightReactComponent } from "app/shared/components/highlight-search/HighlightReactComponent";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { addDidNotAnswerResult } from "app/utils/survey-utils";
 import { Configuration, DataBrowserApi } from "publicGenerated/fetch";
 
 import { SurveyAnswerReactComponent } from "./survey-answer-react.component";
@@ -124,13 +123,6 @@ export class SurveyQuestionReactComponent extends React.Component<
         for (const result of questionWithResults.countAnalysis.results) {
           questionCount += result.countValue;
         }
-        questionWithResults.countAnalysis.results.push(
-          addDidNotAnswerResult(
-            questionWithResults.conceptId,
-            questionWithResults.countAnalysis.results,
-            questionCount
-          )
-        );
         this.setState({ questionWithResults: questionWithResults });
       })
       .catch((err) => {

@@ -46,8 +46,6 @@ import { TreeHighlightService } from "./services/tree-highlight.service";
 import { VideoService } from "./services/video.service";
 import { SourcesComponent } from "./sources/sources.component";
 import { EhrViewComponent } from "./views/ehr-view/ehr-view.component";
-import { ErrorMessageComponent } from "./views/error-message/error-message.component";
-import { ErrorMessageWrapperComponent } from "./views/error-message/error-message-react.component";
 import { FitbitViewComponent } from "./views/fitbit-view/fitbit-view.component";
 import { IntroVidsComponent } from "./views/intro-vids/intro-vids.component";
 import { PhysicalMeasurementsComponent } from "./views/pm/pm.component";
@@ -78,7 +76,6 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     ChartBaseComponent,
     SourcesComponent,
     TooltipComponent,
-    ErrorMessageComponent,
     SurveyVersionTableComponent,
     FitbitViewComponent,
     ChartFitbitComponent,
@@ -103,7 +100,6 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyAnswerWrapperComponent,
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
-    ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,
     BreadCrumbWrapperComponent,
   ],
@@ -142,7 +138,6 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyAnswerWrapperComponent,
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
-    ErrorMessageWrapperComponent,
     SurveyDescWrapperComponent,
     BreadCrumbWrapperComponent,
   ],

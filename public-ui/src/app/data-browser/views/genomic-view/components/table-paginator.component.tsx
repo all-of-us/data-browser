@@ -39,6 +39,11 @@ const styles = reactStyles({
 });
 
 const css = `
+    .paginator {
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
     .page-drop-down-label {
         display: flex;
         flex-direction: row;
@@ -50,9 +55,9 @@ const css = `
     @media (max-width: 600px) {
         .paginator {
             flex-direction: column;
-            align-items: flex-start;
+            align-items: flex-end;
             gap: 0;
-            justify-content: flex-start;
+            justify-content: flex-end;
         }
     }
 `;
@@ -77,7 +82,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       currentPage: props.currentPage ? props.currentPage : 1,
-      rowCount: props.rowCount ? props.rowCount : 10,
+      rowCount: props.rowCount ? props.rowCount : 50,
     };
   }
 
@@ -99,6 +104,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <style>{css}</style>
+        {/*
         <div style={styles.pageNum}>
           <label className="page-drop-down-label">
             Showing at a time
@@ -110,6 +116,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
             </select>
           </label>
         </div>
+        */}
         <div style={styles.pageNum}>
           <button
             style={

@@ -1234,7 +1234,7 @@ definitions:
         description: By default it returns the first page and then its next pages from that on.
       rowCount:
         type: integer
-        default: 10
+        default: 50
         description: Number of rows user wants to view per page
       sortMetadata:
         type: object
@@ -1517,19 +1517,16 @@ definitions:
     properties:
       gene:
         description: Gene Filters
-        type: "array"
-        items:
-          $ref: "#/definitions/GenomicFilterOption"
+        type: object
+        $ref: "#/definitions/GenomicFilterOptionList"
       consequence:
         description: Consequence Filters
-        type: "array"
-        items:
-          $ref: "#/definitions/GenomicFilterOption"
+        type: object
+        $ref: "#/definitions/GenomicFilterOptionList"
       clinicalSignificance:
         description: Clinical Significance Filters
-        type: "array"
-        items:
-          $ref: "#/definitions/GenomicFilterOption"
+        type: object
+        $ref: "#/definitions/GenomicFilterOptionList"
       alleleCount:
         description: Allele Count Range Filter
         type: object
@@ -1574,6 +1571,20 @@ definitions:
       checked:
         description: boolean flag
         type: boolean
+
+  GenomicFilterOptionList:
+    type: object
+    required:
+      - items
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/GenomicFilterOption"
+      filterActive:
+        description: boolean flag to know whether the filter is active
+        type: boolean
+        default: false
 
   VariantInfo:
     type: object

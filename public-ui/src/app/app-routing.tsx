@@ -104,23 +104,23 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         }
       />
       <AppRoute
-        path="/genomic-variants"
+        path="/variants"
         component={() =>
           GenomicViewComponent({
             routeData: {
-              title: "Genomic Variants",
-              breadcrumb: { value: "Genomic Variants" },
+              title: "SNP/Indel Variants",
+              breadcrumb: { value: "SNP/Indel Variants" },
             },
           })
         }
       />
       <AppRoute
-        path="/genomic-variants/:search"
+        path="/variants/:search"
         component={() =>
           GenomicViewComponent({
             routeData: {
-              title: "Genomic Variants",
-              breadcrumb: { value: "Genomic Variants" },
+              title: "SNP/Indel Variants",
+              breadcrumb: { value: "SNP/Indel Variants" },
             },
           })
         }

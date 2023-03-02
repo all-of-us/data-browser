@@ -47,12 +47,14 @@ interface Props {
   participantCount: string;
   searchTerm: string;
   filterMetadata: GenomicFilters;
+  submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
 }
 
 interface State {
   searchTerm: string;
   filterMetadata: GenomicFilters;
+  submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
 }
 
@@ -65,16 +67,20 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       searchTerm: null,
       filterMetadata: this.props.filterMetadata,
       sortMetadata: this.props.sortMetadata,
+      submittedFilterMetadata: this.props.submittedFilterMetadata,
     };
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm, filterMetadata } = this.props;
+    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
     }
     if (prevProps.filterMetadata !== filterMetadata) {
       this.setState({ filterMetadata: filterMetadata });
+    }
+    if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+        this.setState({submittedFilterMetadata: submittedFilterMetadata});
     }
   }
 
@@ -97,10 +103,9 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { searchTerm, filterMetadata, sortMetadata } = this.state;
+    const { searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
       rowCount } = this.props;
-
     return <React.Fragment>
       <div style={styles.titleBox}>
         <p style={styles.boxHeading} ref={this.scrollDiv}>
@@ -114,11 +119,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       <VariantSearchComponent
         onSearchTerm={(searchWord: string) => { onSearchInput(searchWord); this.setState({ searchTerm: searchWord }); }}
         onFilterSubmit={(filteredMetadata, sortMetadata) => { this.handleFilterSubmit(filteredMetadata, sortMetadata); }}
-        loading={loadingVariantListSize}
+        loadingResults={loadingResults}
+        loadingVariantListSize={loadingVariantListSize}
         searchTerm={searchTerm}
         variantListSize={variantListSize}
         filterMetadata={filterMetadata}
         sortMetadata={sortMetadata}
+        submittedFilterMetadata={submittedFilterMetadata}
         onSortChange={(e) => this.handleSortClick(e)} />
       <VariantTableComponent
         loadingResults={loadingResults}

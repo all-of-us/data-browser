@@ -82,24 +82,24 @@ const routes: Routes = [
             },
           },
           {
-            path: "genomic-variants",
+            path: "variants",
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Genomic Variants",
+              title: "SNP/Indel Variants",
               breadcrumb: {
-                value: "Genomic Variants",
+                value: "SNP/Indel Variants",
               },
             },
           },
           {
-            path: "genomic-variants/:search",
+            path: "variants/:search",
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Genomic Variants",
+              title: "SNP/Indel Variants",
               breadcrumb: {
-                value: "Genomic Variants",
+                value: "SNP/Indel Variants",
               },
             },
           },

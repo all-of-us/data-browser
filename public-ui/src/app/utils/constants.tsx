@@ -27,14 +27,16 @@ export const routeToDomain = {
 };
 
 export const genomicTileMetadata = {
-  name: "Genomic Variants",
+  name: "SNP/Indel Variants",
   description:
     "View aggregate counts of participants with any genomic data, Whole Genomic Sequence (WGS) data, \
     or Array data in the All of Us dataset.",
   description2:
     "Define a genomic region to search; results show aggregated allele counts, \
                          allele frequency, and variant information in the All of Us dataset, based on WGS Data.",
-  wgsParticipantCount: 0,
+  wgsSRParticipantCount: 0,
+  wgsLRParticipantCount: 0,
+  wgsSVParticipantCount: 0,
   microarrayParticipantCount: 0,
   domain: "Genomics",
 };
