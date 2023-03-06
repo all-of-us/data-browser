@@ -539,42 +539,42 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               </span>
             </React.Fragment>
           )}
-          {!typing && searchWord && domainType === "ehr" && (
+          {searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching medical concepts</span>
             </span>
           )}
-          {!typing && searchWord && domainType === "survey" && (
+          {searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span>matching survey questions</span>
             </span>
           )}
-          {!typing && searchWord && name.toLowerCase() === "physical measurements" && (
+          {searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching Physical Measurements</span>
             </span>
           )}
-          {!typing && searchWord && name.toLowerCase() === "fitbit" && (
+          {searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">matching Fitbit Measurements</span>
             </span>
           )}
-          {!typing && !searchWord && domainType === "ehr" && (
+          {!searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">medical concepts</span>
             </span>
           )}
-          {!typing && !searchWord && domainType === "survey" && (
+          {!searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">questions available</span>
             </span>
           )}
-          {!typing && !searchWord && name.toLowerCase() === "physical measurements" && (
+          {!searchWord && name.toLowerCase() === "physical measurements" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Physical Measurements</span>
             </span>
           )}
-          {!typing && !searchWord && name.toLowerCase() === "fitbit" && (
+          {!searchWord && name.toLowerCase() === "fitbit" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
@@ -585,30 +585,46 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               participants
             </span>
           )}
-
-          {domainType === "genomics" &&
-            searchWord &&
-            !loadingVariantListSize &&
-            variantListSize > 0 && (
-              <React.Fragment>
-                <span className="result-box-body-item">
-                  {(typing || loadingVariantListSize) && <Spinner />}
-                  {(!typing && !loadingVariantListSize) &&
-                    <React.Fragment>
-                      <span className="result-stat" >
-                        {variantListSize.toLocaleString()}
-                      </span>{" "}
-                      matching genomic variants
-                    </React.Fragment>}
-                </span>
-                <span className="result-box-body-item">
-                  <span className="result-stat" >
-                    {microarrayParticipantCount.toLocaleString()}{" "}
-                  </span>
-                  participants
-                </span>
-              </React.Fragment>
-            )}
+          {domainType === "genomics" && searchWord && !loadingVariantListSize &&
+                                                               variantListSize > 0 && (
+                      <React.Fragment>
+                        <span className="result-box-body-item">
+                          <React.Fragment>
+                            <span className="result-stat" >
+                              {variantListSize.toLocaleString()}
+                            </span>
+                            <span className="result-box-stat-label">matching SNP/Indel Variants</span>
+                          </React.Fragment>
+                        </span>
+                        {wgsSRParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Short-Read WGS dataset
+                            </span>
+                          </span>}
+                        {wgsLRParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Long-Read WGS dataset
+                            </span>
+                          </span>}
+                        {wgsSVParticipantCount > 0 &&
+                          <span className="result-box-body-item hgc-count-text">
+                            <span>
+                              <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                              participants in the Structural Variants dataset
+                            </span>
+                          </span>}
+                        <span className="result-box-body-item hgc-count-text">
+                          <span>
+                            <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
+                            participants in the Genotyping Arrays dataset
+                          </span>
+                        </span>
+                      </React.Fragment>
+                    )}
           {questionCount && (
             <div style={styles.resultBodyItem}>
               <span>{description}</span>
@@ -904,7 +920,7 @@ export const dBHomeComponent = withRouteData(
           </div>
           {(loading || loadingVariantListSize) ? <div style={{ height: '15vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
             <section style={styles.results}>
-              {noConceptData && <ErrorMessageReactComponent dataType="data" />}
+              {(noConceptData && variantListSize === 0) && <ErrorMessageReactComponent dataType="noResults" />}
               {true && <div className={`result-boxes ${physicalMeasurementsInfo.length > 0 && searchWord ? 'has-pm' : ''}  `}>
                 {domainInfo.length > 0 &&
                   <h5

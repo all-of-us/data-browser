@@ -407,57 +407,41 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 with single_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count = 1
-order by answers_count desc)
-SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,cast(sq.order_number as string) stratum_5,
-CAST(o.observation_source_concept_id as string) as stratum_6,
-Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-join single_answered_people sap on sap.person_id=o.person_id
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
-group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number
-order by CAST(sq.order_number as int64) asc"
-
-# Set the count of more than one race / ethnicity
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with multiple_answered_people as
+order by answers_count desc),
+multiple_answered_people as
 (select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
 group by person_id having answers_count > 1
-order by answers_count desc)
-SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-'More than one race/ethnicity' as stratum_4,cast(sq.order_number as string) stratum_5,
-CAST(o.observation_source_concept_id as string) as stratum_6,
-Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
+order by answers_count desc),
+basics_category_rows as
+(select o.*, sq.survey_concept_id, sq.order_number, sq.path,
+case WHEN o.person_id IN (SELECT person_id FROM single_answered_people) THEN
+(case when o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070) then CAST(o.value_source_concept_id as string) else '903070' end) else '' end as stratum_3,
+case WHEN o.person_id IN (SELECT person_id FROM single_answered_people) THEN
+(case when o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070) then c.concept_name else 'Other' end) else 'More than one race/ethnicity' end as stratum_4
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-join multiple_answered_people sap on sap.person_id=o.person_id
-where (o.observation_source_concept_id = 1586140)
-group by o.observation_source_concept_id,sq.survey_concept_id,sq.order_number
-order by CAST(sq.order_number as int64) asc"
+left join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+where (o.observation_source_concept_id = 1586140))
+SELECT 0 as id, 3110 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(observation_source_concept_id as string) as stratum_2,
+stratum_3, stratum_4,
+cast(order_number as string) stratum_5,
+CAST(observation_source_concept_id as string) as stratum_6,
+Count(distinct person_id) as count_value, 0 as source_count_value
+from basics_category_rows
+group by observation_source_concept_id, survey_concept_id, order_number, stratum_3, stratum_4
+union all
+select 0,3111 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
+CAST(p.gender_concept_id as string) as stratum_5, path as stratum_6,
+count(distinct p.person_id) as count_value,0 as source_count_value
+FROM basics_category_rows bcr join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = bcr.person_id
+group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, p.gender_concept_id, order_number, path
+union all
+select 0, 3112 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(bcr.observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
+age_stratum as stratum_5, path as stratum_6,
+COUNT(distinct bcr.PERSON_ID) as count_value,0 as source_count_value
+from basics_category_rows bcr join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=bcr.observation_id
+group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, stratum_5, order_number, path"
 
-# Set the rolled survey answer count for basics q2 for the categories american indian, middle eastern, none of these, pacific islander
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with single_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count = 1
-order by answers_count desc)
-SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(903070 as string) as stratum_3,'Other' as stratum_4,cast(sq.order_number as string) stratum_5,
-CAST(o.observation_source_concept_id as string) as stratum_6,
-Count(distinct o.person_id) as count_value, 0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join single_answered_people sap on sap.person_id=o.person_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
-group by o.observation_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number
-order by CAST(sq.order_number as int64) asc"
 
 # Set the survey answer count for all the survey questions that has value as number and not value as concept id
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -469,7 +453,7 @@ sq.path as stratum_6,
 Count(distinct o.person_id) as count_value, 0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id=0)
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null))
 group by o.observation_source_concept_id,o.value_as_number,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
@@ -518,69 +502,6 @@ select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 union all
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_questions_count"
 
-# Survey question answers count by gender for q2 unrolled
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with single_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count = 1
-order by answers_count desc)
-select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join single_answered_people sap on sap.person_id=o.person_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
-# Survey gender counts for more than one race / ethnicity bucket
-# Survey question answers count by gender for q2 unrolled
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with multiple_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count > 1
-order by answers_count desc)
-select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-'More than one race/ethnicity' as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join multiple_answered_people sap on sap.person_id=o.person_id
-where (o.observation_source_concept_id = 1586140)
-group by sq.survey_concept_id,o.observation_source_concept_id,p.gender_concept_id,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
-# Survey question answers count by gender for q2 (rolling up categories)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with single_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count = 1
-order by answers_count desc)
-select 0,3111 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(903070 as string) as stratum_3,'Other' as stratum_4,
-CAST(p.gender_concept_id as string) as stratum_5,sq.path as stratum_6,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join single_answered_people spa on spa.person_id=o.person_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = 903070
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
-group by sq.survey_concept_id,o.observation_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
 # Survey question answers count by gender(value_as_number not null)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -591,7 +512,7 @@ count(distinct p.person_id) as count_value,0 as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.person\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and o.value_source_concept_id = 0)
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null))
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
@@ -641,68 +562,6 @@ select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stra
 union all
 select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_questions_count"
 
-# Survey Question Answer Count by age deciles for unrolled categories in q2
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with single_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count = 1
-order by answers_count desc)
-select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join single_answered_people sap on sap.person_id=o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070))
-group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
-# Survey question answer count by age deciles for more than one race / ethnicity bucket
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with multiple_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count > 1
-order by answers_count desc)
-select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-'More than one race/ethnicity' as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join multiple_answered_people sap on sap.person_id=o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id = 1586140)
-group by sq.survey_concept_id,o.observation_source_concept_id,stratum_5,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
-
-# Survey Question Answer Count by age deciles for rolled categories in q2
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-with single_answered_people as
-(select person_id, count(distinct value_source_concept_id) as answers_count from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob where observation_source_concept_id=1586140
-group by person_id having answers_count > 1
-order by answers_count desc)
-select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
-'903070' as stratum_3,'Other' as stratum_4,
-age_stratum as stratum_5,sq.path as stratum_6,
-COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
-join single_answered_people sap on sap.person_id=o.person_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
-On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id = 1586140 and o.value_source_concept_id in (1586144,1586148,1586145,903070))
-group by sq.survey_concept_id,o.observation_source_concept_id,stratum_4,stratum_5,sq.order_number,sq.path
-order by CAST(sq.order_number as int64) asc"
-
 # Survey Question Answer Count by age deciles for all questions that have value_as_number
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -714,7 +573,7 @@ COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` sq
 On o.observation_source_concept_id=sq.concept_id
-where (o.observation_source_concept_id > 0 and o.value_source_concept_id = 0 and o.value_as_number >= 0)
+where (o.observation_source_concept_id > 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null) and o.value_as_number >= 0)
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 

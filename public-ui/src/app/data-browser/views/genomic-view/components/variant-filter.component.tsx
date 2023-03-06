@@ -88,6 +88,7 @@ interface Props {
 interface State {
     filterCats: Cat[];
     filteredMetadata: any;
+    filterMetadata: any;
     cleared: Boolean;
     ogFilterMetaData: any;
     sortMetadata: SortMetadata;
@@ -107,6 +108,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
             filteredMetadata: this.props.filterMetadata,
+            filterMetadata: this.props.filterMetadata,
             cleared: true,
             ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}'),
             sortMetadata: this.props.sortMetadata,
@@ -116,7 +118,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
         const filterMetadataChange = this.props.filterMetadata;
         filterMetadataChange[cat.field.toString()] = filteredItem;
-        this.setState({ filteredMetadata: filterMetadataChange });
+        this.setState({ filterMetadata: filterMetadataChange });
     }
 
     handleSortChange(sortedItem: SortMetadata) {
@@ -154,6 +156,9 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             sortMetadata[smKey].sortActive = false;
             sortMetadata[smKey].sortDirection = "asc";
         }
+        sortMetadata['variantId'].sortActive = true;
+        sortMetadata['variantId'].sortDirection = "asc";
+
         this.setState({ cleared: false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata }, () => this.setState({ cleared: true }));
     }
 

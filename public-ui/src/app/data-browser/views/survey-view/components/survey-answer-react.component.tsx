@@ -11,7 +11,7 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { SurveyChartReactComponent } from "app/data-browser/views/survey-chart/survey-chart-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { ClrIcon } from "app/utils/clr-icon";
-import { addDidNotAnswerResult, countPercentage } from "app/utils/survey-utils";
+import { countPercentage } from "app/utils/survey-utils";
 
 const styleCss = `
     .survey-tbl {
@@ -103,8 +103,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
 
   openDrawer(answerValueString, path) {
     this.setState({
-      drawerOpen:
-        answerValueString !== "Did not answer" ? !this.state.drawerOpen : false,
+      drawerOpen: !this.state.drawerOpen,
     });
     if (this.props.hasSubQuestions === "1" && !this.state.subQuestions.length) {
       this.getSubQuestions(path);
@@ -163,19 +162,6 @@ const SurveyAnswerRowComponent = class extends React.Component<
         this.addMissingResults(q, aCount);
         return aCount;
       });
-      if (
-        !q.countAnalysis.results.filter(
-          (qu) => qu.stratum4 === "Did not answer"
-        )
-      ) {
-        q.countAnalysis.results.push(
-          addDidNotAnswerResult(
-            q.conceptId,
-            q.countAnalysis.results,
-            countValue
-          )
-        );
-      }
       return q;
     });
     questions.sort((a, b) => a.id - b.id);
