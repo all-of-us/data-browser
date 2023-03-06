@@ -165,7 +165,7 @@ paths:
   /v1/config:
     get:
       tags:
-      - config
+        - config
       description: Returns some server configuration data.
       operationId: getConfig
       security: []
@@ -394,7 +394,7 @@ paths:
           name: request
           description: search concept request
           schema:
-             $ref: "#/definitions/SearchConceptsRequest"
+            $ref: "#/definitions/SearchConceptsRequest"
       responses:
         200:
           description: A collection of matched concepts
@@ -683,7 +683,7 @@ definitions:
       projectId:
         type: string
         description: The cloud project in which this app is running.
-      dataBrowserIsSafe:      
+      dataBrowserIsSafe:
         type: boolean
         description: Whether the data is safe to show. An emergency page will show if set to false.
       publicApiKeyForErrorReports:
@@ -691,7 +691,6 @@ definitions:
         description: |
           Stackdriver API key for error reporting, scoped to a particular
           domain. If unset, Stackdriver error reporting should be disabled.
-
   Criteria:
     type: object
     required:
@@ -1114,7 +1113,7 @@ definitions:
   ConceptAnalysisListResponse:
     type: object
     required:
-       - items
+      - items
     properties:
       items:
         type: array
@@ -1253,14 +1252,14 @@ definitions:
       query:
         type: string
         description: >
-            A query string that can be used to match a subset of the name (case-insensitively),
-            the entire code value (case-insensitively), or the concept ID.
+          A query string that can be used to match a subset of the name (case-insensitively),
+          the entire code value (case-insensitively), or the concept ID.
       standardConceptFilter:
         description: >
-            STANDARD_CONCEPTS if only standard concepts should be returned,
-            NON_STANDARD_CONCEPTS if only non-standard
-            concepts should be returned; defaults to ALL_CONCEPTS, meaning both
-            standard and non-standard concepts will be returned.
+          STANDARD_CONCEPTS if only standard concepts should be returned,
+          NON_STANDARD_CONCEPTS if only non-standard
+          concepts should be returned; defaults to ALL_CONCEPTS, meaning both
+          standard and non-standard concepts will be returned.
         $ref: "#/definitions/StandardConceptFilter"
       vocabularyIds:
         type: array
@@ -1269,8 +1268,8 @@ definitions:
         description: The vocabulary ID for the concepts returned (e.g. SNOMED, RxNorm)
       domain:
         description: >
-            The domain for the concepts returned (e.g. OBSERVATION, DRUG). Note that this may map
-            to multiple domain ID values in OMOP.
+          The domain for the concepts returned (e.g. OBSERVATION, DRUG). Note that this may map
+          to multiple domain ID values in OMOP.
         $ref: "#/definitions/Domain"
       maxResults:
         type: integer
@@ -1585,6 +1584,46 @@ definitions:
         description: boolean flag to know whether the filter is active
         type: boolean
         default: false
+
+  GenomicSearchTermType:
+    type: object
+    properties:
+      variant_id:
+        description: variant property to build sql query
+        type: string
+      whereVariantIdFlag:
+        type: boolean
+      contig:
+        description: contig property to build sql query
+        type: string
+      low:
+        description: position low
+        type: integer
+        format: int64
+      high:
+        description: position high
+        type: integer
+        format: int64
+      whereContigFlag:
+        type: boolean
+      wherePositionFlag:
+        type: boolean
+      rs_id:
+        description: rsnumber property to build sql query
+        type: string
+      whereRsIdFlag:
+        type: boolean
+      genes:
+        description: genes property to build sql query
+        type: string
+      whereGeneFlag:
+        description: flag to determine if the search type is gene
+        type: boolean
+      searchSqlQuery:
+        description: sql query formed
+        type: string
+
+
 
   VariantInfo:
     type: object
