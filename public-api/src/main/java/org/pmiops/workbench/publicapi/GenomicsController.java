@@ -282,10 +282,6 @@ public class GenomicsController implements GenomicsApiDelegate {
             finalSql += ALLELE_FREQUENCY_FILTER;
         }
 
-        System.out.println("**************************************************************");
-        System.out.println(finalSql);
-        System.out.println("**************************************************************");
-
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -530,10 +526,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
-        System.out.println("**************************************************************");
-        System.out.println(finalSql);
-        System.out.println("**************************************************************");
-
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -620,10 +612,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
-
-        System.out.println("**************************************************************");
-        System.out.println(finalSql);
-        System.out.println("**************************************************************");
 
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
