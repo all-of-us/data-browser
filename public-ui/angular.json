@@ -23,7 +23,8 @@
             "styles": [
               "src/styles.css",
               "node_modules/@clr/icons/clr-icons.min.css",
-              "node_modules/nouislider/distribute/nouislider.min.css"
+              "node_modules/nouislider/distribute/nouislider.min.css",
+              "node_modules/simplebar-react/dist/simplebar.min.css"
             ],
             "scripts": [
               "node_modules/mutationobserver-shim/dist/mutationobserver.min.js",
