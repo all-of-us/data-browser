@@ -41,6 +41,7 @@ SliderRail.propTypes = {
 // HANDLE COMPONENT
 // *******************************************************
 export function Handle({ handle: { id, percent, value }, getHandleProps }) {
+  value = value.toFixed(2);
   const r0 = dims[1] * 0.4; // inner - visible
   const r1 = dims[1] * 0.6; // outer - invisible w/ events
   return (    
