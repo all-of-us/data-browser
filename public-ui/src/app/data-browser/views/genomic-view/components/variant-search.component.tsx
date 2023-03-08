@@ -66,6 +66,7 @@ interface Props {
   searchTerm: string;
   variantListSize: number;
   filterMetadata: GenomicFilters;
+  submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   onSortChange: Function;
   loadingResults: boolean;
@@ -74,6 +75,7 @@ interface Props {
 interface State {
     filteredMetadata: GenomicFilters;
     filteredMetaMap: GenomicFilters;
+    submittedFilterMetadata: GenomicFilters;
     searchWord: string;
     filterShow: Boolean;
     filterMetadata: GenomicFilters;
@@ -81,20 +83,23 @@ interface State {
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
+    private filterWrapperRef;
     constructor(props: Props) {
         super(props);
-
         this.state = {
             searchWord: '',
             filterShow: false,
             filteredMetadata: undefined,
             filteredMetaMap: undefined,
             filterMetadata: this.props.filterMetadata,
+            submittedFilterMetadata: this.props.submittedFilterMetadata,
             sortMetadata: this.props.sortMetadata,
         };
         if (this.state.searchWord !== '') {
             this.props.onSearchTerm(this.state.searchWord);
         }
+        this.filterWrapperRef = React.createRef();
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
 
@@ -103,14 +108,34 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm, filterMetadata } = this.props;
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside(event) {
+    const {filterShow} = this.state;
+    if (this.filterWrapperRef && !this.filterWrapperRef.current.contains(event.target)) {
+      if (filterShow) {
+        this.setState({ filterShow: !this.state.filterShow });
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
+    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
 
     if (prevProps.searchTerm !== searchTerm) {
         this.setState({ searchWord: searchTerm });
     }
     if (prevProps.filterMetadata !== filterMetadata) {
         this.setState({ filterMetadata: filterMetadata});
+    }
+    if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+        this.setState({ submittedFilterMetadata: submittedFilterMetadata});
     }
   }
 
@@ -119,6 +144,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+        this.setState({filteredMetadata: filteredMetadata});
         this.props.onFilterSubmit(filteredMetadata, sortMetadata);
         this.setState({ filterShow: false });
     }
@@ -135,7 +161,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     render() {
-        const { searchWord, filterShow, sortMetadata } = this.state;
+        const { searchWord, filterShow, sortMetadata, filteredMetadata, submittedFilterMetadata } = this.state;
         const {filterMetadata} = this.props
         const { variantListSize, loadingResults, loadingVariantListSize } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
@@ -156,16 +182,16 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 </div>
             </div>
             {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
-                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter</div> : <div style={{height:'1rem'}}></div>}
-            {filterMetadata &&
+                style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> : <div style={{height:'1rem'}}></div>}
+            {submittedFilterMetadata &&
                 <VariantFilterChips
-                    filteredMetadata={filterMetadata}
+                    filteredMetadata={submittedFilterMetadata}
                     onChipChange={(changes) => this.handleChipChange(changes)} />}
             <React.Fragment>{
                 (!loadingResults && !loadingVariantListSize && searchWord) && <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
                                 <span style={styles.loading}><Spinner /></span>} variants found</strong>
                 }</React.Fragment>
-            {environment.genoFilters && <div style={styles.filterContainer}>
+            {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
                 {((!loadingResults && !loadingVariantListSize) && filterShow) &&
                     <VariantFilterComponent
                         filterMetadata={filterMetadata}

@@ -5,12 +5,14 @@ import { VariantSortItemComponent } from "app/data-browser/views/genomic-view/co
 import { reactStyles } from "app/utils";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
+import SimpleBar from 'simplebar-react';
+
 
 const styles = reactStyles({
     filterBox: {
         top: ".5rem",
         position: "absolute",
-        padding: ".5rem",
+        padding: ".25rem",
         zIndex: 10,
         borderRadius: "0 1px 1px 0",
         backgroundColor: "#FFFFFF",
@@ -18,6 +20,8 @@ const styles = reactStyles({
             "0 1px 3px 0 rgba(0,0,0,0.15), 0 0 2px 0 rgba(0,0,0,0.25), 0 2px 2px 0 rgba(0,0,0,0.15)",
         width: "264px",
         height: "421px",
+        display: "grid",
+        gridTemplateRows: "84% 16%"
     },
     filterItemHandleClosed: {
         transform: "rotate(90deg)",
@@ -31,6 +35,7 @@ const styles = reactStyles({
         bottom: ".5rem",
         width: "100%",
         display: "flex",
+        justifyContent:"space-around",
         fontSize: "1.1em",
     },
     clearBtn: {
@@ -51,28 +56,11 @@ const styles = reactStyles({
         width: "45%",
     },
     filterItems: {
-        maxHeight: "340px",
-        overflowY: "auto",
+        // maxHeight: "340px",
+        // overflowY: "auto",
     },
 });
 
-const css = `
-::-webkit-scrollbar {
-    width: .3334rem;
-    background: #f9f9fa;
-  }
-
-  /* Style the thumb */
-  ::-webkit-scrollbar-thumb {
-    // background: #dae6ed;
-    background: #bcc6cc;
-    border-radius: .3334rem;
-  }
-
-  /* Style the thumb when hovered over */
-  ::-webkit-scrollbar-thumb:hover {
-      background: #216FB4;
-}`;
 
 export interface Cat {
     display: String;
@@ -88,6 +76,7 @@ interface Props {
 interface State {
     filterCats: Cat[];
     filteredMetadata: any;
+    filterMetadata: any;
     cleared: Boolean;
     ogFilterMetaData: any;
     sortMetadata: SortMetadata;
@@ -107,6 +96,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
             ],
             filteredMetadata: this.props.filterMetadata,
+            filterMetadata: this.props.filterMetadata,
             cleared: true,
             ogFilterMetaData: JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}'),
             sortMetadata: this.props.sortMetadata,
@@ -116,7 +106,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
         const filterMetadataChange = this.props.filterMetadata;
         filterMetadataChange[cat.field.toString()] = filteredItem;
-        this.setState({ filteredMetadata: filterMetadataChange });
+        this.setState({ filterMetadata: filterMetadataChange });
     }
 
     handleSortChange(sortedItem: SortMetadata) {
@@ -154,6 +144,9 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             sortMetadata[smKey].sortActive = false;
             sortMetadata[smKey].sortDirection = "asc";
         }
+        sortMetadata['variantId'].sortActive = true;
+        sortMetadata['variantId'].sortDirection = "asc";
+
         this.setState({ cleared: false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata }, () => this.setState({ cleared: true }));
     }
 
@@ -161,9 +154,8 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         const { filterMetadata } = this.props;
         const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
         return <React.Fragment>
-            <style>{css}</style>
             <div style={styles.filterBox}>
-                <div style={styles.filterItems}>
+                <SimpleBar style={styles.filterItems} >
                     {filterCats.map((cat, index) => {
                         const key = 'cat' + index;
                         {
@@ -180,7 +172,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                     <div style={styles.sortByContainer}>
                         {<VariantSortItemComponent cleared={cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
                     </div>
-                </div>
+                </SimpleBar>
                 <div style={styles.actionBtnContainer}>
                     <button onClick={() => this.handleClear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>

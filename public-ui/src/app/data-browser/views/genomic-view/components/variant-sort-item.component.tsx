@@ -73,7 +73,8 @@ interface Props {
 interface State {
   sortItemOpen: Boolean;
   sortMetadata: SortMetadata;
-  cats: any[];
+  filterCats: any[];
+  sortCats: any[];
 }
 
 export class VariantSortItemComponent extends React.Component<Props, State> {
@@ -82,7 +83,17 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     this.state = {
       sortItemOpen: false,
       sortMetadata: props.sortMetadata,
-      cats: [
+      filterCats: [
+        { display: 'Gene', field: 'gene' },
+        { display: 'Consequence', field: 'consequence' },
+        { display: 'Protein Change', field: 'proteinChange' },
+        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
+        { display: 'Allele Count', field: 'alleleCount' },
+        { display: 'Allele Number', field: 'alleleNumber' },
+        { display: 'Allele Frequency', field: 'alleleFrequency' },
+      ],
+      sortCats: [
+        { display: 'Variant ID', field: 'variantId'},
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
         { display: 'Protein Change', field: 'proteinChange' },
@@ -95,13 +106,6 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    const { sortMetadata } = this.state;
-    for (const smKey in sortMetadata) {
-      sortMetadata[smKey].sortDirection = 'asc'
-      // console.log(sortMetadata[smKey].sortDirection,'sortMetadata[smKey].sortDirection');
-      
-    }
-    this.setState({ sortMetadata: this.state.sortMetadata })
   }
 
   sortClick() {
@@ -112,7 +116,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
 
   clickToSort(field) {
     const { sortMetadata } = this.state;
-    
+
     if (sortMetadata[field].sortActive) {
       if (sortMetadata[field].sortDirection === 'asc') {
         sortMetadata[field].sortDirection = 'desc'
@@ -139,7 +143,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
 
   render(): React.ReactNode {
     const { cleared } = this.props;
-    const { sortItemOpen, sortMetadata, cats } = this.state;
+    const { sortItemOpen, sortMetadata, filterCats, sortCats } = this.state;
 
     return <React.Fragment>
       <div onClick={() => this.sortClick()} style={styles.sortItem}>
@@ -148,11 +152,12 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       </div>
       {(cleared && sortItemOpen) &&
         <div style={styles.sortItemForm}>
-          {cats && cats.map((cat, index) => {
-            return <div style={{ cursor: 'pointer' }} key={index}>
-              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}} onClick={(e) => this.clickToSort(cat.field)}>{cat.display}</span>
+          {sortCats && sortCats.map((cat, index) => {
+            return <div style={{ cursor: 'pointer' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
+              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>{cat.display}
               {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <i className="fas fa-arrow-up" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
               {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <i className="fas fa-arrow-down" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
+            </span>
             </div>
           })}
         </div>}
