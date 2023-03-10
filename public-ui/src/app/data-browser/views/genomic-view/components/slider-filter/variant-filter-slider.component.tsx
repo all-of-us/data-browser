@@ -53,7 +53,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
       <Surface view={view} trbl={trbl}>
         <Slider
           mode={1}
-          step={(domain[1] === 1) ? .01 : 1}
+          step={(!domain[0]) ? .01 : 1}
           flatten
           domain={domain}
           component="rect"
