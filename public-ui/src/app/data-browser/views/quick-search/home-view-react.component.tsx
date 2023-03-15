@@ -197,7 +197,7 @@ const css = `
     'pmBoxes pmBoxes';
 }
   .ehr-boxes {
-    grid-template-columns: repeat(3, minmax(296px, 1fr));
+    grid-template-columns: repeat(3, minmax(239px, 1fr));
     row-gap: 1rem;
   }
     .survey-result-boxes{
@@ -666,6 +666,8 @@ interface State {
   searchWord: string;
   popUp: boolean;
   loading: boolean;
+  winWidth: any;
+  winHeight: any;
 }
 
 export const dBHomeComponent = withRouteData(
@@ -685,8 +687,9 @@ export const dBHomeComponent = withRouteData(
           : "",
         popUp: false,
         loading: true,
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
       };
-      this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     search = _.debounce((val) => {
@@ -712,8 +715,10 @@ export const dBHomeComponent = withRouteData(
       this.getDomainInfos();
       this.getVariantResultSize();
       this.getGenomicParticipantCounts();
-      this.updateWindowDimensions();
-      window.addEventListener('resize', this.updateWindowDimensions);
+      window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.handleResize);
     }
 
     getGenomicParticipantCounts() {
@@ -816,8 +821,11 @@ export const dBHomeComponent = withRouteData(
         popUp: !this.state.popUp,
       });
     }
-    updateWindowDimensions() {
-      this.setState({ width: window.innerWidth, height: window.innerHeight });
+    handleResize=() => {
+      this.setState({
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
+      });
     }
 
     render() {
@@ -831,6 +839,8 @@ export const dBHomeComponent = withRouteData(
         genomicInfo,
         variantListSize,
         loadingVariantListSize,
+        winHeight,
+        winWidth
       } = this.state;
       const noResults =
         domainInfo.length === 0 &&
@@ -997,11 +1007,10 @@ export const dBHomeComponent = withRouteData(
                   </h5>
                   <div className="pm-boxes"
                     style={physicalMeasurementsInfo.length > 0 && searchWord ?
-                      { gridTemplateColumns: "repeat(4, minmax(239px, 1fr))" } : windowSize > 1000 ?
-                        {
-                          gridTemplateColumns: "repeat(2, minmax(239px, 1fr))",
-                          background: 'red'
-                        } : {}
+                      { gridTemplateColumns: winWidth > 1050 ? "repeat(4, minmax(239px, 1fr))":winWidth > 766 ? "repeat(3, minmax(239px, 1fr))" :"repeat(2, minmax(239px, 1fr))" } : 
+                       winWidth > 1050 ? {gridTemplateColumns: "repeat(2, minmax(239px, 1fr)"}:{
+                        gridTemplateColumns: "repeat(3, minmax(239px, 1fr)", width: "97vw"
+                       }
                     }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
