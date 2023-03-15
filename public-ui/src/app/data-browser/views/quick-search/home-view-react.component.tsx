@@ -197,7 +197,7 @@ const css = `
     'pmBoxes pmBoxes';
 }
   .ehr-boxes {
-    grid-template-columns: repeat(3, minmax(296px, 1fr));
+    grid-template-columns: repeat(3, minmax(239px, 1fr));
     row-gap: 1rem;
   }
     .survey-result-boxes{
@@ -209,7 +209,7 @@ const css = `
     }
 
     .pm-boxes {
-      width: calc((100vw)/1.57);
+      width: calc((100%)/.725);
       grid-template-columns: repeat(2, minmax(239px, 1fr));
     }
 
@@ -586,45 +586,45 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
           {domainType === "genomics" && searchWord && !loadingVariantListSize &&
-                                                               variantListSize > 0 && (
-                      <React.Fragment>
-                        <span className="result-box-body-item">
-                          <React.Fragment>
-                            <span className="result-stat" >
-                              {variantListSize.toLocaleString()}
-                            </span>
-                            <span className="result-box-stat-label">matching SNP/Indel Variants</span>
-                          </React.Fragment>
-                        </span>
-                        {wgsSRParticipantCount > 0 &&
-                          <span className="result-box-body-item hgc-count-text">
-                            <span>
-                              <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                              participants in the Short-Read WGS dataset
-                            </span>
-                          </span>}
-                        {wgsLRParticipantCount > 0 &&
-                          <span className="result-box-body-item hgc-count-text">
-                            <span>
-                              <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                              participants in the Long-Read WGS dataset
-                            </span>
-                          </span>}
-                        {wgsSVParticipantCount > 0 &&
-                          <span className="result-box-body-item hgc-count-text">
-                            <span>
-                              <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                              participants in the Structural Variants dataset
-                            </span>
-                          </span>}
-                        <span className="result-box-body-item hgc-count-text">
-                          <span>
-                            <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                            participants in the Genotyping Arrays dataset
-                          </span>
-                        </span>
-                      </React.Fragment>
-                    )}
+            variantListSize > 0 && (
+              <React.Fragment>
+                <span className="result-box-body-item">
+                  <React.Fragment>
+                    <span className="result-stat" >
+                      {variantListSize.toLocaleString()}
+                    </span>
+                    <span className="result-box-stat-label">matching SNP/Indel Variants</span>
+                  </React.Fragment>
+                </span>
+                {wgsSRParticipantCount > 0 &&
+                  <span className="result-box-body-item hgc-count-text">
+                    <span>
+                      <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                      participants in the Short-Read WGS dataset
+                    </span>
+                  </span>}
+                {wgsLRParticipantCount > 0 &&
+                  <span className="result-box-body-item hgc-count-text">
+                    <span>
+                      <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                      participants in the Long-Read WGS dataset
+                    </span>
+                  </span>}
+                {wgsSVParticipantCount > 0 &&
+                  <span className="result-box-body-item hgc-count-text">
+                    <span>
+                      <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                      participants in the Structural Variants dataset
+                    </span>
+                  </span>}
+                <span className="result-box-body-item hgc-count-text">
+                  <span>
+                    <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
+                    participants in the Genotyping Arrays dataset
+                  </span>
+                </span>
+              </React.Fragment>
+            )}
           {questionCount && (
             <div style={styles.resultBodyItem}>
               <span>{description}</span>
@@ -666,6 +666,8 @@ interface State {
   searchWord: string;
   popUp: boolean;
   loading: boolean;
+  winWidth: any;
+  winHeight: any;
 }
 
 export const dBHomeComponent = withRouteData(
@@ -685,6 +687,8 @@ export const dBHomeComponent = withRouteData(
           : "",
         popUp: false,
         loading: true,
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
       };
     }
 
@@ -711,6 +715,10 @@ export const dBHomeComponent = withRouteData(
       this.getDomainInfos();
       this.getVariantResultSize();
       this.getGenomicParticipantCounts();
+      window.addEventListener('resize', this.handleResize);
+    }
+    componentWillUnmount() {
+      window.removeEventListener('resize', this.handleResize);
     }
 
     getGenomicParticipantCounts() {
@@ -813,6 +821,12 @@ export const dBHomeComponent = withRouteData(
         popUp: !this.state.popUp,
       });
     }
+    handleResize=() => {
+      this.setState({
+        winWidth: window.innerWidth,
+        winHeight: window.innerHeight
+      });
+    }
 
     render() {
       const {
@@ -825,6 +839,8 @@ export const dBHomeComponent = withRouteData(
         genomicInfo,
         variantListSize,
         loadingVariantListSize,
+        winHeight,
+        winWidth
       } = this.state;
       const noResults =
         domainInfo.length === 0 &&
@@ -930,7 +946,7 @@ export const dBHomeComponent = withRouteData(
                       gridArea: 'eHeading',
                     }}
                   >
-                    <span style={{position:'relative', bottom:'2px'}}>EHR Domains</span>
+                    <span style={{ position: 'relative', bottom: '2px' }}>EHR Domains</span>
                   </h5>}
                 {domainInfo.length > 0 && (
                   <React.Fragment>
@@ -963,7 +979,7 @@ export const dBHomeComponent = withRouteData(
                         gridArea: 'gHeading',
                       }}
                     >
-                      <span style={{position:'relative', bottom:'2px'}}>Genomics</span>
+                      <span style={{ position: 'relative', bottom: '2px' }}>Genomics</span>
                     </h5>
                     <div className="genomic-boxes">
                       <ResultLinksComponent
@@ -987,9 +1003,15 @@ export const dBHomeComponent = withRouteData(
                       whiteSpace: 'nowrap'
                     }}
                   >
-                    <span style={{position:'relative', bottom:'2px'}}>Measurements and Wearables</span>
+                    <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
                   </h5>
-                  <div className="pm-boxes">
+                  <div className="pm-boxes"
+                    style={physicalMeasurementsInfo.length > 0 && searchWord ?
+                      { gridTemplateColumns: winWidth > 1050 ? "repeat(4, minmax(239px, 1fr))":winWidth > 766 ? "repeat(3, minmax(239px, 1fr))" :"repeat(2, minmax(239px, 1fr))" } : 
+                       winWidth > 1050 ? {gridTemplateColumns: "repeat(2, minmax(239px, 1fr)"}:{
+                        gridTemplateColumns: "repeat(3, minmax(239px, 1fr)", width: "97vw"
+                       }
+                    }>
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
                         const key = "phyMeasurements" + index;
