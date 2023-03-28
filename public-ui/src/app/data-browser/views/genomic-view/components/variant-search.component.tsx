@@ -165,7 +165,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         const {filterMetadata} = this.props
         const { variantListSize, loadingResults, loadingVariantListSize } = this.props;
         const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-
         return <React.Fragment>
             <style>{css}</style>
             <div className='search-container'>
