@@ -104,8 +104,10 @@ export class VariantFilterComponent extends React.Component<Props, State> {
     }
 
     handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
+
         const filterMetadataChange = this.props.filterMetadata;
         filterMetadataChange[cat.field.toString()] = filteredItem;
+
         this.setState({ filterMetadata: filterMetadataChange });
     }
 

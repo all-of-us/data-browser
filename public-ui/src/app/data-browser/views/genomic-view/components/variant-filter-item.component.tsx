@@ -151,7 +151,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
 
 
   handleSliderChange(vals, filterItem) {
-    const updatedFilterItem = filterItem;
+    const updatedFilterItem = {...filterItem};
     updatedFilterItem.min = vals[0];
     updatedFilterItem.max = vals[1];
     updatedFilterItem.checked = true;
