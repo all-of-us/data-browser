@@ -58,7 +58,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     formatChips(filteredMetadata): Array<any> {
-
         const displayArr = [];
         for (const key in filteredMetadata) {
             if (Object.prototype.hasOwnProperty.call(filteredMetadata, key)) {
@@ -70,7 +69,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
             }
         }
-
         return displayArr;
     }
 
@@ -110,7 +108,6 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
     render() {
         const { chips } = this.state;
-
         return <div style={styles.chipFormat}>
             {chips.length > 0 && chips.map((el, count) => {
                 if (el.data.hasOwnProperty("filterActive")) {

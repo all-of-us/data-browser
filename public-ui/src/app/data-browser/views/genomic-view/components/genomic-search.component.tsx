@@ -106,7 +106,6 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     const { searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
       rowCount } = this.props;
-
     return <React.Fragment>
       <div style={styles.titleBox}>
         <p style={styles.boxHeading} ref={this.scrollDiv}>
