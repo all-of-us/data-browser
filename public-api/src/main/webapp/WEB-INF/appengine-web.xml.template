@@ -5,6 +5,16 @@
   <!-- Deploy complains about this tag, bug BigQuery needs it. -->
   <application>aou-db-test</application>
 
+   <env-variables>
+      <env-var name="CLOUD_SQL_INSTANCE" value="${CLOUD_SQL_INSTANCE}" />
+      <env-var name="PUBLIC_DB_USER" value="${PUBLIC_DB_USER}" />
+      <env-var name="PUBLIC_DB_PASSWORD" value="${PUBLIC_DB_PASSWORD}" />
+      <env-var name="META_DB_USER" value="${META_DB_USER}" />
+      <env-var name="META_DB_PASSWORD" value="${META_DB_PASSWORD}" />
+      <env-var name="PUBLIC_DB_CONNECTION_STRING" value="${PUBLIC_DB_CONNECTION_STRING}" />
+    </env-variables>
+
+
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     <property name="spring.datasource.driver-class-name" value="${DB_DRIVER}"/>

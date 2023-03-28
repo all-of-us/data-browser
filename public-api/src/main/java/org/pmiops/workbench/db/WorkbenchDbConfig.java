@@ -18,6 +18,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import java.util.Optional;
 
 @Configuration
 @EnableTransactionManagement
@@ -44,7 +47,15 @@ public class WorkbenchDbConfig {
   @Bean(name = "dataSource")
   @ConfigurationProperties(prefix = "spring.datasource")
   public DataSource dataSource() {
-    return dataSourceProperties().initializeDataSourceBuilder().build();
+    HikariConfig config = new HikariConfig();
+    config.setDriverClassName("com.mysql.cj.jdbc.Driver");
+    config.setJdbcUrl(String.format("jdbc:mysql:///%s", getRequiredEnv("DB_NAME")));
+    config.setUsername(getRequiredEnv("PUBLIC_DB_USER"));
+    config.setPassword(getRequiredEnv("PUBLIC_DB_PASSWORD"));
+    config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
+    config.addDataSourceProperty("cloudSqlInstance", getRequiredEnv("CLOUD_SQL_INSTANCE"));
+    config.addDataSourceProperty("useSSL", false);
+    return new HikariDataSource(config);
   }
 
   @Primary
@@ -76,5 +87,10 @@ public class WorkbenchDbConfig {
   @ConfigurationProperties(prefix = "spring.datasource")
   public PoolConfiguration poolConfig() {
     return new PoolProperties();
+  }
+
+  String getRequiredEnv(String name) {
+    return Optional.ofNullable(System.getenv(name)).map(s -> s.trim()).filter(s -> s != "")
+            .orElseThrow(() -> new IllegalStateException(name + " not defined"));
   }
 }

@@ -30,7 +30,6 @@ public class CdrDataSource extends AbstractRoutingDataSource {
     private static final Logger log = Logger.getLogger(CdrDataSource.class.getName());
 
     private final CdrVersionDao cdrVersionDao;
-
     private final PoolConfiguration basePoolConfig;
     private final PoolConfiguration cdrPoolConfig;
     private final EntityManagerFactory emFactory;
@@ -48,7 +47,20 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         resetTargetDataSources();
     }
 
-    DataSource createDataSource(String dbName) {
+    List<DbCdrVersion> getCdrVersions() {
+        EntityManager em = emFactory.createEntityManager();
+        String jpql = "SELECT v FROM DbCdrVersion v";
+        TypedQuery<DbCdrVersion> query = em.createQuery(jpql, DbCdrVersion.class);
+        try {
+            return query.getResultList();
+        } catch (PersistenceException e) {
+            // This emits "Table 'CDR_VERSION' not found" before throwing to this catch, so it is not
+            // necessary to warn further.
+            return new ArrayList<>();
+        }
+    }
+
+    DataSource createCdrDs(String dbName) {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.cj.jdbc.Driver");
         config.setJdbcUrl(String.format("jdbc:mysql:///%s", dbName));
@@ -57,6 +69,11 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
         config.addDataSourceProperty("cloudSqlInstance", getRequiredEnv("CLOUD_SQL_INSTANCE"));
         config.addDataSourceProperty("useSSL", false);
+
+        System.out.println("*****************************");
+        System.out.println(config);
+        System.out.println("*****************************");
+
         return new HikariDataSource(config);
     }
 
@@ -75,9 +92,9 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         // TODO: find a way to make sure CDR versions aren't shown in the UI until they are in use by
         // all servers.
         Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
-        for (DbCdrVersion cdrVersion : cdrVersionDao.findAll()) {
+        for (DbCdrVersion cdrVersion : getCdrVersions()) {
             try {
-                DataSource dataSource = createDataSource(cdrVersion.getPublicDbName());
+                DataSource dataSource = createCdrDs(cdrVersion.getPublicDbName());
                 if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
                     org.apache.tomcat.jdbc.pool.DataSource tomcatSource =
                             (org.apache.tomcat.jdbc.pool.DataSource) dataSource;
@@ -111,6 +128,7 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         }
         setTargetDataSources(cdrVersionDataSourceMap);
     }
+
     @Override
     protected Object determineCurrentLookupKey() {
         return CdrVersionContext.getCdrVersion().getCdrVersionId();
