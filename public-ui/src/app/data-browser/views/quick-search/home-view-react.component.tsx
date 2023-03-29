@@ -546,7 +546,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           )}
           {searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
-              <span>matching survey questions</span>
+            <span className="result-box-stat-label">matching survey questions</span>
             </span>
           )}
           {searchWord && name.toLowerCase() === "physical measurements" && (
