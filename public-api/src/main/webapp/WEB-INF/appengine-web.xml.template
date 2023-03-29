@@ -5,6 +5,11 @@
   <!-- Deploy complains about this tag, bug BigQuery needs it. -->
   <application>aou-db-test</application>
 
+    <env-variables>
+      <env-var name="CLOUD_SQL_INSTANCE_NAME" value="${CLOUD_SQL_INSTANCE_NAME}" />
+      <env-var name="DB_PASSWORD" value="${DB_PASSWORD}" />
+    </env-variables>
+
   <system-properties>
     <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
     <property name="spring.datasource.driver-class-name" value="${DB_DRIVER}"/>

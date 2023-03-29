@@ -18,6 +18,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import java.util.Optional;
 
 @Configuration
 @EnableTransactionManagement
@@ -35,9 +36,24 @@ public class WorkbenchDbConfig {
 
   @Primary
   @Bean(name = "dataSourceProperties")
-  @ConfigurationProperties(prefix = "spring.datasource")
   public DataSourceProperties dataSourceProperties() {
-    return new DataSourceProperties();
+    DataSourceProperties p = new DataSourceProperties();
+    // DB_HOST should be defined for local development, otherwise CLOUD_SQL_INSTANCE_NAME is
+    // required.
+    Optional<String> dbHost = getEnv("DB_HOST");
+    p.setDriverClassName(
+            dbHost.isPresent() ? "com.mysql.cj.jdbc.Driver" : "com.mysql.jdbc.GoogleDriver");
+    String options = dbHost.isPresent() ? "useSSL=false" : "rewriteBatchedStatements=true";
+    p.setUrl(
+            String.format(
+                    "jdbc:%smysql://%s/%s?%s",
+                    dbHost.isPresent() ? "" : "google:",
+                    dbHost.orElseGet(() -> getEnvRequired("CLOUD_SQL_INSTANCE_NAME")),
+                    "workbench", // database name is consistent across environments
+                    options));
+    p.setUsername("databrowser"); // consistent across environments
+    p.setPassword(getEnvRequired("DB_PASSWORD"));
+    return p;
   }
 
   @Primary
@@ -76,5 +92,13 @@ public class WorkbenchDbConfig {
   @ConfigurationProperties(prefix = "spring.datasource")
   public PoolConfiguration poolConfig() {
     return new PoolProperties();
+  }
+
+  Optional<String> getEnv(String name) {
+    return Optional.ofNullable(System.getenv(name)).map(s -> s.trim()).filter(s -> s != "");
+  }
+
+  String getEnvRequired(String name) {
+    return getEnv(name).orElseThrow(() -> new IllegalStateException(name + " not defined"));
   }
 }
