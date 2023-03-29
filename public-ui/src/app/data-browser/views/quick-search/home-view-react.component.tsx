@@ -148,6 +148,10 @@ const css = `
 
 }
 
+.participant-count {
+    padding-bottom: 1rem;
+}
+
 .hgc-count-text {
     padding-bottom: 0.5em;
 }
@@ -580,7 +584,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
           {participantCount && !(domainType === "genomics") && (
-            <span className="result-box-body-item">
+            <span className="result-box-body-item participant-count">
               <strong> {participantCount.toLocaleString()}</strong>{" "}
               participants
             </span>
