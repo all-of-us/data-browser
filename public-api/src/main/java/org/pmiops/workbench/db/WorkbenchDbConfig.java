@@ -49,7 +49,7 @@ public class WorkbenchDbConfig {
                     "jdbc:%smysql://%s/%s?%s",
                     dbHost.isPresent() ? "" : "google:",
                     dbHost.orElseGet(() -> getEnvRequired("CLOUD_SQL_INSTANCE_NAME")),
-                    "workbench", // database name is consistent across environments
+                    "databrowser", // database name is consistent across environments
                     options));
     p.setUsername("databrowser"); // consistent across environments
     p.setPassword(getEnvRequired("DB_PASSWORD"));
