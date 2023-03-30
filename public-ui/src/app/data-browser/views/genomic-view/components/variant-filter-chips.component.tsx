@@ -89,6 +89,13 @@ export class VariantFilterChips extends React.Component<Props, State> {
             });
         } else {
             filteredMetadata[cat.toString()].checked = false;
+            try {
+                let originalFilterMetadata = JSON.parse(localStorage.getItem("originalFilterMetadata") || '{}');
+                filteredMetadata[cat.toString()]['min'] = originalFilterMetadata[cat.toString()]['min'];
+                filteredMetadata[cat.toString()]['max'] = originalFilterMetadata[cat.toString()]['max'];
+            } catch (e) {
+              console.log('Error')
+            }
         }
         const allFalse = (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) &&
             filteredMetadata[cat.toString()].items.every(t => t.checked === false);
@@ -100,7 +107,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
     }
 
     render() {
-        const { chips } = this.state;       
+        const { chips } = this.state;
         return <div style={styles.chipFormat}>
             {chips.length > 0 && chips.map((el, count) => {
                 if (el.data.hasOwnProperty("filterActive")) {
