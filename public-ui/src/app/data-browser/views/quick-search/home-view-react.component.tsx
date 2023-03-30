@@ -136,6 +136,10 @@ const css = `
   justify-content: space-between;
 }
 
+.result-box-title-text {
+    font-size: 16px;
+}
+
 .result-box-body {
   color: #302c71;
   font-family: GothamBook, Arial, sans-serif;
@@ -479,7 +483,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
         <div className="result-box-title" >
-          <span>{name}</span>
+          <span className="result-box-title-text">{name}</span>
           <div>
             <TooltipReactComponent
               label="Homepage Tooltip Hover"
