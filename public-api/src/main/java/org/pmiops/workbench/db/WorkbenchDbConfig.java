@@ -38,6 +38,9 @@ public class WorkbenchDbConfig {
 
   public static HikariConfig createConfig(String dbName) {
     HikariConfig config = new HikariConfig();
+
+    System.out.println("debug - 1");
+
     Optional<String> dbHost = getEnv("DB_HOST");
     boolean connectViaAppEngine = !dbHost.isPresent();
     config.setDriverClassName("com.mysql.cj.jdbc.Driver");
@@ -50,6 +53,9 @@ public class WorkbenchDbConfig {
       config.addDataSourceProperty("cloudSqlInstance", getEnvRequired("CLOUD_SQL_INSTANCE_NAME"));
     }
     config.addDataSourceProperty("useSSL", false);
+
+    System.out.println("debug - 2");
+
     return config;
   }
 

@@ -10,6 +10,8 @@
     <env-var name="CLOUD_SQL_INSTANCE_NAME" value="${CLOUD_SQL_INSTANCE_NAME}" />
     <env-var name="DATABROWSER_DB_USER" value="${DATABROWSER_DB_USER}" />
     <env-var name="DATABROWSER_DB_PASSWORD" value="${DATABROWSER_DB_PASSWORD}" />
+    <env-var name="PUBLIC_DB_USER" value="${PUBLIC_DB_USER}" />
+    <env-var name="PUBLIC_DB_PASSWORD" value="${PUBLIC_DB_PASSWORD}" />
   </env-variables>
 
   <system-properties>

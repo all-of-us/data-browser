@@ -69,6 +69,10 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
         for (DbCdrVersion cdrVersion : getCdrVersions()) {
             try {
+
+                System.out.println("AM I HERE ???????????");
+                System.out.println(cdrVersion.getPublicDbName());
+
                 DataSource dataSource = createCdrDs(cdrVersion.getPublicDbName());
                 if (dataSource instanceof org.apache.tomcat.jdbc.pool.DataSource) {
                     org.apache.tomcat.jdbc.pool.DataSource tomcatSource =
