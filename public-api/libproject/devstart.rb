@@ -893,6 +893,8 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
       db_creds_file.puts "META_DB_USER=databrowser"
       db_creds_file.puts "META_DB_PASSWORD=#{meta_db_password}"
+      db_creds_file.puts "DATABROWSER_DB_USER=databrowser"
+      db_creds_file.puts "DATABROWSER_DB_PASSWORD=#{meta_db_password}"
       if public_password
         db_creds_file.puts "PUBLIC_DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/#{public_db_name}?rewriteBatchedStatements=true"
         db_creds_file.puts "PUBLIC_DB_USER=public"
