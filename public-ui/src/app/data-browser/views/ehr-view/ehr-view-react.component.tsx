@@ -483,7 +483,7 @@ export const EhrViewReactComponent = withRouteData(
 
     handleChange(val) {
       this.setState({ searchWord: val, currentPage: 1, showTopConcepts: true });
-      this.domainTotals();
+      this.domainTotals(val);
     }
 
     backToMain() {

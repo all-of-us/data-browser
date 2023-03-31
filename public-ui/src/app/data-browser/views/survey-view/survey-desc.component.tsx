@@ -6,9 +6,7 @@ import { reactStyles } from "app/utils";
 
 const styles = reactStyles({
   pageHeader: {
-    paddingTop: "18px",
-    paddingLeft: "18px",
-    paddingRight: "18px",
+    padding: "18px",
   },
   titleContainer: {
     width: "100%",
@@ -89,6 +87,25 @@ export const SurveyDescReactComponent = (props) => {
               which participants took the survey.
             </p>
           </div>
+        </div>
+        <div className="survey-note">
+          {" "}
+          <span className="bold-note-heading">Note</span>: The data on this page
+          are:
+          <ul className="survey-note">
+            <li>
+              Gathered directly from participants through electronic surveys
+            </li>
+            <li>Grouped into bins of 20 to protect privacy</li>
+          </ul>
+          For more information about this survey, please visit the{" "}
+          <a
+            target="_blank"
+            href="https://www.researchallofus.org/data-sources/survey-explorer"
+            rel="noopener noreferrer"
+          >
+            Survey Explorer
+          </a>
         </div>
       </div>
     </React.Fragment>

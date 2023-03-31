@@ -58,10 +58,8 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
     newBaseOptions.xAxis.gridLineWidth = 1;
     newBaseOptions.xAxis.gridLineColor = "#F0F0F0";
     newBaseOptions.xAxis.labels = {
-      reserveSpace: true,
       style: {
         fontSize: "12px",
-        width: "80px",
         whiteSpace: "wrap",
         textOverflow: "ellipsis",
         color: "#262262",
@@ -72,12 +70,9 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       },
       useHTML: true,
     };
+    newBaseOptions.tooltip.positioner = undefined;
     newBaseOptions.tooltip.outside = true;
-    newBaseOptions.series = [{ name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
-                                          showInLegend: undefined,
-                                          dataLabels: {
-                                                  enabled: false,
-                                                },}];
+    newBaseOptions.series = [{ data: series }];
     this.setState({ options: newBaseOptions });
   }
 

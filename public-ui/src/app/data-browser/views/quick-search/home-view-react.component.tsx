@@ -152,10 +152,6 @@ const css = `
 
 }
 
-.participant-count {
-    padding-bottom: 1rem;
-}
-
 .hgc-count-text {
     padding-bottom: 0.5em;
 }
@@ -554,7 +550,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           )}
           {searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
-            <span className="result-box-stat-label">matching survey questions</span>
+              <span>matching survey questions</span>
             </span>
           )}
           {searchWord && name.toLowerCase() === "physical measurements" && (
@@ -588,7 +584,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
           {participantCount && !(domainType === "genomics") && (
-            <span className="result-box-body-item participant-count">
+            <span className="result-box-body-item">
               <strong> {participantCount.toLocaleString()}</strong>{" "}
               participants
             </span>
