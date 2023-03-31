@@ -887,7 +887,6 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
       # table of the workbench DB; then this shouldn't be needed anymore.
       db_creds_file.puts "PUBLIC_DB_NAME=#{public_db_name}"
       db_creds_file.puts "CLOUD_SQL_INSTANCE=#{instance_name}"
-      db_creds_file.puts "CLOUD_SQL_INSTANCE_NAME=#{instance_name}"
       db_creds_file.puts "LIQUIBASE_DB_USER=liquibase"
       db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{meta_db_password}"
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
