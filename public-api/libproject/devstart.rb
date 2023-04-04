@@ -1027,7 +1027,7 @@ def migrate_meta_db()
 end
 
 def load_config(project, dry_run = false)
-  config_json = get_config(project)
+  config_json = must_get_env_value(project, :config_json)
   unless config_json
     raise("unknown project #{project}, expected one of #{configs.keys}")
   end
