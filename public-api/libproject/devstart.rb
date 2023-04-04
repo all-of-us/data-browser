@@ -8,6 +8,7 @@ require_relative "../../aou-utils/workbench"
 require_relative "cloudsqlproxycontext"
 require_relative "gcloudcontext"
 require_relative "wboptionsparser"
+require_relative "environments"
 require "fileutils"
 require "io/console"
 require "json"
@@ -15,7 +16,6 @@ require "optparse"
 require "ostruct"
 require "tempfile"
 
-TEST_PROJECT = "aou-db-test"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
@@ -24,56 +24,6 @@ SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com 
               cloudbilling.googleapis.com sqladmin.googleapis.com sql-component.googleapis.com
               clouderrorreporting.googleapis.com bigquery-json.googleapis.com}
 DRY_RUN_CMD = %W{echo [DRY_RUN]}
-TEST_GAE_VARS = {
-  "GAE_MIN_IDLE_INSTANCES" => "1",
-  "GAE_MAX_INSTANCES" => "10"
-}
-
-ENVIRONMENTS = {
-  TEST_PROJECT => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
-    :config_json => "config_test.json",
-    :cdr_versions_json => "cdr_versions_test.json",
-    :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
-    :source_cdr_project => "aou-res-curation-prod",
-    :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
-    :gae_vars => TEST_GAE_VARS
-  },
-  "aou-db-staging" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
-    :config_json => "config_staging.json",
-    :cdr_versions_json => "cdr_versions_staging.json",
-    :api_base_path => "https://public.api.staging.fake-research-aou.org",
-    :source_cdr_project => "aou-res-curation-prod",
-    :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
-    :gae_vars => TEST_GAE_VARS
-  },
-  "aou-db-stable" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
-    :config_json => "config_stable.json",
-    :cdr_versions_json => "cdr_versions_stable.json",
-    :api_base_path => "https://public.api.stable.fake-research-aou.org",
-    :source_cdr_project => "aou-res-curation-prod",
-    :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
-    :gae_vars => TEST_GAE_VARS
-  },
-  "aou-db-prod" => {
-    :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
-    :config_json => "config_prod.json",
-    :cdr_versions_json => "cdr_versions_prod.json",
-    :api_base_path => "https://public.api.researchallofus.org",
-    :source_cdr_project => "aou-res-curation-prod",
-    :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
-    :instance => "databrowsermaindb",
-    :gae_vars => {
-      "GAE_MIN_IDLE_INSTANCES" => "1",
-      "GAE_MAX_INSTANCES" => "64"
-    }
-  }
-}
 
 def run_inline_or_log(dry_run, args)
   cmd_prefix = dry_run ? DRY_RUN_CMD : []
@@ -85,14 +35,6 @@ def must_get_project_key(project, key)
     raise ArgumentError.new("project #{project} missing configuration for #{key}")
   end
   return ENVIRONMENTS[project][key]
-end
-
-def get_config(project)
-  must_get_project_key(project, :config_json)
-end
-
-def get_cdr_versions_file(project)
-  must_get_project_key(project, :cdr_versions_json)
 end
 
 def get_cdr_sql_project(project)
@@ -191,7 +133,7 @@ def dev_up()
   common.run_inline %W{docker-compose run db-public-migration}
 
   common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_versions_local.json',false]}
+  common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
 
   common.status "Updating workbench configuration..."
   common.run_inline %W{
@@ -234,7 +176,7 @@ def run_local_migrations()
   end
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
-  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['config/cdr_versions_local.json',false]}
+  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['config/cdr_config_local.json',false]}
 end
 
 Common.register_command({
@@ -443,24 +385,24 @@ Common.register_command({
 def docker_clean()
   common = Common.new
 
-  docker_images = `docker ps -aq`.gsub(/\s+/, " ")
-  unless docker_images.empty?
-    common.run_inline("docker rm -f #{docker_images}")
-  end
+  # --volumes clears out any cached data between runs, e.g. the MySQL database
   common.run_inline %W{docker-compose down --volumes}
+
   # This keyfile gets created and cached locally on dev-up. Though it's not
   # specific to Docker, it is mounted locally for docker runs. For lack of a
   # better "dev teardown" hook, purge that file here; e.g. in case we decide to
   # invalidate a dev key or change the service account.
   common.run_inline %W{rm -f #{ServiceAccountContext::SERVICE_ACCOUNT_KEY_PATH}}
+
+  # See https://github.com/docker/compose/issues/3447
+  common.status "Cleaning complete. docker-compose 'not found' errors can be safely ignored"
 end
 
 Common.register_command({
   :invocation => "docker-clean",
   :description => \
     "Removes docker containers and volumes, allowing the next `dev-up` to" \
-    " start from scratch (e.g., the database will be re-created). Includes ALL" \
-    " docker images, not just for the API.",
+    " start from scratch (e.g., the database will be re-created).",
   :fn => ->() { docker_clean() }
 })
 
@@ -887,14 +829,11 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
       # table of the workbench DB; then this shouldn't be needed anymore.
       db_creds_file.puts "PUBLIC_DB_NAME=#{public_db_name}"
       db_creds_file.puts "CLOUD_SQL_INSTANCE=#{instance_name}"
-      db_creds_file.puts "CLOUD_SQL_INSTANCE_NAME=#{instance_name}"
       db_creds_file.puts "LIQUIBASE_DB_USER=liquibase"
       db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{meta_db_password}"
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
       db_creds_file.puts "META_DB_USER=databrowser"
       db_creds_file.puts "META_DB_PASSWORD=#{meta_db_password}"
-      db_creds_file.puts "DATABROWSER_DB_USER=databrowser"
-      db_creds_file.puts "DATABROWSER_DB_PASSWORD=#{meta_db_password}"
       if public_password
         db_creds_file.puts "PUBLIC_DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/#{public_db_name}?rewriteBatchedStatements=true"
         db_creds_file.puts "PUBLIC_DB_USER=public"
@@ -911,7 +850,7 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
   end
 end
 
-def update_cdr_version_options(cmd_name, args)
+def update_cdr_config_options(cmd_name, args)
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.dry_run = false
   op.add_option(
@@ -921,47 +860,47 @@ def update_cdr_version_options(cmd_name, args)
   return op
 end
 
-def update_cdr_versions_for_project(versions_file, dry_run)
-   common = Common.new
-   common.run_inline %W{
-      ./gradlew --info updateCdrVersions
-     -PappArgs=['#{versions_file}',#{dry_run}]}
+def update_cdr_config_for_project(cdr_config_file, dry_run)
+  common = Common.new
+  common.run_inline %W{
+    gradle updateCdrConfig
+   -PappArgs=['#{cdr_config_file}',#{dry_run}]}
 end
 
-def update_cdr_versions(cmd_name, *args)
+def update_cdr_config(cmd_name, *args)
   ensure_docker cmd_name, args
-  op = update_cdr_version_options(cmd_name, args)
+  op = update_cdr_config_options(cmd_name, args)
   gcc = GcloudContextV2.new(op)
   op.parse.validate
   gcc.validate
 
   with_cloud_proxy_and_db(gcc) do
-    versions_file = get_cdr_versions_file(gcc.project)
-    update_cdr_versions_for_project("/w/public-api/config/#{versions_file}", op.opts.dry_run)
+    cdr_config_file = must_get_env_value(gcc.project, :cdr_config_json)
+    update_cdr_config_for_project("/w/public-api/config/#{cdr_config_file}", op.opts.dry_run)
   end
 end
 
 Common.register_command({
-  :invocation => "update-cdr-versions",
-  :description => "Update CDR versions in a cloud environment",
-  :fn => ->(*args) { update_cdr_versions("update-cdr-versions", *args)}
+  :invocation => "update-cdr-config",
+  :description => "Update CDR config (tiers and versions) in a cloud environment",
+  :fn => ->(*args) { update_cdr_config("update-cdr-config", *args)}
 })
 
-def update_cdr_versions_local(cmd_name, *args)
+def update_cdr_config_local(cmd_name, *args)
   ensure_docker_sync()
   setup_local_environment
-  op = update_cdr_version_options(cmd_name, args)
+  op = update_cdr_config_options(cmd_name, args)
   op.parse.validate
-  versions_file = 'config/cdr_versions_local.json'
-  app_args = ["-PappArgs=['/w/public-api/" + versions_file + "',false]"]
+  cdr_config_file = 'config/cdr_config_local.json'
+  app_args = ["-PappArgs=['/w/public-api/" + cdr_config_file + "',false]"]
   common = Common.new
-  common.run_inline %W{docker-compose run update-cdr-versions} + app_args
+  common.run_inline %W{docker-compose run --rm api-scripts ./gradlew updateCdrConfig} + app_args
 end
 
 Common.register_command({
-  :invocation => "update-cdr-versions-local",
-  :description => "Update CDR versions in the local environment",
-  :fn => ->(*args) { update_cdr_versions_local("update-cdr-versions-local", *args)}
+  :invocation => "update-cdr-config-local",
+  :description => "Update CDR config (tiers and versions) in the local environment",
+  :fn => ->(*args) { update_cdr_config_local("update-cdr-config-local", *args)}
 })
 
 def connect_to_cloud_db(cmd_name, *args)
@@ -1166,8 +1105,8 @@ def deploy(cmd_name, args)
   with_cloud_proxy_and_db(gcc, op.opts.account, op.opts.key_file) do |ctx|
     migrate_database(op.opts.dry_run)
     load_config(ctx.project, op.opts.dry_run)
-    versions_file = get_cdr_versions_file(ctx.project)
-    update_cdr_versions_for_project("config/#{versions_file}", op.opts.dry_run)
+    cdr_config_file = must_get_env_value(gcc.project, :cdr_config_json)
+    update_cdr_config_for_project("config/#{cdr_config_file}", op.opts.dry_run)
 
     # Keep the cloud proxy context open for the service account credentials.
     deploy_public_api(cmd_name, %W{
