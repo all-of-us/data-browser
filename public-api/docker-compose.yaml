@@ -36,6 +36,8 @@ services:
       - db/vars.env
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
 
   public-api:
     <<: *api-defaults
