@@ -17,8 +17,8 @@ require "tempfile"
 
 TEST_PROJECT = "aou-db-test"
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
-INSTANCE_NAME = "databrowsermaindb"
-FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
+INSTANCE_NAME = "databrowser-main-db-8"
+FAILOVER_INSTANCE_NAME = "databrowser-backupdb-8"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
               compute.googleapis.com admin.googleapis.com appengine.googleapis.com
               cloudbilling.googleapis.com sqladmin.googleapis.com sql-component.googleapis.com
@@ -31,43 +31,43 @@ TEST_GAE_VARS = {
 
 ENVIRONMENTS = {
   TEST_PROJECT => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowser-main-db-8",
     :config_json => "config_test.json",
     :cdr_versions_json => "cdr_versions_test.json",
     :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowser-main-db-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-staging" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowser-main-db-8",
     :config_json => "config_staging.json",
     :cdr_versions_json => "cdr_versions_staging.json",
     :api_base_path => "https://api-dot-aou-db-staging.appspot.com",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowser-main-db-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-stable" => {
-    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowser-main-db-8",
     :config_json => "config_stable.json",
     :cdr_versions_json => "cdr_versions_stable.json",
     :api_base_path => "https://public.api.stable.fake-research-aou.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowser-main-db-8",
     :gae_vars => TEST_GAE_VARS
   },
   "aou-db-prod" => {
-    :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
+    :cdr_sql_instance => "aou-db-prod:us-central1:databrowser-main-db-8",
     :config_json => "config_prod.json",
     :cdr_versions_json => "cdr_versions_prod.json",
     :api_base_path => "https://public.api.researchallofus.org",
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
-    :instance => "databrowsermaindb",
+    :instance => "databrowser-main-db-8",
     :gae_vars => {
       "GAE_MIN_IDLE_INSTANCES" => "1",
       "GAE_MAX_INSTANCES" => "64"
@@ -218,8 +218,8 @@ def setup_local_environment()
   ENV.update(Workbench.read_vars_file("db/vars.env"))
   ENV["DB_HOST"] = "127.0.0.1"
   ENV["MYSQL_ROOT_PASSWORD"] = root_password
-  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser?useSSL=false"
-  ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
+  ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser"
+  ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public"
 end
 
 def run_local_migrations()
@@ -919,10 +919,10 @@ def update_cdr_version_options(cmd_name, args)
 end
 
 def update_cdr_versions_for_project(versions_file, dry_run)
-  common = Common.new
-  common.run_inline %W{
-    gradle --info updateCdrVersions
-   -PappArgs=['#{versions_file}',#{dry_run}]}
+   common = Common.new
+   common.run_inline %W{
+      ../gradlew --info updateCdrVersions
+     -PappArgs=['#{versions_file}',#{dry_run}]}
 end
 
 def update_cdr_versions(cmd_name, *args)
@@ -976,9 +976,11 @@ def connect_to_cloud_db(cmd_name, *args)
   CloudSqlProxyContext.new(gcc.project).run do
     password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["META_DB_PASSWORD"]
     user = op.opts.root ? "root" : env["META_DB_USER"]
+    common.run_inline %W{echo #{password}}
     common.run_inline %W{
       mysql --host=127.0.0.1 --port=3307 --user=#{user}
-      --database=#{env["DB_NAME"]} --password=#{password}},
+      --database=#{env["DB_NAME"]} --password=#{password}
+      --default-auth=mysql_native_password},
       password
   end
 end
@@ -1223,17 +1225,17 @@ def create_project_resources(gcc)
   for service in SERVICES
     common.run_inline("gcloud services enable #{service} --project #{gcc.project}")
   end
-  common.status "Creating GCS bucket to store credentials..."
-  common.run_inline %W{gsutil mb -p #{gcc.project} -c regional -l us-central1 gs://#{gcc.project}-credentials/}
+  #common.status "Creating GCS bucket to store credentials..."
+  #common.run_inline %W{gsutil mb -p #{gcc.project} -c regional -l us-central1 gs://#{gcc.project}-credentials/}
   common.status "Creating Cloud SQL instances..."
   common.run_inline %W{gcloud sql instances create #{INSTANCE_NAME} --require-ssl --tier=db-n1-standard-2
                        --activation-policy=ALWAYS --backup-start-time 00:00
                        --failover-replica-name #{FAILOVER_INSTANCE_NAME} --enable-bin-log
-                       --database-version MYSQL_5_7 --project #{gcc.project} --storage-auto-increase --async --maintenance-release-channel preview --maintenance-window-day SAT --maintenance-window-hour 5}
+                       --database-version MYSQL_8_0_27 --project #{gcc.project} --storage-auto-increase --async --maintenance-release-channel preview --maintenance-window-day SAT --maintenance-window-hour 5}
   common.status "Waiting for database instance to become ready..."
   loop do
     sleep 3.0
-    db_status = `gcloud sql instances describe databrowsermaindb --project #{gcc.project} | grep state`
+    db_status = `gcloud sql instances describe databrowser-main-db-8 --project #{gcc.project} | grep state`
     common.status "DB status: #{db_status}"
     break if db_status.include? "RUNNABLE"
   end
