@@ -1,4 +1,4 @@
-version: 3
+version: 2.1
 
 defaults: &defaults
   docker:
@@ -15,6 +15,39 @@ java_defaults: &java_defaults
     JAVA_TOOL_OPTIONS: -Xmx3g
     TERM: dumb
 
+commands:
+  checkout-code:
+    description: "git checkout and update submodules"
+    steps:
+      - checkout
+      - run:
+          command: git submodule update --init --recursive
+
+  gcloud-auth-login:
+    description: "Activate CircleCI service account credential"
+    parameters:
+      with_application_default_credentials:
+        description: |
+          Whether to apply these credentials for Application Default Credentials (ADC).
+          This may be necessary to simulate certain local or server-side auth flows.
+          This is applied in addition to the normal behavior of this command, which activates
+          credentials e.g. for gcloud or gsutil commands.
+        type: boolean
+        default: false
+    steps:
+      - run:
+          working_directory: ~/data-browser
+          command: ci/activate_creds.sh public-api/circle-sa-key.json
+      - when:
+          condition: << parameters.with_application_default_credentials >>
+          steps:
+            - run:
+                name: Export application default credentials
+                command: |
+                  echo 'export GOOGLE_APPLICATION_CREDENTIALS=~/data-browser/public-api/circle-sa-key.json' >> $BASH_ENV
+                  source $BASH_ENV
+                working_directory: ~/data-browser
+
 jobs:
   public-api-local-test:
     docker:
@@ -30,10 +63,7 @@ jobs:
       TERM: dumb
       MYSQL_ROOT_PASSWORD: ubuntu
     steps:
-      - checkout
-      - run:
-          name: Fetch Submodules
-          command: git submodule update --init --recursive
+      - checkout-code
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
@@ -73,9 +103,7 @@ jobs:
       TERM: dumb
       MYSQL_ROOT_PASSWORD: ubuntu
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout-code
       - run:
           #Circle is bad about setting up your remotes for you, you must use origin/
           command: |
@@ -109,9 +137,7 @@ jobs:
   public-api-deploy-to-test:
     <<: *java_defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout-code
       # Note: most of the time spent here appears to be in Gradle / App Engine
       # deployment. We tried more aggressively caching outputs via Cirlce
       # workspaces, but that seemed to have a negligible effect on speed. It's
@@ -138,9 +164,7 @@ jobs:
   api-deps-check:
     <<: *java_defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout-code
       - run:
           name: Scan dependencies for vulnerabilities
           working_directory: ~/data-browser/public-api
@@ -150,10 +174,7 @@ jobs:
   public-ui-build-test:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          name: Fetch Submodules
-          command: git submodule update --init --recursive
+      - checkout-code
       - run:
           working_directory: ~/data-browser
           name: Download Swagger CLI
@@ -163,6 +184,11 @@ jobs:
           keys:
           - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
           - public-ui-cache-
+      - gcloud-auth-login
+      - run:
+          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
+          working_directory: ~/data-browser
+          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
       - run:
           working_directory: ~/data-browser/public-ui
           command: yarn install --frozen-lockfile && yarn codegen
@@ -186,9 +212,7 @@ jobs:
   public-ui-deploy-to-test:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout-code
       # Use the ui-build-test workspace here to avoid redoing the setup.
       - attach_workspace:
           at: .
@@ -210,9 +234,7 @@ jobs:
   deploy-staging:
     <<: *defaults
     steps:
-      - checkout
-      - run:
-          command: git submodule update --init --recursive
+      - checkout-code
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
