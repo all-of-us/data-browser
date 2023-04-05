@@ -1,6 +1,5 @@
 import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
-import org.gradle.api.tasks.JavaExec
 
 buildscript {
     // External properties on the default project. Values declared in ext blocks
@@ -67,6 +66,7 @@ def swaggerTemplateDir = 'src/main/resources'
 def swaggerSourceFile = 'src/main/resources/public-api.yaml'
 def swaggerTargetFolder = 'src/generated/java'
 
+<<<<<<< HEAD
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
 def meta_db_user = System.getenv("META_DB_USER")
@@ -81,6 +81,8 @@ def dbProperties = [
         'spring.datasource.password': '${meta_db_password}'
 ]
 
+=======
+>>>>>>> e5f83a2b (Revert "Mysql 5.7 -> 8 upgrade (#1131)" (#1138))
 task generateApi {
     group 'swagger-codegen'
     description 'Generates the Spring controllers and API model classes in Java.'
@@ -216,55 +218,6 @@ sourceSets {
             srcDir file('src/integration/java')
         }
     }
-    tools {
-        compileClasspath += main.output + generated.output
-        runtimeClasspath += main.output + generated.output
-
-        resources {
-            srcDir "tools/src/main/resources"
-        }
-        java {
-            srcDirs = ['tools/src/main/java', 'src/main/java', 'src/generated/java']
-            includes = ['org/pmiops/workbench/tools/**/*.java',
-                        'org/pmiops/workbench/db/**/*.java',
-                        // In general, command-line tools won't need access to
-                        // org.pmiops.workbench.model (Swagger-generated classes),
-                        // so we selectively whitelist as needed.
-                        'org/pmiops/workbench/config/CdrBigQuerySchemaConfig.java',
-                        'org/pmiops/workbench/config/WorkbenchConfig.java',
-                        'org/pmiops/workbench/model/Authority.java',
-                        'org/pmiops/workbench/model/BlockscoreVerificationStatus.java',
-                        'org/pmiops/workbench/model/BillingProjectStatus.java',
-                        'org/pmiops/workbench/model/ContactEmailTakenResponse.java',
-                        'org/pmiops/workbench/model/DataAccessLevel.java',
-                        'org/pmiops/workbench/model/EmailVerificationStatus.java',
-                        'org/pmiops/workbench/model/ErrorCode.java',
-                        'org/pmiops/workbench/model/ErrorResponse.java',
-                        'org/pmiops/workbench/model/WorkspaceAccessLevel.java',
-                        'org/pmiops/workbench/model/CohortStatus.java',
-                        'org/pmiops/workbench/model/CohortReview.java',
-                        'org/pmiops/workbench/model/Domain.java',
-                        'org/pmiops/workbench/model/PageVisit.java',
-                        'org/pmiops/workbench/model/ParticipantCohortStatus.java',
-                        'org/pmiops/workbench/model/ReviewStatus.java',
-                        'org/pmiops/workbench/model/UnderservedPopulationEnum.java',
-                        'org/pmiops/workbench/model/AnnotationType.java']
-            excludes = ['org/pmiops/workbench/db/dao/ConceptSetService.java',
-                        'org/pmiops/workbench/db/dao/UserService.java',
-                        'org/pmiops/workbench/db/dao/WorkspaceService.java',
-                        'org/pmiops/workbench/db/dao/WorkspaceServiceImpl.java',
-                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDao.java',
-                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDaoImpl.java',
-                        'org/pmiops/workbench/db/dao/UserRecentResourceServiceImpl.java',
-                        'org/pmiops/workbench/cohortreview/util/*.java',
-                        'org/pmiops/workbench/model/Filter.java',
-                        'org/pmiops/workbench/model/Operator.java',
-                        'org/pmiops/workbench/model/ParticipantCohortStatusColumns.java',
-                        'org/pmiops/workbench/model/SortOrder.java',
-                        'org/pmiops/workbench/db/dao/CohortService.java',
-                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDaoCustom.java']
-        }
-    }
 }
 
 generateApi.dependsOn validateSwagger
@@ -278,29 +231,6 @@ classes.dependsOn generatedClasses
 compileJava.dependsOn compileGeneratedJava
 
 war.dependsOn generate_local_appengine_web_xml
-
-// Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
-// which is automatically run during api/project.rb dev-up.
-task loadConfig(type: JavaExec) {
-    classpath sourceSets.tools.runtimeClasspath
-    main = "org.pmiops.workbench.tools.ConfigLoader"
-    systemProperties = dbProperties
-    if (project.hasProperty("config_key") && project.hasProperty("config_file")) {
-        args config_key, config_file
-    }
-}
-
-// This task is called from:
-// - docker-compose.yaml#update-cdr-versions
-// - devstart.rb > update_cdr_versions_for_project (called by run-local-migrations)
-task updateCdrVersions(type: JavaExec) {
-    classpath sourceSets.tools.runtimeClasspath
-    main = "org.pmiops.workbench.tools.UpdateCdrVersions"
-    systemProperties = dbProperties
-    if (project.hasProperty("appArgs")) {
-        args Eval.me(appArgs)
-    }
-}
 
 task integration(type: Test) {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
@@ -443,7 +373,7 @@ dependencies {
     testCompile 'com.google.truth.extensions:truth-java8-extension:1.0.1'
     testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile 'com.h2database:h2:1.4.194'
-    testCompile 'org.liquibase:liquibase-core:4.3.5'
+    testCompile 'org.liquibase:liquibase-core:3.5.3'
     testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 }
 
