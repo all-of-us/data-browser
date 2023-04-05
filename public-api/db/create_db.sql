@@ -14,6 +14,11 @@ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, ALTER, CREATE, INDEX, REFERENCES, CR
 -- Give wildcard permission to public databases for public user
 -- public matches the older naming convention + local
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `public%`.* TO '${PUBLIC_DB_USER}'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `public%`.* TO '${META_DB_USER}'@'%';
 -- {synth_,}p_ match the new naming convention
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `p_%`.* TO '${PUBLIC_DB_USER}'@'%';
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `synth_p_%`.* TO '${PUBLIC_DB_USER}'@'%';
+
+-- {synth_,}p_ match the new naming convention
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `p_%`.* TO '${META_DB_USER}'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE TEMPORARY TABLES ON `synth_p_%`.* TO '${META_DB_USER}'@'%';
