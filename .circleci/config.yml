@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 version: 2.1
+=======
+version: 3
+>>>>>>> 90ed0e68 (changing build image to 21)
 
 defaults: &defaults
   docker:
