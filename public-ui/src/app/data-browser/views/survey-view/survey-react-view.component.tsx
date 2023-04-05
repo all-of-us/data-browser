@@ -105,6 +105,7 @@ const surveyStyle = `
 .toggle-link, .toggle-link:link, .toggle-link:visited {
     color: #216fb4;
 }
+
 .topic-text {
         border-top: 1px solid #cccccc;
         font-size: 1.2em;
@@ -160,6 +161,11 @@ const surveyStyle = `
 .topic-text + .question-result {
     border-top: none;
 }
+
+.question-result ~ .topic-text:first-of-type {
+    border-top: 1px solid #cccccc;
+}
+
 div {
     display: block;
 }

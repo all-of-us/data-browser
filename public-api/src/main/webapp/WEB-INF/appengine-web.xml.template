@@ -1,0 +1,23 @@
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+  <service>api</service>
+  <runtime>java8</runtime>
+  <threadsafe>true</threadsafe>
+  <!-- Deploy complains about this tag, bug BigQuery needs it. -->
+  <application>aou-db-test</application>
+
+  <env-variables>
+    <env-var name="GAE_PROFILER_MODE" value="cpu,heap" />
+    <env-var name="CLOUD_SQL_INSTANCE_NAME" value="${CLOUD_SQL_INSTANCE_NAME}" />
+    <env-var name="DB_PASSWORD" value="${DB_PASSWORD}" />
+  </env-variables>
+
+  <system-properties>
+    <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+  </system-properties>
+
+  <automatic-scaling>
+    <min-idle-instances>${GAE_MIN_IDLE_INSTANCES}</min-idle-instances>
+    <max-instances>${GAE_MAX_INSTANCES}</max-instances>
+  </automatic-scaling>
+</appengine-web-app>
+

@@ -409,7 +409,7 @@ dependencies {
 
     compile "org.json:json:20160810"
 
-    compile("org.apache.tomcat:tomcat-jdbc:9.0.10")
+    compile("org.apache.tomcat:tomcat-jdbc:10.0.23")
     compile("org.springframework.boot:spring-boot-starter-tomcat")
     compile("org.springframework.boot:spring-boot-starter-jdbc") {
         exclude group: 'com.zaxxer', module: 'HikariCP'
@@ -439,24 +439,10 @@ dependencies {
     // plus any custom templates included in our repo under the SWAGGER_2_TEMPLATE_DIR.
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest"
 
-<<<<<<< HEAD
-=======
-    compile "org.apache.tomcat:tomcat-jdbc:10.0.23"
->>>>>>> 7a914b27 (trying to fix some vul in build.gradle (#1206))
-
     generatedCompile "io.springfox:springfox-swagger2:$project.ext.SPRINGFOX_VERSION"
     generatedCompile "io.springfox:springfox-swagger-ui:$project.ext.SPRINGFOX_VERSION"
 
-<<<<<<< HEAD
-    generatedCompile 'org.springframework.boot:spring-boot-starter-validation'
-    generatedCompile "com.squareup.okhttp:okhttp:$project.ext.OKHTTP_VERSION"
-    generatedCompile "com.squareup.okhttp:logging-interceptor:$project.ext.OKHTTP_VERSION"
-    generatedCompile "com.google.code.gson:gson:$project.ext.GSON_VERSION"
-    generatedCompile "joda-time:joda-time:$project.ext.JODA_VERSION"
-    generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:$project.ext.JACKSON_VERSION"
-=======
     compile 'com.google.protobuf:protobuf-java:3.19.6'
->>>>>>> 7a914b27 (trying to fix some vul in build.gradle (#1206))
 
     generatedCompile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 

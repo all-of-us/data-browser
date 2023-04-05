@@ -68,8 +68,11 @@ export const baseOptions = {
   title: {
     text: "",
     useHTML: true,
+    verticalAlign: undefined,
     style: {
       color: "#666",
+      wordBreak: undefined,
+      zIndex: undefined,
       fontSize: "14px",
       fontFamily: "GothamBook",
       fontWeight: "normal",
@@ -79,6 +82,7 @@ export const baseOptions = {
     followPointer: true,
     outside: false,
     hideDelay: 0,
+    positioner: undefined,
     formatter: function (tooltip) {
       if (this.point.y <= 20) {
         if (this.point.analysisId === 3101 || this.point.analysisId === 3102) {
@@ -106,6 +110,7 @@ export const baseOptions = {
     style: {
       color: "#302C71",
       whiteSpace: "normal",
+      zIndex: undefined,
     },
   },
   colors: ["#2691D0"],
@@ -219,6 +224,7 @@ export const baseOptions = {
       shadow: false,
       borderColor: null,
       colorByPoint: true,
+      minPointLength: undefined,
       groupPadding: 0,
       pointPadding: 0,
       borderWidth: 0,
@@ -247,7 +253,11 @@ export const baseOptions = {
       },
     },
   },
-  series: [{ data: [] }],
+  series: [{ name: undefined, data: [], size: undefined, shadow: undefined, innerSize: undefined,
+             showInLegend: undefined,
+             dataLabels: {
+                     enabled: false,
+                   },}],
 };
 
 export const genomicOptions = {
@@ -280,6 +290,7 @@ export const genomicOptions = {
     hideDelay: 0,
   },
   xAxis: {
+    categories: [],
     labels: {
       reserveSpace: true,
       style: {
@@ -374,6 +385,8 @@ export const genomicOptions = {
       events: {},
     },
   },
+  column: {},
+  series: [{ name: "", data: [], color: "" }],
 };
 
 export function getBaseOptions() {
