@@ -20,6 +20,11 @@ import { NavStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 
 const css = `
+.homePageLink {
+    cursor: pointer;
+    color: #337ab7 !important;
+    text-decoration: underline;
+},
 .disclaimer-btn {
     font-size: 15px;
     color: #337ab7;
@@ -866,20 +871,15 @@ export const dBHomeComponent = withRouteData(
             Data Browser
           </h1>
           <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-            The Data Browser provides interactive views of the
-            publicly-available <i>All of Us</i>&#32; Research Program
-            participant data. Electronic Health Record (EHR) data are derived
-            from reports by health care providers. Genomic data are derived from
-            biosamples provided by participants. Physical measurements are taken
-            at the time of participant enrollment. Data from survey responses
-            and wearables data are collected from participants on an ongoing
-            basis.
+            Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
+            Data are derived from multiple&#32;
+            <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink">data sources.</a>
             <br />
             <br />
-            In order to protect participant privacy, we have removed personal
-            identifiers, rounded aggregate data to counts of 20, and only
-            included summary demographic information. Detailed data are
-            available for analysis in the Researcher Workbench.
+            To protect participant privacy, we have removed personal identifiers, rounded aggregate data
+            to counts of 20, and only included summary demographic information.
+            Individual-level data are available for analysis in the&#32;
+            <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink">Researcher Workbench</a>.
             <br />
             <br />
             <button
