@@ -2,7 +2,11 @@ version: 3
 
 defaults: &defaults
   docker:
+<<<<<<< HEAD
     - image: allofustest/workbench:aou-db-image-2
+=======
+    - image: allofustest/workbench:buildimage-0.0.24
+>>>>>>> d9802aec (changing build image to 21)
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
