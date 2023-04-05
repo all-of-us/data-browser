@@ -335,10 +335,16 @@ ext {
 dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:$project.ext.MAPSTRUCT_VERSION"
 
+<<<<<<< HEAD
     compile "com.fasterxml.jackson.core:jackson-annotations:$project.ext.JACKSON_VERSION"
     compile "com.fasterxml.jackson.core:jackson-core:$project.ext.JACKSON_VERSION"
     compile "com.fasterxml.jackson.core:jackson-databind:$project.ext.JACKSON_DATABIND_VERSION"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$project.ext.JACKSON_VERSION"
+=======
+    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
+    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
+    compile 'com.google.guava:guava:30.0-jre'
+>>>>>>> 02d96988 (trying to fix snyk vul (#1167))
 
     compile 'ch.qos.logback:logback-classic:1.2.11'
 
@@ -455,11 +461,30 @@ dependencies {
     __tools__Compile 'commons-cli:commons-cli:1.4'
     __tools__Compile 'com.opencsv:opencsv:4.6'
 
-    testCompile 'org.mockito:mockito-core:3.3.3'
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-    testCompile 'com.google.truth:truth:0.42'
-    testCompile 'com.google.truth.extensions:truth-java8-extension:1.0.1'
-    testCompile "org.springframework.boot:spring-boot-starter-test"
+    compile 'com.google.api-client:google-api-client:1.35.1'
+    compile 'com.auth0:java-jwt:3.19.2'
+
+// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
+    compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
+
+    // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
+    compile 'org.json:json:20180130'
+    compile 'org.springframework.boot:spring-boot-starter-validation'
+
+    testCompile 'junit:junit:4.13.1'
+    testCompile 'org.mockito:mockito-core:3.11.2'
+
+    testCompile("org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}") {
+        exclude group: 'org.junit', module: 'junit'
+        exclude group: 'org.mockito', module: 'mockito-core'
+        exclude group: 'org.mockito', module: 'mockito-all'
+    }
+
+    testCompile 'com.google.truth:truth:1.1'
+    testCompile "org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}"
     testCompile 'com.h2database:h2:1.4.194'
     testCompile 'org.liquibase:liquibase-core:3.5.3'
     testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
