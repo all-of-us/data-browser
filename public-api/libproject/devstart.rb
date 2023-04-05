@@ -174,9 +174,15 @@ def run_local_migrations()
   Dir.chdir('db-cdr') do
     common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
   end
+<<<<<<< HEAD
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
   common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['config/cdr_config_local.json',false]}
+=======
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=../config/config_local.json}
+  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=../config/cdm/cdm_5_2.json}
+  common.run_inline %W{./gradlew :updateCdrVersions -PappArgs=['../config/cdr_versions_local.json',false]}
+>>>>>>> b67bbb9e (merging tools/build.gradle with build.gradle)
 end
 
 Common.register_command({
@@ -860,11 +866,19 @@ def update_cdr_config_options(cmd_name, args)
   return op
 end
 
+<<<<<<< HEAD
 def update_cdr_config_for_project(cdr_config_file, dry_run)
   common = Common.new
   common.run_inline %W{
     gradle updateCdrConfig
    -PappArgs=['#{cdr_config_file}',#{dry_run}]}
+=======
+def update_cdr_versions_for_project(versions_file, dry_run)
+  common = Common.new
+  common.run_inline %W{
+    gradle --info updateCdrVersions
+   -PappArgs=['#{versions_file}',#{dry_run}]}
+>>>>>>> b67bbb9e (merging tools/build.gradle with build.gradle)
 end
 
 def update_cdr_config(cmd_name, *args)
@@ -1105,8 +1119,13 @@ def deploy(cmd_name, args)
   with_cloud_proxy_and_db(gcc, op.opts.account, op.opts.key_file) do |ctx|
     migrate_database(op.opts.dry_run)
     load_config(ctx.project, op.opts.dry_run)
+<<<<<<< HEAD
     cdr_config_file = must_get_env_value(gcc.project, :cdr_config_json)
     update_cdr_config_for_project("config/#{cdr_config_file}", op.opts.dry_run)
+=======
+    versions_file = get_cdr_versions_file(ctx.project)
+    update_cdr_versions_for_project("config/#{versions_file}", op.opts.dry_run)
+>>>>>>> b67bbb9e (merging tools/build.gradle with build.gradle)
 
     # Keep the cloud proxy context open for the service account credentials.
     deploy_public_api(cmd_name, %W{

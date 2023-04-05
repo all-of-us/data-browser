@@ -98,7 +98,80 @@ sourceSets {
             srcDir file('src/integration/java')
         }
     }
+    tools {
+        compileClasspath += main.output + generated.output
+        runtimeClasspath += main.output + generated.output
+
+        resources {
+            srcDir "tools/src/main/resources"
+        }
+        java {
+            srcDirs = ['tools/src/main/java', 'src/main/java', 'src/generated/java']
+            includes = ['org/pmiops/workbench/tools/**/*.java',
+                        'org/pmiops/workbench/db/**/*.java',
+                        // In general, command-line tools won't need access to
+                        // org.pmiops.workbench.model (Swagger-generated classes),
+                        // so we selectively whitelist as needed.
+                        'org/pmiops/workbench/config/CdrBigQuerySchemaConfig.java',
+                        'org/pmiops/workbench/config/WorkbenchConfig.java',
+                        'org/pmiops/workbench/model/Authority.java',
+                        'org/pmiops/workbench/model/BlockscoreVerificationStatus.java',
+                        'org/pmiops/workbench/model/BillingProjectStatus.java',
+                        'org/pmiops/workbench/model/ContactEmailTakenResponse.java',
+                        'org/pmiops/workbench/model/DataAccessLevel.java',
+                        'org/pmiops/workbench/model/EmailVerificationStatus.java',
+                        'org/pmiops/workbench/model/ErrorCode.java',
+                        'org/pmiops/workbench/model/ErrorResponse.java',
+                        'org/pmiops/workbench/model/WorkspaceAccessLevel.java',
+                        'org/pmiops/workbench/model/CohortStatus.java',
+                        'org/pmiops/workbench/model/CohortReview.java',
+                        'org/pmiops/workbench/model/Domain.java',
+                        'org/pmiops/workbench/model/PageVisit.java',
+                        'org/pmiops/workbench/model/ParticipantCohortStatus.java',
+                        'org/pmiops/workbench/model/ReviewStatus.java',
+                        'org/pmiops/workbench/model/UnderservedPopulationEnum.java',
+                        'org/pmiops/workbench/model/AnnotationType.java']
+            excludes = ['org/pmiops/workbench/db/dao/ConceptSetService.java',
+                        'org/pmiops/workbench/db/dao/UserService.java',
+                        'org/pmiops/workbench/db/dao/WorkspaceService.java',
+                        'org/pmiops/workbench/db/dao/WorkspaceServiceImpl.java',
+                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDao.java',
+                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDaoImpl.java',
+                        'org/pmiops/workbench/db/dao/UserRecentResourceServiceImpl.java',
+                        'org/pmiops/workbench/cohortreview/util/*.java',
+                        'org/pmiops/workbench/model/Filter.java',
+                        'org/pmiops/workbench/model/Operator.java',
+                        'org/pmiops/workbench/model/ParticipantCohortStatusColumns.java',
+                        'org/pmiops/workbench/model/SortOrder.java',
+                        'org/pmiops/workbench/db/dao/CohortService.java',
+                        'org/pmiops/workbench/db/dao/ParticipantCohortStatusDaoCustom.java']
+        }
+    }
 }
+
+// Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
+// which is automatically run during api/project.rb dev-up.
+task loadConfig(type: JavaExec) {
+    classpath sourceSets.tools.runtimeClasspath
+    main = "org.pmiops.workbench.tools.ConfigLoader"
+    systemProperties = dbProperties
+    if (project.hasProperty("config_key") && project.hasProperty("config_file")) {
+        args config_key, config_file
+    }
+}
+
+// This task is called from:
+// - docker-compose.yaml#update-cdr-versions
+// - devstart.rb > update_cdr_versions_for_project (called by run-local-migrations)
+task updateCdrVersions(type: JavaExec) {
+    classpath sourceSets.tools.runtimeClasspath
+    main = "org.pmiops.workbench.tools.UpdateCdrVersions"
+    systemProperties = dbProperties
+    if (project.hasProperty("appArgs")) {
+        args Eval.me(appArgs)
+    }
+}
+
 
 task generateApi {
     group 'swagger-codegen'
@@ -190,31 +263,6 @@ configurations {
 }
 
 classes.dependsOn 'generatedClasses'
-
-<<<<<<< HEAD
-def swaggerCodegenTasks = ['generateApi', 'generateApiClient', 'generateWorkbenchClient']
-
-project.tasks.ideaModule.dependsOn(swaggerCodegenTasks)
-project.tasks.compileGeneratedJava.dependsOn(swaggerCodegenTasks)
-
-project.tasks.bootJar.dependsOn(['compileGeneratedJava', 'generate_appengine_yaml'])
-=======
-<<<<<<< HEAD
-    ext {
-        GAE_VERSION = '1.9.64'
-        GOOGLE_TRUTH_VERSION = '1.1.3'
-        GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
-        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-        OKHTTP_VERSION = '2.7.5'
-        SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-    }
 
 def swaggerCodegenTasks = ['generateApi', 'generateApiClient', 'generateWorkbenchClient']
 
