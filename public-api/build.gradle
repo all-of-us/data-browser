@@ -59,7 +59,7 @@ task generateApiClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java11'
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
@@ -84,15 +84,15 @@ task generateWorkbenchClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java11'
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
 }
 
-task generate_local_appengine_web_xml(type: Exec) {
-    executable "bash"
-    args "libproject/generate_appengine_web_xml.sh"
+task generate_appengine_yaml(type: Exec) {
+    executable "ruby"
+    args "libproject/generate_appengine_yaml.rb"
 }
 
 configurations {
@@ -125,11 +125,13 @@ buildscript {    // Configuration for building
     }
 
     repositories {
-        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+        // Bintray's repository - a fast Maven Central mirror & more
+        mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
+
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
@@ -397,6 +399,7 @@ dependencies {
     generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
+    generatedCompile "javax.xml.bind:jaxb-api:2.3.1"
 }
 
 swaggerSources {
