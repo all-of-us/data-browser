@@ -340,6 +340,8 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:$project.ext.JACKSON_DATABIND_VERSION"
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$project.ext.JACKSON_VERSION"
 
+    compile 'ch.qos.logback:logback-classic:1.2.11'
+
     compile "org.yaml:snakeyaml:1.32"
 
     compile 'commons-io:commons-io:2.7'
@@ -461,6 +463,19 @@ dependencies {
     testCompile 'com.h2database:h2:1.4.194'
     testCompile 'org.liquibase:liquibase-core:3.5.3'
     testCompile 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
+
+    // For Swagger generation. These should include dependencies found in the Swagger codegen
+    // example here:
+    // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
+    generatedCompile "org.springframework.boot:spring-boot-starter-data-rest"
+    generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
+    generatedCompile 'io.springfox:springfox-swagger2:3.0.0'
+    generatedCompile 'io.springfox:springfox-swagger-ui:3.0.0'
+    generatedCompile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
+    generatedCompile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
+    generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
+    generatedCompile 'joda-time:joda-time:2.10'
+    generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
 }
 
 swaggerSources {
