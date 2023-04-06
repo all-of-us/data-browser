@@ -1,7 +1,6 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
   <service>api</service>
-  <runtime>java8</runtime>
-  <threadsafe>true</threadsafe>
+  <runtime>java11</runtime>
 
   <!--
   The GAE java8 runtime restricts certain JVM APIs. The java11 runtime has fewer restrictions.
@@ -18,6 +17,7 @@
   from them in subsequent steps.
   -->
   <app-engine-apis>true</app-engine-apis>
+  <threadsafe>true</threadsafe>
 
   <!-- Deploy complains about this tag, bug BigQuery needs it. -->
   <application>aou-db-test</application>
