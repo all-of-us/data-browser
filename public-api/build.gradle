@@ -250,7 +250,7 @@ task loadConfig(type: JavaExec) {
 // This task is called from:
 // - docker-compose.yaml#update-cdr-versions
 // - devstart.rb > update_cdr_versions_for_project (called by run-local-migrations)
-task updateCdrVersions(type: JavaExec) {
+task updateCdrConfig(type: JavaExec) {
     classpath sourceSets.tools.runtimeClasspath
     main = "org.pmiops.workbench.tools.UpdateCdrVersions"
     systemProperties = dbProperties
