@@ -446,7 +446,7 @@ group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4,
 # Set the survey answer count for all the survey questions that has value as number and not value as concept id
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,count_value,source_count_value)
+(id,analysis_id,stratum_1,stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 SELECT 0 as id, 3110 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,cast(sq.order_number as string) stratum_5,
 sq.path as stratum_6,
