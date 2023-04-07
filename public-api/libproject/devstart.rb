@@ -145,7 +145,7 @@ def dev_up()
     docker-compose run update-config
     -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json
   }
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+  common.run_inline "DB_HOST=127.0.0.1 ./gradlew --daemon appengineRun &"
 end
 
 Common.register_command({
@@ -241,7 +241,7 @@ def run_public_api_and_db()
   end
   common.run_inline %W{docker-compose up -d db}
   common.status "Starting public API."
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+  common.run_inline "DB_HOST=127.0.0.1 ./gradlew --daemon appengineRun &"
 end
 
 Common.register_command({
