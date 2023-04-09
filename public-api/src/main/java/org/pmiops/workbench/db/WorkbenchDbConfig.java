@@ -1,8 +1,8 @@
 package org.pmiops.workbench.db;
 
-import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
@@ -36,34 +36,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
         basePackages = {"org.pmiops.workbench.db"})
 public class WorkbenchDbConfig {
 
-  public static HikariConfig createConfig(String dbName) {
-    HikariConfig config = new HikariConfig();
+  private static final Logger log = Logger.getLogger(WorkbenchDbConfig.class.getName());
 
-    System.out.println("debug - 1");
+  final Params params;
 
-    Optional<String> dbHost = getEnv("DB_HOST");
-    boolean connectViaAppEngine = !dbHost.isPresent();
-    config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-    config.setJdbcUrl(
-            String.format("jdbc:mysql://%s/%s", connectViaAppEngine ? "" : dbHost.get(), dbName));
-    config.setUsername("databrowser"); // consistent across environments
-    config.setPassword(getEnvRequired("DATABROWSER_DB_PASSWORD"));
-    if (connectViaAppEngine) {
-      config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.mysql.SocketFactory");
-      config.addDataSourceProperty("cloudSqlInstance", getEnvRequired("CLOUD_SQL_INSTANCE_NAME"));
-    }
-    config.addDataSourceProperty("useSSL", false);
-
-    System.out.println("debug - 2");
-
-    return config;
+  public WorkbenchDbConfig(Params params) {
+    this.params = params;
   }
 
   @Primary
   @Bean(name = "dataSource")
   public DataSource dataSource() {
     // main database name is consistent across environments
-    return new HikariDataSource(createConfig("databrowser"));
+    return new HikariDataSource(params.createConfig("databrowser"));
   }
 
   @Primary
