@@ -69,7 +69,7 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
         for (DbCdrVersion cdrVersion : getCdrVersions()) {
             try {
-                DataSource dataSource = createCdrDs(cdrVersion.getCdrDbName());
+                DataSource dataSource = createCdrDs(cdrVersion.getPublicDbName());
                 if (dataSource == null) {
                     continue;
                 }
