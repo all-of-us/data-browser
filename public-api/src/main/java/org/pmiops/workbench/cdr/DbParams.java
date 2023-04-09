@@ -18,7 +18,7 @@ public class DbParams extends Params {
             log.info("CDR SQL instance params: " + this.toString());
         } catch (IllegalStateException e) {
             super.loadFromEnvironment();
-            log.info("CDR SQL instance params: [Workbench instance params]");
+            log.info("CDR SQL instance params: [Databrowser instance params]");
         }
     }
 
