@@ -46,7 +46,7 @@ public class WorkbenchDbConfig {
   @Bean(name = "dataSource")
   public DataSource dataSource() {
     // main database name is consistent across environments
-    return new HikariDataSource(params.createConfig("workbench"));
+    return new HikariDataSource(params.createConfig("databrowser"));
   }
 
   @Primary
