@@ -274,7 +274,7 @@ services:
       volumes:
         - ..:/w:cached
         - gradle-cache:/.gradle
-      entrypoint: wait-for db:3306 -- ./gradlew :updateCdrVersions
+      entrypoint: wait-for db:3306 -- ./gradlew :updateCdrConfig
       env_file:
         - db/vars.env
 volumes:
