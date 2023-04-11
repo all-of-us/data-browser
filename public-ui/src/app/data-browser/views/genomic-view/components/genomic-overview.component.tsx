@@ -223,7 +223,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 <label className="radio-label"> <input id="radio-blue" type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'} /> Long-Read WGS</label>
               </React.Fragment>)}
               {wgsSVParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label"> <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Structural Variants</label>
+                <label className="radio-label"> <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Short-Read WGS Structural Variants</label>
               </React.Fragment>)}
               {arrayParticipantCount > 0 && (<React.Fragment>
                 <label className="radio-label"> <input id="radio-orange" type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'} /> Genotyping Arrays</label>

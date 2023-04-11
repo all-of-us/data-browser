@@ -871,23 +871,14 @@ export const dBHomeComponent = withRouteData(
             Data Browser
           </h1>
           <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-            Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
-            Data are derived from multiple&#32;
-            <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink">data sources.</a>
-            <br />
-            <br />
-            To protect participant privacy, we have removed personal identifiers, rounded aggregate data
-            to counts of 20, and only included summary demographic information.
-            Individual-level data are available for analysis in the&#32;
-            <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink">Researcher Workbench</a>.
-            <br />
-            <br />
-            <button
-              onClick={() => this.closePopUp()}
-              className="disclaimer-btn"
-            >
-              public data use statement
-            </button>
+          Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
+          Data are derived from multiple&#32;
+          <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink" target="_blank">data sources</a>.
+          To protect participant privacy, we have removed personal identifiers,
+          rounded aggregate data to counts of 20, and only included summary demographic information.
+          Individual-level data are available for analysis in the&#32;
+          <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink" target="_blank">Researcher Workbench</a>.
+          <br />
           </p>
           <div className="search-icon-container">
             <div>
