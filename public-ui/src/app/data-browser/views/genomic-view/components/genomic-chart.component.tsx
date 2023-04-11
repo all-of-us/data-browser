@@ -167,7 +167,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     } else if (selectedGenotype === 'wgs_shortread') {
         legendText = 'Short-Read WGS';
     } else if (selectedGenotype === 'wgs_structural_variants') {
-        legendText = 'Structural Variants';
+        legendText = 'Short-Read WGS Structural Variants';
     }
 
     return (
