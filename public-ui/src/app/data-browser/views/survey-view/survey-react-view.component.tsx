@@ -109,6 +109,7 @@ const surveyStyle = `
 .stat-container .secondary-display{
   // margin-bottom:26px;
   margin-bottom:1rem;
+  margin-top:1rem;
 }
 
 .topic-text {
