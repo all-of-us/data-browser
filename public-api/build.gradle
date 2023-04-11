@@ -8,16 +8,16 @@ def swaggerTargetFolder = 'src/generated/java'
 
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
-def meta_db_user = System.getenv("META_DB_USER")
-def meta_db_password = System.getenv("META_DB_PASSWORD")
+def databrowser_db_user = System.getenv("DATABROWSER_DB_USER")
+def databrowser_db_password = System.getenv("DATABROWSER_DB_PASSWORD")
 
 def dbProperties = [
         'spring.datasource.driver-class-name': 'com.mysql.cj.jdbc.Driver',
         // Our database isn't configured to allow outside connections (which is good), so our connections
         // are either local or through the proxy, which encrypts all traffic.
         'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
-        'spring.datasource.username': '${meta_db_user}',
-        'spring.datasource.password': '${meta_db_password}'
+        'spring.datasource.username': '${databrowser_db_user}',
+        'spring.datasource.password': '${databrowser_db_password}'
 ]
 
 task generateApi {
