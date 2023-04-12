@@ -31,7 +31,7 @@ export class GenomicCallToActionComponent extends React.Component<Props, State> 
       <div className="result-box">
         <div className="result-box-title">
           <span className="result-box-title-text">
-            Genomic Data Only in  Researcher Workbench
+            Genomic Data
           </span>
           <div>
             <TooltipReactComponent

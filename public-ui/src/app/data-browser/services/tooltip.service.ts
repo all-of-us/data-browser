@@ -8,7 +8,7 @@ export interface Tooltip {
 // Const for tooltip component
 export const tooltips = {
   genomicsCTA: {
-    texts: ["this will be the tooltip",]
+    texts: ["Only in  Researcher Workbench",]
   },
   "Search Across Data Types": {
     texts: [

@@ -590,42 +590,27 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {domainType === "genomics" && searchWord && !loadingVariantListSize &&
             variantListSize > 0 && (
               <React.Fragment>
-                <span className="result-box-body-item">
-                  <React.Fragment>
-                    <span className="result-stat" >
-                      {variantListSize.toLocaleString()}
-                    </span>
-                    <span className="result-box-stat-label">matching SNP/Indel Variants</span>
-                  </React.Fragment>
+              <span className="result-box-body-item">
+
+                <span className="result-stat">
+                  {wgsSRParticipantCount.toLocaleString()}
                 </span>
-                {wgsSRParticipantCount > 0 &&
-                  <span className="result-box-body-item hgc-count-text">
-                    <span>
-                      <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                      participants in the Short-Read WGS dataset
-                    </span>
-                  </span>}
-                {wgsLRParticipantCount > 0 &&
-                  <span className="result-box-body-item hgc-count-text">
-                    <span>
-                      <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                      participants in the Long-Read WGS dataset
-                    </span>
-                  </span>}
-                {wgsSVParticipantCount > 0 &&
-                  <span className="result-box-body-item hgc-count-text">
-                    <span>
-                      <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                      participants in the Structural Variants dataset
-                    </span>
-                  </span>}
-                <span className="result-box-body-item hgc-count-text">
-                  <span>
-                    <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Genotyping Arrays dataset
+                <div style={{paddingTop:'.25rem'}} > Participants in Short-Read <br></br>
+                  Whole Genome Sequencing <br></br>
+                  (WGS) dataset
+                </div>
+
+                <React.Fragment>
+                  <span style={{paddingTop:'1rem', fontSize:'28px'}} className="result-stat" >
+                    {variantListSize.toLocaleString()}
                   </span>
-                </span>
-              </React.Fragment>
+                  <span className="result-box-stat-label">SNP/Indel Variants</span>
+                </React.Fragment>
+              </span>
+
+
+            </React.Fragment>
+
             )}
           {questionCount && (
             <div style={styles.resultBodyItem}>
