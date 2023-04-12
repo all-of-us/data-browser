@@ -1,7 +1,6 @@
-import * as React from "react";
 import _ from "lodash";
+import * as React from "react";
 
-import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { CdrVersionReactComponent } from "app/data-browser/cdr-version/cdr-version-info";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
@@ -18,8 +17,10 @@ import { globalStyles } from "app/utils/global-styles";
 import { triggerEvent } from "app/utils/google_analytics";
 import { NavStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
+import { environment } from "environments/environment";
+import { GenomicCallToActionComponent } from "./genomic-call-to-action-react.component";
 
-const css = `
+export const css = `
 .homePageLink {
     cursor: pointer;
     color: #337ab7 !important;
@@ -108,7 +109,7 @@ const css = `
 }
 .genomic-boxes {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, minmax(239px, 1fr));
   grid-area: gBoxes;
   column-gap: 1rem;
 }
@@ -162,7 +163,7 @@ const css = `
 }
 
 .hgc-count-text {
-    padding-bottom: 0.5em;
+    padding-bottom: 1rem;
 }
 
 .result-box-stat-label {
@@ -182,8 +183,8 @@ const css = `
 
 .search-icon-container {
     display: flex;
-    flex-wrap: wrap;
-    flex-flow: column-reverse;
+    // flex-wrap: wrap;
+    // flex-flow: column-reverse;
     padding-left:1em;
     justify-content: 'flex-start';
 }
@@ -218,7 +219,7 @@ const css = `
     }
 
     .genomic-boxes {
-      grid-template-columns: repeat(1, minmax(239px, 1fr));
+      grid-template-columns: repeat(2, minmax(239px, 1fr));
     }
 
     .pm-boxes {
@@ -232,6 +233,9 @@ const css = `
 
     .tooltip-container {
         padding-left: 1em;
+    }
+    .search-icon-container {
+      flex-flow: column-reverse;
     }
 }
 @media (max-width: 766px) {
@@ -252,7 +256,7 @@ const css = `
     grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
   .genomic-boxes{
-    grid-template-columns: repeat(1, minmax(239px, 1fr));
+    grid-template-columns: repeat(2, minmax(239px, 1fr));
   }
 }
     `;
@@ -353,7 +357,7 @@ const styles = reactStyles({
   },
   iconLinks: {
     position: "relative",
-    top: "-1rem",
+    top: "0",
     display: "flex",
     alignItems: "baseline",
     justifyContent: "center",
@@ -516,41 +520,26 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {domainType === "genomics" && !searchWord && (
             <React.Fragment>
               <span className="result-box-body-item">
+
+                <span className="result-stat">
+                  {wgsSRParticipantCount.toLocaleString()}
+                </span>
+                <div style={{paddingTop:'.25rem'}} > Participants in Short-Read <br></br>
+                  Whole Genome Sequencing <br></br>
+                  (WGS) dataset
+                </div>
+
                 <React.Fragment>
-                  <span className="result-stat" >
+                  <span style={{paddingTop:'1rem', fontSize:'28px'}} className="result-stat" >
                     {variantListSize.toLocaleString()}
                   </span>
                   <span className="result-box-stat-label">SNP/Indel Variants</span>
                 </React.Fragment>
               </span>
-              {wgsSRParticipantCount > 0 &&
-                <span className="result-box-body-item hgc-count-text">
-                  <span>
-                    <strong> {wgsSRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Short-Read WGS dataset
-                  </span>
-                </span>}
-              {wgsLRParticipantCount > 0 &&
-                <span className="result-box-body-item hgc-count-text">
-                  <span>
-                    <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Long-Read WGS dataset
-                  </span>
-                </span>}
-              {wgsSVParticipantCount > 0 &&
-                <span className="result-box-body-item hgc-count-text">
-                  <span>
-                    <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                    participants in the Structural Variants dataset
-                  </span>
-                </span>}
-              <span className="result-box-body-item hgc-count-text">
-                <span>
-                  <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                  participants in the Genotyping Arrays dataset
-                </span>
-              </span>
+
+
             </React.Fragment>
+
           )}
           {searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
@@ -559,7 +548,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           )}
           {searchWord && domainType === "survey" && (
             <span className="result-box-body-item">
-            <span className="result-box-stat-label">matching survey questions</span>
+              <span className="result-box-stat-label">matching survey questions</span>
             </span>
           )}
           {searchWord && name.toLowerCase() === "physical measurements" && (
@@ -834,7 +823,7 @@ export const dBHomeComponent = withRouteData(
         popUp: !this.state.popUp,
       });
     }
-    handleResize=() => {
+    handleResize = () => {
       this.setState({
         winWidth: window.innerWidth,
         winHeight: window.innerHeight
@@ -871,14 +860,14 @@ export const dBHomeComponent = withRouteData(
             Data Browser
           </h1>
           <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
-          Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
-          Data are derived from multiple&#32;
-          <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink" target="_blank">data sources</a>.
-          To protect participant privacy, we have removed personal identifiers,
-          rounded aggregate data to counts of 20, and only included summary demographic information.
-          Individual-level data are available for analysis in the&#32;
-          <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink" target="_blank">Researcher Workbench</a>.
-          <br />
+            Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
+            Data are derived from multiple&#32;
+            <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink" target="_blank">data sources</a>.
+            To protect participant privacy, we have removed personal identifiers,
+            rounded aggregate data to counts of 20, and only included summary demographic information.
+            Individual-level data are available for analysis in the&#32;
+            <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink" target="_blank">Researcher Workbench</a>.
+            <br />
           </p>
           <div className="search-icon-container">
             <div>
@@ -990,6 +979,8 @@ export const dBHomeComponent = withRouteData(
                         variantListSize={variantListSize}
                         loadingVariantListSize={loadingVariantListSize}
                       />
+                      <GenomicCallToActionComponent {...genomicInfo} />
+
                     </div>
                   </React.Fragment>
                   )}
@@ -1004,13 +995,7 @@ export const dBHomeComponent = withRouteData(
                   >
                     <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
                   </h5>
-                  <div className="pm-boxes"
-                    style={physicalMeasurementsInfo.length > 0 && searchWord ?
-                      { gridTemplateColumns: winWidth > 1050 ? "repeat(4, minmax(239px, 1fr))":winWidth > 766 ? "repeat(3, minmax(239px, 1fr))" :"repeat(2, minmax(239px, 1fr))" } : 
-                       winWidth > 1050 ? {gridTemplateColumns: "repeat(2, minmax(239px, 1fr)"}:{
-                        gridTemplateColumns: "repeat(3, minmax(239px, 1fr)", width: "97vw"
-                       }
-                    }>
+                  <div className="pm-boxes">
                     {physicalMeasurementsInfo.map(
                       (phyMeasurements, index) => {
                         const key = "phyMeasurements" + index;
