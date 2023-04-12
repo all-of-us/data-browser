@@ -1,5 +1,6 @@
 import * as React from "react";
 import { reactStyles } from "app/utils";
+import { NavStore } from "app/utils/navigation";
 import { css } from "./home-view-react.component"
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 
@@ -28,7 +29,7 @@ export class GenomicCallToActionComponent extends React.Component<Props, State> 
       microarrayParticipantCount } = this.props;
     return <React.Fragment>
       <style>{css} + {ctaCss}</style>
-      <div className="result-box">
+      <div onClick={() =>window.open("https://www.researchallofus.org/register/")} className="result-box">
         <div className="result-box-title">
           <span className="result-box-title-text">
             Genomic Data
