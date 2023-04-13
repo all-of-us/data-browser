@@ -22,243 +22,181 @@ import { GenomicCallToActionComponent } from "./genomic-call-to-action-react.com
 
 export const css = `
 .homePageLink {
-    cursor: pointer;
-    color: #337ab7 !important;
-    text-decoration: underline;
-},
+	cursor: pointer;
+	color: #337ab7 !important;
+	text-decoration: underline;
+}
 .disclaimer-btn {
-    font-size: 15px;
-    color: #337ab7;
-    cursor: pointer;
-    background: none!important;
-    border: none;
-    padding: 0!important;
-    text-decoration: underline;
+	font-size: 15px;
+	color: #337ab7;
+	cursor: pointer;
+	background: none!important;
+	border: none;
+	padding: 0!important;
+	text-decoration: underline;
 }
 .disclaimer-btn:hover {
-    color: #262262;
-}
-  .icons img {
-    width: 100px;
-}
-.icons:first-of-type {
-    margin-left: 0;
-}
-.icons {
-    width: 100px;
-    margin-left: 1.5rem;
-    text-align: center;
+	color: #262262;
 }
 .icons img {
-    text-align: center;
+	width: 100px;
+}
+.icons:first-of-type {
+	margin-left: 0;
+}
+.icons {
+	width: 100px;
+	margin-left: 1.5rem;
+	text-align: center;
+}
+.icons img {
+	text-align: center;
 }
 .icon-link{
-    color:#2b266d;
+	color:#2b266d;
 }
 .result-bottom-link {
-    white-space: pre;
-    font-size: 15px;
-    color: #337ab7;
-    cursor: pointer;
-    position:absolute;
-    bottom:.25rem;
+	white-space: pre;
+	font-size: 15px;
+	color: #337ab7;
+	cursor: pointer;
+	position:absolute;
+	bottom:.25rem;
 }
 .result-bottom-link:hover {
-    color: #262262;
+	color: #262262;
 }
-.survey-result-boxes {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(239px, 1fr));
-  column-gap:1rem;
-  row-gap:1rem;
-}
-.result-boxes {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(239px, 1fr));
-  grid-template-areas:
-  'eHeading eHeading eHeading eHeading'
-  'eBoxes eBoxes eBoxes eBoxes'
-  'gHeading gHeading pmHeading pmHeading'
-  'gBoxes gBoxes pmBoxes pmBoxes';
-  grid-template-rows: 3rem 1fr 3rem;
-  column-gap: 1rem;
-  row-gap:1rem;
-  margin-bottom: 2rem;
+.survey-result-boxes, .ehr-boxes {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(239px, 1fr));
+	column-gap:1rem;
+	row-gap:1rem;
 }
 
-.no-pm {
-  grid-template-areas:
-  'eHeading eHeading eHeading eHeading'
-  'eBoxes eBoxes eBoxes eBoxes'
-  'gHeading gHeading pmHeading pmHeading'
-  'gBoxes gBoxes pmBoxes pmBoxes';
-}
-.has-pm {
-  grid-template-areas:
-  'eHeading eHeading eHeading eHeading'
-  'eBoxes eBoxes eBoxes eBoxes'
-  'pmHeading pmHeading pmHeading pmHeading'
-  'pmBoxes pmBoxes pmBoxes pmBoxes';
-  
-}
-.ehr-boxes{
-  display: grid;
-  grid-template-columns: repeat(4, minmax(239px, 1fr));
-  grid-area: eBoxes;
-  column-gap: 1rem;
-}
 .genomic-boxes {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(239px, 1fr));
-  grid-area: gBoxes;
-  column-gap: 1rem;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(239px, 1fr));
+	grid-area: gBoxes;
+	column-gap: 1rem;
 }
 .pm-boxes{
-  grid-area: pmBoxes;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr;
-  column-gap:1rem;
+	grid-area: pmBoxes;
+	display: grid;
+	grid-template-columns: repeat(4, minmax(239px, 1fr));
+	grid-template-rows: 1fr;
+	column-gap:1rem;
 }
-.pm-boxes .result-box{
-    // margin-right:1rem;
+.genomic-pm {
+	display:grid;
+	grid-template-columns: 50% 50%;
+	column-gap:1rem;
+  padding-right:1rem;
 }
+
 .result-box {
-    cursor: pointer;
-    min-width:239px;
-    border-radius: 5px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
-    padding: .5rem 1rem;
-    position: relative;
-  }
-  
+	cursor: pointer;
+	min-width:239px;
+	border-radius: 5px;
+	background-color: #ffffff;
+	box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+	padding: .5rem 1rem;
+	position: relative;
+}
 .result-box-title {
-  font-family: GothamBook, Arial, sans-serif;
-  color: #3279b7;
-  height: 2.5rem;
-  margin-bottom:1rem;
-  display: flex;
-  justify-content: space-between;
+	font-family: GothamBook, Arial, sans-serif;
+	color: #3279b7;
+	height: 2.5rem;
+	margin-bottom:1rem;
+	display: flex;
+	justify-content: space-between;
 }
-
 .result-box-title-text {
-    font-size: 16px;
+	font-size: 16px;
 }
-
 .result-box-body {
-  color: #302c71;
-  font-family: GothamBook, Arial, sans-serif;
-  font-size: 14px;
-  display: flex;
-  flex-direction: column;
-  padding-bottom:4rem;
+	color: #302c71;
+	font-family: GothamBook, Arial, sans-serif;
+	font-size: 14px;
+	display: flex;
+	flex-direction: column;
+	padding-bottom:4rem;
 }
 .result-box-body-item {
-
 }
-
 .participant-count {
-    padding-bottom: 1rem;
+	padding-bottom: 1rem;
 }
-
 .hgc-count-text {
-    padding-bottom: 1rem;
+	padding-bottom: 1rem;
 }
-
 .result-box-stat-label {
-  padding-bottom:1rem;
-  display:block;
+	padding-bottom:1rem;
+	display:block;
 }
-
 .result-stat {
-  display: block;
-  color: #302c71;
-  font-family: GothamBook, Arial, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 35px;
-  line-height: 1em;
+	display: block;
+	color: #302c71;
+	font-family: GothamBook, Arial, sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 35px;
+	line-height: 1em;
 }
-
 .search-icon-container {
-    display: flex;
-    // flex-wrap: wrap;
-    // flex-flow: column-reverse;
-    padding-left:1em;
-    justify-content: 'flex-start';
+	display: flex;
+	padding-left:1em;
+	justify-content: 'flex-start';
 }
+.pm-boxes , .genomic-boxes{
 
-.pm-boxes {
-  display:grid;
-  grid-template-columns: repeat(2, minmax(239px, 1fr));
-  column-gap:1rem;
+	grid-template-columns: repeat(2, minmax(239px, 1fr));
+	column-gap:1rem;
 }
-
+.pm-boxes  .result-box, .genomic-boxes .result-box{
+  height: 18rem;
+}
 .result-box:last-of-type {
-  margin-right: 0;
+	margin-right: 0;
 }
-
 @media (max-width: 1048px) {
-  .result-boxes {
-    grid-template-columns: repeat(3, minmax(239px, 1fr));
-    grid-template-areas:
-    'eHeading eHeading'
-    'eBoxes eBoxes'
-    'gHeading gHeading'
-    'gBoxes gBoxes'
-    'pmHeading pmHeading'
-    'pmBoxes pmBoxes';
-}
-  .ehr-boxes {
-    grid-template-columns: repeat(3, minmax(239px, 1fr));
-    row-gap: 1rem;
-  }
-    .survey-result-boxes{
-      grid-template-columns: repeat(3, minmax(239px, 1fr));
-    }
 
-    .genomic-boxes {
-      grid-template-columns: repeat(2, minmax(239px, 1fr));
-    }
-
-    .pm-boxes {
-      width: calc((100%)/.725);
-      grid-template-columns: repeat(2, minmax(239px, 1fr));
-    }
-
-    .cope-preview {
-        justify-content: flex-start;
-    }
-
-    .tooltip-container {
-        padding-left: 1em;
-    }
-    .search-icon-container {
-      flex-flow: column-reverse;
-    }
+	.genomic-pm{
+		grid-template-columns: 100%;
+    padding-right: 0;
+	}
+	.survey-result-boxes, .ehr-boxes{
+		grid-template-columns: repeat(3, minmax(239px, 1fr));
+	}
+  .pm-boxes, .genomic-boxes {
+		width:auto;
+		grid-template-columns: repeat(3, minmax(239px, 1fr));
+	}
+	.cope-preview {
+		justify-content: flex-start;
+	}
+	.tooltip-container {
+		padding-left: 1em;
+	}
+	.search-icon-container {
+		flex-flow: column-reverse;
+	}
 }
 @media (max-width: 766px) {
-  .result-boxes {
-    grid-template-areas:
-    'eHeading eHeading'
-    'eBoxes eBoxes'
-    'gHeading gHeading'
-    ' gBoxes gBoxes'
-    'pmHeading pmHeading'
-    'pmBoxes pmBoxes ';
+	.result-boxes {
+		grid-template-areas:'eHeading eHeading''eBoxes eBoxes''gHeading gHeading'' gBoxes gBoxes''pmHeading pmHeading''pmBoxes pmBoxes ';
+	}
+	.result-boxes, .survey-result-boxes, .ehr-boxes{
+		grid-template-columns: repeat(2, minmax(239px, 1fr));
+	}
+	.pm-boxes, .genomic-boxes {
+		width:auto;
+		grid-template-columns: repeat(2, minmax(239px, 1fr));
+	}
+	.genomic-boxes{
+		// grid-template-columns: repeat(2, minmax(239px, 1fr));
+	}
 }
-  .result-boxes, .survey-result-boxes, .ehr-boxes{
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
-  }
-  .pm-boxes {
-    width:auto;
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
-  }
-  .genomic-boxes{
-    grid-template-columns: repeat(2, minmax(239px, 1fr));
-  }
-}
+
     `;
 const styles = reactStyles({
   searchIconLayout: {
@@ -524,13 +462,13 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 <span className="result-stat">
                   {wgsSRParticipantCount.toLocaleString()}
                 </span>
-                <div style={{paddingTop:'.25rem'}} > Participants in Short-Read <br></br>
+                <div style={{ paddingTop: '.25rem' }} > Participants in Short-Read <br></br>
                   Whole Genome Sequencing <br></br>
                   (WGS) dataset
                 </div>
 
                 <React.Fragment>
-                  <span style={{paddingTop:'1rem', fontSize:'28px'}} className="result-stat" >
+                  <span style={{ paddingTop: '1rem', fontSize: '28px' }} className="result-stat" >
                     {variantListSize.toLocaleString()}
                   </span>
                   <span className="result-box-stat-label">SNP/Indel Variants</span>
@@ -590,26 +528,26 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {domainType === "genomics" && searchWord && !loadingVariantListSize &&
             variantListSize > 0 && (
               <React.Fragment>
-              <span className="result-box-body-item">
+                <span className="result-box-body-item">
 
-                <span className="result-stat">
-                  {wgsSRParticipantCount.toLocaleString()}
-                </span>
-                <div style={{paddingTop:'.25rem'}} > Participants in Short-Read <br></br>
-                  Whole Genome Sequencing <br></br>
-                  (WGS) dataset
-                </div>
-
-                <React.Fragment>
-                  <span style={{paddingTop:'1rem', fontSize:'28px'}} className="result-stat" >
-                    {variantListSize.toLocaleString()}
+                  <span className="result-stat">
+                    {wgsSRParticipantCount.toLocaleString()}
                   </span>
-                  <span className="result-box-stat-label">SNP/Indel Variants</span>
-                </React.Fragment>
-              </span>
+                  <div style={{ paddingTop: '.25rem' }} > Participants in Short-Read <br></br>
+                    Whole Genome Sequencing <br></br>
+                    (WGS) dataset
+                  </div>
+
+                  <React.Fragment>
+                    <span style={{ paddingTop: '1rem', fontSize: '28px' }} className="result-stat" >
+                      {variantListSize.toLocaleString()}
+                    </span>
+                    <span className="result-box-stat-label">SNP/Indel Variants</span>
+                  </React.Fragment>
+                </span>
 
 
-            </React.Fragment>
+              </React.Fragment>
 
             )}
           {questionCount && (
@@ -941,65 +879,69 @@ export const dBHomeComponent = withRouteData(
                     </div>
                   </React.Fragment>
                 )}
-                {environment.geno &&
-                  genomicInfo &&
-                  !loadingVariantListSize &&
-                  variantListSize > 0 && (<React.Fragment>
+                <div className="genomic-pm">
+                  {environment.geno &&
+                    genomicInfo &&
+                    !loadingVariantListSize &&
+                    variantListSize > 0 && (
+                    <div>
+                      <h5
+                        style={{
+                          ...globalStyles.secondaryDisplay,
+                          ...styles.resultHeading,
+                          gridArea: 'gHeading',
+                        }}
+                      >
+                        <span style={{ position: 'relative', bottom: '2px' }}>Genomics</span>
+                      </h5>
+                      <div className="genomic-boxes">
+                        <ResultLinksComponent
+                          typing={!this.typing}
+                          key="genomics-tile"
+                          searchWord={searchWord}
+                          {...genomicInfo}
+                          domainType="genomics"
+                          variantListSize={variantListSize}
+                          loadingVariantListSize={loadingVariantListSize}
+                        />
+                        <GenomicCallToActionComponent {...genomicInfo} />
+
+                      </div>
+                    </div>
+                    )}
+                  {physicalMeasurementsInfo.length > 0 && (
+                  <div>
                     <h5
                       style={{
                         ...globalStyles.secondaryDisplay,
                         ...styles.resultHeading,
-                        gridArea: 'gHeading',
+                        gridArea: 'pmHeading',
+                        whiteSpace: 'nowrap'
                       }}
                     >
-                      <span style={{ position: 'relative', bottom: '2px' }}>Genomics</span>
+                      <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
                     </h5>
-                    <div className="genomic-boxes">
-                      <ResultLinksComponent
-                        typing={!this.typing}
-                        key="genomics-tile"
-                        searchWord={searchWord}
-                        {...genomicInfo}
-                        domainType="genomics"
-                        variantListSize={variantListSize}
-                        loadingVariantListSize={loadingVariantListSize}
-                      />
-                      <GenomicCallToActionComponent {...genomicInfo} />
-
+                    <div className="pm-boxes">
+                      {physicalMeasurementsInfo.map(
+                        (phyMeasurements, index) => {
+                          const key = "phyMeasurements" + index;
+                          return (
+                            <ResultLinksComponent
+                              typing={!this.typing}
+                              key={key}
+                              searchWord={searchWord}
+                              {...phyMeasurements}
+                              domainType="pmw"
+                              variantListSize={variantListSize}
+                              loadingVariantListSize={loadingVariantListSize}
+                            />
+                          );
+                        }
+                      )}
                     </div>
-                  </React.Fragment>
-                  )}
-                {physicalMeasurementsInfo.length > 0 && (<React.Fragment>
-                  <h5
-                    style={{
-                      ...globalStyles.secondaryDisplay,
-                      ...styles.resultHeading,
-                      gridArea: 'pmHeading',
-                      whiteSpace: 'nowrap'
-                    }}
-                  >
-                    <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
-                  </h5>
-                  <div className="pm-boxes">
-                    {physicalMeasurementsInfo.map(
-                      (phyMeasurements, index) => {
-                        const key = "phyMeasurements" + index;
-                        return (
-                          <ResultLinksComponent
-                            typing={!this.typing}
-                            key={key}
-                            searchWord={searchWord}
-                            {...phyMeasurements}
-                            domainType="pmw"
-                            variantListSize={variantListSize}
-                            loadingVariantListSize={loadingVariantListSize}
-                          />
-                        );
-                      }
-                    )}
                   </div>
-                </React.Fragment>
-                )}
+                  )}
+                </div>
               </div>}
               {surveyInfo.length > 0 && (
                 <React.Fragment>
