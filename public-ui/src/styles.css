@@ -743,9 +743,6 @@ strong {
   background: #2691d0 !important;
 }
 
-body *:focus {
-  outline: 1px solid rgba(38, 145, 208, 0.5);
-}
 
 .btn.btn-link {
   margin: 0.25rem 0;
