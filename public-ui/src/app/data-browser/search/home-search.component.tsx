@@ -95,7 +95,7 @@ const searchStyle = `
     background: #dae6ed;
     padding: 9px;
     border-radius: 5px;
-    width: 75%;
+    width: 100%;
 }
 
 @media only screen and (min-width: 768px) {
