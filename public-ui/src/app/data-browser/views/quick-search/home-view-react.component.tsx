@@ -91,6 +91,7 @@ export const css = `
 	grid-template-columns: 50% 50%;
 	column-gap:1rem;
   padding-right:1rem;
+  min-width: 56rem;
 }
 
 .result-box {
@@ -163,6 +164,7 @@ export const css = `
 	.genomic-pm{
 		grid-template-columns: 100%;
     padding-right: 0;
+    min-width:0;
 	}
 	.survey-result-boxes, .ehr-boxes{
 		grid-template-columns: repeat(3, minmax(239px, 1fr));
