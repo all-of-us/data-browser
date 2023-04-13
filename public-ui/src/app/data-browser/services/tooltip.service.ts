@@ -7,6 +7,9 @@ export interface Tooltip {
 
 // Const for tooltip component
 export const tooltips = {
+  genomicsCTA: {
+    texts: ["Register for the Researcher Workbench to access the full genomic dataset and start your project.",]
+  },
   "Search Across Data Types": {
     texts: [
       `Search across all data types by using common keywords or billing/data standards codes (i.e., SNOMED, CPT, ICD).
@@ -262,6 +265,7 @@ export class TooltipService {
             Searchable genomic variant data are available within the Genomic Variants section.`,
       ],
     },
+
     raceEthnicityQuestionHelpText: {
       texts: [
         `Through "The Basics" program survey, participants self-report race and ethnicity information to the`,
@@ -383,6 +387,8 @@ export class TooltipService {
        social life, stress, and feelings about everyday life.`,
     genomics:
       "Search and explore SNP/Indel variant data available within the dataset.",
+    // genomicsCTA:
+    // "this will be the tooltip",
     pmValueChartHelpText:
       "Values provide the numeric result of the " +
       "physical measurements taken at the time of participant enrollment. " +
