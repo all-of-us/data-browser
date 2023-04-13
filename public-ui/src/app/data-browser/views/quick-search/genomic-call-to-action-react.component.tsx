@@ -29,10 +29,12 @@ export class GenomicCallToActionComponent extends React.Component<Props, State> 
       microarrayParticipantCount } = this.props;
     return <React.Fragment>
       <style>{css} + {ctaCss}</style>
-      <div onClick={() =>window.open("https://www.researchallofus.org/register/")} className="result-box">
+      <div onClick={() => window.open("https://www.researchallofus.org/register/?utm_source=intra&utm_medium=DataBr&utm_campaign=gen_card")} className="result-box">
         <div className="result-box-title">
           <span className="result-box-title-text">
-            Genomic Data
+            Genomic data only in
+            Researcher Workbench
+
           </span>
           <div>
             <TooltipReactComponent
@@ -44,30 +46,30 @@ export class GenomicCallToActionComponent extends React.Component<Props, State> 
           </div>
         </div>
 
-      <div className="result-box-body">
+        <div className="result-box-body">
           {wgsLRParticipantCount > 0 &&
             <span className="result-box-body-item hgc-count-text">
               <span>
                 <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                participants in<br></br> the Long-Read WGS dataset
+                participants in the<br></br> Long-Read WGS dataset
               </span>
             </span>}
           {wgsSVParticipantCount > 0 &&
             <span className="result-box-body-item hgc-count-text">
               <span>
                 <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                participants in<br></br> the Structural Variants dataset
+                participants in the<br></br>Short-Read WGS Structural<br></br> Variants dataset 
               </span>
             </span>}
           <span className="result-box-body-item hgc-count-text">
             <span>
               <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-              participants in<br></br> the Genotyping Arrays dataset
+              participants in the<br></br>  Genotyping Arrays dataset
             </span>
           </span>
         </div>
         <div>
-        <a href="https://www.researchallofus.org/register/" className="result-bottom-link">Register for access</a>
+          <a href="https://www.researchallofus.org/register/?utm_source=intra&utm_medium=DataBr&utm_campaign=gen_card" className="result-bottom-link">Register for access</a>
         </div>
       </div>
 
