@@ -63,7 +63,12 @@ export class VariantFilterChips extends React.Component<Props, State> {
             if (Object.prototype.hasOwnProperty.call(filteredMetadata, key)) {
                 const allChecked = Array.isArray(filteredMetadata[key]) && filteredMetadata[key].every((t => t.checked));
                 if (!allChecked) {
-                    const el = filteredMetadata[key];
+                    let el = filteredMetadata[key];
+                    if (!el.hasOwnProperty("filterActive")) {
+                        if (el.min < 1) {
+                            el.min = +el.min.toFixed(2);
+                        }
+                    }
                     displayArr.push({ cat: key, data: el });
                 }
 
