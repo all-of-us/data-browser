@@ -68,6 +68,9 @@ export class VariantFilterChips extends React.Component<Props, State> {
                         if (el.min < 1) {
                             el.min = +el.min.toFixed(2);
                         }
+                        if (el.max < 1) {
+                            el.max = +el.max.toFixed(2);
+                        }
                     }
                     displayArr.push({ cat: key, data: el });
                 }
