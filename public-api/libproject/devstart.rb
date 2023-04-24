@@ -832,8 +832,8 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
       db_creds_file.puts "LIQUIBASE_DB_USER=liquibase"
       db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{meta_db_password}"
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
-      db_creds_file.puts "META_DB_USER=databrowser"
-      db_creds_file.puts "META_DB_PASSWORD=#{meta_db_password}"
+      db_creds_file.puts "DATABROWSER_DB_USER=databrowser"
+      db_creds_file.puts "DATABROWSER_DB_PASSWORD=#{meta_db_password}"
       if public_password
         db_creds_file.puts "PUBLIC_DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/#{public_db_name}?rewriteBatchedStatements=true"
         db_creds_file.puts "PUBLIC_DB_USER=public"
@@ -917,7 +917,7 @@ def connect_to_cloud_db(cmd_name, *args)
   env = read_db_vars(gcc)
   CloudSqlProxyContext.new(gcc.project).run do
     password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["META_DB_PASSWORD"]
-    user = op.opts.root ? "root" : env["META_DB_USER"]
+    user = op.opts.root ? "root" : env["DATABROWSER_DB_USER"]
     common.run_inline %W{
       mysql --host=127.0.0.1 --port=3307 --user=#{user}
       --database=#{env["DB_NAME"]} --password=#{password}},
