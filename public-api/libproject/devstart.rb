@@ -84,7 +84,7 @@ end
 
 def read_db_vars(gcc)
   Workbench.assert_in_docker
-  vars_path = "gs://#{gcc.project}-credentials/vars.env"
+  vars_path = "gs://#{gcc.project}-credentials/vars_hikari.env"
   vars = Workbench.read_vars(Common.new.capture_stdout(%W{
     gsutil cat #{vars_path}
   }))
@@ -94,7 +94,7 @@ def read_db_vars(gcc)
   end
   # Note: CDR project and target project may be the same.
   cdr_project = get_cdr_sql_project(gcc.project)
-  cdr_vars_path = "gs://#{cdr_project}-credentials/vars.env"
+  cdr_vars_path = "gs://#{cdr_project}-credentials/vars_hikari.env"
   cdr_vars = Workbench.read_vars(Common.new.capture_stdout(%W{
     gsutil cat #{cdr_vars_path}
   }))
