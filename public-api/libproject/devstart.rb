@@ -816,7 +816,7 @@ Common.register_command({
   :fn => ->(*args) { run_cloud_data_migrations("run-cloud-data-migrations", args) }
 })
 
-def write_db_creds_file(project, public_db_name, root_password, meta_db_password, public_password=nil)
+def write_db_creds_file(project, public_db_name, root_password, databrowser_db_password, public_password=nil)
   instance_name = "#{project}:us-central1:#{INSTANCE_NAME}"
   db_creds_file = Tempfile.new("#{project}-vars.env")
   if db_creds_file
@@ -830,10 +830,10 @@ def write_db_creds_file(project, public_db_name, root_password, meta_db_password
       db_creds_file.puts "PUBLIC_DB_NAME=#{public_db_name}"
       db_creds_file.puts "CLOUD_SQL_INSTANCE=#{instance_name}"
       db_creds_file.puts "LIQUIBASE_DB_USER=liquibase"
-      db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{meta_db_password}"
+      db_creds_file.puts "LIQUIBASE_DB_PASSWORD=#{databrowser_db_password}"
       db_creds_file.puts "MYSQL_ROOT_PASSWORD=#{root_password}"
       db_creds_file.puts "DATABROWSER_DB_USER=databrowser"
-      db_creds_file.puts "DATABROWSER_DB_PASSWORD=#{meta_db_password}"
+      db_creds_file.puts "DATABROWSER_DB_PASSWORD=#{databrowser_db_password}"
       if public_password
         db_creds_file.puts "PUBLIC_DB_CONNECTION_STRING=jdbc:google:mysql://#{instance_name}/#{public_db_name}?rewriteBatchedStatements=true"
         db_creds_file.puts "PUBLIC_DB_USER=public"
@@ -916,7 +916,7 @@ def connect_to_cloud_db(cmd_name, *args)
   gcc.validate
   env = read_db_vars(gcc)
   CloudSqlProxyContext.new(gcc.project).run do
-    password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["META_DB_PASSWORD"]
+    password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["DATABROWSER_DB_PASSWORD"]
     user = op.opts.root ? "root" : env["DATABROWSER_DB_USER"]
     common.run_inline %W{
       mysql --host=127.0.0.1 --port=3307 --user=#{user}
@@ -1184,7 +1184,7 @@ def create_project_resources(gcc)
 end
 
 def setup_project_data(gcc, public_db_name)
-  root_password, meta_db_password = random_password(), random_password()
+  root_password, databrowser_db_password = random_password(), random_password()
 
   public_password = nil
   if gcc.project == get_cdr_sql_project(gcc.project)
@@ -1195,8 +1195,7 @@ def setup_project_data(gcc, public_db_name)
   common = Common.new
   # This changes database connection information; don't call this while the server is running!
   common.status "Writing DB credentials file..."
-  write_db_creds_file(gcc.project, public_db_name, root_password,
-                      meta_db_password, public_password)
+  write_db_creds_file(gcc.project, public_db_name, root_password, databrowser_db_password, public_password)
   common.status "Setting root password..."
   run_with_redirects("gcloud sql users set-password root --host % --project #{gcc.project} " +
                      "--instance #{INSTANCE_NAME} --password #{root_password}",
