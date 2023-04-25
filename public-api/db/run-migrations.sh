@@ -13,34 +13,27 @@ fi
 # Ruby is not installed in our dev container and this script is short, so bash is fine.
 
 CREATE_DB_FILE=/tmp/create_db.sql
-GRANT_PERMISSIONS_FILE=/tmp/grant_permissions.sql
 
 function finish {
   rm -f ${CREATE_DB_FILE}
-  rm -f ${GRANT_PERMISSIONS_FILE}
 }
 trap finish EXIT
 
-envsubst < create_db.sql > $CREATE_DB_FILE
-envsubst < grant_permissions.sql > $GRANT_PERMISSIONS_FILE
+envsubst < "$(dirname "${BASH_SOURCE}")/create_db.sql" > $CREATE_DB_FILE
 
 function run_mysql() {
   if [ -f /.dockerenv ]; then
     mysql $@
   else
     echo "Outside docker: invoking mysql via docker for portability"
-    docker run --rm --network host --entrypoint '' \
-      -v "${CREATE_DB_FILE}:${CREATE_DB_FILE}" \
-      --platform linux/amd64 \
-      mysql:5.7.27 \
+    docker run --rm --network host --entrypoint '' -i \
+      mariadb:10.2 \
       mysql $@
   fi
 }
 
 echo "Creating database if it does not exist..."
-run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}" < "${CREATE_DB_FILE}"
+cat "${CREATE_DB_FILE}" | run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}"
 
 echo "Upgrading database..."
-../gradlew update $activity $context
-
-mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < ${GRANT_PERMISSIONS_FILE}
+(cd "$(dirname "${BASH_SOURCE}")" && ../gradlew update $activity $context)

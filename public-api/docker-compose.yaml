@@ -30,12 +30,13 @@ services:
   scripts:
     <<: *api-defaults
   db:
-    image: mysql:5.7
-    platform: linux/amd64
-    env_file:
-      - db/vars.env
+    image: mariadb:10.2
+    environment:
+      - MYSQL_ROOT_PASSWORD=root-notasecret
     volumes:
       - db:/var/lib/mysql
+    ports:
+      - 127.0.0.1:3306:3306
 
   public-api:
     <<: *api-defaults

@@ -103,9 +103,9 @@ def read_db_vars(gcc)
     exit 1
   end
   return vars.merge({
-    'PUBLIC_DB_CONNECTION_STRING' => cdr_vars['PUBLIC_DB_CONNECTION_STRING'],
-    'PUBLIC_DB_USER' => cdr_vars['PUBLIC_DB_USER'],
-    'PUBLIC_DB_PASSWORD' => cdr_vars['PUBLIC_DB_PASSWORD']
+    'PUBLIC_DB_CONNECTION_STRING' => cdr_vars['DB_CONNECTION_STRING'],
+    'PUBLIC_DB_USER' => cdr_vars['DATABROWSER_DB_USER'],
+    'PUBLIC_DB_PASSWORD' => cdr_vars['DATABROWSER_DB_PASSWORD']
   })
 end
 
@@ -441,7 +441,6 @@ def get_auth_login_account()
 end
 
 def drop_cloud_db(cmd_name, *args)
-  ensure_docker cmd_name, args
   op = WbOptionsParser.new(cmd_name, args)
   gcc = GcloudContextV2.new(op)
   op.parse.validate
@@ -450,8 +449,11 @@ def drop_cloud_db(cmd_name, *args)
     puts "Dropping database..."
     pw = ENV["MYSQL_ROOT_PASSWORD"]
     run_with_redirects(
-        "cat db/drop_db.sql | envsubst | " \
-        "mysql -u \"root\" -p\"#{pw}\" --host 127.0.0.1 --port 3307",
+        "cat db/drop_db.sql | envsubst | " +
+        maybe_dockerize_mysql_cmd(
+          "mysql -u \"root\" -p\"#{pw}\" --host 127.0.0.1 --port 3307",
+          true # interactive
+        ),
         pw)
   end
 end
@@ -918,10 +920,13 @@ def connect_to_cloud_db(cmd_name, *args)
   CloudSqlProxyContext.new(gcc.project).run do
     password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["DATABROWSER_DB_PASSWORD"]
     user = op.opts.root ? "root" : env["DATABROWSER_DB_USER"]
-    common.run_inline %W{
-      mysql --host=127.0.0.1 --port=3307 --user=#{user}
-      --database=#{env["DB_NAME"]} --password=#{password}},
-      password
+    common.run_inline(
+      maybe_dockerize_mysql_cmd(
+        "mysql --host=127.0.0.1 --port=3307 --user=#{op.opts.user} " +
+        "--database=#{env["DB_NAME"]} --password=#{password}",
+        true, true # interactive, tty
+      ),
+      password)
   end
 end
 
@@ -1004,8 +1009,11 @@ Common.register_command({
 
 def create_meta_db()
   run_with_redirects(
-    "cat db/create_db.sql | envsubst | " \
-    "mysql -u \"root\" -p\"#{ENV["MYSQL_ROOT_PASSWORD"]}\" --host 127.0.0.1 --port 3307",
+    "cat db/create_db.sql | envsubst | " +
+    maybe_dockerize_mysql_cmd(
+      "mysql -u \"root\" -p\"#{ENV["MYSQL_ROOT_PASSWORD"]}\" --host 127.0.0.1 --port 3307",
+      true # interactive
+    ),
     ENV["MYSQL_ROOT_PASSWORD"]
   )
 end

@@ -49,18 +49,18 @@ trap finish EXIT
 
 envsubst < create_db.sql > $CREATE_DB_FILE
 
+
 function run_mysql() {
   if [ -f /.dockerenv ]; then
     mysql $@
   else
     echo "Outside docker: invoking mysql via docker for portability"
-    docker run --rm --network host --entrypoint '' \
-      -v "${CREATE_DB_FILE}:${CREATE_DB_FILE}" \
-      --platform linux/amd64 \
-      mysql:5.7.27 \
+    docker run -i --rm --network host --entrypoint '' \
+      mariadb:10.2 \
       mysql $@
   fi
 }
+
 
 # Drop and create new cdr database
 if [ "${DROP_IF_EXISTS}" == "Y" ]
