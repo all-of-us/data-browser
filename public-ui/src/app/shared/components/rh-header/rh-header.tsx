@@ -33,215 +33,72 @@ export class RhHeader extends React.Component<{}, State> {
     const { menuOpen, searchTerms, submenusOpen } = this.state;
     return (
       <React.Fragment>
-        <div className="wrapper">
-          <div className="cta-bar">
-            <div className="site-branding-container">
-              <div className="site-branding">
-                <div className="logo">
-                  <div className="site-logo">
-                    <a
-                      href={environment.researchAllOfUsUrl}
-                      className="custom-logo-link"
-                    >
-                      <img
-                        width="4356"
-                        height="528"
-                        src="/assets/db-images/allofus_research-hub_color.png"
-                        className="custom-logo"
-                        alt="All of Us Research Hub"
-                      />
-                    </a>
-                  </div>
-                  <div className="divider" />
-                  <div className="nih-logo">
-                    <a href="https://allofus.nih.gov/" target="_blank">
-                      <img
-                        alt="National Institute of Health All of Us Research Program"
-                        className="nih_header"
-                        src="/assets/db-images/nih_allofus_color.png"
-                      />
-                    </a>
-                  </div>
-                </div>
-              </div>
+        <header id="rh-nav" className="rh__nav site-header">
+          <div>
+            <div className="nav__login show--screen">
+              <a href="https://workbench.researchallofus.org/login">RESEARCHER LOGIN</a>
             </div>
-            <a
-              className="login-btn"
-              href="https://workbench.researchallofus.org/login"
-              style={{ width: "auto" }}
-            >
-              RESEARCHER LOGIN
-            </a>
-          </div>
-          <div id="masthead" className="site-header">
-            <div className="headwrap">
-
-              <div className="site-nav-container">
-                <nav
-                  id="site-navigation"
-                  className="main-navigation"
-                  aria-label="Top Menu"
-                >
-                  <div className="menu-primary-container">
-                    <ul className="main-menu">
-                      {menuItems.map((menu, m) => (
-                        <li
-                          key={m}
-                          className="main-menu-item menu-item-has-children"
-                        >
-                          <a href={menu.url}> {menu.title}</a>
-                          {menu.submenu.length > 0 && (
-                            <ul className="sub-menu">
-                              {menu.submenu.map((sub, s) => (
-                                <li key={s}>
-                                  <a
-                                    className={
-                                      sub.title === "Data Browser"
-                                        ? "active-menu"
-                                        : ""
-                                    }
-                                    href={sub.url}
-                                  >
-                                    {sub.title}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+            <div className="nav__container">
+              <div className="nav__logos">
+                <div className="logo__ logo--rh"><a href="/" className="katactive"><img src="https://www.researchallofus.org//wp-content/themes/research-hub-wordpress-theme/media/nav/logos-fpo-logo.svg" /></a></div>
+                <div className="logo__ logo--spacer"><div /></div>
+                <div className="logo__ logo--nih"><a href="https://allofus.nih.gov/"><img src="https://www.researchallofus.org//wp-content/themes/research-hub-wordpress-theme/media/nav/logos-nih-ao-u-logo-color.svg" /></a></div>
+              </div>
+              <nav id="rh-site-navigation" className="nav__" aria-label="Top Menu">
+                <div className="menu-primary-container">
+                  <ul id="menu-primary" className="nav__items main-menu">
+                    <li id="menu-item-4088" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4088"><a href="https://www.researchallofus.org/about/">About</a><div className="item-expand" />
+                      <ul className="sub-menu">
+                        <li id="menu-item-1833" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1833"><a href="https://www.researchallofus.org/about-the-research-hub/">About the Research Hub</a><div className="item-expand" /></li>
+                        <li id="menu-item-93" className="icon_researchers-as-partners menu-item menu-item-type-post_type menu-item-object-page menu-item-93"><a href="https://www.researchallofus.org/researchers-as-partners/">Researchers as Partners</a><div className="item-expand" /></li>
+                        <li id="menu-item-91" className="icon_privacy-security menu-item menu-item-type-post_type menu-item-object-page menu-item-91"><a href="https://www.researchallofus.org/privacy-security-protocols/">Privacy &amp; Security Protocols</a><div className="item-expand" /></li>
+                        <li id="menu-item-666" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-666"><a href="https://www.researchallofus.org/research-hub-updates/">Research Hub Updates</a><div className="item-expand" /></li>
+                        <li id="menu-item-100" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-100"><a href="https://www.researchallofus.org/frequently-asked-questions/">FAQ</a><div className="item-expand" /></li>
+                      </ul>
+                    </li>
+                    <li id="menu-item-3760" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3760"><a href="https://www.researchallofus.org/data-tools/">Data &amp; Tools</a><div className="item-expand" />
+                      <ul className="sub-menu">
+                        <li id="menu-item-1465" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-1465"><a href="/">Data Browser</a><div className="item-expand" /></li>
+                        <li id="menu-item-1834" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1834"><a href="https://www.researchallofus.org/data-tools/data-snapshots/">Data Snapshots</a><div className="item-expand" /></li>
+                        <li id="menu-item-2983" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-2983"><a href="https://www.researchallofus.org/data-tools/data-access/">Data Access Tiers</a><div className="item-expand" /></li>
+                        <li id="menu-item-1464" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1464"><a href="https://www.researchallofus.org/data-tools/data-sources/">Data Sources</a><div className="item-expand" /></li>
+                        <li id="menu-item-2981" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-2981"><a href="https://www.researchallofus.org/data-tools/methods/">Data Methods</a><div className="item-expand" /></li>
+                        <li id="menu-item-2982" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-2982"><a href="https://www.researchallofus.org/data-tools/survey-explorer/">Survey Explorer</a><div className="item-expand" /></li>
+                        <li id="menu-item-1462" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1462"><a href="https://www.researchallofus.org/data-tools/workbench/">Researcher Workbench</a><div className="item-expand" /></li>
+                      </ul>
+                    </li>
+                    <li id="menu-item-4089" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-4089"><a href="https://www.researchallofus.org/discover/">Discover</a><div className="item-expand" />
+                      <ul className="sub-menu">
+                        <li id="menu-item-3525" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3525"><a href="https://www.researchallofus.org/research-projects-directory/">Research Projects Directory</a><div className="item-expand" /></li>
+                        <li id="menu-item-4073" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-4073"><a href="/spotlight">Spotlights</a><div className="item-expand" /></li>
+                        <li id="menu-item-4620" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-4620"><a href="https://www.researchallofus.org/discover/covid-19-research-initiatives/">COVID-19 Research Initiatives</a><div className="item-expand" /></li>
+                        <li id="menu-item-3277" className="menu-item menu-item-type-post_type_archive menu-item-object-publication menu-item-3277"><a href="https://www.researchallofus.org/publications/">Publications</a><div className="item-expand" /></li>
+                      </ul>
+                    </li>
+                    <li id="menu-item-5423" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-5423"><a href="https://aousupporthelp.zendesk.com/hc/en-us">Support</a><div className="item-expand" /></li>
+                    <li className="menu-item menu-item-has-children item--search">
+                      <a><div /></a>
+                      <ul className="sub-menu">
+                        <li className="menu-item sub--item--search">
+                          <form role="search" method="get" id="searchform" className="search__form" action="https://www.researchallofus.org/">
+                            <input type="text" name="s" id="s" className="form__input" placeholder="Search" autoComplete="off" />
+                            <input type="submit" name="submit" className="form__submit searchiconinput" alt="Submit" defaultValue="GO" />
+                          </form>
                         </li>
-                      ))}
-                      <li
-                        tabIndex={0}
-                        className="icon_search main-menu-item menu-item-has-children"
-                      >
-                        <a>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="22"
-                            height="22"
-                            viewBox="0 0 22 22"
-                            fill="none"
-                            fillRule="evenodd"
-                            stroke="#262262"
-                            strokeLinejoin="round"
-                            strokeWidth="3"
-                          >
-                            <path
-                              fill="none"
-                              d="M15.313 8.813a6.5 6.5 0 1 1-13.001-.001 6.5 6.5 0 0 1 13 0z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              d="M13.848 13.848l5.84 5.84"
-                            />
-                          </svg>
-                        </a>
-                        <ul className="sub-menu">
-                          <li className="menu-item">
-                            <form
-                              name="searchText"
-                              id="searchform"
-                              action={environment.researchAllOfUsUrl}
-                            >
-                              <input
-                                aria-label="Help Search"
-                                type="text"
-                                name="s"
-                                id="s"
-                                placeholder="Search..."
-                                autoComplete="off"
-                                onChange={(e) =>
-                                  this.setState({ searchTerms: e.target.value })
-                                }
-                                value={searchTerms}
-                              />
-                              <input type="submit" id="searchsubmit" value="" />
-                            </form>
-                          </li>
-                        </ul>
-                      </li>
-                      <li className="nav_apply">
-                        <a href="https://www.researchallofus.org/register/">
-                          REGISTER
-                        </a>
-                      </li>
-                    </ul>
-                    <div className="mobile-nav">
-                      <div
-                        className={menuOpen ? "clicked" : ""}
-                        onClick={() => this.setState({ menuOpen: !menuOpen })}
-                        id="nav-icon"
-                      >
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </div>
-                    </div>
-                  </div>
-                </nav>
-              </div>
+                      </ul>
+                    </li>
+                    <li className="menu-item item--apply">
+                      <a href="/register">register</a>
+                    </li>
+                    <li className="menu-item item--login show--mobile">
+                      <a href="https://workbench.researchallofus.org/login">RESEARCHER LOGIN</a>
+                    </li>
+                  </ul></div>
+              </nav>
+              <div id="nav-mobile" className="nav__mobile" />
             </div>
-            {menuOpen && (
-              <ul id="menu-mobile">
-                {menuItems.map((menu, m) => (
-                  <li
-                    className={`main-menu-item menu-item-has-children ${menu.title
-                      } ${submenusOpen.includes(menu.title) ? "flip" : ""}`}
-                    onClick={() => this.toggleMobileSubmenu(menu.title)}
-                  >
-                    <a href={menu.url} style={{ color: "#2b266d" }}>
-                      {menu.title}
-                    </a>
-                    {submenusOpen.includes(menu.title) &&
-                      menu.submenu.length > 0 && (
-                        <ul className="sub-menu">
-                          {menu.submenu.map((sub, s) => (
-                            <li key={s} className="menu-item">
-                              <a href={sub.url} style={{ color: "#2b266d" }}>
-                                {sub.title}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                  </li>
-                ))}
-                <li className="main-menu-item search">
-                  <form
-                    name="searchText"
-                    id="searchform"
-                    action={environment.researchAllOfUsUrl}
-                  >
-                    <input
-                      aria-label="Help Search"
-                      type="text"
-                      name="s"
-                      id="s"
-                      placeholder="Search..."
-                      autoComplete="off"
-                      onChange={(e) =>
-                        this.setState({ searchTerms: e.target.value })
-                      }
-                      value={searchTerms}
-                    />
-                    <input type="submit" id="searchsubmit" value="" />
-                  </form>
-                </li>
-                <li className="nav_apply">
-                  <a href="https://www.researchallofus.org/apply/">APPLY</a>
-                </li>
-                <li className="cta-bar">
-                  <a
-                    href="https://workbench.researchallofus.org/login"
-                    className="login-btn"
-                  >
-                    RESEARCHER LOGIN
-                  </a>
-                </li>
-              </ul>
-            )}
           </div>
-        </div>
+        </header>
       </React.Fragment>
     );
   }
