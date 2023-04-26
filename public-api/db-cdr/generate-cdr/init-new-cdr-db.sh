@@ -36,8 +36,8 @@ export CDR_DB_NAME
 if [[ CDR_DB_NAME =~ ^public ]]
 then
   echo "Working the public db init cdr"
-  export META_DB_USER=$PUBLIC_DB_USER
-  export META_DB_PASSWORD=$PUBLIC_DB_PASSWORD
+  export DATABROWSER_DB_USER=$PUBLIC_DB_USER
+  export DATABROWSER_DB_PASSWORD=$PUBLIC_DB_PASSWORD
 fi
 
 CREATE_DB_FILE=/tmp/create_db.sql
