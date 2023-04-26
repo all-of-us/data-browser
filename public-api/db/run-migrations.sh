@@ -13,16 +13,13 @@ fi
 # Ruby is not installed in our dev container and this script is short, so bash is fine.
 
 CREATE_DB_FILE=/tmp/create_db.sql
-GRANT_PERMISSIONS_FILE=/tmp/grant_permissions.sql
 
 function finish {
   rm -f ${CREATE_DB_FILE}
-  rm -f ${GRANT_PERMISSIONS_FILE}
 }
 trap finish EXIT
 
 envsubst < create_db.sql > $CREATE_DB_FILE
-envsubst < grant_permissions.sql > $GRANT_PERMISSIONS_FILE
 
 function run_mysql() {
   if [ -f /.dockerenv ]; then
@@ -42,5 +39,3 @@ run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}"
 
 echo "Upgrading database..."
 ../gradlew update $activity $context
-
-mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < ${GRANT_PERMISSIONS_FILE}
