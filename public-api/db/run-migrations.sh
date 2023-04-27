@@ -19,7 +19,7 @@ function finish {
 }
 trap finish EXIT
 
-envsubst < create_db.sql > $CREATE_DB_FILE
+envsubst < "$(dirname "${BASH_SOURCE}")/create_db.sql" > $CREATE_DB_FILE
 
 function run_mysql() {
   if [ -f /.dockerenv ]; then
@@ -38,4 +38,4 @@ echo "Creating database if it does not exist..."
 run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}" < "${CREATE_DB_FILE}"
 
 echo "Upgrading database..."
-../gradlew update $activity $context
+(cd "$(dirname "${BASH_SOURCE}")" && ../gradlew update $activity $context)

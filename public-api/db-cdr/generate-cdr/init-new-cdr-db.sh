@@ -47,7 +47,7 @@ function finish {
 }
 trap finish EXIT
 
-envsubst < create_db.sql > $CREATE_DB_FILE
+envsubst < "$(dirname "${BASH_SOURCE}")/create_db.sql" > $CREATE_DB_FILE
 
 function run_mysql() {
   if [ -f /.dockerenv ]; then
@@ -78,7 +78,7 @@ then
     rm -rf "$(dirname "${BASH_SOURCE}")/../csv"
     mkdir "$(dirname "${BASH_SOURCE}")/../csv"
     # copy down csv files from bucket
-    gsutil -m cp gs://aou-db-test-local-csv/*.csv "$(dirname "${BASH_SOURCE}")/../csv"
+    gsutil -m -o "GSUtil:parallel_process_count=1" cp gs://aou-db-test-local-csv/*.csv "$(dirname "${BASH_SOURCE}")/../csv"
 fi
 
 # Use liquibase to generate the schema and data

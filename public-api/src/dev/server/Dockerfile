@@ -68,6 +68,7 @@ RUN unzip gradle.zip && rm gradle.zip \
 ENV PATH="$PATH:/gradle/bin"
 WORKDIR /
 
+
 COPY with-uid.sh /usr/local/bin
 
 ENTRYPOINT ["with-uid.sh"]

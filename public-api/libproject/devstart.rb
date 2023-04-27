@@ -49,7 +49,8 @@ def get_gae_vars(project)
   must_get_project_key(project, :gae_vars)
 end
 
-def ensure_docker(cmd_name, args)
+def ensure_docker(cmd_name, args=nil)
+  args = (args or [])
   unless Workbench.in_docker?
     ensure_docker_sync()
     exec(*(%W{docker-compose run --rm scripts ./project.rb #{cmd_name}} + args))
@@ -80,6 +81,10 @@ def ensure_docker_api(cmd_name, args)
     exit $?.exitstatus
   end
   exit 1
+end
+
+def init_new_cdr_db(args)
+  Common.new.run_inline %W{docker-compose run cdr-scripts generate-cdr/init-new-cdr-db.sh} + args
 end
 
 def read_db_vars(gcc)
@@ -129,8 +134,8 @@ def dev_up()
   common.status "Starting database..."
   common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
+  common.run_inline %W{docker-compose run db-scripts ./run-migrations.sh main}
+  init_new_cdr_db %W{--cdr-db-name public}
 
   common.status "Updating CDR versions..."
   common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
@@ -171,8 +176,8 @@ def run_local_migrations()
   Dir.chdir('db') do
     common.run_inline %W{./run-migrations.sh main}
   end
-  Dir.chdir('db-cdr') do
-    common.run_inline %W{./generate-cdr/init-new-cdr-db.sh --cdr-db-name public}
+  Dir.chdir('db-cdr/generate-cdr') do
+    common.run_inline %W{./init-new-cdr-db.sh --cdr-db-name public}
   end
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
@@ -485,11 +490,7 @@ Common.register_command({
 })
 
 def run_local_data_migrations()
-  ensure_docker_sync()
-  common = Common.new
-  common.run_inline %W{docker-compose run db-migration}
-  common.run_inline %W{docker-compose run db-public-migration}
-  common.run_inline %W{docker-compose run db-public-data-migration}
+  init_new_cdr_db %W{--cdr-db-name public --run-list data --context local}
 end
 
 Common.register_command({
@@ -706,7 +707,7 @@ Imports .sql file to local mysql instance",
 def run_drop_cdr_db()
   ensure_docker_sync()
   common = Common.new
-  common.run_inline %W{docker-compose run drop-cdr-db}
+  common.run_inline %W{docker-compose run cdr-scripts ./run-drop-db.sh}
 end
 
 Common.register_command({

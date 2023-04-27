@@ -44,55 +44,40 @@ services:
       - 8083:8083
       - 8084:8002
 
-  db-migration:
+  db-scripts:
     depends_on:
       - db
     build:
       context: ./src/dev/server
     user: ${UID}
-    working_dir: /w/db
+    working_dir: /w/public-api/db
     volumes:
+      - ..:/w:cached
       - gradle-cache:/.gradle
-      - .:/w:cached
-    command: wait-for db:3306 -- ./run-migrations.sh main
+    entrypoint: [ 'with-uid.sh', 'wait-for', 'db:3306', -- ]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
     env_file:
       - db/vars.env
-  db-public-migration:
+
+  cdr-scripts:
     depends_on:
       - db
     build:
       context: ./src/dev/server
     user: ${UID}
-    working_dir: /w/db-cdr
+    working_dir: /w/public-api/db-cdr
     volumes:
+      - ..:/w:cached
       - gradle-cache:/.gradle
       - ~/.config:/.config:cached
       - ~/.gsutil:/.gsutil:cached
-      - .:/w:cached
-    command: wait-for db:3306 -- ./generate-cdr/init-new-cdr-db.sh --cdr-db-name public
+    entrypoint: [ 'with-uid.sh', 'wait-for', 'db:3306', -- ]
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
     env_file:
       - db-cdr/vars.env
-  db-public-data-migration:
-      depends_on:
-        - db
-      build:
-        context: ./src/dev/server
-      user: ${UID}
-      working_dir: /w/db-cdr
-      volumes:
-        - gradle-cache:/.gradle
-        - ~/.config:/.config:cached
-        - ~/.gsutil:/.gsutil:cached
-        - .:/w:cached
-      command: wait-for db:3306 -- ./generate-cdr/init-new-cdr-db.sh --cdr-db-name public --run-list data --context local
-      environment:
-        - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
-      env_file:
-        - db-cdr/vars.env
+
   db-generate-public-cdr-counts:
     depends_on:
       - db
@@ -216,19 +201,7 @@ services:
       - GOOGLE_APPLICATION_CREDENTIALS=/w/sa-key.json
     env_file:
       - db/vars.env
-  drop-cdr-db:
-    depends_on:
-      - db
-    build:
-      context: ./src/dev/server
-    user: ${UID}
-    working_dir: /w/db-cdr
-    volumes:
-      - gradle-cache:/.gradle
-      - .:/w:cached
-    command: wait-for db:3306 -- ./run-drop-db.sh
-    env_file:
-      - db-cdr/vars.env
+
   cloud-sql-proxy:
     build:
       context: ./src/dev/server
