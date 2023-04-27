@@ -91,8 +91,8 @@ task generateWorkbenchClient {
 }
 
 task generate_local_appengine_web_xml(type: Exec) {
-    executable "bash"
-    args "libproject/generate_appengine_web_xml.sh"
+    executable "ruby"
+    args "libproject/generate_appengine_web_xml.rb"
 }
 
 configurations {
@@ -234,6 +234,7 @@ compileGeneratedJava.dependsOn generateWorkbenchClient
 classes.dependsOn generatedClasses
 compileJava.dependsOn compileGeneratedJava
 
+war.dependsOn compileGeneratedJava
 war.dependsOn generate_local_appengine_web_xml
 
 // Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
