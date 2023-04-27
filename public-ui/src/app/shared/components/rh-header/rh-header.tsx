@@ -58,7 +58,7 @@ export class RhHeader extends React.Component<{}, State> {
                     </li>
                     <li id="menu-item-3760" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-3760"><a href="https://www.researchallofus.org/data-tools/">Data &amp; Tools</a><div className="item-expand" />
                       <ul className="sub-menu">
-                        <li id="menu-item-1465" className="menu-item menu-item-type-custom menu-item-object-custom menu-item-1465"><a href="/">Data Browser</a><div className="item-expand" /></li>
+                        <li id="menu-item-1465" className="menu-item  menu-item-type-custom menu-item-object-custom menu-item-1465 current-menu-item"><a href="/">Data Browser</a><div className="item-expand" /></li>
                         <li id="menu-item-1834" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1834"><a href="https://www.researchallofus.org/data-tools/data-snapshots/">Data Snapshots</a><div className="item-expand" /></li>
                         <li id="menu-item-2983" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-2983"><a href="https://www.researchallofus.org/data-tools/data-access/">Data Access Tiers</a><div className="item-expand" /></li>
                         <li id="menu-item-1464" className="menu-item menu-item-type-post_type menu-item-object-page menu-item-1464"><a href="https://www.researchallofus.org/data-tools/data-sources/">Data Sources</a><div className="item-expand" /></li>
