@@ -91,15 +91,15 @@ def read_db_vars(gcc)
   Workbench.assert_in_docker
   vars_path = "gs://#{gcc.project}-credentials/vars.env"
   vars = Workbench.read_vars(Common.new.capture_stdout(%W{
-    gsutil cat #{vars_path}
+    gsutil cat #{gcs_vars_path(gcc.project)}
   }))
   if vars.empty?
-    Common.new.error "Failed to read #{vars_path}"
+    Common.new.error "Failed to read #{gcs_vars_path(gcc.project)}"
     exit 1
   end
   # Note: CDR project and target project may be the same.
   cdr_project = get_cdr_sql_project(gcc.project)
-  cdr_vars_path = "gs://#{cdr_project}-credentials/vars.env"
+  cdr_vars_path = gcs_vars_path(cdr_project)
   cdr_vars = Workbench.read_vars(Common.new.capture_stdout(%W{
     gsutil cat #{cdr_vars_path}
   }))
@@ -138,17 +138,8 @@ def dev_up()
   init_new_cdr_db %W{--cdr-db-name public}
 
   common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run api-scripts ./gradlew updateCdrConfig -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
-
-  common.status "Updating workbench configuration..."
   common.run_inline %W{
-    docker-compose run api-scripts ./gradlew loadConfig
-    -Pconfig_key=main -Pconfig_file=config/config_local.json
-  }
-  common.status "Updating CDR schema configuration..."
-  common.run_inline %W{
-    docker-compose run api-scripts ./gradlew loadConfig
-    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json
+        docker-compose run api-scripts ./libproject/load_local_data_and_configs.sh
   }
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
 end
@@ -905,7 +896,7 @@ Common.register_command({
 })
 
 def connect_to_cloud_db(cmd_name, *args)
-  ensure_docker cmd_name, args
+  ensure_docker_with_ports cmd_name, args
   common = Common.new
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
@@ -919,6 +910,7 @@ def connect_to_cloud_db(cmd_name, *args)
   CloudSqlProxyContext.new(gcc.project).run do
     password = op.opts.root ? env["MYSQL_ROOT_PASSWORD"] : env["DATABROWSER_DB_PASSWORD"]
     user = op.opts.root ? "root" : env["DATABROWSER_DB_USER"]
+    common.status "Fetch credentials from #{gcs_vars_path(gcc.project)} to connect through a different SQL tool"
     common.run_inline %W{
       mysql --host=127.0.0.1 --port=3307 --user=#{user}
       --database=#{env["DB_NAME"]} --password=#{password}},
@@ -1025,6 +1017,18 @@ def migrate_meta_db()
   Dir.chdir("db") do
     common.run_inline(%W{../gradlew --info update -PrunList=data -Pcontexts=cloud})
   end
+end
+
+def ensure_docker_with_ports(cmd_name, args=nil)
+  args = (args or [])
+  unless Workbench.in_docker?
+    ensure_docker_sync()
+    exec(*(%W{docker-compose run --service-ports --rm ports-scripts ./project.rb #{cmd_name}} + args))
+  end
+end
+
+def gcs_vars_path(project)
+  return "gs://#{project}-credentials/vars.env"
 end
 
 def load_config(project, dry_run = false)

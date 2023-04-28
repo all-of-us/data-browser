@@ -54,9 +54,7 @@ jobs:
       - image: allofustest/workbench:aou-db-image-1
       - image: mysql:5.7
         environment:
-          - MYSQL_ROOT_PASSWORD=ubuntu
-          - MYSQL_USER=ubuntu
-          - MYSQL_PASSWORD=ubuntu
+          - MYSQL_ROOT_PASSWORD: root-notasecret
     working_directory: ~/data-browser
     environment:
       JAVA_TOOL_OPTIONS: -Xmx3g
@@ -76,9 +74,6 @@ jobs:
           # data migrations. Watch the port for 2m for startup.
           name: Await MySQL startup
           command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
-      - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-migrations
       - run:
           working_directory: ~/data-browser/public-api
           command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
