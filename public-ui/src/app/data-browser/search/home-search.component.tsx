@@ -16,7 +16,8 @@ const styles = reactStyles({
 });
 
 const searchStyle = `
-.search-title {
+.search-title .secondary-display {
+    font-family:GothamBook;
     margin-bottom: 0.5em;
     display: flex;
     flex-direction: row;
