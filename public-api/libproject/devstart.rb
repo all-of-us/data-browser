@@ -138,16 +138,16 @@ def dev_up()
   init_new_cdr_db %W{--cdr-db-name public}
 
   common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run update-cdr-versions -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
+  common.run_inline %W{docker-compose run api-scripts ./gradlew updateCdrConfig -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
 
   common.status "Updating workbench configuration..."
   common.run_inline %W{
-    docker-compose run update-config
+    docker-compose run api-scripts ./gradlew loadConfig
     -Pconfig_key=main -Pconfig_file=config/config_local.json
   }
   common.status "Updating CDR schema configuration..."
   common.run_inline %W{
-    docker-compose run update-config
+    docker-compose run api-scripts ./gradlew loadConfig
     -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json
   }
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
