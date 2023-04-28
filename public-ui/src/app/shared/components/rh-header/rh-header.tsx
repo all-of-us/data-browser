@@ -33,7 +33,7 @@ export class RhHeader extends React.Component<{}, State> {
     const { menuOpen, searchTerms, submenusOpen } = this.state;
     return (
       <React.Fragment>
-        <header id="rh-nav" className="rh__nav site-header">
+        <header id="rh-nav" className={"rh__nav site-header " + (menuOpen? "nav--open":"")}>
           <div>
             <div className="nav__login show--screen">
               <a href="https://workbench.researchallofus.org/login">RESEARCHER LOGIN</a>
@@ -95,7 +95,7 @@ export class RhHeader extends React.Component<{}, State> {
                     </li>
                   </ul></div>
               </nav>
-              <div id="nav-mobile" className="nav__mobile" />
+              <div onClick={()=>this.setState({menuOpen:!menuOpen})} id="nav-mobile" className="nav__mobile" />
             </div>
           </div>
         </header>

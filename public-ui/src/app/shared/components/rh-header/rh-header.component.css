@@ -149,6 +149,7 @@
   .rh__nav .show--mobile {
     display: none !important;
   }
+
   .nav__ .nav__items.main-menu {
     display: flex;
     flex-wrap: nowrap;
