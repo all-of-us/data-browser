@@ -279,6 +279,8 @@ const styles = reactStyles({
     fontSize: "14px",
   },
   dBTitle: {
+    fontFamily:"GothamBold, Arial, sans-serif",
+    fontWeight:"bold",
     textAlign: "center",
     margin: 0,
     padding: "16px",
