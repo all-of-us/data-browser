@@ -57,12 +57,12 @@ jobs:
           - MYSQL_ROOT_PASSWORD=ubuntu
           - MYSQL_USER=ubuntu
           - MYSQL_PASSWORD=ubuntu
+          - PUBLIC_DB_HOST=127.0.0.1
     working_directory: ~/data-browser
     environment:
       JAVA_TOOL_OPTIONS: -Xmx3g
       TERM: dumb
       MYSQL_ROOT_PASSWORD: ubuntu
-      PUBLIC_DB_HOST: 127.0.0.1
     steps:
       - checkout-code
       - restore_cache:
