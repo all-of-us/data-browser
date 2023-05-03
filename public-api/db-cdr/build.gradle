@@ -3,6 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
+        classpath 'org.liquibase:liquibase-gradle-plugin:1.2.4'
         classpath 'org.liquibase:liquibase-core:4.16.1'
         classpath 'org.liquibase:liquibase-groovy-dsl:3.0.2'
         classpath 'info.picocli:picocli:4.6.1'
