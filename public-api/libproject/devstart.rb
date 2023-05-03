@@ -138,18 +138,7 @@ def dev_up()
   init_new_cdr_db %W{--cdr-db-name public}
 
   common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run api-scripts ./gradlew updateCdrConfig -PappArgs=['/w/public-api/config/cdr_config_local.json',false]}
-
-  common.status "Updating workbench configuration..."
-  common.run_inline %W{
-    docker-compose run api-scripts ./gradlew loadConfig
-    -Pconfig_key=main -Pconfig_file=config/config_local.json
-  }
-  common.status "Updating CDR schema configuration..."
-  common.run_inline %W{
-    docker-compose run api-scripts ./gradlew loadConfig
-    -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json
-  }
+  common.run_inline %W{docker-compose run api-scripts ./libproject/load_local_data_and_configs.sh}
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
 end
 
@@ -164,6 +153,7 @@ def setup_local_environment()
   root_password = ENV["MYSQL_ROOT_PASSWORD"]
   ENV.update(Workbench.read_vars_file("db/vars.env"))
   ENV["DB_HOST"] = "127.0.0.1"
+  ENV["PUBLIC_DB_HOST"] = "127.0.0.1"
   ENV["MYSQL_ROOT_PASSWORD"] = root_password
   ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser?useSSL=false"
   ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
