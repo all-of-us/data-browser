@@ -139,7 +139,8 @@ def dev_up()
 
   common.status "Updating CDR versions..."
   common.run_inline %W{docker-compose run api-scripts ./libproject/load_local_data_and_configs.sh}
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+
+  run_public_api_incremental()
 end
 
 Common.register_command({
@@ -244,6 +245,27 @@ Common.register_command({
   :description => "Runs the public api server (assumes database is up-to-date.)",
   :fn => ->() { run_public_api_and_db() }
 })
+
+def run_public_api_incremental()
+  common = Common.new
+
+  # The GAE gradle configuration depends on the existence of an sa-key.json file for auth.
+  get_test_service_account()
+
+  setup_local_environment
+
+  begin
+    common.status "Starting API server..."
+    # appengineStart must be run with the Gradle daemon or it will stop outputting logs as soon as
+    # the application has finished starting.
+    common.run_inline "./gradlew --daemon appengineRun"
+
+  rescue Interrupt
+    # Do nothing
+  ensure
+    common.run_inline %W{./gradlew --stop}
+  end
+end
 
 
 def clean()
