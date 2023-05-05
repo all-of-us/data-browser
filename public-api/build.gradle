@@ -1,6 +1,62 @@
 import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
-import org.gradle.api.tasks.JavaExec
+
+// Runs before all tasks. Sets up properties and dependencies for the build
+// process itself.
+buildscript {
+    // External properties on the default project. Values declared in ext blocks
+    // outside of the buildscript block aren't usable here.
+    ext {
+        GAE_VERSION = '2.0.9'
+        GOOGLE_TRUTH_VERSION = '1.1.3'
+        GSON_VERSION = '2.9.0'
+        HIBERNATE_VERSION = '5.6.9.Final'
+        JACKSON_DATABIND_VERSION = '2.13.4'
+        JACKSON_VERSION = '2.13.4'
+        KOTLIN_VERSION = '1.5.32'
+        LIQUIBASE_VERSION = '4.16.1'
+        MAPSTRUCT_VERSION = '1.4.2.Final'
+        MOCKITO_KOTLIN_VERSION = '2.2.0'
+        OKHTTP_VERSION = '2.7.5'
+        OPENCENSUS_VERSION = '0.31.1'
+        SPRINGFOX_VERSION = '3.0.0'
+        SPRING_BOOT_VERSION = '2.7.4'
+        SPRING_FRAMEWORK_VERSION = '5.3.23'
+        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.1.0'
+        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
+        classpath 'io.swagger:swagger-codegen:2.2.3'
+        classpath 'org.owasp:dependency-check-gradle:6.0.1'
+        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'war'
+apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
+apply plugin: 'org.springframework.boot'
+apply plugin: 'org.hidetake.swagger.generator'
+apply plugin: 'org.owasp.dependencycheck'
+apply plugin: 'io.spring.dependency-management'
+
+
+if (JavaVersion.current() != JavaVersion.VERSION_11) {
+    throw new GradleException("This build must be run with Java 11. See developer-system-initialization.md. The java version used ${JavaVersion.current()}")
+}
 
 def swaggerTemplateDir = 'src/main/resources'
 def swaggerSourceFile = 'src/main/resources/public-api.yaml'
@@ -21,6 +77,7 @@ def dbProperties = [
 ]
 
 task generateApi {
+    dependsOn tasks.validateSwagger
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
     doLast {
@@ -59,7 +116,7 @@ task generateApiClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java11'
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
@@ -84,7 +141,7 @@ task generateWorkbenchClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java11'
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
@@ -100,59 +157,13 @@ configurations {
     integrationRuntime.extendsFrom testRuntime
     generatedCompile
     all {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
         exclude group: 'com.google.guava', module:'guava-jdk5'
     }
     toolsImplementation.extendsFrom implementation
     toolsRuntimeOnly.extendsFrom runtimeOnly
 }
-
-buildscript {    // Configuration for building
-
-    ext {
-        GAE_VERSION = '1.9.64'
-        GOOGLE_TRUTH_VERSION = '1.1.3'
-        GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
-        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-        OKHTTP_VERSION = '2.7.5'
-        SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-    }
-
-    repositories {
-        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
-        classpath 'org.owasp:dependency-check-gradle:6.0.1'
-        classpath 'net.ltgt.gradle:gradle-apt-plugin:0.21'
-        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
-    }
-}
-
-ext['hibernate.version'] = '5.6.9.Final'
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.hidetake.swagger.generator'
-apply plugin: 'org.owasp.dependencycheck'
-apply plugin: 'net.ltgt.apt-idea'
-apply plugin: 'io.spring.dependency-management'
 
 sourceSets {
     generated {
@@ -224,18 +235,20 @@ sourceSets {
     }
 }
 
-generateApi.dependsOn validateSwagger
-ideaModule.dependsOn generateApi
-compileGeneratedJava.dependsOn generateApi
-ideaModule.dependsOn generateApiClient
-compileGeneratedJava.dependsOn generateApiClient
-ideaModule.dependsOn generateWorkbenchClient
-compileGeneratedJava.dependsOn generateWorkbenchClient
 classes.dependsOn generatedClasses
-compileJava.dependsOn compileGeneratedJava
 
-war.dependsOn compileGeneratedJava
-war.dependsOn generate_local_appengine_web_xml
+def swaggerCodegenTasks = ['generateApi', 'generateWorkbenchClient', 'generateApiClient']
+
+// The IDEA plugin generates files that assist the IntelliJ IDE in opening Gradle-defined projects.
+// https://docs.gradle.org/current/userguide/idea_plugin.html
+project.tasks.ideaModule.dependsOn(swaggerCodegenTasks)
+
+// Java plugin's Generated Source Set gives us the compileGeneratedJava task.
+// We need to provide it with the swagger-codegen tasks that excrete Java.
+project.tasks.compileGeneratedJava.dependsOn(swaggerCodegenTasks)
+
+project.tasks.war.dependsOn(['compileGeneratedJava', 'generate_local_appengine_web_xml'])
+
 
 // Run this via ./project.rb update-cloud-config or (locally) docker-compose run update-config,
 // which is automatically run during api/project.rb dev-up.
@@ -258,6 +271,11 @@ task updateCdrConfig(type: JavaExec) {
     if (project.hasProperty("appArgs")) {
         args Eval.me(appArgs)
     }
+}
+
+tasks.compileJava {
+    dependsOn 'compileGeneratedJava'
+    options.compilerArgs << '-Xlint:unchecked'
 }
 
 task integration(type: Test) {
@@ -293,83 +311,86 @@ ext {
 dependencies {
     // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
-    compile 'mysql:mysql-connector-java:8.0.28'
 
-    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
-    compile 'com.google.guava:guava:30.0-jre'
+    implementation "org.springframework.retry:spring-retry"
+    implementation 'com.google.guava:guava:31.1-jre'
 
-    compile 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
 
-    compile "org.yaml:snakeyaml:1.32"
-    compile 'commons-io:commons-io:2.7'
-    compile 'com.github.fge:json-patch:1.9'
-    compile "org.hibernate:hibernate-validator:6.0.18.Final"
+    implementation 'io.swagger:swagger-codegen:2.2.3'
 
-    compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
-    compile "com.google.appengine:appengine:${GAE_VERSION}"
-    compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
-    compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
+    implementation 'com.google.api-client:google-api-client-appengine:1.35.2'
+    implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudresourcemanager:v3-rev20220925-2.0.0'
+    implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
+    implementation 'com.google.apis:google-api-services-iam:v1-rev20220825-2.0.0'
+    implementation "com.google.appengine:appengine-api-1.0-sdk:$project.ext.GAE_VERSION"
+    implementation 'com.google.auth:google-auth-library-appengine:1.11.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.11.0'
+    implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
+    implementation 'com.google.cloud:google-cloud-bigquery:2.17.0'
+    implementation 'com.google.cloud:google-cloud-iamcredentials:2.3.6'
+    implementation 'com.google.cloud:google-cloud-logging:3.11.5'
+    implementation 'com.google.cloud:google-cloud-monitoring:3.4.6'
+    implementation 'com.google.cloud:google-cloud-storage:2.13.0'
+    implementation 'com.google.cloud:google-cloud-tasks:2.3.11'
+    implementation "com.google.code.gson:gson:$project.ext.GSON_VERSION"
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
+    implementation 'com.google.protobuf:protobuf-java:3.21.7'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
+
+    implementation("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
-    compile("org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}") {
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
 
-    compile 'org.springframework:spring-context:5.3.19'
-
-    compile "com.google.code.gson:gson:${GSON_VERSION}"
-    compile 'com.google.api-client:google-api-client:1.35.1'
-    compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
+    implementation("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
-    compile 'org.springframework.security:spring-security-web:5.6.9'
-    compile "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
-    compile "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
+    implementation "org.springframework:spring-context:5.3.19"
 
-    compile "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
-    compile "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-    compile "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
-    compile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
-    compile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
-    compile 'javax.inject:javax.inject:1'
-    compile 'io.swagger:swagger-annotations:1.5.16'
-    compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.google.guava:guava:30.0-jre'
+    implementation 'org.springframework.security:spring-security-config:5.6.4'
 
-    compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
-        exclude group: 'org.json', module: 'json'
-        exclude group: 'io.netty', module: 'netty-common'
-    }
+    implementation "org.springframework.security:spring-security-core"
+    implementation 'org.springframework.security:spring-security-web:5.6.9'
 
-    compile "org.apache.tomcat:tomcat-jdbc:10.0.23"
+    implementation "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
 
-    compile 'joda-time:joda-time:2.10'
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
+    implementation "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
 
-    compile 'com.google.protobuf:protobuf-java:3.19.6'
+    implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
+    implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
+    implementation "javax.inject:javax.inject:1"
+    implementation 'io.swagger:swagger-annotations:1.6.7'
+    implementation 'org.apache.commons:commons-lang3:3.0'
+    implementation('org.apache.tomcat:tomcat-jdbc:10.0.23')
+    implementation 'joda-time:joda-time:2.10'
+    implementation 'io.netty:netty-common:4.1.77.Final'
 
-    compile 'io.netty:netty-common:4.1.77.Final'
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    implementation 'mysql:mysql-connector-java:8.0.30'
 
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-    compile 'com.google.api-client:google-api-client:1.35.1'
-    compile 'com.auth0:java-jwt:3.19.2'
-
-// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
-    compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
+    implementation 'com.auth0:java-jwt:3.19.2'
 
     // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
-    compile 'org.json:json:20180130'
-    compile 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.json:json:20220924'
+    implementation "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
 
     testCompile 'junit:junit:4.13.1'
     testCompile 'org.mockito:mockito-core:3.11.2'
@@ -398,6 +419,8 @@ dependencies {
     generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
+
+    generatedCompile "javax.xml.bind:jaxb-api:2.3.1"
 }
 
 swaggerSources {
@@ -460,11 +483,12 @@ appengine {  // App Engine tasks configuration
         // TODO(danrodney)
         //account = System.properties("account")
         //project = System.properties("project")
+        projectId = "aou-db-test"
     }
 }
 
 group = 'org.pmiops.allofus.workbench'
 version = '0.1.0'          // Version in generated output
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 1.11
+targetCompatibility = 1.11

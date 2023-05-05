@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-     openjdk-8-jdk \
+     openjdk-11-jdk \
      curl \
      python2 \
      python3 \
@@ -26,7 +26,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CLOUD_SDK_VERSION 260.0.0
+ENV CLOUD_SDK_VERSION 392.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -61,7 +61,7 @@ ENV GRADLE_USER_HOME /.gradle
 # It never makes sense for Gradle to run a daemon within a docker container.
 ENV GRADLE_OPTS="-Dorg.gradle.daemon=false"
 
-RUN curl https://services.gradle.org/distributions/gradle-6.8.1-bin.zip -L > /tmp/gradle.zip
+RUN curl https://services.gradle.org/distributions/gradle-7.6.1-bin.zip -L > /tmp/gradle.zip
 WORKDIR /tmp
 RUN unzip gradle.zip && rm gradle.zip \
   && mv gradle-* /gradle
