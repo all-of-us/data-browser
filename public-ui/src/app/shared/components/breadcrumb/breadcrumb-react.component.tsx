@@ -16,6 +16,7 @@ const styles = reactStyles({
   preCrumb: {
     color: "#0079b8",
     marginRight: "0.5em",
+    textDecoration: "none"
   },
   crumb: {
     color: "#2b266d",
