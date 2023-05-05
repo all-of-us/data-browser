@@ -116,6 +116,11 @@ const css = `
             gap: 0;
         }
     }
+  .scroll-area {
+    border:1px red solid;
+    height: 40rem;
+    overflow-Y: scroll;
+  }
 `;
 
 interface Props {
@@ -137,6 +142,7 @@ interface State {
   loading: boolean;
   searchResults: Variant[];
   sortMetadata: any;
+
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -145,7 +151,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.state = {
       loading: props.loadingResults,
       searchResults: props.searchResults,
-      sortMetadata: props.sortMetadata
+      sortMetadata: props.sortMetadata,
+
     };
   }
 
@@ -166,6 +173,25 @@ export class VariantTableComponent extends React.Component<Props, State> {
       this.setState({ searchResults: searchResults, loading: loadingResults });
     }
   }
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+
+    if (document.querySelector('.scroll-area')) {
+
+      const scrollTop = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollTop)
+      const scrollHeight = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollHeight)
+      const clientHeight = document.querySelector('.scroll-area').clientHeight;
+      const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+      if (scrolledToBottom) {
+          //fetch new data and append
+      }
+    }
+  }
+
 
   handlePageClick = (data) => {
     const { searchTerm } = this.props;
@@ -203,6 +229,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.props.onSearchTerm(searchTerm);
   }
 
+
   render() {
     const { loadingVariantListSize, variantListSize, currentPage, rowCount } =
       this.props;
@@ -211,9 +238,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
       <React.Fragment>
         <style>{css}</style>
         {!loading &&
-        !loadingVariantListSize &&
-        searchResults &&
-        searchResults.length ? (
+          !loadingVariantListSize &&
+          searchResults &&
+          searchResults.length ? (
           <div style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
@@ -310,7 +337,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",}}></i>
+                          marginLeft: "0.5em",
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
@@ -323,7 +351,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.clinicalSignificance.sortActive && (
                   <React.Fragment>
                     {sortMetadata.clinicalSignificance.sortDirection ===
-                    "asc" ? (
+                      "asc" ? (
                       <i
                         className="fas fa-arrow-up"
                         style={{
@@ -360,7 +388,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em"}}></i>
+                          marginLeft: "0.5em"
+                        }}></i>
                     )}
                   </React.Fragment>
                 )}
@@ -416,15 +445,17 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            {searchResults &&
-              searchResults.map((variant, index) => {
-                return (
-                  <VariantRowComponent
-                    key={variant.variantId}
-                    variant={variant}
-                  />
-                );
-              })}
+            <div className="scroll-area">
+              {searchResults &&
+                searchResults.map((variant, index) => {
+                  return (
+                    <VariantRowComponent
+                      key={variant.variantId}
+                      variant={variant}
+                    />
+                  );
+                })}
+            </div>
           </div>
         ) : (
           <div style={styles.tableFrame}>
@@ -435,48 +466,48 @@ export class VariantTableComponent extends React.Component<Props, State> {
             )}
             {(!searchResults ||
               (searchResults && searchResults.length === 0)) && (
-              <div style={styles.helpTextContainer}>
-                <div style={styles.helpText}>
-                  Enter a query in the search bar or get started with an example query:
-                </div>
-                <div style={styles.helpText}>
-                  <strong>Gene:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("BRCA2")}
-                    style={styles.helpSearchDiv}
-                  >
-                    BRCA2
+                <div style={styles.helpTextContainer}>
+                  <div style={styles.helpText}>
+                    Enter a query in the search bar or get started with an example query:
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Gene:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("BRCA2")}
+                      style={styles.helpSearchDiv}
+                    >
+                      BRCA2
+                    </div>
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Variant:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("13-32355250-T-C")}
+                      style={styles.helpSearchDiv}
+                    >
+                      13-32355250-T-C
+                    </div>
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>RS Number:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("rs169547")}
+                      style={styles.helpSearchDiv}
+                    >
+                      rs169547
+                    </div>
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Genomic region:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("chr13:32355000-32375000")}
+                      style={styles.helpSearchDiv}
+                    >
+                      chr13:32355000-32375000
+                    </div>
                   </div>
                 </div>
-                <div style={styles.helpText}>
-                  <strong>Variant:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("13-32355250-T-C")}
-                    style={styles.helpSearchDiv}
-                  >
-                    13-32355250-T-C
-                  </div>
-                </div>
-                <div style={styles.helpText}>
-                  <strong>RS Number:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("rs169547")}
-                    style={styles.helpSearchDiv}
-                  >
-                    rs169547
-                  </div>
-                </div>
-                <div style={styles.helpText}>
-                  <strong>Genomic region:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("chr13:32355000-32375000")}
-                    style={styles.helpSearchDiv}
-                  >
-                    chr13:32355000-32375000
-                  </div>
-                </div>
-              </div>
-            )}
+              )}
           </div>
         )}
         {!loading &&
