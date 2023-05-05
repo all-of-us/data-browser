@@ -39,9 +39,9 @@ export class RhHeader extends React.Component<{}, State> {
             </div>
             <div className="nav__container">
               <div className="nav__logos">
-                <div className="logo__ logo--rh"><a href="https://www.researchallofus.org/" className="katactive"><img src="https://www.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/logos-fpo-logo.svg" /></a></div>
+                <div className="logo__ logo--rh"><a href="https://www.researchallofus.org/" className="katactive"><img src="/assets/images/logos-fpo-logo.svg" /></a></div>
                 <div className="logo__ logo--spacer"><div /></div>
-                <div className="logo__ logo--nih"><a href="https://allofus.nih.gov/"><img src="https://www.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/logos-nih-ao-u-logo-color.svg" /></a></div>
+                <div className="logo__ logo--nih"><a href="https://allofus.nih.gov/"><img src="/assets/images/logos-nih-ao-u-logo-color.svg" /></a></div>
               </div>
               <nav id="rh-site-navigation" className="nav__" aria-label="Top Menu">
                 <div className="menu-primary-container">
