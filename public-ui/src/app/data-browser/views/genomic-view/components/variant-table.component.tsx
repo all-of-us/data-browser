@@ -128,6 +128,7 @@ interface Props {
   onSearchTerm: Function;
   onSortClick: Function;
   onRowCountChange: Function;
+  onScrollBottom: Function;
   searchResults: Variant[];
   variantListSize: number;
   loadingVariantListSize: boolean;
@@ -166,6 +167,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     "Allele Number",
     "Allele Frequency",
   ];
+  debounceTimer = null;
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchResults, loadingResults } = this.props;
@@ -174,22 +176,27 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
   }
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScrollEnd);
   }
 
-  handleScroll() {
+  handleScrollEnd = () => {
+    clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => {
+      if (document.querySelector('.scroll-area')) {
 
-    if (document.querySelector('.scroll-area')) {
+        const scrollTop = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollTop)
+        const scrollHeight = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollHeight)
+        const clientHeight = document.querySelector('.scroll-area').clientHeight;
+        const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
 
-      const scrollTop = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollTop)
-      const scrollHeight = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollHeight)
-      const clientHeight = document.querySelector('.scroll-area').clientHeight;
-      const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-      if (scrolledToBottom) {
+        if (scrolledToBottom) {
+          const { searchTerm } = this.props;
           //fetch new data and append
+          this.props.onScrollBottom();
+        }
       }
-    }
+    }, 250);
+
   }
 
 
@@ -450,7 +457,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 searchResults.map((variant, index) => {
                   return (
                     <VariantRowComponent
-                      key={variant.variantId}
+                      key={index}
                       variant={variant}
                     />
                   );
