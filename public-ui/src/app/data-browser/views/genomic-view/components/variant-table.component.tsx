@@ -18,7 +18,8 @@ const styles = reactStyles({
     background: "#FAFAFA",
     marginTop: "0.5rem",
     overflowX: "scroll",
-    overflowY: "hidden",
+    overflowY: "scroll",
+    height: "30rem"
   },
   tableFrame: {
     border: "1px solid #CCCCCC",
@@ -87,7 +88,10 @@ const css = `
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
     width: 72rem;
-    position: relative;
+    position: sticky;
+    left: 0;
+    top:0;
+    z-index:10;
     border-bottom: 1px solid #CCCCCC;
 }
 @media (max-width: 900px) {
@@ -117,9 +121,9 @@ const css = `
         }
     }
   .scroll-area {
-    border:1px red solid;
-    height: 40rem;
-    overflow-Y: scroll;
+    // border:1px red solid;
+    // height: 40rem;
+    // overflow-Y: scroll;
   }
 `;
 
@@ -248,7 +252,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           !loadingVariantListSize &&
           searchResults &&
           searchResults.length ? (
-          <div style={styles.tableContainer}>
+          <div className="scroll-area" style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -452,7 +456,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            <div className="scroll-area">
+
               {searchResults &&
                 searchResults.map((variant, index) => {
                   return (
@@ -462,7 +466,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                     />
                   );
                 })}
-            </div>
+
           </div>
         ) : (
           <div style={styles.tableFrame}>
