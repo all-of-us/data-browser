@@ -30,7 +30,7 @@
 
   <changeSet author="srushtigangireddy" id="add domain_id pk" runAlways="true">
     <validCheckSum>ANY</validCheckSum> <preConditions onFail="MARK_RAN"> <not>
-    <primaryKeyExists /> </not> </preConditions>
+    <primaryKeyExists tableName="domain_info"/> </not> </preConditions>
     <addPrimaryKey tableName="domain_info" columnNames="domain_id"/>
   </changeSet>
 
