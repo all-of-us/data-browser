@@ -170,11 +170,10 @@ def run_api_incremental()
 end
 
 def setup_local_environment()
-  root_password = ENV["MYSQL_ROOT_PASSWORD"]
   ENV.update(Workbench.read_vars_file("db/vars.env"))
+  ENV.update(must_get_env_value("local", :gae_vars))
   ENV["DB_HOST"] = "127.0.0.1"
   ENV["PUBLIC_DB_HOST"] = "127.0.0.1"
-  ENV["MYSQL_ROOT_PASSWORD"] = root_password
   ENV["DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/databrowser?useSSL=false"
   ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
 end

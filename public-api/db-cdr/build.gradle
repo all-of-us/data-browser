@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'org.liquibase.gradle'
 apply plugin: 'application'
 
-def db_host = System.getenv("DB_HOST") ?: "localhost"
+def db_host = System.getenv("DB_HOST") ?: "127.0.0.1"
 def db_port = System.getenv("DB_PORT") ?: "3306"
 def db_name = System.getenv("CDR_DB_NAME") ?: "cdr"
 def liquibase_password = System.getenv("LIQUIBASE_DB_PASSWORD") ?: "lb-notasecret"
