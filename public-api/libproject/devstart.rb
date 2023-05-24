@@ -6,17 +6,19 @@ require_relative "../../aou-utils/serviceaccounts"
 require_relative "../../aou-utils/utils/common"
 require_relative "../../aou-utils/workbench"
 require_relative "cloudsqlproxycontext"
+require_relative "environments"
 require_relative "gcloudcontext"
 require_relative "wboptionsparser"
-require_relative "environments"
+require "benchmark"
 require "fileutils"
 require "io/console"
 require "json"
 require "optparse"
 require "ostruct"
 require "tempfile"
+require "net/http"
+require "json"
 
-TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
 INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
@@ -30,76 +32,31 @@ def run_inline_or_log(dry_run, args)
   Common.new.run_inline(cmd_prefix + args)
 end
 
-def must_get_project_key(project, key)
-  unless ENVIRONMENTS.fetch(project, {}).has_key?(key)
-    raise ArgumentError.new("project #{project} missing configuration for #{key}")
-  end
-  return ENVIRONMENTS[project][key]
-end
-
 def get_cdr_sql_project(project)
-  must_get_project_key(project, :cdr_sql_instance).split(":")[0]
-end
-
-def get_api_base_path(project)
-  must_get_project_key(project, :api_base_path)
-end
-
-def get_gae_vars(project)
-  must_get_project_key(project, :gae_vars)
-end
-
-def ensure_docker(cmd_name, args=nil)
-  args = (args or [])
-  unless Workbench.in_docker?
-    ensure_docker_sync()
-    exec(*(%W{docker-compose run --rm scripts ./project.rb #{cmd_name}} + args))
-  end
-end
-
-def ensure_docker_sync()
-  common = Common.new
-  at_exit do
-    common.run_inline %W{docker-sync stop}
-  end
-  common.run_inline %W{docker-sync start}
-end
-
-# exec against a live local API server - used for script access to a local API
-# server or database.
-def ensure_docker_api(cmd_name, args)
-  if Workbench.in_docker?
-    return
-  end
-  Process.wait spawn(*(%W{docker-compose exec api ./project.rb #{cmd_name}} + args))
-  unless $?.exited? and $?.success?
-    Common.new.error "command against docker-compose service 'api' failed, " +
-                     "please verify your local API server is running (dev-up " +
-                     "or run-api)"
-  end
-  if $?.exited?
-    exit $?.exitstatus
-  end
-  exit 1
+  return must_get_env_value(project, :cdr_sql_instance).split(":")[0]
 end
 
 def init_new_cdr_db(args)
-  Common.new.run_inline %W{docker-compose run cdr-scripts generate-cdr/init-new-cdr-db.sh} + args
+  Dir.chdir('db-cdr') do
+    Common.new.run_inline %W{./generate-cdr/init-new-cdr-db.sh} + args
+  end
+end
+
+def gcs_vars_path(project)
+  return "gs://#{project}-credentials/vars.env"
 end
 
 def read_db_vars(gcc)
-  Workbench.assert_in_docker
-  vars_path = "gs://#{gcc.project}-credentials/vars.env"
   vars = Workbench.read_vars(Common.new.capture_stdout(%W{
-    gsutil cat #{vars_path}
+    gsutil cat #{gcs_vars_path(gcc.project)}
   }))
   if vars.empty?
-    Common.new.error "Failed to read #{vars_path}"
+    Common.new.error "Failed to read #{gcs_vars_path(gcc.project)}"
     exit 1
   end
   # Note: CDR project and target project may be the same.
   cdr_project = get_cdr_sql_project(gcc.project)
-  cdr_vars_path = "gs://#{cdr_project}-credentials/vars.env"
+  cdr_vars_path = gcs_vars_path(cdr_project)
   cdr_vars = Workbench.read_vars(Common.new.capture_stdout(%W{
     gsutil cat #{cdr_vars_path}
   }))
@@ -114,7 +71,39 @@ def read_db_vars(gcc)
   })
 end
 
-def dev_up()
+def format_benchmark(bm)
+  "%ds" % [bm.real]
+end
+
+def start_local_db_service()
+  common = Common.new
+  deadlineSec = 40
+
+  bm = Benchmark.measure {
+    common.run_inline %W{docker-compose up -d db}
+
+    common.status "waiting up to #{deadlineSec}s for mysql service to start..."
+    start = Time.now
+    until (common.run %W{docker-compose exec -T db mysqladmin ping --silent}).success?
+      if Time.now - start >= deadlineSec
+        raise("mysql docker service did not become available after #{deadlineSec}s")
+      end
+      sleep 1
+    end
+  }
+  common.status "Database startup complete (#{format_benchmark(bm)})"
+end
+
+def dev_up(cmd_name, args)
+  op = WbOptionsParser.new(cmd_name, args)
+  op.opts.start_db = true
+  op.add_option(
+      "--nostart-db",
+      ->(opts, _) { opts.start_db = false },
+      "If specified, don't start the DB service. This is useful when running " +
+      "within docker, i.e. on CircleCI, as the DB service runs via docker-compose")
+  op.parse.validate
+
   common = Common.new
 
   account = get_auth_login_account()
@@ -122,32 +111,63 @@ def dev_up()
     raise("Please run 'gcloud auth login' before starting the server.")
   end
 
-  at_exit { common.run_inline %W{docker-compose down} }
-
-  # ensures that sa-key.json is included in the docker-sync image
-  # This is necessary because docker-compose exposes it as GOOGLE_APPLICATION_CREDENTIALS
-  # which is needed to construct the IamCredentialsClient Bean
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    ensure_docker_sync()
+  at_exit do
+    common.run_inline %W{docker-compose down} if op.opts.start_db
   end
 
-  common.status "Starting database..."
-  common.run_inline %W{docker-compose up -d db}
-  common.status "Running database migrations..."
-  common.run_inline %W{docker-compose run db-scripts ./run-migrations.sh main}
-  init_new_cdr_db %W{--cdr-db-name public}
+  setup_local_environment()
 
-  common.status "Updating CDR versions..."
-  common.run_inline %W{docker-compose run api-scripts ./libproject/load_local_data_and_configs.sh}
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+  overall_bm = Benchmark.measure {
+    start_local_db_service() if op.opts.start_db
+
+    common.status "Database init & migrations..."
+    bm = Benchmark.measure {
+      Dir.chdir('db') do
+        common.run_inline %W{./run-migrations.sh main}
+      end
+      init_new_cdr_db %W{--cdr-db-name public}
+    }
+    common.status "Database init & migrations complete (#{format_benchmark(bm)})"
+
+    common.status "Loading configs & data..."
+    bm = Benchmark.measure {
+      common.run_inline %W{./libproject/load_local_data_and_configs.sh}
+    }
+    common.status "Loading configs complete (#{format_benchmark(bm)})"
+  }
+  common.status "Total dev-env setup time: #{format_benchmark(overall_bm)}"
+
+  run_api_incremental()
 end
 
 Common.register_command({
   :invocation => "dev-up",
   :description => "Brings up the development environment, including db migrations and config " \
      "update. (You can use run-api instead if database and config are up-to-date.)",
-  :fn => ->() { dev_up() }
+  :fn => ->(*args) { dev_up("dev-up", args) }
 })
+
+def run_api_incremental()
+  common = Common.new
+
+  # The GAE gradle configuration depends on the existence of an sa-key.json file for auth.
+  get_test_service_account()
+
+  begin
+    common.status "Starting API server..."
+    # appengineStart must be run with the Gradle daemon or it will stop outputting logs as soon as
+    # the application has finished starting.
+    common.run_inline "./gradlew --daemon appengineRun &"
+
+    # incrementalHotSwap must be run without the Gradle daemon or stdout and stderr will not appear
+    # in the output.
+    common.run_inline %W{./gradlew --continuous incrementalHotSwap}
+  rescue Interrupt
+    # Do nothing
+  ensure
+    common.run_inline %W{./gradlew --stop}
+  end
+end
 
 def setup_local_environment()
   root_password = ENV["MYSQL_ROOT_PASSWORD"]
@@ -159,29 +179,32 @@ def setup_local_environment()
   ENV["PUBLIC_DB_CONNECTION_STRING"] = "jdbc:mysql://127.0.0.1/public?useSSL=false"
 end
 
+# TODO(RW-605): This command doesn't actually execute locally as it assumes a docker context.
+#
+# This command is only ever meant to be run via CircleCI; see .circleci/config.yml
 def run_local_migrations()
-  setup_local_environment
+  setup_local_environment()
   # Runs migrations against the local database.
   common = Common.new
   Dir.chdir('db') do
     common.run_inline %W{./run-migrations.sh main}
   end
   Dir.chdir('db-cdr/generate-cdr') do
-    common.run_inline %W{./init-new-cdr-db.sh --cdr-db-name public}
+    common.run_inline %W{./init-new-cdr-db.sh --cdr-db-name cdr}
   end
-  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
-  common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
-  common.run_inline %W{./gradlew :updateCdrConfig -PappArgs=['config/cdr_config_local.json',false]}
+  common.run_inline %W{gradle :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json}
+  common.run_inline %W{gradle :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
+  common.run_inline %W{gradle :updateCdrConfig -PappArgs=['config/cdr_config_local.json',false]}
 end
 
 Common.register_command({
   :invocation => "run-local-migrations",
-  :description => "Runs DB migrations with the local MySQL instance; does not use docker. You must set MYSQL_ROOT_PASSWORD before running this.",
+  :description => "Runs DB migrations with the local MySQL instance. You must set MYSQL_ROOT_PASSWORD before running this.",
   :fn => ->() { run_local_migrations() }
 })
 
 def start_local_public_api()
-  setup_local_environment
+  setup_local_environment()
   common = Common.new
   Dir.chdir('../public-api') do
     common.status "Starting public API server..."
@@ -196,7 +219,7 @@ Common.register_command({
 })
 
 def stop_local_public_api()
-  setup_local_environment
+  setup_local_environment()
   common = Common.new
   Dir.chdir('../public-api') do
     common.status "Stopping public API server..."
@@ -228,37 +251,34 @@ Common.register_command({
   :fn => ->() { run_local_public_api_tests() }
 })
 
-def run_public_api_and_db()
+def run_public_api()
   common = Common.new
-  common.status "Starting database..."
   ServiceAccountContext.new(TEST_PROJECT).run do
-    ensure_docker_sync()
+    common.status "Starting API. This can take a while. Thoughts on reducing development cycle time"
+    common.status "are here:"
+    common.status "  https://github.com/all-of-us/workbench/blob/master/api/doc/2017/dev-cycle.md"
+    at_exit { common.run_inline %W{docker-compose down} }
+    common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
   end
-  common.run_inline %W{docker-compose up -d db}
-  common.status "Starting public API."
-  common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
+end
+
+def run_public_api_and_db()
+  setup_local_environment()
+
+  common = Common.new
+  at_exit { common.run_inline %W{docker-compose down} }
+  start_local_db_service()
+
+  run_api_incremental()
 end
 
 Common.register_command({
   :invocation => "run-public-api",
-  :description => "Runs the public api server (assumes database is up-to-date.)",
+  :description => "Runs the api server (assumes database and config are already up-to-date.)",
   :fn => ->() { run_public_api_and_db() }
 })
 
-
-def clean()
-  common = Common.new
-  common.run_inline %W{docker-compose run --rm public-api ./gradlew clean}
-end
-
-Common.register_command({
-  :invocation => "clean",
-  :description => "Runs gradle clean. Occasionally necessary before generating code from Swagger.",
-  :fn => ->(*args) { clean(*args) }
-})
-
 def validate_swagger(cmd_name, args)
-  ensure_docker cmd_name, args
   Common.new.run_inline %W{./gradlew validateSwagger} + args
 end
 
@@ -269,7 +289,6 @@ Common.register_command({
 })
 
 def run_public_api_tests(cmd_name, args)
-  ensure_docker cmd_name, args
   Dir.chdir('../public-api') do
     Common.new.run_inline %W{./gradlew :test} + args
   end
@@ -295,43 +314,19 @@ Common.register_command({
 
 
 def run_integration_tests(cmd_name, *args)
-  ensure_docker cmd_name, args
-  op = WbOptionsParser.new(cmd_name, args)
-  op.opts.env = 'local'
-  op.add_option(
-    "--env [local|aou-db-test|...]",
-    ->(opts, v) { opts.env = v},
-    "Environment to execute the test against, defaults to local"
-  )
-  op.parse.validate
-
-  api_base = 'http://localhost:8083'
-  if op.opts.env != 'local'
-    api_base = get_api_base_path(op.opts.env)
-  end
-  ENV['DB_API_BASE_PATH'] = api_base
-
   common = Common.new
-  common.status "Executing integration tests against '#{api_base}'"
-
-  # We need to run integration tests in against iap staging env with SA context to be able to get past iap.
-  if op.opts.env == 'aou-db-staging'
-    ServiceAccountContext.new(op.opts.env, TEST_CIRCLE_ACCOUNT).run do
-      common.run_inline %W{./gradlew integration} + op.remaining
-    end
-  else
-    common.run_inline %W{./gradlew integration} + op.remaining
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    common.run_inline %W{./gradlew integrationTest} + args
   end
 end
 
 Common.register_command({
   :invocation => "integration",
-  :description => "Runs integration tests.",
+  :description => "Runs integration tests. Excludes nightly-only tests.",
   :fn => ->(*args) { run_integration_tests("integration", *args) }
 })
 
 def run_bigquery_tests(cmd_name, *args)
-  ensure_docker cmd_name, args
   common = Common.new
   ServiceAccountContext.new(TEST_PROJECT).run do
     common.run_inline %W{./gradlew bigquerytest} + args
@@ -345,7 +340,6 @@ Common.register_command({
 })
 
 def run_gradle(cmd_name, args)
-  ensure_docker cmd_name, args
   begin
     Common.new.run_inline %W{./gradlew} + args
   ensure
@@ -362,10 +356,10 @@ Common.register_command({
   :fn => ->(*args) { run_gradle("gradle", args) }
 })
 
-
 def connect_to_db()
   common = Common.new
-
+  common.status "Starting database if necessary..."
+  common.run_inline %W{docker-compose up -d db}
   cmd = "MYSQL_PWD=root-notasecret mysql --database=databrowser"
   common.run_inline %W{docker-compose exec db sh -c #{cmd}}
 end
@@ -376,12 +370,13 @@ Common.register_command({
   :fn => ->() { connect_to_db() }
 })
 
-
 def docker_clean()
   common = Common.new
 
   # --volumes clears out any cached data between runs, e.g. the MySQL database
-  common.run_inline %W{docker-compose down --volumes}
+  # --rmi local forces a rebuild of any local dev images on the next run - usually the pieces will
+  #   still be cached and this is fast.
+  common.run_inline %W{docker-compose down --volumes --rmi local}
 
   # This keyfile gets created and cached locally on dev-up. Though it's not
   # specific to Docker, it is mounted locally for docker runs. For lack of a
@@ -397,7 +392,8 @@ Common.register_command({
   :invocation => "docker-clean",
   :description => \
     "Removes docker containers and volumes, allowing the next `dev-up` to" \
-    " start from scratch (e.g., the database will be re-created).",
+    " start from scratch (e.g., the database will be re-created). Includes ALL" \
+    " docker images, not just for the API.",
   :fn => ->() { docker_clean() }
 })
 
@@ -436,7 +432,6 @@ def get_auth_login_account()
 end
 
 def drop_cloud_db(cmd_name, *args)
-  ensure_docker cmd_name, args
   op = WbOptionsParser.new(cmd_name, args)
   gcc = GcloudContextV2.new(op)
   op.parse.validate
@@ -458,7 +453,6 @@ Common.register_command({
 })
 
 def drop_cloud_cdr(cmd_name, *args)
-  ensure_docker cmd_name, args
   op = WbOptionsParser.new(cmd_name, args)
   gcc = GcloudContextV2.new(op)
   op.parse.validate
@@ -479,15 +473,25 @@ Common.register_command({
   :fn => ->(*args) { drop_cloud_cdr("drop-cloud-cdr", *args) }
 })
 
-def run_local_data_migrations()
+def run_local_all_migrations()
+  setup_local_environment()
+  start_local_db_service()
+
+  common = Common.new
+  Dir.chdir('db') do
+    common.run_inline %W{./run-migrations.sh main}
+  end
+
+  init_new_cdr_db %W{--cdr-db-name public}
   init_new_cdr_db %W{--cdr-db-name public --run-list data --context local}
 end
 
 Common.register_command({
-  :invocation => "run-local-data-migrations",
-  :description => "Runs local data migrations for cdr/workbench schemas.",
-  :fn => ->() { run_local_data_migrations() }
+  :invocation => "run-local-all-migrations",
+  :description => "Runs local data/schema migrations for the cdr and workbench schemas.",
+  :fn => ->() { run_local_all_migrations() }
 })
+
 
 def generate_public_cdr_counts(cmd_name, *args)
   op = WbOptionsParser.new(cmd_name, args)
@@ -611,11 +615,15 @@ def cloudsql_import(cmd_name, *args)
   op.parse.validate
 
   ServiceAccountContext.new(op.opts.project).run do
-    common = Common.new
-    #common.run_inline %W{docker-compose run db-cloudsql-import} + args
-    common.run_inline %W{docker-compose run db-cloudsql-import
-          --project #{op.opts.project} --instance #{op.opts.instance} --database #{op.opts.database}
-          --bucket #{op.opts.bucket}}
+    Dir.chdir('db-cdr') do
+      common = Common.new
+      common.run_inline %W{./generate-cdr/cloudsql-import.sh
+        --project #{op.opts.project}
+        --instance #{op.opts.instance}
+        --database #{op.opts.database}
+        --bucket #{op.opts.bucket}
+        --file #{op.opts.file}}
+    end
   end
 end
 
@@ -630,7 +638,9 @@ Import bucket of files or a single file in a bucket to a cloudsql database",
 
 def generate_local_cdr_db(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-generate-local-cdr-db} + args
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./generate-cdr/generate-local-cdr-db.sh} + args
+  end
 end
 
 Common.register_command({
@@ -643,7 +653,9 @@ Creates and populates local mysql database from data in bucket made by generate-
 
 def generate_local_count_dbs(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-generate-local-count-dbs} + args
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./generate-cdr/generate-local-count-dbs.sh} + args
+  end
 end
 
 Common.register_command({
@@ -656,9 +668,10 @@ Creates and populates local mysql databases cdr<VERSION> and public<VERSION> fro
 
 def mysqldump_db(*args)
   common = Common.new
-  common.run_inline %W{docker-compose run db-mysqldump-local-db} + args
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./generate-cdr/make-mysqldump.sh} + args
+  end
 end
-
 
 Common.register_command({
   :invocation => "mysqldump-local-db",
@@ -669,7 +682,6 @@ Dumps the local mysql db and uploads the .sql file to bucket",
 
 def local_mysql_import(cmd_name, *args)
   op = WbOptionsParser.new(cmd_name, args)
-
   op.add_option(
     "--sql-dump-file [filename]",
     ->(opts, v) { opts.file = v},
@@ -683,8 +695,10 @@ def local_mysql_import(cmd_name, *args)
   op.parse.validate
 
   common = Common.new
-  common.run_inline %W{docker-compose run db-local-mysql-import
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./generate-cdr/local-mysql-import.sh
         --sql-dump-file #{op.opts.file} --bucket #{op.opts.bucket}}
+  end
 end
 Common.register_command({
                             :invocation => "local-mysql-import",
@@ -695,9 +709,10 @@ Imports .sql file to local mysql instance",
 
 
 def run_drop_cdr_db()
-  ensure_docker_sync()
   common = Common.new
-  common.run_inline %W{docker-compose run cdr-scripts ./run-drop-db.sh}
+  Dir.chdir('db-cdr') do
+    common.run_inline %W{./run-drop-db.sh}
+  end
 end
 
 Common.register_command({
@@ -859,7 +874,6 @@ def update_cdr_config_for_project(cdr_config_file, dry_run)
 end
 
 def update_cdr_config(cmd_name, *args)
-  ensure_docker cmd_name, args
   op = update_cdr_config_options(cmd_name, args)
   gcc = GcloudContextV2.new(op)
   op.parse.validate
@@ -878,14 +892,13 @@ Common.register_command({
 })
 
 def update_cdr_config_local(cmd_name, *args)
-  ensure_docker_sync()
-  setup_local_environment
+  setup_local_environment()
   op = update_cdr_config_options(cmd_name, args)
   op.parse.validate
   cdr_config_file = 'config/cdr_config_local.json'
   app_args = ["-PappArgs=['/w/public-api/" + cdr_config_file + "',false]"]
   common = Common.new
-  common.run_inline %W{docker-compose run --rm api-scripts ./gradlew updateCdrConfig} + app_args
+  common.run_inline %W{./gradlew updateCdrConfig} + app_args
 end
 
 Common.register_command({
@@ -895,7 +908,6 @@ Common.register_command({
 })
 
 def connect_to_cloud_db(cmd_name, *args)
-  ensure_docker cmd_name, args
   common = Common.new
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
@@ -921,7 +933,6 @@ Common.register_command({
   :description => "Connect to a Cloud SQL database via mysql.",
   :fn => ->(*args) { connect_to_cloud_db("connect-to-cloud-db", *args) }
 })
-
 
 def deploy_app(cmd_name, args)
   common = Common.new
@@ -981,7 +992,6 @@ def deploy_app(cmd_name, args)
 end
 
 def deploy_public_api(cmd_name, args)
-  ensure_docker cmd_name, args
   common = Common.new
   common.status "Deploying public-api..."
   deploy_app(cmd_name, args)
@@ -1048,7 +1058,6 @@ def with_cloud_proxy_and_db_env(cmd_name, args)
 end
 
 def deploy(cmd_name, args)
-  ensure_docker cmd_name, args
 
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.dry_run = false
@@ -1117,7 +1126,6 @@ Common.register_command({
 
 
 def run_cloud_migrations(cmd_name, args)
-  ensure_docker cmd_name, args
   with_cloud_proxy_and_db_env(cmd_name, args) { migrate_database }
 end
 
@@ -1128,7 +1136,6 @@ Common.register_command({
 })
 
 def update_cloud_config(cmd_name, args)
-  ensure_docker cmd_name, args
   with_cloud_proxy_and_db_env(cmd_name, args) do |ctx|
     load_config(ctx.project)
   end
@@ -1210,7 +1217,6 @@ end
 # TODO: add a goal which updates CDR DBs but nothing else
 
 def setup_cloud_project(cmd_name, *args)
-  ensure_docker cmd_name, args
   op = WbOptionsParser.new(cmd_name, args)
   op.add_option(
     "--public-db-name [PUBLIC_DB]",
@@ -1245,3 +1251,5 @@ Common.register_command({
   :description => "Copies sa-key.json locally (for use when running tests from an IDE, etc).",
   :fn => ->() { get_test_service_account()}
 })
+
+
