@@ -38,6 +38,7 @@ interface Props {
   onRowCountChange: Function;
   onSortClick: Function;
   onFilterSubmit: Function;
+  onScrollBottom: Function;
   variantListSize: number;
   loadingVariantListSize: boolean;
   loadingResults: boolean;
@@ -86,7 +87,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
   handlePageChange(info) {
     this.props.onPageChange(info);
-    this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+    // this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
   }
 
   handleRowCountChange(info) {
@@ -100,6 +101,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
   handleFilterSubmit(filteredMetadata, sortMetadata) {
     this.props.onFilterSubmit(filteredMetadata, sortMetadata);
+  }
+
+  handleScrollBottom() {
+    this.props.onScrollBottom();
   }
 
   render() {
@@ -137,6 +142,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         onRowCountChange={(info: any) => this.handleRowCountChange(info)}
         onPageChange={(info: any) => this.handlePageChange(info)}
         onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
+        onScrollBottom={()=>this.handleScrollBottom()}
         currentPage={currentPage}
         rowCount={rowCount}
         sortMetadata={sortMetadata} />
