@@ -706,7 +706,7 @@ Common.register_command({
   :fn => ->() { run_drop_cdr_db() }
 })
 
-def circle_build_cdr_indices(cmd_name, args)
+def create_cdr_indices(cmd_name, args)
   op = WbOptionsParser.new(cmd_name, args)
   op.opts.data_browser = false
   op.opts.branch = "master"
@@ -761,7 +761,7 @@ end
 Common.register_command({
   :invocation => "create-cdr-indices",
   :description => "Build the CDR indices using CircleCi",
-  :fn => ->(*args) { circle_build_cdr_indices("create-cdr-indices", args) }
+  :fn => ->(*args) { create_cdr_indices("create-cdr-indices", args) }
 })
 
 def circle_import_cdr_data(cmd_name, args)
