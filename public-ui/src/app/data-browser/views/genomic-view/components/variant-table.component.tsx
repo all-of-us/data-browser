@@ -120,11 +120,6 @@ const css = `
             gap: 0;
         }
     }
-  .scroll-area {
-    // border:1px red solid;
-    // height: 40rem;
-    // overflow-Y: scroll;
-  }
 `;
 
 interface Props {
@@ -157,9 +152,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
       loading: props.loadingResults,
       searchResults: props.searchResults,
       sortMetadata: props.sortMetadata,
-
     };
   }
+  triggerRef = React.createRef();
+  observer = null;
 
   columnNames = [
     "Variant ID",
@@ -179,29 +175,30 @@ export class VariantTableComponent extends React.Component<Props, State> {
       this.setState({ searchResults: searchResults, loading: loadingResults });
     }
   }
-  componentDidMount() {
-    window.addEventListener('scroll', this.handleScrollEnd);
-  }
 
-  handleScrollEnd = () => {
+  handleScrollEnd = (event) => {
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
-      if (document.querySelector('.scroll-area')) {
+      const scrollArea = document.querySelector('.scroll-area');
+      if (scrollArea) {
+        event.preventDefault();
+        const buffer = 1000;
+        const scrollTop = scrollArea.scrollTop;
+        const scrollHeight = scrollArea.scrollHeight;
+        const clientHeight = scrollArea.clientHeight;
+        const scrolledToBottom = scrollTop + clientHeight + buffer >= scrollHeight;
 
-        const scrollTop = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollTop)
-        const scrollHeight = (document.querySelector('.scroll-area') && document.querySelector('.scroll-area').scrollHeight)
-        const clientHeight = document.querySelector('.scroll-area').clientHeight;
-        const scrolledToBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-        if (scrolledToBottom) {
+        if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
+          console.log('Scrolled to the bottom');
           const { searchTerm } = this.props;
-          //fetch new data and append
+          // Fetch new data and append
           this.props.onScrollBottom();
+          // this.setState({loading:false})
         }
       }
-    }, 250);
+    }, 150);
+  };
 
-  }
 
 
   handlePageClick = (data) => {
@@ -242,7 +239,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
 
   render() {
-    const { loadingVariantListSize, variantListSize, currentPage, rowCount } =
+    const { loadingVariantListSize, loadingResults, variantListSize, currentPage, rowCount } =
       this.props;
     const { loading, searchResults, sortMetadata } = this.state;
     return (
@@ -252,7 +249,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           !loadingVariantListSize &&
           searchResults &&
           searchResults.length ? (
-          <div className="scroll-area" style={styles.tableContainer}>
+          <div onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -457,16 +454,18 @@ export class VariantTableComponent extends React.Component<Props, State> {
               </div>
             </div>
 
-              {searchResults &&
-                searchResults.map((variant, index) => {
-                  return (
-                    <VariantRowComponent
-                      key={index}
-                      variant={variant}
-                    />
-                  );
-                })}
-
+            {searchResults &&
+              searchResults.map((variant, index) => {
+                return (
+                  <VariantRowComponent
+                    key={index}
+                    variant={variant}
+                  />
+                );
+              })}
+            <div style={{ marginTop: "2rem" }}>
+              {currentPage < variantListSize / rowCount && loadingResults && <Spinner />}
+            </div>
           </div>
         ) : (
           <div style={styles.tableFrame}>
@@ -521,7 +520,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
               )}
           </div>
         )}
-        {!loading &&
+        {/* {!loading &&
           !loadingVariantListSize &&
           searchResults &&
           variantListSize > rowCount && (
@@ -542,7 +541,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 />
               }
             </div>
-          )}
+          )} */}
       </React.Fragment>
     );
   }
