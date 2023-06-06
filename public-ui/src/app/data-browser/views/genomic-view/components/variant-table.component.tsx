@@ -520,28 +520,28 @@ export class VariantTableComponent extends React.Component<Props, State> {
               )}
           </div>
         )}
-        {/* {!loading &&
+        {!loading &&
           !loadingVariantListSize &&
           searchResults &&
           variantListSize > rowCount && (
             <div className="paginator">
               {
-                <TablePaginatorComponent
-                  pageCount={Math.ceil(variantListSize / rowCount)}
-                  variantListSize={variantListSize}
-                  currentPage={currentPage}
-                  resultsSize={searchResults.length}
-                  rowCount={rowCount}
-                  onPageChange={(info) => {
-                    this.handlePageClick(info);
-                  }}
-                  onRowCountChange={(info) => {
-                    this.handleRowCountChange(info);
-                  }}
-                />
+                // <TablePaginatorComponent
+                //   pageCount={Math.ceil(variantListSize / rowCount)}
+                //   variantListSize={variantListSize}
+                //   currentPage={currentPage}
+                //   resultsSize={searchResults.length}
+                //   rowCount={rowCount}
+                //   onPageChange={(info) => {
+                //     this.handlePageClick(info);
+                //   }}
+                //   onRowCountChange={(info) => {
+                //     this.handleRowCountChange(info);
+                //   }}
+                // />
               }
             </div>
-          )} */}
+          )}
       </React.Fragment>
     );
   }
