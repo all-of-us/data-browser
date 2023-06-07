@@ -68,14 +68,12 @@ const css = `
     border-bottom: 1px solid #CCCCCC;
     position: relative;
 }
-
 @media (max-width: 900px) {
     .row-layout {
         grid-template-columns: 10rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
         width: 71rem;
     }
 }
-
 `;
 
 interface Props {

@@ -74,10 +74,10 @@ const styles = reactStyles({
     overflowX: "hidden",
     width: "100%",
     background: "#ECF1F4",
+    top: "0px",
     left: "0px",
     padding: ".5em",
     paddingLeft: "1em",
-    zIndex:"9",
     borderTop: "1px solid rgb(204, 204, 204)",
   },
   top: {

@@ -432,29 +432,6 @@ export const GenomicViewComponent = withRouteData(
       this.getSearchSize(this.state.searchTerm, true);
     }
 
-    handleScrollBottom() {
-     
-      this.setState({ currentPage: this.state.currentPage + 1, loadingResults:true})
-      const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
-
-      const searchRequest: SearchVariantsRequest = {
-        query: searchTerm,
-        pageNumber: currentPage,
-        rowCount: rowCount,
-        sortMetadata: sortMetadata,
-        filterMetadata: filterMetadata,
-      };
-      
-      genomicsApi()
-        .searchVariants(searchRequest)
-        .then((results) => {
-          this.setState({
-            searchResults: [...this.state.searchResults, ...results.items],
-            loadingResults: false,
-          });
-        });
-    }
-
     render() {
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
         participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
@@ -511,7 +488,6 @@ export const GenomicViewComponent = withRouteData(
                 onFilterSubmit={(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) => {
                   this.handleFilterSubmit(filteredMetadata, sortMetadata);
                 }}
-                onScrollBottom = {()=>this.handleScrollBottom()}
                 currentPage={currentPage}
                 rowCount={rowCount}
                 variantListSize={variantListSize}
