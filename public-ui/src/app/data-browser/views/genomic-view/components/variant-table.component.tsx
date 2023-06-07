@@ -18,8 +18,7 @@ const styles = reactStyles({
     background: "#FAFAFA",
     marginTop: "0.5rem",
     overflowX: "scroll",
-    overflowY: "scroll",
-    height: "30rem"
+    overflowY: "hidden",
   },
   tableFrame: {
     border: "1px solid #CCCCCC",
@@ -88,10 +87,7 @@ const css = `
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
     width: 72rem;
-    position: sticky;
-    left: 0;
-    top:0;
-    z-index:10;
+    position: relative;
     border-bottom: 1px solid #CCCCCC;
 }
 @media (max-width: 900px) {
@@ -127,7 +123,6 @@ interface Props {
   onSearchTerm: Function;
   onSortClick: Function;
   onRowCountChange: Function;
-  onScrollBottom: Function;
   searchResults: Variant[];
   variantListSize: number;
   loadingVariantListSize: boolean;
@@ -142,7 +137,6 @@ interface State {
   loading: boolean;
   searchResults: Variant[];
   sortMetadata: any;
-
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -151,11 +145,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.state = {
       loading: props.loadingResults,
       searchResults: props.searchResults,
-      sortMetadata: props.sortMetadata,
+      sortMetadata: props.sortMetadata
     };
   }
-  triggerRef = React.createRef();
-  observer = null;
 
   columnNames = [
     "Variant ID",
@@ -167,7 +159,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
     "Allele Number",
     "Allele Frequency",
   ];
-  debounceTimer = null;
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchResults, loadingResults } = this.props;
@@ -175,31 +166,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
       this.setState({ searchResults: searchResults, loading: loadingResults });
     }
   }
-
-  handleScrollEnd = (event) => {
-    clearTimeout(this.debounceTimer);
-    this.debounceTimer = setTimeout(() => {
-      const scrollArea = document.querySelector('.scroll-area');
-      if (scrollArea) {
-        event.preventDefault();
-        const buffer = 1000;
-        const scrollTop = scrollArea.scrollTop;
-        const scrollHeight = scrollArea.scrollHeight;
-        const clientHeight = scrollArea.clientHeight;
-        const scrolledToBottom = scrollTop + clientHeight + buffer >= scrollHeight;
-
-        if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
-          console.log('Scrolled to the bottom');
-          const { searchTerm } = this.props;
-          // Fetch new data and append
-          this.props.onScrollBottom();
-          // this.setState({loading:false})
-        }
-      }
-    }, 150);
-  };
-
-
 
   handlePageClick = (data) => {
     const { searchTerm } = this.props;
@@ -237,19 +203,18 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.props.onSearchTerm(searchTerm);
   }
 
-
   render() {
-    const { loadingVariantListSize, loadingResults, variantListSize, currentPage, rowCount } =
+    const { loadingVariantListSize, variantListSize, currentPage, rowCount } =
       this.props;
     const { loading, searchResults, sortMetadata } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
         {!loading &&
-          !loadingVariantListSize &&
-          searchResults &&
-          searchResults.length ? (
-          <div onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
+        !loadingVariantListSize &&
+        searchResults &&
+        searchResults.length ? (
+          <div style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -345,8 +310,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                          marginLeft: "0.5em",}}></i>
                     )}
                   </React.Fragment>
                 )}
@@ -359,7 +323,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.clinicalSignificance.sortActive && (
                   <React.Fragment>
                     {sortMetadata.clinicalSignificance.sortDirection ===
-                      "asc" ? (
+                    "asc" ? (
                       <i
                         className="fas fa-arrow-up"
                         style={{
@@ -396,8 +360,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         className="fas fa-arrow-down"
                         style={{
                           color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em"
-                        }}></i>
+                          marginLeft: "0.5em"}}></i>
                     )}
                   </React.Fragment>
                 )}
@@ -453,19 +416,15 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-
             {searchResults &&
               searchResults.map((variant, index) => {
                 return (
                   <VariantRowComponent
-                    key={index}
+                    key={variant.variantId}
                     variant={variant}
                   />
                 );
               })}
-            <div style={{ marginTop: "2rem" }}>
-              {currentPage < variantListSize / rowCount && loadingResults && <Spinner />}
-            </div>
           </div>
         ) : (
           <div style={styles.tableFrame}>
@@ -476,48 +435,48 @@ export class VariantTableComponent extends React.Component<Props, State> {
             )}
             {(!searchResults ||
               (searchResults && searchResults.length === 0)) && (
-                <div style={styles.helpTextContainer}>
-                  <div style={styles.helpText}>
-                    Enter a query in the search bar or get started with an example query:
-                  </div>
-                  <div style={styles.helpText}>
-                    <strong>Gene:</strong>{" "}
-                    <div
-                      onClick={() => this.searchItem("BRCA2")}
-                      style={styles.helpSearchDiv}
-                    >
-                      BRCA2
-                    </div>
-                  </div>
-                  <div style={styles.helpText}>
-                    <strong>Variant:</strong>{" "}
-                    <div
-                      onClick={() => this.searchItem("13-32355250-T-C")}
-                      style={styles.helpSearchDiv}
-                    >
-                      13-32355250-T-C
-                    </div>
-                  </div>
-                  <div style={styles.helpText}>
-                    <strong>RS Number:</strong>{" "}
-                    <div
-                      onClick={() => this.searchItem("rs169547")}
-                      style={styles.helpSearchDiv}
-                    >
-                      rs169547
-                    </div>
-                  </div>
-                  <div style={styles.helpText}>
-                    <strong>Genomic region:</strong>{" "}
-                    <div
-                      onClick={() => this.searchItem("chr13:32355000-32375000")}
-                      style={styles.helpSearchDiv}
-                    >
-                      chr13:32355000-32375000
-                    </div>
+              <div style={styles.helpTextContainer}>
+                <div style={styles.helpText}>
+                  Enter a query in the search bar or get started with an example query:
+                </div>
+                <div style={styles.helpText}>
+                  <strong>Gene:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("BRCA2")}
+                    style={styles.helpSearchDiv}
+                  >
+                    BRCA2
                   </div>
                 </div>
-              )}
+                <div style={styles.helpText}>
+                  <strong>Variant:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("13-32355250-T-C")}
+                    style={styles.helpSearchDiv}
+                  >
+                    13-32355250-T-C
+                  </div>
+                </div>
+                <div style={styles.helpText}>
+                  <strong>RS Number:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("rs169547")}
+                    style={styles.helpSearchDiv}
+                  >
+                    rs169547
+                  </div>
+                </div>
+                <div style={styles.helpText}>
+                  <strong>Genomic region:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("chr13:32355000-32375000")}
+                    style={styles.helpSearchDiv}
+                  >
+                    chr13:32355000-32375000
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         )}
         {!loading &&
@@ -526,19 +485,19 @@ export class VariantTableComponent extends React.Component<Props, State> {
           variantListSize > rowCount && (
             <div className="paginator">
               {
-                // <TablePaginatorComponent
-                //   pageCount={Math.ceil(variantListSize / rowCount)}
-                //   variantListSize={variantListSize}
-                //   currentPage={currentPage}
-                //   resultsSize={searchResults.length}
-                //   rowCount={rowCount}
-                //   onPageChange={(info) => {
-                //     this.handlePageClick(info);
-                //   }}
-                //   onRowCountChange={(info) => {
-                //     this.handleRowCountChange(info);
-                //   }}
-                // />
+                <TablePaginatorComponent
+                  pageCount={Math.ceil(variantListSize / rowCount)}
+                  variantListSize={variantListSize}
+                  currentPage={currentPage}
+                  resultsSize={searchResults.length}
+                  rowCount={rowCount}
+                  onPageChange={(info) => {
+                    this.handlePageClick(info);
+                  }}
+                  onRowCountChange={(info) => {
+                    this.handleRowCountChange(info);
+                  }}
+                />
               }
             </div>
           )}
