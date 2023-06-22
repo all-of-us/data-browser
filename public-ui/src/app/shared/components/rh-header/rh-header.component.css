@@ -129,12 +129,12 @@
   height: 26px;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/icon-menu.svg);
+  background-image: url(/assets/images/hamburger.svg);
   opacity: 1;
   transition: opacity 110ms ease-in-out;
 }
 .rh__nav .nav__mobile:after {
-  background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/icon-menu-hover.svg);
+  background-image: url(/assets/images/icon-menu-hover.svg);
   opacity: 0;
 }
 .sub-menu {
@@ -193,12 +193,12 @@
     height: 18px;
     background-repeat: no-repeat;
     background-position: center;
-    background-image: url(https://www.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/search.svg);
+    background-image: url(/assets/images/search.svg);
     opacity: 1;
     transition: opacity 110ms ease-in-out;
   }
   .nav__ .nav__items.main-menu > li.item--search > a > div:after {
-    background-image: url(https://www.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/search-hover.svg);
+    background-image: url(/assets/images/search-hover.svg);
     opacity: 0;
   }
   .nav__ .nav__items.main-menu > li.item--apply > a {
@@ -422,7 +422,7 @@
     display: block;
   }
   .rh__nav.nav--open .nav__mobile:before {
-    background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/icon-menu-close.svg);
+    background-image: url(/assets/images/icon-menu-close.svg);
   }
   .rh__nav.nav--open .nav__ {
     display: block;
@@ -468,7 +468,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-color: transparent;
-    background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/arrow-down-nav-mobile.svg);
+    background-image: url(/assets/images/arrow-down-nav-mobile.svg);
     opacity: 1;
     transition: opacity 110ms ease-in-out;
     cursor: pointer;
@@ -541,7 +541,7 @@
     color: #262262;
   }
   .nav__ .nav__items.main-menu > li.sub--nav--open ul li a:hover:after {
-    background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/arrow-right-hover.svg);
+    background-image: url(/assets/images/arrow-right-hover.svg);
   }
   .nav__ .nav__items.main-menu > li.sub--nav--open ul li a:after {
     content: "";
@@ -556,7 +556,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-color: transparent;
-    background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/arrow-right.svg);
+    background-image: url(/assets/images/arrow-right.svg);
   }
   .nav__ .nav__items.main-menu li.menu-item-100 > div {
     display: none;
@@ -626,7 +626,7 @@
     background-color: transparent;
     background-repeat: no-repeat;
     background-position: top right;
-    background-image: url(https://researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/nav/search-mobile.svg);
+    background-image: url(/assets/images/search-mobile.svg);
   }
   .nav__ .nav__items.main-menu li.item--search > ul li form input[type="button"]:hover,
   .nav__ .nav__items.main-menu li.item--search > ul li form input[type="submit"]:hover {
