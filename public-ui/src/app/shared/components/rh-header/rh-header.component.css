@@ -129,7 +129,7 @@
   height: 26px;
   background-repeat: no-repeat;
   background-position: center center;
-  background-image: url(/assets/images/hamburger.svg);
+  background-image: url(/assets/images/icon-menu.svg);
   opacity: 1;
   transition: opacity 110ms ease-in-out;
 }
