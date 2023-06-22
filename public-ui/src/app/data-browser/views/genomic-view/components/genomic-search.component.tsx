@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { reactStyles } from "app/utils";
+import { environment } from "environments/environment";
 import { GenomicFilters, Variant } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
-
 import { VariantSearchComponent } from "./variant-search.component";
 import { VariantTableComponent } from "./variant-table.component";
 
@@ -87,7 +87,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
   handlePageChange(info) {
     this.props.onPageChange(info);
-    // this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
+    { !environment.infiniteSrcoll &&  this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });}
   }
 
   handleRowCountChange(info) {
@@ -142,7 +142,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         onRowCountChange={(info: any) => this.handleRowCountChange(info)}
         onPageChange={(info: any) => this.handlePageChange(info)}
         onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-        onScrollBottom={()=>this.handleScrollBottom()}
+        onScrollBottom={()=>{environment.infiniteSrcoll && this.handleScrollBottom()}}
         currentPage={currentPage}
         rowCount={rowCount}
         sortMetadata={sortMetadata} />
