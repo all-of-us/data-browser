@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { reactStyles } from "app/utils";
 import { Spinner } from "app/utils/spinner";
+import { environment } from "environments/environment";
 import { Variant } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
-
 import { TablePaginatorComponent } from "./table-paginator.component";
 import { VariantRowComponent } from "./variant-row.component";
 
@@ -18,8 +18,8 @@ const styles = reactStyles({
     background: "#FAFAFA",
     marginTop: "0.5rem",
     overflowX: "scroll",
-    overflowY: "scroll",
-    height: "30rem"
+    overflowY: environment.infiniteSrcoll ? "scroll" : "hidden",
+    height: environment.infiniteSrcoll ? "30rem" : "",
   },
   tableFrame: {
     border: "1px solid #CCCCCC",
@@ -463,9 +463,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   />
                 );
               })}
-            <div style={{ marginTop: "2rem" }}>
+            {environment.infiniteSrcoll && <div style={{ marginTop: "2rem" }}>
               {currentPage < variantListSize / rowCount && loadingResults && <Spinner />}
-            </div>
+            </div>}
           </div>
         ) : (
           <div style={styles.tableFrame}>
@@ -525,20 +525,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
           searchResults &&
           variantListSize > rowCount && (
             <div className="paginator">
-              {
-                // <TablePaginatorComponent
-                //   pageCount={Math.ceil(variantListSize / rowCount)}
-                //   variantListSize={variantListSize}
-                //   currentPage={currentPage}
-                //   resultsSize={searchResults.length}
-                //   rowCount={rowCount}
-                //   onPageChange={(info) => {
-                //     this.handlePageClick(info);
-                //   }}
-                //   onRowCountChange={(info) => {
-                //     this.handleRowCountChange(info);
-                //   }}
-                // />
+              {!environment.infiniteSrcoll &&
+                <TablePaginatorComponent
+                  pageCount={Math.ceil(variantListSize / rowCount)}
+                  variantListSize={variantListSize}
+                  currentPage={currentPage}
+                  resultsSize={searchResults.length}
+                  rowCount={rowCount}
+                  onPageChange={(info) => {
+                    this.handlePageClick(info);
+                  }}
+                  onRowCountChange={(info) => {
+                    this.handleRowCountChange(info);
+                  }}
+                />
               }
             </div>
           )}

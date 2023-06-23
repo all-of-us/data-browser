@@ -12,5 +12,6 @@ export const environment = {
   testReact: false,
   geno: true,
   genoFilters: true,
-  fitbitCDRUpdate: true
+  fitbitCDRUpdate: true,
+  infiniteSrcoll: false
 };
