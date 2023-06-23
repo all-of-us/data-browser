@@ -87,13 +87,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     let selectedData: Array<any> = [];
     chartOptions.chart.type = data.chartType;
     chartOptions.xAxis.categories = [];
-    chartOptions.xAxis.labels.style = {
-        whiteSpace: undefined,
-        textOverflow: undefined,
-        width: "80%",
-        fontSize: undefined,
-        color: undefined,
-        fontFamily: undefined};
+    chartOptions.xAxis.labels.style.width = "80%";
 
     chartOptions.column = {};
     data.results.forEach((result) => {
