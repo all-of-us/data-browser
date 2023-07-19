@@ -82,7 +82,8 @@ const styles = reactStyles({
     display: 'flex',
     flexDirection: "row",
     gap: '1em',
-    justifyContent: 'center'
+    justifyContent: 'space-between',
+    flexWrap:"wrap"
   },
   noUnitPanel: {
     display: 'flex',
