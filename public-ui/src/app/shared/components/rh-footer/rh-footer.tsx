@@ -206,10 +206,10 @@ const RhFooter: React.FunctionComponent = () => {
             ))}
           </ul>
           <ul>
-            <li className="foot-apply">
+            <li id="register-db-footer" className="foot-apply">
               <a href="https://www.researchallofus.org/register/">REGISTER</a>
             </li>
-            <li className="login-btn">
+            <li id="login-db-footer" className="login-btn">
               <a href="https://workbench.researchallofus.org/login">
                 {" "}
                 RESEARCHER LOGIN

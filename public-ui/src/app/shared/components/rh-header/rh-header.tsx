@@ -34,7 +34,7 @@ export class RhHeader extends React.Component<{}, State> {
       <React.Fragment>
         <header id="rh-nav" className={"rh__nav site-header " + (menuOpen ? "nav--open" : "")}>
           <div>
-            <div className="nav__login show--screen">
+            <div id="login-db-header" className="nav__login show--screen">
               <a href="https://workbench.researchallofus.org/login">RESEARCHER LOGIN</a>
             </div>
             <div className="nav__container">
@@ -86,7 +86,7 @@ export class RhHeader extends React.Component<{}, State> {
                         </li>
                       </ul>
                     </li>
-                    <li className="menu-item item--apply">
+                    <li id="register-db-header" className="menu-item item--apply">
                       <a href="https://www.researchallofus.org/register">register</a>
                     </li>
                     <li className="menu-item item--login show--mobile">

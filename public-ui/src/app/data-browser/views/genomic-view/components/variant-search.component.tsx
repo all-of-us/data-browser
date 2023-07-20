@@ -171,7 +171,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
                 <div style={styles.searchBar}>
                     <SearchComponent value={searchWord} searchTitle='' domain='genomics'
                         onChange={(val: string) => this.handleChange(val)}
-                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, rs number or genomic region' />
+                        onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, rs number, or genomic region' />
                 </div>
                 <div style={styles.searchHelpText}>
                     Examples by query type: <br></br>
