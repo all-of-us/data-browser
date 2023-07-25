@@ -599,6 +599,7 @@ a a:link a:visited {
 }
 
 .chart-tooltip,
+.sources-tooltip,
 .bio-sex-tooltip,
 .fitbit-tooltip,
 .version-survey-tooltip,
@@ -615,6 +616,12 @@ a a:link a:visited {
   padding: 5px;
   font-family: GothamBook, Arial, sans-serif;
   border: 1px solid #262262;
+}
+
+.sources-tooltip {
+  white-space:pre-line;
+  min-width: 300px;
+  max-width: 100%;
 }
 
 .bio-sex-tooltip {
@@ -656,6 +663,7 @@ a a:link a:visited {
 .highcharts-container svg {
   overflow: visible !important;
 }
+
 /* covid disclaimer */
 .cope-statement {
   font-size: 0.8em;

@@ -49,17 +49,17 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
   setChartOptions(categories: any, series: any) {
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
-    newBaseOptions.chart.tooltip = {
-      headerFormat: "<span>{point.key} <br/>",
-      pointFormat: "{point.y}</span>",
-    };
+    // newBaseOptions.chart.tooltip = {
+    //   headerFormat: "<span>{point.key} <br/>",
+    //   pointFormat: "{point.y}</span>",
+    // };
     newBaseOptions.plotOptions.column.pointPadding = 0.25;
     newBaseOptions.plotOptions.series.minPointLength = 3;
     newBaseOptions.plotOptions.column.pointWidth = 20;
     newBaseOptions.xAxis.title.text = "Source Concepts";
     newBaseOptions.yAxis.title.text = "Participant Count";
     newBaseOptions.xAxis.categories = categories;
-    newBaseOptions.tooltip.outside = true;
+    newBaseOptions.tooltip.outside = false;
     newBaseOptions.series = [series];
     this.setState({ options: newBaseOptions });
   }
@@ -74,7 +74,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
     for (const a of concepts) {
       const count = a.sourceCountValue <= 20 ? "&le; 20" : a.sourceCountValue;
       const toolTipText =
-        '<div class="chart-tooltip" style="position: relative; white-space:normal;">' +
+        '<div id="sources-chart" class="sources-tooltip" style="position: relative; white-space:normal;">' +
         a.conceptName +
         " (" +
         a.vocabularyId +
@@ -109,9 +109,10 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
   }
 
   render() {
+    console.log(this.state);
     const { options } = this.state;
     return (
-      <div>
+      <div className="sources-chart">
         {options && (
           <HighchartsReact
             highcharts={highCharts}
