@@ -5,7 +5,6 @@ import { VariantSortItemComponent } from "app/data-browser/views/genomic-view/co
 import { reactStyles } from "app/utils";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
-import SimpleBar from 'simplebar-react';
 
 
 const styles = reactStyles({
@@ -21,7 +20,7 @@ const styles = reactStyles({
         width: "264px",
         height: "421px",
         display: "grid",
-        gridTemplateRows: "84% 16%"
+        gridTemplateRows: "84% 16%",
     },
     filterItemHandleClosed: {
         transform: "rotate(90deg)",
@@ -56,8 +55,9 @@ const styles = reactStyles({
         width: "45%",
     },
     filterItems: {
-        // maxHeight: "340px",
-        // overflowY: "auto",
+        marginTop: "2rem",
+        maxHeight: "340px",
+        overflowY: "auto",
     },
 });
 
@@ -155,7 +155,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
         return <React.Fragment>
             <div style={styles.filterBox}>
-                <SimpleBar style={styles.filterItems} >
+                <div style={styles.filterItems} >
                     {filterCats.map((cat, index) => {
                         const key = 'cat' + index;
                         {
@@ -172,7 +172,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                     <div style={styles.sortByContainer}>
                         {<VariantSortItemComponent cleared={cleared} onSortChange={(e) => this.handleSortChange(e)} sortMetadata={sortMetadata} />}
                     </div>
-                </SimpleBar>
+                </div>
                 <div style={styles.actionBtnContainer}>
                     <button onClick={() => this.handleClear()} style={styles.clearBtn}>Clear</button>
                     <button onClick={() => this.submitFilter(filteredMetadata)} style={styles.applyBtn}>Apply</button>
