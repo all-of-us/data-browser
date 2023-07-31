@@ -255,11 +255,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           "</strong>" +
           " participants <br> who had <strong>" +
           concept.analysisStratumName +
-          "</strong> as sex assigned at birth and that is <strong>" +
-          percentage +
-          "% </strong> of all participants with the same criteria. (" +
-          genderCountTooltip +
-          ")</div>",
+          "</strong> as sex assigned at birth.</div>",
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: "",

@@ -314,7 +314,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                        Age when physical measurement taken
+                       Age at data collection
                       </div>
                       {selectedAnalyses && domainCountAnalysis && (
                         <AgeChartReactComponent

@@ -277,12 +277,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
           '<div class="age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
           count +
           "</strong> participants were ages within range of <strong>" +
-          concept.analysisStratumName +
-          "</strong> and that is <strong>" +
-          percentage +
-          "% </strong> of all participants with the same criteria. (" +
-          ageCountTooltip +
-          ")</div>",
+          concept.analysisStratumName + ".</div>",
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: "",
