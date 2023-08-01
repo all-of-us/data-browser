@@ -174,10 +174,14 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showCopyAlert: false,
       selectedConcept: this.props.selectedConcept,
     };
+
+    
   }
 
   componentDidMount() {
     const { selectedConcept, concept, searchTerm } = this.props;
+
+    
     if (
       selectedConcept
         ? selectedConcept && selectedConcept.conceptId === concept.conceptId
@@ -249,7 +253,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         graphToShow === GraphType.Sources
       ) {
         this.setState({
-          graphToShow: GraphType.Values,
+          graphToShow:         this.props.domain.name.toLowerCase() === "labs & measurements"
+          ? GraphType.Values
+          : GraphType.BiologicalSex,
         });
       } else {
         this.setState({
@@ -315,6 +321,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       graphToShow,
       showCopyAlert,
     } = this.state;
+
+    
     const id = "c" + concept.conceptId;
     const tabIndex = 0;
     const tooltipAction =
