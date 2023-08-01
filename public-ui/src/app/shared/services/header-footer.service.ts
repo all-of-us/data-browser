@@ -12,8 +12,8 @@ export const menuItems = [
         submenu: [],
       },
       {
-        title: "Researchers as Partners",
-        url: "https://www.researchallofus.org/researchers-as-partners/",
+        title: "Registered Institutions",
+        url: "https://www.researchallofus.org/institutional-agreements/",
         submenu: [],
       },
       {
@@ -84,6 +84,11 @@ export const menuItems = [
         submenu: [],
       },
       {
+        title: "Publications",
+        url: "https://www.researchallofus.org/publications",
+        submenu: [],
+      },
+      {
         title: "Spotlights",
         url: "https://www.researchallofus.org/spotlight/",
         submenu: [],
@@ -91,11 +96,6 @@ export const menuItems = [
       {
         title: "COVID-19 Research Initiatives",
         url: "https://researchallofus.org/discover/covid-19-research-initiatives/",
-        submenu: [],
-      },
-      {
-        title: "Publications",
-        url: "https://www.researchallofus.org/publications",
         submenu: [],
       },
     ],

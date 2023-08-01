@@ -109,7 +109,6 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
   }
 
   render() {
-    console.log(this.state);
     const { options } = this.state;
     return (
       <div className="sources-chart">

@@ -65,7 +65,7 @@ const searchStyle = `
 }
 
 #db-search-bar input {
-  min-width: calc((100% / 12) * 10);
+  min-width: calc((100% / 12) * 10.1);
   padding: 18px;
   font-size: 18px;
 }
