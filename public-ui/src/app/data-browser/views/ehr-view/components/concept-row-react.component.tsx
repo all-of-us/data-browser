@@ -253,7 +253,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         graphToShow === GraphType.Sources
       ) {
         this.setState({
-          graphToShow:         this.props.domain.name.toLowerCase() === "labs & measurements"
+          graphToShow:  this.props.domain.name.toLowerCase() === "labs & measurements"
           ? GraphType.Values
           : GraphType.BiologicalSex,
         });
