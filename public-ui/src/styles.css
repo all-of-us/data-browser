@@ -761,34 +761,34 @@ strong {
 
 /* For Chrome */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 6px!important;
+  height: 6px!important;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f1f1f1!important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #d0d0d0;
-  border-radius: 3px;
+  background-color: #d0d0d0!important;
+  border-radius: 3px!important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #b0b0b0;
+  background-color: #b0b0b0!important;
 }
 /* For Firefox */
 /* Note: Firefox uses a different pseudo-element */
 body {
-  scrollbar-width: 6px;
-  scrollbar-color: #d0d0d0 #f1f1f1;
+  scrollbar-width: 5px!important;
+  scrollbar-color: #d0d0d0 #f1f1f1!important;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #d0d0d0;
-  border-radius: 3px;
+  background-color: #d0d0d0!important;
+  border-radius: 3px!important;
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background-color: #b0b0b0;
+  background-color: #b0b0b0!important;
 }
