@@ -253,7 +253,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           '<div class="bio-sex-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
           count +
           "</strong>" +
-          " participants <br> who had <strong>" +
+          " participants who had <strong>" +
           concept.analysisStratumName +
           "</strong> as sex assigned at birth.</div>",
         name: concept.analysisStratumName,
