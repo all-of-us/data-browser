@@ -33,7 +33,8 @@ const styles = reactStyles({
     textTransform:'uppercase',
     fontFamily:'GothamBook, Arial, sans-serif',
     padding: '0 0.5rem',
-    height: '1.5rem'
+    height: '1.5rem',
+    whitespace:'nowrap'
   },
   btnList: {
     width:'14rem',
