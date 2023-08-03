@@ -12,7 +12,7 @@ const styles = reactStyles({
         top: ".5rem",
         position: "absolute",
         padding: ".25rem",
-        zIndex: 10,
+        zIndex: 12,
         borderRadius: "0 1px 1px 0",
         backgroundColor: "#FFFFFF",
         boxShadow:
@@ -55,7 +55,6 @@ const styles = reactStyles({
         width: "45%",
     },
     filterItems: {
-        marginTop: "2rem",
         maxHeight: "340px",
         overflowY: "auto",
     },
