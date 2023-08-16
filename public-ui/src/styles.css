@@ -1,4 +1,3 @@
-
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
@@ -86,7 +85,7 @@ pre {
 
 a {
   background-color: transparent;
-  text-decoration: none!important;
+  text-decoration: none !important;
 }
 
 /**
@@ -458,11 +457,16 @@ a:hover {
   src: url("/assets/fonts/GothamBook.eot");
   /* IE9 Compat Modes */
   src: url("/assets/fonts/GothamBook.eot?#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */ url("/assets/fonts/GothamBook.otf") format("opentype"),
-    /* Open Type Font */ url("/assets/fonts/GothamBook.svg") format("svg"),
-    /* Legacy iOS */ url("/assets/fonts/GothamBook.ttf") format("truetype"),
-    /* Safari, Android, iOS */ url("/assets/fonts/GothamBook.woff") format("woff"),
-    /* Modern Browsers */ url("/assets/fonts/GothamBook.woff2") format("woff2");
+    /* IE6-IE8 */
+    url("/assets/fonts/GothamBook.otf") format("opentype"),
+    /* Open Type Font */
+    url("/assets/fonts/GothamBook.svg") format("svg"),
+    /* Legacy iOS */
+    url("/assets/fonts/GothamBook.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("/assets/fonts/GothamBook.woff") format("woff"),
+    /* Modern Browsers */
+    url("/assets/fonts/GothamBook.woff2") format("woff2");
   /* Modern Browsers */
   font-weight: normal;
   font-style: normal;
@@ -473,11 +477,16 @@ a:hover {
   src: url("/assets/fonts/GothamBold.eot");
   /* IE9 Compat Modes */
   src: url("/assets/fonts/GothamBold.eot?#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */ url("/assets/fonts/GothamBold.otf") format("opentype"),
-    /* Open Type Font */ url("/assets/fonts/GothamBold.svg") format("svg"),
-    /* Legacy iOS */ url("/assets/fonts/GothamBold.ttf") format("truetype"),
-    /* Safari, Android, iOS */ url("/assets/fonts/GothamBold.woff") format("woff"),
-    /* Modern Browsers */ url("/assets/fonts/GothamBold.woff2") format("woff2");
+    /* IE6-IE8 */
+    url("/assets/fonts/GothamBold.otf") format("opentype"),
+    /* Open Type Font */
+    url("/assets/fonts/GothamBold.svg") format("svg"),
+    /* Legacy iOS */
+    url("/assets/fonts/GothamBold.ttf") format("truetype"),
+    /* Safari, Android, iOS */
+    url("/assets/fonts/GothamBold.woff") format("woff"),
+    /* Modern Browsers */
+    url("/assets/fonts/GothamBold.woff2") format("woff2");
   /* Modern Browsers */
   font-weight: normal;
   font-style: normal;
@@ -503,6 +512,7 @@ img {
   max-width: 100%;
   position: relative;
 }
+
 /*
 .widget>* {
   -webkit-font-smoothing: antialiased;
@@ -519,6 +529,7 @@ img {
     margin: 0 calc(10%);
     padding: 0 0.7rem;
   }
+
   /* outside container desktop */
   .db-container {
     margin: 0 calc(10%);
@@ -586,6 +597,7 @@ a a:link a:visited {
 .toggle-link {
   cursor: pointer;
 }
+
 .copy-alert {
   border: 1px solid #2b266d;
   background: white;
@@ -611,15 +623,15 @@ a a:link a:visited {
   word-wrap: break-word;
   white-space: normal;
   background-color: #ffffff;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
   font-size: 14px;
   padding: 5px;
   font-family: GothamBook, Arial, sans-serif;
-  border: 1px solid #262262;
+  padding: .5rem;
+  border:#262262 1px solid;
 }
 
 .sources-tooltip {
-  white-space:pre-line;
+  white-space: pre-line;
   min-width: 300px;
   max-width: 100%;
 }
@@ -627,6 +639,7 @@ a a:link a:visited {
 .bio-sex-tooltip {
   max-width: 16rem;
 }
+
 .fitbit-tooltip,
 .age-tooltip {
   width: 10rem;
@@ -634,7 +647,7 @@ a a:link a:visited {
 
 .geno-chart-tooltip {
   width: 12rem;
-  color:#262262;
+  color: #262262;
 }
 
 .version-survey-tooltip,
@@ -651,8 +664,8 @@ a a:link a:visited {
   color: #262262;
 }
 
-.highcharts-tooltip  {
-    z-index:9999!important;
+.highcharts-tooltip {
+  z-index: 9999 !important;
 }
 
 .survey-answer-tooltip strong {
@@ -668,20 +681,26 @@ a a:link a:visited {
 .cope-statement {
   font-size: 0.8em;
 }
+
 .cope-statement-body {
   padding-bottom: 1rem;
   display: inline-block;
 }
+
 .cope-statement-box {
   display: inline-block;
   background: #dae6ed;
   border-radius: 3px;
   padding: 1rem;
 }
+
 strong {
   font-family: GothamBold;
 }
-@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+
+@media all and (-ms-high-contrast: none),
+(-ms-high-contrast: active) {
+
   /* IE10+ CSS styles go here */
   .headwrap {
     height: 160px;
@@ -695,6 +714,7 @@ strong {
     padding: 0;
   }
 }
+
 /* Must override 3 party component styles here, globally as angular component styles don't apply to child components used
  * in the template ie clarity components. 
  */
@@ -712,6 +732,7 @@ strong {
 .ngx-pagination span {
   color: #262262 !important;
 }
+
 .ngx-pagination a {
   color: #262262 !important;
 }
@@ -761,34 +782,35 @@ strong {
 
 /* For Chrome */
 ::-webkit-scrollbar {
-  width: 6px!important;
-  height: 6px!important;
+  width: 6px !important;
+  height: 6px !important;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1!important;
+  background: #f1f1f1 !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #d0d0d0!important;
-  border-radius: 3px!important;
+  background-color: #d0d0d0 !important;
+  border-radius: 3px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #b0b0b0!important;
+  background-color: #b0b0b0 !important;
 }
+
 /* For Firefox */
 /* Note: Firefox uses a different pseudo-element */
 body {
-  scrollbar-width: 5px!important;
-  scrollbar-color: #d0d0d0 #f1f1f1!important;
+  scrollbar-width: 5px !important;
+  scrollbar-color: #d0d0d0 #f1f1f1 !important;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #d0d0d0!important;
-  border-radius: 3px!important;
+  background-color: #d0d0d0 !important;
+  border-radius: 3px !important;
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background-color: #b0b0b0!important;
+  background-color: #b0b0b0 !important;
 }
