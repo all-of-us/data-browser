@@ -73,11 +73,13 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       useHTML: true,
     };
     newBaseOptions.tooltip.outside = true;
-    newBaseOptions.series = [{ name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
-                                          showInLegend: undefined,
-                                          dataLabels: {
-                                                  enabled: false,
-                                                },}];
+    newBaseOptions.series = [{
+      name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
+      showInLegend: undefined,
+      dataLabels: {
+        enabled: false,
+      },
+    }];
     this.setState({ options: newBaseOptions });
   }
 
@@ -102,10 +104,10 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
           "</strong>" +
           " and that is <strong>" +
           percentage +
-          "</strong>% of Total Fitbit Participants. (Total Count = )" +
+          "</strong>% of Total Fitbit Participants. (Total Count = " +
           "<strong> " +
           totalCount +
-          "</strong>" +
+          ")</strong>" +
           "</div>",
         name: "",
         y: concept.countValue,
