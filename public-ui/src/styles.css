@@ -779,9 +779,9 @@ strong {
 }
 /* For Firefox */
 /* Note: Firefox uses a different pseudo-element */
-body {
-  scrollbar-width: 5px!important;
-  scrollbar-color: #d0d0d0 #f1f1f1!important;
+body * {
+  scrollbar-width: thin !important;
+  scrollbar-color: #d0d0d0 #f1f1f1 !important;
 }
 
 body::-webkit-scrollbar-thumb {
