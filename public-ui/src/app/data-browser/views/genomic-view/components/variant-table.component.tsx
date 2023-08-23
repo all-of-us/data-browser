@@ -182,7 +182,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
       const scrollArea = document.querySelector('.scroll-area');
       if (scrollArea) {
         event.preventDefault();
-        const buffer = 1000;
+        const buffer = 2000;
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
         const clientHeight = scrollArea.clientHeight;
