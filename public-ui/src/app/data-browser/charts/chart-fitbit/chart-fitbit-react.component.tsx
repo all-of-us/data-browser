@@ -73,11 +73,13 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       useHTML: true,
     };
     newBaseOptions.tooltip.outside = true;
-    newBaseOptions.series = [{ name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
-                                          showInLegend: undefined,
-                                          dataLabels: {
-                                                  enabled: false,
-                                                },}];
+    newBaseOptions.series = [{
+      name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
+      showInLegend: undefined,
+      dataLabels: {
+        enabled: false,
+      },
+    }];
     this.setState({ options: newBaseOptions });
   }
 
@@ -95,17 +97,17 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
         toolTipHelpText:
           '<div class="fitbit-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' +
           count +
-          " </strong> participants had <br>" +
+          " </strong> participants had " +
           concept.stratum1 +
-          "<br> by <strong>" +
+          " by <strong>" +
           concept.stratum2 +
           "</strong>" +
           " and that is <strong>" +
           percentage +
-          "</strong>% of Total Fitbit Participants. (Total Count = )" +
+          "</strong>% of Total Fitbit Participants. <br/> (Total Count = " +
           "<strong> " +
           totalCount +
-          "</strong>" +
+          ")</strong>" +
           "</div>",
         name: "",
         y: concept.countValue,

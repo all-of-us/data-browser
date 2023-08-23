@@ -107,6 +107,7 @@ export const baseOptions = {
     borderColor: "#262262",
     borderRadius: "1px",
     backgroundColor: "#FFFFFF",
+    padding:0,
     style: {
       color: "#302C71",
       whiteSpace: "normal",
