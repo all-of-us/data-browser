@@ -103,10 +103,11 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
 
-  handleChange(val: string) {
+  handleChange = (val: string) => {
     this.props.onSearchTerm(val);
     this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
+  
 
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
