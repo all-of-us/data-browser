@@ -182,14 +182,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
       const scrollArea = document.querySelector('.scroll-area');
       if (scrollArea) {
         event.preventDefault();
-        const buffer = 2000;
+        const buffer = 12000;
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
         const clientHeight = scrollArea.clientHeight;
         const scrolledToBottom = scrollTop + clientHeight + buffer >= scrollHeight;
 
         if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
-          console.log('Scrolled to the bottom');
           const { searchTerm } = this.props;
           // Fetch new data and append
           this.props.onScrollBottom();

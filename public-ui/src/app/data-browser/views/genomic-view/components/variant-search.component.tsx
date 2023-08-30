@@ -71,15 +71,17 @@ interface Props {
   onSortChange: Function;
   loadingResults: boolean;
   loadingVariantListSize: boolean;
+  scrollClean: boolean;
 }
 interface State {
   filteredMetadata: GenomicFilters;
   filteredMetaMap: GenomicFilters;
   submittedFilterMetadata: GenomicFilters;
-  searchWord: string;
-  filterShow: Boolean;
   filterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
+  filterShow: Boolean;
+  searchWord: string;
+  scrollClean: boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -94,6 +96,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       filterMetadata: this.props.filterMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
       sortMetadata: this.props.sortMetadata,
+      scrollClean: this.props.scrollClean
     };
     if (this.state.searchWord !== '') {
       this.props.onSearchTerm(this.state.searchWord);
@@ -104,10 +107,15 @@ export class VariantSearchComponent extends React.Component<Props, State> {
 
 
   handleChange(val: string) {
+    if (val == '') { this.setState({ scrollClean: true }) }
     this.props.onSearchTerm(val);
     this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
-
+  componentWillUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): void {
+    if (this.props.scrollClean != nextProps.scrollClean) {
+      this.setState({ scrollClean: nextProps.scrollClean })
+    }
+  }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -161,7 +169,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { searchWord, filterShow, sortMetadata, filteredMetadata, submittedFilterMetadata } = this.state;
+    const { searchWord, filterShow, sortMetadata, submittedFilterMetadata, scrollClean } = this.state;
     const { filterMetadata } = this.props
     const { variantListSize, loadingResults, loadingVariantListSize } = this.props;
     const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
@@ -182,15 +190,19 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         </div>
       </div>
       {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
-        style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> : <div style={{ height: '1rem' }}></div>}
+        style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> :
+        scrollClean ? <div> </div> : <div onClick={() => this.showFilter()}
+          style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div>}
       {submittedFilterMetadata &&
         <VariantFilterChips
           filteredMetadata={submittedFilterMetadata}
           onChipChange={(changes) => this.handleChipChange(changes)} />}
-      <React.Fragment>{
-        (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
-          <span style={styles.loading}><Spinner /></span>} variants found</strong> : <div style={{ height: '1rem' }}></div>
-      }</React.Fragment>
+      <React.Fragment>
+        {
+          (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
+            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
+            scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants found</strong>
+        }</React.Fragment>
       {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
         {((!loadingResults && !loadingVariantListSize) && filterShow) &&
           <VariantFilterComponent

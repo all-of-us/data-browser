@@ -50,6 +50,7 @@ interface Props {
   filterMetadata: GenomicFilters;
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
+  scrollClean: boolean;
 }
 
 interface State {
@@ -81,13 +82,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       this.setState({ filterMetadata: filterMetadata });
     }
     if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-        this.setState({submittedFilterMetadata: submittedFilterMetadata});
+      this.setState({ submittedFilterMetadata: submittedFilterMetadata });
     }
   }
 
   handlePageChange(info) {
     this.props.onPageChange(info);
-    { !environment.infiniteSrcoll &&  this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });}
+    { !environment.infiniteSrcoll && this.scrollDiv.current.scrollIntoView({ behavior: "smooth" }); }
   }
 
   handleRowCountChange(info) {
@@ -110,14 +111,14 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   render() {
     const { searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
-      rowCount } = this.props;
+      rowCount,scrollClean } = this.props;
     return <React.Fragment>
       <div style={styles.titleBox}>
         <p style={styles.boxHeading} ref={this.scrollDiv}>
-        Explore allele frequencies for a gene or genomic region and drill down into variants to view select annotations and genetic ancestry associations. 
-        Variants are based on short-read whole genome sequencing and called against the GRCh38/hg38 genome reference. Learn more: &#32;
-          <a style={{color:'#1f79b8'}} target="_blank" href='https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table'>
-          Variant Annotation Table.
+          Explore allele frequencies for a gene or genomic region and drill down into variants to view select annotations and genetic ancestry associations.
+          Variants are based on short-read whole genome sequencing and called against the GRCh38/hg38 genome reference. Learn more: &#32;
+          <a style={{ color: '#1f79b8' }} target="_blank" href='https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table'>
+            Variant Annotation Table.
           </a>
         </p>
       </div>
@@ -131,7 +132,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         filterMetadata={filterMetadata}
         sortMetadata={sortMetadata}
         submittedFilterMetadata={submittedFilterMetadata}
-        onSortChange={(e) => this.handleSortClick(e)} />
+        onSortChange={(e) => this.handleSortClick(e)}
+        scrollClean={scrollClean} />
       <VariantTableComponent
         loadingResults={loadingResults}
         loadingVariantListSize={loadingVariantListSize}
@@ -142,10 +144,11 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         onRowCountChange={(info: any) => this.handleRowCountChange(info)}
         onPageChange={(info: any) => this.handlePageChange(info)}
         onSortClick={(sortMetadata: any) => this.handleSortClick(sortMetadata)}
-        onScrollBottom={()=>{environment.infiniteSrcoll && this.handleScrollBottom()}}
+        onScrollBottom={() => { environment.infiniteSrcoll && this.handleScrollBottom() }}
         currentPage={currentPage}
         rowCount={rowCount}
-        sortMetadata={sortMetadata} />
+        sortMetadata={sortMetadata}
+         />
     </React.Fragment>;
   }
 }
