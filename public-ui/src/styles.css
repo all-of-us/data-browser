@@ -762,7 +762,7 @@ strong {
 /* For Chrome */
 ::-webkit-scrollbar {
   width: 6px!important;
-  height: 6px!important;z
+  height: 6px!important;
 }
 
 ::-webkit-scrollbar-track {
