@@ -105,12 +105,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
-
   handleChange(val: string) {
-    if (val == '') { this.setState({ scrollClean: true }) }
+    if (val == '') {this.setState({ scrollClean: true }) }
     this.props.onSearchTerm(val);
     this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
+  
   componentWillUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): void {
     if (this.props.scrollClean != nextProps.scrollClean) {
       this.setState({ scrollClean: nextProps.scrollClean })
