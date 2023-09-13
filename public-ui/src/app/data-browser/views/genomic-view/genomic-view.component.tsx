@@ -290,7 +290,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 50 },
+          { loadingResults: true, currentPage: 1, rowCount: 100 },
           () => {
             this.fetchVariantData();
           }
