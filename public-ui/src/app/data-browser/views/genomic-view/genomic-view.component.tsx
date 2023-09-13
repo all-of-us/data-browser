@@ -435,10 +435,8 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleScrollBottom() {
-
       this.setState({ currentPage: this.state.currentPage + 1, loadingResults: true, scrollClean: false })
       const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
-
       const searchRequest: SearchVariantsRequest = {
         query: searchTerm,
         pageNumber: currentPage,
