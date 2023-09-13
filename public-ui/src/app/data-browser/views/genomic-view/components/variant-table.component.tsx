@@ -181,15 +181,17 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.debounceTimer = setTimeout(() => {
       const scrollArea = document.querySelector('.scroll-area');
       if (scrollArea) {
-        event.preventDefault();
+        // event.preventDefault();
         const buffer = 12000;
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
         const clientHeight = scrollArea.clientHeight;
-        const scrolledToBottom = scrollTop + clientHeight + buffer >= scrollHeight;
-
+        // trigger scroll at 35%
+        const scrolledToBottom = scrollTop / scrollHeight > .35;
         if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
           const { searchTerm } = this.props;
+          console.log();
+          
           // Fetch new data and append
           this.props.onScrollBottom();
           // this.setState({loading:false})
