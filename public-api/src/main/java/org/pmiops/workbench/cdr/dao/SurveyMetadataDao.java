@@ -10,7 +10,8 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
     List<DbSurveyMetadata> getSurveyQuestions(Long survey_concept_id);
 
     @Query(nativeQuery=true, value="select * from survey_metadata where concept_id in \n" +
-            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and (match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1;")
+            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and " +
+            "(match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1;")
     List<DbSurveyMetadata> getMatchingSurveyQuestions(Long survey_concept_id, String search_word);
 
     @Query(nativeQuery = true, value="select distinct b.* from survey_metadata a \n" +
