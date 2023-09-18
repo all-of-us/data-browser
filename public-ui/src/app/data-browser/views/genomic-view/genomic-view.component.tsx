@@ -379,6 +379,7 @@ export const GenomicViewComponent = withRouteData(
     }
 
     filterGenomics(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
+    // this.setState({loadingResults:false})
       const { searchTerm, currentPage, rowCount } = this.state;
       const searchRequest = {
         query: searchTerm,
@@ -391,7 +392,7 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
-          this.setState({ searchResults: results.items });
+          this.setState({ searchResults: results.items,loadingResults:false });
         });
     }
 

@@ -58,6 +58,7 @@ interface State {
   filterMetadata: GenomicFilters;
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
+  filtered: boolean
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -70,6 +71,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       filterMetadata: this.props.filterMetadata,
       sortMetadata: this.props.sortMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
+      filtered: false
     };
   }
 
@@ -102,6 +104,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
 
   handleFilterSubmit(filteredMetadata, sortMetadata) {
     this.props.onFilterSubmit(filteredMetadata, sortMetadata);
+    this.setState({filtered:true});
+    setTimeout(() => {
+      this.setState({filtered:false});
+    }, 1000);
   }
 
   handleScrollBottom() {
@@ -109,7 +115,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
+    const { searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata,filtered } = this.state;
     const { currentPage, loadingResults, searchResults, variantListSize, loadingVariantListSize, onSearchInput,
       rowCount,scrollClean } = this.props;
     return <React.Fragment>
@@ -148,6 +154,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
         currentPage={currentPage}
         rowCount={rowCount}
         sortMetadata={sortMetadata}
+        filtered = {filtered}
          />
     </React.Fragment>;
   }

@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { reactStyles } from "app/utils";
 import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
@@ -136,12 +135,15 @@ interface Props {
   currentPage: number;
   rowCount: number;
   sortMetadata: SortMetadata;
+  filtered: boolean;
 }
 
 interface State {
   loading: boolean;
   searchResults: Variant[];
   sortMetadata: any;
+  currentPage: number;
+  rowCount: number;
 
 }
 
@@ -152,9 +154,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
       loading: props.loadingResults,
       searchResults: props.searchResults,
       sortMetadata: props.sortMetadata,
+      currentPage: props.currentPage,
+      rowCount:  props.searchResults.length < 100 ? props.searchResults.length : 100
     };
   }
-  triggerRef = React.createRef();
+  scrollAreaRef: React.RefObject<HTMLDivElement> = React.createRef();
+
   observer = null;
 
   columnNames = [
@@ -170,10 +175,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
   debounceTimer = null;
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchResults, loadingResults } = this.props;
+    const { searchResults, loadingResults, filtered } = this.props;
+    // console.log(loadingResults,'loadingResults');
+    console.log(this.state.rowCount);
+    
+    if (filtered) {
+      this.scrollAreaToTop();
+
+    }
     if (prevProps.searchResults !== searchResults) {
       this.setState({ searchResults: searchResults, loading: loadingResults });
     }
+
+
+
   }
 
   handleScrollEnd = (event) => {
@@ -181,12 +196,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.debounceTimer = setTimeout(() => {
       const scrollArea = document.querySelector('.scroll-area');
       if (scrollArea) {
-        // event.preventDefault();
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
         // trigger scroll at 35%
         const scrolledToBottom = scrollTop / scrollHeight > .35;
-        if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
+        if (scrolledToBottom && this.state.currentPage < this.props.variantListSize / this.props.rowCount) {
           // Fetch new data and append
           this.props.onScrollBottom();
         }
@@ -232,11 +246,19 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.props.onSearchTerm(searchTerm);
   }
 
+  // Function to scroll the div with class 'scroll-area' to the top
+  scrollAreaToTop = () => {
+    if (this.scrollAreaRef.current) {
+      this.scrollAreaRef.current.scrollTop = 0;
+    }
+  };
+
+
 
   render() {
-    const { loadingVariantListSize, loadingResults, variantListSize, currentPage, rowCount } =
+    const { loadingVariantListSize, loadingResults, variantListSize } =
       this.props;
-    const { loading, searchResults, sortMetadata } = this.state;
+    const { loading, searchResults, sortMetadata, currentPage, rowCount } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -244,7 +266,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           !loadingVariantListSize &&
           searchResults &&
           searchResults.length ? (
-          <div onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
+          <div ref={this.scrollAreaRef} onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -464,7 +486,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           </div>
         ) : (
           <div style={styles.tableFrame}>
-            {(loading || loadingVariantListSize) && (
+            {(loading || loadingVariantListSize || loadingResults) && (
               <div style={styles.center}>
                 <Spinner />{" "}
               </div>
