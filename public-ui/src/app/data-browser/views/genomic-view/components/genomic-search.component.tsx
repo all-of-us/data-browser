@@ -58,7 +58,7 @@ interface State {
   filterMetadata: GenomicFilters;
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
-  filtered: boolean
+  filtered: boolean;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
