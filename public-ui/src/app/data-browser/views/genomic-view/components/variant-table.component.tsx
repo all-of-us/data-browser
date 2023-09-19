@@ -142,8 +142,6 @@ interface State {
   loading: boolean;
   searchResults: Variant[];
   sortMetadata: any;
-  currentPage: number;
-  rowCount: number;
 
 }
 
@@ -154,8 +152,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
       loading: props.loadingResults,
       searchResults: props.searchResults,
       sortMetadata: props.sortMetadata,
-      currentPage: props.currentPage,
-      rowCount:  props.searchResults.length < 100 ? props.searchResults.length : 100
     };
   }
   scrollAreaRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -177,7 +173,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchResults, loadingResults, filtered } = this.props;
     // console.log(loadingResults,'loadingResults');
-    console.log(this.state.rowCount);
+
     
     if (filtered) {
       this.scrollAreaToTop();
@@ -200,7 +196,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         const scrollHeight = scrollArea.scrollHeight;
         // trigger scroll at 35%
         const scrolledToBottom = scrollTop / scrollHeight > .35;
-        if (scrolledToBottom && this.state.currentPage < this.props.variantListSize / this.props.rowCount) {
+        if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
           // Fetch new data and append
           this.props.onScrollBottom();
         }
@@ -256,9 +252,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
 
   render() {
-    const { loadingVariantListSize, loadingResults, variantListSize } =
+    const { loadingVariantListSize, loadingResults, variantListSize, rowCount, currentPage } =
       this.props;
-    const { loading, searchResults, sortMetadata, currentPage, rowCount } = this.state;
+    const { loading, searchResults, sortMetadata } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
