@@ -290,7 +290,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 100 },
+          { loadingResults: true, currentPage: 1, rowCount: 200 },
           () => {
             this.fetchVariantData();
           }
@@ -380,10 +380,10 @@ export const GenomicViewComponent = withRouteData(
 
     filterGenomics(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
     // this.setState({loadingResults:false})
-      const { searchTerm, currentPage, rowCount } = this.state;
+      const { searchTerm, rowCount } = this.state;
       const searchRequest = {
         query: searchTerm,
-        pageNumber: currentPage,
+        pageNumber: 1,
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
         sortMetadata: sortMetadata,
