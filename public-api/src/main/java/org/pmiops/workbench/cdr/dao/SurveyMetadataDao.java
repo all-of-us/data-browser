@@ -10,8 +10,7 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
     List<DbSurveyMetadata> getSurveyQuestions(Long survey_concept_id);
 
     @Query(nativeQuery=true, value="select * from survey_metadata where concept_id in \n" +
-            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and " +
-            "(match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1;")
+            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and (match(question_string) against(?2 in boolean mode) > 0 or match(concept_name) against(?2 in boolean mode) > 0)) and generate_counts=1;")
     List<DbSurveyMetadata> getMatchingSurveyQuestions(Long survey_concept_id, String search_word);
 
     @Query(nativeQuery = true, value="select distinct b.* from survey_metadata a \n" +
@@ -29,6 +28,6 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
     List<DbSurveyMetadata> getMatchingSurveyQuestionTopics(Long surveyConceptId, String searchWord);
 
     @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and survey_concept_id=?1 and \n" +
-        "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
+            "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
     List<DbSurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path);
 }
