@@ -123,7 +123,6 @@ export class SurveyQuestionReactComponent extends React.Component<
         for (const result of questionWithResults.countAnalysis.results) {
           questionCount += result.countValue;
         }
-        console.log(questionWithResults);
         this.setState({ questionWithResults: questionWithResults });
       })
       .catch((err) => {
