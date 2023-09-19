@@ -204,7 +204,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants found</strong>
         }</React.Fragment>
       {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
-        {((!loadingResults && !loadingVariantListSize) && filterShow) &&
+        { filterShow &&
           <VariantFilterComponent
             filterMetadata={filterMetadata}
             sortMetadata={sortMetadata}
