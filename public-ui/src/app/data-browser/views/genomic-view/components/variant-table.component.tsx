@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { reactStyles } from "app/utils";
 import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
@@ -136,6 +135,7 @@ interface Props {
   currentPage: number;
   rowCount: number;
   sortMetadata: SortMetadata;
+  filtered: boolean;
 }
 
 interface State {
@@ -154,7 +154,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
       sortMetadata: props.sortMetadata,
     };
   }
-  triggerRef = React.createRef();
+  scrollAreaRef: React.RefObject<HTMLDivElement> = React.createRef();
+
   observer = null;
 
   columnNames = [
@@ -170,10 +171,20 @@ export class VariantTableComponent extends React.Component<Props, State> {
   debounceTimer = null;
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchResults, loadingResults } = this.props;
+    const { searchResults, loadingResults, filtered } = this.props;
+    // console.log(loadingResults,'loadingResults');
+
+    
+    if (filtered) {
+      this.scrollAreaToTop();
+
+    }
     if (prevProps.searchResults !== searchResults) {
       this.setState({ searchResults: searchResults, loading: loadingResults });
     }
+
+
+
   }
 
   handleScrollEnd = (event) => {
@@ -181,19 +192,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.debounceTimer = setTimeout(() => {
       const scrollArea = document.querySelector('.scroll-area');
       if (scrollArea) {
-        event.preventDefault();
-        const buffer = 1000;
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
-        const clientHeight = scrollArea.clientHeight;
-        const scrolledToBottom = scrollTop + clientHeight + buffer >= scrollHeight;
-
+        // trigger scroll at 35%
+        const scrolledToBottom = scrollTop / scrollHeight > .35;
         if (scrolledToBottom && this.props.currentPage < this.props.variantListSize / this.props.rowCount) {
-          console.log('Scrolled to the bottom');
-          const { searchTerm } = this.props;
           // Fetch new data and append
           this.props.onScrollBottom();
-          // this.setState({loading:false})
         }
       }
     }, 150);
@@ -237,9 +242,17 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.props.onSearchTerm(searchTerm);
   }
 
+  // Function to scroll the div with class 'scroll-area' to the top
+  scrollAreaToTop = () => {
+    if (this.scrollAreaRef.current) {
+      this.scrollAreaRef.current.scrollTop = 0;
+    }
+  };
+
+
 
   render() {
-    const { loadingVariantListSize, loadingResults, variantListSize, currentPage, rowCount } =
+    const { loadingVariantListSize, loadingResults, variantListSize, rowCount, currentPage } =
       this.props;
     const { loading, searchResults, sortMetadata } = this.state;
     return (
@@ -249,7 +262,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           !loadingVariantListSize &&
           searchResults &&
           searchResults.length ? (
-          <div onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
+          <div ref={this.scrollAreaRef} onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -469,7 +482,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           </div>
         ) : (
           <div style={styles.tableFrame}>
-            {(loading || loadingVariantListSize) && (
+            {(loading || loadingVariantListSize || loadingResults) && (
               <div style={styles.center}>
                 <Spinner />{" "}
               </div>

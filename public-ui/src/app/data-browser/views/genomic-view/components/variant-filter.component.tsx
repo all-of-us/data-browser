@@ -147,6 +147,8 @@ export class VariantFilterComponent extends React.Component<Props, State> {
         sortMetadata['variantId'].sortDirection = "asc";
 
         this.setState({ cleared: false, filteredMetadata: this.state.filteredMetadata, sortMetadata: sortMetadata }, () => this.setState({ cleared: true }));
+        this.props.onFilterSubmit(this.state.filteredMetadata, sortMetadata);
+        
     }
 
     render() {

@@ -123,6 +123,7 @@ interface State {
   submittedFilterMetadata: GenomicFilters;
   filteredMetadata: GenomicFilters;
   filterChipsShow: boolean;
+  scrollClean: boolean;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -190,15 +191,16 @@ export const GenomicViewComponent = withRouteData(
         filterMetadata: null,
         filteredMetadata: undefined,
         submittedFilterMetadata: undefined,
+        scrollClean: true,
         sortMetadata: new SortMetadataClass(
-                    new SortColumnDetailsClass(true, "asc", 1),
-                    new SortColumnDetailsClass(false, "asc", 2),
-                    new SortColumnDetailsClass(false, "asc", 3),
-                    new SortColumnDetailsClass(false, "asc", 4),
-                    new SortColumnDetailsClass(false, "asc", 5),
-                    new SortColumnDetailsClass(false, "asc", 6),
-                    new SortColumnDetailsClass(false, "asc", 7),
-                    new SortColumnDetailsClass(false, "asc", 8),
+          new SortColumnDetailsClass(true, "asc", 1),
+          new SortColumnDetailsClass(false, "asc", 2),
+          new SortColumnDetailsClass(false, "asc", 3),
+          new SortColumnDetailsClass(false, "asc", 4),
+          new SortColumnDetailsClass(false, "asc", 5),
+          new SortColumnDetailsClass(false, "asc", 6),
+          new SortColumnDetailsClass(false, "asc", 7),
+          new SortColumnDetailsClass(false, "asc", 8),
         ),
       };
     }
@@ -222,14 +224,14 @@ export const GenomicViewComponent = withRouteData(
     }, 1000);
 
     clearSortMetadata() {
-        const { sortMetadata } = this.state;
-        for (const smKey in sortMetadata) {
-            sortMetadata[smKey].sortActive = false;
-            sortMetadata[smKey].sortDirection = "asc";
-        }
-        sortMetadata['variantId'].sortActive = true;
-        sortMetadata['variantId'].sortDirection = "asc";
-        this.setState({sortMetadata: sortMetadata});
+      const { sortMetadata } = this.state;
+      for (const smKey in sortMetadata) {
+        sortMetadata[smKey].sortActive = false;
+        sortMetadata[smKey].sortDirection = "asc";
+      }
+      sortMetadata['variantId'].sortActive = true;
+      sortMetadata['variantId'].sortDirection = "asc";
+      this.setState({ sortMetadata: sortMetadata });
     }
 
     changeUrl() {
@@ -267,7 +269,7 @@ export const GenomicViewComponent = withRouteData(
           result.gene.items.forEach(el => { el.checked = false; });
           result.consequence.items.forEach(el => { el.checked = false; });
           result.clinicalSignificance.items.forEach(el => { el.checked = false; });
-          this.setState({ filterMetadata: result, submittedFilterMetadata: { ...result} });
+          this.setState({ filterMetadata: result, submittedFilterMetadata: { ...result } });
           localStorage.setItem("originalFilterMetadata", JSON.stringify(result));
         }
       ).catch(e => {
@@ -288,7 +290,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 50 },
+          { loadingResults: true, currentPage: 1, rowCount: 200 },
           () => {
             this.fetchVariantData();
           }
@@ -365,7 +367,7 @@ export const GenomicViewComponent = withRouteData(
         sortMetadata: sortMetadata,
         filterMetadata: filterMetadata,
       };
-      
+
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
@@ -377,10 +379,10 @@ export const GenomicViewComponent = withRouteData(
     }
 
     filterGenomics(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
-      const { searchTerm, currentPage, rowCount } = this.state;
+      const { searchTerm, rowCount } = this.state;
       const searchRequest = {
         query: searchTerm,
-        pageNumber: currentPage,
+        pageNumber: 1,
         rowCount: rowCount,
         filterMetadata: filteredMetadata,
         sortMetadata: sortMetadata,
@@ -389,7 +391,7 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
-          this.setState({ searchResults: results.items });
+          this.setState({ searchResults: results.items,loadingResults:false });
         });
     }
 
@@ -423,20 +425,18 @@ export const GenomicViewComponent = withRouteData(
 
     handleFilterSubmit(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) {
       if (filteredMetadata['alleleFrequency']['checked']) {
-              filteredMetadata['alleleFrequency']['maxFreq'] = filteredMetadata['alleleFrequency']['max'];
-              filteredMetadata['alleleFrequency']['minFreq'] = filteredMetadata['alleleFrequency']['min'];
+        filteredMetadata['alleleFrequency']['maxFreq'] = filteredMetadata['alleleFrequency']['max'];
+        filteredMetadata['alleleFrequency']['minFreq'] = filteredMetadata['alleleFrequency']['min'];
       }
 
-      this.setState({submittedFilterMetadata: { ...filteredMetadata} });
+      this.setState({ submittedFilterMetadata: { ...filteredMetadata } });
       this.filterGenomics(filteredMetadata, sortMetadata);
       this.getSearchSize(this.state.searchTerm, true);
     }
 
     handleScrollBottom() {
-     
-      this.setState({ currentPage: this.state.currentPage + 1, loadingResults:true})
+      this.setState({ currentPage: this.state.currentPage + 1, loadingResults: true, scrollClean: false })
       const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
-
       const searchRequest: SearchVariantsRequest = {
         query: searchTerm,
         pageNumber: currentPage,
@@ -444,7 +444,7 @@ export const GenomicViewComponent = withRouteData(
         sortMetadata: sortMetadata,
         filterMetadata: filterMetadata,
       };
-      
+
       genomicsApi()
         .searchVariants(searchRequest)
         .then((results) => {
@@ -457,7 +457,8 @@ export const GenomicViewComponent = withRouteData(
 
     render() {
       const { currentPage, selectionId, loadingVariantListSize, variantListSize, loadingResults, searchResults,
-        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata } = this.state;
+        participantCount, chartData, rowCount, searchTerm, filterMetadata, sortMetadata, submittedFilterMetadata,
+        scrollClean } = this.state;
       return <React.Fragment>
         <style>{css}</style>
         <div style={styles.pageHeader}>
@@ -480,11 +481,11 @@ export const GenomicViewComponent = withRouteData(
             </div>
           </div>
           {selectionId === 1 && (
-          <div style={styles.headingLayout}>
-          <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
-          age of participants whose genomic data are available within the
-          Researcher Workbench.{" "}</p>
-          </div>
+            <div style={styles.headingLayout}>
+              <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
+                age of participants whose genomic data are available within the
+                Researcher Workbench.{" "}</p>
+            </div>
           )}
           <div style={styles.innerContainer} id="childView">
             {selectionId === 1 && (
@@ -511,7 +512,7 @@ export const GenomicViewComponent = withRouteData(
                 onFilterSubmit={(filteredMetadata: GenomicFilters, sortMetadata: SortMetadata) => {
                   this.handleFilterSubmit(filteredMetadata, sortMetadata);
                 }}
-                onScrollBottom = {()=>this.handleScrollBottom()}
+                onScrollBottom={() => this.handleScrollBottom()}
                 currentPage={currentPage}
                 rowCount={rowCount}
                 variantListSize={variantListSize}
@@ -523,6 +524,7 @@ export const GenomicViewComponent = withRouteData(
                 filterMetadata={filterMetadata}
                 submittedFilterMetadata={submittedFilterMetadata}
                 sortMetadata={sortMetadata}
+                scrollClean={scrollClean}
               />
             )}
 
