@@ -106,7 +106,6 @@ const cssStyles = `
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 1rem 0;
 }
 
 .primary-display
@@ -114,6 +113,10 @@ const cssStyles = `
   font-size: 20px;
   font-stretch: normal;
   line-height: 18px;
+  margin:.5rem 0 ;
+}
+.domain-summary{
+  margin:0;
 }
 .search-bar-container {
     padding: 18px;
@@ -183,7 +186,6 @@ h5.secondary-display {
     border: 1px solid #CCCCCC;
     padding: .5rem 0;
     border-radius: 3px 3px 0 0;
-    position: sticky;
     top:0px;
     z-index:100;
 }
@@ -534,8 +536,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementOrders: measurementOrderFilter ? 1 : 0,
       };
       this.setState({
-        currentPage: data + 1,
-        // showTopConcepts: tr,
+        currentPage: data + 1
       });
       this.fetchConcepts(searchRequest);
     };
@@ -644,7 +645,7 @@ export const EhrViewReactComponent = withRouteData(
                         data disclaimer
                       </button>
                       <section>
-                        <h5 id="domain-summary" className="secondary-display">
+                        <h5 className="secondary-display domain-summary">
                           <React.Fragment>
                             <div
                               className="toggle-link"
@@ -885,7 +886,7 @@ export const EhrViewReactComponent = withRouteData(
                               )}
                             </div>
                             {concepts && concepts.length > 0 && (
-                              <div style={{ overflowY: 'scroll', height: '30rem' }} onScroll={this.handleScrollEnd} className="tbl-body scroll-area">
+                              <div style={{ overflowY: 'scroll', height: '35rem' }} onScroll={this.handleScrollEnd} className="tbl-body scroll-area">
                                 {standardConcepts
                                   .concat(concepts)
                                   .map((concept, index) => {
