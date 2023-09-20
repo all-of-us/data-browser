@@ -515,7 +515,6 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     addMoreResults = () => {
-      // console.log(data,this.state.currentPage,'adata');
       const data = this.state.currentPage;
 
       const {
@@ -536,7 +535,7 @@ export const EhrViewReactComponent = withRouteData(
       };
       this.setState({
         currentPage: data + 1,
-        showTopConcepts: data <= 0,
+        // showTopConcepts: tr,
       });
       this.fetchConcepts(searchRequest);
     };
