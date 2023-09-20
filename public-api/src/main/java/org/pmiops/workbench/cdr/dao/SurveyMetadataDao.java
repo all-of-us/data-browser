@@ -28,6 +28,6 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
     List<DbSurveyMetadata> getMatchingSurveyQuestionTopics(Long surveyConceptId, String searchWord);
 
     @Query(nativeQuery=true, value="select distinct * from survey_metadata where sub=1 and survey_concept_id=?1 and \n" +
-        "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
+            "parent_question_concept_id=?2 and parent_answer_concept_id=?3 and path like CONCAT('%', ?4, '%')")
     List<DbSurveyMetadata> getSubQuestions(Long surveyConceptId, Long questionConceptId, Long answerConceptId, String path);
 }
