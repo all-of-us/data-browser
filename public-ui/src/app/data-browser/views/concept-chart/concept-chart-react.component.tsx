@@ -634,7 +634,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                           );
                         })
                       ) : (
-                        <p className="no-values">No Values Available</p>
+                        !loading && <p className="no-values">No Values Available</p>
                       )}
                     </div>
                   </div>
