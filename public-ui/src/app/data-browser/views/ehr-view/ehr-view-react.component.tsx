@@ -427,7 +427,7 @@ export const EhrViewReactComponent = withRouteData(
         }
       }
       this.setState({
-        concepts: results.items,
+        concepts: [...this.state.concepts, ...results.items],
         standardConcepts: conceptStandardConcepts,
         standardConceptIds: conceptStandardConcepts.map((a) => a.conceptId),
         matchType: results.matchType,
