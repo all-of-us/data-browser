@@ -551,7 +551,6 @@ export const EhrViewReactComponent = withRouteData(
           // trigger scroll at 35%
           const scrolledToBottom = scrollTop / scrollHeight > .35;
           if (scrolledToBottom) {
-            console.log('bottomeeee');
             this.addMoreResults()
 
           }
