@@ -552,7 +552,6 @@ export const EhrViewReactComponent = withRouteData(
           const scrolledToBottom = scrollTop / scrollHeight > .35;
           if (scrolledToBottom) {
             this.addMoreResults()
-
           }
         }
       }, 150);
