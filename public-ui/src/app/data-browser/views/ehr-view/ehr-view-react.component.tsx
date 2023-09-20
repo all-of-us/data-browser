@@ -338,6 +338,7 @@ export const EhrViewReactComponent = withRouteData(
         matchType: MatchType.NAME,
       };
     }
+    debounceTimer = null;
     domainTotals = _.debounce(() => {
       this.setState({ loading: true }, () => {
         this.getDomainTotals();
@@ -509,11 +510,14 @@ export const EhrViewReactComponent = withRouteData(
       return top10Results.length === 1
         ? top10Results.length + " " + title.slice(0, -1)
         : top10Results.length < 10
-        ? top10Results.length + " " + title
-        : 10 + " " + title;
+          ? top10Results.length + " " + title
+          : 10 + " " + title;
     }
 
-    handlePageClick = (data) => {
+    addMoreResults = () => {
+      // console.log(data,this.state.currentPage,'adata');
+      const data = this.state.currentPage;
+
       const {
         searchWord,
         domain: { domain },
@@ -526,16 +530,33 @@ export const EhrViewReactComponent = withRouteData(
         standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
         maxResults: 50,
         minCount: 1,
-        pageNumber: data.selected,
+        pageNumber: data,
         measurementTests: measurementTestFilter ? 1 : 0,
         measurementOrders: measurementOrderFilter ? 1 : 0,
       };
       this.setState({
-        currentPage: data.selected + 1,
-        showTopConcepts: data.selected <= 0,
+        currentPage: data + 1,
+        showTopConcepts: data <= 0,
       });
-      window.scrollTo(0, 0);
       this.fetchConcepts(searchRequest);
+    };
+
+    handleScrollEnd = (event) => {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = setTimeout(() => {
+        const scrollArea = document.querySelector('.scroll-area');
+        if (scrollArea) {
+          const scrollTop = scrollArea.scrollTop;
+          const scrollHeight = scrollArea.scrollHeight;
+          // trigger scroll at 35%
+          const scrolledToBottom = scrollTop / scrollHeight > .35;
+          if (scrolledToBottom) {
+            console.log('bottomeeee');
+            this.addMoreResults()
+
+          }
+        }
+      }, 150);
     };
 
     changeResults() {
@@ -543,15 +564,15 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     flipMeasurementTypeFilter() {
-        const {selectedMeasurementTypeFilter} = this.state;
-        this.setState({ selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter });
+      const { selectedMeasurementTypeFilter } = this.state;
+      this.setState({ selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter });
     }
 
     getDropdownDisplayStyle() {
-        if (this.state.selectedMeasurementTypeFilter) {
-            return {display: "block"};
-        }
-        return {display: "none"};
+      if (this.state.selectedMeasurementTypeFilter) {
+        return { display: "block" };
+      }
+      return { display: "none" };
     }
 
     render() {
@@ -605,303 +626,303 @@ export const EhrViewReactComponent = withRouteData(
           {loading && <Spinner />}
           {domain && !loading && ((concepts && concepts.length > 0) ||
             (domain.domain.toLowerCase() === "measurement" && !measurementTestFilter && !measurementOrderFilter))
-           && (
-            <div className="results" style={styles.results}>
-              <a
-                className="btn btn-link btn-sm main-search-link"
-                style={styles.searchLink}
-                onClick={() => this.backToMain()}
-              >
-                &lt; Back to main search{" "}
-              </a>
-              <div className="result-list">
-                <div className="db-card">
-                  <div className="db-card-inner">
-                    <button
-                      className="disclaimer-btn"
-                      onClick={() => this.setState({ showStatement: true })}
-                    >
-                      data disclaimer
-                    </button>
-                    <section>
-                      <h5 id="domain-summary" className="secondary-display">
-                        <React.Fragment>
-                          <div
-                            className="toggle-link"
-                            onClick={() =>
-                              this.setState({
-                                showTopConcepts: !showTopConcepts,
-                              })
-                            }
-                          >
-                            Top {this.getTopResultsSize()} by Descending
-                            Participant Counts
-                            <div className="toggle-icon">
-                              {showTopConcepts ? (
-                                <ClrIcon
-                                  shape="caret"
-                                  dir="down"
-                                  style={{ width: 20, height: 20 }}
-                                />
-                              ) : (
-                                <ClrIcon
-                                  shape="caret"
-                                  dir="right"
-                                  style={{ width: 20, height: 20 }}
-                                />
-                              )}
-                            </div>
-                          </div>
-                          {showTopConcepts &&
-                            top10Results &&
-                            top10Results.length > 0 && (
-                              <TopResultsChartReactComponent
-                                concepts={top10Results}
-                                onClick={(e) => this.selectConcept(e)}
-                              />
-                            )}
-                        </React.Fragment>
-                      </h5>
-                    </section>
-                    <section>
-                      <div className="results-grid" style={styles.resultsGrid}>
-                        <React.Fragment>
-                          <div className="domain-info-layout">
-                            <span>
-                              {totalResults <= 50 ? (
-                                <h5
-                                  id="domain-name"
-                                  className="primary-display"
-                                >
-                                  Showing top {totalResults}
-                                  {searchWord ? (
-                                    <React.Fragment>
-                                      {" "}
-                                      matching medical concepts{" "}
-                                    </React.Fragment>
-                                  ) : (
-                                    <React.Fragment>
-                                      {" "}
-                                      concepts for this domain
-                                    </React.Fragment>
-                                  )}
-                                  <TooltipReactComponent
-                                    tooltipKey="matchingConceptsHelpText"
-                                    label="EHR Tooltip Hover"
-                                    searchTerm={searchWord}
-                                    action="Matching medical concepts tooltip hover"
+            && (
+              <div className="results" style={styles.results}>
+                <a
+                  className="btn btn-link btn-sm main-search-link"
+                  style={styles.searchLink}
+                  onClick={() => this.backToMain()}
+                >
+                  &lt; Back to main search{" "}
+                </a>
+                <div className="result-list">
+                  <div className="db-card">
+                    <div className="db-card-inner">
+                      <button
+                        className="disclaimer-btn"
+                        onClick={() => this.setState({ showStatement: true })}
+                      >
+                        data disclaimer
+                      </button>
+                      <section>
+                        <h5 id="domain-summary" className="secondary-display">
+                          <React.Fragment>
+                            <div
+                              className="toggle-link"
+                              onClick={() =>
+                                this.setState({
+                                  showTopConcepts: !showTopConcepts,
+                                })
+                              }
+                            >
+                              Top {this.getTopResultsSize()} by Descending
+                              Participant Counts
+                              <div className="toggle-icon">
+                                {showTopConcepts ? (
+                                  <ClrIcon
+                                    shape="caret"
+                                    dir="down"
+                                    style={{ width: 20, height: 20 }}
                                   />
-                                </h5>
-                              ) : (
-                                <h5
-                                  id="domain-name"
-                                  className="primary-display"
-                                >
-                                  Showing top{" "}
-                                  {(currentPage - 1) * 50 + 1}-
-                                  {concepts.length + (currentPage - 1) * 50} of{" "}
-                                  {totalResults}
-                                  {searchWord ? (
-                                    <React.Fragment>
-                                      {" "}
-                                      matching medical concepts{" "}
-                                    </React.Fragment>
-                                  ) : (
-                                    <React.Fragment>
-                                      {" "}
-                                      concepts for this domain
-                                    </React.Fragment>
-                                  )}
-                                  <TooltipReactComponent
-                                    tooltipKey="matchingConceptsHelpText"
-                                    label="EHR Tooltip Hover"
-                                    searchTerm={searchWord}
-                                    action="Matching medical concepts tooltip hover"
-                                  />{" "}
-                                </h5>
+                                ) : (
+                                  <ClrIcon
+                                    shape="caret"
+                                    dir="right"
+                                    style={{ width: 20, height: 20 }}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            {showTopConcepts &&
+                              top10Results &&
+                              top10Results.length > 0 && (
+                                <TopResultsChartReactComponent
+                                  concepts={top10Results}
+                                  onClick={(e) => this.selectConcept(e)}
+                                />
                               )}
-                            </span>
-                            {searchWord && (
-                              <h6
-                                className="medline-link"
-                                style={styles.medlineLink}
-                              >
-                                Interested in general health information related
-                                to "{medlineTerm}"?
-                                <br />
-                                <a
-                                  href={medlinePlusLink}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  Search MedlinePlus
-                                </a>
-                              </h6>
-                            )}
-                          </div>
-                          {concepts.length === 1 &&
-                            concepts[0].standardConcept !== "S" &&
-                            standardConcepts.length > 0 && (
-                              <div className="db-alert" style={styles.dbAlert}>
-                                Note: {concepts[0].vocabularyId}{" "}
-                                {concepts[0].conceptCode}'
-                                {concepts[0].conceptName}' maps to Standard
-                                Vocabulary {standardConcepts[0].vocabularyId}
-                                {standardConcepts[0].conceptCode} '
-                                {standardConcepts[0].conceptName}'. Standard
-                                vocabularies capture data across a variety of
-                                source vocabularies.
-                              </div>
-                            )}
-                          <div className="tbl-r tbl-head">
-                            <div className="tbl-d body-lead">
-                              {" "}
-                              {domain.name}
-                              <TooltipReactComponent
-                                tooltipKey={domain.domain.toLowerCase()}
-                                label="EHR Tooltip Hover"
-                                searchTerm={searchWord}
-                                action="Domain name tooltip hover in matching concepts table"
-                              />
-                            </div>
-                            <div className="tbl-d body-lead">
-                              {" "}
-                              Participants of{" "}
-                              {totalParticipants.toLocaleString()}
-                              <TooltipReactComponent
-                                tooltipKey="participantCountHelpText"
-                                label="EHR Tooltip Hover"
-                                searchTerm={searchWord}
-                                action="Participant count tooltip hover"
-                              />
-                            </div>
-                            <div className="tbl-d body-lead">
-                              {" "}
-                              % of {totalParticipants.toLocaleString()}
-                              <TooltipReactComponent
-                                tooltipKey="percentageOfParticipants"
-                                label="EHR Tooltip Hover"
-                                searchTerm={searchWord}
-                                action="Percentage of participant count tooltip hover"
-                              />
-                            </div>
-
-                            {domain.domain.toLowerCase() === "measurement" && (
-                              <div className="tbl-d body-lead info-text">
-                                Data Type
-                                 <div className="dropdown">
-                                         <button className="dropbtn" style={styles.dropdownToggle}>
-                                           <ClrIcon
-                                             shape="filter-grid"
-                                             className={filterIconClass}
-                                             onClick={() => this.flipMeasurementTypeFilter()}
-                                           />
-                                         </button>
-                                    <div className="dropdown-content" style={this.getDropdownDisplayStyle()}>
-                                                  <div className="checkbox-input">
-                                                    <input
-                                                      type="checkbox"
-                                                      id="checkbox1"
-                                                      className="clr-checkbox"
-                                                      onClick={() =>
-                                                        this.setState(
-                                                          {
-                                                            measurementTestFilter:
-                                                              !measurementTestFilter,
-                                                          },
-                                                          () => {
-                                                            this.getDomainTotals();
-                                                            this.getTopConcepts();
-                                                          }
-                                                        )
-                                                      }
-                                                      defaultChecked={measurementTestFilter}
-                                                    />
-                                                    <label
-                                                      htmlFor="checkbox1"
-                                                      className="checkbox-label"
-                                                    >
-                                                      <i
-                                                        className="fas fa-vial fa-rotate-45"
-                                                        style={{
-                                                          transform: "rotate(315deg)",
-                                                        }}
-                                                      />
-                                                      Tests
-                                                    </label>
-                                                  </div>
-                                        <div className="checkbox-input">
-                                                    <input
-                                                      type="checkbox"
-                                                      id="checkbox2"
-                                                      className="clr-checkbox"
-                                                      onClick={() =>
-                                                        this.setState(
-                                                          {
-                                                            measurementOrderFilter:
-                                                              !measurementOrderFilter,
-                                                          },
-                                                          () => {
-                                                            this.getDomainTotals();
-                                                            this.getTopConcepts();
-                                                          }
-                                                        )
-                                                      }
-                                                      defaultChecked={
-                                                        measurementOrderFilter
-                                                      }
-                                                    />
-                                                    <label
-                                                      htmlFor="checkbox2"
-                                                      className="checkbox-label"
-                                                    >
-                                                      <i className="far fa-file-signature" />{" "}
-                                                      Orders
-                                                    </label>
-                                                  </div>
-                                    </div>
-                                 </div>
-                              </div>
-                            )}
-                          </div>
-                          {concepts && concepts.length > 0 && (
-                            <div className="tbl-body">
-                              {standardConcepts
-                                .concat(concepts)
-                                .map((concept, index) => {
-                                  return (
-                                    <ConceptRowReactComponent
-                                      key={concept.conceptId}
-                                      concept={concept}
-                                      domain={domain}
-                                      totalResults={totalResults}
-                                      maxResults={maxResults}
-                                      currentPage={currentPage}
-                                      counter={index}
+                          </React.Fragment>
+                        </h5>
+                      </section>
+                      <section>
+                        <div className="results-grid" style={styles.resultsGrid}>
+                          <React.Fragment>
+                            <div className="domain-info-layout">
+                              <span>
+                                {totalResults <= 50 ? (
+                                  <h5
+                                    id="domain-name"
+                                    className="primary-display"
+                                  >
+                                    Showing top {totalResults}
+                                    {searchWord ? (
+                                      <React.Fragment>
+                                        {" "}
+                                        matching medical concepts{" "}
+                                      </React.Fragment>
+                                    ) : (
+                                      <React.Fragment>
+                                        {" "}
+                                        concepts for this domain
+                                      </React.Fragment>
+                                    )}
+                                    <TooltipReactComponent
+                                      tooltipKey="matchingConceptsHelpText"
+                                      label="EHR Tooltip Hover"
                                       searchTerm={searchWord}
-                                      totalParticipants={totalParticipants}
-                                      selectedConcept={selectedConcept}
-                                      synonymString={concept.conceptSynonyms.join(
-                                        ", "
-                                      )}
-                                      matchType={matchType}
-                                      match={
-                                        standardConceptIds.indexOf(
-                                          concept.conceptId
-                                        ) >= 0
-                                          ? "standard"
-                                          : "source"
-                                      }
+                                      action="Matching medical concepts tooltip hover"
                                     />
-                                  );
-                                })}
+                                  </h5>
+                                ) : (
+                                  <h5
+                                    id="domain-name"
+                                    className="primary-display"
+                                  >
+                                    Showing top{" "}
+                                    {(currentPage - 1) * 50 + 1}-
+                                    {concepts.length + (currentPage - 1) * 50} of{" "}
+                                    {totalResults}
+                                    {searchWord ? (
+                                      <React.Fragment>
+                                        {" "}
+                                        matching medical concepts{" "}
+                                      </React.Fragment>
+                                    ) : (
+                                      <React.Fragment>
+                                        {" "}
+                                        concepts for this domain
+                                      </React.Fragment>
+                                    )}
+                                    <TooltipReactComponent
+                                      tooltipKey="matchingConceptsHelpText"
+                                      label="EHR Tooltip Hover"
+                                      searchTerm={searchWord}
+                                      action="Matching medical concepts tooltip hover"
+                                    />{" "}
+                                  </h5>
+                                )}
+                              </span>
+                              {searchWord && (
+                                <h6
+                                  className="medline-link"
+                                  style={styles.medlineLink}
+                                >
+                                  Interested in general health information related
+                                  to "{medlineTerm}"?
+                                  <br />
+                                  <a
+                                    href={medlinePlusLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    Search MedlinePlus
+                                  </a>
+                                </h6>
+                              )}
                             </div>
-                          )}
-                        </React.Fragment>
-                      </div>
-                    </section>
-                  </div>
-                  {concepts && numPages && (numPages > 1) && (
+                            {concepts.length === 1 &&
+                              concepts[0].standardConcept !== "S" &&
+                              standardConcepts.length > 0 && (
+                                <div className="db-alert" style={styles.dbAlert}>
+                                  Note: {concepts[0].vocabularyId}{" "}
+                                  {concepts[0].conceptCode}'
+                                  {concepts[0].conceptName}' maps to Standard
+                                  Vocabulary {standardConcepts[0].vocabularyId}
+                                  {standardConcepts[0].conceptCode} '
+                                  {standardConcepts[0].conceptName}'. Standard
+                                  vocabularies capture data across a variety of
+                                  source vocabularies.
+                                </div>
+                              )}
+                            <div className="tbl-r tbl-head">
+                              <div className="tbl-d body-lead">
+                                {" "}
+                                {domain.name}
+                                <TooltipReactComponent
+                                  tooltipKey={domain.domain.toLowerCase()}
+                                  label="EHR Tooltip Hover"
+                                  searchTerm={searchWord}
+                                  action="Domain name tooltip hover in matching concepts table"
+                                />
+                              </div>
+                              <div className="tbl-d body-lead">
+                                {" "}
+                                Participants of{" "}
+                                {totalParticipants.toLocaleString()}
+                                <TooltipReactComponent
+                                  tooltipKey="participantCountHelpText"
+                                  label="EHR Tooltip Hover"
+                                  searchTerm={searchWord}
+                                  action="Participant count tooltip hover"
+                                />
+                              </div>
+                              <div className="tbl-d body-lead">
+                                {" "}
+                                % of {totalParticipants.toLocaleString()}
+                                <TooltipReactComponent
+                                  tooltipKey="percentageOfParticipants"
+                                  label="EHR Tooltip Hover"
+                                  searchTerm={searchWord}
+                                  action="Percentage of participant count tooltip hover"
+                                />
+                              </div>
+
+                              {domain.domain.toLowerCase() === "measurement" && (
+                                <div className="tbl-d body-lead info-text">
+                                  Data Type
+                                  <div className="dropdown">
+                                    <button className="dropbtn" style={styles.dropdownToggle}>
+                                      <ClrIcon
+                                        shape="filter-grid"
+                                        className={filterIconClass}
+                                        onClick={() => this.flipMeasurementTypeFilter()}
+                                      />
+                                    </button>
+                                    <div className="dropdown-content" style={this.getDropdownDisplayStyle()}>
+                                      <div className="checkbox-input">
+                                        <input
+                                          type="checkbox"
+                                          id="checkbox1"
+                                          className="clr-checkbox"
+                                          onClick={() =>
+                                            this.setState(
+                                              {
+                                                measurementTestFilter:
+                                                  !measurementTestFilter,
+                                              },
+                                              () => {
+                                                this.getDomainTotals();
+                                                this.getTopConcepts();
+                                              }
+                                            )
+                                          }
+                                          defaultChecked={measurementTestFilter}
+                                        />
+                                        <label
+                                          htmlFor="checkbox1"
+                                          className="checkbox-label"
+                                        >
+                                          <i
+                                            className="fas fa-vial fa-rotate-45"
+                                            style={{
+                                              transform: "rotate(315deg)",
+                                            }}
+                                          />
+                                          Tests
+                                        </label>
+                                      </div>
+                                      <div className="checkbox-input">
+                                        <input
+                                          type="checkbox"
+                                          id="checkbox2"
+                                          className="clr-checkbox"
+                                          onClick={() =>
+                                            this.setState(
+                                              {
+                                                measurementOrderFilter:
+                                                  !measurementOrderFilter,
+                                              },
+                                              () => {
+                                                this.getDomainTotals();
+                                                this.getTopConcepts();
+                                              }
+                                            )
+                                          }
+                                          defaultChecked={
+                                            measurementOrderFilter
+                                          }
+                                        />
+                                        <label
+                                          htmlFor="checkbox2"
+                                          className="checkbox-label"
+                                        >
+                                          <i className="far fa-file-signature" />{" "}
+                                          Orders
+                                        </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                            {concepts && concepts.length > 0 && (
+                              <div style={{ overflowY: 'scroll', height: '30rem' }} onScroll={this.handleScrollEnd} className="tbl-body scroll-area">
+                                {standardConcepts
+                                  .concat(concepts)
+                                  .map((concept, index) => {
+                                    return (
+                                      <ConceptRowReactComponent
+                                        key={concept.conceptId}
+                                        concept={concept}
+                                        domain={domain}
+                                        totalResults={totalResults}
+                                        maxResults={maxResults}
+                                        currentPage={1} //always on page one if infinite
+                                        counter={index}
+                                        searchTerm={searchWord}
+                                        totalParticipants={totalParticipants}
+                                        selectedConcept={selectedConcept}
+                                        synonymString={concept.conceptSynonyms.join(
+                                          ", "
+                                        )}
+                                        matchType={matchType}
+                                        match={
+                                          standardConceptIds.indexOf(
+                                            concept.conceptId
+                                          ) >= 0
+                                            ? "standard"
+                                            : "source"
+                                        }
+                                      />
+                                    );
+                                  })}
+                              </div>
+                            )}
+                          </React.Fragment>
+                        </div>
+                      </section>
+                    </div>
+                    {/* {concepts && numPages && (numPages > 1) && (
                     <ReactPaginate
                       previousLabel={"< Previous"}
                       nextLabel={"Next >"}
@@ -914,11 +935,11 @@ export const EhrViewReactComponent = withRouteData(
                       onPageChange={this.handlePageClick}
                       containerClassName={"pagination"}
                     />
-                  )}
+                  )} */}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
           {!loading && concepts.length === 0 && searchWord && (
             <div>
               <h5 className="secondary-display">
