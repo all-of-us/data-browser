@@ -1,0 +1,417 @@
+
+
+#colophon.site-footer {
+    padding: 0 20px
+}
+
+#colophon.site-footer .footer-container {
+    position: relative;
+    max-width: 1180px;
+    padding: 0;
+    margin: 0 auto
+}
+
+#colophon.site-footer .footer-container .widget-logo-section {
+    padding: 0;
+    padding-top: 27px;
+    padding-bottom: 40px;
+    margin: 0
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget {
+    font-size: 0;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+    display: inline-block;
+    width: 25%;
+    vertical-align: top
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+    max-width: 233px
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+    max-width: 201px
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a img {
+    display: block;
+    width: calc(100% - 30px);
+    height: auto;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 {
+    flex-grow: 0;
+    flex-basis: calc(25%);
+    width: 25%;
+    display: inline-block;
+    vertical-align: text-top
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) .widget-column.footer-widget {
+    margin-right: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    margin-right: 30px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .textwidget.custom-html-widget>p:first-child {
+    margin-bottom: 10px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left {
+    float: left;
+    display: block;
+    vertical-align: text-top;
+    width: 48%;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+    display: block;
+    float: right;
+    vertical-align: text-top;
+    width: 52%;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button.apply {
+    margin-bottom: 16px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button__link {
+    font-size: 19px;
+    font-weight: 800;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    letter-spacing: 0.13px;
+    line-height: 19px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right #res_login_footer.wp-block-button__link {
+    word-break: keep-all;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.11px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 p {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 a {
+    display: block
+}
+
+#colophon.site-footer .footer-row-2 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0;
+    padding: 0;
+    padding-top: 30px;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 {
+    flex-grow: 0;
+    flex-basis: calc(25%);
+    display: block;
+    width: 25%;
+    vertical-align: text-top
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) .widget-column.footer-widget {
+    margin-right: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 #text-13 p {
+    font-weight: 800
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget {
+    margin-right: 30px
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget p {
+    padding: 0;
+    margin: 0;
+    line-height: 0.9rem
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 16px;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton .wp-block-button__link {
+    font-size: 16px;
+    padding: 18px 10px;
+    padding-left: 40px
+}
+
+#colophon.site-footer .widget-area.widget-full-width {
+    width: 100%;
+    padding: 0;
+    padding-top: 30px;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p {
+    padding: 0;
+    margin: 0;
+    color: #bee1ff;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    text-align: center
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p a {
+    color: #ffffff
+}
+
+#colophon.site-footer .site-info {
+    width: 100%;
+    padding: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    text-align: center
+}
+
+@media only screen and (min-width: 0px) and (max-width: 900px) {
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+        width: auto;
+        max-width: 50%
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child {
+        padding-right: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+        display: block;
+        max-width: 292px;
+        width: 100%;
+        min-width: calc(100% - 20px)
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child {
+        padding-left: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+        max-width: 252px;
+        width: 100%;
+        min-width: calc(100% - 20px)
+    }
+
+    #colophon.site-footer .footer-row-1 {
+        justify-content: flex-end
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 {
+        flex-basis: calc(33.333%);
+        width: 33.333%
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        align-self: end;
+        justify-self: end;
+        margin-top: -80px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+        margin-right: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget a {
+        display: block;
+        margin-bottom: 3px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(3) .widget-column.footer-widget,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(1),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(2) {
+        flex-basis: calc(100%);
+        width: 100%;
+        margin-bottom: 24px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) {
+        flex-basis: calc(50%);
+        width: 50%
+    }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+    #colophon.site-footer .footer-row-1 {
+        justify-content: flex-start
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        align-self: start;
+        justify-self: start;
+        flex-basis: calc(66.666%);
+        width: 66.666%;
+        margin-top: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        width: 50%;
+        padding-right: 20px
+    }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 599px) {
+    #colophon.site-footer .widget-column .widget p {
+        font-size: 14px;
+        line-height: 1.57
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget a {
+        margin-bottom: 2px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section {
+        padding: 20px 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget {
+        font-size: 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+        width: 100%;
+        max-width: 100%
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+        max-width: 240px;
+        min-width: 240px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child {
+        padding: 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+        max-width: 265px;
+        min-width: 265px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        flex-basis: calc(100%);
+        width: 100%;
+        margin: 0;
+        margin-bottom: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:last-child,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4):last-child {
+        margin-bottom: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        width: 100%;
+        margin: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        padding: 0;
+        margin-top: 40px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget p {
+        font-size: 16px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3) {
+        margin-top: 20px;
+        margin-bottom: 30px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) {
+        flex-basis: calc(100%);
+        width: 100%
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .social-navigation ul.social-links-menu li {
+        margin-right: 8px
+    }
+}
