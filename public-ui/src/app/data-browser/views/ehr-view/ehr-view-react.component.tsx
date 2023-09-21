@@ -307,6 +307,7 @@ interface State {
   selectedMeasurementTypeFilter: boolean;
   measurementTestFilter: boolean;
   measurementOrderFilter: boolean;
+  endReached: boolean
 }
 
 export const EhrViewReactComponent = withRouteData(
@@ -340,6 +341,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementOrderFilter: true,
         showTopConcepts: true,
         matchType: MatchType.NAME,
+        endReached: false
       };
     }
     debounceTimer = null;
@@ -400,7 +402,7 @@ export const EhrViewReactComponent = withRouteData(
         });
     }
 
-    processSearchResults(results) {
+    processSearchResults(results, append: boolean) {
       const { searchWord, top10Results, currentPage, domain } = this.state;
       results.items = results.items
         .filter((x) => PM_CONCEPTS.indexOf(x.conceptId) === -1)
@@ -432,7 +434,7 @@ export const EhrViewReactComponent = withRouteData(
         }
       }
       this.setState({
-        concepts: [...this.state.concepts, ...results.items],
+        concepts: append? [...this.state.concepts, ...results.items]:results.items ,
         standardConcepts: conceptStandardConcepts,
         standardConceptIds: conceptStandardConcepts.map((a) => a.conceptId),
         matchType: results.matchType,
@@ -471,14 +473,14 @@ export const EhrViewReactComponent = withRouteData(
           null
         );
       }
-      this.fetchConcepts(searchRequest);
+      this.fetchConcepts(searchRequest, false);
     }
 
-    fetchConcepts(searchRequest: any) {
+    fetchConcepts(searchRequest: any, append: boolean) {
       dataBrowserApi()
         .searchConcepts(searchRequest)
         .then((results) => {
-          this.processSearchResults(results);
+          this.processSearchResults(results, append);
         })
         .catch((e) => {
           console.log(e, "error");
@@ -540,7 +542,7 @@ export const EhrViewReactComponent = withRouteData(
       this.setState({
         currentPage: data + 1
       });
-      this.fetchConcepts(searchRequest);
+      this.fetchConcepts(searchRequest, true);
     };
 
     handleScrollEnd = (event) => {
@@ -574,6 +576,9 @@ export const EhrViewReactComponent = withRouteData(
       }
       return { display: "none" };
     }
+    handleEnd() {
+      
+    }
 
     render() {
       const {
@@ -598,6 +603,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementTestFilter,
         measurementOrderFilter,
         top10Results,
+        endReached
       } = this.state;
       const maxResults = 50;
       const noMatchFilter = 1;
@@ -911,9 +917,11 @@ export const EhrViewReactComponent = withRouteData(
                                             ? "standard"
                                             : "source"
                                         }
+                                        endReached = {()=>this.setState({endReached: true})}
                                       />
                                     );
                                   })}
+                            {!endReached && <span style={{marginTop:'1rem',display:'block'}}><Spinner/></span>}
                               </div>
                             )}
                           </React.Fragment>
