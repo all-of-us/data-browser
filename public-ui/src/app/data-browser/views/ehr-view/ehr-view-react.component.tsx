@@ -54,6 +54,7 @@ const styles = reactStyles({
     borderRadius: "10px",
     padding: ".5rem 1rem",
     lineHeight: "1.5",
+    margin: "0.5rem 0"
   },
   resultsGrid: {
     width: "100%",
@@ -105,7 +106,8 @@ const cssStyles = `
 .domain-info-layout {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: end;
+    
 }
 
 .primary-display
@@ -692,7 +694,7 @@ export const EhrViewReactComponent = withRouteData(
                                     id="domain-name"
                                     className="primary-display"
                                   >
-                                    Showing top {totalResults}
+                                    &#32;{totalResults}&#32;
                                     {searchWord ? (
                                       <React.Fragment>
                                         {" "}
@@ -716,10 +718,8 @@ export const EhrViewReactComponent = withRouteData(
                                     id="domain-name"
                                     className="primary-display"
                                   >
-                                    Showing top{" "}
-                                    {(currentPage - 1) * 50 + 1}-
-                                    {concepts.length + (currentPage - 1) * 50} of{" "}
-                                    {totalResults}
+                                    Showing&#32;
+                                    {totalResults}&#32;
                                     {searchWord ? (
                                       <React.Fragment>
                                         {" "}
