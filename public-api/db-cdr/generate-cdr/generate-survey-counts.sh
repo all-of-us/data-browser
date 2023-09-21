@@ -393,7 +393,8 @@ and (exists
 (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
 or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
-1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348'))
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348')
+or sq.survey_concept_id = 1740639)
 group by o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,sq.survey_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3110 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -495,7 +496,8 @@ and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
 or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
-1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348'))
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348')
+or sq.survey_concept_id = 1740639)
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
@@ -555,7 +557,8 @@ and
 (exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` where questionnaire_response_id=o.questionnaire_response_id
 and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
 or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
-1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348'))
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348')
+or sq.survey_concept_id = 1740639)
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,stratum_5,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3112 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
