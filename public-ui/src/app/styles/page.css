@@ -319,7 +319,7 @@ p {
 /**** ##MAILCHIMP ***/
 
 #mc_embed_signup {
-  text-align: left;
+  text-align: center;
   background: transparent;
   position: relative;
 }
@@ -332,6 +332,7 @@ p {
 }
 
 #mc_embed_signup .clear input {
+  border-radius: 0;
   margin-top: 0.6rem;
   margin-bottom: 1rem;
 }
