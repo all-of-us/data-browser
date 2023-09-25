@@ -135,6 +135,7 @@ interface Props {
   maxResults: number;
   currentPage: number;
   counter: number;
+  endReached: Function;
   searchTerm: string;
   totalParticipants: number;
   synonymString: string;
@@ -163,10 +164,10 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showMoreDrugBrands: false,
       showConceptChart: props.selectedConcept
         ? props.selectedConcept &&
-          props.selectedConcept.conceptId === props.concept.conceptId
+        props.selectedConcept.conceptId === props.concept.conceptId
         : props.searchTerm
-        ? parseInt(props.searchTerm, 10) === props.concept.conceptId
-        : false,
+          ? parseInt(props.searchTerm, 10) === props.concept.conceptId
+          : false,
       graphToShow:
         props.domain.name.toLowerCase() === "labs & measurements"
           ? GraphType.Values
@@ -175,21 +176,22 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       selectedConcept: this.props.selectedConcept,
     };
 
-    
+
   }
 
   componentDidMount() {
-    const { selectedConcept, concept, searchTerm } = this.props;
-
-    
+    const { selectedConcept, concept, searchTerm, counter, totalResults } = this.props;
     if (
       selectedConcept
         ? selectedConcept && selectedConcept.conceptId === concept.conceptId
         : searchTerm
-        ? parseInt(searchTerm, 10) === concept.conceptId
-        : false
+          ? parseInt(searchTerm, 10) === concept.conceptId
+          : false
     ) {
       this.myRef.current.scrollIntoView();
+    }
+    if (counter + 1 == totalResults) {
+      this.props.endReached();
     }
   }
 
@@ -253,9 +255,9 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         graphToShow === GraphType.Sources
       ) {
         this.setState({
-          graphToShow:  this.props.domain.name.toLowerCase() === "labs & measurements"
-          ? GraphType.Values
-          : GraphType.BiologicalSex,
+          graphToShow: this.props.domain.name.toLowerCase() === "labs & measurements"
+            ? GraphType.Values
+            : GraphType.BiologicalSex,
         });
       } else {
         this.setState({
@@ -264,8 +266,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             chartType === "sources"
               ? GraphType.Sources
               : name.toLowerCase() === "labs & measurements"
-              ? GraphType.Values
-              : GraphType.BiologicalSex,
+                ? GraphType.Values
+                : GraphType.BiologicalSex,
         });
       }
     } else {
@@ -275,8 +277,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
           chartType === "sources"
             ? GraphType.Sources
             : name.toLowerCase() === "labs & measurements"
-            ? GraphType.Values
-            : GraphType.BiologicalSex,
+              ? GraphType.Values
+              : GraphType.BiologicalSex,
       });
     }
   }
@@ -285,13 +287,13 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     const { concept, searchTerm } = this.props;
     let path = window.location.pathname;
     if (searchTerm && (searchTerm.length > 0) && path.indexOf(searchTerm) > 0) {
-        path = path.substring(0, path.lastIndexOf("/"));
+      path = path.substring(0, path.lastIndexOf("/"));
     }
     navigator.clipboard.writeText(
       window.location.origin +
-        path +
-        "/" +
-        concept.conceptId
+      path +
+      "/" +
+      concept.conceptId
     );
     this.setState({
       showCopyAlert: true,
@@ -322,7 +324,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showCopyAlert,
     } = this.state;
 
-    
+
     const id = "c" + concept.conceptId;
     const tabIndex = 0;
     const tooltipAction =
@@ -334,8 +336,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     const synonymsStr = showMoreSynonyms
       ? synonymString
       : synonymString
-      ? synonymString.substring(0, 100)
-      : null;
+        ? synonymString.substring(0, 100)
+        : null;
     const drugBrandsStr = showMoreDrugBrands
       ? concept.drugBrands.join(", ")
       : concept.drugBrands.slice(0, 10).join(", ");
