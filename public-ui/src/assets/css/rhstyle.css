@@ -1,0 +1,1188 @@
+@media all {
+    body {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 1.15;
+        color: rgba(38, 34, 98, 1);
+    }
+}
+
+@media all {
+    .site-footer {
+        background-color: rgba(38, 34, 98, 1);
+        padding-bottom: 2rem;
+    }
+
+    #colophon.site-footer {
+        padding: 0 20px;
+    }
+
+    .footer-container {
+        margin-block-end: 0;
+        margin-block-start: 0;
+        padding: 1rem;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    .footer-container {
+        margin: 0 calc(10%);
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-container {
+        position: relative;
+        max-width: 1180px;
+        padding: 0;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .widget-area:not(.widget-full-width) {
+        width: 24%;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+
+    #colophon .widget-area.widget-logo-section {
+        width: 100%;
+        display: block;
+        padding-bottom: 10px;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-container .widget-logo-section {
+        padding: 0;
+        padding-top: 27px;
+        padding-bottom: 40px;
+        margin: 0;
+    }
+
+    #colophon.site-footer .footer-row-1 {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        font-size: 0;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-row-2 {
+        padding-top: 20px;
+    }
+
+    #colophon.site-footer .footer-row-2 {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: flex-start;
+        font-size: 0;
+        padding: 0;
+        padding-top: 30px;
+        margin: 0;
+    }
+
+    #colophon.site-footer .widget-area.widget-full-width {
+        width: 100%;
+        padding: 0;
+        padding-top: 30px;
+        margin: 0;
+    }
+
+    .site-info {
+        font-size: 0.8rem !important;
+    }
+
+    #colophon .site-info {
+        color: rgba(255, 255, 255, 1);
+        text-align: center;
+    }
+
+    #colophon.site-footer .site-info {
+        width: 100%;
+        padding: 0;
+        padding-top: 30px;
+        padding-bottom: 20px;
+        margin: 0;
+        font-size: 13px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.38;
+        letter-spacing: normal;
+        text-align: center;
+    }
+
+    #colophon .widget-column {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .widget-column:not(.footer-boiler) {
+        margin: 0 2rem 0 0;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget {
+        font-size: 0;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .widget-area.widget-5 {
+        width: 19%;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 {
+        flex-grow: 0;
+        flex-basis: calc(25%);
+        width: 25%;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .widget-area.widget-4 {
+        width: 24%;
+        display: inline-block;
+        vertical-align: text-top;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 {
+        flex-grow: 0;
+        flex-basis: calc(25%);
+        display: block;
+        width: 25%;
+        vertical-align: text-top;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .footer-boiler {
+        text-align: center;
+        margin-top: 2rem;
+        width: 96%;
+    }
+}
+
+@media all {
+    #colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler {
+        padding: 0;
+        margin: 0;
+    }
+
+    #colophon a {
+        color: rgba(190, 225, 255, 1);
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        font-weight: normal;
+    }
+
+    #colophon .site-info * {
+        font-size: 0.8rem;
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    #colophon a:hover {
+        color: #ffffff;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+        display: block;
+        position: relative;
+        padding: 0;
+        margin: 0;
+        margin-right: 30px;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) .widget-column.footer-widget {
+        margin-right: 0;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget {
+        margin-right: 30px;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) .widget-column.footer-widget {
+        margin-right: 0;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .footer-boiler .widget {
+        margin-right: 2rem;
+    }
+}
+
+@media all {
+    #colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text {
+        padding: 0;
+        margin: 0;
+    }
+
+    .widget>* {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        font-weight: normal;
+        font-size: 1em;
+        line-height: 1.5;
+        margin: 0;
+        text-rendering: optimizeLegibility;
+    }
+
+    #colophon .widget-column.footer-boiler .widget * {
+        font-size: 0.8rem;
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    .footer-widget .widget a {
+        text-decoration: none;
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+        display: inline-block;
+        width: 25%;
+        vertical-align: top;
+    }
+
+    #colophon a:hover,
+    #colophon a:focus {
+        color: #ffffff;
+    }
+
+    #colophon .widget p {
+        color: #fff;
+        font-size: 0.9rem;
+    }
+
+    #colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p {
+        padding: 0;
+        margin: 0;
+        color: #bee1ff;
+        font-size: 13px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.38;
+        letter-spacing: normal;
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .widget-area.widget-logo-section img {
+        width: auto;
+        height: 30px;
+        margin-right: 30px;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a img {
+        display: block;
+        width: calc(100% - 30px);
+        height: auto;
+        padding: 0;
+        margin: 0;
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+        max-width: 233px;
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+        max-width: 201px;
+    }
+
+    #colophon .footer-widget p {
+        margin-block-end: 0;
+    }
+
+    #colophon .widget-column:not(.footer-boiler) .widget p {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 p {
+        padding: 0;
+        margin: 0;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .textwidget.custom-html-widget>p:first-child {
+        margin-bottom: 10px;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    .footer-researcher-box-left {
+        width: 40%;
+        float: left;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left {
+        float: left;
+        display: block;
+        vertical-align: text-top;
+        width: 48%;
+        padding: 0;
+        margin: 0;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    .footer-researcher-box-right {
+        width: 60%;
+        float: left;
+        padding-top: 1em;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        display: block;
+        float: right;
+        vertical-align: text-top;
+        width: 52%;
+        padding: 0;
+        margin: 0;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget p {
+        padding: 0;
+        margin: 0;
+        line-height: 0.9rem;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 #text-13 p {
+        font-weight: 800;
+    }
+
+    .social-navigation ul.social-links-menu {
+        margin: .5rem 0 0;
+        padding: 0;
+    }
+
+    #colophon .mailchimpbutton {
+        margin-top: 2rem;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .mailchimpbutton {
+        margin-top: 1rem;
+    }
+}
+
+@media all {
+    #colophon .wp-block-button {
+        margin-bottom: 1em;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton {
+        font-size: 16px;
+        font-weight: 900;
+        line-height: 16px;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-boiler .widget a {
+        text-decoration: underline;
+    }
+
+    #colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p a {
+        color: #ffffff;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 a {
+        display: block;
+    }
+
+    #colophon .widget-column:not(.footer-boiler) .widget p strong {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button.apply {
+        margin-bottom: 16px;
+    }
+
+    #colophon .widget-column:not(.footer-boiler) .widget p em {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    .social-navigation ul.social-links-menu li {
+        display: inline-block;
+        list-style: none;
+    }
+
+    :where(.wp-block-button__link) {
+        box-shadow: none;
+        text-decoration: none;
+        border-radius: 9999px;
+        padding: calc(.667em + 2px) calc(1.333em + 2px);
+    }
+
+    .wp-block-button__link {
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        word-break: break-word;
+        box-sizing: border-box;
+    }
+
+    .wp-block-button__link {
+        color: #fff;
+        background-color: #32373c;
+        border-radius: 9999px;
+        box-shadow: none;
+        text-decoration: none;
+        padding: calc(.667em + 2px) calc(1.333em + 2px);
+        font-size: 1.125em;
+    }
+
+    .wp-block-button__link {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        font-weight: 600;
+        transition: background 150ms ease-in-out;
+        background: rgba(38, 34, 98, 1);
+        border: none;
+        border-radius: 4px;
+        box-sizing: border-box;
+        color: rgba(38, 34, 98, 1);
+        outline: none;
+        padding: 0.8rem 2rem;
+        min-width: 290px;
+        text-decoration: none;
+        vertical-align: bottom;
+        letter-spacing: 0.14px;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .wp-block-button__link {
+        min-width: 320px;
+    }
+}
+
+@media all {
+    #colophon .wp-block-button a {
+        font-size: 0.9rem;
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        padding: .5rem;
+        min-width: max-content;
+        border-radius: 0px;
+        border: 1px solid #fff;
+        text-transform: uppercase;
+        color: #fff;
+        width: 100%;
+        min-width: auto;
+        max-width: 100%;
+    }
+
+    #colophon .mailchimpbutton a {
+        background-image: url("https://www.stable.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_enevelope-white.png");
+        background-size: 20px 15px;
+        background-position: left 15px center;
+        background-repeat: no-repeat;
+        background-repeat-x: no-repeat;
+        background-repeat-y: no-repeat;
+        background-color: #262162;
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton .wp-block-button__link {
+        font-size: 16px;
+        padding: 18px 10px;
+        padding-left: 40px;
+    }
+
+    .wp-block-button__link:hover {
+        background: rgba(33, 111, 180, 1);
+        color: #fff;
+    }
+
+    #colophon .mailchimpbutton:hover a {
+        background-image: url("https://www.stable.researchallofus.org/wp-content/themes/research-hub-wordpress-theme/media/2019/02/icon_enevelope-blue.png");
+        background-color: #fff !important;
+        color: #262162;
+    }
+
+    #colophon a strong {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    #colophon strong a {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    }
+
+    #colophon .wp-block-button.apply a {
+        font-weight: 900;
+        font-size: 19px;
+        padding-top: .2em;
+        padding-bottom: .2em;
+        line-height: 1.2;
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button__link {
+        font-size: 19px;
+        font-weight: 800;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        letter-spacing: 0.13px;
+        line-height: 19px;
+    }
+
+    #colophon .wp-block-button.blue:hover a {
+        background-color: #bee1ff !important;
+        border-color: #bee1ff;
+        color: #262262;
+    }
+}
+
+@media only screen and (min-width: 1168px) {
+    #colophon .wp-block-button a#res_login_footer {
+        word-break: keep-all;
+        font-size: .8vw;
+        padding: .4vw;
+    }
+}
+
+@media all {
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right #res_login_footer.wp-block-button__link {
+        word-break: keep-all;
+        padding: 12px 0;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.11px;
+    }
+
+    .social-navigation ul.social-links-menu li a {
+        display: block;
+        color: rgba(255, 255, 255, 1) !important;
+        transition: opacity 110ms ease-in-out;
+    }
+
+    .social-navigation ul.social-links-menu li a:hover,
+    .social-navigation ul.social-links-menu li a:active {
+        color: #ffffff;
+        opacity: 0.6;
+    }
+
+    .social-navigation ul.social-links-menu li a:hover,
+    .social-navigation ul.social-links-menu li a:focus,
+    .social-navigation ul.social-links-menu li a:active {
+        color: #ffffff;
+        opacity: 0.6;
+    }
+
+    .wp-block-button__link strong {
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        color:white;
+    }
+    .wp-block-button__link:hover strong{
+        color:#262162;
+    }
+    .social-navigation ul.social-links-menu li a svg {
+        display: block;
+        width: 32px;
+        height: 32px;
+        transform: translateZ(0);
+    }
+
+    .social-navigation ul.social-links-menu li:nth-child(1) a svg {
+        width: 28px;
+        height: 28px;
+        padding-bottom: 3px;
+    }
+}
+
+.glider-contain {
+    width: 100%;
+    margin: 0 auto;
+    position: relative
+}
+
+.glider {
+    margin: 0 auto;
+    position: relative;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    transform: translateZ(0)
+}
+
+.glider-track {
+    transform: translateZ(0);
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    z-index: 1
+}
+
+.glider.draggable {
+    user-select: none;
+    cursor: -webkit-grab;
+    cursor: grab
+}
+
+.glider.draggable .glider-slide img {
+    user-select: none;
+    pointer-events: none
+}
+
+.glider.drag {
+    cursor: -webkit-grabbing;
+    cursor: grabbing
+}
+
+.glider-slide {
+    user-select: none;
+    justify-content: center;
+    align-content: center;
+    width: 100%
+}
+
+.glider-slide img {
+    max-width: 100%
+}
+
+.glider::-webkit-scrollbar {
+    opacity: 0;
+    height: 0
+}
+
+.glider-prev,
+.glider-next {
+    user-select: none;
+    position: absolute;
+    outline: none;
+    background: none;
+    padding: 0;
+    z-index: 2;
+    font-size: 40px;
+    text-decoration: none;
+    left: -23px;
+    border: 0;
+    top: 30%;
+    cursor: pointer;
+    color: #666;
+    opacity: 1;
+    line-height: 1;
+    transition: opacity 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67), color 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67)
+}
+
+.glider-prev:hover,
+.glider-next:hover,
+.glider-prev:focus,
+.glider-next:focus {
+    color: #a89cc8
+}
+
+.glider-next {
+    right: -23px;
+    left: auto
+}
+
+.glider-next.disabled,
+.glider-prev.disabled {
+    opacity: .25;
+    color: #666;
+    cursor: default
+}
+
+.glider-slide {
+    min-width: 150px
+}
+
+.glider-hide {
+    opacity: 0
+}
+
+.glider-dots {
+    user-select: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 0
+}
+
+.glider-dot {
+    border: 0;
+    padding: 0;
+    user-select: none;
+    outline: none;
+    display: block;
+    cursor: pointer;
+    color: #ccc;
+    border-radius: 999px;
+    background: #ccc;
+    width: 12px;
+    height: 12px;
+    margin: 7px
+}
+
+.glider-dot:hover,
+.glider-dot:focus,
+.glider-dot.active {
+    background: #a89cc8
+}
+
+@media (max-width: 36em) {
+    .glider::-webkit-scrollbar {
+        opacity: 1;
+        -webkit-appearance: none;
+        width: 7px;
+        height: 3px
+    }
+
+    .glider::-webkit-scrollbar-thumb {
+        opacity: 1;
+        border-radius: 99px;
+        background-color: rgba(156, 156, 156, 0.25);
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.25)
+    }
+}
+
+#colophon.site-footer {
+    padding: 0 20px
+}
+
+#colophon.site-footer .footer-container {
+    position: relative;
+    max-width: 1180px;
+    padding: 0;
+    margin: 0 auto
+}
+
+#colophon.site-footer .footer-container .widget-logo-section {
+    padding: 0;
+    padding-top: 27px;
+    padding-bottom: 40px;
+    margin: 0
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget {
+    font-size: 0;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+    display: inline-block;
+    width: 25%;
+    vertical-align: top
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+    max-width: 233px
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+    max-width: 201px
+}
+
+#colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a img {
+    display: block;
+    width: calc(100% - 30px);
+    height: auto;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 {
+    flex-grow: 0;
+    flex-basis: calc(25%);
+    width: 25%;
+    display: inline-block;
+    vertical-align: text-top
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) .widget-column.footer-widget {
+    margin-right: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+    display: block;
+    position: relative;
+    padding: 0;
+    margin: 0;
+    margin-right: 30px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .textwidget.custom-html-widget>p:first-child {
+    margin-bottom: 10px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left {
+    float: left;
+    display: block;
+    vertical-align: text-top;
+    width: 48%;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+    display: block;
+    float: right;
+    vertical-align: text-top;
+    width: 52%;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button.apply {
+    margin-bottom: 16px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right .wp-block-button__link {
+    font-size: 19px;
+    font-weight: 800;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    letter-spacing: 0.13px;
+    line-height: 19px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right #res_login_footer.wp-block-button__link {
+    word-break: keep-all;
+    padding: 12px 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.11px
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 p {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-1 .widget-area.widget-5 a {
+    display: block
+}
+
+#colophon.site-footer .footer-row-2 {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 0;
+    padding: 0;
+    padding-top: 30px;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 {
+    flex-grow: 0;
+    flex-basis: calc(25%);
+    display: block;
+    width: 25%;
+    vertical-align: text-top
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) .widget-column.footer-widget {
+    margin-right: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 #text-13 p {
+    font-weight: 800
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget {
+    margin-right: 30px
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget p {
+    padding: 0;
+    margin: 0;
+    line-height: 0.9rem
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 16px;
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget .wp-block-button.mailchimpbutton .wp-block-button__link {
+    font-size: 16px;
+    padding: 18px 10px;
+    padding-left: 40px
+}
+
+#colophon.site-footer .widget-area.widget-full-width {
+    width: 100%;
+    padding: 0;
+    padding-top: 30px;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text {
+    padding: 0;
+    margin: 0
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p {
+    padding: 0;
+    margin: 0;
+    color: #bee1ff;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    text-align: center
+}
+
+#colophon.site-footer .widget-area.widget-full-width .widget-column.footer-boiler .widget.widget_text p a {
+    color: #ffffff
+}
+
+#colophon.site-footer .site-info {
+    width: 100%;
+    padding: 0;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin: 0;
+    font-size: 13px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.38;
+    letter-spacing: normal;
+    text-align: center
+}
+
+@media only screen and (min-width: 0px) and (max-width: 900px) {
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+        width: auto;
+        max-width: 50%
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child {
+        padding-right: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+        display: block;
+        max-width: 292px;
+        width: 100%;
+        min-width: calc(100% - 20px)
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child {
+        padding-left: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+        max-width: 252px;
+        width: 100%;
+        min-width: calc(100% - 20px)
+    }
+
+    #colophon.site-footer .footer-row-1 {
+        justify-content: flex-end
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 {
+        flex-basis: calc(33.333%);
+        width: 33.333%
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        align-self: end;
+        justify-self: end;
+        margin-top: -80px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+        margin-right: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget a {
+        display: block;
+        margin-bottom: 3px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(3) .widget-column.footer-widget,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(1),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(2) {
+        flex-basis: calc(100%);
+        width: 100%;
+        margin-bottom: 24px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) {
+        flex-basis: calc(50%);
+        width: 50%
+    }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 767px) {
+    #colophon.site-footer .footer-row-1 {
+        justify-content: flex-start
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        align-self: start;
+        justify-self: start;
+        flex-basis: calc(66.666%);
+        width: 66.666%;
+        margin-top: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        width: 50%;
+        padding-right: 20px
+    }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 599px) {
+    #colophon.site-footer .widget-column .widget p {
+        font-size: 14px;
+        line-height: 1.57
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget a {
+        margin-bottom: 2px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section {
+        padding: 20px 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget {
+        font-size: 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a {
+        width: 100%;
+        max-width: 100%
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child {
+        padding: 0;
+        margin: 0;
+        margin-bottom: 20px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:first-child img {
+        max-width: 240px;
+        min-width: 240px
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child {
+        padding: 0
+    }
+
+    #colophon.site-footer .footer-container .widget-logo-section .widget-column.footer-widget a:last-child img {
+        max-width: 265px;
+        min-width: 265px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4) {
+        flex-basis: calc(100%);
+        width: 100%;
+        margin: 0;
+        margin-bottom: 20px
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:last-child,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5:nth-child(4):last-child {
+        margin-bottom: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-left,
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        width: 100%;
+        margin: 0
+    }
+
+    #colophon.site-footer .footer-row-1 .widget-area.widget-5 .widget-column.footer-widget .footer-researcher-box-right {
+        padding: 0;
+        margin-top: 40px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget p {
+        font-size: 16px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3) {
+        margin-top: 20px;
+        margin-bottom: 30px
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(3),
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4:nth-child(4) {
+        flex-basis: calc(100%);
+        width: 100%
+    }
+
+    #colophon.site-footer .footer-row-2 .widget-area.widget-4 .widget-column.footer-widget {
+        margin-right: 0
+    }
+
+    #colophon.site-footer .social-navigation ul.social-links-menu li {
+        margin-right: 8px
+    }
+}
+
+#menu-social li {
+    fill: white;
+}
+
