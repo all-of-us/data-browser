@@ -8,6 +8,10 @@
     }
 }
 
+#colophon {
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif !important;
+}
+
 @media all {
     .site-footer {
         background-color: rgba(38, 34, 98, 1);
