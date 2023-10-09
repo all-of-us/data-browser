@@ -2,6 +2,9 @@ import * as React from "react";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const styles = reactStyles({
   sortItem: {
@@ -155,8 +158,12 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
           {sortCats && sortCats.map((cat, index) => {
             return <div style={{ cursor: 'pointer' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
               <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>{cat.display}
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' && <i className="fas fa-arrow-up" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' && <i className="fas fa-arrow-down" aria-hidden="true" style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}></i>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' &&
+                <FontAwesomeIcon icon={faArrowUp}  aria-hidden="true"
+                style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}/>}
+              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' &&
+              <FontAwesomeIcon icon={faArrowDown}  aria-hidden="true"
+               style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}/>}
             </span>
             </div>
           })}

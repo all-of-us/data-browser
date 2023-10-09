@@ -9,8 +9,10 @@ import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
 import { urlParamsStore } from "app/utils/navigation";
+import { WatchFitness, MonitorWaveForm, PersonRunning, PersonWalking, HeartPulse, BedPulse, BedPulseDuo } from "app/utils/icons";
 import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
+
 
 const styles = reactStyles({
   fmLayout: {
@@ -107,6 +109,7 @@ const styleCss = `
     }
 }
 `;
+
 
 interface State {
   concepts: any;
@@ -234,6 +237,8 @@ export const FitbitReactComponent = withRouteData(
                   {concepts &&
                     concepts.map((concept, index) => {
                       const iconClass = concept.icon;
+                      console.log(concept);
+                      console.log(iconClass);
                       const conceptClass =
                         selectedDisplay.toLowerCase() ===
                         concept.displayName.toLowerCase()
@@ -250,7 +255,14 @@ export const FitbitReactComponent = withRouteData(
                             style={conceptClass}
                             onClick={() => this.setGraphs(concept)}
                           >
-                            <i className={iconClass} style={styles.fas}></i>
+                          {concept.id === 1 && <WatchFitness style={styles.fas} />}
+                          {concept.id === 2 && <HeartPulse style={styles.fas} />}
+                          {concept.id === 3 && <MonitorWaveForm style={styles.fas} />}
+                          {concept.id === 4 && <PersonRunning style={styles.fas} />}
+                          {concept.id === 5 && <PersonWalking style={styles.fas} />}
+                          {concept.id === 6 && <BedPulse style={styles.fas} />}
+                          {concept.id === 7 && <BedPulseDuo style={styles.fas} />}
+
                             <div
                               className="fm-menu-item-display"
                               style={styles.fmMenuItemDisplay}

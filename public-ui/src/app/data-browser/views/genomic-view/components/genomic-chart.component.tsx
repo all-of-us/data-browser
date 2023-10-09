@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as highCharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 import {
   AGE_STRATUM_MAP,
@@ -169,7 +171,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
           <div style={styles.legend}>
-            <i className="fas fa-circle" style={{ color: color }}></i>{" "}
+            <FontAwesomeIcon icon={faCircle} style={{ color: color }} />{" "}
             <span style={styles.legendItem}>{legendText}</span>
           </div>
         </div>

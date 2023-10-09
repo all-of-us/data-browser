@@ -1,6 +1,8 @@
 import { reactStyles } from 'app/utils';
 import { GenomicFilters } from 'publicGenerated';
 import * as React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
     filteredMetadata: GenomicFilters;
@@ -125,10 +127,10 @@ export class VariantFilterChips extends React.Component<Props, State> {
                             return <div style={styles.chipLayout} key={i}>
                                 {item.checked && <div style={styles.chip} >
                                     <span >{chipLabel}</span>
-                                    <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
-                                        onClick={() => this.removeChip(item, el.cat)}
-                                        className='far fa-times fa-1x clear-search-icon'
-                                        caria-hidden='true'></i>
+                                    <FontAwesomeIcon style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
+                                    onClick={() => this.removeChip(item, el.cat)}
+                                    icon={faXmark} className="clear-search-icon"
+                                    caria-hidden='true'/>
                                 </div>}
                             </div>;
                         })}
@@ -143,10 +145,10 @@ export class VariantFilterChips extends React.Component<Props, State> {
                                 <span>{el.data.min} </span>
                                 <span style={{fontFamily:'GothamBook'}}>&nbsp;|&nbsp;Max&nbsp;</span>
                                 <span>{el.data.max}</span>
-                                    <i style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
-                                        onClick={() => this.removeChip(el, el.cat)}
-                                        className='far fa-times fa-1x clear-search-icon'
-                                        caria-hidden='true'></i>
+                                    <FontAwesomeIcon style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
+                                    onClick={() => this.removeChip(el, el.cat)}
+                                    icon={faXmark} className="clear-search-icon"
+                                    caria-hidden='true'/>
                                 </div>
                             </div>}
                     </div>}
