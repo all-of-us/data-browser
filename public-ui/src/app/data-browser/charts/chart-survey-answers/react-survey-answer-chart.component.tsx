@@ -1,4 +1,6 @@
 import * as React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import * as highCharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
@@ -275,7 +277,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
                     style={styles.legendItem}
                   >
                     <span>
-                      <i className="fas fa-circle" style={colorStyle} />
+                      <FontAwesomeIcon icon={faCircle} style={colorStyle} />
                     </span>
                     <span> {answer.answerValue}</span>
                   </div>

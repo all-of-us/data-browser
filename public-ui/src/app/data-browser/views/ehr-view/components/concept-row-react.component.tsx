@@ -1,6 +1,9 @@
 import * as React from "react";
 
 import { Component, Input } from "@angular/core";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVial } from '@fortawesome/free-solid-svg-icons';
+import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { ConceptChartReactComponent } from "app/data-browser/views/concept-chart/concept-chart-react.component";
@@ -404,10 +407,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         className="test-span"
                         style={styles.measurementTypeSpan}
                       >
-                        <i
-                          className="fas fa-vial"
-                          style={{ transform: "rotate(315deg)" }}
-                        />
+                      <FontAwesomeIcon icon={faVial} style={{transform: "rotate(315deg)",}} />
                         <TooltipReactComponent
                           tooltipKey="valueFilter"
                           label=""
@@ -420,7 +420,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         className="order-span"
                         style={styles.measurementTypeSpan}
                       >
-                        <i className="far fa-file-signature" />
+                        <FontAwesomeIcon icon={faFileSignature} />
                         <TooltipReactComponent
                           tooltipKey="orderFilter"
                           label=""

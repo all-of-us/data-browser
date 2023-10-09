@@ -3,6 +3,8 @@ import * as React from "react";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const styles = reactStyles({
   searchTitle: {
@@ -181,7 +183,7 @@ export const SearchComponent = class extends React.Component<SearchProps, {}> {
               onClear();
             }}
           >
-            <i className="far fa-times fa-1x clear-search-icon"></i>
+            <FontAwesomeIcon icon={faXmark} className="clear-search-icon" />
           </div>
         </div>
       </React.Fragment>

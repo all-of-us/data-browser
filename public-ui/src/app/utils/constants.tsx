@@ -58,35 +58,35 @@ export let fitbitConcepts = [
     id: 1,
     displayName: "any Fitbit data",
     conceptName: "Any Fitbit Data",
-    icon: "fa-solid fa-watch-fitness",
+    icon: "faWatchFitness",
     tooltipKey: "fitbitAllDataHelpText",
   },
   {
     id: 2,
     displayName: "heart rate by zone summary",
     conceptName: "Heart Rate (Summary)",
-    icon: "fa fa-heartbeat",
+    icon: "faHeartPulse",
     tooltipKey: "fitbitHeartZoneHelpText",
   },
   {
     id: 3,
     displayName: "heart rate (minute-level)",
     conceptName: "Heart rate (minute-level)",
-    icon: "fa-solid fa-monitor-waveform",
+    icon: "faMonitorWaveform",
     tooltipKey: "fitbitHeartRateHelpText",
   },
   {
     id: 4,
     displayName: "activity (daily summary)",
     conceptName: "Activity (daily summary)",
-    icon: "fa fa-running",
+    icon: "faPersonRunning",
     tooltipKey: "fitbitActivityDailyHelpText",
   },
   {
     id: 5,
     displayName: "activity intraday steps (minute-level)",
     conceptName: "Activity intraday steps (minute-level)",
-    icon: "fa fa-walking",
+    icon: "faPersonWalking",
     tooltipKey: "fitbitActivityStepsHelpText",
   }
 ];
@@ -96,7 +96,7 @@ fitbitConcepts.push({
   id: 6,
   displayName: "sleep daily summary",
   conceptName: "sleep daily summary",
-  icon: "fa-solid fa-bed-pulse",
+  icon: "faBedPulse",
   tooltipKey: "sleepDailySummaryHelpText"
 });
 
@@ -104,7 +104,7 @@ fitbitConcepts.push({
   id: 7,
   displayName: "sleep level (sequence by level)",
   conceptName: "Sleep Level (Sequence by level)",
-  icon: "fa-duotone fa-bed-pulse",
+  icon: "faBedPulse",
   tooltipKey: "sleepLevelHelpText"
 });
 }

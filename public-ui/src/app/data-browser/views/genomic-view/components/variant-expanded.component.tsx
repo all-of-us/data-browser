@@ -6,6 +6,8 @@ import { ClrIcon } from "app/utils/clr-icon";
 import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
 import { Variant, VariantInfo } from "publicGenerated";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const css = `
 .exit{
@@ -277,14 +279,8 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                           <div style={styles.popTableData}>
                             {item.Ancestry !== "Total" ? (
                               <span className="pop-desc">
-                                <i
-                                  className="fas fa-circle"
-                                  style={{
-                                    ...colorStyle,
-                                    marginRight: ".5rem",
-                                    transform: "scale(1.3)",
-                                  }}
-                                />
+                                <FontAwesomeIcon icon={faCircle}
+                                style={{...colorStyle, marginRight: ".5rem", transform: "scale(1.3)",}} />
                                 {item.Ancestry}{" "}
                               </span>
                             ) : (

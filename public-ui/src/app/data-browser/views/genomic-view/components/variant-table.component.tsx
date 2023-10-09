@@ -6,6 +6,9 @@ import { Variant } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
 import { TablePaginatorComponent } from "./table-paginator.component";
 import { VariantRowComponent } from "./variant-row.component";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const styles = reactStyles({
   tableContainer: {
@@ -272,19 +275,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.variantId.sortActive && (
                   <React.Fragment>
                     {sortMetadata.variantId.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -297,19 +290,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.gene.sortActive && (
                   <React.Fragment>
                     {sortMetadata.gene.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -322,19 +305,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.consequence.sortActive && (
                   <React.Fragment>
                     {sortMetadata.consequence.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -347,19 +320,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.proteinChange.sortActive && (
                   <React.Fragment>
                     {sortMetadata.proteinChange.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -373,19 +336,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   <React.Fragment>
                     {sortMetadata.clinicalSignificance.sortDirection ===
                       "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -398,19 +351,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.alleleCount.sortActive && (
                   <React.Fragment>
                     {sortMetadata.alleleCount.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em"
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -423,19 +366,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.alleleNumber.sortActive && (
                   <React.Fragment>
                     {sortMetadata.alleleNumber.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}
@@ -448,19 +381,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.alleleFrequency.sortActive && (
                   <React.Fragment>
                     {sortMetadata.alleleFrequency.sortDirection === "asc" ? (
-                      <i
-                        className="fas fa-arrow-up"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     ) : (
-                      <i
-                        className="fas fa-arrow-down"
-                        style={{
-                          color: "rgb(33, 111, 180)",
-                          marginLeft: "0.5em",
-                        }}></i>
+                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
                     )}
                   </React.Fragment>
                 )}

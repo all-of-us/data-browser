@@ -2,6 +2,11 @@ import * as React from "react";
 import ReactPaginate from "react-paginate";
 import _ from "lodash";
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faVial } from '@fortawesome/free-solid-svg-icons';
+import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
+
+
 import { withRouteData } from "app/components/app-router";
 import { NoResultSearchComponent } from "app/components/db-no-results/no-results-search.component";
 import { TopResultsChartReactComponent } from "app/data-browser/charts/chart-top-results/chart-top-results-react.component";
@@ -846,12 +851,7 @@ export const EhrViewReactComponent = withRouteData(
                                           htmlFor="checkbox1"
                                           className="checkbox-label"
                                         >
-                                          <i
-                                            className="fas fa-vial fa-rotate-45"
-                                            style={{
-                                              transform: "rotate(315deg)",
-                                            }}
-                                          />
+                                        <FontAwesomeIcon icon={faVial} style={{transform: "rotate(315deg)",}} />
                                           Tests
                                         </label>
                                       </div>
@@ -880,7 +880,7 @@ export const EhrViewReactComponent = withRouteData(
                                           htmlFor="checkbox2"
                                           className="checkbox-label"
                                         >
-                                          <i className="far fa-file-signature" />{" "}
+                                        <FontAwesomeIcon icon={faFileSignature} />{" "}
                                           Orders
                                         </label>
                                       </div>
