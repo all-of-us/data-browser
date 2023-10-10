@@ -25,6 +25,7 @@ const styles = reactStyles({
     fontSize: "14px",
     fontWeight: 500,
     lineHeight: "14px",
+    cursor: "pointer"
   },
   dbCard: {
     overflowX: "auto",

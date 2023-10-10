@@ -35,6 +35,7 @@ const styles = reactStyles({
     padding: '0 0.5rem',
     whiteSpace:'nowrap',
     height: '1.5rem',
+    cursor: 'pointer'
   },
   btnList: {
     width:'14rem',
