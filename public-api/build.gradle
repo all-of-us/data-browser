@@ -398,6 +398,7 @@ dependencies {
     generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
+    generatedCompile "javax.xml.bind:jaxb-api:2.3.1"
 }
 
 swaggerSources {
