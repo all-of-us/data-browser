@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-     openjdk-8-jdk \
+     openjdk-11-jdk \
      curl \
      python2 \
      python3 \
