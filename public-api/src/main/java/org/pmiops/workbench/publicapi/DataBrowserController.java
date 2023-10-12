@@ -169,6 +169,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
+        System. out. println("Current JVM version - " + System. getProperty("java.version"));
+
         return ResponseEntity.ok(cdrVersionService.findByIsDefault(true));
     }
 
