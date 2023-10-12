@@ -13,6 +13,9 @@ public class DbParams extends Params {
         hostname = getEnv("PUBLIC_DB_HOST").orElse(null);
         cloudSqlInstanceName = getEnv("PUBLIC_CLOUD_SQL_INSTANCE_NAME").orElse(null);
         password = getEnv("PUBLIC_DB_PASSWORD").orElse(null);
+        log.info("************************ TEST ************************");
+        log.info("Cloud SQL Instance Name: " + cloudSqlInstanceName);
+        log.info("************************ TEST ************************");
         try {
             validate();
             log.info("PUBLIC SQL instance params: " + this.toString());
