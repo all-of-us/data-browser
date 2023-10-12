@@ -32,10 +32,6 @@ public class Params {
         hostname = getEnv("DB_HOST").orElse(null);
         cloudSqlInstanceName = getEnv("CLOUD_SQL_INSTANCE_NAME").orElse(null);
         password = getEnv("DATABROWSER_DB_PASSWORD").orElse(null);
-
-        log.info("************************ TEST ************************");
-        log.info("Cloud SQL Instance Name: " + cloudSqlInstanceName);
-        log.info("************************ TEST ************************");
     }
 
     protected void logParams() {
