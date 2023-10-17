@@ -16,7 +16,8 @@ const styles = reactStyles({
   preCrumb: {
     color: "#0079b8",
     marginRight: "0.5em",
-    textDecoration: "none"
+    textDecoration: "none",
+    cursor: "pointer"
   },
   crumb: {
     color: "#2b266d",
@@ -24,7 +25,7 @@ const styles = reactStyles({
   },
   crumbContainer: {
     paddingLeft:'1rem',
-    paddingTop: "1rem"
+    paddingTop: "1rem",
   },
   separator: {
     marginRight: "0.5em",
