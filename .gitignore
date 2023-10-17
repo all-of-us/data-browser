@@ -50,3 +50,4 @@ Common-api/out/*
 .vscode/settings.json
 public-api/.docker-sync/daemon.log
 public-ui/.angular/cache/*
+public-ui/npmrc
