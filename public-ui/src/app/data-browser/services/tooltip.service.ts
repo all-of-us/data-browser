@@ -244,6 +244,7 @@ export const tooltips = {
     "temperature might have a value of 96.8 degrees. " +
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
+  sortVariants: `Click to select ascending or descending`,
 };
 
 export const getTooltip = (textKey) => {
@@ -485,6 +486,7 @@ export class TooltipService {
              temperature might have a value of 96.8 degrees.
              Values can also be reported in different units,
              such as Fahrenheit or Celsius for body temperature.`,
+    sortVariants: `Click to select ascending or descending`,
   };
   constructor() {}
 }
