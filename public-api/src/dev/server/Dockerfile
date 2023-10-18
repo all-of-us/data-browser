@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-     openjdk-11-jdk \
+     openjdk-8-jdk \
      curl \
      python2 \
      python3 \
@@ -26,7 +26,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CLOUD_SDK_VERSION 392.0.0
+ENV CLOUD_SDK_VERSION 260.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
