@@ -193,6 +193,7 @@ h5.secondary-display {
     border: 1px solid #CCCCCC;
     padding: .5rem 0;
     border-radius: 3px 3px 0 0;
+    position: sticky;
     top:0px;
     z-index:100;
 }
