@@ -57,13 +57,11 @@ const styles = reactStyles({
 });
 
 const css = `
-/* The container for the tooltip */
 .tooltip {
     position: relative;
     display: inline-block;
 }
 
-/* The tooltip content (hidden by default) */
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 185px;
@@ -76,7 +74,7 @@ const css = `
     padding: 5px;
     position: absolute;
     z-index: 9999;
-    bottom: 125%; /* Position the tooltip above the text */
+    bottom: 125%;
     left: 10%;
 }
 
@@ -84,7 +82,7 @@ const css = `
     content: " ";
     position: absolute;
     top: 100%;
-    left: 30%;
+    left: 50%;
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
