@@ -44,6 +44,7 @@ const styles = reactStyles({
         border: "none",
         background: "transparent",
         width: "45%",
+        cursor: "pointer",
     },
     applyBtn: {
         textTransform: "uppercase",
@@ -53,6 +54,7 @@ const styles = reactStyles({
         background: "#262262",
         color: "white",
         width: "45%",
+        cursor: "pointer",
     },
     filterItems: {
         maxHeight: "340px",
