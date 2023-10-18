@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
@@ -28,10 +29,10 @@ const styles = reactStyles({
   sortItemForm: {
     fontSize: "0.8em",
     display: "flex",
-    overflow: 'hidden',
+    overflow: 'visible',
     flexDirection: "column",
     paddingLeft: "1rem",
-    paddingTop: ".25rem"
+    paddingTop: ".25rem",
   },
   sortItemOption: {
     fontSize: ".8em",
@@ -56,6 +57,37 @@ const styles = reactStyles({
 });
 
 const css = `
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 185px;
+    font-size: 14px;
+    font-family: GothamBook, Arial, sans-serif;
+    background-color: #FFFFFF;
+    color: #302C71;
+    text-align: left;
+    border-spacing: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 125%;
+    left: 10%;
+}
+
+.tooltip:focus .tooltiptext, .tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.tooltiptext {
+    margin: 3%;
+    line-height: normal;
+    outline: 2px solid #302C71;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+}
 `;
 
 const lables = {
@@ -149,6 +181,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     const { sortItemOpen, sortMetadata, filterCats, sortCats } = this.state;
 
     return <React.Fragment>
+      <style>{css}</style>
       <div onClick={() => this.sortClick()} style={styles.sortItem}>
         <span style={{ fontFamily: 'gothamBold' }}>Sort By</span>
         <div><ClrIcon style={!sortItemOpen ? { ...styles.sortItemClosed } : { ...styles.sortItemOpen }} shape='angle' /></div>
@@ -156,8 +189,11 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       {(cleared && sortItemOpen) &&
         <div style={styles.sortItemForm}>
           {sortCats && sortCats.map((cat, index) => {
-            return <div style={{ cursor: 'pointer' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
-              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>{cat.display}
+            return <div style={{ cursor: 'pointer', position: 'relative' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
+              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>
+                <div className="tooltip">{cat.display}
+                    <span className="tooltiptext">Click to select <br/>ascending or descending</span>
+                </div>
               {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' &&
                 <FontAwesomeIcon icon={faArrowUp}  aria-hidden="true"
                 style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}/>}
