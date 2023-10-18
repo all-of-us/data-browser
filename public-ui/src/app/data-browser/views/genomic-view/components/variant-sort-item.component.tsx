@@ -78,17 +78,6 @@ const css = `
     left: 10%;
 }
 
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #302C71 transparent transparent transparent;
-}
-
 .tooltip:focus .tooltiptext, .tooltip:hover .tooltiptext {
     visibility: visible;
 }
