@@ -93,7 +93,7 @@ export class TopResultsChartReactComponent extends React.Component<
       count = concept.countValue.toString();
     }
     const toolTipText =
-      '<div class="chart-tooltip">' +
+      '<div class="chart-tooltip top-results-tooltip">' +
       concept.conceptName +
       " (" +
       concept.vocabularyId +
