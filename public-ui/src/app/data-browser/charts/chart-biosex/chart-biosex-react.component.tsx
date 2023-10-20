@@ -139,7 +139,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           (domain === "ehr" ? x.stratum4 : x.stratum2) ===
           (domain === "ehr" ? a.stratum2 : a.stratum5)
       )[0];
-      const count = a.countValue <= 20 ? "&le; 20" : a.countValue;
+      const count = a.countValue <= 20 ? "&le; 20" : a.countValue.toLocaleString();
       const totalCount =
         bsResult.countValue <= 20
           ? "&le; 20"

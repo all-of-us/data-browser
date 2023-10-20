@@ -238,13 +238,14 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       if (this.point.y == 0 && this.point.series.name.toLowerCase() !== 'did not answer') {
         toolTipText += '\n This option was not available in this version of the survey';
       }
-      this.point.toolTipHelpText = `
+     this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
               <strong>${toolTipText}</strong>
-              <span>${count} Participants </span>
+              <span>${count.toLocaleString()} Participants </span>
               <span>${percentage}% of all participants who took this version of survey</span>
-              <span>${surveyVersionParticipantCounts} Total </span>
+              <span>${surveyVersionParticipantCounts.toLocaleString()} Total </span>
             </div>`;
+
       return this.point.toolTipHelpText;
     };
     newBaseOptions.colors = colors;
