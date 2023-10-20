@@ -234,6 +234,7 @@ h5.secondary-display {
     background: #f6f6f8;
     border-top: none;
     padding-bottom: 27px;
+    cursor: default;
 }
 
 .tbl-r-state {
