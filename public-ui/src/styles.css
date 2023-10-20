@@ -635,6 +635,11 @@ a a:link a:visited {
   max-width: 100%;
 }
 
+.top-results-tooltip {
+  width: fit-content;
+  white-space: pre;
+}
+
 .bio-sex-tooltip {
   max-width: 16rem;
 }
