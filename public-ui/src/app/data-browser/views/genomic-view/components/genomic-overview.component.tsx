@@ -57,6 +57,10 @@ input[type='radio']:before {
     cursor: pointer;
 }
 
+.radio-label input {
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 1400px) {
     #selectGenotypeDataForm {
         font-size: 14px;
