@@ -171,8 +171,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     }
     newBaseOptions.tooltip.positioner = (width, height, point) => {
       return {
-        x: this.state.pageX - 100,
-        y: this.state.pageY - 110,
+        x: this.state.pageX - 144,
+        y: this.state.pageY - 90,
       };
     };
     this.setState({ options: newBaseOptions });
