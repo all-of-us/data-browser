@@ -11,6 +11,8 @@ import {
 
 interface State {
   options: any;
+  pageX: number;
+  pageY: number;
 }
 
 interface Props {
@@ -23,7 +25,11 @@ interface Props {
 export class ValueReactChartComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { options: null };
+    this.state = { 
+      options: null,
+      pageX: 0,
+      pageY: 0
+     };
   }
 
   componentDidMount() {
@@ -36,6 +42,14 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     }
   }
 
+  handleMouseEvent = (event) => {
+    this.setState({
+      pageX: event.pageX,
+      pageY: event.pageY,
+    });
+  }
+  
+  
   getChartOptions() {
     const { conceptId } = this.props;
     if (conceptId === "903111" || conceptId === "903120") {
@@ -134,6 +148,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.yAxis.title.text = "Participant Count";
     newBaseOptions.xAxis.title.text = unitName ? unitName : "";
     newBaseOptions.xAxis.labels.style.fontSize = "12px";
+    newBaseOptions.tooltip.outside = true;
     if ("dataOnlyLT20" in series) {
       newBaseOptions.yAxis.min = series.dataOnlyLT20 ? 20 : 0;
       newBaseOptions.yAxis.labels = {
@@ -156,8 +171,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     }
     newBaseOptions.tooltip.positioner = (width, height, point) => {
       return {
-        x: point.plotX + 20,
-        y: point.plotY - 25,
+        x: this.state.pageX - 100,
+        y: this.state.pageY - 110,
       };
     };
     this.setState({ options: newBaseOptions });
@@ -233,7 +248,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       }
       if (a.stratum2 !== "No unit") {
         tooltipText =
-          '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: calc((100%/3)*8);"> <b>' +
+          '<div class="chart-tooltip value-chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px;"> <b>' +
           analysisStratumName +
           "</b>" +
           "<br/>" +
@@ -361,7 +376,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   render() {
     const { options } = this.state;
     return (
-      <div>
+      <div onMouseMove={this.handleMouseEvent}>
         {options && (
           <HighchartsReact
             highcharts={highCharts}
