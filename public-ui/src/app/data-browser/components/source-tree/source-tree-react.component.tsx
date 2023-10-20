@@ -28,10 +28,12 @@ const styles = reactStyles({
     color: "#2991cf",
     transition: ".1s transform linear",
     marginTop: "0.1rem",
+    cursor: "pointer"
   },
   treeRow: {
     textAlign: "left",
     marginLeft: "1em",
+    cursor: "pointer"
   },
   childNode: {
     marginLeft: "1em",

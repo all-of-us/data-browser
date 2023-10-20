@@ -108,6 +108,7 @@ const cssStyles = `
     width: 100%;
     text-align: right;
     font-size: 2.5rem;
+    cursor: pointer;
 }
 .toggle-link,
  .toggle-link:link,
