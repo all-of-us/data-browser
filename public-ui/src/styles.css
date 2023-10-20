@@ -654,6 +654,10 @@ a a:link a:visited {
   color: #262262;
 }
 
+.value-chart-tooltip{
+  width: 16rem;
+}
+
 .version-survey-tooltip,
 .survey-answer-tooltip {
   width: fit-content;
