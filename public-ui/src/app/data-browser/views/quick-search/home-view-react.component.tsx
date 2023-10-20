@@ -629,7 +629,7 @@ export const dBHomeComponent = withRouteData(
 
     handleChange(val) {
       this.setState({ loading: true });
-      this.setState({ searchWord: val });
+      this.setState({ searchWord: val }, () => {localStorage.setItem("searchText", val);});
       this.search(val);
       this.typing = false;
     }

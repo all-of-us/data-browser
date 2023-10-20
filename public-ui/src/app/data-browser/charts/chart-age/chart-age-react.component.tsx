@@ -224,20 +224,14 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
     domain
   ) {
     return (
-      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;">' +
+      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;">' +
       "<strong>" +
       count +
       "</strong>" +
-      " participants were ages within range " +
+      " participants were ages within range of <strong>" +
       analysisStratumName +
-      " when" +
-      (domain === "pm" ? " physical measurement with" : "") +
-      " this medical concept first occurred and that is <strong>" +
-      percentage +
-      "</strong>" +
-      "% of all participants with the same criteria. (Total Count = <strong> " +
-      totalCount +
-      "</strong>) </div>"
+      ".</strong>" +
+      "</div>"
     );
   }
 

@@ -502,7 +502,7 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     handleChange(val) {
-      this.setState({ searchWord: val, currentPage: 1, showTopConcepts: true });
+      this.setState({ searchWord: val, currentPage: 1, showTopConcepts: true }, () => {localStorage.setItem("searchText", val);});
       this.domainTotals();
     }
 
