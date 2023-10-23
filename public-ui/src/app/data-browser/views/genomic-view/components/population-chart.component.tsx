@@ -95,7 +95,7 @@ export class PopulationChartReactComponent extends React.Component<
 
   getTooltipHelpText(name: string, percentage: any, count: number) {
     return (
-      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 1.5em; width: 16em; color: #302C71;"' +
+      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 1.5em; width: 17em; color: #302C71;"' +
       "<strong>" +
       name +
       "</strong> <br /> " +
