@@ -398,6 +398,9 @@ export const SurveyViewReactComponent = withRouteData(
       const statStyle = isCopeSurvey
         ? styles.copeStatLayout
         : styles.statLayout;
+      const matchingQuestions = questions.filter((question) =>
+                    question.type.toLowerCase().includes("question")
+                  );
       return (
         <React.Fragment>
           <style>{surveyStyle}</style>
@@ -481,7 +484,7 @@ export const SurveyViewReactComponent = withRouteData(
                             className="secondary-display"
                             style={styles.secondaryDisplay}
                           >
-                            <span>{questions.length}</span>
+                            <span>{matchingQuestions.length}</span>
                           </h2>
                           <p className="info-text" style={styles.infoText}>
                             matching of{" "}
