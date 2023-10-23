@@ -132,6 +132,7 @@ const cssStyles = `
 .disclaimer-btn {
     font-size:.7em;
     padding: .5em 1em;
+    cursor: pointer;
 }
 .disclaimer-btn:hover {
   background: #262262;
