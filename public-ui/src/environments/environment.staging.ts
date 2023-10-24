@@ -8,10 +8,10 @@ export const environment = {
   gtmAuth: "v5hD4oOWvct1sYdnaNp7yQ",
   gtmPreview: "env-28",
   reactSurveyTable: false,
-  ehrReact: false,
+  ehrReact: true,
   testReact: false,
   geno: true,
   genoFilters: true,
   fitbitCDRUpdate: true,
-  infiniteSrcoll: false
+  infiniteSrcoll: true
 };

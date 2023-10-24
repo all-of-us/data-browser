@@ -7,11 +7,10 @@ export const environment = {
   gtmId: "GTM-NQ9XDTW",
   gtmAuth: "ixtwsbMAbR3hx5st_ek2jg",
   gtmPreview: "env-65",
-  reactSurveyTable: false,
-  ehrReact: false,
+  ehrReact: true,
   testReact: false,
   geno: true,
   genoFilters: true,
   fitbitCDRUpdate: true,
-  infiniteSrcoll: false
+  infiniteSrcoll: true
 };
