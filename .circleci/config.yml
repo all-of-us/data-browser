@@ -233,6 +233,10 @@ jobs:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
           - api-cache-
+      - run:
+          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
+          working_directory: ~/data-browser
+          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
