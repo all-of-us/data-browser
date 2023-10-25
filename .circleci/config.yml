@@ -229,6 +229,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout-code
+      - gcloud-auth-login
       - restore_cache:
           keys:
           - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
