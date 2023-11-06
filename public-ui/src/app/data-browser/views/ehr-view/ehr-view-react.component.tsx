@@ -461,6 +461,7 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     getTopConcepts() {
+      console.log('Am i getting top concepts?');
       const {
         searchWord,
         domain: { domain, name },
@@ -491,6 +492,7 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     fetchConcepts(searchRequest: any, append: boolean) {
+      console.log('Am i here at all?');
       dataBrowserApi()
         .searchConcepts(searchRequest)
         .then((results) => {
@@ -527,11 +529,13 @@ export const EhrViewReactComponent = withRouteData(
 
     getTopResultsSize() {
       const { top10Results, title } = this.state;
-      return top10Results.length === 1
-        ? top10Results.length + " " + title.slice(0, -1)
-        : top10Results.length < 10
-          ? top10Results.length + " " + title
-          : 10 + " " + title;
+      return top10Results
+        ? top10Results.length === 1
+          ? top10Results.length + " " + title.slice(0, -1)
+          : top10Results.length < 10
+            ? top10Results.length + " " + title
+            : 10 + " " + title
+        : "No results available";
     }
 
     addMoreResults = () => {
