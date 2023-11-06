@@ -453,7 +453,7 @@ export const EhrViewReactComponent = withRouteData(
         standardConceptIds: conceptStandardConcepts.map((a) => a.conceptId),
         matchType: results.matchType,
         top10Results:
-          currentPage === 1 ? results.items.slice(0, 10) : top10Results,
+          currentPage === 1 ? results.items.slice(0, 10) : (top10Results ? top10Results : results.items.slice(0, 10)),
         loading: false,
         medlineTerm: medlineTerm,
         medlinePlusLink: medlinePlusLink,
@@ -461,7 +461,6 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     getTopConcepts() {
-      console.log('Am i getting top concepts?');
       const {
         searchWord,
         domain: { domain, name },
@@ -492,7 +491,6 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     fetchConcepts(searchRequest: any, append: boolean) {
-      console.log('Am i here at all?');
       dataBrowserApi()
         .searchConcepts(searchRequest)
         .then((results) => {
