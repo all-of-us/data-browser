@@ -201,7 +201,7 @@ export const tooltips = {
   fitbitHeartRateHelpText: `Heart rate represented granularly at the minute level. Heart rate zones are the highest
   number of times your heart
       can safely beat in one minute.`,
-  fitbitActivityDailyHelpText: `Activity data summarized as a daily report. Activity (daily summary) is a summary and
+  fitbitActivityDailyHelpText: `Activity data summarized as a daily report. Activity daily summary is a summary and
   list of a participant's activities and activity log entries for a given day.`,
   fitbitActivityStepsHelpText: `Activity data represented granularly at the minute level. Intraday steps are the total
     summary of a participant's daily calories and steps.`,
@@ -449,7 +449,7 @@ export class TooltipService {
       report the amount of time a participant spent in each heart rate zone.`,
     fitbitHeartRateHelpText: `Heart rate represented granularly at the minute level. Heart rate zones are the highest number of times your heart
       can safely beat in one minute.`,
-    fitbitActivityDailyHelpText: `Activity data summarized as a daily report. Activity (daily summary) is a summary and list of a participant's
+    fitbitActivityDailyHelpText: `Activity data summarized as a daily report. Activity daily summary is a summary and list of a participant's
       activities and activity log entries for a given day.`,
     fitbitActivityStepsHelpText: `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
       daily calories and steps.`,

@@ -44,7 +44,7 @@ export class DbConfigService {
     "Any Fitbit Data",
     "Heart Rate (Summary)",
     "Heart rate (minute-level)",
-    "Activity (daily summary)",
+    "Activity daily summary",
     "Activity intraday steps (minute-level)",
   ];
   VALID_AGE_DECILES = ["2", "3", "4", "5", "6", "7", "8", "9"];

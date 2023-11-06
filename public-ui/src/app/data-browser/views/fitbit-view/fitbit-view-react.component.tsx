@@ -148,7 +148,7 @@ export const FitbitReactComponent = withRouteData(
         "Any Fitbit Data",
         "Heart Rate (Summary)",
         "Heart rate (minute-level)",
-        "Activity (daily summary)",
+        "Activity Daily Summary",
         "Activity intraday steps (minute-level)"
       ];
       if (fitbitUpdateFlag) {

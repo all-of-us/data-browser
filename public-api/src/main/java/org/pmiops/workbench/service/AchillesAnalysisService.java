@@ -178,7 +178,6 @@ public class AchillesAnalysisService {
             analysisHashMap.put(aa.getAnalysisId(), aa);
         }
         for (String concept: concepts) {
-
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
 
             Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)));
