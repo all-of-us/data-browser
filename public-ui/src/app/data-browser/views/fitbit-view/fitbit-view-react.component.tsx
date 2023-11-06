@@ -282,7 +282,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                        Participants with {selectedDisplay}
+                        Participants over time
                       </div>
                       {selectedAnalyses && totalCountAnalysis && (
                         <ChartFitbitReactComponent
