@@ -453,7 +453,7 @@ export const EhrViewReactComponent = withRouteData(
         standardConceptIds: conceptStandardConcepts.map((a) => a.conceptId),
         matchType: results.matchType,
         top10Results:
-          currentPage === 1 ? results.items.slice(0, 10) : top10Results,
+          currentPage === 1 ? results.items.slice(0, 10) : (top10Results ? top10Results : results.items.slice(0, 10)),
         loading: false,
         medlineTerm: medlineTerm,
         medlinePlusLink: medlinePlusLink,
@@ -527,11 +527,13 @@ export const EhrViewReactComponent = withRouteData(
 
     getTopResultsSize() {
       const { top10Results, title } = this.state;
-      return top10Results.length === 1
-        ? top10Results.length + " " + title.slice(0, -1)
-        : top10Results.length < 10
-          ? top10Results.length + " " + title
-          : 10 + " " + title;
+      return top10Results
+        ? top10Results.length === 1
+          ? top10Results.length + " " + title.slice(0, -1)
+          : top10Results.length < 10
+            ? top10Results.length + " " + title
+            : 10 + " " + title
+        : "No results available";
     }
 
     addMoreResults = () => {

@@ -97,18 +97,9 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
         toolTipHelpText:
           '<div class="fitbit-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' +
           count +
-          " </strong> participants had " +
-          concept.stratum1 +
-          " by <strong>" +
+          " </strong> participants by <strong>" +
           concept.stratum2 +
-          "</strong>" +
-          " and that is <strong>" +
-          percentage +
-          "</strong>% of Total Fitbit Participants. <br/> (Total Count = " +
-          "<strong> " +
-          totalCount +
-          ")</strong>" +
-          "</div>",
+          "</strong> </div>",
         name: "",
         y: concept.countValue,
         concept: "",

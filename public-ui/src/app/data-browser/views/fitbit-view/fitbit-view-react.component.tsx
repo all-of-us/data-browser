@@ -9,7 +9,6 @@ import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
 import { urlParamsStore } from "app/utils/navigation";
-import { WatchFitness, MonitorWaveForm, PersonRunning, PersonWalking, HeartPulse, BedPulse, BedPulseDuo } from "app/utils/icons";
 import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
 
@@ -255,13 +254,6 @@ export const FitbitReactComponent = withRouteData(
                             style={conceptClass}
                             onClick={() => this.setGraphs(concept)}
                           >
-                          {concept.id === 1 && <WatchFitness style={styles.fas} />}
-                          {concept.id === 2 && <HeartPulse style={styles.fas} />}
-                          {concept.id === 3 && <MonitorWaveForm style={styles.fas} />}
-                          {concept.id === 4 && <PersonRunning style={styles.fas} />}
-                          {concept.id === 5 && <PersonWalking style={styles.fas} />}
-                          {concept.id === 6 && <BedPulse style={styles.fas} />}
-                          {concept.id === 7 && <BedPulseDuo style={styles.fas} />}
 
                             <div
                               className="fm-menu-item-display"
@@ -290,7 +282,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                        Participants with {selectedDisplay}
+                        Participants over time
                       </div>
                       {selectedAnalyses && totalCountAnalysis && (
                         <ChartFitbitReactComponent
