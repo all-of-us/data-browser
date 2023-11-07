@@ -224,7 +224,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
     domain
   ) {
     return (
-      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;">' +
+      '<div class="chart-tooltip age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;">' +
       "<strong>" +
       count +
       "</strong>" +

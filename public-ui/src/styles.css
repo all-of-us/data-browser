@@ -645,8 +645,10 @@ a a:link a:visited {
 }
 
 .fitbit-tooltip,
-.age-tooltip {
-  width: 10rem;
+.age-tooltip,
+.bio-sex-tooltip {
+  width: fit-content;
+  white-space: pre;
 }
 
 .geno-chart-tooltip {

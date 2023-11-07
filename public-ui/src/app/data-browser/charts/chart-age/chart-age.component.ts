@@ -65,7 +65,7 @@ export class ChartAgeComponent extends ChartBaseComponent implements OnChanges {
       const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue;
       this.pointData.push({
         toolTipHelpText:
-          '<div class="age-tooltip"><strong>' +
+          '<div style="background:red" class="age-tooltip"><strong>' +
           count +
           "</strong> participants were ages within range of <strong>" +
           concept.analysisStratumName +

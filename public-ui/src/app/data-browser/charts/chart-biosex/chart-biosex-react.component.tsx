@@ -193,7 +193,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     domain
   ) {
     const toolTipHelpText =
-      '<div class="chart-tooltip">' +
+      '<div class="chart-tooltip age-tooltip">' +
       "<strong> " +
       count +
       "</strong> participants who had <strong>" +
