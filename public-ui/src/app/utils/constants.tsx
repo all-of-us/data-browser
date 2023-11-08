@@ -77,8 +77,8 @@ export let fitbitConcepts = [
   },
   {
     id: 4,
-    displayName: "activity (daily summary)",
-    conceptName: "Activity (daily summary)",
+    displayName: "activity daily summary",
+    conceptName: "Activity daily summary",
     icon: "faPersonRunning",
     tooltipKey: "fitbitActivityDailyHelpText",
   },

@@ -1939,14 +1939,14 @@ year_rolling_counts as
 (SELECT join_year,people_count,
 SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
 FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Activity Daily Summary' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
+select 0 as id, 3107 as analysis_id, 'Activity daily summary' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
 from year_rolling_counts
 union all
-select 0 as id, 3101 as analysis_id, 'Activity Daily Summary' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
+select 0 as id, 3101 as analysis_id, 'Activity daily summary' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
 from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
 group by 4
 union all
-select 0 as id, 3102 as analysis_id, 'Activity Daily Summary' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
+select 0 as id, 3102 as analysis_id, 'Activity daily summary' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
 from m_age_stratum a
 group by 4;"
 
