@@ -200,8 +200,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       <React.Fragment>
         {
           (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
-            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-            scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants found</strong>
+            <span style={styles.loading}><Spinner /></span>} variants</strong> :
+            scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants</strong>
         }</React.Fragment>
       {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
         { filterShow &&
