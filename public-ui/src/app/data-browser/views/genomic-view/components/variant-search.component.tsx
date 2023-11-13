@@ -24,10 +24,7 @@ const styles = reactStyles({
     marginLeft: "-1rem",
   },
   resultSize: {
-    display: "flex",
-    alignItems: "center",
-    height: "1rem",
-    paddingTop: ".5rem"
+    fontSize:"1.2em"
   },
   filterBtn: {
     fontFamily: "gothamBold",
@@ -38,6 +35,11 @@ const styles = reactStyles({
   filterContainer: {
     position: "relative",
   },
+  resultInfo: {
+    display:"grid",
+    gridTemplateColumns: "11.5rem 1fr",
+    alignItems: "baseline"
+  }
 });
 
 const css = `
@@ -106,11 +108,11 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
   handleChange(val: string) {
-    if (val == '') {this.setState({ scrollClean: true }) }
+    if (val == '') { this.setState({ scrollClean: true }) }
     this.props.onSearchTerm(val);
     this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
   }
-  
+
   componentWillUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): void {
     if (this.props.scrollClean != nextProps.scrollClean) {
       this.setState({ scrollClean: nextProps.scrollClean })
@@ -189,22 +191,27 @@ export class VariantSearchComponent extends React.Component<Props, State> {
           <strong>Genomic Region:</strong> chr13:32355000-32375000
         </div>
       </div>
-      {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
-        style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> :
-        scrollClean ? <div> </div> : <div onClick={() => this.showFilter()}
-          style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div>}
-      {submittedFilterMetadata &&
+      {
+        submittedFilterMetadata &&
         <VariantFilterChips
           filteredMetadata={submittedFilterMetadata}
-          onChipChange={(changes) => this.handleChipChange(changes)} />}
-      <React.Fragment>
-        {
-          (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
-            <span style={styles.loading}><Spinner /></span>} variants found</strong> :
-            scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants found</strong>
-        }</React.Fragment>
+          onChipChange={(changes) => this.handleChipChange(changes)} />
+      }
+      <div style={styles.resultInfo}>
+        {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
+          style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> :
+          scrollClean ? <div> </div> : <div onClick={() => this.showFilter()}
+            style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div>}
+        <React.Fragment>
+          {
+            (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
+              <span style={styles.loading}><Spinner /></span>} variants</strong> :
+              scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants</strong>
+          }
+        </React.Fragment>
+      </div>
       {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
-        { filterShow &&
+        {filterShow &&
           <VariantFilterComponent
             filterMetadata={filterMetadata}
             sortMetadata={sortMetadata}
