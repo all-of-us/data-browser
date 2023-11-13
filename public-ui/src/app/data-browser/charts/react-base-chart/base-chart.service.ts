@@ -79,6 +79,9 @@ export const baseOptions = {
     },
   },
   tooltip: {
+    borderWidth: 0, // This will remove the border or outline
+    backgroundColor: 'transparent',
+    shadow: false,
     followPointer: true,
     outside: false,
     hideDelay: 0,
@@ -104,12 +107,12 @@ export const baseOptions = {
     },
     useHTML: true,
     enabled: true,
-    borderColor: "#262262",
-    borderRadius: "1px",
-    backgroundColor: "#FFFFFF",
+    borderColor: "transparent",
+    borderRadius: "0px",
     padding:0,
     style: {
       color: "#302C71",
+      outline:"none",
       whiteSpace: "normal",
       zIndex: undefined,
     },

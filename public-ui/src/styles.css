@@ -787,6 +787,7 @@ a a:link a:visited {
   font-family: GothamBook, Arial, sans-serif;
   padding: .5rem;
   border:#262262 1px solid;
+  box-shadow: 0px 0px 2px 1px #26226258;
 }
 
 .sources-tooltip {
@@ -805,8 +806,10 @@ a a:link a:visited {
 }
 
 .fitbit-tooltip,
-.age-tooltip {
-  width: 10rem;
+.age-tooltip,
+.bio-sex-tooltip {
+  width: fit-content;
+  white-space: pre;
 }
 
 .geno-chart-tooltip {
