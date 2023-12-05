@@ -195,7 +195,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     const toolTipHelpText =
       '<div class="chart-tooltip age-tooltip">' +
       "<strong> " +
-      count +
+      count.toLocaleString() +
       "</strong> participants who had <strong>" +
       analysisStratumName +
       "</strong> as sex assigned at birth." +
@@ -237,7 +237,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
       pointData.push({
         toolTipHelpText:
           '<div class="bio-sex-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
-          count +
+          count.toLocaleString() +
           "</strong>" +
           " participants who had <strong>" +
           concept.analysisStratumName +

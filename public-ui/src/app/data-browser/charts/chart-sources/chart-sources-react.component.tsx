@@ -84,7 +84,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
         "<br/>" +
         "Participant Count: " +
         "<strong>" +
-        count +
+        count.toLocaleString() +
         "</strong> </div>";
       data.push({
         name:
