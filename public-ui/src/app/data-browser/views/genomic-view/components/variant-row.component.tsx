@@ -199,8 +199,8 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 )}
               </div>
             </div>
-            <div style={styles.rowItem}>{variant.alleleCount}</div>
-            <div style={styles.rowItem}>{variant.alleleNumber}</div>
+            <div style={styles.rowItem}>{variant.alleleCount.toLocaleString()}</div>
+            <div style={styles.rowItem}>{variant.alleleNumber.toLocaleString()}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
           </div>
         )}
