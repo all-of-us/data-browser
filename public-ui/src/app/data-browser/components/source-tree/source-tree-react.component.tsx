@@ -133,7 +133,7 @@ export const SourceTreeComponent = class extends React.Component<
               conceptedClicked(this.props.node);
             }}
           >
-            {node.count}
+            {node.count.toLocaleString()}
           </span>
         </div>
         {isHandelSelected &&

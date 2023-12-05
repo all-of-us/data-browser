@@ -101,7 +101,7 @@ export class PopulationChartReactComponent extends React.Component<
       "</strong> <br /> " +
       percentage +
       " % | Allele Count: " +
-      count +
+      count.toLocaleString() +
       "</div>"
     );
   }
