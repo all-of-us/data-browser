@@ -96,7 +96,7 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       pointData.push({
         toolTipHelpText:
           '<div class="fitbit-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' +
-          count +
+          count.toLocaleString() +
           " </strong> participants by <strong>" +
           concept.stratum2 +
           "</strong> </div>",

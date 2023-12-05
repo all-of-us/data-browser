@@ -292,22 +292,22 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                           <div style={styles.popTableData}>
                             {item.Ancestry !== "Total" ? (
                               <React.Fragment>
-                                {item.AlleleCount}
+                                {item.AlleleCount.toLocaleString()}
                               </React.Fragment>
                             ) : (
                               <span style={styles.catHeading}>
-                                {item.AlleleCount}
+                                {item.AlleleCount.toLocaleString()}
                               </span>
                             )}
                           </div>
                           <div style={styles.popTableData}>
                             {item.Ancestry !== "Total" ? (
                               <React.Fragment>
-                                {item.AlleleNumber}
+                                {item.AlleleNumber.toLocaleString()}
                               </React.Fragment>
                             ) : (
                               <span style={styles.catHeading}>
-                                {item.AlleleNumber}
+                                {item.AlleleNumber.toLocaleString()}
                               </span>
                             )}
                           </div>

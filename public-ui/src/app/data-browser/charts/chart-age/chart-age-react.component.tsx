@@ -226,7 +226,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
     return (
       '<div class="chart-tooltip age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;">' +
       "<strong>" +
-      count +
+      count.toLocaleString() +
       "</strong>" +
       " participants were ages within range of <strong>" +
       analysisStratumName +
@@ -269,7 +269,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
       pointData.push({
         toolTipHelpText:
           '<div class="age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
-          count +
+          count.toLocaleString() +
           "</strong> participants were ages within range of <strong>" +
           concept.analysisStratumName + ".</div>",
         name: concept.analysisStratumName,
