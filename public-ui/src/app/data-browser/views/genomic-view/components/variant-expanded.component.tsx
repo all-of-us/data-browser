@@ -173,6 +173,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
       "https://www.ncbi.nlm.nih.gov/snp/?term=" + variantDetails.rsNumber;
     if (!loading) {
       variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
+      console.log(variantPopulationDetails);
     }
     return (
       <React.Fragment>

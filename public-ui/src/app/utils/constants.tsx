@@ -153,7 +153,7 @@ export const VARIANT_POPULATION_DETAILS = [
     color: "#8BC990",
   },
   {
-    Ancestry: "Other",
+    Ancestry: "Remaining",
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
