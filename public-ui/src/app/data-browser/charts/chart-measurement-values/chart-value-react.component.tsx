@@ -244,7 +244,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         participantCountText = "Participant Count: <strong> &le; 20 </strong>";
       } else {
         participantCountText =
-          "Participant Count: <strong>" + a.countValue + "</strong>";
+          "Participant Count: <strong>" + a.countValue.toLocaleString() + "</strong>";
       }
       if (a.stratum2 !== "No unit") {
         tooltipText =
