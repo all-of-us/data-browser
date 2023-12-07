@@ -114,6 +114,10 @@ export const css = `
 .result-box-title-text {
 	font-size: 16px;
 }
+
+.survey-result-boxes .result-box-body{
+  padding-bottom:2rem;
+}
 .result-box-body {
 	color: #302c71;
 	font-family: GothamBook, Arial, sans-serif;
@@ -279,8 +283,8 @@ const styles = reactStyles({
     fontSize: "14px",
   },
   dBTitle: {
-    fontFamily:"GothamBold, Arial, sans-serif",
-    fontWeight:"bold",
+    fontFamily: "GothamBold, Arial, sans-serif",
+    fontWeight: "bold",
     textAlign: "center",
     margin: 0,
     padding: "16px",
@@ -554,11 +558,6 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               </React.Fragment>
 
             )}
-          {questionCount && (
-            <div style={styles.resultBodyItem}>
-              <span>{description}</span>
-            </div>
-          )}
           {name.toLowerCase() === "physical measurements" && (
             <span style={styles.resultBodyDescription}>
               Participants have the option to provide a standard set of physical
@@ -629,7 +628,7 @@ export const dBHomeComponent = withRouteData(
 
     handleChange(val) {
       this.setState({ loading: true });
-      this.setState({ searchWord: val }, () => {localStorage.setItem("searchText", val);});
+      this.setState({ searchWord: val }, () => { localStorage.setItem("searchText", val); });
       this.search(val);
       this.typing = false;
     }
@@ -888,62 +887,62 @@ export const dBHomeComponent = withRouteData(
                     genomicInfo &&
                     !loadingVariantListSize &&
                     variantListSize > 0 && (
+                      <div>
+                        <h5
+                          style={{
+                            ...globalStyles.secondaryDisplay,
+                            ...styles.resultHeading,
+                            gridArea: 'gHeading',
+                          }}
+                        >
+                          <span style={{ position: 'relative', bottom: '2px' }}>Genomics</span>
+                        </h5>
+                        <div className="genomic-boxes">
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key="genomics-tile"
+                            searchWord={searchWord}
+                            {...genomicInfo}
+                            domainType="genomics"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                          <GenomicCallToActionComponent {...genomicInfo} />
+
+                        </div>
+                      </div>
+                    )}
+                  {physicalMeasurementsInfo.length > 0 && (
                     <div>
                       <h5
                         style={{
                           ...globalStyles.secondaryDisplay,
                           ...styles.resultHeading,
-                          gridArea: 'gHeading',
+                          gridArea: 'pmHeading',
+                          whiteSpace: 'nowrap'
                         }}
                       >
-                        <span style={{ position: 'relative', bottom: '2px' }}>Genomics</span>
+                        <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
                       </h5>
-                      <div className="genomic-boxes">
-                        <ResultLinksComponent
-                          typing={!this.typing}
-                          key="genomics-tile"
-                          searchWord={searchWord}
-                          {...genomicInfo}
-                          domainType="genomics"
-                          variantListSize={variantListSize}
-                          loadingVariantListSize={loadingVariantListSize}
-                        />
-                        <GenomicCallToActionComponent {...genomicInfo} />
-
+                      <div className="pm-boxes">
+                        {physicalMeasurementsInfo.map(
+                          (phyMeasurements, index) => {
+                            const key = "phyMeasurements" + index;
+                            return (
+                              <ResultLinksComponent
+                                typing={!this.typing}
+                                key={key}
+                                searchWord={searchWord}
+                                {...phyMeasurements}
+                                domainType="pmw"
+                                variantListSize={variantListSize}
+                                loadingVariantListSize={loadingVariantListSize}
+                              />
+                            );
+                          }
+                        )}
                       </div>
                     </div>
-                    )}
-                  {physicalMeasurementsInfo.length > 0 && (
-                  <div>
-                    <h5
-                      style={{
-                        ...globalStyles.secondaryDisplay,
-                        ...styles.resultHeading,
-                        gridArea: 'pmHeading',
-                        whiteSpace: 'nowrap'
-                      }}
-                    >
-                      <span style={{ position: 'relative', bottom: '2px' }}>Measurements and Wearables</span>
-                    </h5>
-                    <div className="pm-boxes">
-                      {physicalMeasurementsInfo.map(
-                        (phyMeasurements, index) => {
-                          const key = "phyMeasurements" + index;
-                          return (
-                            <ResultLinksComponent
-                              typing={!this.typing}
-                              key={key}
-                              searchWord={searchWord}
-                              {...phyMeasurements}
-                              domainType="pmw"
-                              variantListSize={variantListSize}
-                              loadingVariantListSize={loadingVariantListSize}
-                            />
-                          );
-                        }
-                      )}
-                    </div>
-                  </div>
                   )}
                 </div>
               </div>}
