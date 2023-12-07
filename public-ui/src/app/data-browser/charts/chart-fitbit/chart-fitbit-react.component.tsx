@@ -87,10 +87,10 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
     const pointData = [];
     const categoryArr = [];
     for (const concept of concepts.results) {
-      const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue;
+      const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue.toLocaleString();
       const totalCount =
         this.props.countAnalysis && this.props.countAnalysis.results
-          ? this.props.countAnalysis.results[0].countValue
+          ? this.props.countAnalysis.results[0].countValue.toLocaleString()
           : 0;
       const percentage = ((concept.countValue / totalCount) * 100).toFixed();
       pointData.push({

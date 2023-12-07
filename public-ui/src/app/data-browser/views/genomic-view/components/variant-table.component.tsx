@@ -177,7 +177,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     const { searchResults, loadingResults, filtered } = this.props;
     // console.log(loadingResults,'loadingResults');
 
-    
+
     if (filtered) {
       this.scrollAreaToTop();
 
@@ -258,6 +258,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     const { loadingVariantListSize, loadingResults, variantListSize, rowCount, currentPage } =
       this.props;
     const { loading, searchResults, sortMetadata } = this.state;
+    const arrowIcon = sortMetadata.clinicalSignificance.sortDirection === "asc" ? faArrowUp : faArrowDown;
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -273,13 +274,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Variant ID
                 </span>
                 {sortMetadata.variantId.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.variantId.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -289,11 +287,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.gene.sortActive && (
                   <React.Fragment>
-                    {sortMetadata.gene.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
+                    <FontAwesomeIcon
+                      icon={arrowIcon}
+                      style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                    />
                   </React.Fragment>
                 )}
               </div>
@@ -303,13 +300,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Consequence
                 </span>
                 {sortMetadata.consequence.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.consequence.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -318,13 +312,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Protein Change
                 </span>
                 {sortMetadata.proteinChange.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.proteinChange.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -333,14 +324,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   ClinVar Significance
                 </span>
                 {sortMetadata.clinicalSignificance.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.clinicalSignificance.sortDirection ===
-                      "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -349,13 +336,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Allele Count
                 </span>
                 {sortMetadata.alleleCount.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.alleleCount.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -364,13 +348,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Allele Number
                 </span>
                 {sortMetadata.alleleNumber.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.alleleNumber.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={{ ...styles.headingItem, ...styles.last }}>
@@ -379,13 +360,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   Allele Frequency
                 </span>
                 {sortMetadata.alleleFrequency.sortActive && (
-                  <React.Fragment>
-                    {sortMetadata.alleleFrequency.sortDirection === "asc" ? (
-                      <FontAwesomeIcon icon={faArrowUp}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    ) : (
-                      <FontAwesomeIcon icon={faArrowDown}  style={{color: "rgb(33, 111, 180)", marginLeft: "0.5em", }}/>
-                    )}
-                  </React.Fragment>
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
             </div>

@@ -90,7 +90,7 @@ export class TopResultsChartReactComponent extends React.Component<
     if (concept.countValue <= 20) {
       count = "&le; 20";
     } else {
-      count = new Intl.NumberFormat().format(concept.countValue);
+      count = concept.countValue.toLocaleString();
     }
     const toolTipText =
       '<div class="chart-tooltip top-results-tooltip">' +
