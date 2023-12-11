@@ -212,6 +212,9 @@ export const css = `
   body > app-public-aou > main > div:nth-child(2) > ng-component > div > section > div.result-boxes > div.genomic-pm > div:nth-child(1) > div > div:nth-child(3) {
     height: 22rem;
   }
+  .result-stat {
+    font-size: 1.6em;
+  }
 }
 
     `;
