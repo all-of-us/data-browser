@@ -67,7 +67,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
     super(props);
   }
 
-  tooltipHover() {
+  tooltipHover(e) {
     triggerEvent(
       "tooltipsHover",
       "Tooltips",
@@ -76,6 +76,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       this.props.searchTerm,
       this.props.action
     );
+    e.stopPropagation();
   }
 
   render() {
@@ -88,8 +89,9 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
         <div
           tabIndex={tabIndex}
           className="tooltip"
-          onFocus={() => this.tooltipHover()}
-          onMouseEnter={() => this.tooltipHover()}
+          onFocus={(e) => this.tooltipHover(e)}
+          onMouseEnter={(e) => this.tooltipHover(e)}
+          onClick={(e) => this.tooltipHover(e)}
         >
           <ClrIcon
             shape={iconShape}
