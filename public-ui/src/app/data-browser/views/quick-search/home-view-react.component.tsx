@@ -192,15 +192,26 @@ export const css = `
 		grid-template-areas:'eHeading eHeading''eBoxes eBoxes''gHeading gHeading'' gBoxes gBoxes''pmHeading pmHeading''pmBoxes pmBoxes ';
 	}
 	.result-boxes, .survey-result-boxes, .ehr-boxes{
-		grid-template-columns: repeat(2, minmax(239px, 1fr));
+		grid-template-columns: repeat(1, minmax(239px, 1fr));
 	}
 	.pm-boxes, .genomic-boxes {
 		width:auto;
-		grid-template-columns: repeat(2, minmax(239px, 1fr));
+		grid-template-columns: repeat(1, minmax(239px, 1fr));
 	}
 	.genomic-boxes{
 		// grid-template-columns: repeat(2, minmax(239px, 1fr));
+    margin-bottom:1rem;
 	}
+  div.genomic-pm > div:nth-child(1) > div > div:nth-child(1),
+ div.genomic-pm > div:nth-child(2) > div > div:nth-child(1){
+    margin-bottom: 1rem;
+  }
+  .result-box * {
+    font-size: 1.05em;
+  }
+  body > app-public-aou > main > div:nth-child(2) > ng-component > div > section > div.result-boxes > div.genomic-pm > div:nth-child(1) > div > div:nth-child(3) {
+    height: 22rem;
+  }
 }
 
     `;
