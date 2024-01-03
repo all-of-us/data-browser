@@ -204,19 +204,19 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
             <React.Fragment>
               <div className="body">
                 <div>
+                  <span style={styles.catHeading}>Gene:</span>
+                  <br />
+                  <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
+                </div>
+                <div>
                   <span style={styles.catHeading}>Consequence:</span>
                   <br />
                   <span style={styles.catInfo}>{variant.consequence ? variant.consequence : "-"}</span>
                 </div>
                 <div>
-                  <span style={styles.catHeading}>Protein Change:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>DNA Change:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
+                    <span style={styles.catHeading}>Variant Type:</span>
+                    <br />
+                    <span style={styles.catInfo}>{variant.variantType ? variant.variantType : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>Transcript:</span>
@@ -244,9 +244,14 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   </span>
                 </div>
                 <div>
-                  <span style={styles.catHeading}>Gene:</span>
+                  <span style={styles.catHeading}>DNA Change:</span>
                   <br />
-                  <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
+                  <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
+                </div>
+                <div>
+                  <span style={styles.catHeading}>Protein Change:</span>
+                  <br />
+                  <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>ClinVar Significance:</span>

@@ -1376,8 +1376,8 @@ definitions:
         description: consequence column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
-      proteinChange:
-        description: Protein change column metadata
+      variantType:
+        description: Variant Type column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
       clinicalSignificance:
@@ -1482,6 +1482,9 @@ definitions:
       consequence:
         description: consequence
         type: string
+      variantType:
+        description: variant type
+        type: string
       proteinChange:
         description: protein change
         type: string
@@ -1520,6 +1523,10 @@ definitions:
         $ref: "#/definitions/GenomicFilterOptionList"
       consequence:
         description: Consequence Filters
+        type: object
+        $ref: "#/definitions/GenomicFilterOptionList"
+      variantType:
+        description: Variant Type Filters
         type: object
         $ref: "#/definitions/GenomicFilterOptionList"
       clinicalSignificance:

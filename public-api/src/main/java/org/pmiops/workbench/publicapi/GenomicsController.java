@@ -59,7 +59,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(genes, @genes)";
     // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
-            "protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
+            "variant_type, protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, " +
             "gvs_eur_ac as eur_allele_count, gvs_eur_an as eur_allele_number, gvs_eur_af as eur_allele_frequency, " +
             "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, " +
@@ -69,30 +69,35 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency from ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
-            "(select 'Gene' as option, genes as genes, '' as conseq, '' as clin_significance, count(*) as gene_count, " +
-            "0 as con_count, " +
+            "(select 'Gene' as option, genes as genes, '' as conseq, '' as variant_type, '' as clin_significance, count(*) as gene_count, " +
+            "0 as con_count, 0 as variant_type_count, " +
             "0 as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant tj, \n" +
             " unnest(split(genes, ', ')) gene\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_CON = " group by genes),\n" +
             "b as\n" +
-            "(select 'Consequence' as option, '' as genes, conseq, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
+            "(select 'Consequence' as option, '' as genes, conseq, '' as variant_type, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant left join unnest(consequence) AS conseq\n";
-    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by conseq),\n" +
+
+    private static final String FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE = " group by conseq),\n" +
             "c as\n" +
-            "(select 'Clinical Significance' as option, '' as genes, '' as consequence, clin as clin_significance, \n" +
-            "0 as gene_count, 0 as con_count, count(*) as clin_count, 0 as min_count, 0 as max_count\n" +
+            "(select 'Variant Type' as option, '' as genes, '' as conseq, variant_type as variant_type, '' as clin_significance, 0 as gene_count, 0 as con_count, count(*) as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
+            "from ${projectId}.${dataSetId}.wgs_variant\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by variant_type),\n" +
+            "d as\n" +
+            "(select 'Clinical Significance' as option, '' as genes, '' as consequence, '' as variant_type, clin as clin_significance, \n" +
+            "0 as gene_count, 0 as con_count, 0 as variant_type_count, count(*) as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant left join unnest(clinical_significance) AS clin\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by clin),\n" +
-            "d as \n" +
-            "(select 'Allele Count' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
-            "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
+            "e as \n" +
+            "(select 'Allele Count' as option, '' as genes, '' as consequence, '' as variant_type, '' as clin_significance, \n" +
+            "0 as gene_count, 0 as con_count, 0 as variant_type_count, 0 as clin_count,\n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
-            "e as \n" +
-            "(select 'Allele Number' as option, '' as genes, '' as consequence, '' as clin_significance, \n" +
-            "0 as gene_count, 0 as con_count, 0 as clin_count,\n" +
+            "f as \n" +
+            "(select 'Allele Number' as option, '' as genes, '' as consequence, '' as variant_type, '' as clin_significance, \n" +
+            "0 as gene_count, 0 as con_count, 0 as variant_type_count, 0 as clin_count,\n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_UNION = ")" +
@@ -104,7 +109,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             "union all \n" +
             "select * from d \n" +
             "union all \n" +
-            "select * from e;";
+            "select * from e \n" +
+            "union all \n" +
+            "select * from f;";
 
     public GenomicsController() {}
 
@@ -164,11 +171,13 @@ public class GenomicsController implements GenomicsApiDelegate {
         String WHERE_CON_NULL = "";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
         String WHERE_CLIN_NULL = "";
+        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
         String ALLELE_COUNT_FILTER = "";
         String ALLELE_NUMBER_FILTER = "";
         String ALLELE_FREQUENCY_FILTER = "";
         boolean geneFilterFlag = false;
         boolean conFilterFlag = false;
+        boolean varTypeFilterFlag = false;
         boolean clinFilterFlag = false;
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
@@ -191,6 +200,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                             WHERE_CON_IN += "\"" + filter.getOption() + "\",";
                         } else {
                             WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
+                        }
+                    }
+                }
+            }
+            GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
+            List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+                for(int i=0; i < varTypeFilters.size(); i++) {
+                    GenomicFilterOption filter = varTypeFilters.get(i);
+                    if (filter.getChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
                         }
                     }
                 }
@@ -238,6 +259,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CON_IN = WHERE_CON_IN.substring(0, WHERE_CON_IN.length()-1);
             WHERE_CON_IN += ")) ";
         }
+        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
+            varTypeFilterFlag = true;
+            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
+        }
         if (WHERE_CLIN_IN.substring(WHERE_CLIN_IN.length() - 1).equals(",")) {
             clinFilterFlag = true;
             WHERE_CLIN_IN = WHERE_CLIN_IN.substring(0, WHERE_CLIN_IN.length()-1);
@@ -261,6 +286,10 @@ public class GenomicsController implements GenomicsApiDelegate {
                 finalSql += " AND ARRAY_LENGTH(consequence) = 0";
             }
         }
+        if (varTypeFilterFlag) {
+            finalSql += WHERE_VAR_TYPE_IN;
+            finalSql += ") ";
+        }
         if (clinFilterFlag) {
             finalSql += WHERE_CLIN_IN;
             if (WHERE_CLIN_NULL.length() > 0) {
@@ -281,6 +310,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (ALLELE_FREQUENCY_FILTER.length() > 0) {
             finalSql += ALLELE_FREQUENCY_FILTER;
         }
+
+        System.out.println("**************************");
+        System.out.println(finalSql);
+        System.out.println("**************************");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -305,6 +338,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
@@ -334,12 +368,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                     ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
                 }
             }
-            SortColumnDetails proteinChangeColumnSortMetadata = sortMetadata.getProteinChange();
-            if (proteinChangeColumnSortMetadata != null && proteinChangeColumnSortMetadata.getSortActive()) {
-                if (proteinChangeColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY protein_change ASC";
+            SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
+            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.getSortActive()) {
+                if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY protein_change DESC";
+                    ORDER_BY_CLAUSE = " ORDER BY variant_type DESC";
                 }
             }
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
@@ -403,6 +437,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String WHERE_GENE_IN = " AND genes in (";
         String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
         String WHERE_CON_NULL = "";
+        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
         String WHERE_CLIN_NULL = "";
         String ALLELE_COUNT_FILTER = "";
@@ -410,6 +445,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String ALLELE_FREQUENCY_FILTER = "";
         boolean geneFilterFlag = false;
         boolean conFilterFlag = false;
+        boolean varTypeFilterFlag = false;
         boolean clinFilterFlag = false;
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
@@ -436,6 +472,20 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
+
+            GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
+            List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+                for(int i=0; i < varTypeFilters.size(); i++) {
+                    GenomicFilterOption filter = varTypeFilters.get(i);
+                    if (filter.getChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
+                        }
+                    }
+                }
+            }
+
             GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
             List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
             if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
@@ -479,6 +529,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_CON_IN = WHERE_CON_IN.substring(0, WHERE_CON_IN.length()-1);
             WHERE_CON_IN += ")) ";
         }
+        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
+            varTypeFilterFlag = true;
+            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
+        }
         if (WHERE_CLIN_IN.substring(WHERE_CLIN_IN.length() - 1).equals(",")) {
             clinFilterFlag = true;
             WHERE_CLIN_IN = WHERE_CLIN_IN.substring(0, WHERE_CLIN_IN.length()-1);
@@ -501,6 +555,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             if (WHERE_CON_NULL.length() > 0) {
                 finalSql += " AND ARRAY_LENGTH(consequence) = 0";
             }
+        }
+
+        if (varTypeFilterFlag) {
+            finalSql += WHERE_VAR_TYPE_IN;
+            finalSql += ") ";
         }
 
         if (clinFilterFlag) {
@@ -526,6 +585,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
+        System.out.println("**************************");
+        System.out.println(finalSql);
+        System.out.println("**************************");
+
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -544,6 +607,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     .variantId(bigQueryService.getString(row, rm.get("variant_id")))
                     .genes(bigQueryService.getString(row, rm.get("genes")))
                     .consequence(bigQueryService.getString(row, rm.get("cons_agg_str")))
+                    .variantType(bigQueryService.getString(row, rm.get("variant_type")))
                     .proteinChange(bigQueryService.getString(row, rm.get("protein_change")))
                     .clinicalSignificance(bigQueryService.getString(row, rm.get("clin_sig_agg_str")))
                     .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
@@ -598,6 +662,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
+                + FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_CLIN + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
@@ -619,10 +684,12 @@ public class GenomicsController implements GenomicsApiDelegate {
         GenomicFilters genomicFilters = new GenomicFilters();
         GenomicFilterOptionList geneFilterList = new GenomicFilterOptionList();
         GenomicFilterOptionList conseqFilterList = new GenomicFilterOptionList();
+        GenomicFilterOptionList varTypeFilterList = new GenomicFilterOptionList();
         GenomicFilterOptionList clinSigFilterList = new GenomicFilterOptionList();
 
         List<GenomicFilterOption> geneFilters = new ArrayList<>();
         List<GenomicFilterOption> conseqFilters = new ArrayList<>();
+        List<GenomicFilterOption> varTypeFilters = new ArrayList<>();
         List<GenomicFilterOption> clinSigFilters = new ArrayList<>();
 
 
@@ -632,9 +699,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             String option = bigQueryService.getString(row, rm.get("option"));
             String gene = bigQueryService.getString(row, rm.get("genes"));
             String conseq = bigQueryService.getString(row, rm.get("conseq"));
+            String varType = bigQueryService.getString(row, rm.get("variant_type"));
             String clinSignificance = bigQueryService.getString(row, rm.get("clin_significance"));
             Long geneCount = bigQueryService.getLong(row, rm.get("gene_count"));
             Long conCount = bigQueryService.getLong(row, rm.get("con_count"));
+            Long variantTypeCount = bigQueryService.getLong(row, rm.get("variant_type_count"));
             Long clinCount = bigQueryService.getLong(row, rm.get("clin_count"));
             Long minCount = bigQueryService.getLong(row, rm.get("min_count"));
             Long maxCount = bigQueryService.getLong(row, rm.get("max_count"));
@@ -653,6 +722,13 @@ public class GenomicsController implements GenomicsApiDelegate {
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 conseqFilters.add(genomicFilterOption);
+            } else if (option.equals("Variant Type")) {
+                genomicFilterOption.setOption(varType);
+                genomicFilterOption.setCount(variantTypeCount);
+                genomicFilterOption.setChecked(false);
+                genomicFilterOption.setMin(0L);
+                genomicFilterOption.setMax(0L);
+                varTypeFilters.add(genomicFilterOption);
             } else if (option.equals("Clinical Significance")) {
                 genomicFilterOption.setOption(clinSignificance);
                 genomicFilterOption.setCount(clinCount);
@@ -687,11 +763,14 @@ public class GenomicsController implements GenomicsApiDelegate {
         geneFilterList.setFilterActive(false);
         conseqFilterList.setItems(conseqFilters);
         conseqFilterList.setFilterActive(false);
+        varTypeFilterList.setItems(varTypeFilters);
+        varTypeFilterList.setFilterActive(false);
         clinSigFilterList.setItems(clinSigFilters);
         clinSigFilterList.setFilterActive(false);
 
         genomicFilters.gene(geneFilterList);
         genomicFilters.consequence(conseqFilterList);
+        genomicFilters.variantType(varTypeFilterList);
         genomicFilters.clinicalSignificance(clinSigFilterList);
         genomicFilters.alleleCount(alleleCountFilter);
         genomicFilters.alleleNumber(alleleNumberFilter);

@@ -165,7 +165,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     "Variant ID",
     "Gene",
     "Consequence",
-    "Protein Change",
+    "Variant Type",
     "Clinical Significance",
     "Allele Count",
     "Allele Number",
@@ -309,9 +309,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
               <div style={styles.headingItem}>
                 <span
                   style={styles.headingLabel}>
-                  Protein Change
+                  Variant Type
                 </span>
-                {sortMetadata.proteinChange.sortActive && (
+                {sortMetadata.variantType.sortActive && (
                   <FontAwesomeIcon
                     icon={arrowIcon}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
