@@ -114,7 +114,8 @@ if [ "$SEARCH_VAT" = true ]; then
   "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`
   cluster by variant_id
   as
-  WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence, aa_change as protein_change,
+  WITH sorted_transcripts as (SELECT vid as variant_id, gene_symbol as gene_symbol, consequence,
+  variant_type as variant_type, aa_change as protein_change,
   contig, position, ref_allele, alt_allele, transcript, ARRAY_TO_STRING(consequence, ',') as cons_str, dna_change_in_transcript, clinvar_classification as clinical_significance,
   gvs_all_ac, gvs_all_an, gvs_all_af, dbsnp_rsid as rs_number,
   gvs_afr_ac, gvs_afr_an, gvs_afr_af,
@@ -146,6 +147,7 @@ if [ "$SEARCH_VAT" = true ]; then
      sorted_transcripts.variant_id,
      sorted_transcripts.gene_symbol,
      sorted_transcripts.consequence,
+     sorted_transcripts.variant_type,
      sorted_transcripts.protein_change,
      sorted_transcripts.dna_change_in_transcript as dna_change,
      sorted_transcripts.gvs_all_ac as allele_count,
