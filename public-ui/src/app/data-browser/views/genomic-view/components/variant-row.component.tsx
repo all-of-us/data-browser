@@ -181,9 +181,9 @@ export class VariantRowComponent extends React.Component<Props, State> {
               </div>
             </div>
             <div style={styles.rowItem}>
-              {variant.proteinChange ? (
+              {variant.variantType ? (
                 <div style={{ overflowWrap: "anywhere" }}>
-                  {variant.proteinChange}
+                  {variant.variantType}
                 </div>
               ) : (
                 <div>–</div>

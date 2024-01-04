@@ -91,6 +91,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             filterCats: [
                 { display: 'Gene', field: 'gene' },
                 { display: 'Consequence', field: 'consequence' },
+                { display: 'Variant Type', field: 'variantType' },
                 { display: 'ClinVar Significance', field: 'clinicalSignificance' },
                 { display: 'Allele Count', field: 'alleleCount' },
                 { display: 'Allele Number', field: 'alleleNumber' },

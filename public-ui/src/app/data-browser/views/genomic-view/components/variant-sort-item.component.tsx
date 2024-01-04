@@ -93,6 +93,7 @@ const css = `
 const lables = {
   gene: 'Gene',
   consequence: 'Consequence',
+  variantType: 'Variant Type',
   clinicalSignificance: 'ClinVar Significance',
   alleleNumber: 'Allele Number',
   alleleFrequency: 'Allele Frequency',
@@ -121,7 +122,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       filterCats: [
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
-        { display: 'Protein Change', field: 'proteinChange' },
+        { display: 'Variant Type', field: 'variantType' },
         { display: 'ClinVar Significance', field: 'clinicalSignificance' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
@@ -131,7 +132,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
         { display: 'Variant ID', field: 'variantId'},
         { display: 'Gene', field: 'gene' },
         { display: 'Consequence', field: 'consequence' },
-        { display: 'Protein Change', field: 'proteinChange' },
+        { display: 'Variant Type', field: 'variantType' },
         { display: 'ClinVar Significance', field: 'clinicalSignificance' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },

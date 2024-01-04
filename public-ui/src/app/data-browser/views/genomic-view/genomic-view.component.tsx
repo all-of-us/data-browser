@@ -130,7 +130,7 @@ class SortMetadataClass implements SortMetadata {
   variantId: any;
   gene: any;
   consequence: any;
-  proteinChange: any;
+  variantType: any;
   clinicalSignificance: any;
   alleleCount: any;
   alleleNumber: any;
@@ -139,7 +139,7 @@ class SortMetadataClass implements SortMetadata {
     variantId: any,
     gene: any,
     consequence: any,
-    proteinChange: any,
+    variantType: any,
     clinicalSignificance: any,
     alleleCount: any,
     alleleNumber: any,
@@ -148,7 +148,7 @@ class SortMetadataClass implements SortMetadata {
     this.variantId = variantId;
     this.gene = gene;
     this.consequence = consequence;
-    this.proteinChange = proteinChange;
+    this.variantType = variantType;
     this.clinicalSignificance = clinicalSignificance;
     this.alleleCount = alleleCount;
     this.alleleNumber = alleleNumber;
