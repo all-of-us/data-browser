@@ -533,7 +533,7 @@ export const GenomicViewComponent = withRouteData(
             )}
             <div style={styles.faqHeading}>
               <div className="faq-heading-text">
-                Questions about genomics?
+              Questions about genetic ancestry?
                 <span
                   style={styles.faqLink}
                   onClick={() => this.topBarClick(3)}
