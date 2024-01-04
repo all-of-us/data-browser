@@ -791,7 +791,10 @@ a a:link a:visited {
   border:#262262 1px solid;
   box-shadow: 0px 0px 2px 1px #26226258;
 }
-
+.chart-tooltip strong{
+  font-family: 'GothamBold';
+  font-weight: bold;
+}
 .sources-tooltip {
   white-space: pre-line;
   min-width: 300px;
