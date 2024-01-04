@@ -166,7 +166,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               </strong>
             </div>
             <div style={styles.answer}>
-              Genetic ancestry is more complex than what is included in the Data
+              Genetic ancestry is more complex than what is included in The Data
               Browser. The available data is intended to provide a broad
               overview of genetic variation by ancestry. Genetic ancestry is
               linked to migration over time among populations. Individuals may
