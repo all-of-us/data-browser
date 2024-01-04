@@ -174,7 +174,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
               <div style={styles.multipleValVariantItem}>
                 {variant.consequence && variant.consequence.length ? (
-                  <span>{variant.consequence}</span>
+                  <span>{variant.consequence.replace(/_/g, " ")}</span>
                 ) : (
                   <span>-</span>
                 )}
