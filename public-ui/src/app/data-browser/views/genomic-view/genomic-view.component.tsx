@@ -135,6 +135,7 @@ class SortMetadataClass implements SortMetadata {
   alleleCount: any;
   alleleNumber: any;
   alleleFrequency: any;
+  homozygoteCount: any;
   constructor(
     variantId: any,
     gene: any,
@@ -143,7 +144,8 @@ class SortMetadataClass implements SortMetadata {
     clinicalSignificance: any,
     alleleCount: any,
     alleleNumber: any,
-    alleleFrequency: any
+    alleleFrequency: any,
+    homozygoteCount: any
   ) {
     this.variantId = variantId;
     this.gene = gene;
@@ -153,6 +155,7 @@ class SortMetadataClass implements SortMetadata {
     this.alleleCount = alleleCount;
     this.alleleNumber = alleleNumber;
     this.alleleFrequency = alleleFrequency;
+    this.homozygoteCount = homozygoteCount;
   }
 }
 
@@ -201,6 +204,7 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 6),
           new SortColumnDetailsClass(false, "asc", 7),
           new SortColumnDetailsClass(false, "asc", 8),
+          new SortColumnDetailsClass(false, "asc", 9),
         ),
       };
     }

@@ -127,6 +127,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
         { display: 'Allele Frequency', field: 'alleleFrequency' },
+        { display: 'Homozygote Count', field: 'homozygoteCount' },
       ],
       sortCats: [
         { display: 'Variant ID', field: 'variantId'},
@@ -137,6 +138,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
         { display: 'Allele Frequency', field: 'alleleFrequency' },
+        { display: 'Homozygote Count', field: 'homozygoteCount' },
       ]
     };
   }

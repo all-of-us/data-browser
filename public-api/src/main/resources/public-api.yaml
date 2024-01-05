@@ -1396,6 +1396,10 @@ definitions:
         description: allele frequency column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      homozygoteCount:
+        description: homozygote count column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
 
   SortColumnDetails:
     type: object
@@ -1496,13 +1500,17 @@ definitions:
         type: integer
         format: int64
       alleleNumber:
-        description: allele count
+        description: allele number
         type: integer
         format: int64
       alleleFrequency:
-        description: allele count
+        description: allele frequency
         type: number
         format: double
+      homozygoteCount:
+        description: homozygote count
+        type: integer
+        format: int64
 
   VariantListResponse:
     type: object
@@ -1543,6 +1551,10 @@ definitions:
         $ref: "#/definitions/GenomicFilterOption"
       alleleFrequency:
         description: Allele Frequency Range Filter
+        type: object
+        $ref: "#/definitions/GenomicFilterOption"
+      homozygoteCount:
+        description: Homozygote Count Range Filter
         type: object
         $ref: "#/definitions/GenomicFilterOption"
 
@@ -1661,6 +1673,10 @@ definitions:
         description: African Ancestry Allele Frequency
         type: number
         format: double
+      afrHomozygoteCount:
+        description: African Ancestry Homozygote Count
+        type: integer
+        format: int64
       easAlleleCount:
         description: East Asian Ancestry Allele Count
         type: integer
@@ -1673,6 +1689,10 @@ definitions:
         description: East Asian Ancestry Allele Frequency
         type: number
         format: double
+      easHomozygoteCount:
+        description: East Asian Ancestry Homozygote Count
+        type: integer
+        format: int64
       eurAlleleCount:
         description: European Ancestry Allele Count
         type: integer
@@ -1685,6 +1705,10 @@ definitions:
         description: European Ancestry Allele Frequency
         type: number
         format: double
+      eurHomozygoteCount:
+        description: European Ancestry Homozygote Count
+        type: integer
+        format: int64
       amrAlleleCount:
         description: Latin American Ancestry Allele Count
         type: integer
@@ -1697,6 +1721,10 @@ definitions:
         description: Latin American Ancestry Allele Frequency
         type: number
         format: double
+      amrHomozygoteCount:
+        description: Latin American Ancestry Homozygote Count
+        type: integer
+        format: int64
       midAlleleCount:
         description: Middle Eastern Ancestry Allele Count
         type: integer
@@ -1709,6 +1737,10 @@ definitions:
         description: Middle Eastern Ancestry Allele Frequency
         type: number
         format: double
+      midHomozygoteCount:
+        description: Middle Eastern Ancestry Homozygote Count
+        type: integer
+        format: int64
       sasAlleleCount:
         description: South Asian Ancestry Allele Count
         type: integer
@@ -1721,6 +1753,10 @@ definitions:
         description: South Asian Ancestry Allele Frequency
         type: number
         format: double
+      sasHomozygoteCount:
+        description: South Asian Ancestry Homozygote Count
+        type: integer
+        format: int64
       othAlleleCount:
         description: Other Ancestry Allele Count
         type: integer
@@ -1733,6 +1769,10 @@ definitions:
         description: Other Ancestry Allele Frequency
         type: number
         format: double
+      othHomozygoteCount:
+        description: Other Homozygote Count
+        type: integer
+        format: int64
       totalAlleleCount:
         description: Total Allele Count
         type: integer
@@ -1745,3 +1785,7 @@ definitions:
         description: Total Allele Frequency
         type: number
         format: double
+      totalHomozygoteCount:
+        description: Total Homozygote Count
+        type: integer
+        format: int64

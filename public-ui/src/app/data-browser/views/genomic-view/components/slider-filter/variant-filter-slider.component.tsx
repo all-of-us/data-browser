@@ -11,6 +11,7 @@ const sliderProps = {
   opacity: 0.5,
 };
 interface Props {
+  category: string;
   filterItem: any;
   ogFilterItem: any;
   onSliderChange: Function;
@@ -46,6 +47,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
 
   render() {
     const { domain, defaultValues } = this.state;
+    const {filterItem, ogFilterItem, category} = this.props;
     return <div style={{
       maxWidth: 600, textAlign: "center", display: "flex",
       justifyContent: "center",
@@ -53,7 +55,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
       <Surface view={view} trbl={trbl}>
         <Slider
           mode={1}
-          step={(!domain[0]) ? .01 : 1}
+          step={(category === 'alleleFrequency') ? .01 : 1}
           flatten
           domain={domain}
           component="rect"
@@ -61,7 +63,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
           rootProps={sliderProps}
           values={defaultValues}>
           <Rail>
-            {({ getRailProps }) => <SliderRail getRailProps={getRailProps} />}
+            {({ getRailProps }) => <SliderRail getRailProps={getRailProps}/>}
           </Rail>
           {/* <Ticks>
             {({ ticks }) => (
@@ -94,6 +96,7 @@ export const VariantFilterSliderComponent = (class extends React.Component<Props
                     key={handle.id}
                     handle={handle}
                     domain={domain}
+                    category={category}
                     getHandleProps={getHandleProps}
                   />
                 ))}
