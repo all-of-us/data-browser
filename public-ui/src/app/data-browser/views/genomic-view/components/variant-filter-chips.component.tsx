@@ -126,7 +126,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
                             const chipLabel = item.option ? item.option : '(undefined)';
                             return <div style={styles.chipLayout} key={i}>
                                 {item.checked && <div style={styles.chip} >
-                                    <span >{chipLabel}</span>
+                                    <span >{chipLabel.replace(/_/g, " ")}</span>
                                     <FontAwesomeIcon style={{ paddingLeft: '.5rem', cursor: 'pointer' }}
                                     onClick={() => this.removeChip(item, el.cat)}
                                     icon={faXmark} className="clear-search-icon"

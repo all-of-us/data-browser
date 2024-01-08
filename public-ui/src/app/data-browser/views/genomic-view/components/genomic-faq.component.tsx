@@ -50,7 +50,7 @@ interface Props {
   closed: Function;
 }
 // tslint:disable-next-line:no-empty-interface
-interface State {}
+interface State { }
 
 const css = `
 `;
@@ -71,7 +71,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
         <div style={styles.background}> </div>
         <div style={styles.faqContainer} id="genomicsFaq" ref={this.faqWindow}>
           <div style={styles.top}>
-            <span>FAQs </span>
+            <span>Genetic ancestry FAQs </span>
             <div>
               <ClrIcon
                 onClick={(e) => this.props.closed()}
@@ -91,8 +91,8 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               <strong>How can the Variant Search be used?</strong>
             </div>
             <div style={styles.answer}>
-              This data browser allows researchers to plan studies using
-              <em>All of Us</em> data. Using the Variant Search, researchers can
+              The Data Browser allows researchers to plan studies using
+              <em> All of Us</em> data. Using the Variant Search, researchers can
               conduct preliminary exploration of allele frequencies by broad
               genetic ancestry categories and can observe how patterns of
               variation might differ between groups with different genetic
@@ -151,7 +151,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               hundreds of years ago.
             </div>
             <div style={styles.question}>
-              <strong>What does the category ‘other’ mean?</strong>
+              <strong>What does the category ‘Remaining’ mean?</strong>
             </div>
             <div style={styles.answer}>
               This means that individuals did not neatly fit the patterns of any
@@ -166,7 +166,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               </strong>
             </div>
             <div style={styles.answer}>
-              Genetic ancestry is more complex than what is included in the Data
+              Genetic ancestry is more complex than what is included in The Data
               Browser. The available data is intended to provide a broad
               overview of genetic variation by ancestry. Genetic ancestry is
               linked to migration over time among populations. Individuals may

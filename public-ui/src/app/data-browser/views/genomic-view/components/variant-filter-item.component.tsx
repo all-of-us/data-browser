@@ -183,7 +183,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
               style={styles.filterItemCheck}
               type='checkbox' name={item.option}
               checked={item.checked} />
-            <label style={styles.filterItemLabel} htmlFor={item.option}>{itemLabel}</label>
+            <label style={styles.filterItemLabel} htmlFor={item.option}>{itemLabel.replace(/_/g, " ")}</label>
           </span>;
         })}
       </div> :
