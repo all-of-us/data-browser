@@ -37,7 +37,7 @@ export class PopulationChartReactComponent extends React.Component<
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "pie";
     newBaseOptions.title.text =
-      '<div style="text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
+      '<div style=" color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
     newBaseOptions.title.verticalAlign = "middle";
     newBaseOptions.title.style = {
       color: "black",
@@ -95,7 +95,7 @@ export class PopulationChartReactComponent extends React.Component<
 
   getTooltipHelpText(name: string, percentage: any, count: number) {
     return (
-      '<div class="chart-tooltip" style="white-space: nowrap; word-wrap: break-word; width:fit-content; font-size: 1.5em; color: #302C71;"' +
+      '<div class="chart-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 1.5em; width: 18em; color: #302C71;">' +
       "<strong>" +
       name +
       "</strong> <br /> " +
