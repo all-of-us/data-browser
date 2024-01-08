@@ -36,6 +36,7 @@ const styles = reactStyles({
   },
   surveyHead: {
     display: "flex",
+    alignItems:"baseline",
     position: "relative",
     padding: "0 1rem",
     marginBottom: "calc(18px * 4)",
@@ -110,7 +111,7 @@ const surveyStyle = `
 .stat-container .secondary-display{
   // margin-bottom:26px;
   margin-bottom:1rem;
-  margin-top:1rem;
+  margin-top:0;
 }
 
 .topic-text {
