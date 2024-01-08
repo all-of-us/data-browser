@@ -12,7 +12,8 @@ import { SortMetadata } from "publicGenerated/fetch";
 const styles = reactStyles({
   searchBar: {
     paddingRight: "2rem",
-    width: "42em",
+    width: "calc(100% - 16rem)",
+    minWidth: "20rem"
   },
   searchHelpText: {
     paddingTop: "2em",
@@ -52,8 +53,8 @@ const css = `
 }
 @media (max-width: 1220px) {
     .search-container {
-        flex-direction: column;
-        align-items: flex-start;
+        // flex-direction: column;
+        // align-items: flex-start;
     }
 }
 `;
@@ -178,7 +179,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     return <React.Fragment>
       <style>{css}</style>
       <div className='search-container'>
-        <div style={styles.searchBar}>
+        <div className="search-bar" style={styles.searchBar}>
           <SearchComponent value={searchWord} searchTitle='' domain='genomics'
             onChange={(val: string) => this.handleChange(val)}
             onClear={() => this.handleChange('')} placeholderText='Search by gene, variant, rs number, or genomic region' />
