@@ -21,7 +21,7 @@ strong {
 
 .version-box-header,.version-box-row {
     display: grid;
-    grid-template-columns: 20% 15% 25% 15% 25%;
+    grid-template-columns: 20% 15% 1fr 20% 25%;
     /* justify-content: space-around; */
     width:100%;
 }
@@ -73,7 +73,7 @@ export class SurveyVersionTableReactComponent extends React.Component<
             <div className="version-box-item">Month</div>
             <div className="version-box-item">Year</div>
             <div className="version-box-item">Participants</div>
-            <div className="version-box-item">Number of Questions</div>
+            <div className="version-box-item">Questions</div>
             <div className="version-box-item">Download PDF</div>
           </div>
           <div className="version-box-body">
