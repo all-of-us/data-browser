@@ -17,7 +17,7 @@ const css = `
 }
 .pop-table-container {
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 65% 35%;
     text-align: left;
     align-items: center;
     margin-top: 1rem;
@@ -30,7 +30,7 @@ const css = `
 }
 .pop-table {
         display: grid;
-        grid-template-columns: 25% 25% 25% 25%;
+        grid-template-columns: 26% 18.5% 18.5% 18.5% 18.5%;
         font-size: 14px;
     }
 .pop-desc {
@@ -40,7 +40,7 @@ const css = `
 }
 .body {
     display: grid;
-    grid-template-columns: 25% 25% 25% 25%;
+    grid-template-columns: 26% 18.5% 18.5% 18.5% 18.5%;
     column-gap: 1rem;
     row-gap: 1rem;
     padding-top: 1rem;
@@ -267,17 +267,21 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   <div className="pop-table">
                     <div style={styles.popTableHeading}></div>
                     <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele Count</span>
+                      <span style={styles.catHeading}>Allele <br />Count</span>
                     </div>
                     <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele Number</span>
+                      <span style={styles.catHeading}>Allele <br/>Number</span>
                     </div>
                     <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele Frequency</span>
+                      <span style={styles.catHeading}>Allele <br />Frequency</span>
+                    </div>
+                    <div style={styles.popTableHeading}>
+                      <span style={styles.catHeading}>Homozygote <br />Count</span>
                     </div>
                   </div>
                   <div style={styles.popTableBody}>
                     {variantPopulationDetails.map((item, index) => {
+                     console.log(item);
                       const colorStyle = { color: item.color };
                       return (
                         <div key={index} className="pop-table">
@@ -328,6 +332,17 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                                 {item.AlleleFrequency > 0
                                   ? item.AlleleFrequency.toFixed(6)
                                   : item.AlleleFrequency}
+                              </span>
+                            )}
+                          </div>
+                          <div style={styles.popTableData}>
+                            {item.Ancestry !== "Total" ? (
+                              <React.Fragment>
+                                {item.HomozygoteCount.toLocaleString()}
+                              </React.Fragment>
+                            ) : (
+                              <span style={styles.catHeading}>
+                                {item.HomozygoteCount.toLocaleString()}
                               </span>
                             )}
                           </div>

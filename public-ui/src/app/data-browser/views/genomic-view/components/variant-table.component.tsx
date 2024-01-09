@@ -86,7 +86,7 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 11rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+    grid-template-columns: 10rem 7rem 7rem 6rem 8rem 8rem 8rem 8rem 10rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
     width: 72rem;
@@ -98,7 +98,7 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+        grid-template-columns: 10rem 7rem 7rem 6rem 8rem 8rem 8rem 8rem 10rem;
         width: 71rem;
     }
 }
@@ -170,6 +170,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     "Allele Count",
     "Allele Number",
     "Allele Frequency",
+    "Homozygote Count",
   ];
   debounceTimer = null;
 
@@ -354,12 +355,24 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   />
                 )}
               </div>
-              <div style={{ ...styles.headingItem, ...styles.last }}>
+              <div style={styles.headingItem}>
                 <span
                   style={styles.headingLabel}>
                   Allele Frequency
                 </span>
                 {sortMetadata.alleleFrequency.sortActive && (
+                  <FontAwesomeIcon
+                    icon={arrowIcon}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
+                )}
+              </div>
+              <div style={{ ...styles.headingItem, ...styles.last }}>
+                <span
+                  style={styles.headingLabel}>
+                  Homozygote Count
+                </span>
+                {sortMetadata.homozygoteCount.sortActive && (
                   <FontAwesomeIcon
                     icon={arrowIcon}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}

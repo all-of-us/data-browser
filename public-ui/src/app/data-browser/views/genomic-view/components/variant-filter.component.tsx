@@ -96,6 +96,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                 { display: 'Allele Count', field: 'alleleCount' },
                 { display: 'Allele Number', field: 'alleleNumber' },
                 { display: 'Allele Frequency', field: 'alleleFrequency' },
+                { display: 'Homozygote Count', field: 'homozygoteCount' },
             ],
             filteredMetadata: this.props.filterMetadata,
             filterMetadata: this.props.filterMetadata,

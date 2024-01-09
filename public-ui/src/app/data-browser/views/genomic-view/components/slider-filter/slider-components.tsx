@@ -34,16 +34,15 @@ export function SliderRail({ getRailProps }) {
 }
 
 SliderRail.propTypes = {
-  getRailProps: PropTypes.func.isRequired
+  getRailProps: PropTypes.func.isRequired,
 };
 
 // *******************************************************
 // HANDLE COMPONENT
 // *******************************************************
-export function Handle({ handle: { id, percent, value },domain, getHandleProps }) {
- 
-  
-  value = !domain[0] ? value.toFixed(2): value;
+export function Handle({ handle: { id, percent, value },domain, category, getHandleProps }) {
+
+  value = (category === 'alleleFrequency') ? value.toFixed(2): value;
   const r0 = dims[1] * 0.4; // inner - visible
   const r1 = dims[1] * 0.6; // outer - invisible w/ events
   return (    

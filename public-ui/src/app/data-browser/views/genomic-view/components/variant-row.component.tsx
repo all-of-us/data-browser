@@ -60,7 +60,7 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 11rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+    grid-template-columns: 10rem 7rem 7rem 6rem 8rem 8rem 8rem 8rem 10rem;
     align-items: center;
     width: 72rem;
     background: white;
@@ -71,7 +71,7 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 8rem 11rem 8rem 10rem 8rem 8rem 8rem;
+        grid-template-columns: 10rem 7rem 7rem 6rem 8rem 8rem 8rem 8rem 10rem;
         width: 71rem;
     }
 }
@@ -202,6 +202,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>{variant.alleleCount.toLocaleString()}</div>
             <div style={styles.rowItem}>{variant.alleleNumber.toLocaleString()}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+            <div style={styles.rowItem}>{variant.homozygoteCount.toLocaleString()}</div>
           </div>
         )}
       </React.Fragment>
