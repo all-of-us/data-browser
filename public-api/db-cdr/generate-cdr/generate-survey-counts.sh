@@ -23,6 +23,234 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` AS
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id != 43529712"
 
+#####################
+# TODO : Clean this code once the issue is fixed #
+# Remove the null questionnaire_response_id participants from the surveys #
+#####################
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1586134 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1586134 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1586134 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585710 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585710 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585710 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585855 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585855 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1585855 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=43528895 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=43528895 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=43528895 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into\`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1740639 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1740639 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1740639 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1333342 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1333342 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=1333342 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=765936 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=765936 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=765936 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=40192389 and type='QUESTION' and generate_counts = 1
+) and person_id not in (
+  SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=40192389 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NULL
+EXCEPT DISTINCT
+SELECT distinct o.person_id
+FROM  \`${BQ_PROJECT}.${BQ_DATASET}.observation\` o join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on o.person_id = p.person_id
+WHERE o.observation_source_concept_id IN (
+    SELECT DISTINCT concept_id
+    FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` c
+    WHERE survey_concept_id=40192389 and type='QUESTION' and generate_counts = 1
+)
+AND o.questionnaire_response_id IS NOT NULL
+ORDER BY person_id
+);
+"
+
 ####################
 # fmh counts #
 ####################
@@ -34,6 +262,7 @@ else
     echo "FAILED To aggregate fmh"
     exit 1
 fi
+
 
 # Cope survey response counts by version
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
