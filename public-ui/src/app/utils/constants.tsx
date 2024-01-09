@@ -115,6 +115,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#1F78B4",
   },
   {
@@ -122,6 +123,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#A27BD7",
   },
   {
@@ -129,6 +131,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#F8C854",
   },
   {
@@ -136,6 +139,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#6CABE4",
   },
   {
@@ -143,6 +147,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#CB2D4C",
   },
   {
@@ -150,6 +155,7 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#8BC990",
   },
   {
@@ -157,9 +163,10 @@ export const VARIANT_POPULATION_DETAILS = [
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,
+    HomozygoteCount: 0,
     color: "#B2AEAD",
   },
-  { Ancestry: "Total", AlleleCount: 0, AlleleNumber: 0, AlleleFrequency: 0 },
+  { Ancestry: "Total", AlleleCount: 0, AlleleNumber: 0, AlleleFrequency: 0, HomozygoteCount: 0, },
 ];
 
 export const prepVariantPopulationDetails = (variantDetails) => {
@@ -167,33 +174,49 @@ export const prepVariantPopulationDetails = (variantDetails) => {
   VARIANT_POPULATION_DETAILS[0].AlleleNumber = variantDetails.afrAlleleNumber;
   VARIANT_POPULATION_DETAILS[0].AlleleFrequency =
     variantDetails.afrAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[0].HomozygoteCount =
+        variantDetails.afrHomozygoteCount;
   VARIANT_POPULATION_DETAILS[1].AlleleCount = variantDetails.easAlleleCount;
   VARIANT_POPULATION_DETAILS[1].AlleleNumber = variantDetails.easAlleleNumber;
   VARIANT_POPULATION_DETAILS[1].AlleleFrequency =
     variantDetails.easAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[1].HomozygoteCount =
+        variantDetails.easHomozygoteCount;
   VARIANT_POPULATION_DETAILS[2].AlleleCount = variantDetails.eurAlleleCount;
   VARIANT_POPULATION_DETAILS[2].AlleleNumber = variantDetails.eurAlleleNumber;
   VARIANT_POPULATION_DETAILS[2].AlleleFrequency =
     variantDetails.eurAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[2].HomozygoteCount =
+        variantDetails.eurHomozygoteCount;
   VARIANT_POPULATION_DETAILS[3].AlleleCount = variantDetails.amrAlleleCount;
   VARIANT_POPULATION_DETAILS[3].AlleleNumber = variantDetails.amrAlleleNumber;
   VARIANT_POPULATION_DETAILS[3].AlleleFrequency =
     variantDetails.amrAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[3].HomozygoteCount =
+        variantDetails.amrHomozygoteCount;
   VARIANT_POPULATION_DETAILS[4].AlleleCount = variantDetails.midAlleleCount;
   VARIANT_POPULATION_DETAILS[4].AlleleNumber = variantDetails.midAlleleNumber;
   VARIANT_POPULATION_DETAILS[4].AlleleFrequency =
     variantDetails.midAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[4].HomozygoteCount =
+        variantDetails.midHomozygoteCount;
   VARIANT_POPULATION_DETAILS[5].AlleleCount = variantDetails.sasAlleleCount;
   VARIANT_POPULATION_DETAILS[5].AlleleNumber = variantDetails.sasAlleleNumber;
   VARIANT_POPULATION_DETAILS[5].AlleleFrequency =
     variantDetails.sasAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[5].HomozygoteCount =
+        variantDetails.sasHomozygoteCount;
   VARIANT_POPULATION_DETAILS[6].AlleleCount = variantDetails.othAlleleCount;
   VARIANT_POPULATION_DETAILS[6].AlleleNumber = variantDetails.othAlleleNumber;
   VARIANT_POPULATION_DETAILS[6].AlleleFrequency =
     variantDetails.othAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[6].HomozygoteCount =
+        variantDetails.othHomozygoteCount;
   VARIANT_POPULATION_DETAILS[7].AlleleCount = variantDetails.totalAlleleCount;
   VARIANT_POPULATION_DETAILS[7].AlleleNumber = variantDetails.totalAlleleNumber;
   VARIANT_POPULATION_DETAILS[7].AlleleFrequency =
     variantDetails.totalAlleleFrequency;
+  VARIANT_POPULATION_DETAILS[7].HomozygoteCount =
+        variantDetails.totalHomozygoteCount;
   return VARIANT_POPULATION_DETAILS;
 };

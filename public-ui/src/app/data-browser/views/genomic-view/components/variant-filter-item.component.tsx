@@ -115,6 +115,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   filterClick() {
+    console.log('Am i clicked ?');
     this.setState({ filterItemOpen: !this.state.filterItemOpen });
   }
 
@@ -161,6 +162,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   render(): React.ReactNode {
     const { category,cleared, filterItem } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
+
     return <React.Fragment>
       <style>{css}</style>
       <div onClick={() => this.filterClick()} style={styles.filterItem}>
@@ -189,6 +191,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       </div> :
         <div>{filterItemOpen &&
           <VariantFilterSliderComponent
+            category={category.field.toString()}
             filterItem={filterItemState}
             ogFilterItem={ogFilterMetaData}
             onSliderChange={(e) => this.handleSliderChange(e, filterItemState)} />}
