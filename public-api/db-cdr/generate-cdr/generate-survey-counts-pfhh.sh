@@ -77,7 +77,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3101 as analysis_id,
-CAST(sq.survey_concept_id AS STRING) as stratum_1,
+'43529712' as stratum_1,
 CAST(p1.gender_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
@@ -86,7 +86,7 @@ on p1.person_id = ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
 On ob1.concept+id=sq.concept_id
 where (ob1.concept+id > 0 and ob1.value_source_concept_id > 0)
-group by sq.survey_concept_id, p1.gender_concept_id"
+group by p1.gender_concept_id"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -101,25 +101,23 @@ when age_at_event >= 30 and age_at_event <= 89 then cast(floor(age_at_event/10) 
 when age_at_event < 18 then '0' end as age_stratum from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\`
 )
 select 0, 3102 as analysis_id,
-CAST(sq.survey_concept_id AS STRING) as stratum_1,
+'43529712' as stratum_1,
 age_stratum as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
 from survey_age_stratum ob1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
 On ob1.concept+id=sq.concept_id
 where (ob1.concept+id > 0 and ob1.value_source_concept_id > 0)
-group by sq.survey_concept_id, stratum_2"
+group by stratum_2"
 
 # Count of people who took each survey
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3000 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
+SELECT 0 as id, 3000 as analysis_id, '43529712' as stratum_1,
 'Survey' as stratum_3,
 count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
 On o.concept_id=sq.concept_id
 Where (o.concept_id > 0 and o.value_source_concept_id > 0)
-and o.concept_id not in (40766240,43528428,1585389)
-and survey_concept_id not in (1333342, 765936)
-Group by sq.survey_concept_id"
+and o.concept_id not in (40766240,43528428,1585389)"

@@ -23,6 +23,17 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` AS
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id != 43529712"
 
+####################
+# fmh counts #
+####################
+# Aggregate fmh counts
+if ./generate-cdr/fmh-aggregate-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
+then
+    echo "Added few extra rows in observation table to aggregate counts of old version of fmh with the new one"
+else
+    echo "FAILED To aggregate fmh"
+    exit 1
+fi
 
 # Cope survey response counts by version
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -650,3 +661,16 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.observation_ext\` ob_ext on ob.observation_id
 where ob_ext.survey_version_concept_id is not null and ob_ext.survey_version_concept_id in (765936, 905047, 905055, 1741006)
 group by ob_ext.survey_version_concept_id
 order by ob_ext.survey_version_concept_id asc;"
+
+
+####################
+# PFHH counts #
+####################
+# PFHH counts
+if ./generate-cdr/generate-survey-counts-pfhh.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
+then
+    echo "Preparing a mock up of pfhh counts without branching logic"
+else
+    echo "FAILED To aggregate fmh"
+    exit 1
+fi
