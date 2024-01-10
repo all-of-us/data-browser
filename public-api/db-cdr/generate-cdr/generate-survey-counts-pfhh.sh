@@ -32,7 +32,7 @@ CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(sm2.order_number as string) stratum_5,
 sm2.path as stratum_6,
 Count(distinct ob.person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_matadata\` sm on ob.concept_id = sm.question_concept_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on sm2.concept_id = sm.question_concept_id
 and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8;"
@@ -45,7 +45,7 @@ CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(p.gender_concept_id as string) stratum_5,
 sm2.path as stratum_6,
 Count(distinct ob.person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_matadata\` sm on ob.concept_id = sm.question_concept_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on sm2.concept_id = sm.question_concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on ob.person_id = p.person_id
 and ob.value_source_concept_id = sm.answer_concept_id
