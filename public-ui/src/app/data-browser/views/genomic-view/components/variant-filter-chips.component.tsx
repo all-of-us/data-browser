@@ -16,10 +16,12 @@ interface State {
 const lables = {
     gene: 'Gene',
     consequence: 'Consequence',
+    variantType: 'Variant Type',
     clinicalSignificance: 'ClinVar Significance',
     alleleNumber: 'Allele Number',
     alleleFrequency: 'Allele Frequency',
-    alleleCount: 'Allele Count'
+    alleleCount: 'Allele Count',
+    homozygoteCount: 'Homozygote Count'
 };
 
 const styles = reactStyles({
