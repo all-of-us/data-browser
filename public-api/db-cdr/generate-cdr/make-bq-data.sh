@@ -548,7 +548,7 @@ where c.concept_id=sm.concept_id"
 
 # Set the question participant counts
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\ c1
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 SET c1.count_value = subquery.max_count_val
 FROM (
     SELECT
