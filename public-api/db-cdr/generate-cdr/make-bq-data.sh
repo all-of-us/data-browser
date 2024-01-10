@@ -548,15 +548,34 @@ where c.concept_id=sm.concept_id"
 
 # Set the question participant counts
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
-set c1.count_value=count_val from
-(select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
-on ob.observation_source_concept_id=cr.concept_id
-where cr.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
-group by survey_concept_id,cr.concept_id)
-where c1.concept_id=question_id
-"
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\ c1
+SET c1.count_value = subquery.max_count_val
+FROM (
+    SELECT
+        MAX(count_val) AS max_count_val,
+        question_id
+    FROM (
+        SELECT
+            COUNT(DISTINCT ob.person_id) AS count_val,
+            cr.survey_concept_id AS survey_concept_id,
+            cr.concept_id AS question_id
+        FROM
+            \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob
+        JOIN
+            \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
+        ON
+            ob.observation_source_concept_id = cr.concept_id
+        WHERE
+            cr.concept_id NOT IN (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
+        GROUP BY
+            survey_concept_id,
+            cr.concept_id
+    ) AS inner_subquery
+    GROUP BY
+        question_id
+) AS subquery
+WHERE
+    c1.concept_id = subquery.question_id;"
 
 # Set the question count on the survey_module row
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
