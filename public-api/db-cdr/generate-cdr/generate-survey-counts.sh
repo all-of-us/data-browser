@@ -24,7 +24,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id != 43529712"
 
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
+"CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` as
 select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
 SELECT DISTINCT concept_id FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\`);"
 
