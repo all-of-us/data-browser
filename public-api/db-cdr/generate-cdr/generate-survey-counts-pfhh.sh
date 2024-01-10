@@ -84,8 +84,8 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
 \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob1
 on p1.person_id = ob1.person_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
-On ob1.concept+id=sq.concept_id
-where (ob1.concept+id > 0 and ob1.value_source_concept_id > 0)
+On ob1.concept_id=sq.concept_id
+where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
 group by p1.gender_concept_id"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
@@ -106,8 +106,8 @@ age_stratum as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
 from survey_age_stratum ob1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
-On ob1.concept+id=sq.concept_id
-where (ob1.concept+id > 0 and ob1.value_source_concept_id > 0)
+On ob1.concept_id=sq.concept_id
+where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
 group by stratum_2"
 
 # Count of people who took each survey
