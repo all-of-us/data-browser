@@ -85,7 +85,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata pfhh_qa_metadata)
 
 for t in "${create_tables[@]}"
 do
@@ -96,7 +96,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata pfhh_qa_metadata)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -105,7 +105,10 @@ done
 
 if [ "$SEARCH_VAT" = true ]; then
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`"
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_1\`"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_2\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
@@ -207,8 +210,15 @@ if [ "$SEARCH_VAT" = true ]; then
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv\`
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_1\`
   CLUSTER BY contig, position
+  AS
+  SELECT *
+  FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_2\`
+  CLUSTER BY variant_type
   AS
   SELECT *
   FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
@@ -421,6 +431,11 @@ where survey_concept_id=765936 and sub=1) b
 where a.analysis_id=3110 and
 a.stratum_2=CAST(b.parent_question_concept_id as string) and a.stratum_3=CAST(b.parent_answer_concept_id as string);"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set a.stratum_7=''
+where a.analysis_id=3110 and a.stratum_1 = '43529712';"
+
 ###########################
 # concept with count cols #
 ###########################
@@ -538,15 +553,34 @@ where c.concept_id=sm.concept_id"
 
 # Set the question participant counts
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
-set c1.count_value=count_val from
-(select count(distinct ob.person_id) as count_val,cr.survey_concept_id as survey_concept_id,cr.concept_id as question_id
-from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
-on ob.observation_source_concept_id=cr.concept_id
-where cr.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
-group by survey_concept_id,cr.concept_id)
-where c1.concept_id=question_id
-"
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
+SET c1.count_value = subquery.max_count_val
+FROM (
+    SELECT
+        MAX(count_val) AS max_count_val,
+        question_id
+    FROM (
+        SELECT
+            COUNT(DISTINCT ob.person_id) AS count_val,
+            cr.survey_concept_id AS survey_concept_id,
+            cr.concept_id AS question_id
+        FROM
+            \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob
+        JOIN
+            \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` cr
+        ON
+            ob.observation_source_concept_id = cr.concept_id
+        WHERE
+            cr.concept_id NOT IN (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)
+        GROUP BY
+            survey_concept_id,
+            cr.concept_id
+    ) AS inner_subquery
+    GROUP BY
+        question_id
+) AS subquery
+WHERE
+    c1.concept_id = subquery.question_id;"
 
 # Set the question count on the survey_module row
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
@@ -556,6 +590,7 @@ set sm.question_count=num_questions from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` sq
 join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` qc
 on sq.concept_id = qc.concept_id
+where sq.type='QUESTION'
 group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
 
@@ -715,16 +750,16 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` q
 SET q.question_string = t2.qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
-SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
+SELECT stratum_1, stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
-GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
-where q.concept_id=q2.concept_id and q.path=q2.path
+GROUP BY stratum_1, stratum_2, stratum_6) AS t2 ON cast(q2.survey_concept_id as string) = t2.stratum_1 and cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
+where q.concept_id=q2.concept_id and q.path=q2.path and q.survey_concept_id = q2.survey_concept_id
 and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040);"
+
 
 # TODO This is temporary please remove if this bug is no longer in the next dataset DB-1166 for reference
 bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
-"
-delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
+"delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
 where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
 "
 

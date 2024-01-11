@@ -160,6 +160,7 @@ public class AchillesAnalysisService {
         countAnalysis.setDomainId(domainId);
         Analysis genderCountAnalysis = analysisList.stream().filter(aa -> aa.getAnalysisId() == (domainDesc.equals("survey") ? 3200 : 3300)).collect(Collectors.toList()).get(0);
         Analysis ageCountAnalysis = analysisList.stream().filter(aa -> aa.getAnalysisId() == (domainDesc.equals("survey") ? 3201 : 3301)).collect(Collectors.toList()).get(0);
+
         addGenderStratum(genderCountAnalysis,stratum, domainId, null);
         addAgeStratum(ageCountAnalysis, domainId, null,  stratum);
         countAnalysis.setGenderCountAnalysis(genderCountAnalysis);
