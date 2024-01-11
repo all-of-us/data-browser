@@ -121,3 +121,32 @@ FROM \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` o join \`${WORKBENCH_P
 On o.concept_id=sq.concept_id
 Where (o.concept_id > 0 and o.value_source_concept_id > 0)
 and o.concept_id not in (40766240,43528428,1585389)"
+
+# Survey Module counts by gender
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+select 0 as id, 3200 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1,
+cast(p.gender_concept_id as string) as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=ob.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` cr
+on ob.concept_id=cr.concept_id
+group by cr.survey_concept_id, p.gender_concept_id"
+
+# Survey Module counts by age decile
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
+with survey_age_stratum as
+ (
+ select *,
+ case when age_at_event >= 18 and age_at_event <= 29 then '2'
+ when age_at_event > 89 then '9'
+ when age_at_event >= 30 and age_at_event <= 89 then cast(floor(age_at_event/10) as string)
+ when age_at_event < 18 then '0' end as age_stratum from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\`
+ )
+ select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct sa.person_id) as count_value, count(distinct sa.person_id) as source_count_value
+  from survey_age_stratum sa
+ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` cr
+ on sa.concept_id=cr.concept_id
+ group by stratum_1, stratum_2;"
