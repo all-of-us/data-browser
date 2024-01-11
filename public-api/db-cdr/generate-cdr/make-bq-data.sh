@@ -744,9 +744,9 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` q
 SET q.question_string = t2.qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
-SELECT stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
+SELECT stratum_1, stratum_2, stratum_6, array_to_string(array_agg(distinct stratum_4), \"|\", \"\") AS qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` where analysis_id=3110
-GROUP BY stratum_2, stratum_6) AS t2 ON cast(q2.survey_concept_id as string) = t2.stratum_1 and cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
+GROUP BY stratum_1, stratum_2, stratum_6) AS t2 ON cast(q2.survey_concept_id as string) = t2.stratum_1 and cast(q2.concept_id as string) = t2.stratum_2 and q2.path = t2.stratum_6
 where q.concept_id=q2.concept_id and q.path=q2.path and q.survey_concept_id = q2.survey_concept_id
 and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040);"
 
