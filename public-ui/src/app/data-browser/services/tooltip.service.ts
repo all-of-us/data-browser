@@ -13,7 +13,7 @@ export const tooltips = {
   "Search Across Data Types": {
     texts: [
       `Search across all data types by using common keywords or billing/data standards codes (i.e., SNOMED, CPT, ICD).
-       Advanced genomic variant search is available within the SNP/Indel Variants section`,
+       Advanced genomic variant search is available within the SNV/Indel Variants section`,
     ],
   },
   raceEthnicityQuestionHelpText: {
@@ -137,7 +137,7 @@ export const tooltips = {
   "social determinants of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
     social life, stress, and feelings about everyday life.`,
   genomics:
-    "Search and explore SNP/Indel variant data available within the dataset.",
+    "Search and explore SNV/Indel variant data available within the dataset.",
   pmValueChartHelpText:
     "Values provide the numeric result of the " +
     "physical measurements taken at the time of participant enrollment. " +
@@ -387,7 +387,7 @@ export class TooltipService {
     "social determinants of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
        social life, stress, and feelings about everyday life.`,
     genomics:
-      "Search and explore SNP/Indel variant data available within the dataset.",
+      "Search and explore SNV/Indel variant data available within the dataset.",
     // genomicsCTA:
     // "this will be the tooltip",
     pmValueChartHelpText:

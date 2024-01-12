@@ -423,7 +423,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           ? "fitbit/" + this.props.searchWord
           : "fitbit";
         NavStore.navigateByUrl(url);
-      } else if (info.name === "SNP/Indel Variants") {
+      } else if (info.name === "SNV/Indel Variants") {
         const url = this.props.searchWord
           ? "variants/" + this.props.searchWord
           : "variants";
@@ -493,7 +493,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   <span style={{ paddingTop: '1rem', fontSize: '28px' }} className="result-stat" >
                     {variantListSize.toLocaleString()}
                   </span>
-                  <span className="result-box-stat-label">SNP/Indel Variants</span>
+                  <span className="result-box-stat-label">SNV/Indel Variants</span>
                 </React.Fragment>
               </span>
 
@@ -564,7 +564,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                     <span style={{ paddingTop: '1rem', fontSize: '28px' }} className="result-stat" >
                       {variantListSize.toLocaleString()}
                     </span>
-                    <span className="result-box-stat-label">SNP/Indel Variants</span>
+                    <span className="result-box-stat-label">SNV/Indel Variants</span>
                   </React.Fragment>
                 </span>
 
@@ -588,7 +588,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           {questionCount ? (
             <a className="result-bottom-link">View Complete Survey</a>
           ) : domain === "Genomics" ? (
-            <a className="result-bottom-link">View SNP/Indel Variants</a>
+            <a className="result-bottom-link">View SNV/Indel Variants</a>
           ) : (
             <a className="result-bottom-link">View {name}</a>
           )}
