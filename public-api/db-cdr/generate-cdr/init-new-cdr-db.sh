@@ -69,6 +69,7 @@ fi
 echo "Creating database ..."
 cat "${CREATE_DB_FILE}" | run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}"
 
+
 if [ "${RUN_LIST}" == "data" ]
 then
     echo "Copying csv files from gs://aou-db-test-local-csv"
