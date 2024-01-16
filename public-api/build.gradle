@@ -2,6 +2,10 @@ import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
 import org.gradle.api.tasks.JavaExec
 
+if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+    throw new GradleException("This build must be run with Java 8. See developer-system-initialization.md")
+}
+
 def swaggerTemplateDir = 'src/main/resources'
 def swaggerSourceFile = 'src/main/resources/public-api.yaml'
 def swaggerTargetFolder = 'src/generated/java'
