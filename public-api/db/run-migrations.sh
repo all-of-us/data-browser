@@ -29,7 +29,7 @@ function run_mysql() {
     docker run --rm --network host --entrypoint '' \
       -v "${CREATE_DB_FILE}:${CREATE_DB_FILE}" \
       --platform linux/amd64 \
-      mysql:5.7.27 \
+      mariadb:10.2 \
       mysql $@
   fi
 }
