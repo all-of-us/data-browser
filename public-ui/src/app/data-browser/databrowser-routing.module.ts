@@ -86,9 +86,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "SNP/Indel Variants",
+              title: "SNV/Indel Variants",
               breadcrumb: {
-                value: "SNP/Indel Variants",
+                value: "SNV/Indel Variants",
               },
             },
           },
@@ -97,9 +97,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "SNP/Indel Variants",
+              title: "SNV/Indel Variants",
               breadcrumb: {
-                value: "SNP/Indel Variants",
+                value: "SNV/Indel Variants",
               },
             },
           },

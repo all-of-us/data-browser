@@ -108,8 +108,8 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         component={() =>
           GenomicViewComponent({
             routeData: {
-              title: "SNP/Indel Variants",
-              breadcrumb: { value: "SNP/Indel Variants" },
+              title: "SNV/Indel Variants",
+              breadcrumb: { value: "SNV/Indel Variants" },
             },
           })
         }
@@ -119,8 +119,8 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         component={() =>
           GenomicViewComponent({
             routeData: {
-              title: "SNP/Indel Variants",
-              breadcrumb: { value: "SNP/Indel Variants" },
+              title: "SNVIndel Variants",
+              breadcrumb: { value: "SNV/Indel Variants" },
             },
           })
         }
