@@ -212,7 +212,7 @@ Common.register_command({
 
 def run_local_public_api_tests()
   common = Common.new
-  status = common.capture_stdout %W{curl --silent --fail http://localhost:8083/}
+  status = common.capture_stdout %W{curl --silent --fail http://localhost:8085/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
@@ -305,7 +305,7 @@ def run_integration_tests(cmd_name, *args)
   )
   op.parse.validate
 
-  api_base = 'http://localhost:8083'
+  api_base = 'http://localhost:8085'
   if op.opts.env != 'local'
     api_base = get_api_base_path(op.opts.env)
   end
