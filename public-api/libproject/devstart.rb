@@ -83,37 +83,6 @@ def ensure_docker_api(cmd_name, args)
   exit 1
 end
 
-def start_local_db_service()
-  common = Common.new
-  deadlineSec = 40
-
-  account = get_auth_login_account()
-  if account.nil?
-    raise("Please run 'gcloud auth login' before starting the server.")
-  end
-
-  at_exit { common.run_inline %W{docker-compose down} }
-
-  # ensures that sa-key.json is included in the docker-sync image
-  # This is necessary because docker-compose exposes it as GOOGLE_APPLICATION_CREDENTIALS
-  # which is needed to construct the IamCredentialsClient Bean
-  ServiceAccountContext.new(TEST_PROJECT).run do
-    ensure_docker_sync()
-  end
-
-  common.run_inline %W{docker-compose up -d db}
-
-  common.status "waiting up to #{deadlineSec}s for mysql service to start..."
-  start = Time.now
-  until (common.run %W{docker-compose exec -T db mysqladmin ping --silent}).success?
-    if Time.now - start >= deadlineSec
-        raise("mysql docker service did not become available after #{deadlineSec}s")
-    end
-    sleep 1
-  end
-  common.status "Database startup complete"
-end
-
 def init_new_cdr_db(args)
   Common.new.run_inline %W{docker-compose run cdr-scripts generate-cdr/init-new-cdr-db.sh} + args
 end
@@ -163,7 +132,7 @@ def dev_up()
   end
 
   common.status "Starting database..."
-  start_local_db_service()
+  common.run_inline %W{docker-compose up -d db}
   common.status "Running database migrations..."
   common.run_inline %W{docker-compose run db-scripts ./run-migrations.sh main}
   init_new_cdr_db %W{--cdr-db-name public}
@@ -194,7 +163,6 @@ def run_local_migrations()
   setup_local_environment
   # Runs migrations against the local database.
   common = Common.new
-  start_local_db_service()
   Dir.chdir('db') do
     common.run_inline %W{./run-migrations.sh main}
   end
@@ -266,7 +234,7 @@ def run_public_api_and_db()
   ServiceAccountContext.new(TEST_PROJECT).run do
     ensure_docker_sync()
   end
-  start_local_db_service()
+  common.run_inline %W{docker-compose up -d db}
   common.status "Starting public API."
   common.run_inline_swallowing_interrupt %W{docker-compose up public-api}
 end
@@ -512,7 +480,6 @@ Common.register_command({
 })
 
 def run_local_data_migrations()
-  start_local_db_service()
   init_new_cdr_db %W{--cdr-db-name public --run-list data --context local}
 end
 
