@@ -43,7 +43,7 @@ services:
     <<: *api-defaults
     command: ./gradlew :appengineRun
     ports:
-      - 127.0.0.1:8083:8083
+      - 127.0.0.1:8085:8085
       - 127.0.0.1:8084:8002
 
   db-scripts:

@@ -33,10 +33,6 @@ public class CdrVersionsController implements CdrVersionsApiDelegate {
     // out of scope for the data browser.
     List<CdrVersion> cdrVersions = cdrVersionService.findAllByOrderByCreationTimeDesc();
 
-
-    System.out.println("Test tttt cdr versions");
-
-
     if (cdrVersions.isEmpty()) {
       throw new ServerErrorException("Did not find a default CDR version");
     }

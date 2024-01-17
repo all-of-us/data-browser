@@ -20,10 +20,6 @@ public class ConfigController implements ConfigApiDelegate {
 
   @Override
   public ResponseEntity<ConfigResponse> getConfig() {
-
-    System.out.println("Test tttt");
-
-
     WorkbenchConfig config = configProvider.get();
     return ResponseEntity.ok(
         new ConfigResponse()
