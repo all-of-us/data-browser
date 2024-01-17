@@ -87,6 +87,10 @@ def start_local_db_service()
   common = Common.new
   deadlineSec = 40
 
+  ServiceAccountContext.new(TEST_PROJECT).run do
+    ensure_docker_sync()
+  end
+
   common.run_inline %W{docker-compose up -d db}
 
   common.status "waiting up to #{deadlineSec}s for mysql service to start..."
