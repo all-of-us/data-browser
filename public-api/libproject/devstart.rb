@@ -87,6 +87,16 @@ def start_local_db_service()
   common = Common.new
   deadlineSec = 40
 
+  account = get_auth_login_account()
+  if account.nil?
+    raise("Please run 'gcloud auth login' before starting the server.")
+  end
+
+  at_exit { common.run_inline %W{docker-compose down} }
+
+  # ensures that sa-key.json is included in the docker-sync image
+  # This is necessary because docker-compose exposes it as GOOGLE_APPLICATION_CREDENTIALS
+  # which is needed to construct the IamCredentialsClient Bean
   ServiceAccountContext.new(TEST_PROJECT).run do
     ensure_docker_sync()
   end
