@@ -353,10 +353,12 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       match === "source"
         ? "Exact source concept match:"
         : "Standard concept match:";
+
+
     return (
       <React.Fragment>
         <style>{cssStyles}</style>
-        <div id={id} ref={this.myRef}>
+        <div style={showConceptChart ? { background: "#f6f6f8" } : {}} id={id} ref={this.myRef}>
           <div
             className="tbl-exp-r"
             onClick={(e) => {
@@ -408,7 +410,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         className="test-span"
                         style={styles.measurementTypeSpan}
                       >
-                      <FontAwesomeIcon icon={faVial} style={{transform: "rotate(315deg)",}} />
+                        <FontAwesomeIcon icon={faVial} style={{ transform: "rotate(315deg)", }} />
                         <TooltipReactComponent
                           tooltipKey="valueFilter"
                           label=""
@@ -585,7 +587,14 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 </div>
               )}
             {showConceptChart && graphToShow && (
-              <div className="row-expansion">
+              <div onClick={(e) => e.stopPropagation()} className="row-expansion">
+                <div style={{
+                  float:'right',
+                  padding:'0 1rem',
+                  color: '#262262',
+                  fontSize: '1.3em',
+                  cursor: 'pointer'
+                }} onClick={() => this.expandRow()}><i className="far fa-times fa-1x clear-search-icon"></i></div>
                 <div className="concept-chart">
                   <ConceptChartReactComponent
                     concept={concept}
