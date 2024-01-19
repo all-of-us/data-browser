@@ -232,7 +232,7 @@ h5.secondary-display {
     width: 100%;
     text-align: center;
     padding-top: 9px;
-    background: #f6f6f8;
+    background: white;
     border-top: none;
     padding-bottom: 27px;
     cursor: default;
