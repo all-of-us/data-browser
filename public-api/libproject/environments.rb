@@ -25,13 +25,13 @@ ENVIRONMENTS = {
     :source_cdr_project => "aou-db-test"
   }),
   "aou-db-test" => env_with_defaults("test", {
-     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
+     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowser-mysql8",
      :config_json => "config_test.json",
      :cdr_config_json => "cdr_config_test.json",
      :api_base_path => "https://api-dot-#{TEST_PROJECT}.appspot.com",
      :source_cdr_project => "aou-res-curation-prod",
      :cdr_sql_bucket => "aou-db-public-cloudsql",
-     :instance => "databrowsermaindb",
+     :instance => "databrowser-mysql8",
      :gae_vars => make_gae_vars(1, 10),
   }),
   "aou-db-staging" => env_with_defaults("staging", {
