@@ -136,7 +136,7 @@ buildscript {    // Configuration for building
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:1.3.5'
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.2'
         classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
         classpath 'io.swagger:swagger-codegen:2.2.3'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
@@ -151,7 +151,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-standard'  // App Engine tasks
+apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
@@ -299,9 +299,32 @@ dependencies {
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
     compile 'mysql:mysql-connector-java:8.0.28'
 
+    // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
+
+    implementation 'com.google.api-client:google-api-client-appengine:1.35.2'
+    implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudresourcemanager:v3-rev20220925-2.0.0'
+    implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
+    implementation 'com.google.apis:google-api-services-iam:v1-rev20220825-2.0.0'
+    implementation 'com.google.api-client:google-api-client-appengine:2.2.0'
+    implementation 'com.google.auth:google-auth-library-appengine:1.11.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.11.0'
+    implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
+    implementation 'com.google.cloud:google-cloud-bigquery:2.25.0'
+    implementation 'com.google.cloud:google-cloud-iamcredentials:2.3.6'
+    implementation 'com.google.cloud:google-cloud-logging:3.11.5'
+    implementation 'com.google.cloud:google-cloud-monitoring:3.4.6'
+    implementation 'com.google.cloud:google-cloud-storage:2.13.0'
+    implementation 'com.google.cloud:google-cloud-tasks:2.3.11'
+    implementation "com.google.code.gson:gson:${GSON_VERSION}"
+    implementation 'com.google.guava:guava:32.0.1-jre'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
+    implementation 'com.google.protobuf:protobuf-java:3.21.7'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
+
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
     compile group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
-    compile 'com.google.guava:guava:30.0-jre'
 
     compile 'ch.qos.logback:logback-classic:1.2.11'
 
@@ -310,9 +333,6 @@ dependencies {
     compile 'com.github.fge:json-patch:1.9'
     compile "org.hibernate:hibernate-validator:6.0.18.Final"
 
-    compile 'com.google.cloud.sql:mysql-socket-factory:1.6.1'
-    compile "com.google.appengine:appengine:${GAE_VERSION}"
-    compile "com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}"
     compile("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
@@ -324,8 +344,6 @@ dependencies {
 
     compile 'org.springframework:spring-context:5.3.19'
 
-    compile "com.google.code.gson:gson:${GSON_VERSION}"
-    compile 'com.google.api-client:google-api-client:1.35.1'
     compile("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
@@ -344,19 +362,12 @@ dependencies {
     compile 'javax.inject:javax.inject:1'
     compile 'io.swagger:swagger-annotations:1.5.16'
     compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.google.guava:guava:30.0-jre'
 
-    compile("com.google.cloud:google-cloud-bigquery:2.13.2") {
-        exclude group: 'com.google.protobuf', module: 'protobuf-java'
-        exclude group: 'org.json', module: 'json'
-        exclude group: 'io.netty', module: 'netty-common'
-    }
 
     compile "org.apache.tomcat:tomcat-jdbc:10.0.23"
 
     compile 'joda-time:joda-time:2.10'
 
-    compile 'com.google.protobuf:protobuf-java:3.19.6'
 
     compile 'io.netty:netty-common:4.1.77.Final'
 
@@ -365,11 +376,8 @@ dependencies {
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 
-    compile 'com.google.api-client:google-api-client:1.35.1'
     compile 'com.auth0:java-jwt:3.19.2'
 
-// https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
-    compile group: 'com.google.auth', name: 'google-auth-library-oauth2-http', version: '0.21.1'
 
     // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
     compile 'org.json:json:20180130'
@@ -378,13 +386,15 @@ dependencies {
     testCompile 'junit:junit:4.13.1'
     testCompile 'org.mockito:mockito-core:3.11.2'
 
+    testImplementation "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
+    testImplementation "com.google.truth.extensions:truth-java8-extension:${GOOGLE_TRUTH_VERSION}"
+
     testCompile("org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}") {
         exclude group: 'org.junit', module: 'junit'
         exclude group: 'org.mockito', module: 'mockito-core'
         exclude group: 'org.mockito', module: 'mockito-all'
     }
 
-    testCompile 'com.google.truth:truth:1.1'
     testCompile "org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}"
     testCompile 'com.h2database:h2:1.4.194'
     testCompile 'org.liquibase:liquibase-core:3.5.3'
@@ -465,6 +475,7 @@ appengine {  // App Engine tasks configuration
         // TODO(danrodney)
         //account = System.properties("account")
         //project = System.properties("project")
+        projectId = "aou-db-test"
     }
 }
 

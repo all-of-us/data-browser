@@ -41,7 +41,7 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 #
 # Other development tools
 #
-
+RUN gcloud components update
 RUN gcloud components install app-engine-java
 
 RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
@@ -70,5 +70,3 @@ WORKDIR /
 
 
 COPY with-uid.sh /usr/local/bin
-
-ENTRYPOINT ["with-uid.sh"]
