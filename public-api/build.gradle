@@ -301,6 +301,7 @@ dependencies {
 
     // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
 
+    implementation 'com.google.http-client:google-http-client:1.41.1' // Use the latest version available
     implementation 'com.google.api-client:google-api-client-appengine:1.35.2'
     implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
     implementation 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
