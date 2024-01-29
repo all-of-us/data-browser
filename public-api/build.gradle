@@ -388,6 +388,9 @@ dependencies {
     testCompile 'junit:junit:4.13.1'
     testCompile 'org.mockito:mockito-core:3.11.2'
 
+    testImplementation 'com.google.http-client:google-http-client:1.41.1'
+    testImplementation 'com.google.api-client:google-api-client:2.2.0'
+
     testImplementation "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
     testImplementation "com.google.truth.extensions:truth-java8-extension:${GOOGLE_TRUTH_VERSION}"
 
