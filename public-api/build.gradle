@@ -458,6 +458,10 @@ test {
 }
 
 appengine {  // App Engine tasks configuration
+    tools {
+        // Keep in sync with ci/Dockerfile.circle_build
+        cloudSdkVersion = '392.0.0'
+    }
     run {      // local (dev_appserver) configuration (standard environments only)
         port = 8083                 // default
         host = "0.0.0.0"
@@ -483,6 +487,7 @@ appengine {  // App Engine tasks configuration
         // TODO(danrodney)
         //account = System.properties("account")
         //project = System.properties("project")
+        projectId = "aou-db-test"
     }
 }
 
