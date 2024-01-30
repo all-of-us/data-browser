@@ -269,6 +269,7 @@ export const SurveyViewReactComponent = withRouteData(
           : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
       const copeFlag =
         surveyConceptId === 1333342 || surveyConceptId === 765936;
+      const combinedPfhhFlag = surveyConceptId === 43529712;
       if (surveyConceptId === 1333342 || surveyConceptId === 765936) {
         const surveyVersions = [];
         api
