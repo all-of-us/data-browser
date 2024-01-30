@@ -152,6 +152,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
+apply plugin: 'com.google.cloud.tools.appengine'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
@@ -307,7 +308,6 @@ dependencies {
     compile 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
     compile 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
     compile 'com.google.apis:google-api-services-cloudresourcemanager:v3-rev20220925-2.0.0'
-    compile 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
     compile 'com.google.apis:google-api-services-iam:v1-rev20220825-2.0.0'
     compile 'com.google.api-client:google-api-client-appengine:2.2.0'
     compile 'com.google.auth:google-auth-library-appengine:1.11.0'
@@ -321,7 +321,6 @@ dependencies {
     compile 'com.google.cloud:google-cloud-tasks:2.3.11'
     compile "com.google.code.gson:gson:${GSON_VERSION}"
     compile 'com.google.guava:guava:32.0.1-jre'
-    compile 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
     compile 'com.google.protobuf:protobuf-java:3.21.7'
     compile 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
     // https://mvnrepository.com/artifact/com.google.appengine/appengine-api-1.0-sdk
@@ -459,8 +458,7 @@ test {
 
 appengine {  // App Engine tasks configuration
     tools {
-        // Keep in sync with ci/Dockerfile.circle_build
-        cloudSdkVersion = '392.0.0'
+        cloudSdkHome = '/google-cloud-sdk'
     }
     run {      // local (dev_appserver) configuration (standard environments only)
         port = 8083                 // default
