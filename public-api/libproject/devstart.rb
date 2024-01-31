@@ -17,7 +17,7 @@ require "ostruct"
 require "tempfile"
 
 TEST_CIRCLE_ACCOUNT = "circle-deploy-account@aou-db-test.iam.gserviceaccount.com"
-INSTANCE_NAME = "databrowser-mysql8"
+INSTANCE_NAME = "databrowsermaindb"
 FAILOVER_INSTANCE_NAME = "databrowserbackupdb"
 SERVICES = %W{servicemanagement.googleapis.com storage-component.googleapis.com iam.googleapis.com
               compute.googleapis.com admin.googleapis.com appengine.googleapis.com
