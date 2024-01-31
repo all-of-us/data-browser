@@ -10,7 +10,7 @@ def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
 def databrowser_db_user = System.getenv("DATABROWSER_DB_USER")
 def databrowser_db_password = System.getenv("DATABROWSER_DB_PASSWORD")
-def project = System.getenv("PROJECT")
+def project_name = System.getenv("PROJECT")
 
 def dbProperties = [
         'spring.datasource.driver-class-name': 'com.mysql.cj.jdbc.Driver',
