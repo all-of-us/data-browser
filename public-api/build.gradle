@@ -455,7 +455,7 @@ test {
     maxHeapSize = '2048m'
 }
 
-def cloudSdkHomePath = System.getenv('CIRCLECI') == 'true' ?  "/home/circle-ci/google-cloud-sdk" : "/google-cloud-sdk"
+def cloudSdkHomePath = System.getenv('CIRCLECI') == 'true' ?  "/home/circleci/google-cloud-sdk" : "/google-cloud-sdk"
 
 
 appengine {  // App Engine tasks configuration
