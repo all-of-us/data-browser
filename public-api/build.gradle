@@ -10,6 +10,7 @@ def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
 def databrowser_db_user = System.getenv("DATABROWSER_DB_USER")
 def databrowser_db_password = System.getenv("DATABROWSER_DB_PASSWORD")
+def project_name = System.getenv("PROJECT")
 
 def dbProperties = [
         'spring.datasource.driver-class-name': 'com.mysql.cj.jdbc.Driver',
@@ -455,7 +456,15 @@ test {
     maxHeapSize = '2048m'
 }
 
-def cloudSdkHomePath = System.getenv('CIRCLECI') == 'true' ?  "/home/circleci/google-cloud-sdk" : "/google-cloud-sdk"
+def cloudSdkHomePath = "/google-cloud-sdk"
+
+if (System.getenv('CIRCLECI') == 'true') {
+    cloudSdkHomePath = "/home/circleci/google-cloud-sdk"
+} else if (System.getenv('PROJECT').equals("stable") || System.getenv('PROJECT').equals("prod")) {
+    cloudSdkHomePath = "~/google-cloud-sdk"
+} else {
+    cloudSdkHomePath = "/google-cloud-sdk"
+}
 
 
 appengine {  // App Engine tasks configuration
