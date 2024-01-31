@@ -461,7 +461,7 @@ def cloudSdkHomePath = "/google-cloud-sdk"
 if (System.getenv('CIRCLECI') == 'true') {
     cloudSdkHomePath = "/home/circleci/google-cloud-sdk"
 } else if (System.getenv('PROJECT').equals("stable") || System.getenv('PROJECT').equals("prod")) {
-    cloudSdkHomePath = "~/google-cloud-sdk"
+    cloudSdkHomePath = "/root/google-cloud-sdk"
 } else {
     cloudSdkHomePath = "/google-cloud-sdk"
 }
