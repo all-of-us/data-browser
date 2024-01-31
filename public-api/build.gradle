@@ -457,7 +457,18 @@ test {
 
 appengine {  // App Engine tasks configuration
     tools {
-        cloudSdkHome = '~/google-cloud-sdk'
+        // Default path for local development
+        cloudSdkHome = "/google-cloud-sdk"
+        doLast {
+            // Check if running on CircleCI (using the circleciBuild property)
+            if (project.hasProperty("circleciBuild")) {
+                // Running on CircleCI, set the appropriate Cloud SDK path
+                cloudSdkHome = "/home/circle-ci/google-cloud-sdk"
+            }
+        }
+    }
+    tools {
+        cloudSdkHome = '/google-cloud-sdk'
     }
     run {      // local (dev_appserver) configuration (standard environments only)
         port = 8083                 // default
