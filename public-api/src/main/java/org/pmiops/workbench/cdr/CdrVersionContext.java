@@ -29,14 +29,24 @@ public class CdrVersionContext {
     dbCdrVersion.remove();
   }
 
-
   @Nonnull
   public static DbCdrVersion getCdrVersion() {
     DbCdrVersion version = dbCdrVersion.get();
     if (version == null) {
-      throw new ServerErrorException("No CDR version specified!");
+      // CDR versions are not available during startup. The value returned from this is then used
+      // as a key into the set of CDR data sources, which don't handle null values well. Instead
+      // of attempting to return something valid before we're ready, we can stop execution by
+      // throwing an exception.
+      // Since this is a benign situation, we want to avoid log noise, hence the stack suppression.
+      throw suppressStackTrace(new IllegalStateException("No CDR version specified!"));
     }
 
     return version;
   }
+
+  static <T extends Throwable> T suppressStackTrace(T t) {
+    t.setStackTrace(new StackTraceElement[] {});
+    return t;
+  }
+
 }
