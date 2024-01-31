@@ -455,12 +455,8 @@ test {
     maxHeapSize = '2048m'
 }
 
-def cloudSdkHomePath = "/google-cloud-sdk"
+def cloudSdkHomePath = System.getenv('CIRCLECI') == 'true' ?  "/home/circle-ci/google-cloud-sdk" : "/google-cloud-sdk"
 
-// Check if running on CircleCI and override the Cloud SDK path
-if (project.hasProperty("circleciBuild")) {
-    cloudSdkHomePath = "/home/circle-ci/google-cloud-sdk"
-}
 
 appengine {  // App Engine tasks configuration
     tools {
