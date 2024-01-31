@@ -6,7 +6,6 @@ import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Optional;
 import java.util.logging.Logger;
-import org.pmiops.workbench.config.EnvVars;
 import org.springframework.context.annotation.Configuration;
 
 // @Configuration means, "Provide this as an injectable dependency."
@@ -16,8 +15,6 @@ import org.springframework.context.annotation.Configuration;
 public class Params {
     private static final Logger log = Logger.getLogger(Params.class.getName());
 
-    protected final EnvVars envVars;
-
     public static final int mysqlDefaultPort = 3306;
     public String hostname;
     public final String username = "databrowser"; // consistent across environments
@@ -25,17 +22,16 @@ public class Params {
     public String password;
     private boolean loaded;
 
-    public Params(EnvVars envVars) {
-        this.envVars = envVars;
+    public Params() {
         loadFromEnvironment();
         validate();
         logParams();
     }
 
     public void loadFromEnvironment() {
-        hostname = envVars.get("DB_HOST").orElse(null);
-        cloudSqlInstanceName = envVars.get("CLOUD_SQL_INSTANCE_NAME").orElse(null);
-        password = envVars.get("DATABROWSER_DB_PASSWORD").orElse(null);
+        hostname = getEnv("DB_HOST").orElse(null);
+        cloudSqlInstanceName = getEnv("CLOUD_SQL_INSTANCE_NAME").orElse(null);
+        password = getEnv("DATABROWSER_DB_PASSWORD").orElse(null);
     }
 
     protected void logParams() {
@@ -73,8 +69,8 @@ public class Params {
             }
         } else {
             // assert cloudSqlInstanceName != null
-            if (envVars.get("GOOGLE_APPLICATION_CREDENTIALS").isEmpty()
-                    && envVars.get("GAE_INSTANCE").isEmpty()) {
+            if (!getEnv("GOOGLE_APPLICATION_CREDENTIALS").isPresent()
+                    && !getEnv("GAE_INSTANCE").isPresent()) {
                 throw new IllegalStateException(
                         "Google Application Default Credentials are required to connect directly to Cloud SQL."
                                 + " Outside of App Engine, they can be provided with the environment variable"

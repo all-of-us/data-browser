@@ -5,7 +5,7 @@ FROM ubuntu:22.04
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y \
-     openjdk-11-jdk \
+     openjdk-8-jdk \
      curl \
      python2 \
      python3 \
@@ -26,7 +26,7 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CLOUD_SDK_VERSION 392.0.0
+ENV CLOUD_SDK_VERSION 260.0.0
 
 ENV PATH /google-cloud-sdk/bin:$PATH
 
@@ -42,12 +42,6 @@ RUN curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cl
 # Other development tools
 #
 
-RUN gcloud components install app-engine-java
-
-#
-# Other development tools
-#
-RUN gcloud components update
 RUN gcloud components install app-engine-java
 
 RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
@@ -76,3 +70,5 @@ WORKDIR /
 
 
 COPY with-uid.sh /usr/local/bin
+
+ENTRYPOINT ["with-uid.sh"]
