@@ -1,4 +1,4 @@
-runtime: python27
+runtime: nodejs16
 api_version: 1
 threadsafe: true
 default_expiration: "2m"
