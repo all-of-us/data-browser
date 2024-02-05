@@ -5,6 +5,7 @@ import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { NoResultSearchComponent } from "app/components/db-no-results/no-results-search.component";
 import { SurveyVersionTableReactComponent } from "app/data-browser/components/survey-version-table/survey-version-table-react.component";
+import { PfhhSurveyTableReactComponent } from "app/data-browser/components/survey-version-table/pfhh-survey-table-react.component";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
 import { SurveyQuestionReactComponent } from "app/data-browser/views/survey-view/components/survey-question-react.component";
 import { SurveyDescReactComponent } from "app/data-browser/views/survey-view/survey-desc.component";
@@ -184,6 +185,7 @@ interface State {
   surveyId: string;
   surveyPdfUrl: any;
   isCopeSurvey: boolean;
+  isCombinedPfhh: boolean;
   searchWord: string;
   surveyVersions: Array<any>;
   showAnswer: {};
@@ -216,6 +218,7 @@ export const SurveyViewReactComponent = withRouteData(
       const { search } = urlParamsStore.getValue();
       this.state = {
         isCopeSurvey: false,
+        isCombinedPfhh: false,
         survey: null,
         surveyId: urlParamsStore.getValue().id,
         surveyPdfUrl: "",
@@ -269,6 +272,7 @@ export const SurveyViewReactComponent = withRouteData(
           : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
       const copeFlag =
         surveyConceptId === 1333342 || surveyConceptId === 765936;
+      const combinedPfhhFlag = surveyConceptId === 43529712;
       if (surveyConceptId === 1333342 || surveyConceptId === 765936) {
         const surveyVersions = [];
         api
@@ -320,6 +324,7 @@ export const SurveyViewReactComponent = withRouteData(
           survey: survey,
           surveyPdfUrl: surveyPdfUrl,
           isCopeSurvey: copeFlag,
+          isCombinedPfhh: combinedPfhhFlag,
         },
         () => {
           this.getSurvey();
@@ -390,13 +395,14 @@ export const SurveyViewReactComponent = withRouteData(
         loading,
         searchWord,
         isCopeSurvey,
+        isCombinedPfhh,
         survey,
         questions,
         surveyVersions,
         surveyPdfUrl,
       } = this.state;
-      const statClass = isCopeSurvey ? "cope-stat-layout" : "stat-layout";
-      const statStyle = isCopeSurvey
+      const statClass = (isCopeSurvey || isCombinedPfhh) ? "cope-stat-layout" : "stat-layout";
+      const statStyle = (isCopeSurvey || isCombinedPfhh)
         ? styles.copeStatLayout
         : styles.statLayout;
       const matchingQuestions = questions.filter((question) =>
@@ -443,7 +449,7 @@ export const SurveyViewReactComponent = withRouteData(
                         className="stat-container"
                         style={styles.statContainer}
                       >
-                        {isCopeSurvey ? (
+                        {(isCopeSurvey || isCombinedPfhh) ? (
                           <h5>
                             <strong style={styles.strong}>
                               Total unique participants
@@ -512,12 +518,17 @@ export const SurveyViewReactComponent = withRouteData(
                         </div>
                       )
                     ) : (
+                        isCombinedPfhh ? (
+                          <div className="version-table" style={styles.versionTable}>
+                            <PfhhSurveyTableReactComponent />
+                          </div>
+                        ) : (
                       <div className="pdf-link" style={styles.pdfLink}>
                         <a href={surveyPdfUrl} download>
                           <ClrIcon shape="file" className="is-solid" /> Download
                           Survey as PDF
                         </a>
-                      </div>
+                      </div> )
                     )}
                   </div>
                   {questions && (
