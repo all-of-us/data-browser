@@ -48,17 +48,26 @@ strong {
 const containerElementName = "root";
 
 interface Props {
+    questionCount: number;
+    participantCount: number;
 }
 
 export class PfhhSurveyTableReactComponent extends React.Component<
   Props,
-  {}
+  {
+    questionCount: number;
+    participantCount: number;
+  }
 > {
   constructor(props: Props) {
     super(props);
   }
 
   render() {
+    const fhh_survey_pdf_link = '/assets/surveys/Family_Health_History_Survey_English.pdf';
+    const pmh_survey_pdf_link = '/assets/surveys/Personal_Medical_History_Survey_English.pdf';
+    const pafhh_survey_pdf_link = '/assets/surveys/Survey_PaFHH_Eng_Src.pdf';
+    const {questionCount, participantCount} = this.props;
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
@@ -76,21 +85,48 @@ export class PfhhSurveyTableReactComponent extends React.Component<
           <div className="version-box-body">
           <div className="version-box-row">
             <span className="version-box-item">Personal and Family Health History</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
+            <span className="version-box-item">{participantCount}</span>
+            <span className="version-box-item">{questionCount}</span>
+            <span className="version-box-item">
+                      <a href={pafhh_survey_pdf_link} download>
+                        <ClrIcon
+                          shape="file"
+                          className="is-solid"
+                          style={{ width: 18, height: 18 }}
+                        />
+                        Survey as PDF
+                      </a>{" "}
+            </span>
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Personal Medical History</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
+            <span className="version-box-item">142100</span>
+            <span className="version-box-item">465</span>
+            <span className="version-box-item">
+                      <a href={pmh_survey_pdf_link} download>
+                        <ClrIcon
+                          shape="file"
+                          className="is-solid"
+                          style={{ width: 18, height: 18 }}
+                        />
+                        Survey as PDF
+                      </a>{" "}
+            </span>
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Family Health History</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
-            <span className="version-box-item">Test</span>
+            <span className="version-box-item">145620</span>
+            <span className="version-box-item">104</span>
+            <span className="version-box-item">
+                      <a href={fhh_survey_pdf_link} download>
+                        <ClrIcon
+                          shape="file"
+                          className="is-solid"
+                          style={{ width: 18, height: 18 }}
+                        />
+                        Survey as PDF
+                      </a>{" "}
+            </span>
           </div>
           </div>
         </div>

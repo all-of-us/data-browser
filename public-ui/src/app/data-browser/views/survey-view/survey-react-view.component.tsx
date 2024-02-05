@@ -186,6 +186,8 @@ interface State {
   surveyPdfUrl: any;
   isCopeSurvey: boolean;
   isCombinedPfhh: boolean;
+  pfhhQC: number;
+  pfhhPC: number;
   searchWord: string;
   surveyVersions: Array<any>;
   showAnswer: {};
@@ -219,6 +221,8 @@ export const SurveyViewReactComponent = withRouteData(
       this.state = {
         isCopeSurvey: false,
         isCombinedPfhh: false,
+        pfhhPC: 0,
+        pfhhQC: 0,
         survey: null,
         surveyId: urlParamsStore.getValue().id,
         surveyPdfUrl: "",
@@ -235,13 +239,16 @@ export const SurveyViewReactComponent = withRouteData(
     }
 
     fetchSurvey(domain) {
-      const { searchWord, surveyId } = this.state;
+      const { searchWord, surveyId, pfhhQC, pfhhPC } = this.state;
       let fetchDomain = surveyId;
       if (domain && surveyId !== domain) {
         fetchDomain = domain;
       }
       api.getDomainTotals(searchWord, 1, 1).then((data: any) => {
         data.surveyModules.forEach((survey) => {
+          if (survey.conceptId === 1740639) {
+            this.setState({ pfhhQC: survey.questionCount, pfhhPC: survey.participantCount });
+          }
           const surveyRoute =
             survey.conceptId === 43528895
               ? "health-care-access-and-utilization"
@@ -396,6 +403,8 @@ export const SurveyViewReactComponent = withRouteData(
         searchWord,
         isCopeSurvey,
         isCombinedPfhh,
+        pfhhPC,
+        pfhhQC,
         survey,
         questions,
         surveyVersions,
@@ -408,6 +417,7 @@ export const SurveyViewReactComponent = withRouteData(
       const matchingQuestions = questions.filter((question) =>
                     question.type.toLowerCase().includes("question")
                   );
+      console.log(survey);
       return (
         <React.Fragment>
           <style>{surveyStyle}</style>
@@ -520,7 +530,7 @@ export const SurveyViewReactComponent = withRouteData(
                     ) : (
                         isCombinedPfhh ? (
                           <div className="version-table" style={styles.versionTable}>
-                            <PfhhSurveyTableReactComponent />
+                            <PfhhSurveyTableReactComponent questionCount={pfhhQC} participantCount={pfhhPC}/>
                           </div>
                         ) : (
                       <div className="pdf-link" style={styles.pdfLink}>
