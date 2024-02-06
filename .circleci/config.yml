@@ -90,7 +90,18 @@ jobs:
           key: v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-build-test:
-    <<: *java_defaults
+    docker:
+      - image: allofustest/workbench:aou-db-image-5
+      - image: mysql:5.7
+        environment:
+          - MYSQL_ROOT_PASSWORD=ubuntu
+          - MYSQL_USER=ubuntu
+          - MYSQL_PASSWORD=ubuntu
+    working_directory: ~/data-browser
+    environment:
+      JAVA_TOOL_OPTIONS: -Xmx3g
+      TERM: dumb
+      MYSQL_ROOT_PASSWORD: ubuntu
     steps:
       - checkout-code
       - run:
