@@ -66,8 +66,8 @@ jobs:
       - checkout-code
       - restore_cache:
           keys:
-          - v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-wrapper-
+          - v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -87,7 +87,7 @@ jobs:
             - ~/.gradle
             - ~/.m2
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
-          key: v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          key: v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-build-test:
     docker:
@@ -112,7 +112,7 @@ jobs:
               circleci step halt
             fi
       - restore_cache:
-          key: v7-gradle-wrapper-{{ .Branch }}-{{ checksum "~/data-browser/public-api/gradle/wrapper/gradle-wrapper.properties" }}
+          key: v7-gradle-{{ .Branch }}-{{ checksum "~/data-browser/public-api/gradle/wrapper/gradle-wrapper.properties" }}
       - restore_cache:
           key: v7-gradle-cache-{{ .Branch }}-{{ checksum "~/data-browser/public-api/build.gradle" }}
       - run:
@@ -132,7 +132,7 @@ jobs:
             - ~/.gradle
             - ~/.m2
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
-          key: v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          key: v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-deploy-to-test:
     <<: *java_defaults
@@ -145,8 +145,8 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-          - v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-wrapper-
+          - v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -243,8 +243,8 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-          - v7-gradle-wrapper-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-wrapper-
+          - v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
           working_directory: ~/data-browser
