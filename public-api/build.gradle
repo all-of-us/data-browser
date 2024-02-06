@@ -419,6 +419,9 @@ dependencies {
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
     generatedCompile "javax.xml.bind:jaxb-api:2.3.1"
+
+    generatedCompile 'com.google.http-client:google-http-client:1.41.1'
+    generatedCompile 'com.google.api-client:google-api-client:2.2.0'
 }
 
 swaggerSources {
