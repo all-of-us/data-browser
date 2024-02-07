@@ -112,9 +112,9 @@ jobs:
               circleci step halt
             fi
       - restore_cache:
-          key: v7-gradle-{{ .Branch }}-{{ checksum "~/data-browser/public-api/gradle/wrapper/gradle-wrapper.properties" }}
-      - restore_cache:
-          key: v7-gradle-cache-{{ .Branch }}-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          keys:
+            - v7-gradle-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
