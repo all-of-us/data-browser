@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:aou-db-image-2
+    - image: allofustest/workbench:aou-db-image-5
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -51,7 +51,7 @@ commands:
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:aou-db-image-2
+      - image: allofustest/workbench:aou-db-image-5
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
@@ -66,8 +66,8 @@ jobs:
       - checkout-code
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - api-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -87,7 +87,7 @@ jobs:
             - ~/.gradle
             - ~/.m2
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
-          key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          key: v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-build-test:
     <<: *java_defaults
@@ -102,8 +102,8 @@ jobs:
             fi
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - api-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
@@ -111,7 +111,7 @@ jobs:
       - run:
           name: Integration tests compile
           working_directory: ~/data-browser/public-api
-          command: ./project.rb gradle compileIntegration
+          command: ./project.rb integration
       - run:
           name: Unit tests
           working_directory: ~/data-browser/public-api
@@ -121,7 +121,7 @@ jobs:
             - ~/.gradle
             - ~/.m2
             - ~/data-browser/public-api/build/exploded-api/WEB-INF/lib/
-          key: api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          key: v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
 
   public-api-deploy-to-test:
     <<: *java_defaults
@@ -134,8 +134,8 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - api-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -232,8 +232,8 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-          - api-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - api-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
           working_directory: ~/data-browser
