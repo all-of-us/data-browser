@@ -270,6 +270,11 @@ task updateCdrConfig(type: JavaExec) {
     }
 }
 
+task compileIntegration(type: JavaCompile) {
+    sourceSets.integration.java.srcDirs = ['src/integration/java']
+    classpath = sourceSets.main.compileClasspath
+}
+
 task integration(type: Test) {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     testClassesDirs = sourceSets.integration.output.classesDirs
