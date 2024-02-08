@@ -297,6 +297,10 @@ clean.doFirst {
 
 repositories {   // repositories for Jar's you access in your code
     jcenter()
+    maven {
+        // for Terra service clients (currently sam-client)
+        url 'https://broadinstitute.jfrog.io/artifactory/libs-release-local'
+    }
     mavenCentral()
 }
 
