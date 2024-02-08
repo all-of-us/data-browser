@@ -473,6 +473,8 @@ if (System.getenv('CIRCLECI') == 'true') {
 println "cloudsdkhome"
 println cloudSdkHomePath
 
+println "Gradle Version: " + gradle.gradleVersion
+
 appengine {  // App Engine tasks configuration
     tools {
         cloudSdkHome = cloudSdkHomePath
