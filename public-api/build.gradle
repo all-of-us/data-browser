@@ -291,12 +291,6 @@ integration {
     outputs.upToDateWhen { false }
 }
 
-dependencies {
-    // Add your integration test dependencies here
-    integrationTestImplementation 'com.google.truth:truth:1.1.3'
-    // Add more dependencies as needed
-}
-
 task integrationTest(type: Test) {
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = 'Run integration test suite.'
