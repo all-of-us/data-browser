@@ -270,6 +270,9 @@ task updateCdrConfig(type: JavaExec) {
 }
 
 task integrationTest(type: Test) {
+    doLast {
+        println "Integration Test Classpath: ${sourceSets.integrationTest.runtimeClasspath.files}"
+    }
     group = LifecycleBasePlugin.VERIFICATION_GROUP
     description = 'Run integration test suite.'
     testClassesDirs = sourceSets.__integration__.output.classesDirs
