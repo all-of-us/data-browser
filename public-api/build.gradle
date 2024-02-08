@@ -470,7 +470,7 @@ if (System.getenv('CIRCLECI') == 'true') {
     cloudSdkHomePath = "/google-cloud-sdk"
 }
 
-println "cloudsdkhome"
+println "cloudsdkhome:"
 println cloudSdkHomePath
 
 appengine {  // App Engine tasks configuration
