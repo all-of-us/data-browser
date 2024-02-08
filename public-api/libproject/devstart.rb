@@ -320,7 +320,7 @@ def run_integration_tests(cmd_name, *args)
       common.run_inline %W{./gradlew integration} + op.remaining
     end
   else
-    common.run_inline %W{./gradlew integration} + op.remaining
+    common.run_inline %W{./gradlew --refresh-dependencies integration} + op.remaining
   end
 end
 
