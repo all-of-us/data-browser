@@ -111,7 +111,7 @@ jobs:
       - run:
           name: Integration tests compile
           working_directory: ~/data-browser/public-api
-          command: ./project.rb gradle compileIntegration
+          command: ./project.rb gradle integration
       - run:
           name: Unit tests
           working_directory: ~/data-browser/public-api
