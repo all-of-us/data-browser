@@ -142,6 +142,7 @@ buildscript {    // Configuration for building
         classpath 'io.swagger:swagger-codegen:2.2.3'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+        classpath "com.google.http-client:google-http-client:1.41.1"
     }
 }
 
