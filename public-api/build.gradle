@@ -103,6 +103,10 @@ task generate_local_appengine_web_xml(type: Exec) {
 configurations {
     integrationCompile.extendsFrom testImplementation
     integrationRuntime.extendsFrom testRuntime
+
+    integrationImplementation.extendsFrom implementation
+    integrationRuntimeOnly.extendsFrom runtimeOnly
+
     generatedCompile
     all {
         exclude group: 'com.google.guava', module:'guava-jdk5'
@@ -434,6 +438,20 @@ dependencies {
     testImplementation 'com.h2database:h2:1.4.194'
     testImplementation 'org.liquibase:liquibase-core:3.5.3'
     testImplementation 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
+
+    integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
+    integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
+
+    integrationImplementation 'org.assertj:assertj-core:3.20.2'
+
+
+    integrationImplementation "org.springframework:spring-context:$project.ext.SPRING_FRAMEWORK_VERSION"
+
+    integrationImplementation("org.springframework.boot:spring-boot-starter-test:$project.ext.SPRING_BOOT_VERSION") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
+
 
     // For Swagger generation. These should include dependencies found in the Swagger codegen
     // example here:
