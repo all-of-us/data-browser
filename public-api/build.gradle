@@ -101,10 +101,6 @@ task generate_local_appengine_web_xml(type: Exec) {
 }
 
 configurations {
-    integrationTestCompile {
-        // Add Google libraries needed for integration tests
-        testImplementation 'com.google.http-client:google-http-client:1.41.1'
-    }
     __integration__Compile.extendsFrom testImplementation
     __integration__Runtime.extendsFrom testRuntime
     generatedCompile
