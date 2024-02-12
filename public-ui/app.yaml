@@ -1,5 +1,4 @@
 runtime: nodejs16
-api_version: 1
 default_expiration: "2m"
 handlers:
 - url: /(.*\.(css|eot|gz|html|ico|jpg|jpeg|js|map|png|svg|ttf|woff|woff2|pdf|mp4|webm|ogv|vtt))
@@ -29,7 +28,3 @@ handlers:
     X-Frame-Options: "SAMEORIGIN"
     Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org; frame-ancestors 'self'; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com;"
 
-# If a file (relative path under public-ui/) matches this regex, do not upload it.
-# Skip everything not starting with "dist".
-skip_files:
-- ^(?!dist).*$

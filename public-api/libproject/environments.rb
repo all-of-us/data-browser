@@ -1,9 +1,10 @@
 TEST_PROJECT = "aou-db-test"
 
-def make_gae_vars(min_idle_instances = 1, max_instances = 10)
+def make_gae_vars(min_idle_instances = 1, max_instances = 10, instance_class = 'F1')
   {
     "GAE_MIN_IDLE_INSTANCES" => min_idle_instances.to_s,
     "GAE_MAX_INSTANCES" => max_instances.to_s,
+    'GAE_INSTANCE_CLASS' => instance_class
   }
 end
 
