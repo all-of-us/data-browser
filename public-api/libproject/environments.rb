@@ -33,7 +33,7 @@ ENVIRONMENTS = {
      :source_cdr_project => "aou-res-curation-prod",
      :cdr_sql_bucket => "aou-db-public-cloudsql",
      :instance => "databrowsermaindb",
-     :gae_vars => make_gae_vars(1, 10),
+     :gae_vars => make_gae_vars(1, 10, 'F2'),
   }),
   "aou-db-staging" => env_with_defaults("staging", {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
@@ -43,7 +43,7 @@ ENVIRONMENTS = {
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
     :instance => "databrowsermaindb",
-    :gae_vars => make_gae_vars(1, 10),
+    :gae_vars => make_gae_vars(1, 10, 'F4'),
   }),
   "aou-db-stable" => env_with_defaults("stable", {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
@@ -53,7 +53,7 @@ ENVIRONMENTS = {
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
     :instance => "databrowsermaindb",
-    :gae_vars => make_gae_vars(1, 10),
+    :gae_vars => make_gae_vars(1, 10, 'F4'),
   }),
   "aou-db-prod" => env_with_defaults("prod", {
     :cdr_sql_instance => "aou-db-prod:us-central1:databrowsermaindb",
@@ -63,7 +63,7 @@ ENVIRONMENTS = {
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-prod-public-cloudsql",
     :instance => "databrowsermaindb",
-    :gae_vars => make_gae_vars(1, 64),
+    :gae_vars => make_gae_vars(1, 64, 'F4'),
   })
 }
 
