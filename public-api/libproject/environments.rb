@@ -43,7 +43,7 @@ ENVIRONMENTS = {
     :source_cdr_project => "aou-res-curation-prod",
     :cdr_sql_bucket => "aou-db-public-cloudsql",
     :instance => "databrowsermaindb",
-    :gae_vars => make_gae_vars(1, 10. 'F4'),
+    :gae_vars => make_gae_vars(1, 10, 'F4'),
   }),
   "aou-db-stable" => env_with_defaults("stable", {
     :cdr_sql_instance => "#{TEST_PROJECT}:us-central1:databrowsermaindb",
