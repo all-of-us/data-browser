@@ -158,17 +158,12 @@ public class ConceptService {
 
                         if (regex.matcher(keyword).find()) {
                             String keywordPattern = "%" + keyword + "%";
-                            Expression<String> concatenatedColumns = criteriaBuilder.function(
-                                    "CONCAT_WS",
-                                    String.class,
-                                    criteriaBuilder.literal(" "),
-                                    root.get("conceptName"),
-                                    root.get("conceptCode"),
-                                    root.get("vocabularyId"),
-                                    root.get("synonymsStr")
+                            matchExpSpecial = criteriaBuilder.or(
+                                    criteriaBuilder.like(root.get("conceptName"), keywordPattern),
+                                    criteriaBuilder.like(root.get("conceptCode"), keywordPattern),
+                                    criteriaBuilder.like(root.get("vocabularyId"), keywordPattern),
+                                    criteriaBuilder.like(root.get("synonymsStr"), keywordPattern)
                             );
-
-                            matchExpSpecial = criteriaBuilder.like(concatenatedColumns, keywordPattern);
                             predicates.add(matchExpSpecial);
 
                         } else {
