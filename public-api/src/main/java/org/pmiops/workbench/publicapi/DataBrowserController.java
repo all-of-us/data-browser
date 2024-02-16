@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.TreeSet;
 import org.pmiops.workbench.cdr.dao.ConceptService;
@@ -129,6 +131,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
             String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
 
+
             Long conceptId = 0L;
             try {
                 conceptId = Long.parseLong(query);
@@ -138,7 +141,18 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             // TODO: consider parallelizing these lookups
             List<Long> toMatchConceptIds = new ArrayList<>();
             toMatchConceptIds.add(conceptId);
-            List<Long> drugMatchedConceptIds = conceptService.getDrugIngredientsByBrand(query);
+
+            Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+
+            List<Long> drugMatchedConceptIds = new ArrayList<>();
+
+            if (regex.matcher(query).find()) {
+                drugMatchedConceptIds = conceptService.getDrugIngredientsByBrandSpecial(query);
+
+            } else {
+                drugMatchedConceptIds = conceptService.getDrugIngredientsByBrand(query);
+            }
+
             if (drugMatchedConceptIds.size() > 0) {
                 toMatchConceptIds.addAll(drugMatchedConceptIds);
             }

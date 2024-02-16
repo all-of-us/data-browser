@@ -34,6 +34,27 @@ public interface SurveyModuleDao extends CrudRepository<DbSurveyModule, Long> {
           "on sqm2.concept_id=a.concept_id group by m.name, m.description, m.concept_id order by m.order_number;")
   List<DbSurveyModule> findSurveyModuleQuestionCounts(String matchExpression);
 
+  @Query(nativeQuery=true, value= "select m.name, m.description, m.concept_id, COUNT(DISTINCT a.concept_id) as question_count, m.participant_count, m.order_number from \n" +
+          "survey_module m join survey_metadata sqm2 on m.concept_id = sqm2.survey_concept_id left outer join \n" +
+          "(select distinct c.* from survey_metadata c where (CONCAT(c.question_string, ' ', c.concept_name) LIKE CONCAT('%', ?1, '%'))\n \n" +
+          "and c.sub=0 and c.generate_counts=1\n" +
+          "union distinct \n" +
+          "select distinct c.* from survey_metadata c where concept_id in (select distinct SUBSTRING_INDEX(sqm.path, '.', 1) from survey_metadata sqm \n" +
+          "where CONCAT(sqm.question_string, ' ', sqm.concept_name) LIKE CONCAT('%', ?1, '%') and sqm.sub=1 and sqm.generate_counts=1)\n" +
+          "union distinct \n" +
+          "SELECT DISTINCT c.*\n" +
+          "FROM survey_metadata c\n" +
+          "JOIN (\n" +
+          "    SELECT DISTINCT SUBSTRING_INDEX(ar.stratum_6, '.', 1) AS question_id\n" +
+          "    FROM achilles_results ar\n" +
+          "    WHERE ar.analysis_id = 3110\n" +
+          "    AND (ar.stratum_3 = ?1 OR ar.stratum_2 = ?1)\n" +
+          ") AS subquery\n" +
+          "ON c.concept_id = subquery.question_id \n" +
+          ") a \n" +
+          "on sqm2.concept_id=a.concept_id group by m.name, m.description, m.concept_id order by m.order_number;")
+  List<DbSurveyModule> findSurveyModuleQuestionCountsSpecial(String matchExpression);
+
   DbSurveyModule findByConceptId(long conceptId);
 
   List<DbSurveyModule> findAllByOrderByOrderNumberAsc();
