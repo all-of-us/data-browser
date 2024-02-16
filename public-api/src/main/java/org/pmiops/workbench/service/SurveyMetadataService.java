@@ -37,8 +37,6 @@ public class SurveyMetadataService {
 
         Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
 
-        System.out.println("HERE ?????????");
-        System.out.println(searchWord);
 
         if (regex.matcher(searchWord).find()) {
             matchingQuestions = surveyMetadataDao.getMatchingSurveyQuestionsSpecial(surveyConceptId, searchWord).stream()
