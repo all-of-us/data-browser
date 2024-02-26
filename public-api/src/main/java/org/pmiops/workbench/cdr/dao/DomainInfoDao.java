@@ -63,6 +63,52 @@ public interface DomainInfoDao extends CrudRepository<DbDomainInfo, Long> {
                   "order by domain_id")
   List<DbDomainInfo> findStandardOrCodeMatchConceptCounts(String matchExpression, String query, List<Long> conceptIds, List<String> filter);
 
+  @Query(nativeQuery=true,
+          value="select " +
+                  "d.domain as domain, d.domain_id as domain_id, d.name as name, d.description as description, d.concept_id as concept_id, " +
+                  "0 as all_concept_count, c.count as standard_concept_count, d.participant_count as participant_count " +
+                  "from domain_info d " +
+                  "left outer join (" +
+                  "  select c1.domain_id as domain_id, count(*) as count " +
+                  "  from (" +
+                  "    (select domain_id, concept_id from concept " +
+                  "     where has_counts > 0 and " +
+                  "       CONCAT(concept_name, ' ', concept_code, ' ', vocabulary_id, ' ', synonyms) LIKE CONCAT('%', ?1, '%') and " +
+                  "       standard_concept IN ('S', 'C') and can_select=1) " +
+                  // An OR of these different conditions would be easier, but MySQL will not leverage the full
+                  // text index to perform the match, bringing performance to a crawl (~10ms vs ~8s). Using the
+                  // union results in usage of the fulltext index in the first subquery. In the future we should
+                  // move these searches to a more suitable technology, e.g. Elasticsearch.
+                  "    UNION DISTINCT " +
+                  "    (select domain_id, concept_id from concept " +
+                  "     where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 " +
+                  "  group by c1.domain_id) c " +
+                  "ON d.domain_id = c.domain_id where d.domain not in (4, 8, 10)" +
+                  "    UNION DISTINCT " +
+                  "    select domain,domain_id,name,description,concept_id,8 as all_concept_count," +
+                  "    (select count(*) from achilles_results where analysis_id=100 and (stratum_2 like CONCAT('%', ?2, '%') or stratum_3 like CONCAT('%', ?2, '%'))) as standard_concept_count,participant_count" +
+                  "    from domain_info where domain=8" +
+                  "    UNION DISTINCT " +
+                  "    select domain,domain_id,name,description,concept_id,4 as all_concept_count," +
+                  "    (select count(distinct stratum_1) from achilles_results where analysis_id=3101 and stratum_3='Fitbit' and stratum_1 like CONCAT('%', ?2, '%')) as standard_concept_count,participant_count" +
+                  "    from domain_info where domain=10" +
+                  "    UNION DISTINCT\n" +
+                  "    select d.domain, d.domain_id, d.name, d.description, d.concept_id,\n" +
+                  "    0 all_concept_count, case when c.count is not null then c.count else 0 end as standard_concept_count, d.participant_count participant_count \n" +
+                  "    from domain_info d\n" +
+                  "    left join (select c1.domain_id, count(*) as count \n" +
+                  "    from ((select domain_id, c.concept_id from concept c join measurement_concept_info m on c.concept_id=m.concept_id and m.measurement_type in (?4)\n" +
+                  "    where has_counts > 0 and\n" +
+                  "    CONCAT(concept_name, ' ', concept_code, ' ', vocabulary_id, ' ', synonyms) LIKE CONCAT('%', ?1, '%') and \n" +
+                  "    standard_concept IN ('S', 'C') and can_select=1)\n" +
+                  "    UNION DISTINCT\n" +
+                  "    (select domain_id, concept_id from concept\n" +
+                  "    where (concept_id in (?3) or concept_code = ?2) and can_select=1 and has_counts=1)) c1 \n" +
+                  "    group by c1.domain_id) c ON d.domain_id = c.domain_id where d.domain = 4\n" +
+                  "order by domain_id")
+  List<DbDomainInfo> findStandardOrCodeMatchConceptCountsSpecial(String matchExpression, String query, List<Long> conceptIds, List<String> filter);
+
+
   /**
    * Returns domain metadata and concept counts for domains, matching only standard concepts by name,
    * code, or concept ID. standardConceptCount is populated; allConceptCount

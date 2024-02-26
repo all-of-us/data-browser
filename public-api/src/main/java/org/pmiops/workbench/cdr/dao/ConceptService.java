@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -148,11 +150,29 @@ public class ConceptService {
 
                     Expression<Double> matchExp = null;
 
+                    Predicate matchExpSpecial = null;
+
                     if (keyword != null) {
-                        matchExp = criteriaBuilder.function("matchConcept", Double.class,
-                                root.get("conceptName"), root.get("conceptCode"), root.get("vocabularyId"),
-                                root.get("synonymsStr"), criteriaBuilder.literal(keyword));
-                        predicates.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+
+                        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+
+                        if (regex.matcher(keyword).find()) {
+                            String keywordPattern = "%" + keyword + "%";
+                            matchExpSpecial = criteriaBuilder.or(
+                                    criteriaBuilder.like(root.get("conceptName"), keywordPattern),
+                                    criteriaBuilder.like(root.get("conceptCode"), keywordPattern),
+                                    criteriaBuilder.like(root.get("vocabularyId"), keywordPattern),
+                                    criteriaBuilder.like(root.get("synonymsStr"), keywordPattern)
+                            );
+                            predicates.add(matchExpSpecial);
+
+                        } else {
+                            matchExp = criteriaBuilder.function("matchConcept", Double.class,
+                                    root.get("conceptName"), root.get("conceptCode"), root.get("vocabularyId"),
+                                    root.get("synonymsStr"), criteriaBuilder.literal(keyword));
+                            predicates.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                        }
+
                     }
 
                     if (standardConceptFilter.equals(StandardConceptFilter.STANDARD_CONCEPTS)) {
@@ -170,7 +190,13 @@ public class ConceptService {
                                 List<Predicate> standardOrCodeOrIdMatch = new ArrayList<>();
                                 predicates.remove(predicates.size()-1);
                                 List<Predicate> conceptMatch = new ArrayList<>();
-                                conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                                Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+
+                                if (regex.matcher(keyword).find()) {
+                                    conceptMatch.add(matchExpSpecial);
+                                } else {
+                                    conceptMatch.add(criteriaBuilder.greaterThan(matchExp, 0.0));
+                                }
                                 conceptMatch.add(
                                         criteriaBuilder.or(standardConceptPredicates.toArray(new Predicate[0])));
                                 conceptCodeMatch.add(criteriaBuilder.and(conceptMatch.toArray(new Predicate[0])));
@@ -258,6 +284,10 @@ public class ConceptService {
         return conceptDao.findDrugIngredientsByBrand(query);
     }
 
+    public List<Long> getDrugIngredientsByBrandSpecial(String query) {
+        return conceptDao.findDrugIngredientsByBrandSpecial(query);
+    }
+
     public ConceptListResponse getConcepts(SearchConceptsRequest searchConceptsRequest) {
         Integer maxResults = searchConceptsRequest.getMaxResults();
         if(maxResults == null || maxResults == 0){
@@ -292,7 +322,14 @@ public class ConceptService {
         OrderFilter orderFilter = (domainId != null && domainId.equals("Measurement") && searchConceptsRequest.getMeasurementOrders() != null) ? (searchConceptsRequest.getMeasurementOrders() == 1 ? OrderFilter.SELECTED : OrderFilter.UNSELECTED) : OrderFilter.SELECTED;
 
         if(searchConceptsRequest.getDomain() != null && searchConceptsRequest.getDomain().equals(Domain.DRUG) && searchConceptsRequest.getQuery() != null && !searchConceptsRequest.getQuery().isEmpty()) {
-            drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+
+            Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+
+            if (regex.matcher(searchConceptsRequest.getQuery()).find()) {
+                drugConcepts = getDrugIngredientsByBrandSpecial(searchConceptsRequest.getQuery());
+            } else {
+                drugConcepts = getDrugIngredientsByBrand(searchConceptsRequest.getQuery());
+            }
         }
 
         Slice<DbConcept> concepts = searchConcepts(searchConceptsRequest.getQuery(), convertedConceptFilter, drugConcepts,
