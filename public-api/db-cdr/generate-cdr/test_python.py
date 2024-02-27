@@ -13,7 +13,7 @@ def main():
 
     client = bigquery.Client(project="aou-db-prod")
 
-    sql_query = f"""select count(*) from `{bq_project}.{bq_dataset}.concept`"""
+    sql_query = f"""select count(*) from `aou-res-curation-prod.2022q4r9_combined_release.concept` """
     query_job = client.query(sql_query)
 
     results = query_job.result()
