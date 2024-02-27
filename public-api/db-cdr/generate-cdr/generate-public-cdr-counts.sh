@@ -33,7 +33,7 @@ PUBLIC_DATASET=$CDR_VERSION
 startDate=$(date)
 echo $(date) "Starting generate-public-cdr-counts $startDate"
 
-python myscript.py
+python test_python.py
 
 exit 1
 
