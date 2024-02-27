@@ -1,8 +1,15 @@
+import argparse
+import csv
 import os
 import shutil
 from google.cloud import bigquery
 from google.cloud import storage
 from io import StringIO
+
+def init_bigquery_client():
+    bigquery_client = bigquery.Client.from_service_account_json(
+        '../../../sa-key.json')
+    return bigquery_client
 
 def main():
     # Set your project and dataset information
@@ -11,12 +18,14 @@ def main():
     bq_project = "aou-res-curation-prod"
     bq_dataset = "2022q4r9_combined_release"
 
-    client = bigquery.Client(project="aou-db-prod")
+    bigquery_client = init_bigquery_client()
 
-    sql_query = f"""select count(*) from `aou-res-curation-prod.2022q4r9_combined_release.concept` """
-    query_job = client.query(sql_query)
-
-    results = query_job.result()
+    query = (
+        "SELECT count(*) FROM "
+        "`aou-res-curation-prod.2022q4r9_combined_release.concept`"
+    )
+    query_job = bigquery_client.query(query)
+    results =  query_job.result()
 
     for row in results:
         print(row)
