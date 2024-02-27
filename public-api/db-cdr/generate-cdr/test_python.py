@@ -16,6 +16,15 @@ def main():
     bq_project = "aou-res-curation-prod"
     bq_dataset = "2022q4r9_combined_release"
 
+    current_directory = os.getcwd()
+    print(f"Current Working Directory: {current_directory}")
+
+    # List contents of the current directory (equivalent to ls)
+    directory_contents = os.listdir(current_directory)
+    print("Directory Contents:")
+    for item in directory_contents:
+        print(item)
+
     bigquery_client = init_bigquery_client()
 
     query = (
