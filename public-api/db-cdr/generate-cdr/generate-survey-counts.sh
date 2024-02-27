@@ -28,6 +28,9 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
 SELECT DISTINCT concept_id FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\`);"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` a
+set value_source_concept_id = 903626 where value_source_concept_id = 1585730"
 
 ####################
 # fmh counts #
