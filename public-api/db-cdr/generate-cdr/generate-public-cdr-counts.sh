@@ -33,6 +33,8 @@ PUBLIC_DATASET=$CDR_VERSION
 startDate=$(date)
 echo $(date) "Starting generate-public-cdr-counts $startDate"
 
+python myscript.py
+
 ## Make public cdr count data
 echo "Intermediary pre-binned count generation"
 if ./generate-cdr/make-bq-data.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET --output-project $PUBLIC_PROJECT \
