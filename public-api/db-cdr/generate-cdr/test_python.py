@@ -20,7 +20,7 @@ def main():
 
     query = (
         "SELECT count(*) FROM "
-        "`aou-db-prod.2022q4r6_genomics.wgs_variant`"
+        "`aou-res-curation-prod.2022q4r9_combined_release.wgs_variant`"
     )
     query_job = bigquery_client.query(query)
     results =  query_job.result()
