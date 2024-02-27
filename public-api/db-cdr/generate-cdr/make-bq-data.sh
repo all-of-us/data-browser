@@ -114,6 +114,17 @@ if [ "$SEARCH_VAT" = true ]; then
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
 
   bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
+  with distinct_transcripts as
+  (
+  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\` d
+  ),
+  mane_transcripts as
+  (SELECT d.transcript from distinct_transcripts d join \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts\` AS m ON d.transcript LIKE CONCAT('%', m.transcript, '%'))
+  select * from mane_transcripts;
+  "
+
+  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`
   cluster by variant_id
   as
