@@ -3,7 +3,6 @@ import csv
 import os
 import shutil
 from google.cloud import bigquery
-from google.cloud import storage
 from io import StringIO
 
 def init_bigquery_client():
