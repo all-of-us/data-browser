@@ -6,7 +6,7 @@ from google.cloud import bigquery
 from io import StringIO
 
 def init_bigquery_client():
-    bigquery_client = bigquery.Client.from_service_account_json('/home/circleci/cdr-indices/ci/circle-sa-key.json')
+    bigquery_client = bigquery.Client.from_service_account_json('~/cdr-indices/data-browser/public-api/circle-sa-key.json')
     return bigquery_client
 
 def main():
@@ -20,7 +20,7 @@ def main():
 
     query = (
         "SELECT count(*) FROM "
-        "`aou-res-curation-prod.2022q4r9_combined_release.concept`"
+        "`aou-res-curation-prod.2022q4r6_genomics2022q4r9_combined_release.concept`"
     )
     query_job = bigquery_client.query(query)
     results =  query_job.result()
