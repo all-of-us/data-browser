@@ -6,7 +6,7 @@ from google.cloud import bigquery
 from io import StringIO
 
 def init_bigquery_client():
-    bigquery_client = bigquery.Client.from_service_account_json('../../../circle-sa-key.json')
+    bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
     return bigquery_client
 
 def main():
