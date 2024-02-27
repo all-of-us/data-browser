@@ -211,12 +211,12 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                 <div>
                   <span style={styles.catHeading}>Consequence:</span>
                   <br />
-                  <span style={styles.catInfo}>{variant.consequence ? variant.consequence : "-"}</span>
+                  <span style={styles.catInfo}>{variant.consequence ? variant.consequence.replace(/_/g, ' ') : "-"}</span>
                 </div>
                 <div>
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
-                    <span style={styles.catInfo}>{variant.variantType ? variant.variantType : "-"}</span>
+                    <span style={styles.catInfo}>{variant.variantType ? variant.variantType.replace(/_/g, ' ') : "-"}</span>
                 </div>
                 <div>
                   <span style={styles.catHeading}>Transcript:</span>
@@ -257,7 +257,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   <span style={styles.catHeading}>ClinVar Significance:</span>
                   <br />
                   <span style={styles.catInfo}>
-                    {variant.clinicalSignificance ? variant.clinicalSignificance : "-"}
+                    {variant.clinicalSignificance ? variant.clinicalSignificance.replace(/_/g, ' ') : "-"}
                   </span>
                 </div>
               </div>
