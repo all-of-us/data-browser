@@ -201,7 +201,7 @@ def main():
 
 
     errors = bigquery_client.insert_rows_json(
-        f"{output_project}.{genomics_dataset}.{output_table}", rows_to_insert
+        f"{output_project}.{genomics_dataset}.{output_table}", filtered_rows
     )
 
     if errors == []:
