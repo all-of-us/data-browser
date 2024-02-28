@@ -145,7 +145,7 @@ def main():
     print(filtered_rows)
 
     # Create a new list for rows to be inserted into the BigQuery table
-   rows_to_insert = [dict(row) for row in filtered_rows]
+    rows_to_insert = [dict(row) for row in filtered_rows]
 
     print(rows_to_insert)
 
