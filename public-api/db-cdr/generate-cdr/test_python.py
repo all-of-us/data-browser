@@ -52,7 +52,7 @@ def main():
     rows =  query_job.result()
 
     # Fetch distinct transcripts separately
-    distinct_transcripts_query = client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat")
+    distinct_transcripts_query = bigquery_client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat")
     distinct_transcripts = distinct_transcripts_query.result()
 
     # Group genes by variant_id
