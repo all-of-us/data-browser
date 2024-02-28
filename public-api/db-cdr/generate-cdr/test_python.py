@@ -192,7 +192,7 @@ def main():
 
 
     table = bigquery.Table(f"{output_project}.{genomics_dataset}.{output_table}", schema=schema)
-    table = bigquery_client.create_table(table)
+    table = bigquery_client.create_table(table, exists_ok=True)
     print(
         "Created table {}.{}.{}".format(
             table.project, table.dataset_id, table.table_id
