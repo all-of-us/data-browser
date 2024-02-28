@@ -192,7 +192,7 @@ def main():
 
 
     table = bigquery.Table(f"{output_project}.{genomics_dataset}.{output_table}", schema=schema)
-    table = client.create_table(table)
+    table = bigquery_client.create_table(table)
     print(
         "Created table {}.{}.{}".format(
             table.project, table.dataset_id, table.table_id
@@ -200,7 +200,7 @@ def main():
     )
 
 
-    errors = client.insert_rows_json(
+    errors = bigquery_client.insert_rows_json(
         f"{output_project}.{genomics_dataset}.{output_table}", rows_to_insert
     )
 
