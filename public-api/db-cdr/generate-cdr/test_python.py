@@ -111,8 +111,9 @@ def main():
         else:
             current_row_number += 1
 
-        row['row_number'] = current_row_number
-        result_with_row_number.append(row)
+        row_dict = dict(row)
+        row_dict['row_number'] = current_row_number
+        result_with_row_number.append(bigquery.table.Row(row_dict, row._schema))
 
     # Now 'result_with_row_number' contains the result with the added 'row_number' field
 
