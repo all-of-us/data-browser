@@ -33,9 +33,6 @@ PUBLIC_DATASET=$CDR_VERSION
 startDate=$(date)
 echo $(date) "Starting generate-public-cdr-counts $startDate"
 
-python ./generate-cdr/test_python.py
-
-exit 0
 
 ## Make public cdr count data
 echo "Intermediary pre-binned count generation"
