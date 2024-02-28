@@ -32,7 +32,16 @@ def custom_sort_consequence(row):
         'regulatory_region_ablation', 'regulatory_region_amplification', 'regulatory_region_variant',
         'intergenic_variant', 'sequence_variant'
     ]
-    return consequence_order.index(row['consequence'].lower()) + 1
+
+    # Extract consequences from the list
+    consequences = row['consequence'] if row['consequence'] else []
+
+    # Check if any consequence is in the order list
+    for consequence in consequences:
+        if consequence and consequence.lower() in consequence_order:
+            return consequence_order.index(consequence.lower()) + 1
+
+    return len(consequence_order) + 1  # If not found, place it at the end
 
 def main():
     # Set your project and dataset information
