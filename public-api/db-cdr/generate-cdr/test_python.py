@@ -205,6 +205,8 @@ def main():
         new_row = [row.get(field.name, None) for field in schema]
         rows_to_insert.append(new_row)
 
+    print(rows_to_insert)
+
     # Create the table if it does not exist
     table_ref = bigquery_client.dataset(genomics_dataset).table(output_table)
     table = bigquery.Table(table_ref, schema=schema)
