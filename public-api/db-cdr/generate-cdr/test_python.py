@@ -118,7 +118,16 @@ def main():
 
     # Now 'result_with_row_number' contains the result with the added 'row_number' field
 
-    print(result_with_row_number)
+    # Filter rows with row_number equal to 1 or transcript being null
+    filtered_rows = [row for row in result_with_row_number if row['row_number'] == 1 or row['transcript'] is None]
+
+    # Combine gene information
+    for row in filtered_rows:
+        vid = row['variant_id']
+        if vid in genes_dict:
+            row['genes'] = ', '.join(sorted(genes_dict[vid]))
+
+    print(filtered_rows)
 
 
 if __name__ == '__main__':
