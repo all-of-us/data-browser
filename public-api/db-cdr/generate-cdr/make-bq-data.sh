@@ -147,16 +147,59 @@ if [ "$SEARCH_VAT" = true ]; then
   gvs_sas_sc,
   gvs_oth_sc,
   gvs_all_sc,
-  ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
-     CASE ARRAY_TO_STRING(consequence, ',')
-         WHEN 'upstream_gene_variant'
-         THEN 4
-         WHEN 'downstream_gene_variant'
-         THEN 5
-         ELSE 1
-         END
-         ASC
-  )  AS row_number
+ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
+    CASE
+      WHEN transcript IN (SELECT DISTINCT transcript FROM `aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat`) THEN 1
+      ELSE 2
+    END,
+    CASE
+      WHEN 'transcript_ablation' IN UNNEST(consequence) THEN 3
+      WHEN 'splice_acceptor_variant' IN UNNEST(consequence) THEN 4
+      WHEN 'splice_donor_variant' IN UNNEST(consequence) THEN 5
+      WHEN 'stop_gained' IN UNNEST(consequence) THEN 6
+      WHEN 'frameshift_variant' IN UNNEST(consequence) THEN 7
+      WHEN 'stop_lost' IN UNNEST(consequence) THEN 8
+      WHEN 'start_lost' IN UNNEST(consequence) THEN 9
+      WHEN 'transcript_amplification' IN UNNEST(consequence) THEN 10
+
+      WHEN 'feature_elongation' IN UNNEST(consequence) THEN 11
+      WHEN 'feature_truncation' IN UNNEST(consequence) THEN 12
+      WHEN 'inframe_insertion' IN UNNEST(consequence) THEN 13
+      WHEN 'inframe_deletion' IN UNNEST(consequence) THEN 14
+      WHEN 'missense_variant' IN UNNEST(consequence) THEN 15
+      WHEN 'protein_altering_variant' IN UNNEST(consequence) THEN 16
+
+      WHEN 'splice_donor_5th_base_variant' IN UNNEST(consequence) THEN 17
+      WHEN 'splice_region_variant' IN UNNEST(consequence) THEN 18
+      WHEN 'splice_donor_region_variant' IN UNNEST(consequence) THEN 19
+      WHEN 'splice_polypyrimidine_tract_variant' IN UNNEST(consequence) THEN 20
+      WHEN 'incomplete_terminal_codon_variant' IN UNNEST(consequence) THEN 21
+      WHEN 'start_retained_variant' IN UNNEST(consequence) THEN 22
+      WHEN 'stop_retained_variant' IN UNNEST(consequence) THEN 23
+      WHEN 'synonymous_variant' IN UNNEST(consequence) THEN 24
+
+      WHEN 'coding_sequence_variant' IN UNNEST(consequence) THEN 25
+      WHEN 'mature_miRNA_variant' IN UNNEST(consequence) THEN 26
+      WHEN '5_prime_UTR_variant' IN UNNEST(consequence) THEN 27
+      WHEN '3_prime_UTR_variant' IN UNNEST(consequence) THEN 28
+      WHEN 'non_coding_transcript_exon_variant' IN UNNEST(consequence) THEN 29
+      WHEN 'intron_variant' IN UNNEST(consequence) THEN 30
+      WHEN 'NMD_transcript_variant' IN UNNEST(consequence) THEN 31
+      WHEN 'non_coding_transcript_variant' IN UNNEST(consequence) THEN 32
+      WHEN 'coding_transcript_variant' IN UNNEST(consequence) THEN 33
+      WHEN 'upstream_gene_variant' IN UNNEST(consequence) THEN 34
+      WHEN 'downstream_gene_variant' IN UNNEST(consequence) THEN 35
+      WHEN 'TFBS_ablation' IN UNNEST(consequence) THEN 36
+      WHEN 'TFBS_amplification' IN UNNEST(consequence) THEN 37
+      WHEN 'TF_binding_site_variant' IN UNNEST(consequence) THEN 38
+      WHEN 'regulatory_region_ablation' IN UNNEST(consequence) THEN 39
+      WHEN 'regulatory_region_amplification' IN UNNEST(consequence) THEN 40
+      WHEN 'regulatory_region_variant' IN UNNEST(consequence) THEN 41
+      WHEN 'intergenic_variant' IN UNNEST(consequence) THEN 42
+      WHEN 'sequence_variant' IN UNNEST(consequence) THEN 43
+    END,
+    transcript ASC
+) AS row_number
   FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
