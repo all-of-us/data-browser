@@ -145,12 +145,7 @@ def main():
     print(filtered_rows)
 
     # Create a new list for rows to be inserted into the BigQuery table
-    rows_to_insert = []
-
-    # Prepare rows for insertion
-    for row in filtered_rows:
-        new_row = [row.get(field.name, None) for field in schema]
-        rows_to_insert.append(new_row)
+   rows_to_insert = [dict(row) for row in filtered_rows]
 
     print(rows_to_insert)
 
