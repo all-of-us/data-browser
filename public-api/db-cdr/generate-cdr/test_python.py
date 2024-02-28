@@ -9,6 +9,13 @@ def init_bigquery_client():
     bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
     return bigquery_client
 
+# Define a custom sorting function based on mane transcript list
+def custom_sort(row):
+    if row['transcript'] in [tr['transcript'] for tr in distinct_transcripts]:
+        return 1
+    else:
+        return 2
+
 def main():
     # Set your project and dataset information
     output_project = "aou-db-prod"
@@ -44,6 +51,10 @@ def main():
     query_job = bigquery_client.query(query)
     rows =  query_job.result()
 
+    # Fetch distinct transcripts separately
+    distinct_transcripts_query = client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat")
+    distinct_transcripts = distinct_transcripts_query.result()
+
     # Group genes by variant_id
     genes_dict = {}
     for row in rows:
@@ -56,6 +67,7 @@ def main():
             genes_dict[vid].add(gene_symbol)
 
     print(genes_dict)
+    print(distinct_transcripts)
 
 
 if __name__ == '__main__':
