@@ -149,7 +149,7 @@ def main():
         bigquery.SchemaField("allele_count", "INTEGER"),
         bigquery.SchemaField("allele_number", "INTEGER"),
         bigquery.SchemaField("allele_frequency", "FLOAT"),
-        bigquery.SchemaField("clinical_significance", "STRING"),
+        bigquery.SchemaField("clinical_significance", "STRING", mode="REPEATED" ),
         bigquery.SchemaField("rs_number", "STRING", mode="REPEATED"),
         bigquery.SchemaField("transcript", "STRING"),
         bigquery.SchemaField("gvs_afr_ac", "INTEGER"),
