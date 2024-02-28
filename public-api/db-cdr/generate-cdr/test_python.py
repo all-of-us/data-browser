@@ -144,59 +144,6 @@ def main():
 
     print(filtered_rows)
 
-    schema = [
-        bigquery.SchemaField("variant_id", "STRING"),
-        bigquery.SchemaField("gene_symbol", "STRING"),
-        bigquery.SchemaField("consequence", "STRING", mode="REPEATED"),
-        bigquery.SchemaField("variant_type", "STRING"),
-        bigquery.SchemaField("protein_change", "STRING"),
-        bigquery.SchemaField("dna_change", "STRING"),
-        bigquery.SchemaField("allele_count", "INTEGER"),
-        bigquery.SchemaField("allele_number", "INTEGER"),
-        bigquery.SchemaField("allele_frequency", "FLOAT"),
-        bigquery.SchemaField("clinical_significance", "STRING", mode="REPEATED" ),
-        bigquery.SchemaField("rs_number", "STRING", mode="REPEATED"),
-        bigquery.SchemaField("transcript", "STRING"),
-        bigquery.SchemaField("gvs_afr_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_afr_an", "INTEGER"),
-        bigquery.SchemaField("gvs_afr_af", "FLOAT"),
-        bigquery.SchemaField("gvs_amr_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_amr_an", "INTEGER"),
-        bigquery.SchemaField("gvs_amr_af", "FLOAT"),
-        bigquery.SchemaField("gvs_eas_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_eas_an", "INTEGER"),
-        bigquery.SchemaField("gvs_eas_af", "FLOAT"),
-        bigquery.SchemaField("gvs_mid_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_mid_an", "INTEGER"),
-        bigquery.SchemaField("gvs_mid_af", "FLOAT"),
-        bigquery.SchemaField("gvs_eur_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_eur_an", "INTEGER"),
-        bigquery.SchemaField("gvs_eur_af", "FLOAT"),
-        bigquery.SchemaField("gvs_sas_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_sas_an", "INTEGER"),
-        bigquery.SchemaField("gvs_sas_af", "FLOAT"),
-        bigquery.SchemaField("gvs_oth_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_oth_an", "INTEGER"),
-        bigquery.SchemaField("gvs_oth_af", "FLOAT"),
-        bigquery.SchemaField("gvs_all_ac", "INTEGER"),
-        bigquery.SchemaField("gvs_all_an", "INTEGER"),
-        bigquery.SchemaField("gvs_all_af", "FLOAT"),
-        bigquery.SchemaField("homozygote_count", "INTEGER"),
-        bigquery.SchemaField("gvs_afr_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_amr_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_eas_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_mid_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_eur_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_sas_hc", "INTEGER"),
-        bigquery.SchemaField("gvs_oth_hc", "INTEGER"),
-        bigquery.SchemaField("contig", "STRING"),
-        bigquery.SchemaField("position", "INTEGER"),
-        bigquery.SchemaField("ref_allele", "STRING"),
-        bigquery.SchemaField("alt_allele", "STRING"),
-        bigquery.SchemaField("cons_str", "STRING"),
-        bigquery.SchemaField("genes", "STRING")
-      ]
-
     # Create a new list for rows to be inserted into the BigQuery table
     rows_to_insert = []
 
@@ -209,11 +156,15 @@ def main():
 
     # Create the table if it does not exist
     table_ref = bigquery_client.dataset(genomics_dataset).table(output_table)
-    table = bigquery.Table(table_ref, schema=schema)
+    table = bigquery.Table(table_ref)
+
+    # Set the schema to autodetect
+    table.schema = []
+
     table = bigquery_client.create_table(table, exists_ok=True)
 
     # Insert rows into the table
-    errors = bigquery_client.insert_rows(table, rows_to_insert)
+    errors = bigquery_client.insert_rows(table, rows_to_insert, autodetect=True)
 
     if errors:
         print(f"Errors occurred during insertion: {errors}")
