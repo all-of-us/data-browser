@@ -124,10 +124,73 @@ def main():
     # Combine gene information
     for row in filtered_rows:
         vid = row['variant_id']
+        row['homozygote_count'] = row['gvs_all_ac'] - row['gvs_all_sc']
+        row['gvs_afr_hc'] = row['gvs_afr_ac'] - row['gvs_afr_sc']
+        row['gvs_amr_hc'] = row['gvs_amr_ac'] - row['gvs_amr_sc']
+        row['gvs_eas_hc'] = row['gvs_eas_ac'] - row['gvs_eas_sc']
+        row['gvs_mid_hc'] = row['gvs_mid_ac'] - row['gvs_mid_sc']
+        row['gvs_eur_hc'] = row['gvs_eur_ac'] - row['gvs_eur_sc']
+        row['gvs_sas_hc'] = row['gvs_sas_ac'] - row['gvs_sas_sc']
+        row['gvs_oth_hc'] = row['gvs_oth_ac'] - row['gvs_oth_sc']
+
         if vid in genes_dict:
             row['genes'] = ', '.join(sorted(genes_dict[vid]))
 
-    print(filtered_rows)
+
+    schema = [
+        bigquery.SchemaField("variant_id", "STRING"),
+        bigquery.SchemaField("gene_symbol", "STRING"),
+        bigquery.SchemaField("consequence", "STRING"),
+        bigquery.SchemaField("variant_type", "STRING"),
+        bigquery.SchemaField("protein_change", "STRING"),
+        bigquery.SchemaField("dna_change", "STRING"),
+        bigquery.SchemaField("allele_count", "INTEGER"),
+        bigquery.SchemaField("allele_number", "INTEGER"),
+        bigquery.SchemaField("allele_frequency", "FLOAT"),
+        bigquery.SchemaField("clinical_significance", "STRING"),
+        bigquery.SchemaField("rs_number", "STRING"),
+        bigquery.SchemaField("transcript", "STRING"),
+        bigquery.SchemaField("gvs_afr_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_an", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_af", "FLOAT"),
+        bigquery.SchemaField("gvs_amr_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_an", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_af", "FLOAT"),
+        bigquery.SchemaField("gvs_eas_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_an", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_af", "FLOAT"),
+        bigquery.SchemaField("gvs_mid_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_an", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_af", "FLOAT"),
+        bigquery.SchemaField("gvs_eur_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_an", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_af", "FLOAT"),
+        bigquery.SchemaField("gvs_sas_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_an", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_af", "FLOAT"),
+        bigquery.SchemaField("gvs_oth_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_an", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_af", "FLOAT"),
+        bigquery.SchemaField("gvs_all_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_all_an", "INTEGER"),
+        bigquery.SchemaField("gvs_all_af", "FLOAT"),
+        bigquery.SchemaField("homozygote_count", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_hc", "INTEGER"),
+        bigquery.SchemaField("contig", "STRING"),
+        bigquery.SchemaField("position", "INTEGER"),
+        bigquery.SchemaField("ref_allele", "STRING"),
+        bigquery.SchemaField("alt_allele", "STRING"),
+        bigquery.SchemaField("cons_str", "STRING"),
+        bigquery.SchemaField("genes", "STRING")
+      ]
+
+
 
 
 if __name__ == '__main__':
