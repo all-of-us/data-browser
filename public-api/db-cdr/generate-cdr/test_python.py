@@ -47,6 +47,7 @@ def main():
     # Set your project and dataset information
     output_project = "aou-db-prod"
     genomics_dataset = "2022q4r6_genomics"
+    output_table = "wgs_python_test"
     bq_project = "aou-res-curation-prod"
     bq_dataset = "2022q4r9_combined_release"
     bq_table = "delta_vat_v2"
@@ -189,6 +190,27 @@ def main():
         bigquery.SchemaField("cons_str", "STRING"),
         bigquery.SchemaField("genes", "STRING")
       ]
+
+    # Create a new list for rows to be inserted into the BigQuery table
+    rows_to_insert = []
+
+    # Prepare rows for insertion
+    for row in filtered_rows:
+        new_row = [row.get(field.name, None) for field in schema]
+        rows_to_insert.append(new_row)
+
+    # Create the table if it does not exist
+    table_ref = bigquery_client.dataset(genomics_dataset).table(output_table)
+    table = bigquery.Table(table_ref, schema=schema)
+    table = bigquery_client.create_table(table, exists_ok=True)
+
+    # Insert rows into the table
+    errors = bigquery_client.insert_rows(table, rows_to_insert)
+
+    if errors:
+        print(f"Errors occurred during insertion: {errors}")
+    else:
+        print("Table created and rows inserted successfully.")
 
 
 
