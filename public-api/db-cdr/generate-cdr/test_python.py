@@ -137,6 +137,9 @@ def main():
         if vid in genes_dict:
             row['genes'] = ', '.join(sorted(genes_dict[vid]))
 
+        # Print clinical_significance for debugging
+        print(f"Clinical Significance: {row.get('clinical_significance', None)}")
+
     print(filtered_rows)
 
     schema = [
