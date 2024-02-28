@@ -22,6 +22,7 @@ def main():
         "SELECT count(*) FROM "
         "`aou-res-curation-prod.{bq_dataset}.delta_vat_v2`"
         "WHERE is_canonical_transcript OR transcript is NULL"
+        .format(bq_dataset=bq_dataset)
     )
     query_job = bigquery_client.query(query)
     results =  query_job.result()
