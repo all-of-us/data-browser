@@ -142,7 +142,7 @@ def main():
     schema = [
         bigquery.SchemaField("variant_id", "STRING"),
         bigquery.SchemaField("gene_symbol", "STRING"),
-        bigquery.SchemaField("consequence", "STRING"),
+        bigquery.SchemaField("consequence", "STRING", mode="REPEATED"),
         bigquery.SchemaField("variant_type", "STRING"),
         bigquery.SchemaField("protein_change", "STRING"),
         bigquery.SchemaField("dna_change", "STRING"),
