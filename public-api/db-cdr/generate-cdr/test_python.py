@@ -137,6 +137,7 @@ def main():
         if vid in genes_dict:
             row['genes'] = ', '.join(sorted(genes_dict[vid]))
 
+    print(filtered_rows)
 
     schema = [
         bigquery.SchemaField("variant_id", "STRING"),
