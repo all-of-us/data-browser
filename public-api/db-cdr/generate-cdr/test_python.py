@@ -9,8 +9,7 @@ def init_bigquery_client():
     bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
     return bigquery_client
 
-def insert_into_bigquery(rows, output_project, genomics_dataset, output_table):
-    bigquery_client = bigquery.Client()
+def insert_into_bigquery(rows, output_project, genomics_dataset, output_table, bigquery_client):
 
     # Define the target table reference
     dataset_ref = bigquery_client.dataset(genomics_dataset, project=output_project)
@@ -180,7 +179,7 @@ def main():
 
     print(filtered_rows)
 
-    insert_into_bigquery(filtered_rows, output_project, genomics_dataset, output_table)
+    insert_into_bigquery(filtered_rows, output_project, genomics_dataset, output_table, bigquery_client)
 
     print("done")
 
