@@ -9,46 +9,6 @@ def init_bigquery_client():
     bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
     return bigquery_client
 
-def insert_into_bigquery(rows, output_project, genomics_dataset, output_table, bigquery_client):
-
-    # Define the target table reference
-    dataset_ref = bigquery_client.dataset(genomics_dataset, project=output_project)
-    table_ref = dataset_ref.table(output_table)
-
-    # Define the job configuration
-    job_config = bigquery.LoadJobConfig()
-    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE  # You can change this to WRITE_APPEND if you want to append the data
-
-    # Load the data into the BigQuery table
-    with bigquery_client.get_table(table_ref) as table:
-        # Ensure that 'clinical_significance', 'consequence', and 'rs_number' are set as repeated fields in the table schema
-        table_schema = table.schema
-
-        # Create a list of repeated field names
-        repeated_fields = ['clinical_significance', 'consequence', 'rs_number']
-
-        # Define a mapping for repeated field names to their corresponding field indices
-        repeated_field_indices = {field.name: idx for idx, field in enumerate(table_schema) if field.name in repeated_fields}
-
-        # Prepare rows for insertion, converting repeated fields to lists
-        rows_for_insertion = []
-        for row in rows:
-            for field_name in repeated_fields:
-                if field_name in row and isinstance(row[field_name], str):
-                    row[field_name] = [row[field_name]]
-
-            # Ensure all repeated fields are lists, even if empty
-            for field_name, field_index in repeated_field_indices.items():
-                if field_name not in row:
-                    row[field_name] = []
-
-                if not isinstance(row[field_name], list):
-                    row[field_name] = [row[field_name]]
-
-            rows_for_insertion.append(row)
-
-        table.insert_rows(rows_for_insertion, job_config=job_config)
-
 # Define a custom sorting function based on mane transcript list
 def custom_sort(row, mane_transcripts):
     if any(row['transcript'].startswith(prefix) for prefix in mane_transcripts):
@@ -177,11 +137,77 @@ def main():
         if vid in genes_dict:
             row['genes'] = ', '.join(sorted(genes_dict[vid]))
 
-    print(filtered_rows)
+    schema = [
+        bigquery.SchemaField("variant_id", "STRING"),
+        bigquery.SchemaField("gene_symbol", "STRING"),
+        bigquery.SchemaField("consequence", "STRING", mode="REPEATED"),
+        bigquery.SchemaField("variant_type", "STRING"),
+        bigquery.SchemaField("protein_change", "STRING"),
+        bigquery.SchemaField("dna_change", "STRING"),
+        bigquery.SchemaField("allele_count", "INTEGER"),
+        bigquery.SchemaField("allele_number", "INTEGER"),
+        bigquery.SchemaField("allele_frequency", "FLOAT"),
+        bigquery.SchemaField("clinical_significance", "STRING", mode="REPEATED" ),
+        bigquery.SchemaField("rs_number", "STRING", mode="REPEATED"),
+        bigquery.SchemaField("transcript", "STRING"),
+        bigquery.SchemaField("gvs_afr_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_an", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_af", "FLOAT"),
+        bigquery.SchemaField("gvs_amr_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_an", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_af", "FLOAT"),
+        bigquery.SchemaField("gvs_eas_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_an", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_af", "FLOAT"),
+        bigquery.SchemaField("gvs_mid_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_an", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_af", "FLOAT"),
+        bigquery.SchemaField("gvs_eur_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_an", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_af", "FLOAT"),
+        bigquery.SchemaField("gvs_sas_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_an", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_af", "FLOAT"),
+        bigquery.SchemaField("gvs_oth_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_an", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_af", "FLOAT"),
+        bigquery.SchemaField("gvs_all_ac", "INTEGER"),
+        bigquery.SchemaField("gvs_all_an", "INTEGER"),
+        bigquery.SchemaField("gvs_all_af", "FLOAT"),
+        bigquery.SchemaField("homozygote_count", "INTEGER"),
+        bigquery.SchemaField("gvs_afr_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_amr_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_eas_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_mid_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_eur_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_sas_hc", "INTEGER"),
+        bigquery.SchemaField("gvs_oth_hc", "INTEGER"),
+        bigquery.SchemaField("contig", "STRING"),
+        bigquery.SchemaField("position", "INTEGER"),
+        bigquery.SchemaField("ref_allele", "STRING"),
+        bigquery.SchemaField("alt_allele", "STRING"),
+        bigquery.SchemaField("cons_str", "STRING"),
+        bigquery.SchemaField("genes", "STRING")
+      ]
 
-    insert_into_bigquery(filtered_rows, output_project, genomics_dataset, output_table, bigquery_client)
 
-    print("done")
+    table = bigquery.Table(f"{output_project}.{genomics_dataset}.{output_table}", schema=schema)
+    table = client.create_table(table)
+    print(
+        "Created table {}.{}.{}".format(
+            table.project, table.dataset_id, table.table_id
+        )
+    )
+
+
+    errors = client.insert_rows_json(
+        f"{output_project}.{genomics_dataset}.{output_table}", rows_to_insert
+    )
+
+    if errors == []:
+        print("New rows have been added.")
+    else:
+        print("Encountered errors while inserting rows: {}".format(errors))
 
 
 if __name__ == '__main__':
