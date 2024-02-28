@@ -11,10 +11,28 @@ def init_bigquery_client():
 
 # Define a custom sorting function based on mane transcript list
 def custom_sort(row):
-    if row['transcript'] in [tr['transcript'] for tr in distinct_transcripts]:
+    if any(row['transcript'].startswith(prefix) for prefix in mane_transcripts):
         return 1
     else:
         return 2
+
+# Define a custom sorting function based on calculated consequence
+def custom_sort_consequence(row):
+    consequence_order = [
+        'transcript_ablation', 'splice_acceptor_variant', 'splice_donor_variant', 'stop_gained',
+        'frameshift_variant', 'stop_lost', 'start_lost', 'transcript_amplification',
+        'feature_elongation', 'feature_truncation', 'inframe_insertion', 'inframe_deletion',
+        'missense_variant', 'protein_altering_variant', 'splice_donor_5th_base_variant',
+        'splice_region_variant', 'splice_donor_region_variant', 'splice_polypyrimidine_tract_variant',
+        'incomplete_terminal_codon_variant', 'start_retained_variant', 'stop_retained_variant',
+        'synonymous_variant', 'coding_sequence_variant', 'mature_miRNA_variant', '5_prime_UTR_variant',
+        '3_prime_UTR_variant', 'non_coding_transcript_exon_variant', 'NMD_transcript_variant',
+        'non_coding_transcript_variant', 'coding_transcript_variant', 'upstream_gene_variant',
+        'downstream_gene_variant', 'TFBS_ablation', 'TFBS_amplification', 'TF_binding_site_variant',
+        'regulatory_region_ablation', 'regulatory_region_amplification', 'regulatory_region_variant',
+        'intergenic_variant', 'sequence_variant'
+    ]
+    return consequence_order.index(row['consequence'].lower()) + 1
 
 def main():
     # Set your project and dataset information
@@ -66,8 +84,12 @@ def main():
         if gene_symbol:
             genes_dict[vid].add(gene_symbol)
 
-    print(genes_dict)
-    print(mane_transcripts)
+
+    # Sort the rows based on custom sorting
+    sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x), custom_sort_consequence(x)))
+
+    for row in sorted_rows:
+        print(row)
 
 
 if __name__ == '__main__':
