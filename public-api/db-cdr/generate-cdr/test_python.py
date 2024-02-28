@@ -9,6 +9,47 @@ def init_bigquery_client():
     bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
     return bigquery_client
 
+def insert_into_bigquery(rows, output_project, genomics_dataset, output_table):
+    bigquery_client = bigquery.Client()
+
+    # Define the target table reference
+    dataset_ref = bigquery_client.dataset(genomics_dataset, project=output_project)
+    table_ref = dataset_ref.table(output_table)
+
+    # Define the job configuration
+    job_config = bigquery.LoadJobConfig()
+    job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE  # You can change this to WRITE_APPEND if you want to append the data
+
+    # Load the data into the BigQuery table
+    with bigquery.Client().open_table(table_ref) as table:
+        # Ensure that 'clinical_significance', 'consequence', and 'rs_number' are set as repeated fields in the table schema
+        table_schema = table.schema
+
+        # Create a list of repeated field names
+        repeated_fields = ['clinical_significance', 'consequence', 'rs_number']
+
+        # Define a mapping for repeated field names to their corresponding field indices
+        repeated_field_indices = {field.name: idx for idx, field in enumerate(table_schema) if field.name in repeated_fields}
+
+        # Prepare rows for insertion, converting repeated fields to lists
+        rows_for_insertion = []
+        for row in rows:
+            for field_name in repeated_fields:
+                if field_name in row and isinstance(row[field_name], str):
+                    row[field_name] = [row[field_name]]
+
+            # Ensure all repeated fields are lists, even if empty
+            for field_name, field_index in repeated_field_indices.items():
+                if field_name not in row:
+                    row[field_name] = []
+
+                if not isinstance(row[field_name], list):
+                    row[field_name] = [row[field_name]]
+
+            rows_for_insertion.append(row)
+
+        table.insert_rows(rows_for_insertion, job_config=job_config)
+
 # Define a custom sorting function based on mane transcript list
 def custom_sort(row, mane_transcripts):
     if any(row['transcript'].startswith(prefix) for prefix in mane_transcripts):
@@ -137,36 +178,11 @@ def main():
         if vid in genes_dict:
             row['genes'] = ', '.join(sorted(genes_dict[vid]))
 
-        # Print clinical_significance for debugging
-        print(f"Clinical Significance: {row.get('clinical_significance', None)}")
-        print(f"Consequence: {row.get('consequence', None)}")
-        print(f"rs_number: {row.get('rs_number', None)}")
-
     print(filtered_rows)
 
-    # Create a new list for rows to be inserted into the BigQuery table
-    rows_to_insert = [dict(row) for row in filtered_rows]
+    insert_into_bigquery(filtered_rows, output_project, genomics_dataset, output_table)
 
-    print(rows_to_insert)
-
-    # Create the table if it does not exist
-    table_ref = bigquery_client.dataset(genomics_dataset).table(output_table)
-    table = bigquery.Table(table_ref)
-
-    # Set the schema to autodetect
-    table.schema = []
-
-    table = bigquery_client.create_table(table, exists_ok=True)
-
-    # Insert rows into the table
-    errors = bigquery_client.insert_rows(table, rows_to_insert, autodetect=True)
-
-    if errors:
-        print(f"Errors occurred during insertion: {errors}")
-    else:
-        print("Table created and rows inserted successfully.")
-
-
+    print("done")
 
 
 if __name__ == '__main__':
