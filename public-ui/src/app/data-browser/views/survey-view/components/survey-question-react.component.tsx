@@ -160,7 +160,7 @@ export class SurveyQuestionReactComponent extends React.Component<
           <HighlightReactComponent
             searchTerm={searchTerm}
             text={question.conceptName}
-          />
+          /> ({question.conceptId})
           {question.conceptId === 1585852 && (
             <span style={styles.questionNote}>
               Note: Active duty does not include training for the Reserves or
