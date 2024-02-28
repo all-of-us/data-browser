@@ -4,6 +4,7 @@ import os
 import shutil
 from google.cloud import bigquery
 from io import StringIO
+import pandas as pd
 
 def init_bigquery_client():
     bigquery_client = bigquery.Client.from_service_account_json('../circle-sa-key.json')
