@@ -10,7 +10,7 @@ def init_bigquery_client():
     return bigquery_client
 
 # Define a custom sorting function based on mane transcript list
-def custom_sort(row):
+def custom_sort(row, mane_transcripts):
     if any(row['transcript'].startswith(prefix) for prefix in mane_transcripts):
         return 1
     else:
@@ -86,7 +86,7 @@ def main():
 
 
     # Sort the rows based on custom sorting
-    sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x), custom_sort_consequence(x)))
+    sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x, mane_transcripts), custom_sort_consequence(x)))
 
     for row in sorted_rows:
         print(row)
