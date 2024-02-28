@@ -97,8 +97,26 @@ def main():
     # Sort the rows based on custom sorting
     sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x, mane_transcripts), custom_sort_consequence(x)))
 
+    # Create a list to store the final result with 'row_number'
+    result_with_row_number = []
+
+    # Iterate through the sorted rows and add 'row_number' to each row
+    current_variant_id = None
+    current_row_number = 1
+
     for row in sorted_rows:
-        print(row)
+        if row['variant_id'] != current_variant_id:
+            current_variant_id = row['variant_id']
+            current_row_number = 1
+        else:
+            current_row_number += 1
+
+        row['row_number'] = current_row_number
+        result_with_row_number.append(row)
+
+    # Now 'result_with_row_number' contains the result with the added 'row_number' field
+
+    print(result_with_row_number)
 
 
 if __name__ == '__main__':
