@@ -52,8 +52,8 @@ def main():
     rows =  query_job.result()
 
     # Fetch distinct transcripts separately
-    distinct_transcripts_query = bigquery_client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat")
-    distinct_transcripts = distinct_transcripts_query.result()
+    mane_transcripts_query = bigquery_client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts")
+    mane_transcripts = [row['transcript'] for row in mane_transcripts_query.result()]
 
     # Group genes by variant_id
     genes_dict = {}
@@ -67,7 +67,7 @@ def main():
             genes_dict[vid].add(gene_symbol)
 
     print(genes_dict)
-    print(distinct_transcripts)
+    print(mane_transcripts)
 
 
 if __name__ == '__main__':
