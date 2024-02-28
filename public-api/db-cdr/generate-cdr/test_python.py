@@ -139,6 +139,8 @@ def main():
 
         # Print clinical_significance for debugging
         print(f"Clinical Significance: {row.get('clinical_significance', None)}")
+        print(f"Consequence: {row.get('consequence', None)}")
+        print(f"rs_number: {row.get('rs_number', None)}")
 
     print(filtered_rows)
 
