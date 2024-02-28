@@ -16,29 +16,11 @@ def main():
     bq_project = "aou-res-curation-prod"
     bq_dataset = "2022q4r9_combined_release"
 
-    current_directory = os.getcwd()
-    print(f"Current Working Directory: {current_directory}")
-
-    # Get the parent directory
-    parent_directory = os.path.dirname(current_directory)
-
-    # List contents of the current directory (equivalent to ls)
-    directory_contents = os.listdir(current_directory)
-    print("Directory Contents:")
-    for item in directory_contents:
-        print(item)
-
-    # List contents of the parent directory
-    parent_directory_contents = os.listdir(parent_directory)
-    print("Parent Directory Contents:")
-    for item in parent_directory_contents:
-        print(item)
-
     bigquery_client = init_bigquery_client()
 
     query = (
         "SELECT count(*) FROM "
-        "`aou-res-curation-prod.2022q4r9_combined_release.concept`"
+        "`aou-res-curation-prod.2022q4r9_combined_release.delta_vat_v2`"
     )
     query_job = bigquery_client.query(query)
     results =  query_job.result()
