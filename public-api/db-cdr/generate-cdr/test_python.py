@@ -20,7 +20,7 @@ def insert_into_bigquery(rows, output_project, genomics_dataset, output_table, b
     job_config.write_disposition = bigquery.WriteDisposition.WRITE_TRUNCATE  # You can change this to WRITE_APPEND if you want to append the data
 
     # Load the data into the BigQuery table
-    with bigquery.Client().open_table(table_ref) as table:
+    with bigquery_client.open_table(table_ref) as table:
         # Ensure that 'clinical_significance', 'consequence', and 'rs_number' are set as repeated fields in the table schema
         table_schema = table.schema
 
