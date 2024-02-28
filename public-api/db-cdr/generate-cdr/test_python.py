@@ -95,7 +95,7 @@ def main():
 
 
     # Sort the rows based on custom sorting
-    sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x, mane_transcripts), custom_sort_consequence(x)))
+    sorted_rows = sorted(rows, key=lambda x: (x['variant_id'], custom_sort(x, mane_transcripts), custom_sort_consequence(x), x['transcript']))
 
     # Create a list to store the final result with 'row_number'
     result_with_row_number = []
