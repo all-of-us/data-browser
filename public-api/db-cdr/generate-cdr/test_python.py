@@ -67,7 +67,7 @@ def main():
     )
 
     query_job = bigquery_client.query(query)
-    rows =  query_job.result()
+    rows =  list(query_job.result())
 
     # Fetch distinct transcripts separately
     mane_transcripts_query = bigquery_client.query("SELECT DISTINCT transcript FROM aou-db-prod.2022q4r6_genomics.mane_transcripts")
