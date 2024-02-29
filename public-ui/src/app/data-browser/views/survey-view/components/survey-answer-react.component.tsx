@@ -318,7 +318,6 @@ const SurveyAnswerRowComponent = class extends React.Component<
           <div className="survey-row-expanded">
             {hasSubQuestions === "1" && subQuestions ? (
               subQuestions.map((sq, index) => {
-                console.log(sq);
                 return (
                   <React.Fragment key={index + "subquestion"}>
                     <h6>
