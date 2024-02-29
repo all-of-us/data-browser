@@ -86,10 +86,10 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 7rem 6rem 8rem 6rem 7rem 8rem 10rem;
+    grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 69rem;
+    width: 72rem;
     position: sticky;
     left: 0;
     top:0;
@@ -98,8 +98,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 7rem 6rem 8rem 6rem 7rem 8rem 10rem;
-        width: 69rem;
+        grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+        width: 72rem;
     }
 }
     .paginator {
