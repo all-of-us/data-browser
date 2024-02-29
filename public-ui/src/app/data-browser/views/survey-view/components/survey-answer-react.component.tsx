@@ -42,6 +42,11 @@ const styleCss = `
         margin-left: 1em;
         font-family: GothamBold, Arial, Helvetica, sans-serif;
     }
+    .non-bold-text {
+      font-weight: normal !important;
+      margin-top: 1em;
+      text-align: left;
+    }
     .survey-row-expanded {
         margin-top: -1em;
         border-left: #cccccc 1px solid;
@@ -313,11 +318,12 @@ const SurveyAnswerRowComponent = class extends React.Component<
           <div className="survey-row-expanded">
             {hasSubQuestions === "1" && subQuestions ? (
               subQuestions.map((sq, index) => {
+                console.log(sq);
                 return (
                   <React.Fragment key={index + "subquestion"}>
-                    <h6 className="sub-question-text">
+                    <h6>
                       <ClrIcon shape="child-arrow" />
-                      {sq.conceptName}
+                      <span className="sub-question-text">{sq.conceptName}</span> <span className="non-bold-text">({sq.conceptId})</span>
                     </h6>
                     <div className="survey-sub-table">
                       {/* tslint:disable-next-line: no-use-before-declare */}

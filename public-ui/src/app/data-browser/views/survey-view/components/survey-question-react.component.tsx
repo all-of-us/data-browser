@@ -36,6 +36,14 @@ const styles = reactStyles({
   },
 });
 
+
+const styleCss = `
+    .question-conceptid {
+        font-weight: normal !important;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+`;
+
 interface Props {
   isCopeSurvey: boolean;
   question: any;
@@ -152,6 +160,7 @@ export class SurveyQuestionReactComponent extends React.Component<
       this.state;
     return (
       <div>
+      <style>{styleCss}</style>
         <span
           style={{ fontFamily: showAnswers && "GothamBold", cursor: "pointer" }}
           onClick={() => this.showAnswers()}
@@ -160,7 +169,7 @@ export class SurveyQuestionReactComponent extends React.Component<
           <HighlightReactComponent
             searchTerm={searchTerm}
             text={question.conceptName}
-          /> ({question.conceptId})
+          />  <span className="question-conceptid">({question.conceptId})</span>
           {question.conceptId === 1585852 && (
             <span style={styles.questionNote}>
               Note: Active duty does not include training for the Reserves or
