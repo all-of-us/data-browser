@@ -800,6 +800,14 @@ a a:link a:visited {
   min-width: 300px;
   max-width: 100%;
 }
+.pop-chart-tooltip {
+  font-size: 1.5em;
+  background-color: #ffffff;
+  /* width: 18em; */
+  padding: .5rem;
+  border:#262262 1px solid;
+  color: #302C71;
+}
 
 .top-results-tooltip {
   width: fit-content;
