@@ -28,6 +28,18 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 select * from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where observation_source_concept_id in (
 SELECT DISTINCT concept_id FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\`);"
 
+bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+select a.observation_id, a.person_id, a.observation_concept_id, a.observation_date, a.observation_datetime,
+a.observation_type_concept_id, a.value_as_number, a.value_as_string, a.value_as_concept_id, a.qualifier_concept_id, a.unit_concept_id,
+a.provider_id, a.visit_occurrence_id, a.visit_detail_id, a.observation_source_value, a.observation_source_concept_id,
+a.unit_source_value, a.qualifier_source_value, 903626 as value_source_concept_id,
+a.value_source_value, a.questionnaire_response_id
+from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` a
+where observation_source_concept_id =  1585729 and value_source_concept_id = 1585730
+"
+
+
 
 ####################
 # fmh counts #
