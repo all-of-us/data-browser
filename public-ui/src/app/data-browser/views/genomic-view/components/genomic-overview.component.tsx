@@ -54,8 +54,10 @@ input[type='radio']:before {
 }
 
 .radio-label {
-  white-space: nowrap;
     cursor: pointer;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
 }
 
 .radio-label input {
@@ -76,7 +78,7 @@ input[type='radio']:before {
       row-gap: 1rem;
     }
 }
-@media only screen and (max-width: 425px) {
+@media only screen and (max-width: 700px) {
     .heading-layout {
       grid-template-columns:100%;
       row-gap: 1rem;
