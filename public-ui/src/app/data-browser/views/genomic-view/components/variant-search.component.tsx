@@ -48,8 +48,9 @@ const css = `
     padding-top: 1em;
     padding-bottom: 1em;
     display: flex;
+    flex-wrap:wrap-reverse;
     align-items: flex-end;
-    flex-direction: row;
+    
 }
 @media (max-width: 1220px) {
     .search-container {
