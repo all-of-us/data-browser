@@ -61,13 +61,49 @@ interface Props {
   action: string;
   tooltipKey: string;
 }
+interface State {
+  overflowX : number
+  saveLoc : number
+}
 
-export class TooltipReactComponent extends React.Component<Props, {}> {
+export class TooltipReactComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state={
+      overflowX:0,
+      saveLoc:0
+    }
+  }
+
+
+
+  componentDidMount() {
+    document.addEventListener('mousemove', this.tooltipHover);
+    document.addEventListener('resize', this.tooltipHover);
+    // this.detectOverflow();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tooltipHover);
+    window.removeEventListener('mousemove', this.tooltipHover);
+  }
+  
+ 
+  
+  detectOverflow = (pageX) => {
+      this.setState({
+        // using the cursor location to set the tooltip.
+        // todo: rethink  
+       overflowX : pageX + 170 > window.innerWidth ? pageX + 170 - window.innerWidth : 0
+      });
+
   }
 
   tooltipHover(e) {
+    const { pageX } = e;
+    this.setState({
+      saveLoc : pageX
+    });
     triggerEvent(
       "tooltipsHover",
       "Tooltips",
@@ -75,12 +111,19 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       this.props.label,
       this.props.searchTerm,
       this.props.action
-    );
+      );
+    this.detectOverflow(pageX);
     e.stopPropagation();
   }
 
+  handleResize = (e) => {
+    this.detectOverflow(this.state.saveLoc);
+  };
+
   render() {
+    const {overflowX} = this.state;
     const tabIndex = 0;
+    const marginLeft = overflowX > 0 ? -140 - 140 + 'px' : '-140px';
     const iconShape = "info-standard";
     const iconClass = "is-solid info-icon";
     return (
@@ -89,6 +132,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
         <div
           tabIndex={tabIndex}
           className="tooltip"
+          id="tooltip"
           onFocus={(e) => this.tooltipHover(e)}
           onMouseEnter={(e) => this.tooltipHover(e)}
           onClick={(e) => this.tooltipHover(e)}
@@ -98,7 +142,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
             className={iconClass}
             style={{ width: 18, height: 18 }}
           />
-          <span className="tooltiptext">
+          <span id="tooltiptext" style={{marginLeft}} className="tooltiptext">
             {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
               if (index === 1 || index === 3) {
                 return (
