@@ -30,7 +30,7 @@ const css = `
 }
 .pop-table {
         display: grid;
-        grid-template-columns: 26% 18.5% 18.5% 18.5% 18.5%;
+        grid-template-columns: 26% 25% 25% 24%;
         font-size: 14px;
     }
 .pop-desc {
@@ -40,7 +40,7 @@ const css = `
 }
 .body {
     display: grid;
-    grid-template-columns: 26% 18.5% 18.5% 18.5% 18.5%;
+    grid-template-columns: 26% 25% 25% 24%;
     column-gap: 1rem;
     row-gap: 1rem;
     padding-top: 1rem;
