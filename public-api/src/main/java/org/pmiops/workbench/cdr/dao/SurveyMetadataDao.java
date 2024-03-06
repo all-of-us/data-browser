@@ -17,28 +17,6 @@ public interface SurveyMetadataDao extends CrudRepository<DbSurveyMetadata, Long
             "where stratum_1 = ?1 and analysis_id=3110 and (stratum_3 = ?2 or stratum_2 = ?2));")
     List<DbSurveyMetadata> getMatchingSurveyQuestions(Long survey_concept_id, String search_word);
 
-    @Query(nativeQuery=true, value="select * from survey_metadata where concept_id in \n" +
-            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and CONCAT(question_string, ' ', concept_name) LIKE CONCAT('%', ?2, '%') ) and generate_counts=1 \n" +
-            "union distinct \n" +
-            "select distinct c.* from survey_metadata c where concept_id in (\n" +
-            "select distinct SUBSTRING_INDEX(ar.stratum_6, '.', 1) as question_id from achilles_results ar \n" +
-            "where stratum_1 = ?1 and analysis_id=3110 and (stratum_3 = ?2 or stratum_2 = ?2));")
-    List<DbSurveyMetadata> getMatchingSurveyQuestionsSpecial(Long survey_concept_id, String search_word);
-
-    @Query(nativeQuery = true, value="select distinct b.* from survey_metadata a \n" +
-            "JOIN survey_metadata b\n" +
-            "    ON b.id =\n" +
-            "       ( SELECT c.id\n" +
-            "         FROM survey_metadata c\n" +
-            "         WHERE c.id < a.id and c.survey_concept_id = a.survey_concept_id and c.type='TOPIC'\n" +
-            "         ORDER BY c.id DESC\n" +
-            "         LIMIT 1\n" +
-            "       ) \n" +
-            "where a.concept_id in \n" +
-            "(select distinct SUBSTRING_INDEX(SUBSTRING_INDEX(path,'.',1),'.',-1) from survey_metadata where survey_concept_id=?1 and CONCAT(question_string, ' ', concept_name) LIKE CONCAT('%', ?2, '%') \n" +
-            ") and a.generate_counts=1 order by b.id asc;")
-    List<DbSurveyMetadata> getMatchingSurveyQuestionTopicsSpecial(Long surveyConceptId, String searchWord);
-
     @Query(nativeQuery = true, value="select distinct b.* from survey_metadata a \n" +
             "JOIN survey_metadata b\n" +
             "    ON b.id =\n" +

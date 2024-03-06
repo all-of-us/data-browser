@@ -6,8 +6,6 @@ import org.pmiops.workbench.model.DomainInfo;
 import org.pmiops.workbench.cdr.DomainMapper;
 import org.pmiops.workbench.cdr.dao.DomainInfoDao;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import org.pmiops.workbench.model.TestFilter;
@@ -25,13 +23,6 @@ public class DomainInfoService {
     }
 
     public List<DomainInfo> getStandardCodeMatchCounts(String matchExpression, String query, List<Long> conceptIds, List<String> filter) {
-        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
-        if (regex.matcher(query).find()) {
-            return domainInfoDao.findStandardOrCodeMatchConceptCountsSpecial(matchExpression, query, conceptIds, filter).stream()
-                    .map(domainMapper::dbModelToClient)
-                    .collect(Collectors.toList());
-        }
-
         return domainInfoDao.findStandardOrCodeMatchConceptCounts(matchExpression, query, conceptIds, filter).stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());
