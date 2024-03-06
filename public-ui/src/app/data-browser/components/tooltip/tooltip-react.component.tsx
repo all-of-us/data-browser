@@ -1,7 +1,4 @@
 import * as React from "react";
-
-import { Component, Input, ViewEncapsulation } from "@angular/core";
-import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { getTooltip } from "app/data-browser/services/tooltip.service";
 import { ClrIcon } from "app/utils/clr-icon";
 import { triggerEvent } from "app/utils/google_analytics";
@@ -100,10 +97,16 @@ export class TooltipReactComponent extends React.Component<Props, State> {
   }
 
   tooltipHover(e) {
-    const { pageX } = e;
-    this.setState({
-      saveLoc : pageX
-    });
+    const tooltipBox: HTMLElement | null = document.getElementById('tooltiptext');
+
+    // Get the position of the div
+    const rect = tooltipBox != null && tooltipBox.getBoundingClientRect();
+    console.log(rect,'recccctt');
+    
+    // const { pageX } = e;
+    // this.setState({
+    //   saveLoc : pageX
+    // });
     triggerEvent(
       "tooltipsHover",
       "Tooltips",
@@ -112,7 +115,7 @@ export class TooltipReactComponent extends React.Component<Props, State> {
       this.props.searchTerm,
       this.props.action
       );
-    this.detectOverflow(pageX);
+    // this.detectOverflow(pageX);
     e.stopPropagation();
   }
 
@@ -162,25 +165,4 @@ export class TooltipReactComponent extends React.Component<Props, State> {
   }
 }
 
-@Component({
-  selector: "app-tooltip-react",
-  template: `<span #${containerElementName}></span>`,
-  styleUrls: ["./tooltip.component.css", "../../../styles/page.css"],
-  encapsulation: ViewEncapsulation.None,
-})
-export class TooltipWrapperComponent extends BaseReactWrapper {
-  @Input() public label: string;
-  @Input() public searchTerm: string;
-  @Input() public action: string;
-  @Input() public tooltipKey: string;
 
-  constructor() {
-    super(TooltipReactComponent, [
-      "label",
-      "searchTerm",
-      "action",
-      "tooltipKey",
-      "onHover",
-    ]);
-  }
-}
