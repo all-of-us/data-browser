@@ -7,9 +7,6 @@ import org.pmiops.workbench.cdr.dao.SurveyModuleDao;
 import org.pmiops.workbench.cdr.model.DbSurveyModule;
 import org.pmiops.workbench.cdr.DomainMapper;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -25,14 +22,6 @@ public class SurveyModuleService {
     }
 
     public List<SurveyModule> findSurveyModuleQuestionCounts(String matchExpression) {
-        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
-
-        if (regex.matcher(matchExpression).find()) {
-            return surveyModuleDao.findSurveyModuleQuestionCountsSpecial(matchExpression).stream()
-                    .map(domainMapper::dbModelToClient)
-                    .collect(Collectors.toList());
-        }
-
         return surveyModuleDao.findSurveyModuleQuestionCounts(matchExpression).stream()
                 .map(domainMapper::dbModelToClient)
                 .collect(Collectors.toList());

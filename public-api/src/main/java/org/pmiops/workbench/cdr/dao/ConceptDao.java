@@ -27,13 +27,6 @@ public interface ConceptDao extends CrudRepository<DbConcept, Long> {
             "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and c.synonyms like '%drug_rank1%' ", nativeQuery= true)
     List<Long> findDrugIngredientsByBrand(String query);
 
-    @Query(value = "select distinct cr.concept_id_2 from cb_criteria_relationship cr \n" +
-            "join concept c1 on (cr.concept_id_2 = c1.concept_id\n" +
-            "and cr.concept_id_1 in (select distinct concept_id from cb_criteria c where c.domain_id='DRUG' and c.type='BRAND' and (c.name like '%?1%' or c.code like '%?1%'))\n" +
-            "and c1.concept_class_id = 'Ingredient') join cb_criteria c on c.concept_id = cr.concept_id_2\n" +
-            "and c.domain_id = 'DRUG' and c.type = 'RXNORM' and c.synonyms like '%drug_rank1%' ", nativeQuery= true)
-    List<Long> findDrugIngredientsByBrandSpecial(String query);
-
     @Query(value = "select distinct c.concept_id from cb_criteria c\n" +
             "inner join ( \n" +
             "select cr.concept_id_2 from cb_criteria_relationship cr \n" +
