@@ -18,7 +18,7 @@
       <column name="domain_id" type="VARCHAR(80)">
         <constraints nullable="true"/>
       </column>
-      <column name="is_standard" type="BOOL">
+      <column name="is_standard" type="TINYINT">
         <constraints nullable="true"/>
       </column>
       <column name="type" type="VARCHAR(20)">
@@ -42,19 +42,19 @@
       <column name="est_count" type="BIGINT">
         <constraints nullable="true"/>
       </column>
-      <column name="is_group" type="BOOL">
+      <column name="is_group" type="TINYINT">
         <constraints nullable="true"/>
       </column>
-      <column name="is_selectable" type="BOOL">
+      <column name="is_selectable" type="TINYINT">
         <constraints nullable="true"/>
       </column>
-      <column name="has_attribute" type="BOOL">
+      <column name="has_attribute" type="TINYINT">
         <constraints nullable="true"/>
       </column>
-      <column name="has_hierarchy" type="BOOL">
+      <column name="has_hierarchy" type="TINYINT">
         <constraints nullable="true"/>
       </column>
-      <column name="has_ancestor_data" type="BOOL">
+      <column name="has_ancestor_data" type="TINYINT">
         <constraints nullable="true"/>
       </column>
       <column name="path" type="VARCHAR(500)">

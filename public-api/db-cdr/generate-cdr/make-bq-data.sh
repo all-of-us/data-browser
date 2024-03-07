@@ -49,7 +49,7 @@ fi
 gcloud config set project aou-db-test
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project=$BQ_PROJECT ls --max_results=500)
+datasets=$(bq --project_id=$BQ_PROJECT ls --max_results=500)
 if [ -z "$datasets" ]
 then
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -76,7 +76,7 @@ fi
 GENOMICS_DATASET="2022q4r6_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
-tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
 cb_cri_table_check=\\bcb_criteria\\b
 cb_cri_attr_table_check=\\bcb_criteria_attribute\\b
 cb_cri_rel_table_check=\\bcb_criteria_relationship\\b
@@ -104,16 +104,16 @@ do
 done
 
 if [ "$SEARCH_VAT" = true ]; then
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_1\`"
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP MATERIALIZED VIEW IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_2\`"
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`"
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
   with distinct_transcripts as
   (
@@ -124,7 +124,7 @@ if [ "$SEARCH_VAT" = true ]; then
   select * from mane_transcripts;
   "
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`
   cluster by variant_id
   as
@@ -263,14 +263,14 @@ ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
   WHERE genes.vid = sorted_transcripts.variant_id
   AND (sorted_transcripts.row_number =1 or sorted_transcripts.transcript is NULL);"
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_1\`
   CLUSTER BY contig, position
   AS
   SELECT *
   FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant\`;"
 
-  bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+  bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
   "CREATE MATERIALIZED VIEW \`$OUTPUT_PROJECT.$GENOMICS_DATASET.wgs_variant_mv_2\`
   CLUSTER BY variant_type
   AS
@@ -332,7 +332,7 @@ fi
 # domain #
 ##########
 echo "Inserting domain"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.domain\`
  (domain_id, domain_name, domain_concept_id)
 SELECT domain_id, domain_name, domain_concept_id
@@ -342,7 +342,7 @@ FROM \`$BQ_PROJECT.$BQ_DATASET.domain\` d"
 # vocabulary #
 ##############
 echo "Inserting vocabulary"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.vocabulary\`
  (vocabulary_id, vocabulary_name, vocabulary_reference, vocabulary_version, vocabulary_concept_id)
 SELECT vocabulary_id, vocabulary_name, vocabulary_reference, vocabulary_version, vocabulary_concept_id
@@ -377,54 +377,54 @@ fi
 # updating concept DB-1143 #
 ####################
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Indian Health Service' where stratum_3='43529111'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Insurance purchased directly from an insurance company (by you or another family member)'
 where stratum_3='43529119'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Insurance through a current or former employer or union (by you or another family member)'
 where stratum_3='43529120'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Medicare, for people 65 and older or people with certain disabilities'
 where stratum_3='43529210'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Medicaid, Medical Assistance, or any kind of government-assistance plan for those with low incomes or disability'
 where stratum_3='43529209'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='TRICARE or other military health care'
 where stratum_3='43529920'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Veterans Affairs (VA) (including those who have ever used or enrolled for VA health care)'
 where stratum_3='43529926'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='Any other type of health insurance or health coverage plan'
 where stratum_3='43528423'; "
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` c1
 set stratum_4='I don’ t have health insurance, self-pay'
 where stratum_3='43529095'; "
@@ -432,7 +432,7 @@ where stratum_3='43529095'; "
 ##################################################################
 # Add survey participant count by question addition date
 ##################################################################
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` set showup_date = sdate from
 (select observation_source_concept_id, min(observation_datetime) sdate from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` join \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
@@ -440,7 +440,7 @@ on observation_source_concept_id = concept_id
 group by 1)
 where concept_id = observation_source_concept_id;"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_6, count_value)
 with survey_dates as
@@ -460,7 +460,7 @@ join survey_row_counts b on a.survey_concept_id = b.survey_concept_id and a.show
 ##################################################################
 #Add sub questions flag in stratum_7 in survey response count rows
 ##################################################################
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
 from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(path, '.')[OFFSET(1)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
@@ -468,7 +468,7 @@ where ARRAY_LENGTH(SPLIT(path, '.')) = 3 and generate_counts=1) b
 where a.stratum_2=b.qid
 and a.stratum_3=b.aid and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
 from (select distinct SPLIT(path, '.')[OFFSET(0)] as qid1, SPLIT(path, '.')[OFFSET(1)] aid1, SPLIT(path, '.')[OFFSET(2)] as qid2, SPLIT(path, '.')[OFFSET(3)] as aid2
@@ -477,7 +477,7 @@ where a.stratum_2=b.qid2 and a.stratum_3=b.aid2
 and a.stratum_6=CONCAT(qid1, '.', aid1, '.', qid2)
 and a.analysis_id=3110 and a.stratum_3 not in ('43529842', '43528385', '43529574')"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
 from (select distinct parent_question_concept_id, parent_answer_concept_id from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\`
@@ -485,7 +485,7 @@ where survey_concept_id=765936 and sub=1) b
 where a.analysis_id=3110 and
 a.stratum_2=CAST(b.parent_question_concept_id as string) and a.stratum_3=CAST(b.parent_answer_concept_id as string);"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7=''
 where a.analysis_id=3110 and a.stratum_1 = '43529712';"
@@ -497,7 +497,7 @@ where a.analysis_id=3110 and a.stratum_1 = '43529712';"
 # and dates need to be formatted for mysql
 # Insert the base data into it formatting dates.
 echo "Inserting concept table data ... "
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\`
 (concept_id, concept_name, domain_id, vocabulary_id, concept_class_id, standard_concept,
 concept_code, count_value, prevalence, source_count_value, synonyms, can_select, has_counts)
@@ -513,9 +513,9 @@ group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class
 
 # Update counts and prevalence in concept
 q="select count_value from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a where a.analysis_id = 1"
-person_count=$(bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
+person_count=$(bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.source_count_value = r.source_count_value,c.count_value=r.count_value
 from  (select cast(r.stratum_1 as int64) as concept_id , sum(r.count_value) as count_value , sum(r.source_count_value) as source_count_value
@@ -526,7 +526,7 @@ where r.concept_id = c.concept_id"
 ##########################################
 # Remove units from achilles_results if no values #
 ##########################################
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar1
 where ar1.analysis_id=1910 and NOT EXISTS
 (select * from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar2 where ar2.stratum_1=ar1.stratum_1
@@ -538,7 +538,7 @@ and  ar2.stratum_2=ar1.stratum_2 and  ar2.stratum_3=ar1.stratum_3 and analysis_i
 ##########################################
 
 # Set all_concept_count and standard_concept_count on domain_info
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
 set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
 (select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
@@ -551,7 +551,7 @@ group by c.domain_id) c
 where d.domain_id = c.domain_id
 "
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
 set d.all_concept_count = c.all_concept_count, d.standard_concept_count = c.standard_concept_count from
 (select c.domain_id as domain_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
@@ -567,7 +567,7 @@ where d.domain_id = c.domain_id
 "
 
 # Set participant counts for each domain
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
 set d.participant_count = r.count_value from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` r
@@ -576,7 +576,7 @@ and r.stratum_3 = d.domain_id
 and r.stratum_2 is null"
 
 # Set participant counts for physical measurements
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.domain_info\` d
 set d.participant_count = r.count_value from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` r
@@ -589,7 +589,7 @@ and d.domain_id='Physical Measurements' "
 ##########################################
 
 # Set the survey participant count on the concept
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 set c1.count_value=count_val from
 (select ob.observation_source_concept_id as concept, count(distinct ob.person_id) as count_val from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.v_full_observation\` ob
@@ -599,14 +599,14 @@ where c1.concept_id=concept
 and c1.concept_id in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040)"
 
 # Set the participant count on the survey_module row
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.participant_count=c.count_value from
 \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
 where c.concept_id=sm.concept_id"
 
 # Set the question participant counts
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c1
 SET c1.count_value = subquery.max_count_val
 FROM (
@@ -637,7 +637,7 @@ WHERE
     c1.concept_id = subquery.question_id;"
 
 # Set the question count on the survey_module row
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.question_count=num_questions from
 (select count(distinct qc.concept_id) num_questions, sq.survey_concept_id as survey_concept_id from
@@ -649,7 +649,7 @@ group by survey_concept_id)
 where sm.concept_id = survey_concept_id"
 
 # Set the question count on the survey_module row
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_module\` sm
 set sm.question_count=num_questions from
 (select count(distinct observation_source_concept_id) as num_questions
@@ -662,7 +662,7 @@ where sm.concept_id=765936;"
 # concept_relationship #
 ########################
 echo "Inserting concept_relationship"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept_relationship\`
  (concept_id_1, concept_id_2, relationship_id)
 SELECT c.concept_id_1, c.concept_id_2, c.relationship_id
@@ -672,7 +672,7 @@ FROM \`$BQ_PROJECT.$BQ_DATASET.concept_relationship\` c"
 # concept_synonym #
 ########################
 echo "Inserting concept_synonym"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept_synonym\`
  (id, concept_id, concept_synonym_name)
 SELECT 0, c.concept_id, c.concept_synonym_name
@@ -683,7 +683,7 @@ where language_concept_id=4180186;"
 # Domain_Vocabulary_Info #
 ###########################
 echo "Updating all concept count in domain_vocabulary_info"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.domain_vocabulary_info\`
 (domain_id,vocabulary_id,all_concept_count,standard_concept_count)
 select d2.domain_id as domain_id,c.vocabulary_id as vocabulary_id, COUNT(DISTINCT c.concept_id) as all_concept_count,
@@ -707,7 +707,7 @@ else
 fi
 
 echo "Inserting rows in achilles results for the concepts that are not in there and that have rolled up counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "
 insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
@@ -720,20 +720,20 @@ group by t1.analysis_id, t1.concept_id, t1.stratum_1,t1.domain,t1.count_value;
 "
 
 echo "Updating counts in achilles results with the ones generated in criteria stratum"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
 set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
 where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set has_counts = IF(count_value > 0 or source_count_value > 0, 1, 0)
 where concept_id != 0"
 
 echo "Update question names to match the text in the survey pdfs (there are some questions that are present in the table just for building schema so ignoring them)"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set c.concept_name=sqm.concept_name
 from  (select distinct concept_id , concept_name
@@ -741,28 +741,28 @@ from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_metadata\` where generate_counts =
 and concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 905045, 905046, 905056, 905048, 905057, 905061, 905040) group by 1,2) as sqm
 where c.concept_id = sqm.concept_id"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set concept_name=REGEXP_REPLACE(concept_name, 'PMI:', '')
 where concept_name like '%PMI:%' "
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 set concept_name=REGEXP_REPLACE(concept_name, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where concept_name like '%Sex At Birth: Sex At Birth%' "
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
 set stratum_4=REGEXP_REPLACE(stratum_4, 'PMI:', '')
 where stratum_4 like '%PMI:%' "
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
 set stratum_4=REGEXP_REPLACE(stratum_4, 'Sex At Birth: Sex At Birth', 'Sex At Birth:')
 where stratum_4 like '%Sex At Birth: Sex At Birth%' "
 
 #Create temp table to store drug brand names
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "
 CREATE TABLE IF NOT EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
 (
@@ -772,7 +772,7 @@ CREATE TABLE IF NOT EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by
 "
 
 #Fill drug brand names in temp table
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "
 INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`
 (ing_concept, drug_brand_names)
@@ -784,23 +784,23 @@ group by concept_id_2
 "
 
 #Update concept with drug brand names
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` d
 set d.drug_brand_names = r.drug_brand_names from
 \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\` r
 where d.concept_id=r.ing_concept"
 
 # This fixes basics survey answer typo
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` ar
 set ar.stratum_4='Highest Grade: College One to Three' where ar.stratum_3='1585946' "
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` set concept_name = case concept_id when 1384639 then 'Diagnosed Health Condition: Heart and Blood Condition'
  when 43528761 then 'Diagnosed Health Condition: Hormone/Endocrine Condition' when 43529638 then 'Diagnosed Health Condition: Other Conditions'
  when 43529170 then 'Other Conditions: Liver Condition' else concept_name end where concept_id in (1384639, 43528761, 43529170, 43529638);"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` q
 SET q.question_string = t2.qs
 FROM \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS q2 INNER JOIN (
@@ -812,7 +812,7 @@ and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 
 
 
 # TODO This is temporary please remove if this bug is no longer in the next dataset DB-1166 for reference
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
 where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
 "
@@ -820,26 +820,26 @@ where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', 
 #######################
 # Drop views created #
 #######################
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_measurement\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_rdr_measurement\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_condition_occurrence\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_procedure_occurrence\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.v_ehr_drug_exposure\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_observation\`"

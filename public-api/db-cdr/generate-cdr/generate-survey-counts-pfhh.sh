@@ -19,12 +19,12 @@ while [ $# -gt 0 ]; do
   esac
 done
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` AS
 select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id = 43529712"
 
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0 as id, 3110 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
@@ -37,7 +37,7 @@ join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on
 and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8;"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 select 0 as id, 3111 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
@@ -51,7 +51,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on ob.person_id = p.person_id
 and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8;"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 with survey_age_stratum as
@@ -73,7 +73,7 @@ and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8;"
 
 # Gender breakdown of people who took each survey (Row for combinations of each survey and gender)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3101 as analysis_id,
@@ -89,7 +89,7 @@ where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
 group by p1.gender_concept_id"
 
 # Age breakdown of people who took each survey (Row for combinations of each survey and age decile)
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 with survey_age_stratum as
@@ -111,7 +111,7 @@ where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
 group by stratum_2"
 
 # Count of people who took each survey
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
 SELECT 0 as id, 3000 as analysis_id, '43529712' as stratum_1,
@@ -123,7 +123,7 @@ Where (o.concept_id > 0 and o.value_source_concept_id > 0)
 and o.concept_id not in (40766240,43528428,1585389)"
 
 # Survey Module counts by gender
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
 select 0 as id, 3200 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1,
@@ -134,7 +134,7 @@ on ob.concept_id=cr.concept_id
 group by cr.survey_concept_id, p.gender_concept_id"
 
 # Survey Module counts by age decile
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
 with survey_age_stratum as

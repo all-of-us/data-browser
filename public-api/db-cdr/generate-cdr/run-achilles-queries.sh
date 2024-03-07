@@ -45,7 +45,7 @@ then
 fi
 
 #Get the list of tables in the dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
 
 declare -a domain_names domain_table_names measurement_table_name
 domain_names=(condition drug procedure observation measurement)
@@ -78,7 +78,7 @@ deid_pipeline_table="pipeline_tables"
 # Mapping tables have the dataset id specified which can be used to differentiate ehr specific rows
 if [[ "$tables" == *"_mapping_"* ]]; then
     echo "CREATE VIEWS - v_ehr_measurement"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
     select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
      m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.standard_concept is not null then suc.standard_concept else m.unit_concept_id end) as unit_concept_id,
@@ -93,7 +93,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
     echo "CREATE VIEWS - v_full_measurement_with_grouped_units"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` AS
     select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
     m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.standard_concept is not null then suc.standard_concept else m.unit_concept_id end) as unit_concept_id,
@@ -112,7 +112,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
         source_concept_id="${view_domain_names[$index]}_source_concept_id";
 
         echo "CREATE VIEWS - ${view_name}"
-        bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+        bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
         "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
         select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m join \`${BQ_PROJECT}.${BQ_DATASET}.${view_mapping_table_name}\` mm
         on m.${view_table_id} = mm.${view_table_id}
@@ -123,7 +123,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
 else
     echo "CREATE VIEWS - v_ehr_measurement"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_ehr_measurement\` AS
     select m.measurement_id, m.person_id, m.measurement_concept_id, m.measurement_date, m.measurement_datetime, m.measurement_type_concept_id,
     m.operator_concept_id, m.value_as_number, m.value_as_concept_id, (case when suc.standard_concept is not null then suc.standard_concept else m.unit_concept_id end) as unit_concept_id,
@@ -142,7 +142,7 @@ else
         source_concept_id="${view_domain_names[$index]}_source_concept_id";
 
         echo "CREATE VIEWS - ${view_name}"
-        bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+        bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
         "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
         select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m
         where m.${concept_id} > 0 or m.${source_concept_id} > 0
@@ -150,19 +150,19 @@ else
     done
 fi
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` AS
 select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
 where p.person_id not in
 (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
 select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m
 where (m.observation_concept_id > 0 or m.observation_source_concept_id > 0)
 and m.person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` a
 set a.observation_source_concept_id=705047, a.observation_concept_id=705047, a.observation_source_value='dmfs_27'
 from
@@ -170,7 +170,7 @@ from
 b1.observation_id=b2.observation_id and b2.observation_source_value='cdc_covid_19_9b' and b1.survey_version_concept_id in (2100000005, 2100000006, 2100000007)) b
 where a.observation_id=b.observation_id;"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` AS
 with survey_age as
 (
@@ -195,14 +195,14 @@ select * from survey_age_stratum_temp"
 echo "Running achilles queries..."
 
 echo "Getting person count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, count_value,source_count_value) select 0 as id, 1 as analysis_id,  COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`"
 
 # Gender count
 echo "Getting gender count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 2 as analysis_id,  cast (gender_concept_id as STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
@@ -211,7 +211,7 @@ group by GENDER_CONCEPT_ID"
 # Age count
 # 3	Number of persons by year of birth
 echo "Getting age count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 3 as analysis_id,  CAST(year_of_birth AS STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
@@ -219,7 +219,7 @@ group by YEAR_OF_BIRTH"
 
 #  4	Number of persons by race
 echo "Getting race count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 4 as analysis_id,  CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, COUNT(distinct person_id) as count_value,0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
@@ -227,7 +227,7 @@ group by RACE_CONCEPT_ID"
 
 # 5	Number of persons by ethnicity
 echo "Getting ethnicity count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 select 0, 5 as analysis_id,  CAST(ETHNICITY_CONCEPT_ID AS STRING) as stratum_1, COUNT(distinct person_id) as count_value, 0 as source_count_value
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\`
@@ -235,7 +235,7 @@ group by ETHNICITY_CONCEPT_ID"
 
 # 6 Number of person by age decile
 echo "Getting age decile count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` (id, analysis_id, stratum_1, count_value,source_count_value)
 with person_age as
 (select person_id,
@@ -254,7 +254,7 @@ group by stratum_2"
 
 # 10	Number of all persons by year of birth and by gender
 echo "Getting year of birth , gender count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, count_value,source_count_value)
 select 0, 10 as analysis_id,  CAST(year_of_birth AS STRING) as stratum_1,
@@ -265,7 +265,7 @@ group by YEAR_OF_BIRTH, gender_concept_id"
 
 # 12	Number of persons by race and ethnicity
 echo "Getting race, ethnicity count"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, count_value,source_count_value)
 select 0, 12 as analysis_id, CAST(RACE_CONCEPT_ID AS STRING) as stratum_1, CAST(ETHNICITY_CONCEPT_ID AS STRING) as stratum_2, COUNT(distinct person_id) as count_value,
@@ -287,7 +287,7 @@ for index in "${!domain_names[@]}"; do
     domain_stratum="${domain_stratum_names[$index]}";
 
     # Get 3000 counts
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
     select 0, 3000 as analysis_id,
@@ -308,7 +308,7 @@ for index in "${!domain_names[@]}"; do
     group by co1.${source_concept_id}"
 
     # Fetching 3101 counts
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     select 0, 3101 as analysis_id,
@@ -338,7 +338,7 @@ for index in "${!domain_names[@]}"; do
     #  children are 0-17 and we don't have children for now .
     #Ex yob = 2000  , start date : 2017 -- , sd - yob = 17  / 10 = 1.7 floor(1.7) = 1
     # 30 - 39 , 2017 - 1980 = 37 / 10 = 3
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     with ehr_age as
@@ -381,7 +381,7 @@ for index in "${!domain_names[@]}"; do
     group by co1.${source_concept_id}, stratum_2"
 
     # Get the current age counts
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     with current_person_age as
@@ -425,7 +425,7 @@ for index in "${!domain_names[@]}"; do
 
     # Domain Participant Counts
     echo "Getting domain participant counts"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
     select 0 as id,3000 as analysis_id,\"${domain_concept_id}\" as stratum_1, \"${domain_stratum}\" as stratum_3,count(distinct person_id) as count_value,
@@ -433,7 +433,7 @@ for index in "${!domain_names[@]}"; do
 
     # Domain participant counts by gender
     echo "Getting domain participant counts by gender"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
     select 0 as id,3300 as analysis_id, \"${domain_concept_id}\" as stratum_1, \"${domain_stratum}\" as stratum_3,cast(p.gender_concept_id as string) as stratum_4,
@@ -444,7 +444,7 @@ for index in "${!domain_names[@]}"; do
 
     # Domain participant counts by age
     echo "Getting domain participant counts by age"
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
     with ehr_age as
@@ -469,7 +469,7 @@ for index in "${!domain_names[@]}"; do
 done
 
 echo "Getting physical measurement participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3,
@@ -483,7 +483,7 @@ or observation_source_concept_id in (903120)
 0 as source_count_value"
 
 echo "Getting Fitbit participant counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3,
@@ -502,7 +502,7 @@ SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summar
 ) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
 
 echo "Getting genomic tile counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, 'Genomics' as stratum_3, count(distinct person) as count_value, 0 as source_count_value from
@@ -521,7 +521,7 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 ;"
 
 echo "Getting genomic tile counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'micro-array' as stratum_4,
@@ -542,7 +542,7 @@ select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id;"
 
 echo "Getting genomic biological sex counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2,
@@ -564,7 +564,7 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 group by 4;"
 
 echo "Getting genomic race/ ethnicity counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with person_race_eth_ans as
@@ -598,7 +598,7 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 group by 4;"
 
 echo "Getting genomic current age counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with person_age as
@@ -637,7 +637,7 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 group by 4;"
 
 echo "Getting physical measurement participant counts by gender"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id,3300 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
@@ -648,7 +648,7 @@ or measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903
 group by p.gender_concept_id"
 
 echo "Getting fitbit participant counts by gender"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3300 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, cast(b.gender_concept_id as string) as stratum_4, count(distinct a.person_id) as count_value, 0 as source_count_value from
@@ -666,7 +666,7 @@ SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summar
 group by 5;"
 
 echo "Getting physical measurement participant counts by gender"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id,3300 as analysis_id,'0' as stratum_1,'Physical Measurements' as stratum_3, cast(p.gender_concept_id as string) as stratum_4,
@@ -676,7 +676,7 @@ where observation_concept_id in (903120)
 or observation_source_concept_id in (903120)
 group by p.gender_concept_id"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 with m_age as
@@ -727,7 +727,7 @@ on m.observation_id=p.observation_id
 group by age_stratum)
 group by 2,5;"
 
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 with all_fibit_data as
