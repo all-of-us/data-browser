@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableList;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -144,7 +146,12 @@ public class ConceptService {
                     nonStandardConceptPredicates.add(criteriaBuilder.not
                             (root.get("standardConcept").in(STANDARD_CONCEPT_CODE, CLASSIFICATION_CONCEPT_CODE)));
 
-                    final String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
+                    String keyword = modifyMultipleMatchKeyword(query, SearchType.CONCEPT_SEARCH);
+
+                    Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+                    if (keyword != null && regex.matcher(keyword).find() && keyword.length() == 1) {
+                        keyword = "\"" + keyword + "\"";
+                    }
 
                     Expression<Double> matchExp = null;
 
@@ -255,6 +262,10 @@ public class ConceptService {
     }
 
     public List<Long> getDrugIngredientsByBrand(String query) {
+        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+        if (query != null && regex.matcher(query).find() && query.length() == 1) {
+           query = "\"" + query + "\"";
+        }
         return conceptDao.findDrugIngredientsByBrand(query);
     }
 

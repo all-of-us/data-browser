@@ -129,6 +129,14 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             String domainKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.DOMAIN_COUNTS);
             String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(query, ConceptService.SearchType.SURVEY_COUNTS);
 
+            Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+            if (domainKeyword != null && regex.matcher(domainKeyword).find() && domainKeyword.length() == 1) {
+                domainKeyword = "\"" + domainKeyword + "\"";
+            }
+            if (surveyKeyword != null && regex.matcher(surveyKeyword).find() && surveyKeyword.length() == 1) {
+                surveyKeyword = "\"" + surveyKeyword + "\"";
+            }
+
             Long conceptId = 0L;
             try {
                 conceptId = Long.parseLong(query);
@@ -195,6 +203,11 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         response.setSurvey(surveyModuleService.findByConceptId(surveyConceptId));
 
         String surveyKeyword = ConceptService.modifyMultipleMatchKeyword(searchWord, ConceptService.SearchType.SURVEY_COUNTS);
+
+        Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
+        if (surveyKeyword != null && regex.matcher(surveyKeyword).find() && surveyKeyword.length() == 1) {
+            surveyKeyword = "\"" + surveyKeyword + "\"";
+        }
 
         SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
 
