@@ -39,7 +39,7 @@ then
 fi
 
 # Check that source dataset exists and exit if not
-datasets=$(bq --project=$PUBLIC_PROJECT ls --max_results=100)
+datasets=$(bq --project_id=$PUBLIC_PROJECT ls --max_results=100)
 if [ -z "$datasets" ]
 then
   echo "No datasets in PUBLIC_PROJECT. Please specify a valid project and dataset."
