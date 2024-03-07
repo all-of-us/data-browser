@@ -45,7 +45,7 @@ then
 fi
 
 #Get the list of tables in the dataset
-tables=$(bq --project=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
 
 declare -a domain_names domain_table_names measurement_table_name
 domain_names=(condition drug procedure observation measurement)

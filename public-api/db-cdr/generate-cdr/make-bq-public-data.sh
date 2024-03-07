@@ -53,7 +53,7 @@ else
   exit 1
 fi
 
-tables=$(bq --project=$PUBLIC_PROJECT --dataset=$PUBLIC_DATASET ls --max_results=100)
+tables=$(bq --project=$PUBLIC_PROJECT --dataset_id=$PUBLIC_DATASET ls --max_results=100)
 c_re=\\bconcept\\b
 cr_re=\\bconcept_relationship\\b
 ar_re=\\bachilles_results\\b

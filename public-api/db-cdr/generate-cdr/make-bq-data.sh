@@ -76,7 +76,7 @@ fi
 GENOMICS_DATASET="2022q4r6_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
-tables=$(bq --project_id=$BQ_PROJECT --dataset=$BQ_DATASET ls --max_results=100)
+tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
 cb_cri_table_check=\\bcb_criteria\\b
 cb_cri_attr_table_check=\\bcb_criteria_attribute\\b
 cb_cri_rel_table_check=\\bcb_criteria_relationship\\b
