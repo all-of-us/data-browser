@@ -5,12 +5,12 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-  <changeSet author="srushtigangireddy" id="changelog-27">
+  <changeSet author="srushtigangireddy" id="changelog-83">
     <validCheckSum>ANY</validCheckSum>
-    <dropColumn tableName="concept" columnName="path"/>
+    <dropColumn tableName="concept" columnName="can_select"/>
     <addColumn tableName="concept">
       <!-- Contains the tree path of the concept -->
-      <column name="can_select" type="BOOL">
+      <column name="can_select" type="INTEGER" defaultValue="0">
         <constraints nullable="false"/>
       </column>
     </addColumn>
