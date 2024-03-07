@@ -74,9 +74,9 @@ fi
 
 # Get person count to set prevalence
 q="select count_value from \`${PUBLIC_PROJECT}.${PUBLIC_DATASET}.achilles_results\` a where a.analysis_id = 1"
-person_count=$(bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
+person_count=$(bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -84,7 +84,7 @@ where r.type='SNOMED' and r.domain_id='CONDITION' and r.full_text like '%conditi
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -92,7 +92,7 @@ where r.type='SNOMED' and r.domain_id='CONDITION' and r.full_text like '%conditi
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='SNOMED' "
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -100,7 +100,7 @@ where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.full_text like '%procedu
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -108,7 +108,7 @@ where r.type='SNOMED' and r.domain_id='PROCEDURE' and r.full_text like '%procedu
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Procedure' and c.vocabulary_id='SNOMED' "
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count, c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -116,7 +116,7 @@ where r.type='ICD9CM' and r.domain_id='CONDITION' and r.full_text like '%conditi
 group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='ICD9CM' "
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\` c
 set c.count_value = r.count, c.source_count_value = r.count
 from  (select r.concept_id, est_count as count from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\` r
@@ -125,7 +125,7 @@ group by r.concept_id, count) as r
 where r.concept_id = c.concept_id and c.domain_id='Condition' and c.vocabulary_id='ICD10CM' "
 
 #Concept prevalence (based on count value and not on source count value)
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`
 set prevalence =
 case when count_value > 0 then round(count_value/$person_count, 2)
@@ -135,7 +135,7 @@ where count_value > 0 or source_count_value > 0"
 
 
 # achilles_results
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 set count_value =
     case when count_value < ${BIN_SIZE}
@@ -152,25 +152,25 @@ set count_value =
 where count_value > 0 and analysis_id != 3401"
 
 # Delete bad values from overall health q 10 (Check the data and remove this query when safe)
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "delete from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` where stratum_2='1585747'
  and (safe_cast(stratum_4 as int64) < 0 or safe_cast(stratum_4 as int64) > 10)"
 
 #delete concepts with 0 count / source count value
 
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "delete from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`
 where (count_value=0 and source_count_value=0) and domain_id not in ('Race','Gender','Ethnicity','Unit','Drug')
 and concept_code not in ('OMOP generated') and lower(vocabulary_id) not in ('ppi')"
 
 #delete concepts from concept_relationship that are not in concepts
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "delete from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept_relationship\`
 where (concept_id_1 not in (select concept_id from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`)) or (concept_id_2 not in (select concept_id from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`))"
 
 # concept bin size :
 #Aggregate bin size will be set at 20. Counts lower than 20 will be displayed as 20; Counts higher than 20 will be rounded up to the closest multiple of 20. Eg: A count of 1245 will be displayed as 1260 .
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`
 set count_value =
     case when count_value < ${BIN_SIZE}
@@ -199,7 +199,7 @@ set count_value =
 where count_value > 0 or lower(vocabulary_id) ='ppi' "
 
 # criteria
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.cb_criteria\`
 set est_count =
     case when est_count < ${BIN_SIZE}
@@ -210,7 +210,7 @@ set est_count =
 where est_count > 0"
 
 # domain_info
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.domain_info\`
 set participant_count =
     case when participant_count < ${BIN_SIZE}
@@ -221,7 +221,7 @@ set participant_count =
 where participant_count > 0"
 
 # survey_module
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.survey_module\`
 set participant_count =
     case when participant_count < ${BIN_SIZE}
@@ -232,7 +232,7 @@ set participant_count =
 where participant_count > 0"
 
 echo "Inserting percentages of condition rows by gender"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with meta_data as
@@ -243,7 +243,7 @@ count_value, source_count_value
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Condition' ";
 
 echo "Inserting percentages of condition rows by age decile"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with meta_data as
@@ -254,7 +254,7 @@ count_value, source_count_value
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Condition' ";
 
 echo "Inserting percentages of measurement rows by gender"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with meta_data as
@@ -265,7 +265,7 @@ count_value, source_count_value
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Measurement' ";
 
 echo "Inserting percentages of measurement rows by age decile"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4,count_value, source_count_value)
 with meta_data as
@@ -276,7 +276,7 @@ count_value, source_count_value
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Measurement' ";
 
 echo "Inserting percentages of Drug rows by gender"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4,count_value, source_count_value)
 with meta_data as
@@ -286,7 +286,7 @@ cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Drug' ";
 
 echo "Inserting percentages of Drug rows by age decile"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4,count_value, source_count_value)
 with meta_data as
@@ -296,7 +296,7 @@ cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Drug' ";
 
 echo "Inserting percentages of Procedure rows by gender"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4,count_value, source_count_value)
 with meta_data as
@@ -306,7 +306,7 @@ cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3101 and stratum_3='Procedure' ";
 
 echo "Inserting percentages of Procedure rows by age decile"
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "insert into \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4,count_value, source_count_value)
 with meta_data as
@@ -316,19 +316,19 @@ cast(ROUND((count_value/(select count_value from meta_data md where md.stratum_4
 from \`$PUBLIC_PROJECT.$PUBLIC_DATASET.achilles_results\` ar where analysis_id=3102 and stratum_3='Procedure' ";
 
 #Drop unit_map table
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.unit_map\` "
 
 #Drop similar_unit_concepts mapping table
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.source_standard_unit_map\` "
 
 #Drop filter_conditions table
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "drop table \`$PUBLIC_PROJECT.$PUBLIC_DATASET.filter_conditions\` "
 
 # Updating domain_id of few survey questions from measurement to observation to avoid confusion in display
-bq --quiet --project=$PUBLIC_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$PUBLIC_PROJECT query --nouse_legacy_sql \
 "Update  \`$PUBLIC_PROJECT.$PUBLIC_DATASET.concept\`
 set domain_id = 'Observation'
 where concept_id in (40770349, 40766240, 40766930, 40766219, 40767339, 40766306, 40766645, 40766357, 40769140, 40766229, 40767407, 40766333, 40766241, 40766929, 40766643, 40766307)"

@@ -55,7 +55,7 @@ echo "Running measurement queries..."
 # If mapping tables are present, the views contain ehr specific data, so we need to run these extra queries.
 if [[ "$tables" == *"_mapping_"* ]]; then
     # 3000 Measurements that have numeric values - Number of persons with at least one measurement occurrence by measurement_concept_id, bin size of the measurement value for 10 bins, maximum and minimum from measurement value. Added value for measurement rows
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
     select 0, 3000 as analysis_id,
@@ -75,7 +75,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      group by co1.measurement_source_concept_id"
 
-    bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
     select 0, 3000 as analysis_id,
@@ -96,7 +96,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       group by co1.observation_source_concept_id"
 
      # Measurement concept by gender
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
      select 0, 3101 as analysis_id,
@@ -124,7 +124,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      group by co1.measurement_source_concept_id, p1.gender_concept_id"
 
       # Pregnancy concept by gender
-      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       select 0, 3101 as analysis_id,
@@ -152,7 +152,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       group by co1.observation_source_concept_id, p1.gender_concept_id"
 
      # Measurement by age deciles
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
      with m_age as
@@ -194,7 +194,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      group by co1.measurement_source_concept_id, stratum_2"
 
      # Pregnancy physical Measurement by age deciles
-      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       with m_age as
@@ -237,7 +237,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
      # 1815 Measurement response by gender distribution
      echo "Getting measurement response by gender distribution"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,min_value,max_value,avg_value,stdev_value,median_value,p10_value,p25_value,p75_value,p90_value)
      with rawdata_1815 as
@@ -308,7 +308,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
      # Update iqr_min and iqr_max in distributions for debugging purposes
      echo "updating iqr_min and iqr_max"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(ROUND((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end),2) as string),
      stratum_5 = cast(ROUND((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end),2) as string)
@@ -316,7 +316,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
      # Update iqr_min and iqr_max in distributions for debugging purposes
      echo "updating iqr_min and iqr_max"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(ROUND(p10_value,2) as string),
      stratum_5 = cast(ROUND(p90_value,2) as string)
@@ -325,45 +325,45 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
      # Update iqr_min and iqr_max in case both of them are 0
      echo "updating iqr_min and iqr_max"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(ROUND(min_value,2) as string),
      stratum_5 = cast(ROUND(max_value,2) as string) where analysis_id in (1815) and stratum_4='0' and stratum_5='0'
      and (min_value != 0 or max_value != 0)"
 
      echo "Rounding the bin values to multiples of 10"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string)
      where cast(stratum_4 as float64) >= 10 and analysis_id = 1815"
 
      echo "Rounding the bin values to multiples of 10"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
      where cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
      echo "Rounding bin values to one decimal"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = CAST(ROUND(safe_cast(stratum_4 as float64),1) as string)
      where safe_cast(stratum_4 as int64) is null"
 
      echo "Rounding bin values to one decimal"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_5 = CAST(ROUND(safe_cast(stratum_5 as float64),1) as string)
      where safe_cast(stratum_5 as int64) is null"
 
      echo "Rounding bin values to one decimal"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_4 = CAST(ROUND(cast(stratum_4 as float64)) as string)
      where safe_cast(stratum_4 as int64) is null
      and cast(stratum_4 as float64) > 1"
 
      echo "Rounding bin values to one decimal"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
      set stratum_5 = CAST(ROUND(cast(stratum_5 as float64)) as string)
      where safe_cast(stratum_5 as int64) is null
@@ -371,7 +371,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
 
      echo "Make the min range of all the biological sexes same"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
      set a.stratum_4= cast(res.min_iqr_min as string)
      from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
@@ -379,7 +379,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
      echo "Make the max range of all the biological sexes same"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
      set a.stratum_5= cast(res.min_iqr_max as string)
      from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
@@ -387,7 +387,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
      echo "Update the bin_width in achilles_results_dist"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
      set a.stratum_6 =
      cast(case
@@ -405,7 +405,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      where analysis_id=1815"
 
      echo "Update the bin_width in achilles_results_dist"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
      set a.stratum_6 = cast(ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),2) as string)
      where analysis_id=1815 and stratum_6='0' "
@@ -415,7 +415,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      # We do net yet generate the binned source counts of standard concepts
      # This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
      echo "Getting measurements binned gender value counts"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
      with measurement_data as
@@ -788,7 +788,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      # We do not yet generate the source counts of standard concepts
      # This query generates counts of measurements that do not have unit at all
      echo "Getting measurements unbinned gender value counts"
-     bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
      "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
       SELECT 0,1900 as analysis_id,
@@ -822,7 +822,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       group by stratum_1,stratum_3,stratum_4,stratum_5"
 
       echo "Getting pregnancy unbinned gender value counts"
-           bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+           bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
            "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
             (id, analysis_id, stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
             SELECT 0,1900 as analysis_id,
@@ -857,7 +857,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
       # Generating biological sex counts for measurement concepts for each unit
       echo "Inserting unit specific biological sex counts for each measurement concept"
-      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       with unit_counts as
@@ -908,7 +908,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
 
       # Generating biological sex counts for measurement concepts for each unit
       echo "Inserting unit specific biological sex counts for each measurement concept"
-      bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       with unit_counts as
@@ -960,7 +960,7 @@ fi
 
 # 1815 Measurement response by gender distribution
 echo "Getting measurement response by gender distribution"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,min_value,max_value,avg_value,stdev_value,median_value,p10_value,p25_value,p75_value,p90_value)
 with rawdata_1815 as
@@ -1031,7 +1031,7 @@ group by o.stratum1_id, o.stratum2_id, o.stratum3_id, o.total, o.min_value, o.ma
 
 # 1814 Measurement response distribution
 echo "Getting measurement response distribution"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 (id,analysis_id,stratum_1,stratum_2,count_value,min_value,max_value,avg_value,stdev_value,median_value,p10_value,p25_value,p75_value,p90_value)
 with rawdata_1814 as
@@ -1097,7 +1097,7 @@ group by o.stratum1_id, o.stratum2_id, o.total, o.min_value, o.max_value, o.avg_
 
 # Update iqr_min and iqr_max in distributions for debugging purposes
 echo "updating iqr_min and iqr_max"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(ROUND((case when (p25_value - 1.5*(p75_value-p25_value)) > min_value then (p25_value - 1.5*(p75_value-p25_value)) else min_value end),2) as string),
 stratum_5 = cast(ROUND((case when (p75_value + 1.5*(p75_value-p25_value)) < max_value then (p75_value + 1.5*(p75_value-p25_value)) else max_value end),2) as string)
@@ -1105,7 +1105,7 @@ where analysis_id in (1815)"
 
 # Update iqr_min and iqr_max in distributions for debugging purposes
 echo "updating iqr_min and iqr_max"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(ROUND(p10_value,2) as string),
 stratum_5 = cast(ROUND(p90_value,2) as string)
@@ -1114,45 +1114,45 @@ and stratum_4=stratum_5"
 
 # Update iqr_min and iqr_max in case both of them are 0
 echo "updating iqr_min and iqr_max"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(ROUND(min_value,2) as string),
 stratum_5 = cast(ROUND(max_value,2) as string) where analysis_id in (1815) and stratum_4='0' and stratum_5='0'
 and (min_value != 0 or max_value != 0)"
 
 echo "Rounding the bin values to multiples of 10"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = cast(cast(FLOOR(cast(stratum_4 as float64) / 10) * 10 as int64) as string)
 where cast(stratum_4 as float64) >= 10 and analysis_id = 1815"
 
 echo "Rounding the bin values to multiples of 10"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_5 = cast(cast(CEIL(cast(stratum_5 as float64) / 10) * 10 as int64) as string)
 where cast(stratum_5 as float64) >= 10 and analysis_id = 1815"
 
 echo "Rounding bin values to one decimal"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = CAST(ROUND(safe_cast(stratum_4 as float64),1) as string)
 where safe_cast(stratum_4 as int64) is null"
 
 echo "Rounding bin values to one decimal"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_5 = CAST(ROUND(safe_cast(stratum_5 as float64),1) as string)
 where safe_cast(stratum_5 as int64) is null"
 
 echo "Rounding bin values to one decimal"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_4 = CAST(ROUND(cast(stratum_4 as float64)) as string)
 where safe_cast(stratum_4 as int64) is null
 and cast(stratum_4 as float64) > 1"
 
 echo "Rounding bin values to one decimal"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_5 = CAST(ROUND(cast(stratum_5 as float64)) as string)
 where safe_cast(stratum_5 as int64) is null
@@ -1160,7 +1160,7 @@ and cast(stratum_5 as float64) > 1"
 
 
 echo "Make the min range of all the biological sexes same"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_4= cast(res.min_iqr_min as string)
 from  (select stratum_1, stratum_2, min(cast(r.stratum_4 as float64)) as min_iqr_min from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
@@ -1168,7 +1168,7 @@ where r.analysis_id=1815 group by stratum_1, stratum_2) as res
 where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
 echo "Make the max range of all the biological sexes same"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_5= cast(res.min_iqr_max as string)
 from  (select stratum_1, stratum_2, max(cast(r.stratum_5 as float64)) as min_iqr_max from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` r
@@ -1176,7 +1176,7 @@ where r.analysis_id=1815 group by stratum_1, stratum_2) as res
 where a.stratum_1 = res.stratum_1 and a.stratum_2=res.stratum_2"
 
 echo "Update the bin_width in achilles_results_dist"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_6 =
 cast(case
@@ -1194,7 +1194,7 @@ else ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),1) end a
 where analysis_id=1815"
 
 echo "Update the bin_width in achilles_results_dist"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` a
 set a.stratum_6 = cast(ROUND(((cast(stratum_5 as float64)-cast(stratum_4 as float64))/11),2) as string)
 where analysis_id=1815 and stratum_6='0' "
@@ -1203,7 +1203,7 @@ where analysis_id=1815 and stratum_6='0' "
 # We do net yet generate the binned source counts of standard concepts
 # This query only generates counts of measurements that have unit_concept_id 0 and unit_source_value (being considered) by joining on the manual made unit_map table
 echo "Getting measurements binned gender value counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_6,count_value,source_count_value)
 with measurement_data as
@@ -1576,7 +1576,7 @@ group by stratum_1, stratum_2, stratum_3, stratum_4,stratum_6"
 # We do not yet generate the source counts of standard concepts
 # This query generates counts of measurements that do not have unit at all
 echo "Getting measurements unbinned gender value counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
  (id, analysis_id, stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,count_value,source_count_value)
  SELECT 0,1900 as analysis_id,
@@ -1610,7 +1610,7 @@ bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
 
 # Generating biological sex counts for measurement concepts for each unit
 echo "Inserting unit specific biological sex counts for each measurement concept"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with unit_counts as
@@ -1660,44 +1660,44 @@ group by id, analysis_id, concept_id, unit, gender"
 
 # Set the counts > 0 and < 20 to 20
 echo "Binning counts < 20"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 set count_value = 20, source_count_value = 20 where analysis_id in (1900) and ((count_value>0 and count_value<20) or (source_count_value>0 and source_count_value<20))"
 
 # Set concept name in place of concept id for units
 echo "Replacing unit concept id with unit concept name"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\`
 set stratum_2 = (select distinct concept_name from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` where cast(concept_id as string)=stratum_2)
 where analysis_id in (1815,1814) and stratum_2 is not null and stratum_2 != '' "
 
 # Set concept name in place of concept id for units
 echo "Replacing unit concept id with unit concept name"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 set stratum_2 = (select distinct concept_name from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` where cast(concept_id as string)=stratum_2)
 where analysis_id in (1900,1910) and stratum_2 is not null and stratum_2 != '' "
 
 # Update no unit concept name in achilles_results_dist(For nice display)
 echo "Replacing no matching concept unit name to no unit"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results_dist\` set stratum_2 = 'No unit'
 where stratum_2 = 'No matching concept'"
 
 # Update no unit concept name in achilles_results(For nice display)
 echo "Replacing no matching concept unit name to no unit"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
 where stratum_2 = 'No matching concept'"
 
 # Update no unit concept name in achilles_results(For nice display)
 echo "Replacing no matching concept unit name to no unit"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "update \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\` set stratum_2 = 'No unit'
 where (stratum_2 = '' or stratum_2 is null) and analysis_id=1910"
 
 echo "Filling measurement concept info table"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.measurement_concept_info\`
 (concept_id, has_values, measurement_type)
 with
@@ -1735,7 +1735,7 @@ union distinct
 select * from yes_values_2"
 
 echo "Generating any fitbit data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1787,7 +1787,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating any fitbit data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1828,7 +1828,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating any fitbit data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1869,7 +1869,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating any fitbit data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1910,7 +1910,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating any fitbit data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1951,7 +1951,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating sleep daily summary data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
@@ -1992,7 +1992,7 @@ from m_age_stratum a
 group by 4;"
 
 echo "Generating sleep daily summary data counts"
-bq --quiet --project=$BQ_PROJECT query --nouse_legacy_sql \
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
