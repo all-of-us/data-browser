@@ -10,7 +10,7 @@
     <dropColumn tableName="concept" columnName="path"/>
     <addColumn tableName="concept">
       <!-- Contains the tree path of the concept -->
-      <column name="can_select" type="BOOL">
+      <column name="can_select" type="TINYINT">
         <constraints nullable="false"/>
       </column>
     </addColumn>
