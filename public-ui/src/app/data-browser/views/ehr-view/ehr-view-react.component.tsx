@@ -730,7 +730,7 @@ export const EhrViewReactComponent = withRouteData(
                                       id="domain-name"
                                       className="primary-display"
                                     >
-                                      &#32;{totalResults}&#32;
+                                      &#32;{totalResults.toLocaleString()}&#32;
                                       {searchWord ? (
                                         <React.Fragment>
                                           {" "}
@@ -755,7 +755,7 @@ export const EhrViewReactComponent = withRouteData(
                                       className="primary-display"
                                     >
                                       Showing&#32;
-                                      {totalResults}&#32;
+                                      {totalResults.toLocaleString()}&#32;
                                       {searchWord ? (
                                         <React.Fragment>
                                           {" "}

@@ -21,7 +21,7 @@ strong {
 
 .version-box-header,.version-box-row {
     display: grid;
-    grid-template-columns: 40% 17.5% 17.5% 25%;
+    grid-template-columns: 45% 25% 30%;
     /* justify-content: space-around; */
     width:100%;
 }
@@ -78,14 +78,12 @@ export class PfhhSurveyTableReactComponent extends React.Component<
         <div className="version-box">
           <div className="version-box-header">
             <div className="version-box-item">Survey</div>
-            <div className="version-box-item">Participants</div>
             <div className="version-box-item">Questions</div>
             <div className="version-box-item">Download PDF</div>
           </div>
           <div className="version-box-body">
           <div className="version-box-row">
             <span className="version-box-item">Personal and Family Health History</span>
-            <span className="version-box-item">{participantCount}</span>
             <span className="version-box-item">{questionCount}</span>
             <span className="version-box-item">
                       <a href={pafhh_survey_pdf_link} download>
@@ -100,7 +98,6 @@ export class PfhhSurveyTableReactComponent extends React.Component<
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Personal Medical History</span>
-            <span className="version-box-item">142100</span>
             <span className="version-box-item">465</span>
             <span className="version-box-item">
                       <a href={pmh_survey_pdf_link} download>
@@ -115,7 +112,6 @@ export class PfhhSurveyTableReactComponent extends React.Component<
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Family Health History</span>
-            <span className="version-box-item">145620</span>
             <span className="version-box-item">104</span>
             <span className="version-box-item">
                       <a href={fhh_survey_pdf_link} download>

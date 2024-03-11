@@ -111,7 +111,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
     newBaseOptions.chart.type = "column";
     newBaseOptions.plotOptions.column.groupPadding = 0.4;
     newBaseOptions.plotOptions.series.pointWidth = 45;
-    newBaseOptions.legend.enabled = true;
+    newBaseOptions.legend.enabled = false;
     newBaseOptions.yAxis.gridLineColor = "#ECF1F4";
     newBaseOptions.title.style.color = "#262262";
     newBaseOptions.title.style.fontSize = "22px";
