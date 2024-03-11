@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { Component, Input, ViewEncapsulation } from "@angular/core";
-import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
+
 import { getTooltip } from "app/data-browser/services/tooltip.service";
 import { ClrIcon } from "app/utils/clr-icon";
 import { triggerEvent } from "app/utils/google_analytics";
@@ -65,9 +64,73 @@ interface Props {
 export class TooltipReactComponent extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
+    this.state={
+      overflowX:0,
+      saveLoc:0
+    }
+  }
+
+
+
+  componentDidMount() {
+    // document.addEventListener('mousemove', this.tooltipHover);
+    document.addEventListener('resize', this.tooltipHover);
+    // this.detectOverflow();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tooltipHover);
+    // window.removeEventListener('mousemove', this.tooltipHover);
+  }
+  
+ 
+  
+ 
+    detectOverflow = () => {
+      const div = document.getElementById('tooltip');
+      const body = document.body;
+    
+      if (div && body) {
+        const divRect = div.getBoundingClientRect();
+        const bodyRect = body.getBoundingClientRect();
+    
+        if (divRect && bodyRect) {
+          const overflowX = divRect.right > bodyRect.right ? divRect.right - bodyRect.right : 0;
+          const overflowY = divRect.bottom > bodyRect.bottom ? divRect.bottom - bodyRect.bottom : 0;
+    
+          console.log('Overflow X:', overflowX);
+          console.log('Overflow Y:', overflowY);
+        }
+      }
+
+      
+    
+    this.setState({
+        // using the cursor location to set the tooltip.
+        // todo: rethink  
+      //  overflowX : pageX + 170 > window.innerWidth ? pageX + 170 - window.innerWidth : 0
+      });
+
   }
 
   tooltipHover(e) {
+    const tooltipBox: HTMLElement | null = document.getElementById('tooltiptext');
+
+    // // Get the position of the div
+    const box = tooltipBox != null && tooltipBox.getBoundingClientRect();
+    const body = document.body;
+    // const rect = box.getBoundingClientRect();
+    console.log(box,'recccctt');
+    // const bodyRect = body.getBoundingClientRect();
+
+    // const overflowX = rect.right > bodyRect.right ? rect.right - bodyRect.right : 0;
+    // const overflowY = rect.bottom > bodyRect.bottom ? rect.bottom - bodyRect.bottom : 0;
+    // console.log('Overflow X:', overflowX);
+    //   console.log('Overflow Y:', overflowY);
+    // const { pageX } = e;
+    // this.setState({
+    //   saveLoc : pageX
+    // });
     triggerEvent(
       "tooltipsHover",
       "Tooltips",
@@ -75,9 +138,14 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       this.props.label,
       this.props.searchTerm,
       this.props.action
-    );
-    e.stopPropagation();
+      );
+    this.detectOverflow();
+    // e.stopPropagation();
   }
+
+  handleResize = (e) => {
+    this.detectOverflow();
+  };
 
   render() {
     const tabIndex = 0;
@@ -87,6 +155,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       <React.Fragment>
         <style>{tooltipCss}</style>
         <div
+          id="tooltip"
           tabIndex={tabIndex}
           className="tooltip"
           onFocus={(e) => this.tooltipHover(e)}
@@ -98,7 +167,7 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
             className={iconClass}
             style={{ width: 18, height: 18 }}
           />
-          <span className="tooltiptext">
+          <span id="tooltiptext" className="tooltiptext">
             {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
               if (index === 1 || index === 3) {
                 return (
@@ -115,28 +184,5 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
         </div>
       </React.Fragment>
     );
-  }
-}
-
-@Component({
-  selector: "app-tooltip-react",
-  template: `<span #${containerElementName}></span>`,
-  styleUrls: ["./tooltip.component.css", "../../../styles/page.css"],
-  encapsulation: ViewEncapsulation.None,
-})
-export class TooltipWrapperComponent extends BaseReactWrapper {
-  @Input() public label: string;
-  @Input() public searchTerm: string;
-  @Input() public action: string;
-  @Input() public tooltipKey: string;
-
-  constructor() {
-    super(TooltipReactComponent, [
-      "label",
-      "searchTerm",
-      "action",
-      "tooltipKey",
-      "onHover",
-    ]);
   }
 }
