@@ -276,6 +276,10 @@ export const SurveyViewReactComponent = withRouteData(
           ? "/assets/surveys/" +
             "Health Care Access Utilization".split(" ").join("_") +
             ".pdf"
+          : surveyConceptId === 1740639
+          ? "/assets/surveys/" +
+            "Personal_and_Family_Health_History" +
+            ".pdf"
           : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
       const copeFlag =
         surveyConceptId === 1333342 || surveyConceptId === 765936;
