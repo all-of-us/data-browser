@@ -55,23 +55,33 @@ input[type='radio']:before {
 
 .radio-label {
     cursor: pointer;
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    align-items: center;
 }
 
 .radio-label input {
   cursor: pointer;
 }
 
-@media only screen and (max-width: 1400px) {
-    #selectGenotypeDataForm {
-        font-size: 14px;
-        gap: 1em;
-    }
+.heading-layout {
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: 10rem 10rem 17rem 10rem;
+  // justify-content: space-between;
 }
 
-@media only screen and (max-width: 1235px) {
-    #selectGenotypeDataForm {
-        font-size: 12px;
-        gap: 1em;
+
+@media only screen and (max-width: 900px) {
+    .heading-layout {
+      grid-template-columns:50% 50%;
+      row-gap: 1rem;
+    }
+}
+@media only screen and (max-width: 700px) {
+    .heading-layout {
+      grid-template-columns:100%;
+      row-gap: 1rem;
     }
 }
 
@@ -88,19 +98,10 @@ const styles = reactStyles({
     margin: "0",
     fontSize: ".8em",
   },
-  headingLayout: {
-    display: "flex",
-    marginBottom: "1em",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-  },
   selectGenotypeData: {
-    display: "flex",
-    justifyContent:"space-between",
-    flexDirection: "row",
     marginBottom: "1em",
-    gap: "1em",
-    width:'80%'
+    width: '80%',
+    // minWidth: " 5rem"
   }
 
 });
@@ -128,7 +129,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       currentAgeData: [],
       participantCounts: [],
       selectedGenotype: 'wgs_shortread',
-      color:'#6F98A0'
+      color: '#6F98A0'
     };
     this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
   }
@@ -144,7 +145,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
   }
 
   getGenomicChartData() {
-    this.props.chartData.forEach((item) => {      
+    this.props.chartData.forEach((item) => {
       switch (item.analysisId) {
         case 3503:
           this.raceEthArr.push(item);
@@ -187,21 +188,21 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     this.setState({ selectedGenotype: event.target.value });
     switch (event.target.value) {
       case 'micro-array':
-        this.setState({color:'#FAAF56'});
+        this.setState({ color: '#FAAF56' });
         break;
       case 'wgs_structural_variants':
-        this.setState({color:'#93003A'});
+        this.setState({ color: '#93003A' });
         break;
       case 'wgs_shortread':
-        this.setState({color:'#6F98A0'});
+        this.setState({ color: '#6F98A0' });
         break;
       case 'wgs_longread':
-        this.setState({color:'#01429D'});
+        this.setState({ color: '#01429D' });
         break;
 
 
     }
-    
+
   }
 
   render() {
@@ -236,22 +237,24 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         <div style={styles.innerContainer}>
           {!loading && (
             <form style={styles.selectGenotypeData} onChange={this.onGenotypeSelect} id="selectGenotypeDataForm">
-              {wgsSRParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label">
-                <input id="radio-teal" type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'} /> Short-Read WGS</label>
-              </React.Fragment>)}
-              {wgsLRParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label">
-                <input id="radio-blue" type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'} /> Long-Read WGS</label>
-              </React.Fragment>)}
-              {wgsSVParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label">
-                <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Short-Read WGS Structural Variants</label>
-              </React.Fragment>)}
-              {arrayParticipantCount > 0 && (<React.Fragment>
-                <label className="radio-label">
-                <input id="radio-orange" type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'} /> Genotyping Arrays</label>
-              </React.Fragment>)}
+              <div className="heading-layout">
+                {wgsSRParticipantCount > 0 && (<React.Fragment>
+                  <label className="radio-label">
+                    <input id="radio-teal" type="radio" value="wgs_shortread" name="genotype" defaultChecked={selectedGenotype === 'wgs_shortread'} /> Short-Read WGS</label>
+                </React.Fragment>)}
+                {wgsLRParticipantCount > 0 && (<React.Fragment>
+                  <label className="radio-label">
+                    <input id="radio-blue" type="radio" value="wgs_longread" name="genotype" defaultChecked={selectedGenotype === 'wgs_longread'} /> Long-Read WGS</label>
+                </React.Fragment>)}
+                {wgsSVParticipantCount > 0 && (<React.Fragment>
+                  <label className="radio-label">
+                    <input id="radio-red" type="radio" value="wgs_structural_variants" name="genotype" defaultChecked={selectedGenotype === 'wgs_structural_variants'} /> Short-Read WGS Structural Variants</label>
+                </React.Fragment>)}
+                {arrayParticipantCount > 0 && (<React.Fragment>
+                  <label className="radio-label">
+                    <input id="radio-orange" type="radio" value="micro-array" name="genotype" defaultChecked={selectedGenotype === 'micro-array'} /> Genotyping Arrays</label>
+                </React.Fragment>)}
+              </div>
             </form>)}
           {!loading && (
             <React.Fragment>
