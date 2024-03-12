@@ -75,6 +75,7 @@ const styles = reactStyles({
     position: "sticky",
     overflowX: "hidden",
     width: "100%",
+    minWidth: "550px",
     background: "#ECF1F4",
     left: "0px",
     padding: ".5em",
