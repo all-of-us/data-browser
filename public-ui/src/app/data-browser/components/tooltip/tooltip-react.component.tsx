@@ -1,11 +1,8 @@
 import * as React from "react";
-
-
 import { getTooltip } from "app/data-browser/services/tooltip.service";
 import { ClrIcon } from "app/utils/clr-icon";
 import { triggerEvent } from "app/utils/google_analytics";
 
-const containerElementName = "root";
 
 export const tooltipCss = `
 .tooltip {
@@ -31,16 +28,16 @@ export const tooltipCss = `
     z-index: 110;
 }
 
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #302C71 transparent transparent transparent;
-}
+// .tooltip .tooltiptext::after {
+//     content: " ";
+//     position: absolute;
+//     top: 100%;
+//     left: 50%;
+//     margin-left: -5px;
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: #302C71 transparent transparent transparent;
+// }
 
 .tooltip:focus .tooltiptext, .tooltip:hover .tooltiptext {
     visibility: visible;
@@ -60,77 +57,50 @@ interface Props {
   action: string;
   tooltipKey: string;
 }
-
-export class TooltipReactComponent extends React.Component<Props, {}> {
+interface State {
+  overflowX: number;
+  left: number;
+}
+export class TooltipReactComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state={
-      overflowX:0,
-      saveLoc:0
+    this.state = {
+      overflowX: 0,
+      left: 0
     }
   }
 
-
+  divRef: any = React.createRef();
 
   componentDidMount() {
-    // document.addEventListener('mousemove', this.tooltipHover);
     document.addEventListener('resize', this.tooltipHover);
-    // this.detectOverflow();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.tooltipHover);
-    // window.removeEventListener('mousemove', this.tooltipHover);
   }
-  
- 
-  
- 
-    detectOverflow = () => {
-      const div = document.getElementById('tooltip');
-      const body = document.body;
-    
-      if (div && body) {
-        const divRect = div.getBoundingClientRect();
-        const bodyRect = body.getBoundingClientRect();
-    
-        if (divRect && bodyRect) {
-          const overflowX = divRect.right > bodyRect.right ? divRect.right - bodyRect.right : 0;
-          const overflowY = divRect.bottom > bodyRect.bottom ? divRect.bottom - bodyRect.bottom : 0;
-    
-          console.log('Overflow X:', overflowX);
-          console.log('Overflow Y:', overflowY);
-        }
+
+
+
+
+  detectOverflow = () => {
+    const div = this.divRef.current;
+    const body = document.body;
+
+    if (div && body) {
+      const divRect = div.getBoundingClientRect();
+      const bodyRect = body.getBoundingClientRect();
+      if (divRect && bodyRect) {
+        const overflowX = divRect.right + 150 > bodyRect.right ? divRect.right - bodyRect.right + 150 : 0;
+        this.setState({
+          overflowX: overflowX,
+          left: divRect.left
+        })
       }
-
-      
-    
-    this.setState({
-        // using the cursor location to set the tooltip.
-        // todo: rethink  
-      //  overflowX : pageX + 170 > window.innerWidth ? pageX + 170 - window.innerWidth : 0
-      });
-
+    }
   }
 
   tooltipHover(e) {
-    const tooltipBox: HTMLElement | null = document.getElementById('tooltiptext');
-
-    // // Get the position of the div
-    const box = tooltipBox != null && tooltipBox.getBoundingClientRect();
-    const body = document.body;
-    // const rect = box.getBoundingClientRect();
-    console.log(box,'recccctt');
-    // const bodyRect = body.getBoundingClientRect();
-
-    // const overflowX = rect.right > bodyRect.right ? rect.right - bodyRect.right : 0;
-    // const overflowY = rect.bottom > bodyRect.bottom ? rect.bottom - bodyRect.bottom : 0;
-    // console.log('Overflow X:', overflowX);
-    //   console.log('Overflow Y:', overflowY);
-    // const { pageX } = e;
-    // this.setState({
-    //   saveLoc : pageX
-    // });
     triggerEvent(
       "tooltipsHover",
       "Tooltips",
@@ -138,9 +108,9 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       this.props.label,
       this.props.searchTerm,
       this.props.action
-      );
+    );
     this.detectOverflow();
-    // e.stopPropagation();
+    e.stopPropagation();
   }
 
   handleResize = (e) => {
@@ -151,10 +121,14 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
     const tabIndex = 0;
     const iconShape = "info-standard";
     const iconClass = "is-solid info-icon";
+    const { overflowX, left } = this.state;
+    const move = overflowX > 0 ? -overflowX - 28 : 0;
+
+
     return (
       <React.Fragment>
         <style>{tooltipCss}</style>
-        <div
+        <div ref={this.divRef}
           id="tooltip"
           tabIndex={tabIndex}
           className="tooltip"
@@ -167,7 +141,9 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
             className={iconClass}
             style={{ width: 18, height: 18 }}
           />
-          <span id="tooltiptext" className="tooltiptext">
+          <span style={{
+            left: move
+          }} id="tooltiptext" className="tooltiptext">
             {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
               if (index === 1 || index === 3) {
                 return (
