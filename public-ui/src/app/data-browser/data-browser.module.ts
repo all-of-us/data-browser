@@ -38,7 +38,7 @@ import { SourceTreeWrapperComponent } from "./components/source-tree/source-tree
 import { SurveyVersionTableComponent } from "./components/survey-version-table/survey-version-table.component";
 import { SurveyVersionWrapperComponent } from "./components/survey-version-table/survey-version-table-react.component";
 import { TooltipComponent } from "./components/tooltip/tooltip.component";
-import { TooltipWrapperComponent } from "./components/tooltip/tooltip-react.component";
+// import { TooltipWrapperComponent } from "./components/tooltip/tooltip-react.component";
 import { ConceptChartsComponent } from "./concept-charts/concept-charts.component";
 import { DataBrowserRoutingModule } from "./databrowser-routing.module";
 import { TooltipService } from "./services/tooltip.service";
@@ -86,7 +86,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     PopUpWrapperComponent,
     SourcesWrapperComponent,
     TopResultsChartWrapperComponent,
-    TooltipWrapperComponent,
+    // TooltipWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
     SurveyChartWrapperComponent,
@@ -126,7 +126,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     TopResultsChartWrapperComponent,
     AgeWrapperComponent,
     BioSexWrapperComponent,
-    TooltipWrapperComponent,
+    // TooltipWrapperComponent,
     SurveyChartWrapperComponent,
     ConceptChartWrapperComponent,
     ConceptRowWrapperComponent,

@@ -1,12 +1,8 @@
 import * as React from "react";
-
-import { Component, Input, ViewEncapsulation } from "@angular/core";
-import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { getTooltip } from "app/data-browser/services/tooltip.service";
 import { ClrIcon } from "app/utils/clr-icon";
 import { triggerEvent } from "app/utils/google_analytics";
 
-const containerElementName = "root";
 
 export const tooltipCss = `
 .tooltip {
@@ -32,16 +28,16 @@ export const tooltipCss = `
     z-index: 110;
 }
 
-.tooltip .tooltiptext::after {
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #302C71 transparent transparent transparent;
-}
+// .tooltip .tooltiptext::after {
+//     content: " ";
+//     position: absolute;
+//     top: 100%;
+//     left: 50%;
+//     margin-left: -5px;
+//     border-width: 5px;
+//     border-style: solid;
+//     border-color: #302C71 transparent transparent transparent;
+// }
 
 .tooltip:focus .tooltiptext, .tooltip:hover .tooltiptext {
     visibility: visible;
@@ -61,10 +57,47 @@ interface Props {
   action: string;
   tooltipKey: string;
 }
-
-export class TooltipReactComponent extends React.Component<Props, {}> {
+interface State {
+  overflowX: number;
+  left: number;
+}
+export class TooltipReactComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
+    this.state = {
+      overflowX: 0,
+      left: 0
+    }
+  }
+
+  divRef: any = React.createRef();
+
+  componentDidMount() {
+    document.addEventListener('resize', this.tooltipHover);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.tooltipHover);
+  }
+
+
+
+
+  detectOverflow = () => {
+    const div = this.divRef.current;
+    const body = document.body;
+
+    if (div && body) {
+      const divRect = div.getBoundingClientRect();
+      const bodyRect = body.getBoundingClientRect();
+      if (divRect && bodyRect) {
+        const overflowX = divRect.right + 150 > bodyRect.right ? divRect.right - bodyRect.right + 150 : 0;
+        this.setState({
+          overflowX: overflowX,
+          left: divRect.left
+        })
+      }
+    }
   }
 
   tooltipHover(e) {
@@ -76,17 +109,27 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
       this.props.searchTerm,
       this.props.action
     );
+    this.detectOverflow();
     e.stopPropagation();
   }
+
+  handleResize = (e) => {
+    this.detectOverflow();
+  };
 
   render() {
     const tabIndex = 0;
     const iconShape = "info-standard";
     const iconClass = "is-solid info-icon";
+    const { overflowX, left } = this.state;
+    const move = overflowX > 0 ? -overflowX - 28 : 0;
+
+
     return (
       <React.Fragment>
         <style>{tooltipCss}</style>
-        <div
+        <div ref={this.divRef}
+          id="tooltip"
           tabIndex={tabIndex}
           className="tooltip"
           onFocus={(e) => this.tooltipHover(e)}
@@ -98,7 +141,9 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
             className={iconClass}
             style={{ width: 18, height: 18 }}
           />
-          <span className="tooltiptext">
+          <span style={{
+            left: move
+          }} id="tooltiptext" className="tooltiptext">
             {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
               if (index === 1 || index === 3) {
                 return (
@@ -115,28 +160,5 @@ export class TooltipReactComponent extends React.Component<Props, {}> {
         </div>
       </React.Fragment>
     );
-  }
-}
-
-@Component({
-  selector: "app-tooltip-react",
-  template: `<span #${containerElementName}></span>`,
-  styleUrls: ["./tooltip.component.css", "../../../styles/page.css"],
-  encapsulation: ViewEncapsulation.None,
-})
-export class TooltipWrapperComponent extends BaseReactWrapper {
-  @Input() public label: string;
-  @Input() public searchTerm: string;
-  @Input() public action: string;
-  @Input() public tooltipKey: string;
-
-  constructor() {
-    super(TooltipReactComponent, [
-      "label",
-      "searchTerm",
-      "action",
-      "tooltipKey",
-      "onHover",
-    ]);
   }
 }
