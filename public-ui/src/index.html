@@ -269,8 +269,13 @@
       </aside><!-- .widget-area -->
 
       <div class="site-info">
-        Copyright 2023 |
-
+        <span id="copyright">Copyright 2023</span> 
+        <script type="text/javascript">
+          const currentDate = new Date();
+          const currentYear = currentDate.getFullYear();
+          const copyRight = document.getElementById("copyright");
+          copyRight.innerText = `Copyright ${currentYear}`
+        </script>|
         <a class="privacy-policy-link" style="border-bottom: 1px solid #337ab7"
           href="https://www.researchallofus.org/privacy-policy/">Privacy Policy</a><span role="separator"
           aria-hidden="true"></span>
