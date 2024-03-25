@@ -103,6 +103,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     newBaseOptions.yAxis.title.style.color = "#262262";
     newBaseOptions.yAxis.gridLineColor = "#F0F0F0";
     newBaseOptions.xAxis.categories = categories;
+    newBaseOptions.legend.enabled = false;
     if ("dataOnlyLT20" in series[0]) {
       newBaseOptions.yAxis.min = series[0].dataOnlyLT20 ? 20 : 0;
       newBaseOptions.yAxis.labels = {
