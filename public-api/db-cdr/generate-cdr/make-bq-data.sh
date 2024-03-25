@@ -820,14 +820,21 @@ where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS sm1
 JOIN \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\` AS sm2 ON sm1.concept_id = sm2.concept_id and sm1.survey_concept_id = 43529712
-SET sm1.path = sm2.path"
+SET sm1.path = sm2.path, sm1.sub = 1, sm1.is_parent_question = 0"
 
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7='1'
-from (select SPLIT(path, '.')[OFFSET(0)] as qid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\`) b
-where a.stratum_1 = 43529712 and a.stratum_3=b.qid and a.analysis_id=3110"
+from (select SPLIT(path, '.')[OFFSET(0)] as qid, SPLIT(SPLIT(path, '.')[OFFSET(1)], '.')[OFFSET(0)] as aid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\`) b
+where a.stratum_1 = 43529712 and a.stratum_2=b.qid and a.stratum_3 = b.aid and a.analysis_id=3110"
+
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` AS a
+JOIN \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\` AS pp ON a.stratum_1 = '43529712' and a.stratum_2 = pp.concept_id
+SET a.stratum_6 = pp.path
+where a.analysis_id in (3110, 3111, 3112)"
+
 
 #######################
 # Drop views created #
