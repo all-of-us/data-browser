@@ -132,6 +132,7 @@ const styles = reactStyles({
     padding: ".5rem",
     paddingBottom: "0",
     paddingTop: "0",
+    textAlign: "center"
   },
   popTableBody: {
     borderBottom: "1px solid #DDE0E4",
