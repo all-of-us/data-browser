@@ -85,7 +85,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata pfhh_qa_metadata)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata pfhh_qa_metadata pfhh_path_update)
 
 for t in "${create_tables[@]}"
 do
@@ -96,7 +96,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata pfhh_qa_metadata)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata pfhh_qa_metadata pfhh_path_update)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do
@@ -816,6 +816,18 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
 where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
 "
+
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS sm1
+JOIN \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\` AS sm2 ON sm1.concept_id = sm2.concept_id and sm1.survey_concept_id = 43529712
+SET sm1.path = sm2.path"
+
+
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set a.stratum_7='1'
+from (select SPLIT(path, '.')[OFFSET(0)] as qid from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\`) b
+where a.stratum_1 = 43529712 and a.stratum_3=b.qid and a.analysis_id=3110"
 
 #######################
 # Drop views created #
