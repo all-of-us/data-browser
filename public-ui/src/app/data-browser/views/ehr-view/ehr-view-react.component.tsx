@@ -564,17 +564,6 @@ export const EhrViewReactComponent = withRouteData(
     handleScrollEnd = (event) => {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => {
-        // const scrollArea = window.scrollY;
-        // if (scrollArea) {
-        //   const scrollTop = scrollArea.scrollTop;
-        //   const scrollHeight = scrollArea.scrollHeight;
-        //   // trigger scroll at 35%
-        //   const scrolledToBottom = scrollTop / scrollHeight > .60;
-        //   if (scrolledToBottom && !this.state.endReached) {
-        //     alert();
-        //     this.addMoreResults();
-        //   }
-        // }
         
         // Calculate the height of the viewport
         const viewportHeight = window.innerHeight;
@@ -582,7 +571,7 @@ export const EhrViewReactComponent = withRouteData(
         // Calculate the scroll position as a percentage
         const scrollPosition = (window.scrollY / (document.documentElement.scrollHeight - viewportHeight)) * 100;
         if (scrollPosition >= 60) {
-          console.log('Scrolled down 60%');
+
           // You can perform your actions here
               this.addMoreResults();
         }
