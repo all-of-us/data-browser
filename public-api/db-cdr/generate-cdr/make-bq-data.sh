@@ -843,6 +843,12 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
  WHEN MATCHED THEN
    UPDATE SET stratum_6 = source.path"
 
+# TODO remove this once this issue is fixed
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'Marijuana 3 Month Use: Once Or Twice'
+where stratum_3 = '1585652' "
+
 
 #######################
 # Drop views created #
