@@ -39,7 +39,9 @@ from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` a
 where observation_source_concept_id =  1585729 and value_source_concept_id = 1585730
 "
 
-
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"delete from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\`
+where observation_source_concept_id =  1585729 and value_source_concept_id = 1585730"
 
 ####################
 # fmh counts #
