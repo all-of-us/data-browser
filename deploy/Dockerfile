@@ -1,7 +1,7 @@
 # Image used for deployment. The Circle image is not used here as it does not
 # have an ARM build (M1 chip requires emulation).
 # Keep synchronized with ci/Dockerfile.circle_build
-FROM openjdk:11
+FROM eclipse-temurin:17
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -yq \
@@ -12,6 +12,8 @@ RUN apt-get update \
   python3-pip \
   nodejs \
   npm \
+  git \
+  unzip \
   wait-for-it \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
