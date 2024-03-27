@@ -2,6 +2,46 @@ import io.swagger.codegen.config.CodegenConfigurator
 import io.swagger.codegen.DefaultGenerator
 import org.gradle.api.tasks.JavaExec
 
+buildscript {    // Configuration for building
+
+    ext {
+        GAE_VERSION = '1.9.64'
+        GOOGLE_TRUTH_VERSION = '1.1.3'
+        GSON_VERSION = '2.9.0'
+        HIBERNATE_VERSION = '5.6.9.Final'
+        SPRING_BOOT_VERSION = '2.7.1'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
+        JACKSON_DATABIND_VERSION = '2.14.1'
+        JACKSON_VERSION = '2.14.1'
+        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
+        OKHTTP_VERSION = '2.7.5'
+        SPRINGFOX_VERSION = '3.0.0'
+        LIQUIBASE_VERSION = '4.12.0'
+        SPRING_FRAMEWORK_VERSION = '5.3.21'
+    }
+
+    repositories {
+        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+        maven {
+            // for Terra service clients (currently sam-client)
+            url 'https://broadinstitute.jfrog.io/artifactory/libs-release-local'
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
+        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
+        classpath 'io.swagger:swagger-codegen:2.2.3'
+        classpath 'org.owasp:dependency-check-gradle:7.4.4'
+        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+        classpath "com.google.http-client:google-http-client:1.41.1"
+    }
+}
+
 def swaggerTemplateDir = 'src/main/resources'
 def swaggerSourceFile = 'src/main/resources/public-api.yaml'
 def swaggerTargetFolder = 'src/generated/java'
@@ -21,8 +61,8 @@ def dbProperties = [
         'spring.datasource.password': '${databrowser_db_password}'
 ]
 
-if (JavaVersion.current() != JavaVersion.VERSION_11) {
-    throw new GradleException("This build must be run with Java 11. See developer-system-initialization.md")
+if (JavaVersion.current() != JavaVersion.VERSION_17) {
+    throw new GradleException("This build must be run with Java 17. See developer-system-initialization.md")
 }
 
 task generateApi {
@@ -113,46 +153,6 @@ configurations {
     }
     toolsImplementation.extendsFrom implementation
     toolsRuntimeOnly.extendsFrom runtimeOnly
-}
-
-buildscript {    // Configuration for building
-
-    ext {
-        GAE_VERSION = '1.9.64'
-        GOOGLE_TRUTH_VERSION = '1.1.3'
-        GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
-        SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-        OKHTTP_VERSION = '2.7.5'
-        SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-    }
-
-    repositories {
-        jcenter()    // Bintray's repository - a fast Maven Central mirror & more
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            // for Terra service clients (currently sam-client)
-            url 'https://broadinstitute.jfrog.io/artifactory/libs-release-local'
-        }
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.2'
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
-        classpath 'org.owasp:dependency-check-gradle:7.4.4'
-        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
-        classpath "com.google.http-client:google-http-client:1.41.1"
-    }
 }
 
 ext['hibernate.version'] = '5.6.9.Final'
@@ -332,7 +332,6 @@ dependencies {
 
     // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
 
-    implementation 'com.google.http-client:google-http-client:1.41.1'
     implementation 'com.google.api-client:google-api-client:2.2.0'
     implementation 'com.google.api-client:google-api-client-appengine:1.35.2'
     implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
@@ -561,5 +560,5 @@ appengine {  // App Engine tasks configuration
 group = 'org.pmiops.allofus.workbench'
 version = '0.1.0'          // Version in generated output
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 17
+targetCompatibility = 17
