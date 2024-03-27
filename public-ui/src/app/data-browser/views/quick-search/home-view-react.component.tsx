@@ -315,15 +315,6 @@ const styles = reactStyles({
     padding: "2rem",
     textAlign: "center",
   },
-  iconLinks: {
-    position: "relative",
-    top: "0",
-    display: "flex",
-    alignItems: "baseline",
-    justifyContent: "center",
-    width: "100%",
-    color: "#2b266d",
-  },
   resultBodyDescription: {
     // paddingBottom:"1rem"
   },
@@ -820,46 +811,6 @@ export const dBHomeComponent = withRouteData(
                 placeholderText="Keyword Search"
               />
               <CdrVersionReactComponent />
-            </div>
-            <div style={styles.iconLinks}>
-              <div className="icons" onClick={() => this.iconClickEvent("FAQ")}>
-                <a
-                  href={
-                    environment.researchAllOfUsUrl +
-                    "/frequently-asked-questions/#data-browser-faqs"
-                  }
-                >
-                  <img alt="FAQs" src="/assets/icons/icons_faqs.png" />
-                  <span className="icon-link">FAQs</span>
-                </a>
-              </div>
-              <div
-                className="icons"
-                onClick={() => this.iconClickEvent("introductory-videos")}
-              >
-                <a>
-                  <img
-                    alt="Introductory Videos"
-                    src="/assets/icons/icons_introductoryvideo.png"
-                  />
-                  <span className="icon-link">Introductory Videos</span>
-                </a>
-              </div>
-              <div
-                className="icons"
-                onClick={() => this.iconClickEvent("User-Guide")}
-              >
-                <a
-                  href="/assets/pdf/Databrowser_User_Guide_in_RH 5_18_20.pdf"
-                  target="_blank"
-                >
-                  <img
-                    alt="User Guide"
-                    src="/assets/icons/icons_userguide.png"
-                  />
-                  <span className="icon-link">User Guide</span>
-                </a>
-              </div>
             </div>
           </div>
           {(loading || loadingVariantListSize) ? <div style={{ height: '15vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
