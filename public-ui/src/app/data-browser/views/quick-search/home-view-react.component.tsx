@@ -20,7 +20,7 @@ import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
 import { GenomicCallToActionComponent } from "./genomic-call-to-action-react.component";
 
-export const css = `
+export const homeCss = `
 .homePageLink {
 	cursor: pointer;
 	color: #337ab7 !important;
@@ -147,11 +147,39 @@ export const css = `
 	font-size: 35px;
 	line-height: 1em;
 }
-.search-icon-container {
-	display: flex;
+.search-faq-container {
+	display: grid;
+  grid-template-columns: 1fr minmax(239px, 1fr);
+  grid-column-gap: 1rem;
 	padding-left:1em;
-	justify-content: 'flex-start';
+  align-items: center;
 }
+
+.faq-btn-container {
+  display:flex;
+  justify-content: center;
+  align-items:center;
+  margin-top: 1.4rem;
+  min-width: 239px;
+}
+
+.faq-btn {
+  background:white;
+  display: block;
+  border: #337ab7 1px solid;
+  padding: .9rem 4.5rem;
+  padding-bottom: .8rem;
+  border-radius: 5px;
+  font-size:27px;
+  text-align: center;
+  color:#302c71;
+  width:50%;
+  
+}
+.faq-btn:hover {
+  color:#302c71;
+}
+
 .pm-boxes , .genomic-boxes{
 
 	grid-template-columns: repeat(2, minmax(239px, 1fr));
@@ -183,9 +211,16 @@ export const css = `
 	.tooltip-container {
 		padding-left: 1em;
 	}
-	.search-icon-container {
-		flex-flow: column-reverse;
+	.search-faq-container {
+    grid-template-columns: 2fr 1fr;
 	}
+  .faq-btn-container {
+    justify-content:left;
+  }
+  .faq-btn {
+
+    width:auto;
+  }
 }
 @media (max-width: 766px) {
 	.result-boxes {
@@ -215,15 +250,25 @@ export const css = `
   .result-stat {
     font-size: 1.6em;
   }
+
+  .search-faq-container {
+    grid-area: 2 1;
+		grid-template-columns: 98.5%;
+	}
+  .faq-btn-container{
+    grid-column: 1; order: -1;
+    justify-content:right;
+    margin-top:0;
+    padding-bottom:1rem;
+    padding-right:1rem;
+  }
+  .faq-btn {
+    width:auto;
+  }
 }
 
     `;
 const styles = reactStyles({
-  searchIconLayout: {
-    display: "grid",
-    gridTemplateColumns: "50% 50%",
-    padding: "1em",
-  },
   toolTipContainer: {
     paddingLeft: "1em",
   },
@@ -786,7 +831,7 @@ export const dBHomeComponent = withRouteData(
         surveyInfo.length === 0;
       return (
         <React.Fragment>
-          <style>{css}</style>
+          <style>{homeCss}</style>
           <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>
             Data Browser
           </h1>
@@ -800,7 +845,7 @@ export const dBHomeComponent = withRouteData(
             <a href="https://www.researchallofus.org/data-tools/workbench/" className="homePageLink" target="_blank">Researcher Workbench</a>.
             <br />
           </p>
-          <div className="search-icon-container">
+          <div className="search-faq-container">
             <div>
               <SearchComponent
                 value={searchWord}
@@ -812,7 +857,14 @@ export const dBHomeComponent = withRouteData(
               />
               <CdrVersionReactComponent />
             </div>
+            <div className="faq-btn-container">
+              <a className="faq-btn" style={{color:"#302c71"}} href={
+                environment.researchAllOfUsUrl +
+                "/frequently-asked-questions/#data-browser-faqs"
+              } >FAQ</a>
+            </div>
           </div>
+
           {(loading || loadingVariantListSize) ? <div style={{ height: '15vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
             <section style={styles.results}>
               {(noConceptData && variantListSize === 0) && <ErrorMessageReactComponent dataType="noResults" />}

@@ -62,7 +62,7 @@ const searchStyle = `
 
 @media only screen and (min-width: 1168px) {
   #db-search-bar {
-    min-width: 20rem;
+    // min-width: 20rem;
   }
 }
 
@@ -98,7 +98,7 @@ const searchStyle = `
     background: #dae6ed;
     padding: 9px;
     border-radius: 5px;
-    width: 100%;
+    width: calc(100% - 1rem);
 }
 
 @media only screen and (min-width: 768px) {
@@ -119,7 +119,7 @@ const searchStyle = `
 const homeSearchStyle = `
 @media only screen and (min-width: 1000px) {
     #db-search-bar {
-        width: 36vw;
+        // width: calc(50vw - 10%);
     }
 }`;
 

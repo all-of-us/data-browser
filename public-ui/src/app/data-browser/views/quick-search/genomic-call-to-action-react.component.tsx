@@ -1,5 +1,4 @@
 import * as React from "react";
-import { css } from "./home-view-react.component"
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 
 const ctaCss = `
@@ -26,7 +25,7 @@ export class GenomicCallToActionComponent extends React.Component<Props, State> 
       wgsSVParticipantCount,
       microarrayParticipantCount } = this.props;
     return <React.Fragment>
-      <style>{css} + {ctaCss}</style>
+      <style>{ctaCss}</style>
       <div onClick={() => window.open("https://www.researchallofus.org/register/?utm_source=intra&utm_medium=DataBr&utm_campaign=gen_card")} className="result-box">
         <div className="result-box-title">
           <span className="result-box-title-text">
