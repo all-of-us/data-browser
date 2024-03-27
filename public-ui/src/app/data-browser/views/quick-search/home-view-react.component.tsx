@@ -257,9 +257,9 @@ export const homeCss = `
 	}
   .faq-btn-container{
     grid-column: 1; order: -1;
-    justify-content:right;
+    justify-content:left;
     margin-top:0;
-    padding-bottom:1rem;
+    padding-bottom:4rem;
     padding-right:1rem;
   }
   .faq-btn {
