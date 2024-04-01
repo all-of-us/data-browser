@@ -143,7 +143,7 @@ const cssStyles = `
 }
 .secondary-display,
 h2 {
-  font-family: Arial, sans-serif;
+  font-family: GothamBook,Arial, sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;
@@ -166,7 +166,7 @@ h5.secondary-display {
     margin-left: .2em;
 }
 .domain-title {
-  font-family: Arial, sans-serif;
+  font-family:GothamBook Arial, sans-serif;
   font-size: 36.8px;
   font-weight: normal;
   font-style: normal;

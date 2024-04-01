@@ -131,7 +131,7 @@ const surveyStyle = `
         border-top: 1px solid #cccccc;
         padding: 9px 0;
         font-size: 0.9em;
-        font-family: Arial, sans-serif;
+        font-family:GothamBook Arial, sans-serif;
         color: #262262;
         width: 100%;
 }
