@@ -25,7 +25,7 @@ const searchStyle = `
     flex-direction: row;
 }
 .secondary-display {
-  font-family: Arial, sans-serif;
+  font-family:GothamBook, Arial, sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;
@@ -35,7 +35,7 @@ const searchStyle = `
   text-align: left;
 }
 .genomics-search-heading-display {
-  font-family: Arial, sans-serif;
+  font-family:GothamBook, Arial, sans-serif;
   font-style: normal;
   font-size: 18px;
   font-weight: 200;

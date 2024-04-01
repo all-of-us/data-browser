@@ -13,7 +13,7 @@ export const globalStyles = reactStyles({
     color: "#262262",
   },
   primaryDisplay: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "36.8px",
     fontWeight: "normal",
     fontStyle: "normal",
@@ -24,7 +24,7 @@ export const globalStyles = reactStyles({
     color: "#262262",
   },
   secondaryDisplay: {
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "GothamBook,Arial, sans-serif",
     fontWeight: 200,
     fontStyle: "normal",
     fontSize: "27px",

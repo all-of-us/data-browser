@@ -153,7 +153,7 @@ export function Tick({ tick, count, format }) {
         stroke="#333"
         dy="-5px"
         textAnchor="middle"
-        fontFamily="Arial, sans-serif"
+        fontFamily="GothamBook, Arial, sans-serif"
         fontSize="24px"
       >
         {format(tick.value)}

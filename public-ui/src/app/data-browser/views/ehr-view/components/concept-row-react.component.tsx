@@ -40,7 +40,7 @@ const styles = reactStyles({
   },
   akaText: {
     /* width: 170px; */
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "GothamBook, Arial, sans-serif",
     fontStyle: "italic",
     color: "#6B6B6B",
   },
