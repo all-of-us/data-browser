@@ -143,7 +143,7 @@ const cssStyles = `
 }
 .secondary-display,
 h2 {
-  font-family: GothamBook,Arial, sans-serif;
+  font-family: "GothamBook", "Arial", sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;

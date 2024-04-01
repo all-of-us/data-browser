@@ -59,6 +59,9 @@ export const baseOptions = {
     fontSize: "14px",
   },
   chart: {
+    style: {
+      fontFamily: "GothamBook, Arial, sans-serif",
+    },
     type: "",
     backgroundColor: "transparent",
     tooltip: {},
