@@ -279,7 +279,7 @@ const styles = reactStyles({
 
   resultBoxTitle: {
     color: "#337ab7",
-    fontFamily: "Arial, sans-serif",
+    fontFamily: "GothamBook,Arial, sans-serif",
     display: "flex",
     // padding: "16px",
     // paddingBottom: "3px",
@@ -316,6 +316,7 @@ const styles = reactStyles({
     // background:"yellow"
   },
   resultHeading: {
+    fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "23px",
     height: "0rem",
     paddingLeft: "0",
