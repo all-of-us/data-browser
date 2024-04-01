@@ -712,8 +712,9 @@ input[type="password"] {
 }
 
 .push-footer {
-  height: 100vh;
+  height: 90vh;
 }
+
 
 a:hover {
   text-decoration: underline;
