@@ -30,7 +30,7 @@ const css = `
 }
 .pop-table {
         display: grid;
-        grid-template-columns: 26% 25% 25% 24%;
+        grid-template-columns: 20% 20% 20% 20% 20%;
         font-size: 14px;
     }
 .pop-desc {
