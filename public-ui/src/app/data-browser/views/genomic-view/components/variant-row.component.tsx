@@ -80,10 +80,12 @@ const css = `
 
 interface Props {
   variant: Variant;
+  allowParentScroll: Function;
 }
 
 interface State {
-  variantClicked: boolean;
+  variantExpanded: boolean;
+  mouseOverExpanded: boolean;
   variantDetails: VariantInfo;
   loadingVarDetails: boolean;
 }
@@ -92,7 +94,8 @@ export class VariantRowComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      variantClicked: false,
+      variantExpanded: false,
+      mouseOverExpanded: false,
       variantDetails: null,
       loadingVarDetails: true,
     };
@@ -114,98 +117,101 @@ export class VariantRowComponent extends React.Component<Props, State> {
       this.getVariantDetails(variantId);
     }
     this.setState({
-      variantClicked: !this.state.variantClicked,
+      variantExpanded: !this.state.variantExpanded,
     });
+   {}
   }
 
-  render() {
-    const { variant } = this.props;
-    const { variantClicked, variantDetails, loadingVarDetails } = this.state;
-    return (
-      <React.Fragment>
-        <style>{css}</style>
-        {!loadingVarDetails && variantClicked ? (
-          <VariantExpandedComponent
-            loading={loadingVarDetails}
-            variant={variant}
-            variantDetails={variantDetails}
-            closed={() => this.handleClick()}
-          />
-        ) : (
-          <div className="row-layout">
+
+render() {
+  const { variant } = this.props;
+  const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
+  return (
+    <React.Fragment>
+      <style>{css}</style>
+      {!loadingVarDetails && variantExpanded ? (
+        <VariantExpandedComponent
+          loading={loadingVarDetails}
+          variant={variant}
+          variantDetails={variantDetails}
+          closed={() => this.handleClick()}
+          hovered={() => this.state.mouseOverExpanded ? this.props.allowParentScroll(true): this.props.allowParentScroll(false)}
+        />
+      ) : (
+        <div className="row-layout">
+          <div
+            onClick={() => this.handleClick(variant.variantId)}
+            style={styles.variant}
+          >
             <div
-              onClick={() => this.handleClick(variant.variantId)}
-              style={styles.variant}
+              style={{
+                ...styles.first,
+                ...styles.rowItem,
+                ...styles.variantId,
+              }}
             >
-              <div
-                style={{
-                  ...styles.first,
-                  ...styles.rowItem,
-                  ...styles.variantId,
-                }}
-              >
-                <div style={styles.variantIdText}>
-                  {variant.variantId.length > 40 ? (
-                    <React.Fragment>
-                      {variant.variantId.substr(0, 40)} &#8230;
-                    </React.Fragment>
-                  ) : (
-                    variant.variantId
-                  )}
-                </div>
-                <div style={styles.variantIconText}>
-                  <ClrIcon
-                    style={styles.caretIcon}
-                    onClick={(e) => {}}
-                    size="lg"
-                    shape="caret"
-                    dir="down"
-                  />
-                </div>
-              </div>
-            </div>
-            <div style={styles.rowItem}>
-              {variant.genes && variant.genes.length ? (
-                <div>{variant.genes}</div>
-              ) : (
-                <div>-</div>
-              )}
-            </div>
-            <div style={styles.rowItem}>
-              <div style={styles.multipleValVariantItem}>
-                {variant.consequence && variant.consequence.length ? (
-                  <span>{variant.consequence.replace(/_/g, " ")}</span>
+              <div style={styles.variantIdText}>
+                {variant.variantId.length > 40 ? (
+                  <React.Fragment>
+                    {variant.variantId.substr(0, 40)} &#8230;
+                  </React.Fragment>
                 ) : (
-                  <span>-</span>
+                  variant.variantId
                 )}
               </div>
-            </div>
-            <div style={styles.rowItem}>
-              {variant.variantType ? (
-                <div style={{ overflowWrap: "anywhere" }}>
-                  {variant.variantType}
-                </div>
-              ) : (
-                <div>–</div>
-              )}
-            </div>
-            <div style={styles.rowItem}>
-              <div style={styles.multipleValVariantItem}>
-                {variant.clinicalSignificance &&
-                variant.clinicalSignificance.length ? (
-                  <span>{variant.clinicalSignificance}</span>
-                ) : (
-                  <span>-</span>
-                )}
+              <div style={styles.variantIconText}>
+                <ClrIcon
+                  style={styles.caretIcon}
+                  onClick={(e) => { }}
+                  size="lg"
+                  shape="caret"
+                  dir="down"
+                />
               </div>
             </div>
-            <div style={styles.rowItem}>{variant.alleleCount.toLocaleString()}</div>
-            <div style={styles.rowItem}>{variant.alleleNumber.toLocaleString()}</div>
-            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-            <div style={styles.rowItem}>{variant.homozygoteCount.toLocaleString()}</div>
           </div>
-        )}
-      </React.Fragment>
-    );
-  }
+          <div style={styles.rowItem}>
+            {variant.genes && variant.genes.length ? (
+              <div>{variant.genes}</div>
+            ) : (
+              <div>-</div>
+            )}
+          </div>
+          <div style={styles.rowItem}>
+            <div style={styles.multipleValVariantItem}>
+              {variant.consequence && variant.consequence.length ? (
+                <span>{variant.consequence.replace(/_/g, " ")}</span>
+              ) : (
+                <span>-</span>
+              )}
+            </div>
+          </div>
+          <div style={styles.rowItem}>
+            {variant.variantType ? (
+              <div style={{ overflowWrap: "anywhere" }}>
+                {variant.variantType}
+              </div>
+            ) : (
+              <div>–</div>
+            )}
+          </div>
+          <div style={styles.rowItem}>
+            <div style={styles.multipleValVariantItem}>
+              {variant.clinicalSignificance &&
+                variant.clinicalSignificance.length ? (
+                <span>{variant.clinicalSignificance}</span>
+              ) : (
+                <span>-</span>
+              )}
+            </div>
+          </div>
+          <div style={styles.rowItem}>{variant.alleleCount.toLocaleString()}</div>
+          <div style={styles.rowItem}>{variant.alleleNumber.toLocaleString()}</div>
+          <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+          <div style={styles.rowItem}>{variant.homozygoteCount.toLocaleString()}</div>
+        </div>
+      )}
+    </React.Fragment>
+  );
+}
 }

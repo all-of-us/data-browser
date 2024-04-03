@@ -49,7 +49,7 @@ const css = `
 }
 
 @media (max-width: 900px) {
-        .pop-table-container{
+    .pop-table-container{
         display: flex;
         flex-direction: column-reverse;
     }
@@ -58,7 +58,7 @@ const css = `
     }
     .body{
         grid-template-columns: 33.33% 33.33% 33.33%;
-        padding-right: 2rem;
+        // padding-right: 2rem;
     }
 }
 }
@@ -73,15 +73,15 @@ const styles = reactStyles({
   },
   variantExpanded: {
     position: "sticky",
-    overflowX: "hidden",
+    overflowX: "scroll",
     width: "100%",
-    minWidth: "550px",
     background: "#ECF1F4",
     left: "0px",
     padding: ".5em",
-    paddingLeft: "1em",
-    zIndex:"9",
+    // paddingLeft: "1em",
+    zIndex: "9",
     borderTop: "1px solid rgb(204, 204, 204)",
+
   },
   top: {
     position: "relative",
@@ -156,18 +156,22 @@ const styles = reactStyles({
 
 interface Props {
   closed: Function;
+  hovered: Function;
   variant: Variant;
   variantDetails: VariantInfo;
   loading: boolean;
 }
 // tslint:disable-next-line:no-empty-interface
-interface State {}
+interface State { }
 
 export class VariantExpandedComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
+  handleMouseOver = () => {
+    this.props.hovered(true)
 
+  }
   render() {
     const { variantDetails, variant, loading } = this.props;
     let variantPopulationDetails: any[] = [];
@@ -179,60 +183,61 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <style>{css}</style>
-        <div style={styles.variantExpanded}>
-          <div style={styles.top}>
-            <span style={styles.variantId}>
-              <strong style={styles.variantIdLabel}>Variant ID: </strong>{" "}
-              {!loading ? (
-                <span style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}>
-                  {variant.variantId}
-                </span>
-              ) : (
-                <div style={styles.loading}>
-                  <Spinner />
-                </div>
-              )}{" "}
-            </span>
-            <div>
-              <ClrIcon
-                onClick={(e) => this.props.closed()}
-                className="exit"
-                shape="window-close"
-                style={styles.closeIcon}
-              />
+        <div onMouseOver={this.handleMouseOver} style={styles.variantExpanded}>
+          <div style={{minWidth:"600px"}}>
+            <div style={styles.top}>
+              <span style={styles.variantId}>
+                <strong style={styles.variantIdLabel}>Variant ID: </strong>{" "}
+                {!loading ? (
+                  <span style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}>
+                    {variant.variantId}
+                  </span>
+                ) : (
+                  <div style={styles.loading}>
+                    <Spinner />
+                  </div>
+                )}{" "}
+              </span>
+              <div style={{position: "sticky",right: "2px"}} >
+                <ClrIcon
+                  onClick={(e) => this.props.closed()}
+                  className="exit"
+                  shape="window-close"
+                  style={styles.closeIcon}
+                />
+              </div>
             </div>
-          </div>
-          {!loading && (
-            <React.Fragment>
-              <div className="body">
-                <div>
-                  <span style={styles.catHeading}>Gene:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>Consequence:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variant.consequence ? variant.consequence.replace(/_/g, ' ') : "-"}</span>
-                </div>
-                <div>
+            {!loading && (
+              <React.Fragment>
+                <div className="body">
+                  <div>
+                    <span style={styles.catHeading}>Gene:</span>
+                    <br />
+                    <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>Consequence:</span>
+                    <br />
+                    <span style={styles.catInfo}>{variant.consequence ? variant.consequence.replace(/_/g, ' ') : "-"}</span>
+                  </div>
+                  <div>
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
                     <span style={styles.catInfo}>{variant.variantType ? variant.variantType.replace(/_/g, ' ') : "-"}</span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>Transcript:</span>
-                  <br />
-                  <span style={styles.catInfo}>
-                    {variantDetails.transcript ? variantDetails.transcript : "-"}
-                  </span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>RS Number:</span>
-                  <br />
-                  <span style={styles.catInfo}>
-                    {variantDetails.rsNumber
-                      ? [
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>Transcript:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variantDetails.transcript ? variantDetails.transcript : "-"}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>RS Number:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variantDetails.rsNumber
+                        ? [
                           <a
                             href={rsLink}
                             key={variantDetails.variantId}
@@ -242,123 +247,123 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                             {variantDetails.rsNumber}
                           </a>,
                         ]
-                      : "-"}
-                  </span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>DNA Change:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>Protein Change:</span>
-                  <br />
-                  <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
-                </div>
-                <div>
-                  <span style={styles.catHeading}>ClinVar Significance:</span>
-                  <br />
-                  <span style={styles.catInfo}>
-                    {variant.clinicalSignificance ? variant.clinicalSignificance.replace(/_/g, ' ') : "-"}
-                  </span>
-                </div>
-              </div>
-              <h4 className="pop-title">Genetic Ancestry Populations</h4>
-              <div className="pop-table-container">
-                <div style={{ width: "100%" }}>
-                  <div className="pop-table">
-                    <div style={styles.popTableHeading}></div>
-                    <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele <br />Count</span>
-                    </div>
-                    <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele <br/>Number</span>
-                    </div>
-                    <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Allele <br />Frequency</span>
-                    </div>
-                    <div style={styles.popTableHeading}>
-                      <span style={styles.catHeading}>Homozygote <br />Count</span>
-                    </div>
+                        : "-"}
+                    </span>
                   </div>
-                  <div style={styles.popTableBody}>
-                    {variantPopulationDetails.map((item, index) => {
-                     console.log(item);
-                      const colorStyle = { color: item.color };
-                      return (
-                        <div key={index} className="pop-table">
-                          <div style={styles.popTableData}>
-                            {item.Ancestry !== "Total" ? (
-                              <span className="pop-desc">
-                                <FontAwesomeIcon icon={faCircle}
-                                style={{...colorStyle, marginRight: ".5rem", transform: "scale(1.3)",}} />
-                                {item.Ancestry}{" "}
-                              </span>
-                            ) : (
-                              <span style={styles.totalCatHeading}>
-                                {item.Ancestry}
-                              </span>
-                            )}{" "}
-                          </div>
-                          <div style={styles.popTableData}>
-                            {item.Ancestry !== "Total" ? (
-                              <React.Fragment>
-                                {item.AlleleCount.toLocaleString()}
-                              </React.Fragment>
-                            ) : (
-                              <span style={styles.catHeading}>
-                                {item.AlleleCount.toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-                          <div style={styles.popTableData}>
-                            {item.Ancestry !== "Total" ? (
-                              <React.Fragment>
-                                {item.AlleleNumber.toLocaleString()}
-                              </React.Fragment>
-                            ) : (
-                              <span style={styles.catHeading}>
-                                {item.AlleleNumber.toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-                          <div style={styles.popTableData}>
-                            {item.Ancestry !== "Total" ? (
-                              <React.Fragment>
-                                {item.AlleleFrequency > 0
-                                  ? item.AlleleFrequency.toFixed(6)
-                                  : item.AlleleFrequency}
-                              </React.Fragment>
-                            ) : (
-                              <span style={styles.catHeading}>
-                                {item.AlleleFrequency > 0
-                                  ? item.AlleleFrequency.toFixed(6)
-                                  : item.AlleleFrequency}
-                              </span>
-                            )}
-                          </div>
-                          <div style={styles.popTableData}>
-                            {item.Ancestry !== "Total" ? (
-                              <React.Fragment>
-                                {item.HomozygoteCount.toLocaleString()}
-                              </React.Fragment>
-                            ) : (
-                              <span style={styles.catHeading}>
-                                {item.HomozygoteCount.toLocaleString()}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
+                  <div>
+                    <span style={styles.catHeading}>DNA Change:</span>
+                    <br />
+                    <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>Protein Change:</span>
+                    <br />
+                    <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>ClinVar Significance:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variant.clinicalSignificance ? variant.clinicalSignificance.replace(/_/g, ' ') : "-"}
+                    </span>
                   </div>
                 </div>
-                <PopulationChartReactComponent
-                  variantPopulationDetails={variantPopulationDetails}
-                />
-              </div>
-            </React.Fragment>
-          )}
+                <h4 className="pop-title">Genetic Ancestry Populations</h4>
+                <div className="pop-table-container">
+                  <div style={{ width: "100%" }}>
+                    <div className="pop-table">
+                      <div style={styles.popTableHeading}></div>
+                      <div style={styles.popTableHeading}>
+                        <span style={styles.catHeading}>Allele <br />Count</span>
+                      </div>
+                      <div style={styles.popTableHeading}>
+                        <span style={styles.catHeading}>Allele <br />Number</span>
+                      </div>
+                      <div style={styles.popTableHeading}>
+                        <span style={styles.catHeading}>Allele <br />Frequency</span>
+                      </div>
+                      <div style={styles.popTableHeading}>
+                        <span style={styles.catHeading}>Homozygote <br />Count</span>
+                      </div>
+                    </div>
+                    <div style={styles.popTableBody}>
+                      {variantPopulationDetails.map((item, index) => {
+                        const colorStyle = { color: item.color };
+                        return (
+                          <div key={index} className="pop-table">
+                            <div style={styles.popTableData}>
+                              {item.Ancestry !== "Total" ? (
+                                <span className="pop-desc">
+                                  <FontAwesomeIcon icon={faCircle}
+                                    style={{ ...colorStyle, marginRight: ".5rem", transform: "scale(1.3)", }} />
+                                  {item.Ancestry}{" "}
+                                </span>
+                              ) : (
+                                <span style={styles.totalCatHeading}>
+                                  {item.Ancestry}
+                                </span>
+                              )}{" "}
+                            </div>
+                            <div style={styles.popTableData}>
+                              {item.Ancestry !== "Total" ? (
+                                <React.Fragment>
+                                  {item.AlleleCount.toLocaleString()}
+                                </React.Fragment>
+                              ) : (
+                                <span style={styles.catHeading}>
+                                  {item.AlleleCount.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                            <div style={styles.popTableData}>
+                              {item.Ancestry !== "Total" ? (
+                                <React.Fragment>
+                                  {item.AlleleNumber.toLocaleString()}
+                                </React.Fragment>
+                              ) : (
+                                <span style={styles.catHeading}>
+                                  {item.AlleleNumber.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                            <div style={styles.popTableData}>
+                              {item.Ancestry !== "Total" ? (
+                                <React.Fragment>
+                                  {item.AlleleFrequency > 0
+                                    ? item.AlleleFrequency.toFixed(6)
+                                    : item.AlleleFrequency}
+                                </React.Fragment>
+                              ) : (
+                                <span style={styles.catHeading}>
+                                  {item.AlleleFrequency > 0
+                                    ? item.AlleleFrequency.toFixed(6)
+                                    : item.AlleleFrequency}
+                                </span>
+                              )}
+                            </div>
+                            <div style={styles.popTableData}>
+                              {item.Ancestry !== "Total" ? (
+                                <React.Fragment>
+                                  {item.HomozygoteCount.toLocaleString()}
+                                </React.Fragment>
+                              ) : (
+                                <span style={styles.catHeading}>
+                                  {item.HomozygoteCount.toLocaleString()}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <PopulationChartReactComponent
+                    variantPopulationDetails={variantPopulationDetails}
+                  />
+                </div>
+              </React.Fragment>
+            )}
+          </div>
         </div>
       </React.Fragment>
     );

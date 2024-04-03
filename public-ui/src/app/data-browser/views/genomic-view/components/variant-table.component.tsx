@@ -19,9 +19,11 @@ const styles = reactStyles({
     borderRadius: "3px 3px 0 0",
     background: "#FAFAFA",
     marginTop: "0.5rem",
-    overflowX: "scroll",
     overflowY: environment.infiniteSrcoll ? "scroll" : "hidden",
     height: environment.infiniteSrcoll ? "30rem" : "",
+  },
+  noScroll: {
+    overflowX: "scroll"
   },
   tableFrame: {
     border: "1px solid #CCCCCC",
@@ -145,6 +147,7 @@ interface State {
   loading: boolean;
   searchResults: Variant[];
   sortMetadata: any;
+  allowParentScroll: Boolean;
 
 }
 
@@ -155,6 +158,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
       loading: props.loadingResults,
       searchResults: props.searchResults,
       sortMetadata: props.sortMetadata,
+      allowParentScroll: true
     };
   }
   scrollAreaRef: React.RefObject<HTMLDivElement> = React.createRef();
@@ -255,11 +259,16 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
 
 
+
+
   render() {
     const { loadingVariantListSize, loadingResults, variantListSize, rowCount, currentPage } =
       this.props;
-    const { loading, searchResults, sortMetadata } = this.state;
+    const { loading, searchResults, sortMetadata, allowParentScroll } = this.state;
     const arrowIcon = sortMetadata.clinicalSignificance.sortDirection === "asc" ? faArrowUp : faArrowDown;
+    styles.noScroll.overflowX = !allowParentScroll ? "hidden":"scroll";
+
+    
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -267,7 +276,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           !loadingVariantListSize &&
           searchResults &&
           searchResults.length ? (
-          <div ref={this.scrollAreaRef} onScroll={this.handleScrollEnd} className="scroll-area" style={styles.tableContainer}>
+          <div ref={this.scrollAreaRef} onScroll={this.handleScrollEnd} className="scroll-area" style={{...styles.tableContainer, ...styles.noScroll}}>
             <div className="header-layout">
               <div style={{ ...styles.headingItem, ...styles.first }}>
                 <span
@@ -384,9 +393,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
             {searchResults &&
               searchResults.map((variant, index) => {
                 return (
-                  <VariantRowComponent
+                  <VariantRowComponent 
                     key={index}
                     variant={variant}
+                    allowParentScroll={() => this.setState({allowParentScroll:!this.state.allowParentScroll})}
                   />
                 );
               })}
