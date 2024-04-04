@@ -152,10 +152,13 @@ export const homeCss = `
   grid-template-columns: 1fr minmax(239px, 1fr);
   grid-column-gap: 1rem;
 	padding-left:1em;
+  padding-right:1em;
   align-items: center;
 }
 
 .faq-btn-container {
+  position: relative;
+  right: 0.5rem;
   display:flex;
   justify-content: center;
   align-items:center;
@@ -164,9 +167,9 @@ export const homeCss = `
 }
 
 .faq-btn {
-  background:white;
+  background:#f6f6f8;
   display: block;
-  border: #337ab7 1px solid;
+  border: #262262 1px solid;
   padding: 1rem;
   border-radius: 5px;
   font-size:27px;
