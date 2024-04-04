@@ -2,6 +2,8 @@ import * as React from "react";
 import * as fp from "lodash/fp";
 
 import { environment } from "environments/environment";
+import { Component } from "@angular/core";
+import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { reactStyles } from "app/utils";
 import {
   NavStore,
@@ -88,3 +90,13 @@ export const BreadCrumbComponent = class extends React.Component<
     );
   }
 };
+@Component({
+  // tslint:disable-next-line: component-selector
+  selector: "react-breadcrumbs",
+  template: `<span #root></span>`,
+})
+export class BreadCrumbWrapperComponent extends BaseReactWrapper {
+  constructor() {
+    super(BreadCrumbComponent, []);
+  }
+}

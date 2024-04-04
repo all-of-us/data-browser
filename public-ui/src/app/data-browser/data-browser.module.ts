@@ -15,6 +15,7 @@ import { ConceptChartWrapperComponent } from "app/data-browser/views/concept-cha
 import { ConceptRowWrapperComponent } from "app/data-browser/views/ehr-view/components/concept-row-react.component";
 import { SurveyChartWrapperComponent } from "app/data-browser/views/survey-chart/survey-chart-react.component";
 import { SurveyDescWrapperComponent } from "app/data-browser/views/survey-view/survey-desc.component";
+import { BreadCrumbWrapperComponent } from "app/shared/components/breadcrumb/breadcrumb-react.component";
 import { HighlightWrapperComponent } from "app/shared/components/highlight-search/HighlightReactComponent";
 import { PopUpWrapperComponent } from "app/shared/components/pop-up/PopUpReactComponent";
 import { SharedModule } from "app/shared/shared.module";
@@ -100,6 +101,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     SurveyDescWrapperComponent,
+BreadCrumbWrapperComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -137,6 +139,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     SurveyDescWrapperComponent,
+BreadCrumbWrapperComponent,
   ],
   providers: [ChartService, TreeHighlightService, VideoService, TooltipService],
 })
