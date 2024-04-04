@@ -1,10 +1,11 @@
 <app-rh-header-react></app-rh-header-react>
+<div style="margin:0 calc(10%)">
+  <react-breadcrumbs ></react-breadcrumbs>
+</div>
 <main class="main-bg" *ngIf="true">
   <div class="db-container">
-    <react-breadcrumbs ></react-breadcrumbs>
-  </div>
-  <div class="db-container">
-    <router-outlet (activate)="onActivate()"></router-outlet>
+    <router-outlet>
+    </router-outlet>
   </div>
   <!-- *** removed until strategic direction is provided for CTA section ***
     <div class="cta-content dark">
@@ -12,4 +13,3 @@
 		</div> -->
   <!-- .cta-content -->
 </main>
-<app-rh-footer-react></app-rh-footer-react>

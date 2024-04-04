@@ -700,6 +700,9 @@ img {
 }
 
 .main-bg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   height: auto;
   padding-bottom: 4rem;
   background-attachment: fixed;
@@ -712,8 +715,9 @@ input[type="password"] {
 }
 
 .push-footer {
-  height: 100vh;
+  height: 90vh;
 }
+
 
 a:hover {
   text-decoration: underline;

@@ -101,7 +101,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     SurveyDescWrapperComponent,
-    BreadCrumbWrapperComponent,
+BreadCrumbWrapperComponent,
   ],
   exports: [
     DataBrowserRoutingModule,
@@ -139,7 +139,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     SurveyQuestionWrapperComponent,
     VersionChartWrapperComponent,
     SurveyDescWrapperComponent,
-    BreadCrumbWrapperComponent,
+BreadCrumbWrapperComponent,
   ],
   providers: [ChartService, TreeHighlightService, VideoService, TooltipService],
 })

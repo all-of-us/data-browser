@@ -866,7 +866,7 @@ export const dBHomeComponent = withRouteData(
             </div>
           </div>
 
-          {(loading || loadingVariantListSize) ? <div style={{ height: '15vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
+          {(loading || loadingVariantListSize) ? <div style={{ height: '30vh', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Spinner /></div> : (
             <section style={styles.results}>
               {(noConceptData && variantListSize === 0) && <ErrorMessageReactComponent dataType="noResults" />}
               {true && <div className={`result-boxes ${physicalMeasurementsInfo.length > 0 && searchWord ? 'has-pm' : ''}  `}>
