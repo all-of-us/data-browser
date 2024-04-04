@@ -167,13 +167,12 @@ export const homeCss = `
   background:white;
   display: block;
   border: #337ab7 1px solid;
-  padding: .9rem 4.5rem;
-  padding-bottom: .8rem;
+  padding: 1rem;
   border-radius: 5px;
   font-size:27px;
   text-align: center;
   color:#302c71;
-  width:50%;
+  width:35%;
   
 }
 .faq-btn:hover {
@@ -218,8 +217,7 @@ export const homeCss = `
     justify-content:left;
   }
   .faq-btn {
-
-    width:auto;
+    width:50%;
   }
 }
 @media (max-width: 766px) {
