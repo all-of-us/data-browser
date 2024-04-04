@@ -152,10 +152,13 @@ export const homeCss = `
   grid-template-columns: 1fr minmax(239px, 1fr);
   grid-column-gap: 1rem;
 	padding-left:1em;
+  padding-right:1em;
   align-items: center;
 }
 
 .faq-btn-container {
+  position: relative;
+  right: 0.5rem;
   display:flex;
   justify-content: center;
   align-items:center;
@@ -164,16 +167,15 @@ export const homeCss = `
 }
 
 .faq-btn {
-  background:white;
+  background:#f6f6f8;
   display: block;
-  border: #337ab7 1px solid;
-  padding: .9rem 4.5rem;
-  padding-bottom: .8rem;
+  border: #262262 1px solid;
+  padding: 1rem;
   border-radius: 5px;
   font-size:27px;
   text-align: center;
   color:#302c71;
-  width:50%;
+  width:35%;
   
 }
 .faq-btn:hover {
@@ -218,8 +220,7 @@ export const homeCss = `
     justify-content:left;
   }
   .faq-btn {
-
-    width:auto;
+    width:50%;
   }
 }
 @media (max-width: 766px) {
