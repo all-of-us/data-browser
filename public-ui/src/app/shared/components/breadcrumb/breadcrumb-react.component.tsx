@@ -90,6 +90,7 @@ export const BreadCrumbComponent = class extends React.Component<
     );
   }
 };
+
 @Component({
   // tslint:disable-next-line: component-selector
   selector: "react-breadcrumbs",
