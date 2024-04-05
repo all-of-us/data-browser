@@ -246,7 +246,7 @@ export const SurveyViewReactComponent = withRouteData(
       }
       api.getDomainTotals(searchWord, 1, 1).then((data: any) => {
         data.surveyModules.forEach((survey) => {
-          if (survey.conceptId === 1740639) {
+          if (survey.conceptId === 43529712) {
             this.setState({ pfhhQC: survey.questionCount, pfhhPC: survey.participantCount });
           }
           const surveyRoute =
