@@ -488,7 +488,7 @@ a.stratum_2=CAST(b.parent_question_concept_id as string) and a.stratum_3=CAST(b.
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 set a.stratum_7=''
-where a.analysis_id=3110 and a.stratum_1 = '43529712';"
+where a.analysis_id=3110 and a.stratum_1 = '1740639';"
 
 ###########################
 # concept with count cols #
@@ -814,20 +814,20 @@ and q.concept_id not in (1384403, 43529654, 43528428, 1310137, 1310132, 905052, 
 # TODO This is temporary please remove if this bug is no longer in the next dataset DB-1166 for reference
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "delete from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\`
-where stratum_1='43529712' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
+where stratum_1='1740639' and stratum_2='1384522' and stratum_3 in ('1385613', '1384867');
 "
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.survey_metadata\` AS sm1
 SET sm1.path = sub.path, sm1.sub = 1, sm1.is_parent_question = 0
 FROM (select * from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\` AS sm2) sub
-where sm1.survey_concept_id = 43529712 and sm1.concept_id = sub.concept_id"
+where sm1.survey_concept_id = 1740639 and sm1.concept_id = sub.concept_id"
 
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
 SET a.stratum_7 = '1'
-WHERE a.stratum_1 = '43529712'
+WHERE a.stratum_1 = '1740639'
 AND a.analysis_id = 3110
 AND EXISTS (
   SELECT 1
@@ -839,7 +839,7 @@ AND EXISTS (
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "MERGE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` AS target
  USING \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.pfhh_path_update\` AS source
- ON target.stratum_1 = '43529712' AND target.stratum_2 = cast(source.concept_id as string) AND target.analysis_id IN (3110, 3111, 3112)
+ ON target.stratum_1 = '1740639' AND target.stratum_2 = cast(source.concept_id as string) AND target.analysis_id IN (3110, 3111, 3112)
  WHEN MATCHED THEN
    UPDATE SET stratum_6 = source.path"
 

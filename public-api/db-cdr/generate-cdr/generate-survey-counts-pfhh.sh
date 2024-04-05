@@ -21,13 +21,13 @@ done
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` AS
-select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id = 43529712"
+select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata\` where survey_concept_id = 1740639"
 
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-select 0 as id, 3110 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
+select 0 as id, 3110 as analysis_id, '1740639' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
 CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(sm2.order_number as string) stratum_5,
 sm2.path as stratum_6,
@@ -40,7 +40,7 @@ group by 4, 5, 6, 7, 8;"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
-select 0 as id, 3111 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
+select 0 as id, 3111 as analysis_id, '1740639' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
 CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(p.gender_concept_id as string) stratum_5,
 sm2.path as stratum_6,
@@ -62,7 +62,7 @@ when age_at_event > 89 then '9'
 when age_at_event >= 30 and age_at_event <= 89 then cast(floor(age_at_event/10) as string)
 when age_at_event < 18 then '0' end as age_stratum from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\`
 )
-select 0 as id, 3112 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
+select 0 as id, 3112 as analysis_id, '1740639' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
 CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(ob.age_stratum as string) stratum_5,
 sm2.path as stratum_6,
@@ -77,7 +77,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 select 0, 3101 as analysis_id,
-'43529712' as stratum_1,
+'1740639' as stratum_1,
 CAST(p1.gender_concept_id AS STRING) as stratum_2,'Survey' as stratum_3,
 COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1 inner join
@@ -101,7 +101,7 @@ when age_at_event >= 30 and age_at_event <= 89 then cast(floor(age_at_event/10) 
 when age_at_event < 18 then '0' end as age_stratum from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\`
 )
 select 0, 3102 as analysis_id,
-'43529712' as stratum_1,
+'1740639' as stratum_1,
 age_stratum as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
@@ -114,7 +114,7 @@ group by stratum_2"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_3,count_value,source_count_value)
-SELECT 0 as id, 3000 as analysis_id, '43529712' as stratum_1,
+SELECT 0 as id, 3000 as analysis_id, '1740639' as stratum_1,
 'Survey' as stratum_3,
 count(distinct o.person_id) as count_value, count(distinct o.person_id) as source_count_value
 FROM \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
