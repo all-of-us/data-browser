@@ -68,6 +68,9 @@ export class PfhhSurveyTableReactComponent extends React.Component<
     const pmh_survey_pdf_link = '/assets/surveys/Personal_Medical_History_Survey_English.pdf';
     const pafhh_survey_pdf_link = '/assets/surveys/Survey_PaFHH_Eng_Src.pdf';
     const {questionCount, participantCount} = this.props;
+
+    console.log(questionCount);
+
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
