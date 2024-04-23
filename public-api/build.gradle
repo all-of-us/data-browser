@@ -8,15 +8,14 @@ buildscript {    // Configuration for building
         GAE_VERSION = '1.9.64'
         GOOGLE_TRUTH_VERSION = '1.1.3'
         GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
+        HIBERNATE_VERSION = '6.4.4.Final'
+        SPRING_BOOT_VERSION = '3.2.4'
+        SPRING_FRAMEWORK_VERSION = '6.1.5'
+        JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '2.7.5'
         SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
+        LIQUIBASE_VERSION = '4.27.0'
         SPRING_FRAMEWORK_VERSION = '5.3.21'
     }
 
@@ -104,7 +103,8 @@ task generateApiClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java8',
+                'jakarta'          : 'true'
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
@@ -129,7 +129,8 @@ task generateWorkbenchClient {
                 'sourceFolder'     : swaggerTargetFolder,
                 'library'          : 'okhttp-gson',
                 'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
+                'dateLibrary'      : 'java8',
+                'jakarta'          : 'true',
         ])
         new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
@@ -155,7 +156,7 @@ configurations {
     toolsRuntimeOnly.extendsFrom runtimeOnly
 }
 
-ext['hibernate.version'] = '5.6.9.Final'
+ext['hibernate.version'] = '6.4.4.Final'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -327,7 +328,7 @@ ext {
 
 dependencies {
     // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+    providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
     implementation 'mysql:mysql-connector-java:8.0.30'
 
     // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
@@ -359,7 +360,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
 
-    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'ch.qos.logback:logback-classic:1.5.5'
 
     implementation "org.yaml:snakeyaml:1.32"
     implementation 'commons-io:commons-io:2.7'
@@ -382,13 +383,15 @@ dependencies {
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
     implementation 'org.springframework.security:spring-security-web:5.6.9'
-    implementation "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
+
+    implementation "org.hibernate.orm:hibernate-core:${HIBERNATE_VERSION}"
+    implementation "org.hibernate.orm:hibernate-community-dialects:${HIBERNATE_VERSION}"
 
     implementation "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
 
     implementation "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
     implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
@@ -396,6 +399,24 @@ dependencies {
     implementation 'io.swagger:swagger-annotations:1.5.16'
     implementation 'org.apache.commons:commons-lang3:3.0'
 
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
+
+    // jakarta
+    implementation "jakarta.inject:jakarta.inject-api:2.0.1"
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
+    implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    generatedCompile "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
+    generatedCompile "jakarta.inject:jakarta.inject-api:2.0.1"
+    generatedCompile 'jakarta.mail:jakarta.mail-api:2.1.3'
+    generatedCompile 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    generatedCompile 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    generatedCompile 'jakarta.validation:jakarta.validation-api:3.0.2'
+    generatedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
     implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
 
@@ -468,6 +489,8 @@ dependencies {
 
     generatedCompile 'com.google.http-client:google-http-client:1.41.1'
     generatedCompile 'com.google.api-client:google-api-client:2.2.0'
+
+    runtime("org.springframework.boot:spring-boot-properties-migrator")
 }
 
 swaggerSources {
