@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import javax.servlet.http.HttpServletResponse;
 import java.time.ZoneId;
 import org.joda.time.format.DateTimeFormat;
