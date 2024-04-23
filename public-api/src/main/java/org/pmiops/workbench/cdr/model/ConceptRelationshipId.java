@@ -1,8 +1,8 @@
 package org.pmiops.workbench.cdr.model;
 
 import java.io.Serializable;
-import javax.persistence.Embeddable;
-import javax.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Column;
 import java.util.Objects;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

@@ -8,15 +8,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.OneToOne;
-import javax.persistence.JoinColumn;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import javax.persistence.FetchType;
+import jakarta.persistence.FetchType;
 
 
 @Entity
