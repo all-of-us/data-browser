@@ -850,6 +850,42 @@ set stratum_4 = 'Marijuana 3 Month Use: Once Or Twice'
 where stratum_3 = '1585652' "
 
 
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'More than one'
+where stratum_2 = '1586140'
+and stratum_4 = 'More than one race/ethnicity' "
+
+
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'Black'
+where stratum_2 = '1586140'
+and stratum_3 = '1586143' "
+
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'White'
+where stratum_2 = '1586140'
+and stratum_3 = '1586146' "
+
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'Hispanic'
+where stratum_2 = '1586140'
+and stratum_3 = '1586147' "
+
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'Asian'
+where stratum_2 = '1586140'
+and stratum_3 = '1586142' "
+
 #######################
 # Drop views created #
 #######################
