@@ -64,9 +64,6 @@ export class SurveyVersionTableReactComponent extends React.Component<
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
-        <h5>
-          <strong>Survey versions</strong>
-        </h5>
         <br />
         <div className="version-box">
           <div className="version-box-header">

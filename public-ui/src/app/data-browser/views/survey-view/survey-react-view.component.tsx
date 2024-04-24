@@ -62,6 +62,8 @@ const styles = reactStyles({
     display: "flex",
     flexDirection: "column",
     width: "50%",
+    postion:"relative",
+    top:"3rem"
   },
   versionTable: {
     width: "70%",
@@ -152,6 +154,7 @@ const surveyStyle = `
         width: 100%;
         align-items: flex-end;
         flex-direction: row;
+
     }
     .cope-stat-layout .stat-container {
         padding-right: 0px;
@@ -463,13 +466,6 @@ export const SurveyViewReactComponent = withRouteData(
                         className="stat-container"
                         style={styles.statContainer}
                       >
-                        {(isCopeSurvey || isCombinedPfhh) ? (
-                          <h5>
-                            <strong style={styles.strong}>
-                              Total unique participants
-                            </strong>
-                          </h5>
-                        ) : null}
                         <h2
                           className="secondary-display"
                           style={styles.secondaryDisplay}
