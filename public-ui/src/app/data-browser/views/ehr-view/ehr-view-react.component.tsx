@@ -743,7 +743,6 @@ export const EhrViewReactComponent = withRouteData(
                                       id="domain-name"
                                       className="primary-display"
                                     >
-                                      Showing&#32;
                                       {totalResults.toLocaleString()}&#32;
                                       {searchWord ? (
                                         <React.Fragment>
