@@ -401,6 +401,7 @@ dependencies {
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
 
     // jakarta
+    implementation "jakarta.servlet:jakarta.servlet-api:6.0.0"
     implementation "jakarta.inject:jakarta.inject-api:2.0.1"
     implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
     implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
@@ -458,6 +459,8 @@ dependencies {
     testImplementation 'org.liquibase:liquibase-core:3.5.3'
     testImplementation 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
+
+
     integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
     integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
 
@@ -488,7 +491,12 @@ dependencies {
     generatedCompile 'com.google.http-client:google-http-client:1.41.1'
     generatedCompile 'com.google.api-client:google-api-client:2.2.0'
 
-    runtime("org.springframework.boot:spring-boot-properties-migrator")
+}
+
+dependencies {
+    modules {
+        module("javax.servlet:servlet-api") { replacedBy("javax.servlet:javax.servlet-api") }
+    }
 }
 
 swaggerSources {
