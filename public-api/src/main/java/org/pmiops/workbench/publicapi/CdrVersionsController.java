@@ -3,7 +3,7 @@ package org.pmiops.workbench.publicapi;
 import com.google.common.collect.ImmutableSet;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import org.pmiops.workbench.config.WorkbenchConfig;
 import org.pmiops.workbench.model.CdrVersion;
 import org.pmiops.workbench.exceptions.ServerErrorException;

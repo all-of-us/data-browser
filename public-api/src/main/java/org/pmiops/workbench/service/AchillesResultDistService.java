@@ -2,7 +2,7 @@ package org.pmiops.workbench.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.pmiops.workbench.model.AchillesResultDist;
 import org.pmiops.workbench.cdr.model.DbAchillesResultDist;

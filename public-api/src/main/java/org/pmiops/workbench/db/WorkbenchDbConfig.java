@@ -3,7 +3,7 @@ package org.pmiops.workbench.db;
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.Optional;
 import java.util.logging.Logger;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.apache.tomcat.jdbc.pool.PoolProperties;

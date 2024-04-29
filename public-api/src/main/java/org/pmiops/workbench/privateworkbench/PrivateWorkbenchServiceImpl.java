@@ -5,7 +5,7 @@ import org.pmiops.workbench.privateworkbench.model.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 @Service
 // TODO: consider retrying internally when FireCloud returns a 503
