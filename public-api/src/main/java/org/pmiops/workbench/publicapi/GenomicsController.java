@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Variant;
+import org.pmiops.workbench.model.SVVariant;
 import org.pmiops.workbench.model.VariantInfo;
 import org.pmiops.workbench.model.GenomicFilters;
 import org.pmiops.workbench.model.GenomicFilterOption;
 import org.pmiops.workbench.model.GenomicFilterOptionList;
 import org.pmiops.workbench.model.GenomicSearchTermType;
 import org.pmiops.workbench.model.VariantListResponse;
+import org.pmiops.workbench.model.SVVariantListResponse;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 import org.pmiops.workbench.service.BigQueryService;
 import com.google.cloud.bigquery.FieldValue;
@@ -29,8 +31,10 @@ import com.google.common.collect.ImmutableList;
 import org.pmiops.workbench.model.AnalysisIdConstant;
 import org.pmiops.workbench.model.CommonStorageEnums;
 import org.pmiops.workbench.model.SearchVariantsRequest;
+import org.pmiops.workbench.model.SearchSVVariantsRequest;
 import org.pmiops.workbench.model.VariantResultSizeRequest;
 import org.pmiops.workbench.model.SortMetadata;
+import org.pmiops.workbench.model.SortSVMetadata;
 import org.pmiops.workbench.model.SortColumnDetails;
 
 @RestController
@@ -45,6 +49,8 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
+
+    private static final String svVariantIdRegex = "(?i)([1-9]|1[0-9]|2[0-2]|X|Y)-\\d{1,}-[0-9a-fA-F]{4}";
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
@@ -60,6 +66,10 @@ public class GenomicsController implements GenomicsApiDelegate {
     // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
     private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
             "variant_type, protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency, homozygote_count FROM ${projectId}.${dataSetId}.wgs_variant";
+
+    private static final String SV_VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, variant_type, CONCAT(a.position, '-', CAST(a.end AS STRING)) as position, a.size, \n" +
+            "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count FROM ${projectId}.${dataSetId}.selected_sv_fields_db_with_id a";
+
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_afr_hc as afr_homozygote_count, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, gvs_eas_hc as eas_homozygote_count, " +
             "gvs_eur_ac as eur_allele_count, gvs_eur_an as eur_allele_number, gvs_eur_af as eur_allele_frequency, gvs_eur_hc as eur_homozygote_count, " +
             "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, gvs_amr_hc as amr_homozygote_count, " +
@@ -655,6 +665,139 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         }
         VariantListResponse variantListResponse = new VariantListResponse();
+        variantListResponse.setItems(variantList);
+        return ResponseEntity.ok(variantListResponse);
+    }
+
+    @Override
+    public ResponseEntity<SVVariantListResponse> searchSVVariants(SearchSVVariantsRequest searchVariantsRequest) {
+        cdrVersionService.setDefaultCdrVersion();
+
+        String variantSearchTerm = searchVariantsRequest.getQuery().trim();
+        Integer page = searchVariantsRequest.getPageNumber();
+        Integer rowCount = searchVariantsRequest.getRowCount();
+        SortSVMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
+        String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
+        if (sortMetadata != null) {
+            SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
+            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.getSortActive()) {
+                if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
+                }
+            }
+
+            SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
+            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.getSortActive()) {
+                if (variantTypeColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_type DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
+                }
+            }
+
+            SortColumnDetails positionColumnSortMetadata = sortMetadata.getPosition();
+            if (positionColumnSortMetadata != null && positionColumnSortMetadata.getSortActive()) {
+                if (positionColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY position DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY position ASC";
+                }
+            }
+
+            SortColumnDetails sizeColumnSortMetadata = sortMetadata.getSize();
+            if (sizeColumnSortMetadata != null && sizeColumnSortMetadata.getSortActive()) {
+                if (sizeColumnSortMetadata.getSortDirection().equals("desc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY size DESC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY size ASC";
+                }
+            }
+
+            SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
+            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
+                if (alleleCountColumnSortMetadata.getSortDirection().equals("asc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
+                }
+            }
+            SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
+            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.getSortActive()) {
+                if (alleleNumberColumnSortMetadata.getSortDirection().equals("asc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
+                }
+            }
+            SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
+            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.getSortActive()) {
+                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("asc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
+                }
+            }
+            SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
+            if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.getSortActive()) {
+                if (homozygoteCountColumnSortMetadata.getSortDirection().equals("asc")) {
+                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count ASC";
+                } else {
+                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count DESC";
+                }
+            }
+
+        }
+            StringBuilder finalSqlBuilder = new StringBuilder(SV_VARIANT_LIST_SQL_TEMPLATE);
+        String searchTerm = variantSearchTerm;
+        String variant_id = "";
+        boolean whereVariantIdFlag = false;
+
+        if (variantSearchTerm.startsWith("~")) {
+            searchTerm = variantSearchTerm.substring(1);
+        }
+
+        if (searchTerm.matches(svVariantIdRegex)) {
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            finalSqlBuilder.append(WHERE_VARIANT_ID);
+        }
+
+        finalSqlBuilder.append(ORDER_BY_CLAUSE)
+                .append(" LIMIT ")
+                .append(rowCount)
+                .append(" OFFSET ")
+                .append((Optional.ofNullable(page).orElse(1) - 1) * rowCount);
+
+        String finalSql = finalSqlBuilder.toString();
+
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println(finalSql);
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
+                .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+        List<SVVariant> variantList = new ArrayList<>();
+        for (List<FieldValue> row : result.iterateAll()) {
+            variantList.add(new SVVariant()
+                    .variantId(bigQueryService.getString(row, rm.get("variant_id")))
+                    .variantType(bigQueryService.getString(row, rm.get("variant_type")))
+                    .position(bigQueryService.getString(row, rm.get("position")))
+                    .size(bigQueryService.getLong(row, rm.get("size")))
+                    .alleleCount(bigQueryService.getLong(row, rm.get("allele_count")))
+                    .alleleNumber(bigQueryService.getLong(row, rm.get("allele_number")))
+                    .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency")))
+                    .homozygoteCount(bigQueryService.getLong(row, rm.get("homozygote_count")))
+            );
+        }
+
+        SVVariantListResponse variantListResponse = new SVVariantListResponse();
         variantListResponse.setItems(variantList);
         return ResponseEntity.ok(variantListResponse);
     }

@@ -161,6 +161,26 @@ paths:
           schema:
             $ref: "#/definitions/GenomicFilters"
 
+  /v1/genomics/search-sv-variants:
+    post:
+      tags:
+        - genomics
+      consumes:
+        - application/json
+      description: Gets the list of matched variants
+      operationId: "searchSVVariants"
+      parameters:
+        - in: body
+          name: request
+          description: search concept request
+          schema:
+            $ref: "#/definitions/SearchSVVariantsRequest"
+      responses:
+        200:
+          description: A collection of variants from the wgs_variant table
+          schema:
+            $ref: "#/definitions/SVVariantListResponse"
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -1244,6 +1264,29 @@ definitions:
         description: filters
         $ref: "#/definitions/GenomicFilters"
 
+  SearchSVVariantsRequest:
+    type: object
+    required:
+      - query
+    properties:
+      query:
+        type: string
+        description: >
+          A query string that can be used to match a subset of the name (case-insensitively),
+          the entire code value (case-insensitively), or the concept ID.
+      pageNumber:
+        type: integer
+        default: 0
+        description: By default it returns the first page and then its next pages from that on.
+      rowCount:
+        type: integer
+        default: 50
+        description: Number of rows user wants to view per page
+      sortMetadata:
+        type: object
+        description: sort metadata
+        $ref: "#/definitions/SortSVMetadata"
+
   SearchConceptsRequest:
     type: object
     required:
@@ -1415,6 +1458,42 @@ definitions:
         type: integer
         format: int32
 
+  SortSVMetadata:
+    type: object
+    properties:
+      variantId:
+        description: variant id column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      variantType:
+        description: gene column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      position:
+        description: consequence column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      size:
+        description: Variant Type column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleCount:
+        description: allele count column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleNumber:
+        description: allele number column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      alleleFrequency:
+        description: allele frequency column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+      homozygoteCount:
+        description: homozygote count column metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
+
   SurveyModule:
     type: object
     required:
@@ -1521,6 +1600,51 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/Variant"
+
+  SVVariant:
+    type: object
+    required:
+      - variantId
+    properties:
+      variantId:
+        description: id variant
+        type: string
+      variantType:
+        description: variant type
+        type: string
+      position:
+        description: POS - END
+        type: string
+      size:
+        description: size
+        type: integer
+        format: int64
+      alleleCount:
+        description: allele count
+        type: integer
+        format: int64
+      alleleNumber:
+        description: allele number
+        type: integer
+        format: int64
+      alleleFrequency:
+        description: allele frequency
+        type: number
+        format: double
+      homozygoteCount:
+        description: number of homozygotes
+        type: integer
+        format: int64
+
+  SVVariantListResponse:
+    type: object
+    required:
+      - items
+    properties:
+      items:
+        type: "array"
+        items:
+          $ref: "#/definitions/SVVariant"
 
   GenomicFilters:
     type: object
