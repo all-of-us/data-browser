@@ -5,18 +5,18 @@ import org.gradle.api.tasks.JavaExec
 buildscript {    // Configuration for building
 
     ext {
-        GAE_VERSION = '1.9.64'
+        GAE_VERSION = '2.0.26'
         GOOGLE_TRUTH_VERSION = '1.1.3'
         GSON_VERSION = '2.9.0'
         HIBERNATE_VERSION = '6.4.4.Final'
         SPRING_BOOT_VERSION = '3.2.4'
         SPRING_FRAMEWORK_VERSION = '6.1.5'
+        SPRING_SECURITY_VERSION = '6.2.3'
         JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '2.7.5'
         SPRINGFOX_VERSION = '3.0.0'
         LIQUIBASE_VERSION = '4.27.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
     }
 
     repositories {
@@ -354,11 +354,9 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java:3.21.7'
     implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
     // https://mvnrepository.com/artifact/com.google.appengine/appengine-api-1.0-sdk
-    implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.24'
-
-
-    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
+    implementation("com.google.appengine:appengine-api-1.0-sdk:$project.ext.GAE_VERSION") {
+        exclude group: 'com.google.api-client', module: 'google-api-client-servlet'
+    }
 
     implementation 'ch.qos.logback:logback-classic:1.5.5'
 
@@ -376,13 +374,18 @@ dependencies {
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
 
-    implementation 'org.springframework:spring-context:5.3.19'
+    implementation "org.springframework.retry:spring-retry"
+    implementation "org.springframework.security:spring-security-core:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-config:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-crypto:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-web:${SPRING_SECURITY_VERSION}"
+
+    implementation "org.springframework:spring-context:${SPRING_FRAMEWORK_VERSION}"
 
     implementation("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
-    implementation 'org.springframework.security:spring-security-web:5.6.9'
 
     implementation "org.hibernate.orm:hibernate-core:${HIBERNATE_VERSION}"
     implementation "org.hibernate.orm:hibernate-community-dialects:${HIBERNATE_VERSION}"
@@ -495,7 +498,6 @@ dependencies {
 
 dependencies {
     modules {
-        module("javax.servlet:servlet-api") { replacedBy("javax.servlet:javax.servlet-api") }
     }
 }
 
