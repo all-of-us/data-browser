@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: AllOfUs Public API
+  description: |
+    The API for the AllOfUs databrowser.
+
+    Throughout, we use integer/int64 in preference to string/date-time because Swagger's
+    date formatting is inconsistent between server and client. Time values are stored as
+    milliseconds since the UNIX epoch.
+
+  termsOfService: http://www.pmi-ops.org/terms_of_service.html
+  contact:
+    name: developer_help@pmi-ops.org
+  license:
+    name: BSD
+  version: 0.1.0
+servers:
+  - url: https://api.pmi-ops.org/
+security:
+  - aou_oauth: []
+
+paths:
+  /v1/cdrVersions:
+    get:
+      tags:
+        - cdrVersions
+      description: Returns all curated data repository (CDR) versions that the user has access to
+      operationId: getCdrVersions
+      security: []
+      responses:
+        200:
+          description: A list of CDR versions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/CdrVersionListResponse"
+
+
+  /v1/genomics/participant-counts:
+    get:
+      tags:
+        - genomics
+      description: Gets the participant counts
+      operationId: getParticipantCounts
+      security: []
+      parameters: [ ]
+      responses:
+        200:
+          description: A collection of results from achilles results view
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Analysis"
+
+  /v1/genomics/search-variants:
+    post:
+      tags:
+        - genomics
+      description: Gets the list of matched variants
+      operationId: searchVariants
+      parameters:
+        - in: body
+          name: request
+          description: search concept request
+          schema:
+            $ref: "#/definitions/SearchVariantsRequest"
+      responses:
+        200:
+          description: A collection of variants from the wgs_variant table
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/VariantListResponse"
+
+components:
+  schemas:
+    CdrVersion:
+      type: object
+      required:
+        - cdrVersionId
+        - name
+        - creationTime
+      properties:
+        cdrVersionId:
+          type: string
+        name:
+          type: string
+        numParticipants:
+          type: integer
+          format: int32
+        creationTime:
+          type: integer
+          format: int64
+          description: Milliseconds since the UNIX epoch.
+
+    CdrVersionListResponse:
+      type: object
+      required:
+        - items
+        - defaultCdrVersionId
+      properties:
+        items:
+          type: "array"
+          items:
+            $ref: "#/definitions/CdrVersion"
+        defaultCdrVersionId:
+          type: "string"
+          description: ID of the CDR versions that should be used by the user by default
+
