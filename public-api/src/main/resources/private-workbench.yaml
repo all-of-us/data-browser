@@ -1,36 +1,21 @@
-# This is a short term swagger file intended to support auth for the data browser.
-# It is intentionally not perfect or complete because it is expected to go away
-# as soon as we have authority to release publicly.
-swagger: '2.0'
+openapi: 3.0.1
 info:
-  version: "0.1.0"
-  title: "AllOfUs Workbench API"
-  description: "The API for the AllOfUs workbench."
-  termsOfService: "http://www.pmi-ops.org/terms_of_service.html"
+  title: AllOfUs Public API
+  description: |
+    The API for the AllOfUs databrowser.
+
+    Throughout, we use integer/int64 in preference to string/date-time because Swagger's
+    date formatting is inconsistent between server and client. Time values are stored as
+    milliseconds since the UNIX epoch.
+
+  termsOfService: http://www.pmi-ops.org/terms_of_service.html
   contact:
-    name: "developer_help@pmi-ops.org"
+    name: developer_help@pmi-ops.org
   license:
-    name: "BSD"
-host: "api.pmi-ops.org"
-securityDefinitions:
-  # Establish the fact that *some endpoints* are OAuth protected
-  # by defining an `aou_oauth` security mode, which we'll assing
-  # to any protected endpoints below.
-  aou_oauth:
-    # TODO: Vet/fix this token and/or authorization URL to work in practice.
-    # These are currently included simply to satisfy the Swagger specification,
-    # as this is not directly used to dictate oauth details (just used to
-    # annotate which methods require oauth).
-    authorizationUrl: ""
-    tokenUrl: ""
-    type: oauth2
-    flow: accessCode
-schemes:
-  - "https"
-produces:
-  - "application/json"
-# Establish the fact that all endpoints are protected: this annotation
-# ensures that client libraries know to send bearer tokens when calling
+    name: BSD
+  version: 0.1.0
+servers:
+  - url: https://api.pmi-ops.org/
 security:
   - aou_oauth: []
 

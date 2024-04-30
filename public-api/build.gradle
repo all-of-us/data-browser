@@ -1,5 +1,11 @@
-import io.swagger.codegen.config.CodegenConfigurator
-import io.swagger.codegen.DefaultGenerator
+import io.swagger.codegen.v3.config.CodegenConfigurator
+
+import io.swagger.codegen.v3.CodegenConfigLoader
+import io.swagger.codegen.v3.DefaultGenerator
+import io.swagger.codegen.v3.ClientOptInput
+import io.swagger.codegen.v3.ClientOpts
+import io.swagger.v3.parser.OpenAPIV3Parser
+
 import org.gradle.api.tasks.JavaExec
 
 buildscript {    // Configuration for building
@@ -35,15 +41,15 @@ buildscript {    // Configuration for building
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
         classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
+        classpath('io.swagger.codegen.v3:swagger-codegen-maven-plugin:3.0.16')
     }
 }
 
 def swaggerTemplateDir = 'src/main/resources'
-def swaggerSourceFile = 'src/main/resources/public-api.yaml'
+def swaggerSourceFile = 'src/main/resources/test.yaml'
 def swaggerTargetFolder = 'src/generated/java'
 
 def db_host = System.getenv("DB_HOST")
@@ -69,12 +75,15 @@ task generateApi {
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
     doLast {
-        def config = new CodegenConfigurator()
-        config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
-        config.setOutputDir("$projectDir")
-        config.setTemplateDir("$projectDir/$swaggerTemplateDir")
-        config.setLang('spring')
-        config.setAdditionalProperties([
+        def openAPI = new OpenAPIV3Parser().read("$projectDir/$swaggerSourceFile".toString(), null, null)
+        //def openAPI = new OpenAPIV3Parser().read(inputs.file("$projectDir/$swaggerSourceFile").toURI().toURL(), null, null)
+        def clientOpts = new ClientOptInput().openAPI(openAPI)
+        def codegenConfig = CodegenConfigLoader.forName('spring')
+        codegenConfig.setOutputDir(project.buildDir.toString())
+        clientOpts.setConfig(codegenConfig)
+
+        def clientOps = new ClientOpts()
+        clientOps.setProperties([
                 'apiPackage'     : 'org.pmiops.workbench.publicapi',
                 'modelPackage'   : 'org.pmiops.workbench.model',
                 'sourceFolder'   : swaggerTargetFolder,
@@ -83,7 +92,10 @@ task generateApi {
                 // having to copy them to our implementations.
                 'delegatePattern': 'true'
         ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        clientOpts.setOpts(clientOps)
+
+        def generator = new DefaultGenerator().opts(clientOpts)
+        generator.generate() // Executing the generation
     }
 }
 
@@ -91,12 +103,15 @@ task generateApiClient {
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
     doLast {
-        def config = new CodegenConfigurator()
-        config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
-        config.setOutputDir("$projectDir")
-        config.setTemplateDir("$projectDir/$swaggerTemplateDir")
-        config.setLang('java')
-        config.setAdditionalProperties([
+        def openAPI = new OpenAPIV3Parser().read("$projectDir/$swaggerSourceFile".toString(), null, null)
+        //def openAPI = new OpenAPIV3Parser().read(inputs.file("$projectDir/$swaggerSourceFile").toURI().toURL(), null, null)
+        def clientOpts = new ClientOptInput().openAPI(openAPI)
+        def codegenConfig = CodegenConfigLoader.forName('java')
+        codegenConfig.setOutputDir(project.buildDir.toString())
+        clientOpts.setConfig(codegenConfig)
+
+        def clientOps = new ClientOpts()
+        clientOps.setProperties([
                 'invokerPackage'   : 'org.pmiops.workbench.publicapi.client',
                 'modelPackage'   : 'org.pmiops.workbench.publicapi.client.model',
                 'apiPackage'   : 'org.pmiops.workbench.publicapi.client.api',
@@ -106,32 +121,10 @@ task generateApiClient {
                 'serializableModel': 'true',
                 'dateLibrary'      : 'java8'
         ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
-    }
-}
+        clientOpts.setOpts(clientOps)
 
-
-def workbenchApiFile = 'src/main/resources/private-workbench.yaml'
-
-task generateWorkbenchClient {
-    inputs.file("$projectDir/$workbenchApiFile")
-    outputs.dir("$projectDir/$swaggerTargetFolder")
-    doLast {
-        def config = new CodegenConfigurator()
-        config.setInputSpec("file:///$projectDir/$workbenchApiFile")
-        config.setOutputDir("$projectDir")
-        config.setTemplateDir("$projectDir/$swaggerTemplateDir")
-        config.setLang('java')
-        config.setAdditionalProperties([
-                'invokerPackage'   : 'org.pmiops.workbench.privateworkbench',
-                'modelPackage'     : 'org.pmiops.workbench.privateworkbench.model',
-                'apiPackage'       : 'org.pmiops.workbench.privateworkbench.api',
-                'sourceFolder'     : swaggerTargetFolder,
-                'library'          : 'okhttp-gson',
-                'serializableModel': 'true',
-                'dateLibrary'      : 'java8'
-        ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        def generator = new DefaultGenerator().opts(clientOpts)
+        generator.generate() // Executing the generation
     }
 }
 
@@ -237,13 +230,11 @@ sourceSets {
     }
 }
 
-generateApi.dependsOn validateSwagger
 ideaModule.dependsOn generateApi
 project.tasks.compileGeneratedJava.dependsOn generateApi
 ideaModule.dependsOn generateApiClient
 project.tasks.compileGeneratedJava.dependsOn generateApiClient
-ideaModule.dependsOn generateWorkbenchClient
-project.tasks.compileGeneratedJava.dependsOn generateWorkbenchClient
+
 classes.dependsOn generatedClasses
 compileJava.dependsOn compileGeneratedJava
 
@@ -384,6 +375,9 @@ dependencies {
     implementation 'org.springframework.security:spring-security-web:5.6.9'
     implementation "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
 
+    implementation 'io.springfox:springfox-oas:3.0.0'
+    generatedCompile 'io.springfox:springfox-oas:3.0.0'
+
     implementation "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
 
     implementation "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
@@ -393,8 +387,12 @@ dependencies {
     implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
     implementation 'javax.inject:javax.inject:1'
-    implementation 'io.swagger:swagger-annotations:1.5.16'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.3'
     implementation 'org.apache.commons:commons-lang3:3.0'
+
+    generatedCompile 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
 
 
     implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
@@ -457,7 +455,6 @@ dependencies {
     // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:${SPRING_BOOT_VERSION}"
     generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
-    generatedCompile 'io.springfox:springfox-swagger2:3.0.0'
     generatedCompile 'io.springfox:springfox-swagger-ui:3.0.0'
     generatedCompile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     generatedCompile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
