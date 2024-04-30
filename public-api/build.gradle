@@ -1,6 +1,5 @@
-import io.swagger.codegen.config.CodegenConfigurator
-import io.swagger.codegen.DefaultGenerator
-import org.gradle.api.tasks.JavaExec
+import io.swagger.codegen.v3.config.CodegenConfigurator
+import io.swagger.codegen.v3.DefaultGenerator
 
 buildscript {    // Configuration for building
 
@@ -35,7 +34,7 @@ buildscript {    // Configuration for building
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
         classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
+        classpath 'io.swagger.codegen.v3:swagger-codegen-maven-plugin:3.0.27'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
