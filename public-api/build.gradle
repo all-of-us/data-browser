@@ -79,7 +79,7 @@ task generateApi {
         //def openAPI = new OpenAPIV3Parser().read(inputs.file("$projectDir/$swaggerSourceFile").toURI().toURL(), null, null)
         def clientOpts = new ClientOptInput().openAPI(openAPI)
         def codegenConfig = CodegenConfigLoader.forName('spring')
-        codegenConfig.setOutputDir(project.buildDir.toString())
+        codegenConfig.setOutputDir("$projectDir")
         clientOpts.setConfig(codegenConfig)
 
         def clientOps = new ClientOpts()
@@ -107,7 +107,7 @@ task generateApiClient {
         //def openAPI = new OpenAPIV3Parser().read(inputs.file("$projectDir/$swaggerSourceFile").toURI().toURL(), null, null)
         def clientOpts = new ClientOptInput().openAPI(openAPI)
         def codegenConfig = CodegenConfigLoader.forName('java')
-        codegenConfig.setOutputDir(project.buildDir.toString())
+        codegenConfig.setOutputDir("$projectDir")
         clientOpts.setConfig(codegenConfig)
 
         def clientOps = new ClientOpts()
