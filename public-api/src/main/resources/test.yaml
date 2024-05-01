@@ -100,10 +100,719 @@ components:
         - defaultCdrVersionId
       properties:
         items:
-          type: "array"
+          type: array
           items:
             $ref: "#/definitions/CdrVersion"
         defaultCdrVersionId:
           type: "string"
           description: ID of the CDR versions that should be used by the user by default
+
+    Analysis:
+      type: object
+      required:
+        - analysisId
+      properties:
+        analysisId:
+          description: id analysis
+          type: integer
+          format: int64
+        analysisName:
+          description:  analysis name
+          type: string
+        stratum1Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum2Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum3Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum4Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum5Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum6Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        stratum7Name:
+          description:  usually concept name corresponding to stratum
+          type: string
+        chartType:
+          description:  chart type to display for this analysis column pie box
+          type: string
+        dataType:
+          description:  data type of this analysis count or distribution
+          type: string
+        results:
+          description: count results
+          type: array
+          items:
+            $ref: "#/definitions/AchillesResult"
+        distResults:
+          description: distribution results
+          type: array
+          items:
+            $ref: "#/definitions/AchillesResultDist"
+        unitName:
+          description: unit name
+          type: string
+
+    Variant:
+      type: object
+      required:
+        - variantId
+      properties:
+        variantId:
+          description: id variant
+          type: string
+        genes:
+          description: genes
+          type: string
+        consequence:
+          description: consequence
+          type: string
+        variantType:
+          description: variant type
+          type: string
+        proteinChange:
+          description: protein change
+          type: string
+        clinicalSignificance:
+          description: clinical significance
+          type: string
+        alleleCount:
+          description: allele count
+          type: integer
+          format: int64
+        alleleNumber:
+          description: allele number
+          type: integer
+          format: int64
+        alleleFrequency:
+          description: allele frequency
+          type: number
+          format: double
+        homozygoteCount:
+          description: homozygote count
+          type: integer
+          format: int64
+
+    VariantListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+          $ref: "#/definitions/Variant"
+
+    VariantInfo:
+      type: object
+      required:
+        - variantId
+      properties:
+        variantId:
+          description: variant id
+          type: string
+        dnaChange:
+          description: dna change
+          type: string
+        transcript:
+          description: transcript
+          type: string
+        rsNumber:
+          description: rs number
+          type: string
+        afrAlleleCount:
+          description: African Ancestry Allele Count
+          type: integer
+          format: int64
+        afrAlleleNumber:
+          description: African Ancestry Allele Number
+          type: integer
+          format: int64
+        afrAlleleFrequency:
+          description: African Ancestry Allele Frequency
+          type: number
+          format: double
+        afrHomozygoteCount:
+          description: African Ancestry Homozygote Count
+          type: integer
+          format: int64
+        easAlleleCount:
+          description: East Asian Ancestry Allele Count
+          type: integer
+          format: int64
+        easAlleleNumber:
+          description: East Asian Ancestry Allele Number
+          type: integer
+          format: int64
+        easAlleleFrequency:
+          description: East Asian Ancestry Allele Frequency
+          type: number
+          format: double
+        easHomozygoteCount:
+          description: East Asian Ancestry Homozygote Count
+          type: integer
+          format: int64
+        eurAlleleCount:
+          description: European Ancestry Allele Count
+          type: integer
+          format: int64
+        eurAlleleNumber:
+          description: European Ancestry Allele Number
+          type: integer
+          format: int64
+        eurAlleleFrequency:
+          description: European Ancestry Allele Frequency
+          type: number
+          format: double
+        eurHomozygoteCount:
+          description: European Ancestry Homozygote Count
+          type: integer
+          format: int64
+        amrAlleleCount:
+          description: Latin American Ancestry Allele Count
+          type: integer
+          format: int64
+        amrAlleleNumber:
+          description: Latin American Ancestry Allele Number
+          type: integer
+          format: int64
+        amrAlleleFrequency:
+          description: Latin American Ancestry Allele Frequency
+          type: number
+          format: double
+        amrHomozygoteCount:
+          description: Latin American Ancestry Homozygote Count
+          type: integer
+          format: int64
+        midAlleleCount:
+          description: Middle Eastern Ancestry Allele Count
+          type: integer
+          format: int64
+        midAlleleNumber:
+          description: Middle Eastern Ancestry Allele Number
+          type: integer
+          format: int64
+        midAlleleFrequency:
+          description: Middle Eastern Ancestry Allele Frequency
+          type: number
+          format: double
+        midHomozygoteCount:
+          description: Middle Eastern Ancestry Homozygote Count
+          type: integer
+          format: int64
+        sasAlleleCount:
+          description: South Asian Ancestry Allele Count
+          type: integer
+          format: int64
+        sasAlleleNumber:
+          description: South Asian Ancestry Allele Number
+          type: integer
+          format: int64
+        sasAlleleFrequency:
+          description: South Asian Ancestry Allele Frequency
+          type: number
+          format: double
+        sasHomozygoteCount:
+          description: South Asian Ancestry Homozygote Count
+          type: integer
+          format: int64
+        othAlleleCount:
+          description: Other Ancestry Allele Count
+          type: integer
+          format: int64
+        othAlleleNumber:
+          description: Other Ancestry Allele Number
+          type: integer
+          format: int64
+        othAlleleFrequency:
+          description: Other Ancestry Allele Frequency
+          type: number
+          format: double
+        othHomozygoteCount:
+          description: Other Homozygote Count
+          type: integer
+          format: int64
+        totalAlleleCount:
+          description: Total Allele Count
+          type: integer
+          format: int64
+        totalAlleleNumber:
+          description: Total Allele Number
+          type: integer
+          format: int64
+        totalAlleleFrequency:
+          description: Total Allele Frequency
+          type: number
+          format: double
+        totalHomozygoteCount:
+          description: Total Homozygote Count
+          type: integer
+          format: int64
+
+    GenomicFilters:
+      type: object
+      properties:
+        gene:
+          description: Gene Filters
+          type: object
+          $ref: "#/definitions/GenomicFilterOptionList"
+        consequence:
+          description: Consequence Filters
+          type: object
+          $ref: "#/definitions/GenomicFilterOptionList"
+        variantType:
+          description: Variant Type Filters
+          type: object
+          $ref: "#/definitions/GenomicFilterOptionList"
+        clinicalSignificance:
+          description: Clinical Significance Filters
+          type: object
+          $ref: "#/definitions/GenomicFilterOptionList"
+        alleleCount:
+          description: Allele Count Range Filter
+          type: object
+          $ref: "#/definitions/GenomicFilterOption"
+        alleleNumber:
+          description: Allele Number Range Filter
+          type: object
+          $ref: "#/definitions/GenomicFilterOption"
+        alleleFrequency:
+          description: Allele Frequency Range Filter
+          type: object
+          $ref: "#/definitions/GenomicFilterOption"
+        homozygoteCount:
+          description: Homozygote Count Range Filter
+          type: object
+          $ref: "#/definitions/GenomicFilterOption"
+
+    GenomicFilterOption:
+      type: object
+      properties:
+        option:
+          description: Filter Name
+          type: string
+        count:
+          description: count
+          type: integer
+          format: int64
+        min:
+          description: min value
+          type: integer
+          format: int64
+        max:
+          description: max value
+          type: integer
+          format: int64
+        minFreq:
+          description: min Allele Frequency
+          type: number
+          format: float
+          default: 0
+        maxFreq:
+          description: max Allele Frequency
+          type: number
+          format: float
+          default: 1
+        checked:
+          description: boolean flag
+          type: boolean
+
+    GenomicFilterOptionList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+          $ref: "#/definitions/GenomicFilterOption"
+        filterActive:
+          description: boolean flag to know whether the filter is active
+          type: boolean
+          default: false
+
+    Criteria:
+      type: object
+      required:
+        - id
+        - parentId
+        - type
+        - name
+        - path
+      properties:
+        id:
+          description: Primary identifier which is unique within a CDR version.
+          type: integer
+          format: int64
+        parentId:
+          description: The parent id of the criteria. 0 if this is the root node of a criteria tree
+          type: integer
+          format: int64
+        type:
+          description: type of this criteria
+          type: string
+        subtype:
+          description: sub type of this criteria
+          type: string
+        code:
+          description: concept code
+          type: string
+        name:
+          description: concept name
+          type: string
+        group:
+          description: boolean field which represents if the criteria has children
+          type: boolean
+        selectable:
+          description: boolean field which represents if the criteria is selectable
+          type: boolean
+        count:
+          description: count
+          type: integer
+          format: int64
+        sourceCount:
+          description: count
+          type: integer
+          format: int64
+        domainId:
+          description: domain id
+          type: string
+        conceptId:
+          description: concept id
+          type: string
+        path:
+          description: path of concept in the criteria tree
+          type: string
+        synonyms:
+          description: synonyms
+          type: string
+        canSelect:
+          description: filters clickable concepts
+          type: integer
+          format: int32
+
+    CriteriaListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+          $ref: "#/definitions/Criteria"
+
+    CriteriaParentResponse:
+      type: object
+      required:
+        - items
+      properties:
+        parent:
+          description: parent row
+          $ref: "#/definitions/Criteria"
+
+    AchillesResult:
+      type: object
+      required:
+        - analysisId
+
+      properties:
+        id:
+          description: pk id for jpa code to work
+          type: integer
+          format: int64
+        analysisId:
+          description: id analysis
+          type: integer
+          format: int64
+        stratum1:
+          description: stratum 1
+          type: string
+        stratum2:
+          description: stratum 2
+          type: string
+        stratum3:
+          description: stratum 3
+          type: string
+        stratum4:
+          description: stratum 4
+          type: string
+        stratum5:
+          description: stratum 5
+          type: string
+        stratum6:
+          description: stratum6
+          type: string
+        stratum7:
+          description: stratum7
+          type: string
+        analysisStratumName:
+          description: stratum 5 Name
+          type: string
+        measurementValueType:
+          description: measurement value type (text / numeric)
+          type: string
+        countValue:
+          description: count
+          type: integer
+          format: int64
+        sourceCountValue:
+          description: source count
+          type: integer
+          format: int64
+
+    AchillesResultListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+          $ref: "#/definitions/AchillesResult"
+
+    AchillesResultDist:
+      type: object
+      required:
+        - analysisId
+
+      properties:
+        id:
+          description: pk id for jpa code to work
+          type: integer
+          format: int64
+        analysisId:
+          description: id analysis
+          type: integer
+          format: int64
+        stratum1:
+          description: stratum 1
+          type: string
+        stratum2:
+          description: stratum 2
+          type: string
+        stratum3:
+          description: stratum 3
+          type: string
+        stratum4:
+          description: stratum 4
+          type: string
+        stratum5:
+          description: stratum 5
+          type: string
+        stratum6:
+          description: stratum 6
+          type: string
+        countValue:
+          description: count
+          type: integer
+          format: int64
+        minValue:
+          description: min value
+          type: number
+          format: float
+        maxValue:
+          description: max value
+          type: number
+          format: float
+        avgValue:
+          description: avg value
+          type: number
+          format: float
+        stdevValue:
+          description: std deviation value
+          type: number
+          format: float
+        medianValue:
+          description: median value
+          type: number
+          format: float
+        p10Value:
+          description: 10th percentile  value
+          type: number
+          format: float
+        p25Value:
+          description: 25th percentile value
+          type: number
+          format: float
+        p75Value:
+          description: 75th percentile value
+          type: number
+          format: float
+        p90Value:
+          description: 90th percentile value
+          type: number
+          format: float
+
+    Concept:
+      type: object
+      required:
+        - conceptId
+        - conceptName
+        - domainId
+        - vocabularyId
+        - conceptCode
+        - conceptClassId
+        - standardConcept
+
+      properties:
+        conceptId:
+          description: id of the concept
+          type: integer
+          format: int64
+        conceptName:
+          description: name of concept
+          type: string
+        domainId:
+          description: domain of concept
+          type: string
+        vocabularyId:
+          description: vocabulary of concept
+          type: string
+        conceptCode:
+          description: original vocab code of concept
+          type: string
+        conceptClassId:
+          description: class of concept
+          type: string
+        standardConcept:
+          description: standard concept value 1 char
+          type: string
+        countValue:
+          description: est count in the cdr
+          type: integer
+          format: int64
+        sourceCountValue:
+          description: est source count in the cdr
+          type: integer
+          format: int64
+        prevalence:
+          description: prevalence among participants percent count divided num participants
+          type: number
+          format: float
+        conceptSynonyms:
+          description: concept synonym names
+          type: array
+          items:
+            type: "string"
+        canSelect:
+          description: filters clickable concepts
+          type: integer
+          format: int32
+        measurementConceptInfo:
+          description: measurement concept info
+          type: object
+          $ref: "#/definitions/MeasurementConceptInfo"
+        drugBrands:
+          description: drug brand names
+          type: array
+          items:
+            type: "string"
+        standardConcepts:
+          type: array
+          items:
+            $ref: "#/definitions/Concept"
+            description: standard concepts associated with the matched concept
+        matchType:
+          description: match column type on which concept search was successful
+          $ref: "#/definitions/MatchType"
+
+    ConceptListResponse:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/definitions/Concept"
+        matchType:
+          description: match column type on which concept search was successful
+          $ref: "#/definitions/MatchType"
+        matchedConceptName:
+          description: matched concept name
+          type: string
+
+    SurveyModule:
+      type: object
+      required:
+        - conceptId
+        - name
+        - description
+        - questionCount
+        - participantCount
+      properties:
+        conceptId:
+          description: the concept ID for the survey module
+          type: integer
+          format: int64
+        name:
+          description: display name of the module
+          type: string
+        description:
+          description: description of the module
+          type: string
+        questionCount:
+          description: number of questions in the module
+          type: integer
+          format: int64
+        participantCount:
+          description: number of participants with data in the CDR for questions in this module
+          type: integer
+          format: int64
+        orderNumber:
+          description: survey release order number
+          type: integer
+          format: int32
+
+    MatchType:
+      type: string
+      description: match column type on concept search
+      enum:
+        - CONCEPT_CODE
+        - CONCEPT_ID
+        - CONCEPT_NAME
+    Domain:
+      type: string
+      description: a domain for concepts corresponding to a table in the OMOP schema
+      enum:
+        - OBSERVATION
+        - PROCEDURE
+        - DRUG
+        - CONDITION
+        - MEASUREMENT
+        - DEVICE
+        - DEATH
+        - VISIT
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          description: Error message
+          type: string
+        statusCode:
+          description: Http error status code
+          type: integer
+        errorClassName:
+          type: string
+        errorCode:
+          description: Short description of the type of error
+          $ref: "#/definitions/ErrorCode"
+        errorUniqueId:
+          type: string
+          description: Unique ID for this error response, for correlation with backend logs
+
+    ErrorCode:
+      type: string
+      description: Short parsable error descriptions
+      enum: [
+        PARSE_ERROR
+      ]
 

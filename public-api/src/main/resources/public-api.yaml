@@ -1642,8 +1642,6 @@ definitions:
         description: sql query formed
         type: string
 
-
-
   VariantInfo:
     type: object
     required:
