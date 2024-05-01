@@ -481,9 +481,10 @@ dependencies {
 
     testImplementation 'org.mockito:mockito-core:3.11.2'
 
+    testImplementation 'junit:junit:4.12'
+
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
-    testImplementation 'org.junit.vintage:junit-vintage-engine:5.4.0'
 
     testImplementation 'com.google.http-client:google-http-client:1.41.1'
     testImplementation 'com.google.api-client:google-api-client:2.2.0'
