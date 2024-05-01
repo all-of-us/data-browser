@@ -12,16 +12,18 @@ strong {
 .version-box-container  {
     width:100%;
     font-size: .8em;
+    
 }
 
 .version-box{
     border:1px solid #cccccc;
     border-radius: 3px;
+    margin-top: -1rem;
 }
 
 .version-box-header,.version-box-row {
     display: grid;
-    grid-template-columns: 45% 25% 30%;
+    grid-template-columns: 60% 40%;
     /* justify-content: space-around; */
     width:100%;
 }
@@ -35,6 +37,11 @@ strong {
 
 .version-box-header > .version-box-item {
     font-family: GothamBold;
+    text-align: center;
+}
+
+div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
+  border-right:#262262 1px solid;
 }
 .version-box-body{
     overflow-y: auto;
@@ -74,20 +81,15 @@ export class PfhhSurveyTableReactComponent extends React.Component<
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
-        <h5>
-          <strong>Survey versions</strong>
-        </h5>
         <br />
         <div className="version-box">
           <div className="version-box-header">
             <div className="version-box-item">Survey</div>
-            <div className="version-box-item">Questions</div>
             <div className="version-box-item">Download PDF</div>
           </div>
           <div className="version-box-body">
           <div className="version-box-row">
             <span className="version-box-item">Personal and Family Health History</span>
-            <span className="version-box-item">{questionCount}</span>
             <span className="version-box-item">
                       <a href={pafhh_survey_pdf_link} download>
                         <ClrIcon
@@ -101,7 +103,6 @@ export class PfhhSurveyTableReactComponent extends React.Component<
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Personal Medical History</span>
-            <span className="version-box-item">465</span>
             <span className="version-box-item">
                       <a href={pmh_survey_pdf_link} download>
                         <ClrIcon
@@ -115,7 +116,6 @@ export class PfhhSurveyTableReactComponent extends React.Component<
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Family Health History</span>
-            <span className="version-box-item">104</span>
             <span className="version-box-item">
                       <a href={fhh_survey_pdf_link} download>
                         <ClrIcon

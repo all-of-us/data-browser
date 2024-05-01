@@ -37,7 +37,6 @@ const styles = reactStyles({
   },
   surveyHead: {
     display: "flex",
-    alignItems:"baseline",
     position: "relative",
     padding: "0 1rem",
     marginBottom: "calc(18px * 4)",
@@ -62,8 +61,8 @@ const styles = reactStyles({
     display: "flex",
     flexDirection: "column",
     width: "50%",
-    postion:"relative",
-    top:"3rem"
+    postion: "relative",
+    top: "3rem"
   },
   versionTable: {
     width: "70%",
@@ -110,7 +109,9 @@ const surveyStyle = `
 .toggle-link, .toggle-link:link, .toggle-link:visited {
     color: #216fb4;
 }
-
+.pdf-link a {
+  cursor: pointer;
+}
 .stat-container .secondary-display{
   // margin-bottom:26px;
   margin-bottom:1rem;
@@ -187,6 +188,7 @@ interface State {
   survey: any;
   surveyId: string;
   surveyPdfUrl: any;
+  surveyPdfUrlSpanish: any;
   isCopeSurvey: boolean;
   isCombinedPfhh: boolean;
   pfhhQC: number;
@@ -229,6 +231,7 @@ export const SurveyViewReactComponent = withRouteData(
         survey: null,
         surveyId: urlParamsStore.getValue().id,
         surveyPdfUrl: "",
+        surveyPdfUrlSpanish: "",
         searchWord: search,
         showAnswer: {},
         questions: [],
@@ -250,6 +253,8 @@ export const SurveyViewReactComponent = withRouteData(
       api.getDomainTotals(searchWord, 1, 1).then((data: any) => {
         data.surveyModules.forEach((survey) => {
           if (survey.conceptId === 43529712) {
+
+
             this.setState({ pfhhQC: survey.questionCount, pfhhPC: survey.participantCount });
           }
           const surveyRoute =
@@ -277,13 +282,23 @@ export const SurveyViewReactComponent = withRouteData(
       const surveyPdfUrl =
         surveyConceptId === 43528895
           ? "/assets/surveys/" +
-            "Health Care Access Utilization".split(" ").join("_") +
-            ".pdf"
+          "Health Care Access Utilization".split(" ").join("_") +
+          ".pdf"
           : surveyConceptId === 1740639
-          ? "/assets/surveys/" +
+            ? "/assets/surveys/" +
             "Personal_and_Family_Health_History" +
             ".pdf"
-          : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
+            : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
+            const surveyPdfUrlSpanish =
+        surveyConceptId === 43528895
+          ? "/assets/surveys/" +
+          "Health Care Access Utilization".split(" ").join("_") +
+          "_Spanish.pdf"
+          : surveyConceptId === 1740639
+            ? "/assets/surveys/" +
+            "Personal_and_Family_Health_History" +
+            "_Spanish.pdf"
+            : "/assets/surveys/" + survey.name.split(" ").join("_") + "_Spanish.pdf";
       const copeFlag =
         surveyConceptId === 1333342 || surveyConceptId === 765936;
       const combinedPfhhFlag = surveyConceptId === 43529712;
@@ -337,6 +352,7 @@ export const SurveyViewReactComponent = withRouteData(
         {
           survey: survey,
           surveyPdfUrl: surveyPdfUrl,
+          surveyPdfUrlSpanish: surveyPdfUrlSpanish,
           isCopeSurvey: copeFlag,
           isCombinedPfhh: combinedPfhhFlag,
         },
@@ -416,14 +432,15 @@ export const SurveyViewReactComponent = withRouteData(
         questions,
         surveyVersions,
         surveyPdfUrl,
+        surveyPdfUrlSpanish
       } = this.state;
       const statClass = (isCopeSurvey || isCombinedPfhh) ? "cope-stat-layout" : "stat-layout";
       const statStyle = (isCopeSurvey || isCombinedPfhh)
         ? styles.copeStatLayout
         : styles.statLayout;
       const matchingQuestions = questions.filter((question) =>
-                    question.type.toLowerCase().includes("question")
-                  );
+        question.type.toLowerCase().includes("question")
+      );
       console.log(survey);
       return (
         <React.Fragment>
@@ -516,30 +533,30 @@ export const SurveyViewReactComponent = withRouteData(
                         </div>
                       ) : null}
                     </div>
-                    {isCopeSurvey ? (
-                      surveyVersions && (
-                        <div
-                          className="version-table"
-                          style={styles.versionTable}
-                        >
-                          <SurveyVersionTableReactComponent
-                            surveyVersions={surveyVersions}
-                          />
+                    {surveyVersions.length > 0 ?
+                      <div className="version-table"
+                        style={styles.versionTable} >
+                        <SurveyVersionTableReactComponent
+                          surveyVersions={surveyVersions} />
+                      </div>
+                      : isCombinedPfhh ?
+                        <div className="version-table" style={styles.versionTable}>
+                          <PfhhSurveyTableReactComponent questionCount={pfhhQC} participantCount={pfhhPC} />
                         </div>
-                      )
-                    ) : (
-                        isCombinedPfhh ? (
-                          <div className="version-table" style={styles.versionTable}>
-                            <PfhhSurveyTableReactComponent questionCount={pfhhQC} participantCount={pfhhPC}/>
-                          </div>
-                        ) : (
-                      <div className="pdf-link" style={styles.pdfLink}>
-                        <a href={surveyPdfUrl} download>
-                          <ClrIcon shape="file" className="is-solid" /> Download
-                          Survey as PDF
-                        </a>
-                      </div> )
-                    )}
+                        :
+                        <div className="pdf-link" style={styles.pdfLink}>
+                          Download Survey<br />
+                          <a href={surveyPdfUrl} download>
+                            <ClrIcon shape="file" className="is-solid" />  English
+                          </a>
+                          &#32;| &#32;
+                          <a href={surveyPdfUrlSpanish} download>
+                            <ClrIcon shape="file" className="is-solid" />  Spanish
+                          </a>
+                        </div>
+                    }
+
+
                   </div>
                   {questions && (
                     <div
