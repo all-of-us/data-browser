@@ -285,6 +285,28 @@ swaggerSources {
             ]
         }
     }
+
+    workbenchClient {
+        inputFile = file('src/main/resources/private-workbench.yaml')
+        code {
+            configuration = configurations.__swaggerCodegenV2__
+            language = 'java'
+            outputDir = file(SWAGGER_2_CODEGEN_DIR)
+            templateDir = file(SWAGGER_TEMPLATE_DIR)
+            wipeOutputDir = false
+            rawOptions = SWAGGER_2_RAW_OPTS
+            additionalProperties = [
+                    'sourceFolder'     : '',
+                    'invokerPackage'   : "${SWAGGER_CODEGEN_BASE_PKG}.privateworkbench",
+                    'modelPackage'     : "${SWAGGER_CODEGEN_BASE_PKG}.privateworkbench.model",
+                    'apiPackage'       : "${SWAGGER_CODEGEN_BASE_PKG}.privateworkbench.api",
+                    'useTags'        : 'true',
+                    // Generates delegate interfaces; used to make method annotations work without
+                    // having to copy them to our implementations.
+                    'delegatePattern': 'true'
+            ]
+        }
+    }
 }
 
 
@@ -458,6 +480,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     testImplementation 'org.mockito:mockito-core:3.11.2'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+    testImplementation 'org.junit.vintage:junit-vintage-engine:5.4.0'
 
     testImplementation 'com.google.http-client:google-http-client:1.41.1'
     testImplementation 'com.google.api-client:google-api-client:2.2.0'
