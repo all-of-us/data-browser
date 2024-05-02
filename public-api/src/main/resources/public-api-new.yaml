@@ -33,7 +33,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/CdrVersionListResponse"
 
-
 components:
   schemas:
     CdrVersion:

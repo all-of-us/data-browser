@@ -86,10 +86,7 @@ task generateApi {
                 'dateLibrary'      : 'java8'
         ])
 
-        def something = config.toClientOptInput()
-        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
-
-        (new DefaultGenerator().opts(something)).generate()
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
 }
 
@@ -113,10 +110,7 @@ task generateApiClient {
                 'dateLibrary'      : 'java8'
         ])
 
-        def something = config.toClientOptInput()
-        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
-
-        (new DefaultGenerator().opts(something)).generate()
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
 }
 
@@ -142,10 +136,7 @@ task generateWorkbenchClient {
                 'dateLibrary'      : 'java8'
         ])
 
-        def something = config.toClientOptInput()
-        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$workbenchApiFile".toString(), null, null))
-
-        (new DefaultGenerator().opts(something)).generate()
+        new DefaultGenerator().opts(config.toClientOptInput()).generate()
     }
 }
 
