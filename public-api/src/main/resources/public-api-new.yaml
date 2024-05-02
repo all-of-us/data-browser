@@ -36,11 +36,11 @@ paths:
 components:
   schemas:
     CdrVersion:
-      type: object
       required:
         - cdrVersionId
         - name
         - creationTime
+      type: object
       properties:
         cdrVersionId:
           type: string
