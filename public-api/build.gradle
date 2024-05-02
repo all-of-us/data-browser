@@ -86,7 +86,10 @@ task generateApi {
                 'dateLibrary'      : 'java8'
         ])
 
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -110,7 +113,10 @@ task generateApiClient {
                 'dateLibrary'      : 'java8'
         ])
 
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -136,7 +142,10 @@ task generateWorkbenchClient {
                 'dateLibrary'      : 'java8'
         ])
 
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$workbenchApiFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -405,7 +414,6 @@ dependencies {
     implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
     implementation 'javax.inject:javax.inject:1'
-    implementation 'io.swagger:swagger-annotations:1.6.7'
     implementation 'org.apache.commons:commons-lang3:3.0'
 
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
