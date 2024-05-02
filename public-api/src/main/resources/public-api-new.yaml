@@ -31,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/definitions/CdrVersionListResponse"
+                $ref: "#/components/CdrVersionListResponse"
 
 
 components:
@@ -64,7 +64,7 @@ components:
         items:
           type: array
           items:
-            $ref: "#/definitions/CdrVersion"
+            $ref: "#/components/CdrVersion"
         defaultCdrVersionId:
-          type: "string"
+          type: string
           description: ID of the CDR versions that should be used by the user by default
