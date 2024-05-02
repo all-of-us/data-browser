@@ -148,6 +148,8 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+
+        /*
         String finalSql = COUNT_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -172,6 +174,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             contig = searchTermType.getContig();
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
+
+            System.out.println("********************** TEST ****************************");
+            System.out.println(searchTermType);
+            System.out.println("********************** TEST ****************************");
+
             whereGeneFlag = searchTermType.getWhereGeneFlag();
         }
 
@@ -192,7 +199,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
             List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.filterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
@@ -202,7 +209,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList conFilterList = filters.getConsequence();
             List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.filterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
                     if (filter.getChecked()) {
@@ -216,7 +223,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
             List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.filterActive()) {
                 for(int i=0; i < varTypeFilters.size(); i++) {
                     GenomicFilterOption filter = varTypeFilters.get(i);
                     if (filter.getChecked()) {
@@ -228,7 +235,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
             List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.filterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
                     if (filter.getChecked()) {
@@ -348,6 +355,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         List<FieldValue> row = result.iterateAll().iterator().next();
         return ResponseEntity.ok(bigQueryService.getLong(row, rm.get("count")));
+
+         */
+        return null;
     }
 
     @Override
@@ -357,7 +367,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
-
+/*
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
@@ -478,7 +488,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
             List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.filterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
                     if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
@@ -488,7 +498,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList conFilterList = filters.getConsequence();
             List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.filterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
                     if (filter.getChecked()) {
@@ -503,7 +513,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
             List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.filterActive()) {
                 for(int i=0; i < varTypeFilters.size(); i++) {
                     GenomicFilterOption filter = varTypeFilters.get(i);
                     if (filter.getChecked()) {
@@ -516,7 +526,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
             List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.filterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
                     if (filter.getChecked()) {
@@ -657,6 +667,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         VariantListResponse variantListResponse = new VariantListResponse();
         variantListResponse.setItems(variantList);
         return ResponseEntity.ok(variantListResponse);
+
+ */
+        return null;
     }
 
     @Override
@@ -666,6 +679,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         } catch(NullPointerException ie) {
             throw new ServerErrorException("Cannot set default cdr version");
         }
+        /*
         String finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE;
         String genes = "";
         Long low = 0L;
@@ -844,6 +858,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
         analysisListResponse.setItems(achillesAnalysisService.findAnalysisByIdsAndDomain(analysisIds, "Genomics"));
         return ResponseEntity.ok(analysisListResponse);
+
+         */
+
+        return null;
     }
 
     @Override

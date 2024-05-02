@@ -1,5 +1,7 @@
-import io.swagger.codegen.config.CodegenConfigurator
-import io.swagger.codegen.DefaultGenerator
+import io.swagger.codegen.v3.DefaultGenerator
+import io.swagger.codegen.v3.config.CodegenConfigurator
+import io.swagger.v3.parser.OpenAPIV3Parser
+
 import org.gradle.api.tasks.JavaExec
 
 buildscript {    // Configuration for building
@@ -11,8 +13,8 @@ buildscript {    // Configuration for building
         HIBERNATE_VERSION = '5.6.9.Final'
         SPRING_BOOT_VERSION = '2.7.1'
         SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
+        JACKSON_DATABIND_VERSION = '2.16.1'
+        JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '2.7.5'
         SPRINGFOX_VERSION = '3.0.0'
@@ -34,8 +36,7 @@ buildscript {    // Configuration for building
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.12.0'
-        classpath 'io.swagger:swagger-codegen:2.2.3'
+        classpath 'io.swagger.codegen.v3:swagger-codegen-maven-plugin:3.0.25'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
@@ -81,9 +82,14 @@ task generateApi {
                 'useTags'        : 'true',
                 // Generates delegate interfaces; used to make method annotations work without
                 // having to copy them to our implementations.
-                'delegatePattern': 'true'
+                'delegatePattern': 'true',
+                'dateLibrary'      : 'java8'
         ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -106,7 +112,11 @@ task generateApiClient {
                 'serializableModel': 'true',
                 'dateLibrary'      : 'java8'
         ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -131,7 +141,11 @@ task generateWorkbenchClient {
                 'serializableModel': 'true',
                 'dateLibrary'      : 'java8'
         ])
-        new DefaultGenerator().opts(config.toClientOptInput()).generate()
+
+        def something = config.toClientOptInput()
+        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$workbenchApiFile".toString(), null, null))
+
+        (new DefaultGenerator().opts(something)).generate()
     }
 }
 
@@ -163,7 +177,6 @@ apply plugin: 'idea'
 apply plugin: 'war'
 apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'org.hidetake.swagger.generator'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'io.spring.dependency-management'
 
@@ -237,7 +250,6 @@ sourceSets {
     }
 }
 
-generateApi.dependsOn validateSwagger
 ideaModule.dependsOn generateApi
 project.tasks.compileGeneratedJava.dependsOn generateApi
 ideaModule.dependsOn generateApiClient
@@ -355,6 +367,15 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.appengine/appengine-api-1.0-sdk
     implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.24'
 
+    implementation 'io.gsonfire:gson-fire:1.8.5'
+    generatedCompile 'io.gsonfire:gson-fire:1.8.5'
+
+    implementation 'io.springfox:springfox-oas:3.0.0'
+    generatedCompile 'io.springfox:springfox-oas:3.0.0'
+
+    implementation 'org.threeten:threetenbp:1.6.2'
+    generatedCompile 'org.threeten:threetenbp:1.6.2'
+
 
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
@@ -393,8 +414,14 @@ dependencies {
     implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
     implementation 'javax.inject:javax.inject:1'
-    implementation 'io.swagger:swagger-annotations:1.5.16'
+    implementation 'io.swagger:swagger-annotations:1.6.7'
     implementation 'org.apache.commons:commons-lang3:3.0'
+
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.3'
+
+    generatedCompile 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
 
 
     implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
@@ -457,7 +484,6 @@ dependencies {
     // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:${SPRING_BOOT_VERSION}"
     generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
-    generatedCompile 'io.springfox:springfox-swagger2:3.0.0'
     generatedCompile 'io.springfox:springfox-swagger-ui:3.0.0'
     generatedCompile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     generatedCompile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
@@ -468,12 +494,6 @@ dependencies {
 
     generatedCompile 'com.google.http-client:google-http-client:1.41.1'
     generatedCompile 'com.google.api-client:google-api-client:2.2.0'
-}
-
-swaggerSources {
-    workbench {
-        inputFile = file("$projectDir/$swaggerSourceFile")
-    }
 }
 
 tasks.compileJava {
