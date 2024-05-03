@@ -29,7 +29,9 @@ RUN cd && \
   rm -rf gcloud.tgz
 
 RUN sudo apt-get update
-RUN sudo apt-get install gettext ruby default-mysql-client python3 python3-pip wait-for-it
+RUN sudo apt-get install gettext ruby default-mysql-client python3 python3-pip wait-for-it npm
+
+RUN npm install openapi-codegen
 
 ENV PATH=/home/circleci/node/bin:/home/circleci/google-cloud-sdk/bin:$PATH
 
