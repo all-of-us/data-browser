@@ -35,35 +35,3 @@ paths:
 
 components:
   schemas:
-    CdrVersion:
-      required:
-        - cdrVersionId
-        - name
-        - creationTime
-      type: object
-      properties:
-        cdrVersionId:
-          type: string
-        name:
-          type: string
-        numParticipants:
-          type: integer
-          format: int32
-        creationTime:
-          type: integer
-          format: int64
-          description: Milliseconds since the UNIX epoch.
-
-    CdrVersionListResponse:
-      type: object
-      required:
-        - items
-        - defaultCdrVersionId
-      properties:
-        items:
-          type: array
-          items:
-            $ref: "#/components/schemas/CdrVersion"
-        defaultCdrVersionId:
-          type: string
-          description: ID of the CDR versions that should be used by the user by default
