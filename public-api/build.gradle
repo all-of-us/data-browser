@@ -62,10 +62,6 @@ def dbProperties = [
         'spring.datasource.password': '${databrowser_db_password}'
 ]
 
-if (JavaVersion.current() != JavaVersion.VERSION_17) {
-    throw new GradleException("This build must be run with Java 17. See developer-system-initialization.md")
-}
-
 task generateApi {
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
