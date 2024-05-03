@@ -65,6 +65,7 @@ def dbProperties = [
 task generateApi {
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
+    logging.captureStandardOutput(LogLevel.DEBUG)
     doLast {
         def config = new CodegenConfigurator()
         config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
@@ -92,6 +93,7 @@ task generateApi {
 task generateApiClient {
     inputs.file("$projectDir/$swaggerSourceFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
+    logging.captureStandardOutput(LogLevel.DEBUG)
     doLast {
         def config = new CodegenConfigurator()
         config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
@@ -122,6 +124,7 @@ def workbenchApiFile = 'src/main/resources/private-workbench.yaml'
 task generateWorkbenchClient {
     inputs.file("$projectDir/$workbenchApiFile")
     outputs.dir("$projectDir/$swaggerTargetFolder")
+    logging.captureStandardOutput(LogLevel.DEBUG)
     doLast {
         def config = new CodegenConfigurator()
         config.setInputSpec("file:///$projectDir/$workbenchApiFile")
