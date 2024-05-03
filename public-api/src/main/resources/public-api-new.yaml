@@ -1,37 +1,58 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  title: AllOfUs Public API
-  description: |
-    The API for the AllOfUs databrowser.
-    Throughout, we use integer/int64 in preference to string/date-time because Swagger's
-    date formatting is inconsistent between server and client. Time values are stored as
-    milliseconds since the UNIX epoch.
-  termsOfService: http://www.pmi-ops.org/terms_of_service.html
-  contact:
-    name: developer_help@pmi-ops.org
-  license:
-    name: BSD
-  version: 0.1.0
+  title: Sample API
+  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  version: 0.1.9
 servers:
-  - url: https://api.pmi-ops.org/
-security:
-  - aou_oauth: []
-
+  - url: http://api.example.com/v1
+    description: Optional server description, e.g. Main (production) server
+  - url: http://staging-api.example.com
+    description: Optional server description, e.g. Internal staging server for testing
 paths:
   /v1/cdrVersions:
     get:
-      tags:
-        - cdrVersions
-      description: Returns all curated data repository (CDR) versions that the user has access to
-      operationId: getCdrVersions
-      security: []
+      summary: Returns a list of cdr versions.
+      description: Optional extended description in CommonMark or HTML.
       responses:
-        200:
-          description: A list of CDR versions.
+        '200':    # status code
+          description: A list of cdr versions
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CdrVersionListResponse"
+                $ref: "#/definitions/CdrVersionListResponse"
 
 components:
   schemas:
+    CdrVersion:
+      type: object
+      properties:
+        cdrVersionId:
+          type: string
+        name:
+          type: string
+        numParticipants:
+          type: integer
+          format: int32
+        creationTime:
+          type: integer
+          format: int64
+          description: Milliseconds since the UNIX epoch.
+      # Both properties are required
+      required:
+        - cdrVersionId
+        - name
+        - creationTime
+
+    CdrVersionListResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/definitions/CdrVersion"
+        defaultCdrVersionId:
+          type: string
+          description: ID of the CDR versions that should be used by the user by default
+      required:
+        - items
+        - defaultCdrVersionId
