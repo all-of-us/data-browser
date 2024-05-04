@@ -44,7 +44,7 @@ buildscript {    // Configuration for building
 }
 
 def swaggerTemplateDir = 'src/main/resources'
-def swaggerSourceFile = 'src/main/resources/public-api-new.yaml'
+def swaggerSourceFile = 'src/main/resources/public-api.yaml'
 def swaggerTargetFolder = 'src/generated/java'
 
 def db_host = System.getenv("DB_HOST")
