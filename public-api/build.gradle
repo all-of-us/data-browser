@@ -1,6 +1,8 @@
+import io.swagger.v3.parser.OpenAPIV3Parser
+import io.swagger.v3.parser.core.models.ParseOptions
+import io.swagger.codegen.v3.ClientOptInput
 import io.swagger.codegen.v3.DefaultGenerator
 import io.swagger.codegen.v3.config.CodegenConfigurator
-import io.swagger.v3.parser.OpenAPIV3Parser
 
 import org.gradle.api.tasks.JavaExec
 
@@ -36,7 +38,8 @@ buildscript {    // Configuration for building
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
-        classpath 'io.swagger.codegen.v3:swagger-codegen-maven-plugin:3.0.25'
+        classpath 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.50'
+        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.19.2'
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
@@ -44,7 +47,7 @@ buildscript {    // Configuration for building
 }
 
 def swaggerTemplateDir = 'src/main/resources'
-def swaggerSourceFile = 'src/main/resources/public-api.yaml'
+def swaggerSourceFile = 'src/main/resources/public-api-new.yaml'
 def swaggerTargetFolder = 'src/generated/java'
 
 def db_host = System.getenv("DB_HOST")
@@ -68,25 +71,23 @@ task generateApi {
     logging.captureStandardOutput(LogLevel.DEBUG)
     doLast {
         def config = new CodegenConfigurator()
-        config.setInputSpec("file:///$projectDir/$swaggerSourceFile")
-        config.setOutputDir("$projectDir")
-        config.setTemplateDir("$projectDir/$swaggerTemplateDir")
+        def inputFile = new File("$projectDir/$swaggerSourceFile")
+        def outputFile = new File("$projectDir/$swaggerTargetFolder")
+
+        config.setInputSpec(inputFile.toURI().toString())
+        config.setOutputDir(outputFile.toString())
         config.setLang('spring')
-        config.setAdditionalProperties([
-                'apiPackage'     : 'org.pmiops.workbench.publicapi',
-                'modelPackage'   : 'org.pmiops.workbench.model',
-                'sourceFolder'   : swaggerTargetFolder,
-                'useTags'        : 'true',
-                // Generates delegate interfaces; used to make method annotations work without
-                // having to copy them to our implementations.
-                'delegatePattern': 'true',
-                'dateLibrary'      : 'java8'
-        ])
+        config.addAdditionalProperty('apiPackage', 'org.pmiops.workbench.publicapi')
+        config.addAdditionalProperty('modelPackage', 'org.pmiops.workbench.model')
+        config.addAdditionalProperty('sourceFolder', swaggerTargetFolder)
+        config.addAdditionalProperty('useTags', 'true')
+        config.addAdditionalProperty('delegatePattern', 'true')
+        config.addAdditionalProperty('dateLibrary', 'java8')
 
-        def something = config.toClientOptInput()
-        something.setOpenAPI(new OpenAPIV3Parser().read("file:///$projectDir/$swaggerSourceFile".toString(), null, null))
+        def clientOptInput = config.toClientOptInput()
+        clientOptInput.setOpenAPI(new OpenAPIV3Parser().read(inputFile.toString(), null, new ParseOptions()))
 
-        (new DefaultGenerator().opts(something)).generate()
+        new DefaultGenerator().opts(clientOptInput).generate()
     }
 }
 
@@ -178,6 +179,7 @@ apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.hidetake.swagger.generator'
 
 sourceSets {
     generated {
