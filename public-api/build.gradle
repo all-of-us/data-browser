@@ -34,7 +34,7 @@ buildscript {    // Configuration for building
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
-        classpath 'org.owasp:dependency-check-gradle:7.4.4'
+
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
         classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.18.2'
@@ -54,12 +54,12 @@ plugins {
     id 'war'
 
     id 'org.springframework.boot' version '2.7.1'
+    id 'org.owasp.dependencycheck' version '7.4.4'
 }
 
 
 apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 
-apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'io.spring.dependency-management'
 
 apply plugin: 'org.hidetake.swagger.generator'
