@@ -59,7 +59,6 @@ plugins {
     id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.4.2'
 }
 
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 
 
 def db_host = System.getenv("DB_HOST")
