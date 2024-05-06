@@ -107,7 +107,7 @@ ext.SWAGGER_CODEGEN_BASE_PKG = 'org.pmiops.workbench'
 ext.SWAGGER_2_CODEGEN_DIR = "$buildDir/swagger2"
 // This path is the Java sources root for finding any overridden Swagger-codegen
 // templates we may be using.
-ext.SWAGGER_TEMPLATE_DIR = "$projectDir/src/main/resources/swaggercodegen"
+ext.SWAGGER_TEMPLATE_DIR = "$projectDir/src/main/resources"
 // Raw options passed to the Swagger codegen CLI.
 ext.SWAGGER_2_RAW_OPTS = [
         // By default, the ignore file within the output directory is used. Override
@@ -377,6 +377,9 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
     testImplementation 'org.mockito:mockito-core:2.18.3'
+
+    testImplementation 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 
     testImplementation 'org.mockito:mockito-core:3.11.2'
 
