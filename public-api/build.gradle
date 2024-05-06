@@ -315,7 +315,7 @@ dependencies {
 
     implementation 'ch.qos.logback:logback-classic:1.2.11'
 
-    implementation "org.yaml:snakeyaml:1.32"
+    implementation "org.yaml:snakeyaml:1.33"
     implementation 'commons-io:commons-io:2.7'
     implementation 'com.github.fge:json-patch:1.9'
     implementation "org.hibernate:hibernate-validator:6.0.18.Final"
