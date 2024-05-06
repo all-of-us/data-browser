@@ -37,7 +37,6 @@ buildscript {    // Configuration for building
         classpath 'org.owasp:dependency-check-gradle:7.4.4'
         classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.18.2'
         // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
         // implicit dependencies: (1) the set of "generatedCompile" Gradle dependencies need to be updated
         // to match the modules imported by the Swagger codegen templates, and (2) some template files
@@ -47,16 +46,25 @@ buildscript {    // Configuration for building
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.owasp.dependencycheck'
-apply plugin: 'io.spring.dependency-management'
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'war'
 
-apply plugin: 'org.hidetake.swagger.generator'
+    id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.8.0'
+    id 'org.springframework.boot' version '2.7.1'
+    id 'org.owasp.dependencycheck' version '7.4.4'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+
+    // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
+    // implicit dependencies: (1) the set of "generatedCompile" Gradle dependencies need to be updated
+    // to match the modules imported by the Swagger codegen templates, and (2) some template files
+    // are overridden with forked templates within this repo; they will likely need to be re-copied from
+    // the newer release version and have AoU-specific modifications re-applied.
+    id 'org.hidetake.swagger.generator' version '2.19.2'
+}
+
 
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
