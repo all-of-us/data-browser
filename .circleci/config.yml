@@ -107,7 +107,7 @@ jobs:
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
-          command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
+          command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes --stacktrace
       - run:
           name: Integration tests compile
           working_directory: ~/data-browser/public-api
