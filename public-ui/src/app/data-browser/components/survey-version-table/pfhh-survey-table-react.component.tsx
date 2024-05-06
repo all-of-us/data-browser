@@ -41,7 +41,7 @@ strong {
 }
 
 div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
-  border-right:#262262 1px solid;
+  border-right:#cccccc 1px solid;
 }
 .version-box-body{
     overflow-y: auto;
@@ -72,8 +72,11 @@ export class PfhhSurveyTableReactComponent extends React.Component<
 
   render() {
     const fhh_survey_pdf_link = '/assets/surveys/Family_Health_History_Survey_English.pdf';
+    const fhh_survey_pdf_link_spanish = '/assets/surveys/Family_Health_History_Survey_Spanish.pdf';
     const pmh_survey_pdf_link = '/assets/surveys/Personal_Medical_History_Survey_English.pdf';
+    const pmh_survey_pdf_link_spanish = '/assets/surveys/Personal_Medical_History_Survey_Spanish.pdf';
     const pafhh_survey_pdf_link = '/assets/surveys/Survey_PaFHH_Eng_Src.pdf';
+    const pafhh_survey_pdf_link_spanish = '/assets/surveys/Survey_PaFHH_spn_Src.pdf';
     const {questionCount, participantCount} = this.props;
 
     console.log(questionCount);
@@ -92,39 +95,33 @@ export class PfhhSurveyTableReactComponent extends React.Component<
             <span className="version-box-item">Personal and Family Health History</span>
             <span className="version-box-item">
                       <a href={pafhh_survey_pdf_link} download>
-                        <ClrIcon
-                          shape="file"
-                          className="is-solid"
-                          style={{ width: 18, height: 18 }}
-                        />
-                        Survey as PDF
-                      </a>{" "}
+                        English
+                      </a>{" "}|{" "}
+                      <a href={pafhh_survey_pdf_link_spanish} download>
+                        Spanish
+                      </a>
             </span>
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Personal Medical History</span>
             <span className="version-box-item">
                       <a href={pmh_survey_pdf_link} download>
-                        <ClrIcon
-                          shape="file"
-                          className="is-solid"
-                          style={{ width: 18, height: 18 }}
-                        />
-                        Survey as PDF
-                      </a>{" "}
+                        English
+                      </a>{" "}|{" "}
+                      <a href={pmh_survey_pdf_link_spanish} download>
+                        Spanish
+                      </a>
             </span>
           </div>
           <div className="version-box-row">
             <span className="version-box-item">Family Health History</span>
             <span className="version-box-item">
                       <a href={fhh_survey_pdf_link} download>
-                        <ClrIcon
-                          shape="file"
-                          className="is-solid"
-                          style={{ width: 18, height: 18 }}
-                        />
-                        Survey as PDF
-                      </a>{" "}
+                        English
+                      </a>{" "}|{" "}
+                      <a href={fhh_survey_pdf_link_spanish} download>
+                        Spanish
+                      </a>
             </span>
           </div>
           </div>

@@ -41,7 +41,7 @@ strong {
 }
 
 div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
-  border-right:#262262 1px solid;
+  border-right:#cccccc 1px solid;
 }
 .version-box-body{
     overflow-y: auto;
@@ -69,7 +69,8 @@ export class SurveyVersionTableReactComponent extends React.Component<
 
   render() {
     const { surveyVersions } = this.props;
-        
+    console.log(surveyVersions,'surveyversions');
+    
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
@@ -92,13 +93,12 @@ export class SurveyVersionTableReactComponent extends React.Component<
                     </span>
                     <span className="version-box-item">
                       <a href={survey.pdfLink} download>
-                        <ClrIcon
-                          shape="file"
-                          className="is-solid"
-                          style={{ width: 18, height: 18 }}
-                        />
-                        Survey as PDF
-                      </a>{" "}
+                        English
+                      </a>{" "}|{" "}
+                      <a href={survey.pdfLinkSpanish} download>
+
+                        Spanish
+                      </a>
                     </span>
                   </div>
                 );

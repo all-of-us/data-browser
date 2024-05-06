@@ -37,6 +37,7 @@ const styles = reactStyles({
   },
   surveyHead: {
     display: "flex",
+    "justifyContent":"space-between",
     position: "relative",
     padding: "0 1rem",
     marginBottom: "calc(18px * 4)",
@@ -65,7 +66,7 @@ const styles = reactStyles({
     top: "3rem"
   },
   versionTable: {
-    width: "70%",
+    width: "40%",
   },
   statContainer: {
     display: "flex",
@@ -324,6 +325,13 @@ export const SurveyViewReactComponent = withRouteData(
                       "_" +
                       item.stratum4 +
                       "_English.pdf",
+                    pdfLinkSpanish:
+                      "/assets/surveys/" +
+                      "COPE_survey_" +
+                      item.stratum3.split("/")[0].replace("/", "_") +
+                      "_" +
+                      item.stratum4 +
+                      "_Spanish.pdf",
                   });
                 } else if (item.analysisId === 3401) {
                   const matchingSurveyVersionAnalysisRow =
