@@ -28,8 +28,8 @@ import org.pmiops.workbench.publicapi.client.model.SurveyMetadataListResponse;
 import org.pmiops.workbench.publicapi.client.model.SearchConceptsRequest;
 import org.pmiops.workbench.publicapi.client.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.publicapi.client.model.SurveyVersionCountResponse;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Ignore;
 
 import java.util.ArrayList;
 import java.util.HashMap;

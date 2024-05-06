@@ -172,7 +172,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             contig = searchTermType.getContig();
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
-            whereGeneFlag = searchTermType.getWhereGeneFlag();
+            whereGeneFlag = searchTermType.isWhereGeneFlag();
         }
 
         String WHERE_GENE_IN = " AND genes in (";
@@ -192,20 +192,20 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
             List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
+                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
                         WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
                     }
                 }
             }
             GenomicFilterOptionList conFilterList = filters.getConsequence();
             List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CON_IN += "\"" + filter.getOption() + "\",";
                         } else {
@@ -216,10 +216,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
             List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
                 for(int i=0; i < varTypeFilters.size(); i++) {
                     GenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
                         }
@@ -228,10 +228,10 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
             List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.isFilterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CLIN_IN += "\"" + filter.getOption() + "\",";
                         } else {
@@ -241,25 +241,25 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             GenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.getChecked()) {
+            if (acFilter != null && acFilter.isChecked()) {
                 Long minVal = acFilter.getMin();
                 Long maxVal = acFilter.getMax();
                 ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.getChecked()) {
+            if (anFilter != null && anFilter.isChecked()) {
                 Long minVal = anFilter.getMin();
                 Long maxVal = anFilter.getMax();
                 ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.getChecked()) {
+            if (afFilter != null && afFilter.isChecked()) {
                 Float minVal = afFilter.getMinFreq();
                 Float maxVal = afFilter.getMaxFreq();
                 ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.getChecked()) {
+            if (hcFilter != null && hcFilter.isChecked()) {
                 Long minVal = hcFilter.getMin();
                 Long maxVal = hcFilter.getMax();
                 HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
@@ -366,13 +366,13 @@ public class GenomicsController implements GenomicsApiDelegate {
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
-            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.getSortActive()) {
+            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
                 if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
                     ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
                 }
             }
             SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
-            if (geneColumnSortMetadata != null && geneColumnSortMetadata.getSortActive()) {
+            if (geneColumnSortMetadata != null && geneColumnSortMetadata.isSortActive()) {
                 if (geneColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY genes ASC";
                 } else {
@@ -380,7 +380,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
-            if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.getSortActive()) {
+            if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
                 if (consequenceColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) ASC";
                 } else {
@@ -388,7 +388,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
-            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.getSortActive()) {
+            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
                 if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
                 } else {
@@ -396,7 +396,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
-            if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.getSortActive()) {
+            if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.isSortActive()) {
                 if (clinSigColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) ASC";
                 } else {
@@ -404,7 +404,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
-            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.getSortActive()) {
+            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.isSortActive()) {
                 if (alleleCountColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
                 } else {
@@ -412,7 +412,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
-            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.getSortActive()) {
+            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.isSortActive()) {
                 if (alleleNumberColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
                 } else {
@@ -420,7 +420,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
-            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.getSortActive()) {
+            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.isSortActive()) {
                 if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
                 } else {
@@ -428,7 +428,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
-            if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.getSortActive()) {
+            if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.isSortActive()) {
                 if (homozygoteCountColumnSortMetadata.getSortDirection().equals("asc")) {
                     ORDER_BY_CLAUSE = " ORDER BY homozygote_count ASC";
                 } else {
@@ -458,7 +458,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             contig = searchTermType.getContig();
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
-            whereGeneFlag = searchTermType.getWhereGeneFlag();
+            whereGeneFlag = searchTermType.isWhereGeneFlag();
         }
 
         String WHERE_GENE_IN = " AND genes in (";
@@ -478,20 +478,20 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (filters != null) {
             GenomicFilterOptionList geneFilterList = filters.getGene();
             List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.getFilterActive()) {
+            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
                 for(int i=0; i < geneFilters.size(); i++) {
                     GenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.getChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
+                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
                         WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
                     }
                 }
             }
             GenomicFilterOptionList conFilterList = filters.getConsequence();
             List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.getFilterActive()) {
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
                 for(int i=0; i < conFilters.size(); i++) {
                     GenomicFilterOption filter = conFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CON_IN += "\"" + filter.getOption() + "\",";
                         } else {
@@ -503,10 +503,10 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
             List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.getFilterActive()) {
+            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
                 for(int i=0; i < varTypeFilters.size(); i++) {
                     GenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
                         }
@@ -516,10 +516,10 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
             List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.getFilterActive()) {
+            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.isFilterActive()) {
                 for(int i=0; i < clinFilters.size(); i++) {
                     GenomicFilterOption filter = clinFilters.get(i);
-                    if (filter.getChecked()) {
+                    if (filter.isChecked()) {
                         if (!Strings.isNullOrEmpty(filter.getOption())) {
                             WHERE_CLIN_IN += "\"" + filter.getOption() + "\",";
                         } else {
@@ -529,25 +529,25 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
             GenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.getChecked()) {
+            if (acFilter != null && acFilter.isChecked()) {
                 Long minVal = acFilter.getMin();
                 Long maxVal = acFilter.getMax();
                 ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.getChecked()) {
+            if (anFilter != null && anFilter.isChecked()) {
                 Long minVal = anFilter.getMin();
                 Long maxVal = anFilter.getMax();
                 ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.getChecked()) {
+            if (afFilter != null && afFilter.isChecked()) {
                 Float minVal = afFilter.getMinFreq();
                 Float maxVal = afFilter.getMaxFreq();
                 ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
             }
             GenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.getChecked()) {
+            if (hcFilter != null && hcFilter.isChecked()) {
                 Long minVal = hcFilter.getMin();
                 Long maxVal = hcFilter.getMax();
                 HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
@@ -693,11 +693,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             contig = searchTermType.getContig();
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
-            whereGeneFlag = searchTermType.getWhereGeneFlag();
-            whereContigFlag = searchTermType.getWhereContigFlag();
-            wherePositionFlag = searchTermType.getWherePositionFlag();
-            whereRsIdFlag = searchTermType.getWhereRsIdFlag();
-            whereVariantIdFlag = searchTermType.getWhereVariantIdFlag();
+            whereGeneFlag = searchTermType.isWhereGeneFlag();
+            whereContigFlag = searchTermType.isWhereContigFlag();
+            wherePositionFlag = searchTermType.isWherePositionFlag();
+            whereRsIdFlag = searchTermType.isWhereRsIdFlag();
+            whereVariantIdFlag = searchTermType.isWhereVariantIdFlag();
         }
 
         finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery

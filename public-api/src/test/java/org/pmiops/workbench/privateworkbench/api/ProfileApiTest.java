@@ -15,8 +15,8 @@ package org.pmiops.workbench.privateworkbench.api;
 
 import org.pmiops.workbench.privateworkbench.ApiException;
 import org.pmiops.workbench.privateworkbench.model.Profile;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Ignore;
 
 import java.util.ArrayList;
 import java.util.HashMap;

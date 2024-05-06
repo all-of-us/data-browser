@@ -1,11 +1,11 @@
 package org.pmiops.workbench.cdr.dao;
 
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.After;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assert;
+import org.junit.jupiter.api.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
