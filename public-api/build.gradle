@@ -35,7 +35,6 @@ buildscript {    // Configuration for building
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
 
-        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
         classpath "com.google.http-client:google-http-client:1.41.1"
         classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.18.2'
         // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
@@ -55,12 +54,12 @@ plugins {
 
     id 'org.springframework.boot' version '2.7.1'
     id 'org.owasp.dependencycheck' version '7.4.4'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
 }
 
 
 apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 
-apply plugin: 'io.spring.dependency-management'
 
 apply plugin: 'org.hidetake.swagger.generator'
 
