@@ -52,10 +52,10 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'war'
+    id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.8.0'
 }
 
 
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'io.spring.dependency-management'
