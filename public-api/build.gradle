@@ -47,16 +47,20 @@ buildscript {    // Configuration for building
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
+
 apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'org.owasp.dependencycheck'
 apply plugin: 'io.spring.dependency-management'
 
 apply plugin: 'org.hidetake.swagger.generator'
+
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'war'
+}
 
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
