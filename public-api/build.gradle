@@ -30,6 +30,7 @@ buildscript {    // Configuration for building
             url 'https://broadinstitute.jfrog.io/artifactory/libs-release-local'
         }
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
