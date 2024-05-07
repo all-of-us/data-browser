@@ -1,7 +1,7 @@
 package org.pmiops.workbench.cdr.dao;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
 import org.junit.jupiter.api.runner.RunWith;
@@ -82,7 +82,7 @@ public class AchillesResultDaoTest {
                 .sourceCountValue(sourceCountValue);
     }
 
-    @After
+    @AfterEach
     public void flush(){
         achillesAnalysisDao.delete(achillesAnalysis1);
         achillesResultDao.delete(achillesResult1);

@@ -7,7 +7,7 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import org.junit.jupiter.api.After;
+import org.junit.jupiter.api.AfterEach;
 import java.util.List;
 import org.pmiops.workbench.model.MatchType;
 import javax.persistence.EntityManager;
@@ -709,7 +709,7 @@ public class DataBrowserControllerTest {
         return dbCdrVersion;
     }
 
-    @After
+    @AfterEach
     public void flush(){
         conceptDao.delete(CONCEPT_1);
         conceptDao.delete(CONCEPT_2);

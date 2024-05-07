@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
 import org.junit.jupiter.api.runner.RunWith;
@@ -97,7 +97,7 @@ public class ConceptRelationshipDaoTest {
     }
 
 
-    @After
+    @AfterEach
     public void flush(){
 
         conceptDao.delete(concept1);
