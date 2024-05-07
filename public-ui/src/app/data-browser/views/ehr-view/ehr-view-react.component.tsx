@@ -470,7 +470,7 @@ export const EhrViewReactComponent = withRouteData(
       const searchRequest = {
         query: searchWord ? searchWord : "",
         domain: domain.toUpperCase(),
-        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        standardConceptFilter: StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH,
         maxResults: 50,
         minCount: 1,
         pageNumber: 0,
@@ -548,7 +548,7 @@ export const EhrViewReactComponent = withRouteData(
       const searchRequest = {
         query: searchWord ? searchWord : "",
         domain: domain.toUpperCase(),
-        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        standardConceptFilter: StandardConceptFilter.STANDARD_OR_CODE_ID_MATCH,
         maxResults: 50,
         minCount: 1,
         pageNumber: data,

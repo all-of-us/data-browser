@@ -430,18 +430,18 @@ paths:
       description: Get survey questions
       operationId: getSurveyQuestions
       parameters:
-        - name: survey_concept_id
-          in: query
-          description: survey concept id
-          required: true
-          schema:
-            type: integer
-            format: int64
-        - name: search_word
-          in: query
-          description: search word in surveys page
-          schema:
-            type: string
+      - name: survey_concept_id
+        in: query
+        description: survey concept id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: search_word
+        in: query
+        description: search word in surveys page
+        schema:
+          type: string
       responses:
         "200":
           description: survey question fetch
