@@ -1,6 +1,6 @@
 package org.pmiops.workbench.cdr.dao;
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.After;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
@@ -30,7 +30,7 @@ public class AchillesResultDaoTest {
 
     private DbAchillesResult achillesResult1;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
 

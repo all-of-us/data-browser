@@ -1,6 +1,6 @@
 package org.pmiops.workbench.cdr.dao;
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
 import org.junit.jupiter.api.runner.RunWith;
@@ -29,7 +29,7 @@ public class AchillesAnalysisDaoTest {
     @Autowired
     AchillesResultDao achillesResultDao;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         DbAchillesAnalysis achillesAnalysis1=createAnalysis(3110L,"Survey Question Answer Count","survey_concept_id","question_concept_id","answer_concept_id","answer_value_string",null,"column","counts");

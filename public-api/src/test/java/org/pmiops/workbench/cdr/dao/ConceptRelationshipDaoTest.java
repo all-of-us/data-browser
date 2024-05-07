@@ -1,7 +1,7 @@
 package org.pmiops.workbench.cdr.dao;
 
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.After;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
@@ -39,7 +39,7 @@ public class ConceptRelationshipDaoTest {
     private final DbConcept concept6 = makeConcept(7890L, "concept F test concept 2", null, "conceptF", "classId", "V6", "Condition", 1234L, 0.2f, 0L, 1);
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         conceptDao.save(concept1);

@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class DomainInfoDaoTest {
 
   @Autowired private DomainInfoDao domainInfoDao;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     domainInfoDao.save(
         new DbDomainInfo()

@@ -12,7 +12,7 @@ import java.util.List;
 import org.pmiops.workbench.model.MatchType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
@@ -441,7 +441,7 @@ public class DataBrowserControllerTest {
     private DataBrowserController dataBrowserController;
     private ConceptService conceptService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         saveData();
         AchillesMapper achillesMapper = new AchillesMapperImpl();

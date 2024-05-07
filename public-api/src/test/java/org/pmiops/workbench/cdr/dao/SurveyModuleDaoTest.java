@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import org.junit.runner.RunWith;
@@ -21,7 +21,7 @@ public class SurveyModuleDaoTest {
 
   @Autowired private SurveyModuleDao surveyModuleDao;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     surveyModuleDao.save(
         new DbSurveyModule()

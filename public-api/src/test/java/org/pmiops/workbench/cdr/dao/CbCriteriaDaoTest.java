@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.jupiter.api.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class CbCriteriaDaoTest {
     @Autowired private CBCriteriaDao cbCriteriaDao;
     @Autowired private JdbcTemplate jdbcTemplate;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         cbCriteriaDao.save(
                 new DbCriteria()
