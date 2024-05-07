@@ -3,7 +3,7 @@ package org.pmiops.workbench.cdr.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assert;
+import static com.google.common.truth.Truth.assertThat;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class AchillesResultDaoTest {
     @Test
     public void findAchillesResultByAnalysisId() throws Exception{
         final DbAchillesResult achillesResult=achillesResultDao.findAchillesResultByAnalysisId(5000L);
-        Assert.assertNotEquals(achillesResult,null);
+        assertThat(achillesResult).isNotEqualTo(null);
     }
 
 

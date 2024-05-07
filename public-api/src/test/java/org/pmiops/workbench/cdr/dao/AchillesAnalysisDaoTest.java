@@ -2,7 +2,7 @@ package org.pmiops.workbench.cdr.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assert;
+import static com.google.common.truth.Truth.assertThat;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,14 +69,14 @@ public class AchillesAnalysisDaoTest {
     public void findAllAnalyses() throws Exception {
         /* Todo write more tests */
         final List<DbAchillesAnalysis> list = achillesAnalysisDao.findAll();
-        Assert.assertNotEquals(list,null);
+        assertThat(list).isNotEqualTo(null);
     }
 
     @Test
     public void findSurveyAnalysisResults() throws Exception{
         List<String> qids=Arrays.asList("1000000","2000000");
         final List<DbAchillesAnalysis> list=achillesAnalysisDao.findSurveyAnalysisResults("1586134",qids);
-        Assert.assertNotEquals(list,null);
+        assertThat(list).isNotEqualTo(null);
     }
 
     @Test
@@ -85,8 +85,8 @@ public class AchillesAnalysisDaoTest {
         analysisIds.add(3101L);
         analysisIds.add(3102L);
         List<DbAchillesAnalysis> aa = achillesAnalysisDao.findConceptAnalysisResults("104567",analysisIds);
-        Assert.assertNotEquals(aa.get(0),null);
-        Assert.assertNotEquals(aa.get(1),null);
+        assertThat(aa.get(0)).isNotEqualTo(null);
+        assertThat(aa.get(1)).isNotEqualTo(null);
     }
 
     @Test
@@ -95,8 +95,8 @@ public class AchillesAnalysisDaoTest {
         analysisIds.add(3101L);
         analysisIds.add(3102L);
         List<DbAchillesAnalysis> aa = achillesAnalysisDao.findConceptAnalysisResults("1586134",analysisIds);
-        Assert.assertNotEquals(aa.get(0),null);
-        Assert.assertNotEquals(aa.get(1),null);
+        assertThat(aa.get(0)).isNotEqualTo(null);
+        assertThat(aa.get(1)).isNotEqualTo(null);
     }
 
 

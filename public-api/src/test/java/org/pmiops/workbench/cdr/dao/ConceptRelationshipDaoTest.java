@@ -4,7 +4,7 @@ package org.pmiops.workbench.cdr.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assert;
+import static com.google.common.truth.Truth.assertThat;
 import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
@@ -56,13 +56,13 @@ public class ConceptRelationshipDaoTest {
     public void findAllConceptRelationships() throws Exception {
         /* Todo write more tests */
         final List<ConceptRelationship> list = conceptRelationshipDao.findAll();
-        Assert.assertNotEquals(list,null);
+        assertThat(list).isNotEqualTo(null);
     }
 
     @Test
     public void testConceptSearchCodeMatch() throws Exception{
         final List<DbConcept> list = conceptDao.findStandardConcepts(1234L);
-        Assert.assertEquals(list.get(0),concept5);
+        assertThat(list.get(0)).isEqualTo(concept5);
     }
 
 
