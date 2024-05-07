@@ -34,8 +34,8 @@ public class CommonStorageEnumsTest {
             Arguments.of(
                     Domain.class.getSimpleName(),
                     Domain.values(),
-                    (Function<Short, Enum<?>>) CommonStorageEnums::domainFromStorage,
-                    (Function<Enum<?>, Short>) CommonStorageEnums::domainToStorage
+                    (Function<Short, Domain>) CommonStorageEnums::domainFromStorage,
+                    (Function<Enum<?>, Short>) (domain) -> CommonStorageEnums.domainToStorage(domain)
             )
     );
   }
