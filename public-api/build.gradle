@@ -3,19 +3,18 @@ import org.gradle.api.tasks.JavaExec
 buildscript {    // Configuration for building
 
     ext {
-        GAE_VERSION = '1.9.64'
+        GAE_VERSION = '2.0.26'
         GOOGLE_TRUTH_VERSION = '1.1.3'
         GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
-        SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
-        JACKSON_DATABIND_VERSION = '2.14.1'
-        JACKSON_VERSION = '2.14.1'
+        HIBERNATE_VERSION = '6.4.4.Final'
+        SPRING_BOOT_VERSION = '3.2.4'
+        SPRING_FRAMEWORK_VERSION = '6.1.5'
+        SPRING_SECURITY_VERSION = '6.2.3'
+        JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '2.7.5'
         SPRINGFOX_VERSION = '3.0.0'
-        LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
+        LIQUIBASE_VERSION = '4.27.0'
         SWAGGER_3_CODEGEN_VERSION = '3.0.52'
         OPENCENSUS_VERSION = '0.23.0'
     }
@@ -53,7 +52,7 @@ plugins {
     id 'idea'
     id 'war'
 
-    id 'org.springframework.boot' version '2.7.1'
+    id 'org.springframework.boot' version '3.2.4'
     id 'org.owasp.dependencycheck' version '7.4.4'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'org.hidetake.swagger.generator' version '2.19.2'
@@ -104,7 +103,7 @@ configurations {
     toolsRuntimeOnly.extendsFrom runtimeOnly
 }
 
-ext['hibernate.version'] = '5.6.9.Final'
+ext['hibernate.version'] = '6.4.4.Final'
 
 // Shared variables for Swagger codegen. Use "ext" rather than "def" to allow
 // access globally, including from within helper functions.
@@ -289,7 +288,7 @@ dependencies {
     __swaggerCodegenV3__ "io.swagger.codegen.v3:swagger-codegen-cli:${SWAGGER_3_CODEGEN_VERSION}"
 
     // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
-    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
+    providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
     implementation 'mysql:mysql-connector-java:8.0.30'
 
     implementation "io.swagger:swagger-annotations:1.6.7"
@@ -317,13 +316,12 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-java:3.21.7'
     implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
     // https://mvnrepository.com/artifact/com.google.appengine/appengine-api-1.0-sdk
-    implementation 'com.google.appengine:appengine-api-1.0-sdk:2.0.24'
+    implementation("com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}") {
+        exclude group: 'com.google.api-client', module: 'google-api-client-servlet'
+    }
 
 
-    // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
-
-    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'ch.qos.logback:logback-classic:1.5.5'
 
     implementation "org.yaml:snakeyaml:1.32"
     implementation 'commons-io:commons-io:2.7'
@@ -339,25 +337,52 @@ dependencies {
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
 
-    implementation 'org.springframework:spring-context:5.3.19'
+    implementation "org.springframework.retry:spring-retry"
+    implementation "org.springframework.security:spring-security-core:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-config:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-crypto:${SPRING_SECURITY_VERSION}"
+    implementation "org.springframework.security:spring-security-web:${SPRING_SECURITY_VERSION}"
+
+    implementation "org.springframework:spring-context:${SPRING_FRAMEWORK_VERSION}"
 
     implementation("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
         exclude module: 'spring-boot-starter-tomcat'
         exclude group: 'org.slf4j', module: 'jul-to-slf4j'
     }
-    implementation 'org.springframework.security:spring-security-web:5.6.9'
-    implementation "org.hibernate:hibernate-core:${HIBERNATE_VERSION}"
+
+    implementation "org.hibernate.orm:hibernate-core:${HIBERNATE_VERSION}"
+    implementation "org.hibernate.orm:hibernate-community-dialects:${HIBERNATE_VERSION}"
 
     implementation "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
 
     implementation "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_DATABIND_VERSION}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
     implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
-    implementation 'javax.inject:javax.inject:1'
+
     implementation 'org.apache.commons:commons-lang3:3.0'
+
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
+
+    // jakarta
+    implementation "jakarta.servlet:jakarta.servlet-api:6.0.0"
+    implementation "jakarta.inject:jakarta.inject-api:2.0.1"
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
+    implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    generatedCompile "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
+    generatedCompile "jakarta.inject:jakarta.inject-api:2.0.1"
+    generatedCompile 'jakarta.mail:jakarta.mail-api:2.1.3'
+    generatedCompile 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    generatedCompile 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    generatedCompile 'jakarta.validation:jakarta.validation-api:3.0.2'
+    generatedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
 
     implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
@@ -435,7 +460,6 @@ dependencies {
     generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
     generatedCompile 'joda-time:joda-time:2.10'
     generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
-    generatedCompile "javax.xml.bind:jaxb-api:2.3.1"
 
     generatedCompile 'com.google.http-client:google-http-client:1.41.1'
     generatedCompile 'com.google.api-client:google-api-client:2.2.0'
@@ -486,7 +510,8 @@ swaggerSources {
                     // Generates delegate interfaces; used to make method annotations work without
                     // having to copy them to our implementations.
                     'delegatePattern': 'true',
-                    'dateLibrary'      : 'java8'
+                    'dateLibrary'      : 'java8',
+                    'jakarta'          : 'true'
             ]
         }
     }
@@ -506,7 +531,8 @@ swaggerSources {
                     'apiPackage'   : 'org.pmiops.workbench.publicapi.client.api',
                     'library'          : 'okhttp-gson',
                     'serializableModel': 'true',
-                    'dateLibrary'      : 'java8'
+                    'dateLibrary'      : 'java8',
+                    'jakarta'          : 'true'
             ]
         }
     }
@@ -526,9 +552,15 @@ swaggerSources {
                     'apiPackage'       : 'org.pmiops.workbench.privateworkbench.api',
                     'library'          : 'okhttp-gson',
                     'serializableModel': 'true',
-                    'dateLibrary'      : 'java8'
+                    'dateLibrary'      : 'java8',
+                    'jakarta'          : 'true'
             ]
         }
+    }
+}
+
+dependencies {
+    modules {
     }
 }
 

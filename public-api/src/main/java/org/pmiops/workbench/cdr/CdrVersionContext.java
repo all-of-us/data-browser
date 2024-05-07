@@ -1,7 +1,7 @@
 package org.pmiops.workbench.cdr;
 
 import java.util.Optional;
-import javax.annotation.Nonnull;
+import jakarta.annotation.Nonnull;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 
