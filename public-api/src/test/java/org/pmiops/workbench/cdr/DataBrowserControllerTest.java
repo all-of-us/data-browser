@@ -14,7 +14,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
@@ -64,7 +63,6 @@ import org.pmiops.workbench.cdr.ConceptMapper;
 import org.pmiops.workbench.cdr.ConceptMapperImpl;
 import org.springframework.test.context.TestPropertySource;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")

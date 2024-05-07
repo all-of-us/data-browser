@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")

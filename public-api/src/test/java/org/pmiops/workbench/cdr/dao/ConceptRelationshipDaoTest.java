@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
-import org.junit.jupiter.api.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
@@ -18,7 +17,6 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")

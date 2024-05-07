@@ -3,7 +3,6 @@ package org.pmiops.workbench.cdr.dao;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assert;
-import org.junit.jupiter.api.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")

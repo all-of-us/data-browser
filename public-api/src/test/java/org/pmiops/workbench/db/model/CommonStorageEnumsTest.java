@@ -5,13 +5,11 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.runner.RunWith;
 import org.junit.jupiter.api.runners.Parameterized;
 import org.junit.jupiter.api.runners.Parameterized.Parameter;
 import org.junit.jupiter.api.runners.Parameterized.Parameters;
 import org.pmiops.workbench.model.Domain;
 
-@RunWith(Parameterized.class)
 public class CommonStorageEnumsTest {
   @Parameters(name = "{0}")
   public static Object[][] data() {
