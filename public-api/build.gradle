@@ -16,7 +16,7 @@ buildscript {    // Configuration for building
         SPRINGFOX_VERSION = '3.0.0'
         LIQUIBASE_VERSION = '4.12.0'
         SPRING_FRAMEWORK_VERSION = '5.3.21'
-        SWAGGER_2_CODEGEN_VERSION = '2.2.3'
+        SWAGGER_3_CODEGEN_VERSION = '3.0.52'
         OPENCENSUS_VERSION = '0.23.0'
     }
 
@@ -34,29 +34,34 @@ buildscript {    // Configuration for building
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
-        classpath 'org.owasp:dependency-check-gradle:7.4.4'
-        classpath "io.spring.gradle:dependency-management-plugin:${SPRING_DEPENDENCY_MANAGEMENT_VERSION}"
+
         classpath "com.google.http-client:google-http-client:1.41.1"
-        classpath 'gradle.plugin.org.hidetake:gradle-swagger-generator-plugin:2.18.2'
         // Note: if you plan to upgrade the version of swagger-codegen beyond 2.2.3, be aware of two
         // implicit dependencies: (1) the set of "generatedCompile" Gradle dependencies need to be updated
         // to match the modules imported by the Swagger codegen templates, and (2) some template files
         // are overridden with forked templates within this repo; they will likely need to be re-copied from
         // the newer release version and have AoU-specific modifications re-applied.
 
+        classpath "junit:junit:4.12"
+
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'war'
-apply plugin: 'com.google.cloud.tools.appengine-appenginewebxml'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'org.owasp.dependencycheck'
-apply plugin: 'io.spring.dependency-management'
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'idea'
+    id 'war'
 
-apply plugin: 'org.hidetake.swagger.generator'
+    id 'org.springframework.boot' version '2.7.1'
+    id 'org.owasp.dependencycheck' version '7.4.4'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'org.hidetake.swagger.generator' version '2.19.2'
+
+    id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.4.2'
+}
+
+
 
 def db_host = System.getenv("DB_HOST")
 def db_port = System.getenv("DB_PORT")
@@ -89,7 +94,7 @@ configurations {
     integrationImplementation.extendsFrom implementation
     integrationRuntimeOnly.extendsFrom runtimeOnly
 
-    __swaggerCodegenV2__
+    __swaggerCodegenV3__
 
     generatedCompile
     all {
@@ -104,22 +109,22 @@ ext['hibernate.version'] = '5.6.9.Final'
 // Shared variables for Swagger codegen. Use "ext" rather than "def" to allow
 // access globally, including from within helper functions.
 ext.SWAGGER_CODEGEN_BASE_PKG = 'org.pmiops.workbench'
-ext.SWAGGER_2_CODEGEN_DIR = "$buildDir/swagger2"
+ext.SWAGGER_3_CODEGEN_DIR = "$buildDir/swagger3"
 // This path is the Java sources root for finding any overridden Swagger-codegen
 // templates we may be using.
 ext.SWAGGER_TEMPLATE_DIR = "$projectDir/src/main/resources"
 // Raw options passed to the Swagger codegen CLI.
-ext.SWAGGER_2_RAW_OPTS = [
+ext.SWAGGER_3_RAW_OPTS = [
         // By default, the ignore file within the output directory is used. Override
         // as we don't track the output directory in source.
-        '--ignore-file-override', "$projectDir/.swagger2-codegen-ignore"
+        '--ignore-file-override', "$projectDir/.swagger3-codegen-ignore"
 ]
 
 sourceSets {
     generated {
         compileClasspath = configurations.generatedCompile
         java {
-            srcDir SWAGGER_2_CODEGEN_DIR
+            srcDir SWAGGER_3_CODEGEN_DIR
         }
     }
     main {
@@ -267,7 +272,7 @@ task integrationTest(type: Test) {
 }
 
 clean.doFirst {
-    delete("${buildDir}/swagger2")
+    delete("${buildDir}/swagger3")
 }
 
 repositories {   // repositories for Jar's you access in your code
@@ -281,13 +286,13 @@ ext {
 
 dependencies {
 
-    __swaggerCodegenV2__ "io.swagger:swagger-codegen-cli:${SWAGGER_2_CODEGEN_VERSION}"
+    __swaggerCodegenV3__ "io.swagger.codegen.v3:swagger-codegen-cli:${SWAGGER_3_CODEGEN_VERSION}"
 
     // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
     implementation 'mysql:mysql-connector-java:8.0.30'
 
-    implementation "io.swagger:swagger-annotations:1.5.16"
+    implementation "io.swagger:swagger-annotations:1.6.7"
 
     // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
 
@@ -376,10 +381,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testImplementation 'org.mockito:mockito-core:2.18.3'
 
     testImplementation 'junit:junit:4.12'
     implementation 'junit:junit:4.12'
+
+    testImplementation 'au.com.dius:pact-jvm-consumer-java8:4.0.10'
+    testImplementation 'au.com.dius:pact-jvm-consumer-junit5:4.0.10'
 
     testImplementation 'org.mockito:mockito-core:3.11.2'
 
@@ -434,7 +443,6 @@ dependencies {
     // Dependencies for Swagger codegen-generated sources. This should include all dependencies required by Swagger's
     // default okhttp API codegen templates (see https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml)
     // plus any custom templates included in our repo under the SWAGGER_TEMPLATE_DIR.
-    generatedCompile "io.springfox:springfox-swagger2:${SPRINGFOX_VERSION}"
     generatedCompile "io.springfox:springfox-swagger-ui:${SPRINGFOX_VERSION}"
 
     // OpenCensus is an AoU-specific addition to the default Swagger API dependencies. See the
@@ -442,6 +450,20 @@ dependencies {
     generatedCompile "io.opencensus:opencensus-api:${OPENCENSUS_VERSION}"
     generatedCompile "io.opencensus:opencensus-exporter-trace-stackdriver:${OPENCENSUS_VERSION}"
     generatedCompile "io.opencensus:opencensus-impl:${OPENCENSUS_VERSION}"
+
+    // Swagger3 codegen deps
+    // TODO(calbach): The duplicated deps here are highly suspect. Investigate
+    // removing the generated sourceSet, or else fixing the runtime deps.
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.3'
+    implementation 'io.gsonfire:gson-fire:1.8.5'
+    implementation 'org.threeten:threetenbp:1.6.2'
+    implementation 'io.springfox:springfox-oas:3.0.0'
+    generatedCompile 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
+    generatedCompile 'io.gsonfire:gson-fire:1.8.5'
+    generatedCompile 'org.threeten:threetenbp:1.6.2'
+    generatedCompile 'io.springfox:springfox-oas:3.0.0'
 }
 
 swaggerSources {
@@ -450,12 +472,12 @@ swaggerSources {
     databrowser {
         inputFile = file('src/main/resources/public-api.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV2__
+            configuration = configurations.__swaggerCodegenV3__
             language = 'spring'
-            outputDir = file(SWAGGER_2_CODEGEN_DIR)
+            outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
             wipeOutputDir = false
-            rawOptions = SWAGGER_2_RAW_OPTS
+            rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
                     'apiPackage'     : 'org.pmiops.workbench.publicapi',
                     'modelPackage'   : 'org.pmiops.workbench.model',
@@ -472,12 +494,12 @@ swaggerSources {
     databrowserApiClient {
         inputFile = file('src/main/resources/public-api.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV2__
+            configuration = configurations.__swaggerCodegenV3__
             language = 'java'
-            outputDir = file(SWAGGER_2_CODEGEN_DIR)
+            outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
             wipeOutputDir = false
-            rawOptions = SWAGGER_2_RAW_OPTS
+            rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
                     'invokerPackage'   : 'org.pmiops.workbench.publicapi.client',
                     'modelPackage'   : 'org.pmiops.workbench.publicapi.client.model',
@@ -492,12 +514,12 @@ swaggerSources {
     workbenchClient {
         inputFile = file('src/main/resources/private-workbench.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV2__
+            configuration = configurations.__swaggerCodegenV3__
             language = 'java'
-            outputDir = file(SWAGGER_2_CODEGEN_DIR)
+            outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
             wipeOutputDir = false
-            rawOptions = SWAGGER_2_RAW_OPTS
+            rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
                     'invokerPackage'   : 'org.pmiops.workbench.privateworkbench',
                     'modelPackage'     : 'org.pmiops.workbench.privateworkbench.model',

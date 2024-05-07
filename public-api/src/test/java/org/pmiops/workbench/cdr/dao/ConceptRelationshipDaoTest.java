@@ -1,11 +1,10 @@
 package org.pmiops.workbench.cdr.dao;
 
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 import org.pmiops.workbench.cdr.model.DbConcept;
 import org.pmiops.workbench.cdr.model.ConceptRelationship;
 import org.pmiops.workbench.cdr.model.ConceptRelationshipId;
@@ -18,7 +17,6 @@ import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
@@ -39,7 +37,7 @@ public class ConceptRelationshipDaoTest {
     private final DbConcept concept6 = makeConcept(7890L, "concept F test concept 2", null, "conceptF", "classId", "V6", "Condition", 1234L, 0.2f, 0L, 1);
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         conceptDao.save(concept1);
@@ -58,13 +56,13 @@ public class ConceptRelationshipDaoTest {
     public void findAllConceptRelationships() throws Exception {
         /* Todo write more tests */
         final List<ConceptRelationship> list = conceptRelationshipDao.findAll();
-        Assert.assertNotEquals(list,null);
+        assertThat(list).isNotEqualTo(null);
     }
 
     @Test
     public void testConceptSearchCodeMatch() throws Exception{
         final List<DbConcept> list = conceptDao.findStandardConcepts(1234L);
-        Assert.assertEquals(list.get(0),concept5);
+        assertThat(list.get(0)).isEqualTo(concept5);
     }
 
 
@@ -97,7 +95,7 @@ public class ConceptRelationshipDaoTest {
     }
 
 
-    @After
+    @AfterEach
     public void flush(){
 
         conceptDao.delete(concept1);

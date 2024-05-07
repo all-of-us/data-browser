@@ -15,8 +15,8 @@ package org.pmiops.workbench.publicapi.client.api;
 
 import org.pmiops.workbench.publicapi.client.ApiException;
 import org.pmiops.workbench.publicapi.client.model.CdrVersionListResponse;
-import org.junit.Test;
-import org.junit.Ignore;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * API tests for CdrVersionsApi
  */
-@Ignore
+@Disabled
 public class CdrVersionsApiTest {
 
     private final CdrVersionsApi api = new CdrVersionsApi();

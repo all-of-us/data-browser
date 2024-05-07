@@ -7,14 +7,13 @@ import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import java.util.List;
 import org.pmiops.workbench.model.MatchType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.pmiops.workbench.cdr.dao.AchillesAnalysisDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDao;
 import org.pmiops.workbench.cdr.dao.AchillesResultDistDao;
@@ -64,7 +63,6 @@ import org.pmiops.workbench.cdr.ConceptMapper;
 import org.pmiops.workbench.cdr.ConceptMapperImpl;
 import org.springframework.test.context.TestPropertySource;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
@@ -441,7 +439,7 @@ public class DataBrowserControllerTest {
     private DataBrowserController dataBrowserController;
     private ConceptService conceptService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         saveData();
         AchillesMapper achillesMapper = new AchillesMapperImpl();
@@ -709,7 +707,7 @@ public class DataBrowserControllerTest {
         return dbCdrVersion;
     }
 
-    @After
+    @AfterEach
     public void flush(){
         conceptDao.delete(CONCEPT_1);
         conceptDao.delete(CONCEPT_2);

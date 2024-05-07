@@ -1,7 +1,7 @@
 package org.pmiops.workbench.cdr.model;
 
 import static com.google.common.truth.Truth.assertThat;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConceptTest {
 

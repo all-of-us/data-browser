@@ -1,10 +1,9 @@
 package org.pmiops.workbench.cdr.dao;
 
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
-import org.junit.Assert;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import static com.google.common.truth.Truth.assertThat;
 import org.pmiops.workbench.cdr.model.DbAchillesAnalysis;
 import org.pmiops.workbench.cdr.model.DbAchillesResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.TestPropertySource;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
@@ -30,7 +28,7 @@ public class AchillesResultDaoTest {
 
     private DbAchillesResult achillesResult1;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
 
@@ -51,7 +49,7 @@ public class AchillesResultDaoTest {
     @Test
     public void findAchillesResultByAnalysisId() throws Exception{
         final DbAchillesResult achillesResult=achillesResultDao.findAchillesResultByAnalysisId(5000L);
-        Assert.assertNotEquals(achillesResult,null);
+        assertThat(achillesResult).isNotEqualTo(null);
     }
 
 
@@ -82,7 +80,7 @@ public class AchillesResultDaoTest {
                 .sourceCountValue(sourceCountValue);
     }
 
-    @After
+    @AfterEach
     public void flush(){
         achillesAnalysisDao.delete(achillesAnalysis1);
         achillesResultDao.delete(achillesResult1);

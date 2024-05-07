@@ -523,7 +523,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       "https://vsearch.nlm.nih.gov/vivisimo/cgi-bin/query-meta?v%3Aproject=" +
       "medlineplus&v%3Asources=medlineplus-bundle&query=" +
       this.getTerm();
-    this.codeMatch = this.searchResult.matchType === MatchType.CODE;
+    this.codeMatch = this.searchResult.matchType === MatchType.Code;
     for (const concept of this.items) {
       this.synonymString[concept.conceptId] =
         concept.conceptSynonyms.join(", ");
@@ -571,7 +571,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.searchRequest = {
         query: query,
         domain: this.ehrDomain.domain.toUpperCase(),
-        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        standardConceptFilter: StandardConceptFilter.StandardOrCodeIdMatch,
         maxResults: maxResults,
         minCount: 1,
         pageNumber: this.currentPage - 1,
@@ -582,7 +582,7 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
       this.searchRequest = {
         query: query,
         domain: this.ehrDomain.domain.toUpperCase(),
-        standardConceptFilter: StandardConceptFilter.STANDARDORCODEIDMATCH,
+        standardConceptFilter: StandardConceptFilter.StandardOrCodeIdMatch,
         maxResults: maxResults,
         minCount: 1,
         pageNumber: this.currentPage - 1,
@@ -642,8 +642,8 @@ export class EhrViewComponent implements OnChanges, OnInit, OnDestroy {
 
   public getTerm() {
     if (
-      this.searchResult.matchType === MatchType.ID ||
-      this.searchResult.matchType === MatchType.CODE
+      this.searchResult.matchType === MatchType.Id ||
+      this.searchResult.matchType === MatchType.Code
     ) {
       return this.searchResult.matchedConceptName;
     }

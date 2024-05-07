@@ -12,13 +12,14 @@
     "codegen": "yarn run codegen-clean && yarn run public-codegen-swagger && yarn run public-codegen-swagger-fetch && yarn run public-post-codegen",
     "codegen-clean": "rm -rf src/generated src/publicGenerated",
     "post-codegen": "sed -i.bak -e 's/OpaqueToken/InjectionToken/' src/generated/variables.ts",
-    "public-codegen-swagger": "java -jar ../aou-utils/swagger-codegen-cli.jar generate --lang typescript-angular --input-spec ../public-api/src/main/resources/public-api.yaml --output src/publicGenerated --additional-properties ngVersion=10.2.4",
+    "public-codegen-swagger": "openapi-generator-cli generate -g typescript-angular -i ../public-api/src/main/resources/public-api.yaml -o src/publicGenerated --additional-properties ngVersion=10.2.4",
     "public-post-codegen": "sed -i.bak -e 's/OpaqueToken/InjectionToken/' src/publicGenerated/variables.ts",
-    "public-codegen-swagger-fetch": "java -jar ../aou-utils/swagger-codegen-cli.jar generate --lang typescript-fetch --input-spec ../public-api/src/main/resources/public-api.yaml --output src/publicGenerated/fetch/ --additional-properties ngVersion=10.2.4",
+    "public-codegen-swagger-fetch": "openapi-generator-cli generate -g typescript-fetch -i ../public-api/src/main/resources/public-api.yaml -o src/publicGenerated/fetch/ -p generateAliasAsModel=true --additional-properties=typeScriptThreePlus=true,enumPropertyNaming=UPPERCASE,useSingleRequestParameter=false,prefixParameterInterfaces=true",
     "coverage": "ng test --sourcemaps=false --watch=false --code-coverage"
   },
   "private": true,
   "dependencies": {
+    "@openapitools/openapi-generator-cli": "^2.7.0",
     "@angular-eslint/schematics": "14.0.0",
     "@angular/animations": "^13.3.11",
     "@angular/common": "^13.3.11",

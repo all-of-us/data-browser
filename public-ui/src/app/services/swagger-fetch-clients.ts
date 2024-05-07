@@ -85,6 +85,8 @@ export function bindApiClients(conf: Configuration) {
     registerApiClient(
       ctor,
       new (class extends ctor {
+        basePath: string;
+        fetch: any;
         constructor() {
           super();
           this.configuration = conf;

@@ -1,1791 +1,1681 @@
-# If validation fails, gradle:generateApi fails claiming this file does not exist.
-# For separate validation (with some false positives), do:
-#     ./project.rb validate-swagger
-swagger: '2.0'
+openapi: 3.0.1
 info:
-  version: "0.1.0"
-  title: "AllOfUs Public API"
-  description: "The API for the AllOfUs data browser and public storefront."
-  termsOfService: "http://www.pmi-ops.org/terms_of_service.html"
+  title: AllOfUs Public API
+  description: The API for the AllOfUs data browser and public storefront.
+  termsOfService: http://www.pmi-ops.org/terms_of_service.html
   contact:
-    name: "developer_help@pmi-ops.org"
+    name: developer_help@pmi-ops.org
   license:
-    name: "BSD"
-host: "public-api.pmi-ops.org"
-schemes:
-  - "https"
-produces:
-  - "application/json"
-securityDefinitions:
-  # Establish the fact that *some endpoints* are OAuth protected
-  # by defining an `aou_oauth` security mode, which we'll assing
-  # to any protected endpoints below.
-  aou_oauth:
-    # TODO: Vet/fix this token and/or authorization URL to work in practice.
-    # These are currently included simply to satisfy the Swagger specification,
-    # as this is not directly used to dictate oauth details (just used to
-    # annotate which methods require oauth).
-    authorizationUrl: ""
-    tokenUrl: ""
-    type: oauth2
-    flow: accessCode
+    name: BSD
+  version: 0.1.0
+servers:
+  - url: https://public-api.pmi-ops.org/
 security:
   - aou_oauth: []
-
-# Throughout, we use integer/int64 in preference to string/date-time because Swagger's
-# date formatting is inconsistent between server and client. Time values are stored as
-# milliseconds since the UNIX epoch.
-
-
-##########################################################################################
-## PATHS
-##########################################################################################
-
 paths:
-
-  # CDR versions #########################################################################
-
   /v1/cdrVersions:
     get:
       tags:
         - cdrVersions
-      description: Returns all curated data repository (CDR) versions that the user has access to
+      description: Returns all curated data repository (CDR) versions that the user
+        has access to
       operationId: getCdrVersions
       responses:
-        200:
+        "200":
           description: A list of CDR versions.
-          schema:
-            $ref: "#/definitions/CdrVersionListResponse"
-
-  # Genomics ###########################################################################
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdrVersionListResponse'
   /v1/genomics/participant-counts:
     get:
       tags:
         - genomics
       description: Gets the participant counts
-      operationId: "getParticipantCounts"
-      parameters: []
+      operationId: getParticipantCounts
       responses:
-        200:
+        "200":
           description: A collection of results from achilles results view
-          schema:
-            $ref: "#/definitions/Analysis"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
   /v1/genomics/search-variants:
     post:
       tags:
         - genomics
-      consumes:
-        - application/json
       description: Gets the list of matched variants
-      operationId: "searchVariants"
-      parameters:
-        - in: body
-          name: request
-          description: search concept request
-          schema:
-            $ref: "#/definitions/SearchVariantsRequest"
+      operationId: searchVariants
+      requestBody:
+        description: search concept request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchVariantsRequest'
+        required: false
       responses:
-        200:
+        "200":
           description: A collection of variants from the wgs_variant table
-          schema:
-            $ref: "#/definitions/VariantListResponse"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantListResponse'
+      x-codegen-request-body-name: request
   /v1/genomics/variant-search-result-size:
     post:
       tags:
         - genomics
-      consumes:
-        - application/json
       description: Gets the size of variant result list
-      operationId: "getVariantSearchResultSize"
-      parameters:
-        - in: body
-          name: request
-          description: variant result size request
-          schema:
-            $ref: "#/definitions/VariantResultSizeRequest"
+      operationId: getVariantSearchResultSize
+      requestBody:
+        description: variant result size request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VariantResultSizeRequest'
+        required: false
       responses:
-        200:
+        "200":
           description: Variant result list size
-          schema:
-            type: integer
-            format: int64
-
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      x-codegen-request-body-name: request
   /v1/genomics/chart-demo-data:
     get:
       tags:
         - genomics
       description: Gets the demographic participant counts
-      operationId: "getChartData"
-      parameters: []
+      operationId: getChartData
       responses:
-        200:
+        "200":
           description: A collection of results from achilles results view
-          schema:
-            $ref: "#/definitions/AnalysisListResponse"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisListResponse'
   /v1/genomics/variant-details/{variantId}:
     get:
       tags:
         - genomics
       description: Gets the variant details
-      operationId: "getVariantDetails"
+      operationId: getVariantDetails
       parameters:
-        - in: path
-          name: variantId
-          type: string
-          required: true
+        - name: variantId
+          in: path
           description: the variant id
-      responses:
-        200:
-          description: Variant Information
+          required: true
           schema:
-            $ref: "#/definitions/VariantInfo"
-
+            type: string
+      responses:
+        "200":
+          description: Variant Information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VariantInfo'
   /v1/genomics/genomic-filter-options:
     get:
       tags:
         - genomics
       description: Gets the size of each genomic filter option
-      operationId: "getGenomicFilterOptions"
+      operationId: getGenomicFilterOptions
       parameters:
-        - in: query
-          name: variant-search-term
-          type: string
-          required: true
+        - name: variant-search-term
+          in: query
           description: variant search term
-      responses:
-        200:
-          description: A collection of filters
+          required: true
           schema:
-            $ref: "#/definitions/GenomicFilters"
-
-  # Data Browser #######################################################################
+            type: string
+      responses:
+        "200":
+          description: A collection of filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenomicFilters'
   /v1/config:
     get:
       tags:
         - config
       description: Returns some server configuration data.
       operationId: getConfig
-      security: []
       responses:
-        200:
+        "200":
           description: Configuration data
-          schema:
-            "$ref": "#/definitions/ConfigResponse"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+      security: []
   /v1/databrowser/cdrversion-used:
     get:
       tags:
         - dataBrowser
       description: Gets the cdr versions
-      operationId: "getCdrVersionUsed"
-      parameters: []
+      operationId: getCdrVersionUsed
       responses:
-        200:
+        "200":
           description: Default cdr version
-          schema:
-            "$ref": "#/definitions/CdrVersion"
-        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CdrVersion'
+        "500":
           description: Internal Server Error
-
+          content: {}
   /v1/databrowser/count-analysis:
     get:
       tags:
         - dataBrowser
       description: Gets EHR biological sex and age count analysis
-      operationId: "getCountAnalysis"
+      operationId: getCountAnalysis
       parameters:
-        - in: query
-          name: domain-id
-          type: string
-          required: true
+        - name: domain-id
+          in: query
           description: domain id
-        - in: query
-          name: domain-desc
-          type: string
           required: true
-          description: domain desc
-      responses:
-        200:
-          description: A collection of count analysis for biological sex and age
           schema:
-            $ref: "#/definitions/CountAnalysis"
-
+            type: string
+        - name: domain-desc
+          in: query
+          description: domain desc
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A collection of count analysis for biological sex and age
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountAnalysis'
   /v1/databrowser/survey-question-counts:
     get:
       tags:
         - dataBrowser
-
       description: Gets participant count of question by each stratum
-      operationId: "getSurveyQuestionCounts"
+      operationId: getSurveyQuestionCounts
       parameters:
-        - in: query
-          name: questionConceptId
-          type: string
+        - name: questionConceptId
+          in: query
           required: true
-        - in: query
-          name: questionPath
-          type: string
-          required: true
-      responses:
-        200:
-          description: Gender and age stratum counts for each question
           schema:
-            $ref: "#/definitions/AnalysisListResponse"
-
+            type: string
+        - name: questionPath
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Gender and age stratum counts for each question
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisListResponse'
   /v1/databrowser/fitbit-analysis-results:
     get:
       tags:
         - dataBrowser
       description: Gets analysis results of fitbit
-      operationId: "getFitbitAnalysisResults"
+      operationId: getFitbitAnalysisResults
       parameters:
-        - in: query
-          name: concept-names
-          type: array
-          items:
-            type: string
-          required: true
+        - name: concept-names
+          in: query
           description: concept name
-      responses:
-        200:
-          description: Analysis objects for each of fitbit measurement
+          required: true
+          style: form
+          explode: false
           schema:
-            $ref: "#/definitions/ConceptAnalysisListResponse"
-
-
-
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: Analysis objects for each of fitbit measurement
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptAnalysisListResponse'
   /v1/databrowser/concept-analysis-results:
     get:
       tags:
         - dataBrowser
-
       description: Gets analysis results for concept
-      operationId: "getConceptAnalysisResults"
+      operationId: getConceptAnalysisResults
       parameters:
-        - in: query
-          name: concept-ids
-          type: array
-          items:
-            type: string
-          required: true
+        - name: concept-ids
+          in: query
           description: concept id
-        - in: query
-          name: domain-id
-          type: string
-          required: false
-          description: domain id
-      responses:
-        200:
-          description: A collection of analysis for concept
+          required: true
+          style: form
+          explode: false
           schema:
-            $ref: "#/definitions/ConceptAnalysisListResponse"
-
+            type: array
+            items:
+              type: string
+        - name: domain-id
+          in: query
+          description: domain id
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A collection of analysis for concept
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptAnalysisListResponse'
   /v1/databrowser/participant-count:
     get:
       tags:
         - dataBrowser
-
       description: Gets results for an analysis id and stratum
-      operationId: "getParticipantCount"
-      parameters: []
+      operationId: getParticipantCount
       responses:
-        200:
+        "200":
           description: A collection of analysis results from achilles_results_view
-          schema:
-            $ref: "#/definitions/AchillesResult"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AchillesResult'
   /v1/databrowser/gender-count:
     get:
       tags:
         - dataBrowser
-
       description: Gets results for an analysis id
-      operationId: "getGenderAnalysis"
-      parameters: []
+      operationId: getGenderAnalysis
       responses:
-        200:
+        "200":
           description: Gender analysis along with results
-          schema:
-            $ref: "#/definitions/Analysis"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Analysis'
   /v1/databrowser/getCriteriaRolledCounts:
     get:
       tags:
         - dataBrowser
       description: Gets the rolled up count from criteria
-      operationId: "getCriteriaRolledCounts"
+      operationId: getCriteriaRolledCounts
       parameters:
-        - in: query
-          name: conceptId
-          type: integer
-          format: int64
-          required: true
+        - name: conceptId
+          in: query
           description: parent concept id
-        - in: query
-          name: domain
-          type: string
           required: true
-          description: parent concept domain
-      responses:
-        200:
-          description: Rolled up counts of concept
           schema:
-            $ref: "#/definitions/CriteriaParentResponse"
-
+            type: integer
+            format: int64
+        - name: domain
+          in: query
+          description: parent concept domain
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Rolled up counts of concept
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CriteriaParentResponse'
   /v1/databrowser/getCriteriaChildren:
     get:
       tags:
         - dataBrowser
       description: Gets the children when parent concept is expanded in ui
-      operationId: "getCriteriaChildren"
+      operationId: getCriteriaChildren
       parameters:
-        - in: query
-          name: parentId
-          type: integer
-          format: int64
-          required: true
+        - name: parentId
+          in: query
           description: parent id
-      responses:
-        200:
-          description: Criteria children
+          required: true
           schema:
-            $ref: "#/definitions/CriteriaListResponse"
-
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: Criteria children
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CriteriaListResponse'
   /v1/databrowser/domain-totals:
     get:
       tags:
         - dataBrowser
-      description: Gets the domain filters and survey modules with the count of all concepts and questions
-      operationId: "getDomainTotals"
+      description: Gets the domain filters and survey modules with the count of all
+        concepts and questions
+      operationId: getDomainTotals
       parameters:
-        - in: query
-          name: searchWord
-          type: string
+        - name: searchWord
+          in: query
           description: search key word
-        - in: query
-          name: testFilter
-          type: integer
-          format: int32
-          description: measurement filter
-        - in: query
-          name: orderFilter
-          type: integer
-          format: int32
-          description: measurement filter
-      responses:
-        200:
-          description: A collection of domains and survey modules
           schema:
-            $ref: "#/definitions/DomainInfosAndSurveyModulesResponse"
-
+            type: string
+        - name: testFilter
+          in: query
+          description: measurement filter
+          schema:
+            type: integer
+            format: int32
+        - name: orderFilter
+          in: query
+          description: measurement filter
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: A collection of domains and survey modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DomainInfosAndSurveyModulesResponse'
   /v1/databrowser/searchConcepts:
     post:
       tags:
         - dataBrowser
-      consumes:
-        - application/json
       description: Gets list of matched concepts
-      operationId: "searchConcepts"
-      parameters:
-        - in: body
-          name: request
-          description: search concept request
-          schema:
-            $ref: "#/definitions/SearchConceptsRequest"
+      operationId: searchConcepts
+      requestBody:
+        description: search concept request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchConceptsRequest'
+        required: false
       responses:
-        200:
+        "200":
           description: A collection of matched concepts
-          schema:
-            $ref: "#/definitions/ConceptListResponse"
-
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptListResponse'
+      x-codegen-request-body-name: request
   /v1/databrowser/source-concepts:
     get:
       tags:
         - dataBrowser
-
       description: Get children of the given concept
-      operationId: "getSourceConcepts"
+      operationId: getSourceConcepts
       parameters:
-        - in: query
-          name: concept_id
-          type: integer
-          format: int64
-          required: true
+        - name: concept_id
+          in: query
           description: concept id to get maps to concepts
-        - in: query
-          name: minCount
-          type: integer
-          format: int32
-          required: false
-          description: minimum source count
-      responses:
-        200:
-          description: a collection of concepts
+          required: true
           schema:
-            $ref: "#/definitions/ConceptListResponse"
-
+            type: integer
+            format: int64
+        - name: minCount
+          in: query
+          description: minimum source count
+          schema:
+            type: integer
+            format: int32
+      responses:
+        "200":
+          description: a collection of concepts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConceptListResponse'
   /v1/databrowser/survey-questions:
     get:
       tags:
         - dataBrowser
       description: Get survey questions
-      operationId: "getSurveyQuestions"
+      operationId: getSurveyQuestions
       parameters:
-        - in: query
-          name: survey_concept_id
+      - name: survey_concept_id
+        in: query
+        description: survey concept id
+        required: true
+        schema:
           type: integer
           format: int64
-          required: true
-          description: survey concept id
-        - in: query
-          name: search_word
+      - name: search_word
+        in: query
+        description: search word in surveys page
+        schema:
           type: string
-          required: false
-          description: search word in surveys page
       responses:
-        200:
+        "200":
           description: survey question fetch
-          schema:
-            $ref: "#/definitions/SurveyQuestionFetchResponse"
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyQuestionFetchResponse'
   /v1/databrowser/sub-questions:
     get:
       tags:
         - dataBrowser
       description: Get survey sub questions
-      operationId: "getSubQuestions"
+      operationId: getSubQuestions
       parameters:
-        - in: query
-          name: survey_concept_id
-          type: integer
-          format: int64
-          required: true
+        - name: survey_concept_id
+          in: query
           description: survey concept id
-        - in: query
-          name: question_concept_id
-          type: integer
-          format: int64
           required: true
-          description: question concept id
-        - in: query
-          name: answer_concept_id
-          type: integer
-          format: int64
-          required: true
-          description: answer concept id
-        - in: query
-          name: level
-          type: integer
-          format: int32
-          required: true
-          description: sub question level
-        - in: query
-          name: path
-          type: string
-          required: false
-          description: question path
-      responses:
-        200:
-          description: survey sub question fetch
           schema:
-            $ref: "#/definitions/SurveyQuestionFetchResponse"
-
+            type: integer
+            format: int64
+        - name: question_concept_id
+          in: query
+          description: question concept id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: answer_concept_id
+          in: query
+          description: answer concept id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: level
+          in: query
+          description: sub question level
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: path
+          in: query
+          description: question path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: survey sub question fetch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyQuestionFetchResponse'
   /v1/databrowser/survey-question-results:
     get:
       tags:
         - dataBrowser
       description: Get Survey Question Results
-      operationId: "getSurveyQuestionResults"
+      operationId: getSurveyQuestionResults
       parameters:
-        - in: query
-          name: survey_concept_id
-          type: integer
-          format: int64
-          required: true
+        - name: survey_concept_id
+          in: query
           description: survey concept id
-        - in: query
-          name: question_concept_id
-          type: integer
-          format: int64
           required: true
-          description: question concept id
-        - in: query
-          name: questionPath
-          type: string
-          description: question path
-      responses:
-        200:
-          description: survey question results
           schema:
-            $ref: "#/definitions/AnalysisListResponse"
-
+            type: integer
+            format: int64
+        - name: question_concept_id
+          in: query
+          description: question concept id
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: questionPath
+          in: query
+          description: question path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: survey question results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalysisListResponse'
   /v1/databrowser/survey-version-counts:
     get:
       tags:
         - dataBrowser
       description: Get Survey Version Counts
-      operationId: "getSurveyVersionCounts"
+      operationId: getSurveyVersionCounts
       parameters:
-        - in: query
-          name: survey_concept_id
+        - name: survey_concept_id
+          in: query
+          description: survey concept id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: survey version counts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SurveyVersionCountResponse'
+components:
+  schemas:
+    Concept:
+      required:
+        - conceptClassId
+        - conceptCode
+        - conceptId
+        - conceptName
+        - domainId
+        - standardConcept
+        - vocabularyId
+      type: object
+      properties:
+        conceptId:
+          type: integer
+          description: id of the concept
+          format: int64
+        conceptName:
+          type: string
+          description: name of concept
+        domainId:
+          type: string
+          description: domain of concept
+        vocabularyId:
+          type: string
+          description: vocabulary of concept
+        conceptCode:
+          type: string
+          description: original vocab code of concept
+        conceptClassId:
+          type: string
+          description: class of concept
+        standardConcept:
+          type: string
+          description: standard concept value 1 char
+        countValue:
+          type: integer
+          description: est count in the cdr
+          format: int64
+        sourceCountValue:
+          type: integer
+          description: est source count in the cdr
+          format: int64
+        prevalence:
+          type: number
+          description: prevalence among participants percent count divided num participants
+          format: float
+        conceptSynonyms:
+          type: array
+          description: concept synonym names
+          items:
+            type: string
+        canSelect:
+          type: integer
+          description: filters clickable concepts
+          format: int32
+        measurementConceptInfo:
+          $ref: '#/components/schemas/MeasurementConceptInfo'
+        drugBrands:
+          type: array
+          description: drug brand names
+          items:
+            type: string
+        standardConcepts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        matchType:
+          $ref: '#/components/schemas/MatchType'
+    ConceptListResponse:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Concept'
+        matchType:
+          $ref: '#/components/schemas/MatchType'
+        matchedConceptName:
+          type: string
+          description: matched concept name
+    SurveyQuestionFetchResponse:
+      type: object
+      properties:
+        questions:
+          $ref: '#/components/schemas/SurveyMetadataListResponse'
+        survey:
+          $ref: '#/components/schemas/SurveyModule'
+    SubQuestionFetchResponse:
+      type: object
+      properties:
+        questions:
+          $ref: '#/components/schemas/SurveyMetadataListResponse'
+    SurveyVersionCountResponse:
+      type: object
+      properties:
+        analyses:
+          $ref: '#/components/schemas/AnalysisListResponse'
+    MeasurementConceptInfo:
+      type: object
+      properties:
+        conceptId:
           type: integer
           format: int64
-          required: true
-          description: survey concept id
-      responses:
-        200:
-          description: survey version counts
-          schema:
-            $ref: "#/definitions/SurveyVersionCountResponse"
-
-##########################################################################################
-## DEFINITIONS
-##########################################################################################
-definitions:
-  Concept:
-    type: object
-    required:
-      - conceptId
-      - conceptName
-      - domainId
-      - vocabularyId
-      - conceptCode
-      - conceptClassId
-      - standardConcept
-
-    properties:
-      conceptId:
-        description: id of the concept
-        type: integer
-        format: int64
-      conceptName:
-        description: name of concept
-        type: string
-      domainId:
-        description: domain of concept
-        type: string
-      vocabularyId:
-        description: vocabulary of concept
-        type: string
-      conceptCode:
-        description: original vocab code of concept
-        type: string
-      conceptClassId:
-        description: class of concept
-        type: string
-      standardConcept:
-        description: standard concept value 1 char
-        type: string
-      countValue:
-        description: est count in the cdr
-        type: integer
-        format: int64
-      sourceCountValue:
-        description: est source count in the cdr
-        type: integer
-        format: int64
-      prevalence:
-        description: prevalence among participants percent count divided num participants
-        type: number
-        format: float
-      conceptSynonyms:
-        description: concept synonym names
-        type: "array"
-        items:
-          type: "string"
-      canSelect:
-        description: filters clickable concepts
-        type: integer
-        format: int32
-      measurementConceptInfo:
-        description: measurement concept info
-        type: object
-        $ref: "#/definitions/MeasurementConceptInfo"
-      drugBrands:
-        description: drug brand names
-        type: "array"
-        items:
-          type: "string"
-      standardConcepts:
-        type: "array"
-        items:
-          $ref: "#/definitions/Concept"
-          description: standard concepts associated with the matched concept
-      matchType:
-        description: match column type on which concept search was successful
-        $ref: "#/definitions/MatchType"
-
-  ConceptListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Concept"
-      matchType:
-        description: match column type on which concept search was successful
-        $ref: "#/definitions/MatchType"
-      matchedConceptName:
-        description: matched concept name
-        type: string
-
-  SurveyQuestionFetchResponse:
-    type: object
-    required:
-      - items
-    properties:
-      questions:
-        description: survey questions
-        type: object
-        $ref: "#/definitions/SurveyMetadataListResponse"
-      survey:
-        $ref: "#/definitions/SurveyModule"
-
-  SubQuestionFetchResponse:
-    type: object
-    required:
-      - items
-    properties:
-      questions:
-        description: survey questions
-        type: object
-        $ref: "#/definitions/SurveyMetadataListResponse"
-
-  SurveyVersionCountResponse:
-    type: object
-    required:
-      - items
-    properties:
-      analyses:
-        description: analysis objects
-        type: object
-        $ref: "#/definitions/AnalysisListResponse"
-
-  MeasurementConceptInfo:
-    type: object
-    properties:
-      conceptId:
-        type: integer
-        format: int64
-      hasValues:
-        type: integer
-        format: int32
-
-  ConfigResponse:
-    type: object
-    properties:
-      projectId:
-        type: string
-        description: The cloud project in which this app is running.
-      dataBrowserIsSafe:
-        type: boolean
-        description: Whether the data is safe to show. An emergency page will show if set to false.
-      publicApiKeyForErrorReports:
-        type: string
-        description: |
-          Stackdriver API key for error reporting, scoped to a particular
-          domain. If unset, Stackdriver error reporting should be disabled.
-  Criteria:
-    type: object
-    required:
-      - id
-      - parentId
-      - type
-      - name
-      - path
-    properties:
-      id:
-        description: Primary identifier which is unique within a CDR version.
-        type: integer
-        format: int64
-      parentId:
-        description: The parent id of the criteria. 0 if this is the root node of a criteria tree
-        type: integer
-        format: int64
-      type:
-        description: type of this criteria
-        type: string
-      subtype:
-        description: sub type of this criteria
-        type: string
-      code:
-        description: concept code
-        type: string
-      name:
-        description: concept name
-        type: string
-      group:
-        description: boolean field which represents if the criteria has children
-        type: boolean
-      selectable:
-        description: boolean field which represents if the criteria is selectable
-        type: boolean
-      count:
-        description: count
-        type: integer
-        format: int64
-      sourceCount:
-        description: count
-        type: integer
-        format: int64
-      domainId:
-        description: domain id
-        type: string
-      conceptId:
-        description: concept id
-        type: string
-      path:
-        description: path of concept in the criteria tree
-        type: string
-      synonyms:
-        description: synonyms
-        type: string
-      canSelect:
-        description: filters clickable concepts
-        type: integer
-        format: int32
-
-  CriteriaListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Criteria"
-
-  CriteriaParentResponse:
-    type: object
-    required:
-      - items
-    properties:
-      parent:
-        description: parent row
-        $ref: "#/definitions/Criteria"
-
-  SurveyMetadata:
-    type: object
-    required:
-      - conceptId
-      - conceptName
-      - surveyName
-
-    properties:
-      id:
-        description: id of each row
-        type: integer
-        format: int64
-      conceptId:
-        description: id of the concept
-        type: integer
-        format: int64
-      conceptName:
-        description: name of concept
-        type: string
-      surveyName:
-        description: survey name
-        type: string
-      conceptCode:
-        description: original vocab code of concept
-        type: string
-      countValue:
-        description: est count in the cdr
-        type: integer
-        format: int64
-      surveyConceptId:
-        description: survey concept id
-        type: integer
-        format: int64
-      sub:
-        description: flag to indicate if a question is a sub question
-        type: integer
-        format: int32
-      path:
-        description: question path
-        type: string
-      is_parent_question:
-        description: flag to indicate if the question is parent question
-        type: integer
-        format: int32
-      orderNumber:
-        description: question order number
-        type: integer
-        format: int32
-      questionString:
-        description: question string
-        type: string
-      type:
-        description: type of survey data
-        type: string
-      countAnalysis:
-        description: count analysis
-        $ref: "#/definitions/Analysis"
-      genderAnalysis:
-        description: gender analysis
-        $ref: "#/definitions/Analysis"
-      ageAnalysis:
-        description: age analysis
-        $ref: "#/definitions/Analysis"
-      versionAnalysis:
-        description: version analysis
-        $ref: "#/definitions/Analysis"
-      participantCountAnalysis:
-        description: participant count analysis
-        $ref: "#/definitions/Analysis"
-
-  SurveyMetadataListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: array
-        items:
-          $ref: "#/definitions/SurveyMetadata"
-
-  AchillesResult:
-    type: object
-    required:
-      - analysisId
-
-    properties:
-      id:
-        description: pk id for jpa code to work
-        type: integer
-        format: int64
-      analysisId:
-        description: id analysis
-        type: integer
-        format: int64
-      stratum1:
-        description: stratum 1
-        type: string
-      stratum2:
-        description: stratum 2
-        type: string
-      stratum3:
-        description: stratum 3
-        type: string
-      stratum4:
-        description: stratum 4
-        type: string
-      stratum5:
-        description: stratum 5
-        type: string
-      stratum6:
-        description: stratum6
-        type: string
-      stratum7:
-        description: stratum7
-        type: string
-      analysisStratumName:
-        description: stratum 5 Name
-        type: string
-      measurementValueType:
-        description: measurement value type (text / numeric)
-        type: string
-      countValue:
-        description: count
-        type: integer
-        format: int64
-      sourceCountValue:
-        description: source count
-        type: integer
-        format: int64
-
-  AchillesResultListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/AchillesResult"
-
-  AchillesResultDist:
-    type: object
-    required:
-      - analysisId
-
-    properties:
-      id:
-        description: pk id for jpa code to work
-        type: integer
-        format: int64
-      analysisId:
-        description: id analysis
-        type: integer
-        format: int64
-      stratum1:
-        description: stratum 1
-        type: string
-      stratum2:
-        description: stratum 2
-        type: string
-      stratum3:
-        description: stratum 3
-        type: string
-      stratum4:
-        description: stratum 4
-        type: string
-      stratum5:
-        description: stratum 5
-        type: string
-      stratum6:
-        description: stratum 6
-        type: string
-      countValue:
-        description: count
-        type: integer
-        format: int64
-      minValue:
-        description: min value
-        type: number
-        format: float
-      maxValue:
-        description: max value
-        type: number
-        format: float
-      avgValue:
-        description: avg value
-        type: number
-        format: float
-      stdevValue:
-        description: std deviation value
-        type: number
-        format: float
-      medianValue:
-        description: median value
-        type: number
-        format: float
-      p10Value:
-        description: 10th percentile  value
-        type: number
-        format: float
-      p25Value:
-        description: 25th percentile value
-        type: number
-        format: float
-      p75Value:
-        description: 75th percentile value
-        type: number
-        format: float
-      p90Value:
-        description: 90th percentile value
-        type: number
-        format: float
-
-  Analysis:
-    type: object
-    required:
-      - analysisId
-    properties:
-      analysisId:
-        description: id analysis
-        type: integer
-        format: int64
-      analysisName:
-        description:  analysis name
-        type: string
-      stratum1Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum2Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum3Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum4Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum5Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum6Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      stratum7Name:
-        description:  usually concept name corresponding to stratum
-        type: string
-      chartType:
-        description:  chart type to display for this analysis column pie box
-        type: string
-      dataType:
-        description:  data type of this analysis count or distribution
-        type: string
-      results:
-        description: count results
-        type: array
-        items:
-          $ref: "#/definitions/AchillesResult"
-      distResults:
-        description: distribution results
-        type: array
-        items:
-          $ref: "#/definitions/AchillesResultDist"
-      unitName:
-        description: unit name
-        type: string
-
-  AnalysisListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
-        items:
-          $ref: "#/definitions/Analysis"
-
-  DomainInfosAndSurveyModulesResponse:
-    type: object
-    required:
-      - domainInfos
-      - surveyModules
-    properties:
-      domainInfos:
-        type: "array"
-        items:
-          $ref: "#/definitions/DomainInfo"
-      surveyModules:
-        type: "array"
-        items:
-          $ref: "#/definitions/SurveyModule"
-
-  ConceptAnalysis:
-    type: object
-    required:
-      - conceptId
-    properties:
-      conceptId:
-        description: concept id
-        type: string
-      countAnalysis:
-        description: count analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      genderAnalysis:
-        description: gender analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      ageAnalysis:
-        description: age analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      measurementValueGenderAnalysis:
-        description: measurement value gender analysis
-        type: array
-        items:
-          $ref: "#/definitions/Analysis"
-      measurementValueAgeAnalysis:
-        description: age analysis for measurement values
-        type: array
-        items:
-          $ref: "#/definitions/Analysis"
-      measurementDistributionAnalysis:
-        description: measurement distribution analysis
-        type: array
-        items:
-          $ref: "#/definitions/Analysis"
-      measurementGenderCountAnalysis:
-        description: measurement gender count by unit analysis
-        type: array
-        items:
-          $ref: "#/definitions/Analysis"
-      ehrCountAnalysis:
-        description: count analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      participantCountAnalysis:
-        description: participant count by date analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-
-  ConceptAnalysisListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: array
-        items:
-          $ref: "#/definitions/ConceptAnalysis"
-
-  CountAnalysis:
-    type: object
-    required:
-      - domainId
-    properties:
-      domainId:
-        description: domain id
-        type: string
-      genderCountAnalysis:
-        description: biological sex count analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-      ageCountAnalysis:
-        description: age count analysis
-        type: object
-        $ref: "#/definitions/Analysis"
-
-  StandardConceptFilter:
-    type: string
-    description: filter on whether standard, non-standard, or all concepts should be returned\
-    enum: &STANDARD_CONCEPT_FILTER [ALL_CONCEPTS, STANDARD_CONCEPTS, NON_STANDARD_CONCEPTS, STANDARD_OR_CODE_ID_MATCH]
-  TestFilter:
-    type: string
-    description: filter to toggle lab measurement tests
-    enum: &TEST_FILTER [SELECTED, UNSELECTED]
-  OrderFilter:
-    type: string
-    description: filter to toggle lab measurement orders
-    enum: &ORDER_FILTER [SELECTED, UNSELECTED]
-  Domain:
-    type: string
-    description: a domain for concepts corresponding to a table in the OMOP schema
-    enum:
-      - OBSERVATION
-      - PROCEDURE
-      - DRUG
-      - CONDITION
-      - MEASUREMENT
-      - DEVICE
-      - DEATH
-      - VISIT
-  MatchType:
-    type: string
-    description: match column type on concept search
-    enum:
-      - CONCEPT_CODE
-      - CONCEPT_ID
-      - CONCEPT_NAME
-  AnalysisIdConstant:
-    type: string
-    description: analysis id constant map
-    enum:
-      - PARTICIPANT_COUNT_ANALYSIS_ID
-      - GENDER_ANALYSIS
-      - COUNT_ANALYSIS_ID
-      - SURVEY_GENDER_COUNT_ANALYSIS_ID
-      - SURVEY_AGE_COUNT_ANALYSIS_ID
-      - SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID
-      - GENDER_ANALYSIS_ID
-      - PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID
-      - AGE_ANALYSIS_ID
-      - SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID
-      - SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID
-      - SURVEY_COUNT_ANALYSIS_ID
-      - SURVEY_GENDER_ANALYSIS_ID
-      - SURVEY_AGE_ANALYSIS_ID
-      - SURVEY_VERSION_ANALYSIS_ID
-      - SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID
-      - SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID
-      - EHR_GENDER_COUNT_ANALYSIS_ID
-      - EHR_AGE_COUNT_ANALYSIS_ID
-      - RACE_ANALYSIS_ID
-      - ETHNICITY_ANALYSIS_ID
-      - MEASUREMENT_DIST_ANALYSIS_ID
-      - MEASUREMENT_GENDER_ANALYSIS_ID
-      - MEASUREMENT_GENDER_UNIT_ANALYSIS_ID
-      - RACE_ANALYSIS
-      - ETHNICITY_ANALYSIS
-      - GENO_GENDER_ANALYSIS
-      - GENO_AGE_ANALYSIS
-      - GENO_RACE_ANALYSIS
-
-  VariantResultSizeRequest:
-    type: object
-    required:
-      - query
-    properties:
-      query:
-        type: string
-        description: >
-          A query string that can be used to match a subset of the name (case-insensitively),
-          the entire code value (case-insensitively), or the concept ID.
-      filterMetadata:
-        type: object
-        description: filters
-        $ref: "#/definitions/GenomicFilters"
-
-  SearchVariantsRequest:
-    type: object
-    required:
-      - query
-    properties:
-      query:
-        type: string
-        description: >
-          A query string that can be used to match a subset of the name (case-insensitively),
-          the entire code value (case-insensitively), or the concept ID.
-      pageNumber:
-        type: integer
-        default: 0
-        description: By default it returns the first page and then its next pages from that on.
-      rowCount:
-        type: integer
-        default: 50
-        description: Number of rows user wants to view per page
-      sortMetadata:
-        type: object
-        description: sort metadata
-        $ref: "#/definitions/SortMetadata"
-      filterMetadata:
-        type: object
-        description: filters
-        $ref: "#/definitions/GenomicFilters"
-
-  SearchConceptsRequest:
-    type: object
-    required:
-      - query
-    properties:
-      query:
-        type: string
-        description: >
-          A query string that can be used to match a subset of the name (case-insensitively),
-          the entire code value (case-insensitively), or the concept ID.
-      standardConceptFilter:
-        description: >
-          STANDARD_CONCEPTS if only standard concepts should be returned,
-          NON_STANDARD_CONCEPTS if only non-standard
-          concepts should be returned; defaults to ALL_CONCEPTS, meaning both
-          standard and non-standard concepts will be returned.
-        $ref: "#/definitions/StandardConceptFilter"
-      vocabularyIds:
-        type: array
-        items:
+        hasValues:
+          type: integer
+          format: int32
+    ConfigResponse:
+      type: object
+      properties:
+        projectId:
           type: string
-        description: The vocabulary ID for the concepts returned (e.g. SNOMED, RxNorm)
-      domain:
-        description: >
-          The domain for the concepts returned (e.g. OBSERVATION, DRUG). Note that this may map
-          to multiple domain ID values in OMOP.
-        $ref: "#/definitions/Domain"
-      maxResults:
-        type: integer
-        format: int32
-        description: The maximum number of results returned. Defaults to 25.
-      minCount:
-        type: integer
-        format: int32
-        description: The minimum count of concepts to be fetched
-      pageNumber:
-        type: integer
-        default: 0
-        description: By default it returns the first page and then its next pages from that on.
-      measurementTests:
-        type: integer
-        default: 1
-        description: By default all the measurement tests are returned
-      measurementOrders:
-        type: integer
-        default: 1
-        description: By default all the measurement orders are returned
-
-  CdrVersion:
-    type: object
-    required:
-      - cdrVersionId
-      - name
-      - creationTime
-    properties:
-      cdrVersionId:
-        type: string
-      name:
-        type: string
-      numParticipants:
-        type: integer
-        format: int32
-      creationTime:
-        type: integer
-        format: int64
-        description: Milliseconds since the UNIX epoch.
-
-  CdrVersionListResponse:
-    type: object
-    required:
-      - items
-      - defaultCdrVersionId
-    properties:
-      items:
-        type: "array"
+          description: The cloud project in which this app is running.
+        dataBrowserIsSafe:
+          type: boolean
+          description: Whether the data is safe to show. An emergency page will show
+            if set to false.
+        publicApiKeyForErrorReports:
+          type: string
+          description: |
+            Stackdriver API key for error reporting, scoped to a particular
+            domain. If unset, Stackdriver error reporting should be disabled.
+    Criteria:
+      required:
+        - id
+        - name
+        - parentId
+        - path
+        - type
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Primary identifier which is unique within a CDR version.
+          format: int64
+        parentId:
+          type: integer
+          description: The parent id of the criteria. 0 if this is the root node of
+            a criteria tree
+          format: int64
+        type:
+          type: string
+          description: type of this criteria
+        subtype:
+          type: string
+          description: sub type of this criteria
+        code:
+          type: string
+          description: concept code
+        name:
+          type: string
+          description: concept name
+        group:
+          type: boolean
+          description: boolean field which represents if the criteria has children
+        selectable:
+          type: boolean
+          description: boolean field which represents if the criteria is selectable
+        count:
+          type: integer
+          description: count
+          format: int64
+        sourceCount:
+          type: integer
+          description: count
+          format: int64
+        domainId:
+          type: string
+          description: domain id
+        conceptId:
+          type: string
+          description: concept id
+        path:
+          type: string
+          description: path of concept in the criteria tree
+        synonyms:
+          type: string
+          description: synonyms
+        canSelect:
+          type: integer
+          description: filters clickable concepts
+          format: int32
+    CriteriaListResponse:
+      required:
+        - items
+      type: object
+      properties:
         items:
-          $ref: "#/definitions/CdrVersion"
-      defaultCdrVersionId:
-        type: "string"
-        description: ID of the CDR versions that should be used by the user by default
-
-  DomainInfo:
-    type: object
-    required:
-      - domain
-      - name
-      - description
-      - standardConceptCount
-      - allConceptCount
-      - participantCount
-    properties:
-      domain:
-        description: the domain ID
-        $ref: "#/definitions/Domain"
-      domainConceptId:
-        description: domain concept id
-        type: integer
-        format: int64
-      name:
-        description: display name of the domain
-        type: string
-      description:
-        description: description of the domain
-        type: string
-      standardConceptCount:
-        description: number of standard concepts in this domain
-        type: integer
-        format: int64
-      allConceptCount:
-        description: number of concepts in this domain (standard or non-standard)
-        type: integer
-        format: int64
-      participantCount:
-        description: number of participants with data in the CDR for a concept in this domain
-        type: integer
-        format: int64
-
-  SortMetadata:
-    type: object
-    properties:
-      variantId:
-        description: variant id column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      gene:
-        description: gene column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      consequence:
-        description: consequence column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      variantType:
-        description: Variant Type column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      clinicalSignificance:
-        description: Clinical significance column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      alleleCount:
-        description: allele count column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      alleleNumber:
-        description: allele number column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      alleleFrequency:
-        description: allele frequency column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-      homozygoteCount:
-        description: homozygote count column metadata
-        type: object
-        $ref: "#/definitions/SortColumnDetails"
-
-  SortColumnDetails:
-    type: object
-    properties:
-      sortActive:
-        description: Flag for active sort
-        type: boolean
-      sortDirection:
-        description: Sort Direction
-        type: string
-      sortOrder:
-        description: Sort Order
-        type: integer
-        format: int32
-
-  SurveyModule:
-    type: object
-    required:
-      - conceptId
-      - name
-      - description
-      - questionCount
-      - participantCount
-    properties:
-      conceptId:
-        description: the concept ID for the survey module
-        type: integer
-        format: int64
-      name:
-        description: display name of the module
-        type: string
-      description:
-        description: description of the module
-        type: string
-      questionCount:
-        description: number of questions in the module
-        type: integer
-        format: int64
-      participantCount:
-        description: number of participants with data in the CDR for questions in this module
-        type: integer
-        format: int64
-      orderNumber:
-        description: survey release order number
-        type: integer
-        format: int32
-
-  ErrorResponse:
-    type: object
-    properties:
-      message:
-        description: Error message
-        type: string
-      statusCode:
-        description: Http error status code
-        type: integer
-      errorClassName:
-        type: string
-      errorCode:
-        description: Short description of the type of error
-        $ref: "#/definitions/ErrorCode"
-      errorUniqueId:
-        type: string
-        description: Unique ID for this error response, for correlation with backend logs
-
-  ErrorCode:
-    type: string
-    description: Short parsable error descriptions
-    enum: [
-      PARSE_ERROR
-    ]
-
-  Variant:
-    type: object
-    required:
-      - variantId
-    properties:
-      variantId:
-        description: id variant
-        type: string
-      genes:
-        description: genes
-        type: string
-      consequence:
-        description: consequence
-        type: string
-      variantType:
-        description: variant type
-        type: string
-      proteinChange:
-        description: protein change
-        type: string
-      clinicalSignificance:
-        description: clinical significance
-        type: string
-      alleleCount:
-        description: allele count
-        type: integer
-        format: int64
-      alleleNumber:
-        description: allele number
-        type: integer
-        format: int64
-      alleleFrequency:
-        description: allele frequency
-        type: number
-        format: double
-      homozygoteCount:
-        description: homozygote count
-        type: integer
-        format: int64
-
-  VariantListResponse:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
+          type: array
+          items:
+            $ref: '#/components/schemas/Criteria'
+    CriteriaParentResponse:
+      type: object
+      properties:
+        parent:
+          $ref: '#/components/schemas/Criteria'
+    SurveyMetadata:
+      required:
+        - conceptId
+        - conceptName
+        - surveyName
+      type: object
+      properties:
+        id:
+          type: integer
+          description: id of each row
+          format: int64
+        conceptId:
+          type: integer
+          description: id of the concept
+          format: int64
+        conceptName:
+          type: string
+          description: name of concept
+        surveyName:
+          type: string
+          description: survey name
+        conceptCode:
+          type: string
+          description: original vocab code of concept
+        countValue:
+          type: integer
+          description: est count in the cdr
+          format: int64
+        surveyConceptId:
+          type: integer
+          description: survey concept id
+          format: int64
+        sub:
+          type: integer
+          description: flag to indicate if a question is a sub question
+          format: int32
+        path:
+          type: string
+          description: question path
+        is_parent_question:
+          type: integer
+          description: flag to indicate if the question is parent question
+          format: int32
+        orderNumber:
+          type: integer
+          description: question order number
+          format: int32
+        questionString:
+          type: string
+          description: question string
+        type:
+          type: string
+          description: type of survey data
+        countAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        genderAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        ageAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        versionAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        participantCountAnalysis:
+          $ref: '#/components/schemas/Analysis'
+    SurveyMetadataListResponse:
+      required:
+        - items
+      type: object
+      properties:
         items:
-          $ref: "#/definitions/Variant"
-
-  GenomicFilters:
-    type: object
-    properties:
-      gene:
-        description: Gene Filters
-        type: object
-        $ref: "#/definitions/GenomicFilterOptionList"
-      consequence:
-        description: Consequence Filters
-        type: object
-        $ref: "#/definitions/GenomicFilterOptionList"
-      variantType:
-        description: Variant Type Filters
-        type: object
-        $ref: "#/definitions/GenomicFilterOptionList"
-      clinicalSignificance:
-        description: Clinical Significance Filters
-        type: object
-        $ref: "#/definitions/GenomicFilterOptionList"
-      alleleCount:
-        description: Allele Count Range Filter
-        type: object
-        $ref: "#/definitions/GenomicFilterOption"
-      alleleNumber:
-        description: Allele Number Range Filter
-        type: object
-        $ref: "#/definitions/GenomicFilterOption"
-      alleleFrequency:
-        description: Allele Frequency Range Filter
-        type: object
-        $ref: "#/definitions/GenomicFilterOption"
-      homozygoteCount:
-        description: Homozygote Count Range Filter
-        type: object
-        $ref: "#/definitions/GenomicFilterOption"
-
-  GenomicFilterOption:
-    type: object
-    properties:
-      option:
-        description: Filter Name
-        type: string
-      count:
-        description: count
-        type: integer
-        format: int64
-      min:
-        description: min value
-        type: integer
-        format: int64
-      max:
-        description: max value
-        type: integer
-        format: int64
-      minFreq:
-        description: min Allele Frequency
-        type: number
-        format: float
-        default: 0
-      maxFreq:
-        description: max Allele Frequency
-        type: number
-        format: float
-        default: 1
-      checked:
-        description: boolean flag
-        type: boolean
-
-  GenomicFilterOptionList:
-    type: object
-    required:
-      - items
-    properties:
-      items:
-        type: "array"
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyMetadata'
+    AchillesResult:
+      required:
+        - analysisId
+      type: object
+      properties:
+        id:
+          type: integer
+          description: pk id for jpa code to work
+          format: int64
+        analysisId:
+          type: integer
+          description: id analysis
+          format: int64
+        stratum1:
+          type: string
+          description: stratum 1
+        stratum2:
+          type: string
+          description: stratum 2
+        stratum3:
+          type: string
+          description: stratum 3
+        stratum4:
+          type: string
+          description: stratum 4
+        stratum5:
+          type: string
+          description: stratum 5
+        stratum6:
+          type: string
+          description: stratum6
+        stratum7:
+          type: string
+          description: stratum7
+        analysisStratumName:
+          type: string
+          description: stratum 5 Name
+        measurementValueType:
+          type: string
+          description: measurement value type (text / numeric)
+        countValue:
+          type: integer
+          description: count
+          format: int64
+        sourceCountValue:
+          type: integer
+          description: source count
+          format: int64
+    AchillesResultListResponse:
+      required:
+        - items
+      type: object
+      properties:
         items:
-          $ref: "#/definitions/GenomicFilterOption"
-      filterActive:
-        description: boolean flag to know whether the filter is active
-        type: boolean
-        default: false
-
-  GenomicSearchTermType:
-    type: object
-    properties:
-      variant_id:
-        description: variant property to build sql query
-        type: string
-      whereVariantIdFlag:
-        type: boolean
-      contig:
-        description: contig property to build sql query
-        type: string
-      low:
-        description: position low
-        type: integer
-        format: int64
-      high:
-        description: position high
-        type: integer
-        format: int64
-      whereContigFlag:
-        type: boolean
-      wherePositionFlag:
-        type: boolean
-      rs_id:
-        description: rsnumber property to build sql query
-        type: string
-      whereRsIdFlag:
-        type: boolean
-      genes:
-        description: genes property to build sql query
-        type: string
-      whereGeneFlag:
-        description: flag to determine if the search type is gene
-        type: boolean
-      searchSqlQuery:
-        description: sql query formed
-        type: string
-
-
-
-  VariantInfo:
-    type: object
-    required:
-      - variantId
-    properties:
-      variantId:
-        description: variant id
-        type: string
-      dnaChange:
-        description: dna change
-        type: string
-      transcript:
-        description: transcript
-        type: string
-      rsNumber:
-        description: rs number
-        type: string
-      afrAlleleCount:
-        description: African Ancestry Allele Count
-        type: integer
-        format: int64
-      afrAlleleNumber:
-        description: African Ancestry Allele Number
-        type: integer
-        format: int64
-      afrAlleleFrequency:
-        description: African Ancestry Allele Frequency
-        type: number
-        format: double
-      afrHomozygoteCount:
-        description: African Ancestry Homozygote Count
-        type: integer
-        format: int64
-      easAlleleCount:
-        description: East Asian Ancestry Allele Count
-        type: integer
-        format: int64
-      easAlleleNumber:
-        description: East Asian Ancestry Allele Number
-        type: integer
-        format: int64
-      easAlleleFrequency:
-        description: East Asian Ancestry Allele Frequency
-        type: number
-        format: double
-      easHomozygoteCount:
-        description: East Asian Ancestry Homozygote Count
-        type: integer
-        format: int64
-      eurAlleleCount:
-        description: European Ancestry Allele Count
-        type: integer
-        format: int64
-      eurAlleleNumber:
-        description: European Ancestry Allele Number
-        type: integer
-        format: int64
-      eurAlleleFrequency:
-        description: European Ancestry Allele Frequency
-        type: number
-        format: double
-      eurHomozygoteCount:
-        description: European Ancestry Homozygote Count
-        type: integer
-        format: int64
-      amrAlleleCount:
-        description: Latin American Ancestry Allele Count
-        type: integer
-        format: int64
-      amrAlleleNumber:
-        description: Latin American Ancestry Allele Number
-        type: integer
-        format: int64
-      amrAlleleFrequency:
-        description: Latin American Ancestry Allele Frequency
-        type: number
-        format: double
-      amrHomozygoteCount:
-        description: Latin American Ancestry Homozygote Count
-        type: integer
-        format: int64
-      midAlleleCount:
-        description: Middle Eastern Ancestry Allele Count
-        type: integer
-        format: int64
-      midAlleleNumber:
-        description: Middle Eastern Ancestry Allele Number
-        type: integer
-        format: int64
-      midAlleleFrequency:
-        description: Middle Eastern Ancestry Allele Frequency
-        type: number
-        format: double
-      midHomozygoteCount:
-        description: Middle Eastern Ancestry Homozygote Count
-        type: integer
-        format: int64
-      sasAlleleCount:
-        description: South Asian Ancestry Allele Count
-        type: integer
-        format: int64
-      sasAlleleNumber:
-        description: South Asian Ancestry Allele Number
-        type: integer
-        format: int64
-      sasAlleleFrequency:
-        description: South Asian Ancestry Allele Frequency
-        type: number
-        format: double
-      sasHomozygoteCount:
-        description: South Asian Ancestry Homozygote Count
-        type: integer
-        format: int64
-      othAlleleCount:
-        description: Other Ancestry Allele Count
-        type: integer
-        format: int64
-      othAlleleNumber:
-        description: Other Ancestry Allele Number
-        type: integer
-        format: int64
-      othAlleleFrequency:
-        description: Other Ancestry Allele Frequency
-        type: number
-        format: double
-      othHomozygoteCount:
-        description: Other Homozygote Count
-        type: integer
-        format: int64
-      totalAlleleCount:
-        description: Total Allele Count
-        type: integer
-        format: int64
-      totalAlleleNumber:
-        description: Total Allele Number
-        type: integer
-        format: int64
-      totalAlleleFrequency:
-        description: Total Allele Frequency
-        type: number
-        format: double
-      totalHomozygoteCount:
-        description: Total Homozygote Count
-        type: integer
-        format: int64
+          type: array
+          items:
+            $ref: '#/components/schemas/AchillesResult'
+    AchillesResultDist:
+      required:
+        - analysisId
+      type: object
+      properties:
+        id:
+          type: integer
+          description: pk id for jpa code to work
+          format: int64
+        analysisId:
+          type: integer
+          description: id analysis
+          format: int64
+        stratum1:
+          type: string
+          description: stratum 1
+        stratum2:
+          type: string
+          description: stratum 2
+        stratum3:
+          type: string
+          description: stratum 3
+        stratum4:
+          type: string
+          description: stratum 4
+        stratum5:
+          type: string
+          description: stratum 5
+        stratum6:
+          type: string
+          description: stratum 6
+        countValue:
+          type: integer
+          description: count
+          format: int64
+        minValue:
+          type: number
+          description: min value
+          format: float
+        maxValue:
+          type: number
+          description: max value
+          format: float
+        avgValue:
+          type: number
+          description: avg value
+          format: float
+        stdevValue:
+          type: number
+          description: std deviation value
+          format: float
+        medianValue:
+          type: number
+          description: median value
+          format: float
+        p10Value:
+          type: number
+          description: 10th percentile  value
+          format: float
+        p25Value:
+          type: number
+          description: 25th percentile value
+          format: float
+        p75Value:
+          type: number
+          description: 75th percentile value
+          format: float
+        p90Value:
+          type: number
+          description: 90th percentile value
+          format: float
+    Analysis:
+      required:
+        - analysisId
+      type: object
+      properties:
+        analysisId:
+          type: integer
+          description: id analysis
+          format: int64
+        analysisName:
+          type: string
+          description: analysis name
+        stratum1Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum2Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum3Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum4Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum5Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum6Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        stratum7Name:
+          type: string
+          description: usually concept name corresponding to stratum
+        chartType:
+          type: string
+          description: chart type to display for this analysis column pie box
+        dataType:
+          type: string
+          description: data type of this analysis count or distribution
+        results:
+          type: array
+          description: count results
+          items:
+            $ref: '#/components/schemas/AchillesResult'
+        distResults:
+          type: array
+          description: distribution results
+          items:
+            $ref: '#/components/schemas/AchillesResultDist'
+        unitName:
+          type: string
+          description: unit name
+    AnalysisListResponse:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Analysis'
+    DomainInfosAndSurveyModulesResponse:
+      required:
+        - domainInfos
+        - surveyModules
+      type: object
+      properties:
+        domainInfos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DomainInfo'
+        surveyModules:
+          type: array
+          items:
+            $ref: '#/components/schemas/SurveyModule'
+    ConceptAnalysis:
+      required:
+        - conceptId
+      type: object
+      properties:
+        conceptId:
+          type: string
+          description: concept id
+        countAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        genderAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        ageAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        measurementValueGenderAnalysis:
+          type: array
+          description: measurement value gender analysis
+          items:
+            $ref: '#/components/schemas/Analysis'
+        measurementValueAgeAnalysis:
+          type: array
+          description: age analysis for measurement values
+          items:
+            $ref: '#/components/schemas/Analysis'
+        measurementDistributionAnalysis:
+          type: array
+          description: measurement distribution analysis
+          items:
+            $ref: '#/components/schemas/Analysis'
+        measurementGenderCountAnalysis:
+          type: array
+          description: measurement gender count by unit analysis
+          items:
+            $ref: '#/components/schemas/Analysis'
+        ehrCountAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        participantCountAnalysis:
+          $ref: '#/components/schemas/Analysis'
+    ConceptAnalysisListResponse:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConceptAnalysis'
+    CountAnalysis:
+      required:
+        - domainId
+      type: object
+      properties:
+        domainId:
+          type: string
+          description: domain id
+        genderCountAnalysis:
+          $ref: '#/components/schemas/Analysis'
+        ageCountAnalysis:
+          $ref: '#/components/schemas/Analysis'
+    StandardConceptFilter:
+      type: string
+      description: "filter on whether standard, non-standard, or all concepts should\
+        \ be returned\\"
+      enum:
+        - ALL_CONCEPTS
+        - STANDARD_CONCEPTS
+        - NON_STANDARD_CONCEPTS
+        - STANDARD_OR_CODE_ID_MATCH
+    TestFilter:
+      type: string
+      description: filter to toggle lab measurement tests
+      enum:
+        - SELECTED
+        - UNSELECTED
+    OrderFilter:
+      type: string
+      description: filter to toggle lab measurement orders
+      enum:
+        - SELECTED
+        - UNSELECTED
+    Domain:
+      type: string
+      description: a domain for concepts corresponding to a table in the OMOP schema
+      enum:
+        - OBSERVATION
+        - PROCEDURE
+        - DRUG
+        - CONDITION
+        - MEASUREMENT
+        - DEVICE
+        - DEATH
+        - VISIT
+    MatchType:
+      type: string
+      description: match column type on concept search
+      enum:
+        - CONCEPT_CODE
+        - CONCEPT_ID
+        - CONCEPT_NAME
+    AnalysisIdConstant:
+      type: string
+      description: analysis id constant map
+      enum:
+        - PARTICIPANT_COUNT_ANALYSIS_ID
+        - GENDER_ANALYSIS
+        - COUNT_ANALYSIS_ID
+        - SURVEY_GENDER_COUNT_ANALYSIS_ID
+        - SURVEY_AGE_COUNT_ANALYSIS_ID
+        - SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID
+        - GENDER_ANALYSIS_ID
+        - PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID
+        - AGE_ANALYSIS_ID
+        - SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID
+        - SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID
+        - SURVEY_COUNT_ANALYSIS_ID
+        - SURVEY_GENDER_ANALYSIS_ID
+        - SURVEY_AGE_ANALYSIS_ID
+        - SURVEY_VERSION_ANALYSIS_ID
+        - SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID
+        - SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID
+        - EHR_GENDER_COUNT_ANALYSIS_ID
+        - EHR_AGE_COUNT_ANALYSIS_ID
+        - RACE_ANALYSIS_ID
+        - ETHNICITY_ANALYSIS_ID
+        - MEASUREMENT_DIST_ANALYSIS_ID
+        - MEASUREMENT_GENDER_ANALYSIS_ID
+        - MEASUREMENT_GENDER_UNIT_ANALYSIS_ID
+        - RACE_ANALYSIS
+        - ETHNICITY_ANALYSIS
+        - GENO_GENDER_ANALYSIS
+        - GENO_AGE_ANALYSIS
+        - GENO_RACE_ANALYSIS
+    VariantResultSizeRequest:
+      required:
+        - query
+      type: object
+      properties:
+        query:
+          type: string
+          description: |
+            A query string that can be used to match a subset of the name (case-insensitively), the entire code value (case-insensitively), or the concept ID.
+        filterMetadata:
+          $ref: '#/components/schemas/GenomicFilters'
+    SearchVariantsRequest:
+      required:
+        - query
+      type: object
+      properties:
+        query:
+          type: string
+          description: |
+            A query string that can be used to match a subset of the name (case-insensitively), the entire code value (case-insensitively), or the concept ID.
+        pageNumber:
+          type: integer
+          description: By default it returns the first page and then its next pages
+            from that on.
+        rowCount:
+          type: integer
+          description: Number of rows user wants to view per page
+        sortMetadata:
+          $ref: '#/components/schemas/SortMetadata'
+        filterMetadata:
+          $ref: '#/components/schemas/GenomicFilters'
+    SearchConceptsRequest:
+      required:
+        - query
+      type: object
+      properties:
+        query:
+          type: string
+          description: |
+            A query string that can be used to match a subset of the name (case-insensitively), the entire code value (case-insensitively), or the concept ID.
+        standardConceptFilter:
+          $ref: '#/components/schemas/StandardConceptFilter'
+        vocabularyIds:
+          type: array
+          description: "The vocabulary ID for the concepts returned (e.g. SNOMED,\
+            \ RxNorm)"
+          items:
+            type: string
+        domain:
+          $ref: '#/components/schemas/Domain'
+        maxResults:
+          type: integer
+          description: The maximum number of results returned. Defaults to 25.
+          format: int32
+        minCount:
+          type: integer
+          description: The minimum count of concepts to be fetched
+          format: int32
+        pageNumber:
+          type: integer
+          description: By default it returns the first page and then its next pages
+            from that on.
+        measurementTests:
+          type: integer
+          description: By default all the measurement tests are returned
+        measurementOrders:
+          type: integer
+          description: By default all the measurement orders are returned
+    CdrVersion:
+      required:
+        - cdrVersionId
+        - creationTime
+        - name
+      type: object
+      properties:
+        cdrVersionId:
+          type: string
+        name:
+          type: string
+        numParticipants:
+          type: integer
+          format: int32
+        creationTime:
+          type: integer
+          description: Milliseconds since the UNIX epoch.
+          format: int64
+    CdrVersionListResponse:
+      required:
+        - defaultCdrVersionId
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CdrVersion'
+        defaultCdrVersionId:
+          type: string
+          description: ID of the CDR versions that should be used by the user by default
+    DomainInfo:
+      required:
+        - allConceptCount
+        - description
+        - domain
+        - name
+        - participantCount
+        - standardConceptCount
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/Domain'
+        domainConceptId:
+          type: integer
+          description: domain concept id
+          format: int64
+        name:
+          type: string
+          description: display name of the domain
+        description:
+          type: string
+          description: description of the domain
+        standardConceptCount:
+          type: integer
+          description: number of standard concepts in this domain
+          format: int64
+        allConceptCount:
+          type: integer
+          description: number of concepts in this domain (standard or non-standard)
+          format: int64
+        participantCount:
+          type: integer
+          description: number of participants with data in the CDR for a concept in
+            this domain
+          format: int64
+    SortMetadata:
+      type: object
+      properties:
+        variantId:
+          $ref: '#/components/schemas/SortColumnDetails'
+        gene:
+          $ref: '#/components/schemas/SortColumnDetails'
+        consequence:
+          $ref: '#/components/schemas/SortColumnDetails'
+        variantType:
+          $ref: '#/components/schemas/SortColumnDetails'
+        clinicalSignificance:
+          $ref: '#/components/schemas/SortColumnDetails'
+        alleleCount:
+          $ref: '#/components/schemas/SortColumnDetails'
+        alleleNumber:
+          $ref: '#/components/schemas/SortColumnDetails'
+        alleleFrequency:
+          $ref: '#/components/schemas/SortColumnDetails'
+        homozygoteCount:
+          $ref: '#/components/schemas/SortColumnDetails'
+    SortColumnDetails:
+      type: object
+      properties:
+        sortActive:
+          type: boolean
+          description: Flag for active sort
+        sortDirection:
+          type: string
+          description: Sort Direction
+        sortOrder:
+          type: integer
+          description: Sort Order
+          format: int32
+    SurveyModule:
+      required:
+        - conceptId
+        - description
+        - name
+        - participantCount
+        - questionCount
+      type: object
+      properties:
+        conceptId:
+          type: integer
+          description: the concept ID for the survey module
+          format: int64
+        name:
+          type: string
+          description: display name of the module
+        description:
+          type: string
+          description: description of the module
+        questionCount:
+          type: integer
+          description: number of questions in the module
+          format: int64
+        participantCount:
+          type: integer
+          description: number of participants with data in the CDR for questions in
+            this module
+          format: int64
+        orderNumber:
+          type: integer
+          description: survey release order number
+          format: int32
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Error message
+        statusCode:
+          type: integer
+          description: Http error status code
+        errorClassName:
+          type: string
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        errorUniqueId:
+          type: string
+          description: "Unique ID for this error response, for correlation with backend\
+            \ logs"
+    ErrorCode:
+      type: string
+      description: Short parsable error descriptions
+      enum:
+        - PARSE_ERROR
+    Variant:
+      required:
+        - variantId
+      type: object
+      properties:
+        variantId:
+          type: string
+          description: id variant
+        genes:
+          type: string
+          description: genes
+        consequence:
+          type: string
+          description: consequence
+        variantType:
+          type: string
+          description: variant type
+        proteinChange:
+          type: string
+          description: protein change
+        clinicalSignificance:
+          type: string
+          description: clinical significance
+        alleleCount:
+          type: integer
+          description: allele count
+          format: int64
+        alleleNumber:
+          type: integer
+          description: allele number
+          format: int64
+        alleleFrequency:
+          type: number
+          description: allele frequency
+          format: double
+        homozygoteCount:
+          type: integer
+          description: homozygote count
+          format: int64
+    VariantListResponse:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Variant'
+    GenomicFilters:
+      type: object
+      properties:
+        gene:
+          $ref: '#/components/schemas/GenomicFilterOptionList'
+        consequence:
+          $ref: '#/components/schemas/GenomicFilterOptionList'
+        variantType:
+          $ref: '#/components/schemas/GenomicFilterOptionList'
+        clinicalSignificance:
+          $ref: '#/components/schemas/GenomicFilterOptionList'
+        alleleCount:
+          $ref: '#/components/schemas/GenomicFilterOption'
+        alleleNumber:
+          $ref: '#/components/schemas/GenomicFilterOption'
+        alleleFrequency:
+          $ref: '#/components/schemas/GenomicFilterOption'
+        homozygoteCount:
+          $ref: '#/components/schemas/GenomicFilterOption'
+    GenomicFilterOption:
+      type: object
+      properties:
+        option:
+          type: string
+          description: Filter Name
+        count:
+          type: integer
+          description: count
+          format: int64
+        min:
+          type: integer
+          description: min value
+          format: int64
+        max:
+          type: integer
+          description: max value
+          format: int64
+        minFreq:
+          type: number
+          description: min Allele Frequency
+          format: float
+          default: 0.0
+        maxFreq:
+          type: number
+          description: max Allele Frequency
+          format: float
+          default: 1.0
+        checked:
+          type: boolean
+          description: boolean flag
+    GenomicFilterOptionList:
+      required:
+        - items
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/GenomicFilterOption'
+        filterActive:
+          type: boolean
+          description: boolean flag to know whether the filter is active
+          default: false
+    GenomicSearchTermType:
+      type: object
+      properties:
+        variant_id:
+          type: string
+          description: variant property to build sql query
+        whereVariantIdFlag:
+          type: boolean
+        contig:
+          type: string
+          description: contig property to build sql query
+        low:
+          type: integer
+          description: position low
+          format: int64
+        high:
+          type: integer
+          description: position high
+          format: int64
+        whereContigFlag:
+          type: boolean
+        wherePositionFlag:
+          type: boolean
+        rs_id:
+          type: string
+          description: rsnumber property to build sql query
+        whereRsIdFlag:
+          type: boolean
+        genes:
+          type: string
+          description: genes property to build sql query
+        whereGeneFlag:
+          type: boolean
+          description: flag to determine if the search type is gene
+        searchSqlQuery:
+          type: string
+          description: sql query formed
+    VariantInfo:
+      required:
+        - variantId
+      type: object
+      properties:
+        variantId:
+          type: string
+          description: variant id
+        dnaChange:
+          type: string
+          description: dna change
+        transcript:
+          type: string
+          description: transcript
+        rsNumber:
+          type: string
+          description: rs number
+        afrAlleleCount:
+          type: integer
+          description: African Ancestry Allele Count
+          format: int64
+        afrAlleleNumber:
+          type: integer
+          description: African Ancestry Allele Number
+          format: int64
+        afrAlleleFrequency:
+          type: number
+          description: African Ancestry Allele Frequency
+          format: double
+        afrHomozygoteCount:
+          type: integer
+          description: African Ancestry Homozygote Count
+          format: int64
+        easAlleleCount:
+          type: integer
+          description: East Asian Ancestry Allele Count
+          format: int64
+        easAlleleNumber:
+          type: integer
+          description: East Asian Ancestry Allele Number
+          format: int64
+        easAlleleFrequency:
+          type: number
+          description: East Asian Ancestry Allele Frequency
+          format: double
+        easHomozygoteCount:
+          type: integer
+          description: East Asian Ancestry Homozygote Count
+          format: int64
+        eurAlleleCount:
+          type: integer
+          description: European Ancestry Allele Count
+          format: int64
+        eurAlleleNumber:
+          type: integer
+          description: European Ancestry Allele Number
+          format: int64
+        eurAlleleFrequency:
+          type: number
+          description: European Ancestry Allele Frequency
+          format: double
+        eurHomozygoteCount:
+          type: integer
+          description: European Ancestry Homozygote Count
+          format: int64
+        amrAlleleCount:
+          type: integer
+          description: Latin American Ancestry Allele Count
+          format: int64
+        amrAlleleNumber:
+          type: integer
+          description: Latin American Ancestry Allele Number
+          format: int64
+        amrAlleleFrequency:
+          type: number
+          description: Latin American Ancestry Allele Frequency
+          format: double
+        amrHomozygoteCount:
+          type: integer
+          description: Latin American Ancestry Homozygote Count
+          format: int64
+        midAlleleCount:
+          type: integer
+          description: Middle Eastern Ancestry Allele Count
+          format: int64
+        midAlleleNumber:
+          type: integer
+          description: Middle Eastern Ancestry Allele Number
+          format: int64
+        midAlleleFrequency:
+          type: number
+          description: Middle Eastern Ancestry Allele Frequency
+          format: double
+        midHomozygoteCount:
+          type: integer
+          description: Middle Eastern Ancestry Homozygote Count
+          format: int64
+        sasAlleleCount:
+          type: integer
+          description: South Asian Ancestry Allele Count
+          format: int64
+        sasAlleleNumber:
+          type: integer
+          description: South Asian Ancestry Allele Number
+          format: int64
+        sasAlleleFrequency:
+          type: number
+          description: South Asian Ancestry Allele Frequency
+          format: double
+        sasHomozygoteCount:
+          type: integer
+          description: South Asian Ancestry Homozygote Count
+          format: int64
+        othAlleleCount:
+          type: integer
+          description: Other Ancestry Allele Count
+          format: int64
+        othAlleleNumber:
+          type: integer
+          description: Other Ancestry Allele Number
+          format: int64
+        othAlleleFrequency:
+          type: number
+          description: Other Ancestry Allele Frequency
+          format: double
+        othHomozygoteCount:
+          type: integer
+          description: Other Homozygote Count
+          format: int64
+        totalAlleleCount:
+          type: integer
+          description: Total Allele Count
+          format: int64
+        totalAlleleNumber:
+          type: integer
+          description: Total Allele Number
+          format: int64
+        totalAlleleFrequency:
+          type: number
+          description: Total Allele Frequency
+          format: double
+        totalHomozygoteCount:
+          type: integer
+          description: Total Homozygote Count
+          format: int64
+  securitySchemes:
+    aou_oauth:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: ""
+          tokenUrl: ""
+          scopes: {}
+x-original-swagger-version: "2.0"

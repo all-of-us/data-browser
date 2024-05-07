@@ -2,12 +2,11 @@ package org.pmiops.workbench.cdr.dao;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.junit.runner.RunWith;
 import org.pmiops.workbench.cdr.model.DbDomainInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -15,7 +14,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 
-@RunWith(SpringRunner.class)
 @DataJpaTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
@@ -23,7 +21,7 @@ public class DomainInfoDaoTest {
 
   @Autowired private DomainInfoDao domainInfoDao;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     domainInfoDao.save(
         new DbDomainInfo()
