@@ -29,7 +29,7 @@ import org.pmiops.workbench.publicapi.client.model.SearchConceptsRequest;
 import org.pmiops.workbench.publicapi.client.model.SurveyQuestionFetchResponse;
 import org.pmiops.workbench.publicapi.client.model.SurveyVersionCountResponse;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Ignore;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * API tests for DataBrowserApi
  */
-@Ignore
+@Disabled
 public class DataBrowserApiTest {
 
     private final DataBrowserApi api = new DataBrowserApi();

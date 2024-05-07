@@ -16,7 +16,7 @@ package org.pmiops.workbench.privateworkbench.api;
 import org.pmiops.workbench.privateworkbench.ApiException;
 import org.pmiops.workbench.privateworkbench.model.Profile;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Ignore;
+import org.junit.jupiter.api.Disabled;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * API tests for ProfileApi
  */
-@Ignore
+@Disabled
 public class ProfileApiTest {
 
     private final ProfileApi api = new ProfileApi();
