@@ -35,7 +35,13 @@ public class CommonStorageEnumsTest {
                     Domain.class.getSimpleName(),
                     Domain.values(),
                     (Function<Short, Domain>) CommonStorageEnums::domainFromStorage,
-                    (Function<Enum<?>, Short>) (domain) -> CommonStorageEnums.domainToStorage(domain)
+                    (Function<Enum<?>, Short>) (Enum<?> domain) -> {
+                      if (domain instanceof Domain) {
+                        return CommonStorageEnums.domainToStorage((Domain) domain);
+                      } else {
+                        throw new IllegalArgumentException("Invalid domain type: " + domain.getClass());
+                      }
+                    }
             )
     );
   }
