@@ -12,16 +12,18 @@ strong {
 .version-box-container  {
     width:100%;
     font-size: .8em;
+    
 }
 
 .version-box{
     border:1px solid #cccccc;
     border-radius: 3px;
+    margin-top: -1rem;
 }
 
 .version-box-header,.version-box-row {
     display: grid;
-    grid-template-columns: 20% 15% 1fr 20% 25%;
+    grid-template-columns: 60% 40%;
     /* justify-content: space-around; */
     width:100%;
 }
@@ -35,6 +37,11 @@ strong {
 
 .version-box-header > .version-box-item {
     font-family: GothamBold;
+    text-align: center;
+}
+
+div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
+  border-right:#cccccc 1px solid;
 }
 .version-box-body{
     overflow-y: auto;
@@ -48,6 +55,7 @@ strong {
 const containerElementName = "root";
 
 interface Props {
+  // surveyInfo: any;
   surveyVersions: Array<any>;
 }
 
@@ -61,20 +69,16 @@ export class SurveyVersionTableReactComponent extends React.Component<
 
   render() {
     const { surveyVersions } = this.props;
+    console.log(surveyVersions,'surveyversions');
+    
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
-        <h5>
-          <strong>Survey versions</strong>
-        </h5>
         <br />
         <div className="version-box">
           <div className="version-box-header">
-            <div className="version-box-item">Month</div>
-            <div className="version-box-item">Year</div>
-            <div className="version-box-item">Participants</div>
-            <div className="version-box-item">Questions</div>
-            <div className="version-box-item">Download PDF</div>
+            <div className="version-box-item">Survey Version</div>
+            <div className="version-box-item">PDF</div>
           </div>
           <div className="version-box-body">
             {!!surveyVersions &&
@@ -84,23 +88,17 @@ export class SurveyVersionTableReactComponent extends React.Component<
                 }
                 return (
                   <div className="version-box-row" key={survey.monthName}>
-                    <span className="version-box-item">{survey.monthName}</span>
-                    <span className="version-box-item">{survey.year}</span>
                     <span className="version-box-item">
-                      {survey.participants}
-                    </span>
-                    <span className="version-box-item">
-                      {survey.numberOfQuestion}
+                      {survey.monthName} {survey.year}
                     </span>
                     <span className="version-box-item">
                       <a href={survey.pdfLink} download>
-                        <ClrIcon
-                          shape="file"
-                          className="is-solid"
-                          style={{ width: 18, height: 18 }}
-                        />
-                        Survey as PDF
-                      </a>{" "}
+                        English
+                      </a>{" "}|{" "}
+                      <a href={survey.pdfLinkSpanish} download>
+
+                        Spanish
+                      </a>
                     </span>
                   </div>
                 );
