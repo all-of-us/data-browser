@@ -5,14 +5,17 @@ buildscript {    // Configuration for building
     ext {
         GAE_VERSION = '2.0.26'
         GOOGLE_TRUTH_VERSION = '1.1.3'
-        GSON_VERSION = '2.9.0'
+        GSON_VERSION = '2.9.1'
         HIBERNATE_VERSION = '6.4.4.Final'
         SPRING_BOOT_VERSION = '3.2.4'
         SPRING_FRAMEWORK_VERSION = '6.1.5'
         SPRING_SECURITY_VERSION = '6.2.3'
+        OPENTELEMETRY_SDK_VERSION = '1.36.0'
+        OPENTELEMETRY_JAVA_VERSION = '2.3.0'
+        OPENTELEMETRY_GOOGLE_VERSION = '0.27.0'
         JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
-        OKHTTP_VERSION = '2.7.5'
+        OKHTTP_VERSION = '4.12.0'
         SPRINGFOX_VERSION = '3.0.0'
         LIQUIBASE_VERSION = '4.27.0'
         SWAGGER_3_CODEGEN_VERSION = '3.0.52'
@@ -359,10 +362,11 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
     implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
-    implementation "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
-    implementation "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
+    implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
 
     implementation 'org.apache.commons:commons-lang3:3.0'
+
 
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
 
@@ -386,8 +390,6 @@ dependencies {
 
 
     implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
-
-    implementation 'joda-time:joda-time:2.10'
 
     implementation 'com.google.truth:truth:1.1.3'
 
@@ -436,8 +438,8 @@ dependencies {
     testImplementation 'org.liquibase:liquibase-core:3.5.3'
     testImplementation 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
 
-    integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
-    integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
+    integrationImplementation "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
+    integrationImplementation "com.google.truth.extensions:truth-java8-extension:${GOOGLE_TRUTH_VERSION}"
 
     integrationImplementation 'org.assertj:assertj-core:3.20.2'
 
@@ -449,25 +451,49 @@ dependencies {
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
 
-
-    // For Swagger generation. These should include dependencies found in the Swagger codegen
-    // example here:
-    // https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml
+    // Dependencies for Swagger codegen-generated sources. This should include all dependencies required by Swagger's
+    // default okhttp API codegen templates (see https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml)
+    // plus any custom templates included in our repo under the SWAGGER_2_TEMPLATE_DIR.
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:${SPRING_BOOT_VERSION}"
+    generatedCompile "io.springfox:springfox-swagger-ui:${SPRINGFOX_VERSION}"
     generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
-    generatedCompile "com.squareup.okhttp:okhttp:${OKHTTP_VERSION}"
-    generatedCompile "com.squareup.okhttp:logging-interceptor:${OKHTTP_VERSION}"
+    generatedCompile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
+    generatedCompile "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
     generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
-    generatedCompile 'joda-time:joda-time:2.10'
-    generatedCompile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${JACKSON_VERSION}"
+    // OpenTelemetry is an AoU-specific addition to the default Swagger API dependencies. See the
+    // template file api.mustache for more details.
+    generatedCompile "io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_SDK_VERSION}"
+    generatedCompile "io.opentelemetry:opentelemetry-context:${OPENTELEMETRY_SDK_VERSION}"
+
+    implementation "io.opentelemetry:opentelemetry-api:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry:opentelemetry-context:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry:opentelemetry-exporter-otlp:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry:opentelemetry-sdk:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry:opentelemetry-sdk-extension-autoconfigure-spi:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:$project.ext.OPENTELEMETRY_JAVA_VERSION"
+    implementation "io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:$project.ext.OPENTELEMETRY_JAVA_VERSION"
+    implementation "io.opentelemetry.instrumentation:opentelemetry-spring-boot:$project.ext.OPENTELEMETRY_JAVA_VERSION-alpha"
+    implementation("com.google.cloud.opentelemetry:exporter-trace:$project.ext.OPENTELEMETRY_GOOGLE_VERSION") {
+        exclude group: 'com.google.cloud', module: 'libraries-bom'
+        exclude group: 'com.google.cloud', module: 'google-cloud-core'
+        exclude group: 'com.google.cloud', module: 'google-cloud-trace'
+    }
+    implementation("com.google.cloud.opentelemetry:exporter-metrics:$project.ext.OPENTELEMETRY_GOOGLE_VERSION") {
+        exclude group: 'com.google.cloud', module: 'libraries-bom'
+        exclude group: 'com.google.cloud', module: 'google-cloud-core'
+        exclude group: 'com.google.cloud', module: 'google-cloud-trace'
+    }
+    implementation "com.google.cloud.opentelemetry:exporter-auto:$project.ext.OPENTELEMETRY_GOOGLE_VERSION-alpha"
+
+    // OpenTelemetry is an AoU-specific addition to the default Swagger API dependencies. See the
+    // template file api.mustache for more details.
+    generatedCompile "io.opentelemetry:opentelemetry-api:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    generatedCompile "io.opentelemetry:opentelemetry-context:$project.ext.OPENTELEMETRY_SDK_VERSION"
+
 
     generatedCompile 'com.google.http-client:google-http-client:1.41.1'
     generatedCompile 'com.google.api-client:google-api-client:2.2.0'
-
-    // Dependencies for Swagger codegen-generated sources. This should include all dependencies required by Swagger's
-    // default okhttp API codegen templates (see https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml)
-    // plus any custom templates included in our repo under the SWAGGER_TEMPLATE_DIR.
-    generatedCompile "io.springfox:springfox-swagger-ui:${SPRINGFOX_VERSION}"
 
     // OpenCensus is an AoU-specific addition to the default Swagger API dependencies. See the
     // template file api.mustache for more details.
@@ -529,7 +555,7 @@ swaggerSources {
                     'invokerPackage'   : 'org.pmiops.workbench.publicapi.client',
                     'modelPackage'   : 'org.pmiops.workbench.publicapi.client.model',
                     'apiPackage'   : 'org.pmiops.workbench.publicapi.client.api',
-                    'library'          : 'okhttp-gson',
+                    'library'          : 'okhttp4-gson',
                     'serializableModel': 'true',
                     'dateLibrary'      : 'java8',
                     'jakarta'          : 'true'
@@ -550,7 +576,7 @@ swaggerSources {
                     'invokerPackage'   : 'org.pmiops.workbench.privateworkbench',
                     'modelPackage'     : 'org.pmiops.workbench.privateworkbench.model',
                     'apiPackage'       : 'org.pmiops.workbench.privateworkbench.api',
-                    'library'          : 'okhttp-gson',
+                    'library'          : 'okhttp4-gson',
                     'serializableModel': 'true',
                     'dateLibrary'      : 'java8',
                     'jakarta'          : 'true'
