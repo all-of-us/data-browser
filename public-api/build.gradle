@@ -12,14 +12,15 @@ buildscript {    // Configuration for building
         SPRING_SECURITY_VERSION = '6.2.3'
         OPENTELEMETRY_SDK_VERSION = '1.36.0'
         OPENTELEMETRY_JAVA_VERSION = '2.3.0'
+        LOGBACK_VERSION = '1.5.5'
         OPENTELEMETRY_GOOGLE_VERSION = '0.27.0'
         JACKSON_VERSION = '2.16.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '4.12.0'
-        SPRINGFOX_VERSION = '3.0.0'
         LIQUIBASE_VERSION = '4.27.0'
         SWAGGER_3_CODEGEN_VERSION = '3.0.52'
         OPENCENSUS_VERSION = '0.23.0'
+        MAPSTRUCT_VERSION = '1.5.5.Final'
     }
 
     repositories {
@@ -34,7 +35,6 @@ buildscript {    // Configuration for building
         mavenCentral()
     }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${SPRING_BOOT_VERSION}"
         classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
 
         classpath "com.google.http-client:google-http-client:1.41.1"
@@ -286,187 +286,53 @@ ext {
     mapstructVersion = '1.3.1.Final'
 }
 
+// To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
 dependencies {
+    annotationProcessor "org.mapstruct:mapstruct-processor:$project.ext.MAPSTRUCT_VERSION"
 
-    __swaggerCodegenV3__ "io.swagger.codegen.v3:swagger-codegen-cli:${SWAGGER_3_CODEGEN_VERSION}"
+    __swaggerCodegenV3__ "io.swagger.codegen.v3:swagger-codegen-cli:$project.ext.SWAGGER_3_CODEGEN_VERSION"
 
-    // To show the dependency tree, try: ./project.rb gradle dependencies --configuration compile
-    providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
-    implementation 'mysql:mysql-connector-java:8.0.30'
-
-    implementation "io.swagger:swagger-annotations:1.6.7"
-
-    // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
-
-    implementation 'com.google.api-client:google-api-client:2.2.0'
-    implementation 'com.google.api-client:google-api-client-appengine:1.35.2'
-    implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
-    implementation 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
-    implementation 'com.google.apis:google-api-services-cloudresourcemanager:v3-rev20220925-2.0.0'
-    implementation 'com.google.apis:google-api-services-iam:v1-rev20220825-2.0.0'
-    implementation 'com.google.api-client:google-api-client-appengine:2.2.0'
-    implementation 'com.google.auth:google-auth-library-appengine:1.11.0'
-    implementation 'com.google.auth:google-auth-library-oauth2-http:1.11.0'
-    implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
-    implementation 'com.google.cloud:google-cloud-bigquery:2.25.0'
-    implementation 'com.google.cloud:google-cloud-iamcredentials:2.3.6'
-    implementation 'com.google.cloud:google-cloud-logging:3.11.5'
-    implementation 'com.google.cloud:google-cloud-monitoring:3.4.6'
-    implementation 'com.google.cloud:google-cloud-storage:2.13.0'
-    implementation 'com.google.cloud:google-cloud-tasks:2.3.11'
-    implementation "com.google.code.gson:gson:${GSON_VERSION}"
-    implementation 'com.google.guava:guava:32.0.1-jre'
-    implementation 'com.google.protobuf:protobuf-java:3.21.7'
-    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
-    // https://mvnrepository.com/artifact/com.google.appengine/appengine-api-1.0-sdk
-    implementation("com.google.appengine:appengine-api-1.0-sdk:${GAE_VERSION}") {
-        exclude group: 'com.google.api-client', module: 'google-api-client-servlet'
-    }
-
-
-    implementation 'ch.qos.logback:logback-classic:1.5.5'
-
-    implementation "org.yaml:snakeyaml:1.32"
-    implementation 'commons-io:commons-io:2.7'
-    implementation 'com.github.fge:json-patch:1.9'
-    implementation "org.hibernate:hibernate-validator:6.0.18.Final"
-
-    implementation("org.springframework.boot:spring-boot-starter-web:${SPRING_BOOT_VERSION}") {
-        exclude module: 'spring-boot-starter-tomcat'
-        exclude group: 'org.slf4j', module: 'jul-to-slf4j'
-    }
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:${SPRING_BOOT_VERSION}") {
-        exclude module: 'spring-boot-starter-tomcat'
-        exclude group: 'org.slf4j', module: 'jul-to-slf4j'
-    }
-
-    implementation "org.springframework.retry:spring-retry"
-    implementation "org.springframework.security:spring-security-core:${SPRING_SECURITY_VERSION}"
-    implementation "org.springframework.security:spring-security-crypto:${SPRING_SECURITY_VERSION}"
-    implementation "org.springframework.security:spring-security-web:${SPRING_SECURITY_VERSION}"
-
-    implementation "org.springframework:spring-context:${SPRING_FRAMEWORK_VERSION}"
-
-    implementation("org.springframework.boot:spring-boot-starter-actuator:${SPRING_BOOT_VERSION}") {
-        exclude module: 'spring-boot-starter-tomcat'
-        exclude group: 'org.slf4j', module: 'jul-to-slf4j'
-    }
-
-    implementation "org.hibernate.orm:hibernate-core:${HIBERNATE_VERSION}"
-    implementation "org.hibernate.orm:hibernate-community-dialects:${HIBERNATE_VERSION}"
-
-    implementation "org.springframework:spring-beans:${SPRING_FRAMEWORK_VERSION}"
-
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${JACKSON_VERSION}"
-    implementation "com.fasterxml.jackson.core:jackson-core:${JACKSON_VERSION}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${JACKSON_VERSION}"
-    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${JACKSON_VERSION}"
-    implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
-
-    implementation 'org.apache.commons:commons-lang3:3.0'
-
-
-    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
-
-    // jakarta
-    implementation "jakarta.servlet:jakarta.servlet-api:6.0.0"
-    implementation "jakarta.inject:jakarta.inject-api:2.0.1"
-    implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
-    implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
-    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
-    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
-    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
-
-    generatedCompile "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
-    generatedCompile "jakarta.inject:jakarta.inject-api:2.0.1"
-    generatedCompile 'jakarta.mail:jakarta.mail-api:2.1.3'
-    generatedCompile 'jakarta.annotation:jakarta.annotation-api:3.0.0'
-    generatedCompile 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-    generatedCompile 'jakarta.validation:jakarta.validation-api:3.0.2'
-    generatedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-
-
-    implementation "org.apache.tomcat:tomcat-jdbc:10.0.23"
-
-    implementation 'com.google.truth:truth:1.1.3'
-
-    implementation 'io.netty:netty-common:4.1.77.Final'
-
-    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
-
-    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-    testAnnotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
-
-    implementation 'com.auth0:java-jwt:3.19.2'
-
-
-    // https://github.com/GoogleCloudPlatform/google-cloud-java/issues/1502
-    implementation 'org.json:json:20180130'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testImplementation 'org.mockito:mockito-core:2.18.3'
-
-    testImplementation 'junit:junit:4.12'
-    implementation 'junit:junit:4.12'
-
-    testImplementation 'au.com.dius:pact-jvm-consumer-java8:4.0.10'
-    testImplementation 'au.com.dius:pact-jvm-consumer-junit5:4.0.10'
-
-    testImplementation 'org.mockito:mockito-core:3.11.2'
-
-    testImplementation 'com.google.http-client:google-http-client:1.41.1'
-    testImplementation 'com.google.api-client:google-api-client:2.2.0'
-
-    testImplementation "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
-    testImplementation "com.google.truth.extensions:truth-java8-extension:${GOOGLE_TRUTH_VERSION}"
-
-    testImplementation 'com.google.truth:truth:1.1.3'
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}") {
-        exclude group: 'org.junit', module: 'junit'
-        exclude group: 'org.mockito', module: 'mockito-core'
-        exclude group: 'org.mockito', module: 'mockito-all'
-    }
-
-    testImplementation "org.springframework.boot:spring-boot-starter-test:${SPRING_BOOT_VERSION}"
-    testImplementation 'com.h2database:h2:1.4.194'
-    testImplementation 'org.liquibase:liquibase-core:3.5.3'
-    testImplementation 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
-
-    integrationImplementation "com.google.truth:truth:${GOOGLE_TRUTH_VERSION}"
-    integrationImplementation "com.google.truth.extensions:truth-java8-extension:${GOOGLE_TRUTH_VERSION}"
-
-    integrationImplementation 'org.assertj:assertj-core:3.20.2'
-
-
-    integrationImplementation "org.springframework:spring-context:$project.ext.SPRING_FRAMEWORK_VERSION"
-
-    integrationImplementation("org.springframework.boot:spring-boot-starter-test:$project.ext.SPRING_BOOT_VERSION") {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-        exclude group: 'com.vaadin.external.google', module: 'android-json'
-    }
 
     // Dependencies for Swagger codegen-generated sources. This should include all dependencies required by Swagger's
     // default okhttp API codegen templates (see https://github.com/swagger-api/swagger-codegen/blob/v2.2.3/samples/client/petstore/spring-stubs/pom.xml)
     // plus any custom templates included in our repo under the SWAGGER_2_TEMPLATE_DIR.
-    generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:${SPRING_BOOT_VERSION}"
-
-    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0"
-
-    generatedCompile "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0"
-
-    generatedCompile "org.springframework.boot:spring-boot-starter-validation:${SPRING_BOOT_VERSION}"
-    generatedCompile "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
-    generatedCompile "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
-    generatedCompile "com.google.code.gson:gson:${GSON_VERSION}"
+    generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:$project.ext.SPRING_BOOT_VERSION"
+    generatedCompile "org.springframework.boot:spring-boot-starter-validation:$project.ext.SPRING_BOOT_VERSION"
+    generatedCompile "com.squareup.okhttp3:okhttp:$project.ext.OKHTTP_VERSION"
+    generatedCompile "com.squareup.okhttp3:logging-interceptor:$project.ext.OKHTTP_VERSION"
+    generatedCompile "com.google.code.gson:gson:$project.ext.GSON_VERSION"
     // OpenTelemetry is an AoU-specific addition to the default Swagger API dependencies. See the
     // template file api.mustache for more details.
-    generatedCompile "io.opentelemetry:opentelemetry-api:${OPENTELEMETRY_SDK_VERSION}"
-    generatedCompile "io.opentelemetry:opentelemetry-context:${OPENTELEMETRY_SDK_VERSION}"
+    generatedCompile "io.opentelemetry:opentelemetry-api:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    generatedCompile "io.opentelemetry:opentelemetry-context:$project.ext.OPENTELEMETRY_SDK_VERSION"
+
+    // Swagger3 codegen deps
+    // TODO(calbach): The duplicated deps here are highly suspect. Investigate
+    // removing the generated sourceSet, or else fixing the runtime deps.
+
+    implementation 'io.gsonfire:gson-fire:1.8.5'
+    implementation 'org.threeten:threetenbp:1.6.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    implementation 'io.swagger.core.v3:swagger-models:2.2.3'
+
+    generatedCompile 'io.swagger.core.v3:swagger-annotations:2.2.3'
+    generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
+    generatedCompile 'io.gsonfire:gson-fire:1.8.5'
+    generatedCompile 'org.threeten:threetenbp:1.6.2'
+    generatedCompile 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+
+    implementation "ch.qos.logback:logback-classic:$project.ext.LOGBACK_VERSION"
+    implementation "ch.qos.logback:logback-core:$project.ext.LOGBACK_VERSION"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:$project.ext.JACKSON_VERSION"
+    implementation "com.fasterxml.jackson.core:jackson-core:$project.ext.JACKSON_VERSION"
+    implementation "com.fasterxml.jackson.core:jackson-databind:$project.ext.JACKSON_VERSION"
+    implementation "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$project.ext.JACKSON_VERSION"
+    implementation "com.github.java-json-tools:json-patch:1.13"
+    implementation "com.github.rholder:guava-retrying:2.0.0"
+    implementation 'org.javers:javers-core:5.15.0'
+    implementation "com.squareup.okhttp3:logging-interceptor:$project.ext.OKHTTP_VERSION"
+    implementation "com.squareup.okhttp3:okhttp:$project.ext.OKHTTP_VERSION"
 
     implementation "io.opentelemetry:opentelemetry-api:$project.ext.OPENTELEMETRY_SDK_VERSION"
     implementation "io.opentelemetry:opentelemetry-context:$project.ext.OPENTELEMETRY_SDK_VERSION"
@@ -489,37 +355,148 @@ dependencies {
     }
     implementation "com.google.cloud.opentelemetry:exporter-auto:$project.ext.OPENTELEMETRY_GOOGLE_VERSION-alpha"
 
-    // OpenTelemetry is an AoU-specific addition to the default Swagger API dependencies. See the
-    // template file api.mustache for more details.
-    generatedCompile "io.opentelemetry:opentelemetry-api:$project.ext.OPENTELEMETRY_SDK_VERSION"
-    generatedCompile "io.opentelemetry:opentelemetry-context:$project.ext.OPENTELEMETRY_SDK_VERSION"
+    implementation "org.liquibase:liquibase-core:$project.ext.LIQUIBASE_VERSION"
+    implementation 'com.mysql:mysql-connector-j:8.3.0'
+    implementation "org.apache.commons:commons-collections4:4.4"
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'org.apache.commons:commons-text:1.10.0'
+    implementation "org.apache.httpcomponents.client5:httpclient5:5.3.1"
+    implementation "org.springframework.boot:spring-boot-starter-validation:$project.ext.SPRING_BOOT_VERSION"
+    implementation "commons-codec:commons-codec:1.15"
+    implementation 'com.auth0:java-jwt:3.19.2'
+    implementation 'io.netty:netty-common:4.1.82.Final'
+    implementation 'org.json:json:20231013'
+
+    // TODO: consider switching google deps to the BOM.  https://cloud.google.com/java/docs/bom
+
+    implementation("com.google.appengine:appengine-api-1.0-sdk:$project.ext.GAE_VERSION") {
+        exclude group: 'com.google.api-client', module: 'google-api-client-servlet'
+    }
+    implementation 'com.google.apis:google-api-services-admin-directory:directory_v1-rev20220919-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudbilling:v1-rev20220908-2.0.0'
+    implementation 'com.google.apis:google-api-services-cloudresourcemanager:v3-rev20220925-2.0.0'
+    implementation 'com.google.apis:google-api-services-oauth2:v2-rev20200213-2.0.0'
+    implementation 'com.google.apis:google-api-services-iam:v1-rev20220825-2.0.0'
+    implementation 'com.google.api-client:google-api-client-appengine:2.2.0'
+    implementation 'com.google.auth:google-auth-library-appengine:1.23.0'
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
+    implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
+    implementation 'com.google.cloud:google-cloud-bigquery:2.25.0'
+    implementation 'com.google.cloud:google-cloud-iamcredentials:2.3.6'
+    implementation 'com.google.cloud:google-cloud-logging:3.11.5'
+    implementation 'com.google.cloud:google-cloud-monitoring:3.40.0'
+    implementation 'com.google.cloud:google-cloud-trace:2.39.0'
+    implementation 'com.google.cloud:google-cloud-storage:2.13.0'
+    implementation 'com.google.cloud:google-cloud-tasks:2.3.11'
+    implementation "com.google.code.gson:gson:$project.ext.GSON_VERSION"
+    implementation 'com.google.guava:guava:32.0.1-jre'
+    implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
+    implementation 'com.google.protobuf:protobuf-java:3.25.3'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
+
+    implementation "org.hibernate.orm:hibernate-core:$project.ext.HIBERNATE_VERSION"
+    implementation "org.hibernate.orm:hibernate-community-dialects:$project.ext.HIBERNATE_VERSION"
+
+    implementation('org.apache.tomcat:tomcat-jdbc:10.0.23')
+    implementation("org.springframework.boot:spring-boot-starter-tomcat:$project.ext.SPRING_BOOT_VERSION")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:$project.ext.SPRING_BOOT_VERSION") {
+        exclude group: 'com.zaxxer', module: 'HikariCP'
+    }
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa:$project.ext.SPRING_BOOT_VERSION") {
+        exclude module: 'spring-boot-starter-tomcat'
+        exclude group: 'org.slf4j', module: 'jul-to-slf4j'
+    }
+
+    implementation("org.springframework.boot:spring-boot-starter-web:$project.ext.SPRING_BOOT_VERSION") {
+        exclude module: 'spring-boot-starter-tomcat'
+        exclude group: 'org.slf4j', module: 'jul-to-slf4j'
+    }
+
+    implementation "org.springframework.retry:spring-retry"
+    implementation "org.springframework.security:spring-security-core:$project.ext.SPRING_SECURITY_VERSION"
+    implementation "org.springframework.security:spring-security-crypto:$project.ext.SPRING_SECURITY_VERSION"
+    implementation "org.springframework.security:spring-security-web:$project.ext.SPRING_SECURITY_VERSION"
+
+    // updated versions of transitive dependencies to resolve vulnerabilities
+
+    // https://security.snyk.io/vuln/SNYK-JAVA-ORGBOUNCYCASTLE-6612984
+    // https://security.snyk.io/vuln/SNYK-JAVA-ORGBOUNCYCASTLE-6613076
+    // https://security.snyk.io/vuln/SNYK-JAVA-ORGBOUNCYCASTLE-6613079
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.78'
+    // https://spring.io/blog/2022/03/31/spring-framework-rce-early-announcement
+    implementation "org.springframework:spring-aop:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-aspects:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-beans:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-context:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation("org.springframework:spring-core:$project.ext.SPRING_FRAMEWORK_VERSION") {
+        exclude group: 'org.springframework', module: 'spring-jcl'
+    }
+    implementation "org.springframework:spring-expression:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-jcl:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-jdbc:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-orm:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-test:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-tx:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-web:$project.ext.SPRING_FRAMEWORK_VERSION"
+    implementation "org.springframework:spring-webmvc:$project.ext.SPRING_FRAMEWORK_VERSION"
+
+    implementation "org.mapstruct:mapstruct:$project.ext.MAPSTRUCT_VERSION"
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.1'
+    testAnnotationProcessor "org.mapstruct:mapstruct-processor:$project.ext.MAPSTRUCT_VERSION"
+
+    // updated 13 Dec 2023 to most recent passing Sam on 13 Dec
+    implementation("org.broadinstitute.dsde.workbench:sam-client_2.13:0.1-c0263cf") {
+        exclude group: 'org.apache.oltu.oauth2', module: 'org.apache.oltu.oauth2.common'
+    }
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
+
+    // transitive dependencies called out by libyears
+
+    implementation "org.jetbrains:annotations:24.1.0"
+    implementation "commons-logging:commons-logging:1.3.1"
+
+    // jakarta
+    implementation "jakarta.servlet:jakarta.servlet-api:6.0.0"
+    implementation "jakarta.inject:jakarta.inject-api:2.0.1"
+    implementation 'jakarta.mail:jakarta.mail-api:2.1.3'
+    implementation 'jakarta.activation:jakarta.activation-api:2.1.3'
+    implementation 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    generatedCompile "jakarta.xml.bind:jakarta.xml.bind-api:4.0.1"
+    generatedCompile "jakarta.inject:jakarta.inject-api:2.0.1"
+    generatedCompile 'jakarta.mail:jakarta.mail-api:2.1.3'
+    generatedCompile 'jakarta.annotation:jakarta.annotation-api:3.0.0'
+    generatedCompile 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+    generatedCompile 'jakarta.validation:jakarta.validation-api:3.0.2'
+    generatedCompile 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 
 
-    generatedCompile 'com.google.http-client:google-http-client:1.41.1'
-    generatedCompile 'com.google.api-client:google-api-client:2.2.0'
+    // war plugin. Add this to scope of the compile configuration, but do not include in .war file.
+    providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 
-    // OpenCensus is an AoU-specific addition to the default Swagger API dependencies. See the
-    // template file api.mustache for more details.
-    generatedCompile "io.opencensus:opencensus-api:${OPENCENSUS_VERSION}"
-    generatedCompile "io.opencensus:opencensus-exporter-trace-stackdriver:${OPENCENSUS_VERSION}"
-    generatedCompile "io.opencensus:opencensus-impl:${OPENCENSUS_VERSION}"
+    toolsImplementation 'commons-cli:commons-cli:1.5.0'
+    toolsImplementation 'com.opencsv:opencsv:5.7.0'
 
-    // Swagger3 codegen deps
-    // TODO(calbach): The duplicated deps here are highly suspect. Investigate
-    // removing the generated sourceSet, or else fixing the runtime deps.
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.3'
-    implementation 'io.swagger.core.v3:swagger-models:2.2.3'
-    implementation 'io.gsonfire:gson-fire:1.8.5'
-    implementation 'org.threeten:threetenbp:1.6.2'
-    implementation 'io.springfox:springfox-oas:3.0.0'
-    generatedCompile 'io.swagger.core.v3:swagger-annotations:2.2.3'
-    generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
-    generatedCompile 'io.gsonfire:gson-fire:1.8.5'
-    generatedCompile 'org.threeten:threetenbp:1.6.2'
-    generatedCompile 'io.springfox:springfox-oas:3.0.0'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+    testImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
+    testImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
+    testImplementation 'com.h2database:h2:1.4.194'
+    testImplementation "org.liquibase:liquibase-core:$project.ext.LIQUIBASE_VERSION"
+    testImplementation 'org.bitbucket.radistao.test:before-after-spring-test-runner:0.1.0'
+
+    // Test deps
+    testImplementation("org.springframework.boot:spring-boot-starter-test:$project.ext.SPRING_BOOT_VERSION") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        exclude group: 'com.vaadin.external.google', module: 'android-json'
+    }
 }
 
-swaggerSources {
+
+    swaggerSources {
     // Databrowser needs a special configuration style, as we generate Spring server
     // bindings in this case.
     databrowser {
