@@ -886,6 +886,12 @@ set stratum_4 = 'Asian'
 where stratum_2 = '1586140'
 and stratum_3 = '1586142' "
 
+# DB-1396
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+set stratum_4 = 'Asian Specific: Indian'
+where stratum_1 = '1586134' and stratum_2 = '1586151' and stratum_3 = '1585609' "
+
 #######################
 # Drop views created #
 #######################
