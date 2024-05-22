@@ -158,7 +158,6 @@ export const homeCss = `
 
 .faq-btn-container {
   position: relative;
-  right: 0.5rem;
   display:flex;
   justify-content: center;
   align-items:center;
@@ -257,8 +256,9 @@ export const homeCss = `
 		grid-template-columns: 98.5%;
 	}
   .faq-btn-container{
-    grid-column: 1; order: -1;
-    justify-content:left;
+    grid-column: 1; 
+    order: -1;
+    justify-content:center;
     margin-top:0;
     padding-bottom:4rem;
     padding-right:1rem;
@@ -357,6 +357,7 @@ const styles = reactStyles({
     lineHeight: "2",
     fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "20px",
+    textAlign: "center"
   },
   dbSubDesc: {
     padding: "2rem",
@@ -837,7 +838,7 @@ export const dBHomeComponent = withRouteData(
           <h1 style={{ ...globalStyles.primaryDisplay, ...styles.dBTitle }}>
             Data Browser
           </h1>
-          <p style={{ ...styles.dBDesc, ...globalStyles.bodyLead }}>
+          <p style={{ ...globalStyles.bodyLead, ...styles.dBDesc }}>
             Browse aggregate-level data contributed by <i>All of Us</i>&#32; research participants.
             Data are derived from multiple&#32;
             <a href="https://www.researchallofus.org/data-tools/data-sources/" className="homePageLink" target="_blank">data sources</a>.

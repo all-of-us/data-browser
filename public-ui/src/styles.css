@@ -694,8 +694,8 @@ img {
 
   /* outside container desktop */
   .db-container {
-    margin: 0 5rem;
-    max-width: 1332px;
+    margin: 0 auto;
+    max-width: calc((1170px) + 2rem);
   }
 }
 
