@@ -158,7 +158,6 @@ export const homeCss = `
 
 .faq-btn-container {
   position: relative;
-  right: 0.5rem;
   display:flex;
   justify-content: center;
   align-items:center;
@@ -257,8 +256,9 @@ export const homeCss = `
 		grid-template-columns: 98.5%;
 	}
   .faq-btn-container{
-    grid-column: 1; order: -1;
-    justify-content:left;
+    grid-column: 1; 
+    order: -1;
+    justify-content:center;
     margin-top:0;
     padding-bottom:4rem;
     padding-right:1rem;
