@@ -37,7 +37,7 @@ const styles = reactStyles({
   },
   surveyHead: {
     display: "flex",
-    "justifyContent":"space-between",
+    justifyContent:"space-between",
     position: "relative",
     marginBottom: "calc(18px * 4)",
   },
@@ -553,12 +553,10 @@ export const SurveyViewReactComponent = withRouteData(
                         :
                         <div className="pdf-link" style={styles.pdfLink}>
                           Download Survey<br />
-                          <a href={surveyPdfUrl} download>
-                            <ClrIcon shape="file" className="is-solid" />  English
+                          <a href={surveyPdfUrl} download> English
                           </a>
                           &#32;| &#32;
-                          <a href={surveyPdfUrlSpanish} download>
-                            <ClrIcon shape="file" className="is-solid" />  Spanish
+                          <a href={surveyPdfUrlSpanish} download> Spanish
                           </a>
                         </div>
                     }
