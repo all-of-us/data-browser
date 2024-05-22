@@ -39,7 +39,6 @@ const styles = reactStyles({
     display: "flex",
     "justifyContent":"space-between",
     position: "relative",
-    paddingLeft: "1rem",
     marginBottom: "calc(18px * 4)",
   },
   results: {
@@ -67,7 +66,6 @@ const styles = reactStyles({
   },
   versionTable: {
     width: "50%",
-    paddingTop:"1rem"
   },
   statContainer: {
     display: "flex",
@@ -544,7 +542,7 @@ export const SurveyViewReactComponent = withRouteData(
                     </div>
                     {surveyVersions.length > 0 ?
                       <div className="version-table"
-                        style={{...styles.versionTable}} >
+                        style={{...styles.versionTable, paddingTop:"1rem"}} >
                         <SurveyVersionTableReactComponent
                           surveyVersions={surveyVersions} />
                       </div>
