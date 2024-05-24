@@ -49,6 +49,7 @@ div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
 .version-box-item{
     font-weight: bold;
     padding:.5em;
+    text-align:center;
 }
 `;
 
