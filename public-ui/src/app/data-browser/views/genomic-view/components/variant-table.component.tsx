@@ -257,6 +257,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
   };
 
+  setArrowIcon(varName: string) {
+    const { sortMetadata } = this.state;
+    return sortMetadata[varName].sortDirection === "asc" ? faArrowUp : faArrowDown;
+  }
+
 
 
 
@@ -265,9 +270,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     const { loadingVariantListSize, loadingResults, variantListSize, rowCount, currentPage } =
       this.props;
     const { loading, searchResults, sortMetadata, allowParentScroll } = this.state;
-    const arrowIcon = sortMetadata.clinicalSignificance.sortDirection === "asc" ? faArrowUp : faArrowDown;
     styles.noScroll.overflowX = !allowParentScroll ? "hidden":"scroll";
-
     
     return (
       <React.Fragment>
@@ -285,7 +288,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.variantId.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('variantId')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -298,7 +301,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 {sortMetadata.gene.sortActive && (
                   <React.Fragment>
                     <FontAwesomeIcon
-                      icon={arrowIcon}
+                      icon={this.setArrowIcon('gene')}
                       style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                     />
                   </React.Fragment>
@@ -311,7 +314,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.consequence.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('consequence')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -323,7 +326,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.variantType.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('variantType')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -335,7 +338,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.clinicalSignificance.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('clinicalSignificance')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -347,7 +350,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.alleleCount.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('alleleCount')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -359,7 +362,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.alleleNumber.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('alleleNumber')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -371,7 +374,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.alleleFrequency.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('alleleFrequency')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -383,7 +386,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 </span>
                 {sortMetadata.homozygoteCount.sortActive && (
                   <FontAwesomeIcon
-                    icon={arrowIcon}
+                    icon={this.setArrowIcon('homozygoteCount')}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
