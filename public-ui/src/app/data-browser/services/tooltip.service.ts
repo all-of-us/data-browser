@@ -132,7 +132,7 @@ export const tooltips = {
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
   "winter minute survey on covid-19 vaccines":
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-  "cope minute survey":
+  "Minute Survey on COVID-19 Vaccines":
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
   "minute survey on covid-19 vaccines":
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
@@ -384,7 +384,7 @@ export class TooltipService {
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
     "winter minute survey on covid-19 vaccines":
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-    "cope minute survey":
+    "Minute Survey on COVID-19 Vaccines":
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
     "minute survey on covid-19 vaccines":
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
