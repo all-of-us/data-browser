@@ -4,7 +4,7 @@ import java.time.Duration;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 /**
  * Interceptor for handling request or response headers relating to security.
@@ -14,7 +14,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * baked in functionality we don't want, like basic auth.
  */
 @Service
-public class SecurityHeadersInterceptor extends HandlerInterceptorAdapter {
+public class SecurityHeadersInterceptor implements AsyncHandlerInterceptor {
   // TODO(calbach): Bump this to 1y once we've verified this is working as expected.
   private static final long HSTS_MAX_AGE = Duration.ofDays(1).getSeconds();
 
