@@ -136,8 +136,10 @@ public class BigQueryService {
         if (row.get(index).isNull()) {
             return null;
         }
+        Instant instant = Instant.ofEpochMilli(row.get(index).getTimestampValue() / 1000L);
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss zzz").withZone(ZoneId.of("UTC"));
-        return df.format(row.get(index).getTimestampValue() / 1000L);
+        return df.format(zonedDateTime);
     }
 
     public String getDate(List<FieldValue> row, int index) {
