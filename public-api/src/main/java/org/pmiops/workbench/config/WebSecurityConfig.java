@@ -12,10 +12,14 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .headers(headers -> headers
-                        .contentSecurityPolicy(csp -> csp.policyDirectives("script-src 'self' https://trustedscripts.example.com; object-src https://trustedplugins.example.com; report-uri /csp-report-endpoint;"))
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("script-src 'self' https://trustedscripts.example.com; object-src https://trustedplugins.example.com; report-uri /csp-report-endpoint;"))
                         .frameOptions(frameOptions -> frameOptions.sameOrigin())
                 )
-                .csrf(csrf -> csrf.disable());
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .anyRequest().permitAll()
+                );
 
         return http.build();
     }
