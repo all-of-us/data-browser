@@ -22,8 +22,7 @@ import java.util.stream.Collectors;
 import jakarta.inject.Provider;
 import jakarta.servlet.http.HttpServletResponse;
 import java.time.ZoneId;
-import java.time.time.format.DateTimeFormat;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatter; // Correct import
 import org.pmiops.workbench.cdr.CdrVersionContext;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ForbiddenException;
@@ -137,8 +136,8 @@ public class BigQueryService {
         if (row.get(index).isNull()) {
             return null;
         }
-        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss zzz").withZoneUTC();
-        return df.print(row.get(index).getTimestampValue() / 1000L);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss zzz").withZone(ZoneId.of("UTC"));
+        return df.format(row.get(index).getTimestampValue() / 1000L);
     }
 
     public String getDate(List<FieldValue> row, int index) {
