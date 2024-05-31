@@ -46,17 +46,15 @@ const styles = reactStyles({
     color: "#0079b8",
     display: "flex",
     alignItems: "center",
-    borderBottom: "1px solid #216fb4",
     width: "100%",
-  },
-  topBarItemContainer: {
-    width: "fit-content",
+    whiteSpace: "nowrap"
   },
   topBarItem: {
     fontSize: "1em",
     width: "100%",
     cursor: "pointer",
     padding: "1em 2em",
+    borderBottom: "3px solid #216fb4"
   },
   topBarItemText: {
     width: "75%",
@@ -64,8 +62,9 @@ const styles = reactStyles({
   topBarItemSelected: {
     fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
     fontWeight: "bolder",
-    backgroundColor: "rgba(33,111,180,0.15)",
-    borderBottom: "3px solid #216fb4",
+    backgroundColor: "white",
+    border: "3px solid #216fb4",
+    borderBottomColor: "white",
   },
   genomicsDescText: {
     margin: "0",
@@ -74,6 +73,7 @@ const styles = reactStyles({
     color: "#302C71",
     margin: "0",
     fontSize: ".8em",
+    background:"white"
   },
   headingLayout: {
     display: "flex",
@@ -91,6 +91,9 @@ const styles = reactStyles({
   innerContainer: {
     background: "white",
     padding: "1em",
+    position:"relative",
+    marginTop:"-2px",
+    zIndex:5
   },
   faqHeading: {
     fontSize: "0.8em",
@@ -171,6 +174,14 @@ class SortColumnDetailsClass implements SortColumnDetails {
 }
 
 const css = `
+.top-bar-item-container {
+  width: fit-content;
+}
+#topBar > div:nth-child(3){
+  width: 100vw;
+}
+
+}
 `;
 
 export const GenomicViewComponent = withRouteData(
@@ -217,7 +228,7 @@ export const GenomicViewComponent = withRouteData(
       {
         id: 1,
         label: "Participant Demographics",
-      },
+      }
     ];
     title = "SNV/Indel Variants";
 
@@ -472,9 +483,9 @@ export const GenomicViewComponent = withRouteData(
           <div style={styles.viewLayout}>
             <div style={styles.topBarLayout} id='topBar'>
               {this.topBarItems.map((item, index) => {
-                return <div key={index} style={styles.topBarItemContainer}>
+                return <div key={index} className="top-bar-item-container">
                   <div onClick={() => this.topBarClick(item.id)}
-                    style={{ ...selectionId === item.id && { ...styles.topBarItemSelected }, ...styles.topBarItem }}>
+                    style={{ ...styles.topBarItem, ...selectionId === item.id ? { ...styles.topBarItemSelected,borderBottom:"none" }:{borderBottom:"3px solid #216fb4"} }}>
                     <span style={styles.topBarItemText}>
                       {item.label}
                     </span>
@@ -482,10 +493,18 @@ export const GenomicViewComponent = withRouteData(
                 </div>;
               })
               }
+              <div className="top-bar-item-container">
+                  <div
+                    style={{...styles.topBarItem,cursor:"default"}}>
+                    <span style={styles.topBarItemText}>
+                    &nbsp;
+                    </span>
+                  </div>
+                </div>
             </div>
           </div>
           {selectionId === 1 && (
-            <div style={styles.headingLayout}>
+            <div style={styles.innerContainer}>
               <p style={styles.desc}>View the self-reported race/ethnicity, sex assigned at birth, and
                 age of participants whose genomic data are available within the
                 Researcher Workbench.{" "}</p>
