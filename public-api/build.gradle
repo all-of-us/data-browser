@@ -445,10 +445,6 @@ dependencies {
     implementation 'jakarta.mail:jakarta.mail-api:2.1.1'
     testAnnotationProcessor "org.mapstruct:mapstruct-processor:$project.ext.MAPSTRUCT_VERSION"
 
-    // updated 13 Dec 2023 to most recent passing Sam on 13 Dec
-    implementation("org.broadinstitute.dsde.workbench:sam-client_2.13:0.1-c0263cf") {
-        exclude group: 'org.apache.oltu.oauth2', module: 'org.apache.oltu.oauth2.common'
-    }
     implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '4.0.5'
 
     // transitive dependencies called out by libyears
