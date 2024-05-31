@@ -4,7 +4,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.util.Optional;
 import java.util.logging.Logger;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
