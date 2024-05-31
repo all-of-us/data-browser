@@ -30,12 +30,12 @@ const styles = reactStyles({
     fontSize: "14px",
     color: "#0077b7",
     textAlign: 'left',
-    textTransform:'uppercase',
+    textTransform:'capitalize',
     fontFamily:'GothamBook, Arial, sans-serif',
-    padding: '0 0.5rem',
+    padding: '.5rem',
     whiteSpace:'nowrap',
-    height: '1.5rem',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    margin:0
   },
   btnList: {
     width:'14rem',
@@ -162,6 +162,14 @@ const styleCss = `
 .active {
     font-weight: 900;
 }
+.button-item .btn-link {
+    border-bottom: 1px solid;
+  }
+  
+  div.button-item:nth-child(1) > button:nth-child(1) {
+    border-top: 1px solid;
+}
+
 .bs-chart-item {
     width: calc((33.3%) - 18px);
     height: auto;
