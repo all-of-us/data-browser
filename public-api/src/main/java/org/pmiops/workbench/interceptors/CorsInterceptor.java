@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.AsyncHandlerInterceptor;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 
 
@@ -12,7 +12,7 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor;
  * Intercepts all API requests to ensure they have appropriate CORS headers.
  */
 @Service
-public class CorsInterceptor implements AsyncHandlerInterceptor {
+public class CorsInterceptor implements HandlerInterceptor {
   public static final String CREDENTIALS_NAME = "Access-Control-Allow-Credentials";
   public static final String ORIGIN_NAME = "Access-Control-Allow-Origin";
   public static final String METHODS_NAME = "Access-Control-Allow-Methods";
