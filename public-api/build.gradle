@@ -1,5 +1,3 @@
-import org.gradle.api.tasks.JavaExec
-
 buildscript {
     ext {
         GAE_VERSION = '2.0.26'
@@ -20,14 +18,14 @@ buildscript {
     }
 
     repositories {
-        jcenter()
+        mavenCentral()
         maven { url "https://plugins.gradle.org/m2/" }
         maven { url 'https://broadinstitute.jfrog.io/artifactory/libs-release-local' }
-        mavenCentral()
+        jcenter() // Note: JCenter has been deprecated, use Maven Central when possible.
     }
 
     dependencies {
-        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.4.5'
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.8.0'
         classpath "com.google.http-client:google-http-client:1.41.1"
         classpath "junit:junit:4.12"
     }
@@ -54,8 +52,8 @@ def project_name = System.getenv("PROJECT")
 def dbProperties = [
         'spring.datasource.driver-class-name': 'com.mysql.cj.jdbc.Driver',
         'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
-        'spring.datasource.username': '${databrowser_db_user}',
-        'spring.datasource.password': '${databrowser_db_password}'
+        'spring.datasource.username': databrowser_db_user,
+        'spring.datasource.password': databrowser_db_password
 ]
 
 if (JavaVersion.current() != JavaVersion.VERSION_17) {
@@ -74,22 +72,21 @@ configurations {
     integrationRuntimeOnly.extendsFrom runtimeOnly
     __swaggerCodegenV3__
     generatedCompile
-    all { exclude group: 'com.google.guava', module:'guava-jdk5' }
+    all { exclude group: 'com.google.guava', module: 'guava-jdk5' }
     toolsImplementation.extendsFrom implementation
     toolsRuntimeOnly.extendsFrom runtimeOnly
-}
-
-configurations {
     all*.exclude group: 'javax.annotation', module: 'jsr305'
 }
 
-ext['hibernate.version'] = '6.4.4.Final'
-ext.SWAGGER_CODEGEN_BASE_PKG = 'org.pmiops.workbench'
-ext.SWAGGER_3_CODEGEN_DIR = "$buildDir/swagger3"
-ext.SWAGGER_TEMPLATE_DIR = "$projectDir/src/main/resources"
-ext.SWAGGER_3_RAW_OPTS = [
-        '--ignore-file-override', "$projectDir/.swagger3-codegen-ignore"
-]
+ext {
+    hibernateVersion = '6.4.4.Final'
+    SWAGGER_CODEGEN_BASE_PKG = 'org.pmiops.workbench'
+    SWAGGER_3_CODEGEN_DIR = "$buildDir/swagger3"
+    SWAGGER_TEMPLATE_DIR = "$projectDir/src/main/resources"
+    SWAGGER_3_RAW_OPTS = [
+            '--ignore-file-override', "$projectDir/.swagger3-codegen-ignore"
+    ]
+}
 
 sourceSets {
     generated {
@@ -123,11 +120,10 @@ sourceSets {
     }
 }
 
-classes.dependsOn generatedClasses
-ideaModule.dependsOn(generateSwaggerCode)
-compileGeneratedJava.dependsOn(generateSwaggerCode)
-war.dependsOn compileGeneratedJava
-war.dependsOn generate_local_appengine_web_xml
+tasks.classes.dependsOn 'generatedClasses'
+tasks.ideaModule.dependsOn 'generateSwaggerCode'
+tasks.compileGeneratedJava.dependsOn 'generateSwaggerCode'
+tasks.war.dependsOn 'compileGeneratedJava', 'generate_local_appengine_web_xml'
 
 task loadConfig(type: JavaExec) {
     classpath sourceSets.tools.runtimeClasspath
@@ -170,17 +166,12 @@ task integrationTest(type: Test) {
     useJUnitPlatform()
 }
 
-clean.doFirst {
+tasks.clean.doFirst {
     delete("${buildDir}/swagger3")
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-}
-
-ext {
-    mapstructVersion = '1.3.1.Final'
 }
 
 dependencies {
@@ -195,7 +186,6 @@ dependencies {
     generatedCompile 'io.swagger.core.v3:swagger-models:2.2.3'
     generatedCompile 'io.gsonfire:gson-fire:1.8.5'
     generatedCompile 'org.threeten:threetenbp:1.6.2'
-
 
     implementation 'io.gsonfire:gson-fire:1.8.5'
     implementation 'org.threeten:threetenbp:1.6.2'
@@ -331,13 +321,13 @@ swaggerSources {
             wipeOutputDir = false
             rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
-                    'apiPackage'     : 'org.pmiops.workbench.publicapi',
-                    'modelPackage'   : 'org.pmiops.workbench.model',
-                    'sourceFolder'   : '',
-                    'useTags'        : 'true',
+                    'apiPackage': 'org.pmiops.workbench.publicapi',
+                    'modelPackage': 'org.pmiops.workbench.model',
+                    'sourceFolder': '',
+                    'useTags': 'true',
                     'delegatePattern': 'true',
-                    'dateLibrary'      : 'java8',
-                    'jakarta'          : 'true'
+                    'dateLibrary': 'java8',
+                    'jakarta': 'true'
             ]
         }
     }
@@ -352,13 +342,13 @@ swaggerSources {
             wipeOutputDir = false
             rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
-                    'invokerPackage'   : 'org.pmiops.workbench.publicapi.client',
-                    'modelPackage'   : 'org.pmiops.workbench.publicapi.client.model',
-                    'apiPackage'   : 'org.pmiops.workbench.publicapi.client.api',
-                    'library'          : 'okhttp4-gson',
+                    'invokerPackage': 'org.pmiops.workbench.publicapi.client',
+                    'modelPackage': 'org.pmiops.workbench.publicapi.client.model',
+                    'apiPackage': 'org.pmiops.workbench.publicapi.client.api',
+                    'library': 'okhttp4-gson',
                     'serializableModel': 'true',
-                    'dateLibrary'      : 'java8',
-                    'jakarta'          : 'true'
+                    'dateLibrary': 'java8',
+                    'jakarta': 'true'
             ]
         }
     }
@@ -373,13 +363,13 @@ swaggerSources {
             wipeOutputDir = false
             rawOptions = SWAGGER_3_RAW_OPTS
             additionalProperties = [
-                    'invokerPackage'   : 'org.pmiops.workbench.privateworkbench',
-                    'modelPackage'     : 'org.pmiops.workbench.privateworkbench.model',
-                    'apiPackage'       : 'org.pmiops.workbench.privateworkbench.api',
-                    'library'          : 'okhttp4-gson',
+                    'invokerPackage': 'org.pmiops.workbench.privateworkbench',
+                    'modelPackage': 'org.pmiops.workbench.privateworkbench.model',
+                    'apiPackage': 'org.pmiops.workbench.privateworkbench.api',
+                    'library': 'okhttp4-gson',
                     'serializableModel': 'true',
-                    'dateLibrary'      : 'java8',
-                    'jakarta'          : 'true'
+                    'dateLibrary': 'java8',
+                    'jakarta': 'true'
             ]
         }
     }
