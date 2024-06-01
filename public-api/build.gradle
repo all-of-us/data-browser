@@ -6,16 +6,15 @@ buildscript {    // Configuration for building
         GAE_VERSION = '1.9.64'
         GOOGLE_TRUTH_VERSION = '1.1.3'
         GSON_VERSION = '2.9.0'
-        HIBERNATE_VERSION = '5.6.9.Final'
+        HIBERNATE_VERSION = '5.6.15.Final'
         SPRING_BOOT_VERSION = '2.7.1'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
+        SPRING_FRAMEWORK_VERSION = '5.3.32'
         JACKSON_DATABIND_VERSION = '2.14.1'
         JACKSON_VERSION = '2.14.1'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '2.7.5'
         SPRINGFOX_VERSION = '3.0.0'
         LIQUIBASE_VERSION = '4.12.0'
-        SPRING_FRAMEWORK_VERSION = '5.3.21'
         SWAGGER_3_CODEGEN_VERSION = '3.0.52'
         OPENCENSUS_VERSION = '0.23.0'
     }
@@ -104,7 +103,7 @@ configurations {
     toolsRuntimeOnly.extendsFrom runtimeOnly
 }
 
-ext['hibernate.version'] = '5.6.9.Final'
+ext['hibernate.version'] = '5.6.15.Final'
 
 // Shared variables for Swagger codegen. Use "ext" rather than "def" to allow
 // access globally, including from within helper functions.
@@ -321,7 +320,7 @@ dependencies {
 
 
     // https://mvnrepository.com/artifact/org.springframework.security/spring-security-config
-    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.6.4'
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '6.2.2'
 
     implementation 'ch.qos.logback:logback-classic:1.2.11'
 
