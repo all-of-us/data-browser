@@ -49,6 +49,7 @@ div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
 .version-box-item{
     font-weight: bold;
     padding:.5em;
+    text-align:center;
 }
 `;
 
@@ -87,8 +88,8 @@ export class PfhhSurveyTableReactComponent extends React.Component<
         <br />
         <div className="version-box">
           <div className="version-box-header">
-            <div className="version-box-item">Survey</div>
-            <div className="version-box-item">Download PDF</div>
+            <div className="version-box-item">Survey Version</div>
+            <div className="version-box-item">PDF</div>
           </div>
           <div className="version-box-body">
           <div className="version-box-row">
