@@ -12,8 +12,4 @@ public class PublicApiServletInitializer extends SpringBootServletInitializer {
   protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
     return application.sources(PublicApiApplication.class);
   }
-
-  @Override
-  public void onStartup(ServletContext servletContext) throws ServletException {}
-
 }

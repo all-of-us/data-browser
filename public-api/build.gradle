@@ -76,6 +76,11 @@ configurations {
     toolsImplementation.extendsFrom implementation
     toolsRuntimeOnly.extendsFrom runtimeOnly
     all*.exclude group: 'javax.annotation', module: 'jsr305'
+
+    all {
+        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    }
 }
 
 ext {
@@ -227,7 +232,7 @@ dependencies {
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
     implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
     implementation 'com.google.cloud:google-cloud-bigquery:2.25.0'
-    implementation 'com.google.cloud:google-cloud-iamcredentials:2.3.6'
+    implementation 'com.google.cloud:google-cloud-iamcredentials:2.41.0'
     implementation 'com.google.cloud:google-cloud-logging:3.11.5'
     implementation 'com.google.cloud:google-cloud-monitoring:3.40.0'
     implementation 'com.google.cloud:google-cloud-trace:2.39.0'
