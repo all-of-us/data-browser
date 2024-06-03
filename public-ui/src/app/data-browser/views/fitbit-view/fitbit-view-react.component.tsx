@@ -42,17 +42,21 @@ const styles = reactStyles({
     padding: "0.5rem",
     fontSize: "0.8em",
     /* border-bottom: 1px solid #262262 ; */
+    // borderBottom: "1px solid #0079B8",
+    borderTop: "1px solid #0079B8",
     cursor: "pointer",
   },
-  fmMenuItemActive: {
+ fmMenuItemActive: {
     display: "flex",
     alignItems: "center",
     padding: "0.5rem",
     fontSize: "0.8em",
-    /* border-bottom: 1px solid #262262 ; */
+    borderBottom: "3px solid #0079B8",
+    borderTop: "3px solid #0079B8",   
+    borderLeft: "3px solid #0079B8",
+    borderRight: "3px solid #0079B8",
     cursor: "pointer",
-    background: "#dae6ed",
-    borderRadius: "3px",
+    // borderRadius: "3px",
     fontFamily: "GothamBold",
   },
   selectedDisplayH: {
@@ -78,8 +82,8 @@ const styles = reactStyles({
     width: "100%",
   },
   fmMenuItemContainer: {
-    padding: "0.25rem 0rem",
-    borderBottom: "1px solid #262262",
+    // padding: "0.25rem 0rem",
+    // borderBottom: "1px solid #262262",
     cursor: "pointer",
   },
   chartDisplayBody: {
@@ -98,6 +102,9 @@ const styles = reactStyles({
 });
 
 const styleCss = `
+div.fm-menu-item-container:nth-child(7) > div:nth-child(1){
+  border-bottom:1px solid #0079B8;
+}
 @media (max-width: 900px) {
     .fm-body-top .fm-chart {
         width: 100%;
@@ -106,6 +113,7 @@ const styleCss = `
         width: 100%;
         margin-top: 1rem;
     }
+
 }
 `;
 
