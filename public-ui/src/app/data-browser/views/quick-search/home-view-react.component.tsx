@@ -488,6 +488,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       loadingVariantListSize,
       typing
     } = this.props;
+    
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
         <div className="result-box-title" >
