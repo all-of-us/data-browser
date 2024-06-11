@@ -212,7 +212,7 @@ Common.register_command({
 
 def run_local_public_api_tests()
   common = Common.new
-  status = common.capture_stdout %W{curl -i --fail http://localhost:8083/}
+  status = common.capture_stdout %W{curl --silent --show-error --fail http://localhost:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
