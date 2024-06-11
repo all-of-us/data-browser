@@ -216,7 +216,7 @@ def run_local_public_api_tests()
   require 'open3'
 
   command = %W{
-    curl --silent --show-error --verbose --fail http://localhost:8083/
+    curl --silent --show-error --verbose --fail http://127.0.0.1:8083/
   }
 
   stdout_str, stderr_str, status = Open3.capture3(*command)
@@ -225,7 +225,7 @@ def run_local_public_api_tests()
   puts "Error Output (Verbose Logging):\n#{stderr_str}"
   puts "Exit Status: #{status.exitstatus}"
 
-  status = common.capture_stdout %W{curl --silent --show-error -v --fail http://localhost:8083/}
+  status = common.capture_stdout %W{curl --silent --show-error -v --fail http://127.0.0.1:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
