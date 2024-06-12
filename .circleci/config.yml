@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:aou-db-image-11
+    - image: allofustest/workbench:aou-db-image-8
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -48,29 +48,10 @@ commands:
                   source $BASH_ENV
                 working_directory: ~/data-browser
 
-  launch-local-api:
-    description: "Launch local API server"
-    steps:
-      - run:
-          # Watch the port for 2m for MySQL start up
-          name: Await MySQL startup
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
-      - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-migrations
-      - run:
-          name: Launch local API server
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb start-local-public-api
-          background: true
-      - run:
-          name: Wait for local API server to start
-          command: dockerize -wait tcp://localhost:8083/v1/cdrVersions -timeout 6m
-
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:aou-db-image-11
+      - image: allofustest/workbench:aou-db-image-8
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
@@ -90,10 +71,17 @@ jobs:
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
-      - launch-local-api
+      - run:
+          # MySQL sometimes refuses connections by the time we attempt to apply
+          # data migrations. Watch the port for 2m for startup.
+          name: Await MySQL startup
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
       - run:
           working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-public-api-tests
+          command: ./project.rb run-local-migrations
+      - run:
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
       - save_cache:
           paths:
             - ~/.gradle
