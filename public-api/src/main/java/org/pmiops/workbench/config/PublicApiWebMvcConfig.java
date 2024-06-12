@@ -49,6 +49,12 @@ public class PublicApiWebMvcConfig implements WebMvcConfigurer {
     registry.addInterceptor(securityHeadersInterceptor);
   }
 
+  static ServletContext getRequestServletContext() {
+    return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+            .getRequest()
+            .getServletContext();
+  }
+
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry

@@ -1,29 +1,28 @@
 package org.pmiops.workbench.interceptors;
 
-import java.time.Duration;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.time.Duration;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.AsyncHandlerInterceptor;
 
 /**
  * Interceptor for handling request or response headers relating to security.
  *
- * Note: there is a Spring module for handling some of this functionality; for
- * now we've decided not to install this as it brings along with it a lot of
- * baked in functionality we don't want, like basic auth.
+ * <p>Note: there is a Spring module for handling some of this functionality; for now we've decided
+ * not to install this as it brings along with it a lot of baked in functionality we don't want,
+ * like basic auth.
  */
 @Service
-public class SecurityHeadersInterceptor implements HandlerInterceptor {
-  // TODO(calbach): Bump this to 1y once we've verified this is working as expected.
-  private static final long HSTS_MAX_AGE = Duration.ofDays(1).getSeconds();
+public class SecurityHeadersInterceptor implements AsyncHandlerInterceptor {
+  private static final long HSTS_MAX_AGE = Duration.ofDays(365).getSeconds();
 
   @Override
-  public boolean preHandle(
-      HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+          throws Exception {
     response.setHeader(
-        "Strict-Transport-Security",
-        String.format("max-age=%d; includeSubDomains; preload", HSTS_MAX_AGE));
+            "Strict-Transport-Security",
+            String.format("max-age=%d; includeSubDomains; preload", HSTS_MAX_AGE));
     return true;
   }
 }
