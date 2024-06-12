@@ -21,7 +21,7 @@ end
 # using environment keywords as dict keys here, e.g. :test, :staging, etc.
 ENVIRONMENTS = {
   "local" => env_with_defaults("local", {
-    :api_endpoint_host => "localhost:8083",
+    :api_endpoint_host => "localhost:8085",
     :cdr_sql_instance => "databrowser",
     :source_cdr_project => "aou-db-test"
   }),
