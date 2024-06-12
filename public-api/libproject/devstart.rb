@@ -232,7 +232,7 @@ def run_local_public_api_tests()
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
-    common.run_inline %W{cat ../public-api/build/dev-appserver-out/dev_appserver.out}
+    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
     exit 1
   end
   common.status "public-api started up."
