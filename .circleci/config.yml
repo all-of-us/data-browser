@@ -66,8 +66,7 @@ jobs:
           background: true
       - run:
           name: Wait for local API server to start
-          command: dockerize -wait tcp://localhost:8083/v1/cdrVersions -timeout 6m
-
+          command: dockerize -wait tcp://localhost:8081/v1/cdrVersions -timeout 6m
   public-api-local-test:
     docker:
       - image: allofustest/workbench:aou-db-image-8
@@ -85,8 +84,8 @@ jobs:
       - checkout-code
       - restore_cache:
           keys:
-            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-            - v7-gradle-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -114,8 +113,8 @@ jobs:
             fi
       - restore_cache:
           keys:
-            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-            - v7-gradle-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
@@ -146,8 +145,8 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-            - v7-gradle-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -183,8 +182,8 @@ jobs:
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-            - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
-            - public-ui-cache-
+          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+          - public-ui-cache-
       - gcloud-auth-login
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
@@ -244,8 +243,8 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-            - v7-gradle-cache-
+          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+          - v7-gradle-cache-
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
           working_directory: ~/data-browser
@@ -315,4 +314,3 @@ experimental:
     branches:
       only:
         - master
-
