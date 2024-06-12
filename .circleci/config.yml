@@ -48,7 +48,6 @@ commands:
                   source $BASH_ENV
                 working_directory: ~/data-browser
 
-jobs:
   launch-local-api:
     description: "Launch local API server"
     steps:
@@ -67,6 +66,8 @@ jobs:
       - run:
           name: Wait for local API server to start
           command: dockerize -wait tcp://localhost:8081/v1/cdrVersions -timeout 6m
+
+jobs:
   public-api-local-test:
     docker:
       - image: allofustest/workbench:aou-db-image-8
