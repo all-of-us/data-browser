@@ -61,7 +61,7 @@ commands:
       - run:
           name: Launch local API server
           working_directory: ~/data-browser/public-api
-          command: ./project.rb dev-up
+          command: ./project.rb start-local-public-api
           background: true
       - run:
           name: Wait for local API server to start
