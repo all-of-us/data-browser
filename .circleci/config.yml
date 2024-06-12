@@ -49,6 +49,25 @@ commands:
                 working_directory: ~/data-browser
 
 jobs:
+  launch-local-api:
+    description: "Launch local API server"
+    steps:
+      - run:
+          # Watch the port for 2m for MySQL start up
+          name: Await MySQL startup
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
+      - run:
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb run-local-migrations
+      - run:
+          name: Launch local API server
+          working_directory: ~/data-browser/public-api
+          command: ./project.rb dev-up
+          background: true
+      - run:
+          name: Wait for local API server to start
+          command: dockerize -wait tcp://localhost:8083/v1/cdrVersions -timeout 6m
+
   public-api-local-test:
     docker:
       - image: allofustest/workbench:aou-db-image-8
@@ -66,22 +85,15 @@ jobs:
       - checkout-code
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
-      - run:
-          # MySQL sometimes refuses connections by the time we attempt to apply
-          # data migrations. Watch the port for 2m for startup.
-          name: Await MySQL startup
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 2m
+      - launch-local-api
       - run:
           working_directory: ~/data-browser/public-api
-          command: ./project.rb run-local-migrations
-      - run:
-          working_directory: ~/data-browser/public-api
-          command: ./project.rb start-local-public-api && ./project.rb run-local-public-api-tests && ./project.rb stop-local-public-api
+          command: ./project.rb run-local-public-api-tests
       - save_cache:
           paths:
             - ~/.gradle
@@ -102,8 +114,8 @@ jobs:
             fi
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
@@ -134,8 +146,8 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -171,8 +183,8 @@ jobs:
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
-          - public-ui-cache-
+            - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+            - public-ui-cache-
       - gcloud-auth-login
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
@@ -232,8 +244,8 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
           working_directory: ~/data-browser
@@ -303,3 +315,4 @@ experimental:
     branches:
       only:
         - master
+
