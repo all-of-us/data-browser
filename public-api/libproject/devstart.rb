@@ -225,17 +225,6 @@ def run_local_public_api_tests()
   puts "Error Output (Verbose Logging):\n#{stderr_str}"
   puts "Exit Status: #{status.exitstatus}"
 
-    require 'open3'
-
-    command = %W{
-      ping localhost
-    }
-
-    stdout_str, stderr_str, status = Open3.capture3(*command)
-
-    puts "Standard Output:\n#{stdout_str}"
-    puts "Error Output (Verbose Logging):\n#{stderr_str}"
-    puts "Exit Status: #{status.exitstatus}"
 
   status = common.capture_stdout %W{curl --silent --show-error -v --http1.1 http://localhost:8083/}
   if status != 'AllOfUs Public API'
