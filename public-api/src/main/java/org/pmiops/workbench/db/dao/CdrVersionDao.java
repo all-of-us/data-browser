@@ -11,4 +11,3 @@ public interface CdrVersionDao extends CrudRepository<DbCdrVersion, Long> {
   DbCdrVersion findByIsDefault(boolean isDefault);
   List<DbCdrVersion> findAllByOrderByCreationTimeDesc();
 }
--0p
