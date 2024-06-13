@@ -225,17 +225,7 @@ def run_local_public_api_tests()
   puts "Error Output (Verbose Logging):\n#{stderr_str}"
   puts "Exit Status: #{status.exitstatus}"
 
-  status = common.capture_stdout %W{curl --silent --show-error -v --fail \
-                                      -H "Vary: Origin" \
-                                      -H "Vary: Access-Control-Request-Method" \
-                                      -H "Vary: Access-Control-Request-Headers" \
-                                      -H "Strict-Transport-Security: max-age=31536000; includeSubDomains; preload" \
-                                      -H "Content-Type: application/json" \
-                                      -H "X-Content-Type-Options: nosniff" \
-                                      -H "X-XSS-Protection: 0" \
-                                      -H "X-Frame-Options: DENY" \
-                                      http://localhost:8083/}
-
+  status = common.capture_stdout %W{curl --silent --show-error -v --fail --http1.1 http://localhost:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
