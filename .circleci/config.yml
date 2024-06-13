@@ -51,7 +51,7 @@ commands:
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:aou-db-image-14
+      - image: us.gcr.io/broad-dsp-gcr-public/workbench:buildimage-0.0.28
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu

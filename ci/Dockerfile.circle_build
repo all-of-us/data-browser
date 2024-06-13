@@ -37,7 +37,8 @@ RUN sudo apt-get update && sudo apt-get install -y \
   wait-for-it \
   build-essential \
   libssl-dev \
-  libcurl4-openssl-dev
+  libcurl4-openssl-dev \
+  iputils-ping
 
 # Install specific version of curl
 RUN cd /tmp && \
