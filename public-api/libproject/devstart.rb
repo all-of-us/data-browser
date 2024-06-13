@@ -230,7 +230,14 @@ def run_local_public_api_tests()
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
     common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
-    sleep(10)
+    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
+  end
+  sleep(10)
+  status2 = common.capture_stdout %W{curl --silent --show-error -v --http1.1 http://localhost:8083/}
+  if status2 != 'AllOfUs Public API again!'
+    common.error "Error probing public-api; received: #{status}"
+    common.error "Server logs:"
+    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
     common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
     exit 1
   end
