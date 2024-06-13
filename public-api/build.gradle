@@ -313,6 +313,8 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
+    integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
+    integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
 }
 
 swaggerSources {
