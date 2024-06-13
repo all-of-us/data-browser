@@ -219,7 +219,7 @@ def run_local_public_api_tests()
   require 'open3'
 
   command = %W{
-    curl --silent --show-error -v --fail http://127.0.0.1:8083/
+    curl --silent --show-error -v --fail http://localhost:8083/
   }
 
   stdout_str, stderr_str, status = Open3.capture3(*command)
