@@ -32,7 +32,7 @@ import org.springframework.context.annotation.*;
 
 @EnableWebMvc
 @Configuration
-@Import({XADataSourceAutoConfiguration.class, PropertyPlaceholderAutoConfiguration.class})
+@ComponentScan(basePackages = {"org.pmiops.workbench.interceptors"})
 public class PublicApiWebMvcConfig implements WebMvcConfigurer {
 
   @Autowired
@@ -65,6 +65,7 @@ public class PublicApiWebMvcConfig implements WebMvcConfigurer {
             .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "TRACE", "OPTIONS")
             .allowedOrigins("*")
             .allowedHeaders("*")
+            .allowedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization")
             .exposedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization");
   }
 }
