@@ -57,7 +57,7 @@ jobs:
           - MYSQL_ROOT_PASSWORD=ubuntu
           - MYSQL_USER=ubuntu
           - MYSQL_PASSWORD=ubuntu
-    resource_class: large
+    resource_class: medium+
     working_directory: ~/data-browser
     environment:
       JAVA_TOOL_OPTIONS: -Xmx3g
