@@ -213,33 +213,11 @@ Common.register_command({
 def run_local_public_api_tests()
   common = Common.new
 
-  require 'open3'
-
-  command = %W{
-    curl --version
-  }
-
-  stdout_str, stderr_str, status = Open3.capture3(*command)
-
-  puts "Standard Output:\n#{stdout_str}"
-  puts "Error Output (Verbose Logging):\n#{stderr_str}"
-  puts "Exit Status: #{status.exitstatus}"
-
-
   status = common.capture_stdout %W{curl --silent --show-error -v --http1.1 http://localhost:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
-    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
-    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
-  end
-  sleep(10)
-  status2 = common.capture_stdout %W{curl --silent --show-error -v --http1.1 http://localhost:8083/}
-  if status2 != 'AllOfUs Public API again!'
-    common.error "Error probing public-api; received: #{status}"
-    common.error "Server logs:"
-    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
-    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
+    common.run_inline %W{cat ../public-api/build/dev-appserver-out/dev_appserver.out}
     exit 1
   end
   common.status "public-api started up."
