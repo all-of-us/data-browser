@@ -225,10 +225,12 @@ def run_local_public_api_tests()
   puts "Error Output (Verbose Logging):\n#{stderr_str}"
   puts "Exit Status: #{status.exitstatus}"
 
-  status = common.capture_stdout %W{curl --silent --show-error -v --fail --http1.1 http://localhost:8083/}
+  status = common.capture_stdout %W{curl --silent --show-error -v --http1.1 http://localhost:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"
+    common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
+    sleep(10)
     common.run_inline %W{cat build/dev-appserver-out/dev_appserver.out}
     exit 1
   end
