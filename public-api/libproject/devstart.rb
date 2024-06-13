@@ -225,7 +225,7 @@ def run_local_public_api_tests()
   puts "Error Output (Verbose Logging):\n#{stderr_str}"
   puts "Exit Status: #{status.exitstatus}"
 
-  status = common.capture_stdout %W{curl --http1.1 --silent --show-error -v --fail http://127.0.0.1:8083/}
+  status = common.capture_stdout %W{curl --silent --show-error -v --fail http://127.0.0.1:8083/}
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
     common.error "Server logs:"

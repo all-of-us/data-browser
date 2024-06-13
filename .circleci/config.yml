@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:aou-db-image-8
+    - image: allofustest/workbench:aou-db-image-11
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -51,7 +51,7 @@ commands:
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:aou-db-image-8
+      - image: allofustest/workbench:aou-db-image-11
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
