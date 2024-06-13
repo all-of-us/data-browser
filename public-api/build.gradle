@@ -313,8 +313,11 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
+    // Add Truth and Spring Boot Test dependencies for integration tests
     integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
     integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
+    integrationImplementation "org.springframework.boot:spring-boot-starter-test:$project.ext.SPRING_BOOT_VERSION"
+    integrationImplementation "org.assertj:assertj-core:3.23.1"
 }
 
 swaggerSources {
