@@ -300,6 +300,19 @@ Common.register_command({
 
 def run_all_tests(cmd_name, args)
   run_public_api_tests(cmd_name, args)
+
+    require 'open3'
+
+    command = %W{
+      curl --version
+    }
+
+    stdout_str, stderr_str, status = Open3.capture3(*command)
+
+    puts "Standard Output:\n#{stdout_str}"
+    puts "Error Output (Verbose Logging):\n#{stderr_str}"
+    puts "Exit Status: #{status.exitstatus}"
+
 end
 
 Common.register_command({
