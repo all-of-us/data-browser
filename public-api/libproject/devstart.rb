@@ -234,7 +234,7 @@ def run_local_public_api_tests()
                                       -H "X-Content-Type-Options: nosniff" \
                                       -H "X-XSS-Protection: 0" \
                                       -H "X-Frame-Options: DENY" \
-                                      http://127.0.0.1:8083}
+                                      http://localhost:8083/}
 
   if status != 'AllOfUs Public API'
     common.error "Error probing public-api; received: #{status}"
