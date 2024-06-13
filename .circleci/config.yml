@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:aou-db-image-14
+    - image: us.gcr.io/broad-dsp-gcr-public/workbench:buildimage-0.0.28
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
