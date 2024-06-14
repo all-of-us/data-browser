@@ -8,7 +8,6 @@ public class RootController {
 
   @RequestMapping("/")
   public String index() {
-    System.out.println("~~~~~~~!!!!!RootController");
     return "AllOfUs Public API";
   }
 }
