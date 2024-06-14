@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import javax.inject.Provider;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.inject.Provider;
+import jakarta.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.ZoneId;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.pmiops.workbench.cdr.CdrVersionContext;
 import org.pmiops.workbench.db.model.DbCdrVersion;
 import org.pmiops.workbench.exceptions.ForbiddenException;
@@ -137,8 +138,10 @@ public class BigQueryService {
         if (row.get(index).isNull()) {
             return null;
         }
-        DateTimeFormatter df = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss zzz").withZoneUTC();
-        return df.print(row.get(index).getTimestampValue() / 1000L);
+        Instant instant = Instant.ofEpochMilli(row.get(index).getTimestampValue() / 1000L);
+        ZonedDateTime zonedDateTime = instant.atZone(ZoneId.of("UTC"));
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss zzz").withZone(ZoneId.of("UTC"));
+        return df.format(zonedDateTime);
     }
 
     public String getDate(List<FieldValue> row, int index) {

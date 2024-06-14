@@ -2,7 +2,7 @@ version: 2.1
 
 defaults: &defaults
   docker:
-    - image: allofustest/workbench:aou-db-image-8
+    - image: us.gcr.io/broad-dsp-gcr-public/workbench:buildimage-0.0.28
   working_directory: ~/data-browser
 java_defaults: &java_defaults
   <<: *defaults
@@ -51,12 +51,13 @@ commands:
 jobs:
   public-api-local-test:
     docker:
-      - image: allofustest/workbench:aou-db-image-8
+      - image: us.gcr.io/broad-dsp-gcr-public/workbench:buildimage-0.0.28
       - image: mysql:5.7
         environment:
           - MYSQL_ROOT_PASSWORD=ubuntu
           - MYSQL_USER=ubuntu
           - MYSQL_PASSWORD=ubuntu
+    resource_class: medium+
     working_directory: ~/data-browser
     environment:
       JAVA_TOOL_OPTIONS: -Xmx3g

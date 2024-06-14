@@ -42,3 +42,4 @@ build/swagger3/gradlew.bat
 build/swagger3/src/main/resources
 build/swagger3/gradle
 build/swagger3/gradle/**
+build/swagger3/io/swagger/**

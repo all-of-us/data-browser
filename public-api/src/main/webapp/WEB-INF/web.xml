@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-    <display-name>AllOfUs Public API</display-name>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+  <display-name>AllOfUs Public API</display-name>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>all</web-resource-name>
@@ -12,10 +12,4 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
-  <use-google-connector-j>true</use-google-connector-j>
-  <session-config>
-    <cookie-config>
-      <http-only>true</http-only>
-    </cookie-config>
-  </session-config>
 </web-app>

@@ -1,22 +1,39 @@
 package org.pmiops.workbench.config;
 
 import org.pmiops.workbench.interceptors.ClearCdrVersionContextInterceptor;
-import org.pmiops.workbench.interceptors.CorsInterceptor;
+
 import org.pmiops.workbench.interceptors.SecurityHeadersInterceptor;
+
+import jakarta.servlet.ServletContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.http.MediaType;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import org.springframework.web.servlet.config.annotation.*;
+
+import org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration;
+import org.springframework.context.annotation.*;
 
 @EnableWebMvc
 @Configuration
-public class PublicApiWebMvcConfig extends WebMvcConfigurerAdapter {
-
-  @Autowired
-  private CorsInterceptor corsInterceptor;
+@ComponentScan(basePackages = {"org.pmiops.workbench.interceptors"})
+public class PublicApiWebMvcConfig implements WebMvcConfigurer {
 
   @Autowired
   private ClearCdrVersionContextInterceptor clearCdrVersionInterceptor;
@@ -31,9 +48,24 @@ public class PublicApiWebMvcConfig extends WebMvcConfigurerAdapter {
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(corsInterceptor);
     registry.addInterceptor(clearCdrVersionInterceptor);
     registry.addInterceptor(securityHeadersInterceptor);
   }
 
+  static ServletContext getRequestServletContext() {
+    return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+            .getRequest()
+            .getServletContext();
+  }
+
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    registry
+            .addMapping("/**")
+            .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "TRACE", "OPTIONS")
+            .allowedOrigins("*")
+            .allowedHeaders("*")
+            .allowedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization")
+            .exposedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  }
 }
