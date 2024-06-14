@@ -76,11 +76,6 @@ configurations {
     toolsImplementation.extendsFrom implementation
     toolsRuntimeOnly.extendsFrom runtimeOnly
     all*.exclude group: 'javax.annotation', module: 'jsr305'
-
-    all {
-        exclude group: 'org.apache.tomcat.embed', module: 'tomcat-embed-core'
-        exclude group: 'com.google.code.findbugs', module: 'jsr305'
-    }
 }
 
 ext {
@@ -443,6 +438,20 @@ appengine {
         projectId = "aou-db-test"
     }
 }
+
+dependencies {
+    testImplementation 'au.com.dius:pact-jvm-consumer-java8:4.0.10'
+    testImplementation 'au.com.dius:pact-jvm-consumer-junit5:4.0.10'
+    modules {
+        module("org.aspectj:aspectjrt") { replacedBy("org.aspectj:aspectjweaver") }
+        module("org.springframework:spring-jcl") { replacedBy("commons-logging:commons-logging") }
+
+        module("org.apache.tomcat:tomcat-juli") {
+            replacedBy("org.apache.tomcat.embed:tomcat-embed-core")
+        }
+    }
+}
+
 
 group = 'org.pmiops.allofus.workbench'
 version = '0.1.0'
