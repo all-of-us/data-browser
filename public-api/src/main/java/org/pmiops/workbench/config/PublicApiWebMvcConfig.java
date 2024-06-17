@@ -65,7 +65,6 @@ public class PublicApiWebMvcConfig implements WebMvcConfigurer {
             .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "TRACE", "OPTIONS")
             .allowedOrigins("*")
             .allowedHeaders("*")
-            .allowedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization")
             .exposedHeaders("Origin, X-Requested-With, Content-Type, Accept, Authorization");
   }
 }
