@@ -180,7 +180,7 @@ class DeployUI
         "aou-db-prod" => "prod"
     }
     environment_name = project_names_to_environment_names[@opts.project]
-
+    common.run_inline %W{yarn install --frozen-lockfile}
     common.run_inline(%W{yarn run codegen})
     build(@cmd_name, %W{--environment #{environment_name}})
     ServiceAccountContext.new(@opts.project, @opts.account, @opts.key_file).run do
