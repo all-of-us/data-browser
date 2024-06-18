@@ -175,7 +175,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
         ageResult.countValue <= 20
           ? "&le; 20"
           : ageResult.countValue.toLocaleString();
-      if (a.analysisStratumName === null) {
+      if (a.analysisStratumName === null || !a.analysisStratumName) {
         a.analysisStratumName =
           AGE_STRATUM_MAP[domain === "ehr" ? a.stratum2 : a.stratum5];
       }

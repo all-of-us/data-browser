@@ -57,6 +57,7 @@ RUN apk --no-cache add ruby ruby-json ruby-io-console
 # Install openapi-generator-cli
 RUN npm install @openapitools/openapi-generator-cli -g
 
+
 COPY with-uid.sh /usr/local/bin
 
 ENTRYPOINT ["with-uid.sh"]
