@@ -144,7 +144,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
         bsResult.countValue <= 20
           ? "&le; 20"
           : bsResult.countValue.toLocaleString();
-      if (a.analysisStratumName === null) {
+      if (a.analysisStratumName === null || !a.analysisStratumName) {
         a.analysisStratumName =
           GENDER_STRATUM_MAP[domain === "ehr" ? a.stratum2 : a.stratum5];
       }

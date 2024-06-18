@@ -448,7 +448,6 @@ export const SurveyViewReactComponent = withRouteData(
       const matchingQuestions = questions.filter((question) =>
         question.type.toLowerCase().includes("question")
       );
-      console.log(survey);
       return (
         <React.Fragment>
           <style>{surveyStyle}</style>
