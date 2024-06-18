@@ -26,7 +26,7 @@ RUN npm install --global yarn n
 RUN n 18
 
 # Install openapi-generator-cli
-RUN npm install -g @openapitools/openapi-generator-cli
+RUN npm install @openapitools/openapi-generator-cli -g
 
 ENV CLOUD_SDK_VERSION 392.0.0
 
