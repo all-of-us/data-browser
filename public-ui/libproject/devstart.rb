@@ -54,12 +54,13 @@ class DevStart
     common = Common.new
     options = BuildOptions.new.parse("dev-up", args)
 
-    install_dependencies
+    install_dependencies()
 
     ENV["ENV_FLAG"] = "--configuration=#{options.env}"
     at_exit { common.run_inline %W{docker-compose down} }
 
     # Can't use swagger_regen here as it enters docker.
+    common.run_inline %W{yarn install --frozen-lockfile}
     common.run_inline %W{yarn run codegen}
 
     common.run_inline %W{yarn start}
@@ -179,7 +180,7 @@ class DeployUI
         "aou-db-prod" => "prod"
     }
     environment_name = project_names_to_environment_names[@opts.project]
-
+    common.run_inline %W{yarn install --frozen-lockfile}
     common.run_inline(%W{yarn run codegen})
     build(@cmd_name, %W{--environment #{environment_name}})
     ServiceAccountContext.new(@opts.project, @opts.account, @opts.key_file).run do
