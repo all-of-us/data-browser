@@ -28,7 +28,7 @@ RUN n 18
 # Install openapi-generator-cli
 RUN npm install @openapitools/openapi-generator-cli -g
 
-ENV CLOUD_SDK_VERSION 392.0.0
+ENV CLOUD_SDK_VERSION 471.0.0
 
 WORKDIR /root
 RUN wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz -O gcloud.tgz && \
