@@ -413,7 +413,7 @@ for index in "${!domain_names[@]}"; do
         min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${source_concept_id} = ca.concept_id
     WHERE co1.${source_concept_id} NOT IN (
     SELECT DISTINCT ${concept_id} FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
-    GROUP BY co1.${source_concept_id}, ca.stratum_2"
+    GROUP BY co1.${source_concept_id}, stratum_2"
 
     # Get the current age counts
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
