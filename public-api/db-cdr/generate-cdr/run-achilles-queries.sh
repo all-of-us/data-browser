@@ -341,79 +341,33 @@ for index in "${!domain_names[@]}"; do
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-    WITH ehr_age AS (
-        SELECT ${table_id}, co.person_id, ceil(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY)/365.25) AS age
-        FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co JOIN \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
-        ON p.person_id = co.person_id
-        group by ${table_id},co.person_id, age
-    ),
-    ehr_age_stratum AS (
-        SELECT ${table_id}, person_id,
-            CASE
-                WHEN age >= 18 AND age <= 29 THEN '2'
-                WHEN age > 89 THEN '9'
-                WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
-                WHEN age < 18 THEN '0'
-            END AS age_stratum
-        FROM
-            ehr_age
-    ),
-    all_age_stratum AS (
-        SELECT
-            co.person_id,
-            ${concept_id} as concept_id,
-            age_stratum AS age_stratum
-        FROM
-            \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co
-        JOIN
-            ehr_age_stratum ca ON co.${table_id} = ca.${table_id}
-        union all
-            SELECT
-            co.person_id,
-            ${source_concept_id} as concept_id,
-            age_stratum AS age_stratum
-        FROM
-            \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co
-        JOIN
-            ehr_age_stratum ca ON co.${table_id} = ca.${table_id}
-        where co.${source_concept_id} NOT IN (SELECT DISTINCT ${concept_id} FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
-    ),
-    min_age_stratum as
-    (
-        select person_id, concept_id, min(age_stratum) as min_age_stratum from all_age_stratum group by 1, 2
-    )
-    SELECT
-        0 AS id,
-        3102 AS analysis_id,
-        CAST(co1.${concept_id} AS STRING) AS stratum_1,
-        ca.min_age_stratum AS stratum_2,
-        \"${domain_stratum}\" as stratum_3,
-        COUNT(DISTINCT co1.person_id) AS count_value,
-        (SELECT COUNT(DISTINCT co2.person_id)
-         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
-         JOIN min_age_stratum ca2 ON co2.person_id = ca2.person_id AND co2.${concept_id} = ca2.concept_id
-         WHERE ca2.min_age_stratum = ca.min_age_stratum) AS source_count_value
-    FROM
-        \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
-    JOIN
-        min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${concept_id} = ca.concept_id
-    GROUP BY co1.${concept_id}, stratum_2
-    UNION ALL
-    SELECT
-        0 AS id,
-        3102 AS analysis_id,
-        CAST(co1.${source_concept_id} AS STRING) AS stratum_1,
-        ca.min_age_stratum AS stratum_2,
-        \"${domain_stratum}\" as stratum_3,
-        COUNT(DISTINCT co1.person_id) AS count_value,
-        COUNT(DISTINCT co1.person_id) AS source_count_value
-    FROM
-        \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
-    JOIN
-        min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${source_concept_id} = ca.concept_id
-    WHERE co1.${source_concept_id} NOT IN (
-    SELECT DISTINCT ${concept_id} FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
-    GROUP BY co1.${source_concept_id}, stratum_2"
+     with co_age_stratum as
+     (SELECT distinct co.*, ceil(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY)/365.25) AS age,
+             CASE
+                 WHEN CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+                 WHEN CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+                 WHEN CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+                 WHEN CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY) / 365.25) < 18 THEN '0'
+             END AS age_stratum
+     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co JOIN \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p ON p.person_id = co.person_id),
+     all_age_stratum AS (
+     SELECT person_id, ${concept_id} as concept_id, age_stratum AS age_stratum FROM co_age_stratum
+     union all
+     SELECT person_id, ${source_concept_id} as concept_id, age_stratum AS age_stratum FROM co_age_stratum
+     where ${source_concept_id} NOT IN (SELECT DISTINCT ${concept_id} FROM co_age_stratum)),
+     min_age_stratum as
+     (select person_id, concept_id, min(age_stratum) as min_age_stratum from all_age_stratum group by 1, 2)
+     SELECT 0 AS id, 3102 AS analysis_id, CAST(co1.${concept_id} AS STRING) AS stratum_1, ca.min_age_stratum AS stratum_2, \"${domain_stratum}\" as stratum_3, COUNT(DISTINCT co1.person_id) AS count_value,
+     (SELECT COUNT(DISTINCT co2.person_id) FROM co_age_stratum co2 JOIN min_age_stratum ca2 ON co2.person_id = ca2.person_id AND co2.${source_concept_id} = ca2.concept_id AND ca2.min_age_stratum = co2.age_stratum) AS source_count_value
+     FROM co_age_stratum co1 JOIN min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${concept_id} = ca.concept_id
+     and co1.age_stratum = ca.min_age_stratum
+     GROUP BY co1.${concept_id}, stratum_2
+     UNION ALL
+     SELECT 0 AS id, 3102 AS analysis_id, CAST(co1.${source_concept_id} AS STRING) AS stratum_1, ca.min_age_stratum AS stratum_2, \"${domain_stratum}\" as stratum_3, COUNT(DISTINCT co1.person_id) AS count_value, COUNT(DISTINCT co1.person_id) AS source_count_value
+     FROM co_age_stratum co1 JOIN min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${source_concept_id} = ca.concept_id AND co1.age_stratum = ca.min_age_stratum
+     WHERE
+     co1.${source_concept_id} NOT IN (SELECT DISTINCT ${concept_id} FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
+     GROUP BY co1.${source_concept_id}, stratum_2"
 
     # Get the current age counts
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
