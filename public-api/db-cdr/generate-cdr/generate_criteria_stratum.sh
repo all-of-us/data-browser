@@ -84,9 +84,12 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "Inserting age stratum counts for parent pcs concepts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id,stratum_1,stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Procedure', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 2 as age, count(distinct b.person_id) cnt
+with y as
+  (select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -98,53 +101,11 @@ from
     and is_group = 1 and full_text like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-  where (extract(year from procedure_date) - p.year_of_birth) >= 18 and (extract(year from procedure_date) - p.year_of_birth) < 30
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc"
-
-echo "Inserting age stratum counts for parent pcs concepts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id,stratum_1,stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Procedure', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, cast(floor((extract(year from procedure_date) - p.year_of_birth)/10) as int64) as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
-    and domain_id = 'PROCEDURE'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-  where (extract(year from procedure_date) - p.year_of_birth) >= 30 and (extract(year from procedure_date) - p.year_of_birth) < 90
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc"
-
-echo "Inserting age stratum counts for parent pcs concepts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id,stratum_1,stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Procedure', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 9 as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
-    and domain_id = 'PROCEDURE'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
-  where (extract(year from procedure_date) - p.year_of_birth) >= 90
-  group by 1,2) y
-  group by concept_id,age,cnt
+  group by 1,2,3),
+  min_y as
+  (select concept_id, person_id, min(age) as age from y group by 1, 2)
+  select concept_id, age, 'age', 'Procedure', count(distinct person_id) as cnt, 3102 from min_y
+  group by concept_id,age
   order by concept_id asc"
 
 echo "Inserting snomed condition counts"
@@ -191,9 +152,12 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "age parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 2 as age, count(distinct b.person_id) cnt
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -205,55 +169,11 @@ from
     and is_group = 1 and full_text like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 18 and (extract(year from condition_start_date) - p.year_of_birth) < 30
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, cast(floor((extract(year from condition_start_date) - p.year_of_birth)/10) as int64) as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'SNOMED'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 30 and (extract(year from condition_start_date) - p.year_of_birth) < 90
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 9 as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'SNOMED'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 90
-  group by 1,2) y
-  group by concept_id,age,cnt
+  group by 1,2,3),
+  min_y as
+  (select concept_id, person_id, min(age) as age from y group by 1, 2)
+  select concept_id, age, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  group by concept_id,age
   order by concept_id asc
 "
 
@@ -301,9 +221,12 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "age parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 2 as age, count(distinct b.person_id) cnt
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -315,55 +238,11 @@ from
     and is_group = 1 and full_text like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 18 and (extract(year from condition_start_date) - p.year_of_birth) < 30
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, cast(floor((extract(year from condition_start_date) - p.year_of_birth)/10) as int64) as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'ICD9CM'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 30 and (extract(year from condition_start_date) - p.year_of_birth) < 90
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 9 as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'ICD9CM'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 90
-  group by 1,2) y
-  group by concept_id,age,cnt
+  group by 1,2,3),
+  min_y as
+  (select concept_id, person_id, min(age) as age from y group by 1, 2)
+  select concept_id, age, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  group by concept_id,age
   order by concept_id asc
 "
 
@@ -411,9 +290,12 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "age parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 2 as age, count(distinct b.person_id) cnt
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -425,54 +307,10 @@ from
     and is_group = 1 and full_text like '%rank1%')) a
   join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 18 and (extract(year from condition_start_date) - p.year_of_birth) < 30
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, cast(floor((extract(year from condition_start_date) - p.year_of_birth)/10) as int64) as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'ICD10CM'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 30 and (extract(year from condition_start_date) - p.year_of_birth) < 90
-  group by 1,2) y
-  group by concept_id,age,cnt
-  order by concept_id asc
-"
-
-echo "age parent concept counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, age, 'age', 'Condition', cnt, 3102
-from
-  (select ancestor_concept_id as concept_id, 9 as age, count(distinct b.person_id) cnt
-  from
-  (select *
-  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
-  where ancestor_concept_id in
-    (select distinct concept_id
-    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
-    where type = 'ICD10CM'
-    and domain_id = 'CONDITION'
-    and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
-  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
-  where (extract(year from condition_start_date) - p.year_of_birth) >= 90
-  group by 1,2) y
-  group by concept_id,age,cnt
+  group by 1,2,3),
+  min_y as
+  (select concept_id, person_id, min(age) as age from y group by 1, 2)
+  select concept_id, age, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  group by concept_id,age
   order by concept_id asc
 "
