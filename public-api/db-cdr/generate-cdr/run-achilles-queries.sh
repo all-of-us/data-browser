@@ -358,7 +358,7 @@ for index in "${!domain_names[@]}"; do
      min_age_stratum as
      (select person_id, concept_id, min(age_stratum) as min_age_stratum from all_age_stratum group by 1, 2)
      SELECT 0 AS id, 3102 AS analysis_id, CAST(co1.${concept_id} AS STRING) AS stratum_1, ca.min_age_stratum AS stratum_2, \"${domain_stratum}\" as stratum_3, COUNT(DISTINCT co1.person_id) AS count_value,
-     (SELECT COUNT(DISTINCT co2.person_id) FROM co_age_stratum co2 JOIN min_age_stratum ca2 ON co2.person_id = ca2.person_id AND co2.${source_concept_id} = ca2.concept_id AND ca2.min_age_stratum = co2.age_stratum) AS source_count_value
+     (SELECT COUNT(DISTINCT co2.person_id) FROM co_age_stratum co2 where co2.${source_concept_id} = co1.${concept_id} AND ca.min_age_stratum = co2.age_stratum) AS source_count_value
      FROM co_age_stratum co1 JOIN min_age_stratum ca ON co1.person_id = ca.person_id AND co1.${concept_id} = ca.concept_id
      and co1.age_stratum = ca.min_age_stratum
      GROUP BY co1.${concept_id}, stratum_2
