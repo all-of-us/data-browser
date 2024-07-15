@@ -378,7 +378,6 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     const { options } = this.state;
     return (
     <React.Fragment>
-    <p>Test</p>
       <div onMouseMove={this.handleMouseEvent}>
         {options && (
           <HighchartsReact
