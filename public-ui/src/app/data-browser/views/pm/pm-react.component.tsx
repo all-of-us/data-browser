@@ -383,7 +383,7 @@ export const PMReactComponent = withRouteData(
 
     setAnalysisStratum(results: any) {
       for (const r of results) {
-        if (r.analysisStratumName === null) {
+        if (r.analysisStratumName === null || !r.analysisStratumName) {
           r.analysisStratumName = GENDER_STRATUM_MAP[r.stratum3];
         }
       }
