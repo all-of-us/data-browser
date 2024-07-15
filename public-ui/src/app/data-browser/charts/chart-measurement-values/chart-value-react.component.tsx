@@ -25,7 +25,7 @@ interface Props {
 export class ValueReactChartComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       options: null,
       pageX: 0,
       pageY: 0
@@ -48,8 +48,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       pageY: event.pageY,
     });
   }
-  
-  
+
+
   getChartOptions() {
     const { conceptId } = this.props;
     if (conceptId === "903111" || conceptId === "903120") {
@@ -236,7 +236,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     const cats = [];
     for (const a of valueAnalysisResults) {
       let analysisStratumName = a.analysisStratumName;
-      if (analysisStratumName === null) {
+      if (analysisStratumName === null || !analysisStratumName) {
         analysisStratumName = GENDER_STRATUM_MAP[a.stratum3];
       }
       let tooltipText = "";
@@ -377,6 +377,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   render() {
     const { options } = this.state;
     return (
+    <React.Fragment>
       <div onMouseMove={this.handleMouseEvent}>
         {options && (
           <HighchartsReact
@@ -386,6 +387,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
           />
         )}
       </div>
+      </React.Fragment>
     );
   }
 }
