@@ -191,9 +191,13 @@ const styleCss = `
     font-weight: 900;
     border-bottom: 4px solid #216fb4;
 }
-.group-button.active {
+.active {
     font-weight: 3em;
-    border: 2px solid #216fb4;
+    border: 2px solid #216fb4!important;
+    }
+    div.button-item:not(:first-child) .active {
+      border-top: 1px solid #216fb4!important;
+  // background: purple;
 }
 .participant-count {
     width: 100%;
