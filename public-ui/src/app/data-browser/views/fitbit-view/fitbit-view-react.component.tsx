@@ -12,7 +12,6 @@ import { urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 import { environment } from "environments/environment";
 
-
 const styles = reactStyles({
   fmLayout: {
     display: "grid",
@@ -36,29 +35,29 @@ const styles = reactStyles({
     alignItems: "center",
     width: "100%",
   },
-  fmMenuItem: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0.5rem",
-    fontSize: "0.8em",
-    /* border-bottom: 1px solid #262262 ; */
-    // borderBottom: "1px solid #0079B8",
-    borderTop: "1px solid #0079B8",
-    cursor: "pointer",
-  },
- fmMenuItemActive: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0.5rem",
-    fontSize: "0.8em",
-    borderBottom: "3px solid #0079B8",
-    borderTop: "3px solid #0079B8",   
-    borderLeft: "3px solid #0079B8",
-    borderRight: "3px solid #0079B8",
-    cursor: "pointer",
-    // borderRadius: "3px",
-    fontFamily: "GothamBold",
-  },
+  // fmMenuItem: {
+  //   display: "flex",
+  //   alignItems: "center",
+  //   padding: "0.5rem",
+  //   fontSize: "0.8em",
+  //   /* border-bottom: 1px solid #262262 ; */
+  //   // borderBottom: "1px solid #0079B8",
+  //   borderTop: "1px solid #0079B8",
+  //   cursor: "pointer",
+  // },
+  //  fmMenuItemActive: {
+  //     display: "flex",
+  //     alignItems: "center",
+  //     padding: "0.5rem",
+  //     fontSize: "0.8em",
+  //     borderBottom: "1px solid #0079B8",
+  //     borderTop: "2px solid #0079B8",   
+  //     borderLeft: "2px solid #0079B8",
+  //     borderRight: "2px solid #0079B8",
+  //     cursor: "pointer",
+  //     // borderRadius: "3px",
+  //     fontFamily: "GothamBold",
+  //   },
   selectedDisplayH: {
     paddingBottom: "1rem",
     textTransform: "capitalize",
@@ -105,6 +104,26 @@ const styleCss = `
 div.fm-menu-item-container:nth-child(7) > div:nth-child(1){
   border-bottom:1px solid #0079B8;
 }
+  div.fm-menu-item-container {
+  border-top:1px solid #0079B8;
+  }
+  .fb-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    font-size: 0.8em;
+    cursor: pointer,
+  }
+  .active {
+  border: 2px solid #0079B8;
+  border-top: 1px solid #0079B8;
+  border-bottom: 1px solid #0079B8;
+  
+  background: white;
+  }
+  div.fm-menu-item-container:nth-child(7) > div.active{
+  border-bottom: 2px solid #0079B8!important;
+  }
 @media (max-width: 900px) {
     .fm-body-top .fm-chart {
         width: 100%;
@@ -245,9 +264,9 @@ export const FitbitReactComponent = withRouteData(
                     concepts.map((concept, index) => {
                       const conceptClass =
                         selectedDisplay.toLowerCase() ===
-                        concept.displayName.toLowerCase()
-                          ? styles.fmMenuItemActive
-                          : styles.fmMenuItem;
+                          concept.displayName.toLowerCase()
+                          ? 'fb-menu-item active'
+                          : 'fb-menu-item ';
                       return (
                         <div
                           className="fm-menu-item-container"
@@ -256,7 +275,7 @@ export const FitbitReactComponent = withRouteData(
                         >
                           <div
                             tabIndex={tabIndex}
-                            style={conceptClass}
+                            className={conceptClass}
                             onClick={() => this.setGraphs(concept)}
                           >
 
@@ -323,7 +342,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                       Age at data collection
+                        Age at data collection
                       </div>
                       {selectedAnalyses && domainCountAnalysis && (
                         <AgeChartReactComponent
