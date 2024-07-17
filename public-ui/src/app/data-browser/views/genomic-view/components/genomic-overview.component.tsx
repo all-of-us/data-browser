@@ -260,7 +260,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
             <React.Fragment>
               <GenomicChartComponent
                 counts={participantCounts[0]}
-                title="Race/ethnicity"
+                title="Self-reported categories"
                 data={raceEthData}
                 selectedGenotype={selectedGenotype}
                 color={color}
