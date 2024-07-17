@@ -44,11 +44,11 @@ export const tooltips = {
   },
   genderIdentityQuestionHelpText: {
     texts: [
-      `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
-                  identity information to the `,
+      `Participants self-identify their race and ethnicity.`,
       `All of Us`,
-      `Research Program. Because participants can select more than one option, counts and percentages may not add up to
-      100%. To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`,
+      `does not ask for verification of Tribal enrollment or descendancy from participants
+      who self-identify as American Indian/Alaska Native. Because participants can select
+      more than one option, counts and percentages may not add up to 100%.`,
     ],
   },
   matchingConceptsHelpText: {
@@ -297,12 +297,12 @@ export class TooltipService {
     },
     genderIdentityQuestionHelpText: {
       texts: [
-        `Through “The Basics” survey, participants who have completed the initial steps of the program self-report gender
-                    identity information to the `,
-        `All of Us`,
-        `Research Program. Because participants can select more than one option,
-                    counts and percentages may not add up to 100%. To learn more about this question, please visit
-                    “The Basics” in the Survey Explorer under Data Sources`,
+        `Participants self-identify their race and ethnicity.`,
+         `All of Us`,
+         `does not ask for verification of Tribal enrollment or descendancy from participants
+         who self-identify as American Indian/Alaska Native. Because participants can select
+         more than one option, counts and percentages may not add up to 100%.`
+
       ],
     },
     matchingConceptsHelpText: {
