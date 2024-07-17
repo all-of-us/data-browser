@@ -194,10 +194,11 @@ const styleCss = `
 .active {
     font-weight: 3em;
     border: 2px solid #216fb4!important;
+    background: white;
     }
-    div.button-item:not(:first-child) .active {
+div.button-item:not(:first-child) .active {
       border-top: 1px solid #216fb4!important;
-  // background: purple;
+      background: white;
 }
 .participant-count {
     width: 100%;
