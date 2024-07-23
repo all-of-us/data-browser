@@ -169,7 +169,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
@@ -455,7 +455,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
@@ -690,7 +690,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
