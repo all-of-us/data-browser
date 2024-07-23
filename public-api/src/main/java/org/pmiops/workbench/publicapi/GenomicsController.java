@@ -169,7 +169,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
@@ -390,9 +390,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
             if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
                 if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
+                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) ASC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type DESC";
+                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) DESC";
                 }
             }
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
@@ -455,7 +455,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
@@ -690,7 +690,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
-            contig = searchTermType.getContig();
+            contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
