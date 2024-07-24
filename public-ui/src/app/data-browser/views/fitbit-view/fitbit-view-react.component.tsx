@@ -118,7 +118,7 @@ div.fm-menu-item-container:nth-child(7) > div:nth-child(1){
   border: 2px solid #0079B8;
   border-top: 1px solid #0079B8;
   border-bottom: 1px solid #0079B8;
-  
+  font-family: GothamBold;
   background: white;
   }
   div.fm-menu-item-container:nth-child(7) > div.active{
