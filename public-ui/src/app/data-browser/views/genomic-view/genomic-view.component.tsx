@@ -496,6 +496,12 @@ export const GenomicViewComponent = withRouteData(
       });
     }
 
+    handleSVSortClick(sortMetadataTemp) {
+      this.setState({ svSortMetadata: sortMetadataTemp }, () => {
+        this.fetchSVVariantData();
+      });
+    }
+
     handleSVPageChange(info) {
       this.setState(
         { loadingResults: true, currentPage: info.selectedPage },
@@ -507,12 +513,6 @@ export const GenomicViewComponent = withRouteData(
 
     handleSVRowCountChange(info) {
       this.setState({ loadingResults: true, rowCount: +info.rowCount }, () => {
-        this.fetchSVVariantData();
-      });
-    }
-
-    handleSVSortClick(sortMetadataTemp) {
-      this.setState({ sortMetadata: sortMetadataTemp }, () => {
         this.fetchSVVariantData();
       });
     }
@@ -675,20 +675,20 @@ export const GenomicViewComponent = withRouteData(
 
     handleSVScrollBottom() {
       this.setState({ currentPage: this.state.currentPage + 1, loadingResults: true, scrollClean: false })
-      const { searchTerm, currentPage, sortMetadata, rowCount, filterMetadata } = this.state;
+      const { svSearchTerm, currentPage, svSortMetadata, rowCount, svFilterMetadata } = this.state;
       const searchRequest: SearchVariantsRequest = {
-        query: searchTerm,
+        query: svSearchTerm,
         pageNumber: currentPage,
         rowCount: rowCount,
-        sortMetadata: sortMetadata,
-        filterMetadata: filterMetadata,
+        sortMetadata: svSortMetadata,
+        filterMetadata: svFilterMetadata,
       };
 
       genomicsApi()
-        .searchVariants(searchRequest)
+        .searchSVVariants(searchRequest)
         .then((results) => {
           this.setState({
-            searchResults: [...this.state.searchResults, ...results.items],
+            searchSVResults: [...this.state.searchSVResults, ...results.items],
             loadingResults: false,
           });
         });

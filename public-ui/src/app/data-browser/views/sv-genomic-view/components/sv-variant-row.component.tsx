@@ -3,7 +3,8 @@ import * as React from "react";
 import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { SVVariant } from "publicGenerated";
+import { SVVariant, SVVariantInfo } from "publicGenerated";
+import { SVVariantExpandedComponent } from "./sv-variant-expanded.component";
 
 
 const styles = reactStyles({
@@ -59,7 +60,7 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
     align-items: center;
     width: 72rem;
     background: white;
@@ -70,7 +71,7 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
         width: 72rem;
     }
 }
@@ -83,30 +84,60 @@ interface Props {
 }
 
 interface State {
+  svVariantExpanded: boolean;
   mouseOverExpanded: boolean;
+  variantDetails: SVVariantInfo;
+  loadingVarDetails: boolean;
 }
 
 export class SVVariantRowComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
+      svVariantExpanded: false,
       mouseOverExpanded: false,
+      variantDetails: null,
+      loadingVarDetails: true,
     };
   }
 
   getVariantDetails(variantId: string) {
+    genomicsApi()
+      .getSVVariantDetails(variantId)
+      .then((results: SVVariantInfo) => {
+        this.setState({
+          variantDetails: results,
+          loadingVarDetails: false,
+        });
+      });
   }
 
   handleClick(variantId?: string) {
-
+    if (variantId) {
+      this.getVariantDetails(variantId);
+    }
+    this.setState({
+      svVariantExpanded: !this.state.svVariantExpanded,
+    });
+   {}
   }
 
 
 render() {
   const { variant } = this.props;
+  const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
   return (
     <React.Fragment>
       <style>{css}</style>
+            {!loadingVarDetails && svVariantExpanded ? (
+              <SVVariantExpandedComponent
+                loading={loadingVarDetails}
+                variant={variant}
+                variantDetails={variantDetails}
+                closed={() => this.handleClick()}
+                hovered={() => this.state.mouseOverExpanded ? this.props.allowParentScroll(true): this.props.allowParentScroll(false)}
+              />
+            ) : (
         <div className="row-layout">
           <div
             onClick={() => this.handleClick(variant.variantId)}
@@ -164,6 +195,7 @@ render() {
            {variant.homozygoteCount}
           </div>
         </div>
+        )}
     </React.Fragment>
   );
 }

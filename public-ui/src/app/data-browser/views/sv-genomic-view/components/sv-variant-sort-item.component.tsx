@@ -2,7 +2,7 @@ import * as React from "react";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { SortMetadata } from "publicGenerated/fetch";
+import { SortSVMetadata } from "publicGenerated/fetch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
@@ -91,24 +91,26 @@ const css = `
 `;
 
 const lables = {
-  gene: 'Gene',
-  consequence: 'Consequence',
-  variantType: 'Variant Type',
-  clinicalSignificance: 'ClinVar Significance',
-  alleleNumber: 'Allele Number',
-  alleleFrequency: 'Allele Frequency',
-  alleleCount: 'Allele Count'
+    variantId: 'Variant Id',
+    variantType: 'Variant Type',
+    consequence: 'Consequence',
+    position: 'Position',
+    size: 'Size',
+    alleleNumber: 'Allele Number',
+    alleleFrequency: 'Allele Frequency',
+    alleleCount: 'Allele Count',
+    homozygoteCount: 'Homozygote Count'
 };
 
 interface Props {
   cleared: Boolean;
   onSortChange: Function;
-  sortMetadata: SortMetadata;
+  sortMetadata: SortSVMetadata;
 }
 
 interface State {
   sortItemOpen: Boolean;
-  sortMetadata: SortMetadata;
+  sortMetadata: SortSVMetadata;
   filterCats: any[];
   sortCats: any[];
 }
@@ -120,21 +122,22 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
       sortItemOpen: false,
       sortMetadata: props.sortMetadata,
       filterCats: [
-        { display: 'Gene', field: 'gene' },
-        { display: 'Consequence', field: 'consequence' },
         { display: 'Variant Type', field: 'variantType' },
-        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
+        { display: 'Variant ID', field: 'variantId' },
+        { display: 'Consequence', field: 'consequence' },
+        { display: 'Position', field: 'position' },
+        { display: 'Size', field: 'size' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
         { display: 'Allele Frequency', field: 'alleleFrequency' },
         { display: 'Homozygote Count', field: 'homozygoteCount' },
       ],
       sortCats: [
-        { display: 'Variant ID', field: 'variantId'},
-        { display: 'Gene', field: 'gene' },
-        { display: 'Consequence', field: 'consequence' },
         { display: 'Variant Type', field: 'variantType' },
-        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
+        { display: 'Variant ID', field: 'variantId' },
+        { display: 'Consequence', field: 'consequence' },
+        { display: 'Position', field: 'position' },
+        { display: 'Size', field: 'size' },
         { display: 'Allele Count', field: 'alleleCount' },
         { display: 'Allele Number', field: 'alleleNumber' },
         { display: 'Allele Frequency', field: 'alleleFrequency' },
@@ -149,8 +152,6 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
   sortClick() {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
   }
-
-
 
   clickToSort(field) {
     const { sortMetadata } = this.state;
@@ -192,6 +193,9 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
       {(cleared && sortItemOpen) &&
         <div style={styles.sortItemForm}>
           {sortCats && sortCats.map((cat, index) => {
+            console.log(cat);
+            console.log(cat.field);
+            console.log(sortMetadata);
             return <div style={{ cursor: 'pointer', position: 'relative' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
               <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>
                 <div className="tooltip">{cat.display}

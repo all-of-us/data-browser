@@ -13,6 +13,7 @@ import org.pmiops.workbench.model.Analysis;
 import org.pmiops.workbench.model.Variant;
 import org.pmiops.workbench.model.SVVariant;
 import org.pmiops.workbench.model.VariantInfo;
+import org.pmiops.workbench.model.SVVariantInfo;
 import org.pmiops.workbench.model.GenomicFilters;
 import org.pmiops.workbench.model.GenomicFilterOption;
 import org.pmiops.workbench.model.GenomicFilterOptionList;
@@ -88,6 +89,16 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_oth_ac as oth_allele_count, gvs_oth_an as oth_allele_number, gvs_oth_af as oth_allele_frequency, gvs_oth_hc as oth_homozygote_count, " +
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.wgs_variant";
 
+    private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, \n" +
+            "afr_ac as afr_allele_count, afr_an as afr_allele_number, afr_af as afr_allele_frequency, afr_n_homalt as afr_homozygote_count, \n" +
+            "eas_ac as eas_allele_count, eas_an as eas_allele_number, eas_af as eas_allele_frequency, eas_n_homalt as eas_homozygote_count, \n" +
+            "eur_ac as eur_allele_count, eur_an as eur_allele_number, eur_af as eur_allele_frequency, eur_n_homalt as eur_homozygote_count, \n" +
+            "amr_ac as amr_allele_count, amr_an as amr_allele_number, amr_af as amr_allele_frequency, amr_n_homalt as amr_homozygote_count, \n" +
+            "mid_ac as mid_allele_count, mid_an as mid_allele_number, mid_af as mid_allele_frequency, mid_n_homalt as mid_homozygote_count, \n" +
+            "sas_ac as sas_allele_count, sas_an as sas_allele_number, sas_af as sas_allele_frequency, sas_n_homalt as sas_homozygote_count, \n" +
+            "oth_ac as oth_allele_count, oth_an as oth_allele_number, oth_af as oth_allele_frequency, oth_n_homalt as oth_homozygote_count, \n" +
+            "allele_count as total_allele_count, allele_number as total_allele_number, allele_frequency as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+
     private static final String FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
             "(select 'Gene' as option, genes as genes, '' as conseq, '' as variant_type, '' as clin_significance, count(*) as gene_count, " +
             "0 as con_count, 0 as variant_type_count, " +
@@ -143,39 +154,44 @@ public class GenomicsController implements GenomicsApiDelegate {
             "select * from g;";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
-            "(select 'Gene' as option, genes as genes, '' as variant_type, count(*) as gene_count, " +
-            "0 as variant_type_count, " +
+            "(select distinct 'Gene' as option, genes as genes, '' as variant_type, '' as consequence, \n" +
             "0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id tj, \n" +
             " unnest(split(genes, ', ')) gene\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE = " group by genes),\n" +
             "b as \n" +
-            "(select 'Variant Type' as option, '' as genes, variant_type as variant_type, 0 as gene_count, count(*) as variant_type_count, 0 as min_count, 0 as max_count\n" +
+            "(select distinct 'Variant Type' as option, '' as genes, variant_type as variant_type, '' as consequence, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
-    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by variant_type),\n" +
+
+    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_CON = " group by variant_type), \n" +
+            "c as\n" +
+            "(select distinct 'Consequence' as option, '' as genes, '' as variant_type, con as consequence,\n" +
+            "0 as min_count, 0 as max_count\n" +
+            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id tj, \n" +
+            " unnest(split(consequence, ', ')) con\n";
+    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by con),\n" +
             "e as \n" +
-            "(select 'Allele Count' as option, '' as genes, '' as variant_type, \n" +
-            "0 as gene_count, 0 as variant_type_count,\n" +
+            "(select distinct 'Allele Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
             "f as \n" +
-            "(select 'Allele Number' as option, '' as genes, '' as variant_type, \n" +
-            "0 as gene_count, 0 as variant_type_count,\n" +
+            "(select distinct 'Allele Number' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT = "),\n" +
             "g as \n" +
-            "(select 'Homozygote Count' as option, '' as genes, '' as variant_type, \n" +
-            "0 as gene_count, 0 as variant_type_count,\n" +
+            "(select distinct 'Homozygote Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(homozygote_count) as min_count, max(homozygote_count) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_UNION = ")\n" +
             "select * from a \n" +
             "union all \n" +
             "select * from b \n" +
+            "union all \n" +
+            "select * from c \n" +
             "union all \n" +
             "select * from e \n" +
             "union all \n" +
@@ -237,8 +253,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
 
         String WHERE_GENE_IN = " AND genes in (";
-        String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
+        String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in ( \n";
         String WHERE_CON_NULL = "";
+        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
         String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
         String WHERE_CLIN_NULL = "";
         String WHERE_VAR_TYPE_IN = "AND variant_type in (";
@@ -446,12 +463,15 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         String WHERE_GENE_IN = " AND genes in (";
         String WHERE_VAR_TYPE_IN = "AND variant_type in (";
+        String WHERE_CON_NULL = "";
+        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
         String ALLELE_COUNT_FILTER = "";
         String ALLELE_NUMBER_FILTER = "";
         String ALLELE_FREQUENCY_FILTER = "";
         String HOMOZYGOTE_COUNT_FILTER = "";
         boolean geneFilterFlag = false;
         boolean varTypeFilterFlag = false;
+        boolean conFilterFlag = false;
         if (filters != null) {
             SVGenomicFilterOptionList geneFilterList = filters.getGene();
             List<SVGenomicFilterOption> geneFilters = geneFilterList.getItems();
@@ -460,6 +480,20 @@ public class GenomicsController implements GenomicsApiDelegate {
                     SVGenomicFilterOption filter = geneFilters.get(i);
                     if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
                         WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
+                    }
+                }
+            }
+            SVGenomicFilterOptionList conFilterList = filters.getConsequence();
+            List<SVGenomicFilterOption> conFilters = conFilterList.getItems();
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
+                for(int i=0; i < conFilters.size(); i++) {
+                    SVGenomicFilterOption filter = conFilters.get(i);
+                    if (filter.isChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_SV_CON_IN += "\"" + filter.getOption() + "\",";
+                        } else {
+                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
+                        }
                     }
                 }
             }
@@ -505,6 +539,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
             WHERE_GENE_IN += ") ";
         }
+        if (WHERE_SV_CON_IN.substring(WHERE_SV_CON_IN.length() - 1).equals(",")) {
+            conFilterFlag = true;
+            WHERE_SV_CON_IN = WHERE_SV_CON_IN.substring(0, WHERE_SV_CON_IN.length()-1);
+            WHERE_SV_CON_IN += ")) ";
+        }
 
         if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
             varTypeFilterFlag = true;
@@ -517,6 +556,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                 WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
             }
             finalSql += WHERE_GENE_IN;
+        }
+
+        if (conFilterFlag) {
+            finalSql += WHERE_SV_CON_IN;
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += WHERE_CON_NULL;
+            }
+            finalSql += ") ";
+        } else {
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
+            }
         }
 
         if (varTypeFilterFlag) {
@@ -693,12 +744,16 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         String WHERE_VAR_TYPE_IN = "AND variant_type in (";
 
+        String WHERE_CON_NULL = "";
+        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
+
+
         String ALLELE_COUNT_FILTER = "";
         String ALLELE_NUMBER_FILTER = "";
         String ALLELE_FREQUENCY_FILTER = "";
         String HOMOZYGOTE_COUNT_FILTER = "";
         boolean geneFilterFlag = false;
-
+        boolean conFilterFlag = false;
         boolean varTypeFilterFlag = false;
 
         if (filters != null) {
@@ -727,6 +782,20 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
 
+            SVGenomicFilterOptionList conFilterList = filters.getConsequence();
+            List<SVGenomicFilterOption> conFilters = conFilterList.getItems();
+            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
+                for(int i=0; i < conFilters.size(); i++) {
+                    SVGenomicFilterOption filter = conFilters.get(i);
+                    if (filter.isChecked()) {
+                        if (!Strings.isNullOrEmpty(filter.getOption())) {
+                            WHERE_SV_CON_IN += "\"" + filter.getOption() + "\",";
+                        } else {
+                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
+                        }
+                    }
+                }
+            }
 
             SVGenomicFilterOption acFilter = filters.getAlleleCount();
             if (acFilter != null && acFilter.isChecked()) {
@@ -764,6 +833,12 @@ public class GenomicsController implements GenomicsApiDelegate {
             WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
         }
 
+        if (WHERE_SV_CON_IN.substring(WHERE_SV_CON_IN.length() - 1).equals(",")) {
+            conFilterFlag = true;
+            WHERE_SV_CON_IN = WHERE_SV_CON_IN.substring(0, WHERE_SV_CON_IN.length()-1);
+            WHERE_SV_CON_IN += ")) ";
+        }
+
         if (geneFilterFlag) {
             if (whereGeneFlag) {
                 finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
@@ -778,6 +853,17 @@ public class GenomicsController implements GenomicsApiDelegate {
             finalSql += ") ";
         }
 
+        if (conFilterFlag) {
+            finalSql += WHERE_SV_CON_IN;
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += WHERE_CON_NULL;
+            }
+            finalSql += ") ";
+        } else {
+            if (WHERE_CON_NULL.length() > 0) {
+                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
+            }
+        }
 
         if (ALLELE_COUNT_FILTER.length() > 0) {
             finalSql += ALLELE_COUNT_FILTER;
@@ -966,6 +1052,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
+
             GenomicFilterOptionList conFilterList = filters.getConsequence();
             List<GenomicFilterOption> conFilters = conFilterList.getItems();
             if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
@@ -1358,6 +1445,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         finalSql = SV_FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE + searchSqlQuery
+                + SV_FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT + searchSqlQuery
@@ -1383,9 +1471,11 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         SVGenomicFilterOptionList varTypeFilterList = new SVGenomicFilterOptionList();
         SVGenomicFilterOptionList geneFilterList = new SVGenomicFilterOptionList();
+        SVGenomicFilterOptionList conFilterList = new SVGenomicFilterOptionList();
 
         List<SVGenomicFilterOption> varTypeFilters = new ArrayList<>();
         List<SVGenomicFilterOption> geneFilters = new ArrayList<>();
+        List<SVGenomicFilterOption> conFilters = new ArrayList<>();
 
         SVGenomicFilterOption alleleCountFilter = new SVGenomicFilterOption();
         SVGenomicFilterOption alleleNumberFilter = new SVGenomicFilterOption();
@@ -1394,26 +1484,29 @@ public class GenomicsController implements GenomicsApiDelegate {
         for (List<FieldValue> row : result.iterateAll()) {
             String option = bigQueryService.getString(row, rm.get("option"));
             String varType = bigQueryService.getString(row, rm.get("variant_type"));
-            Long variantTypeCount = bigQueryService.getLong(row, rm.get("variant_type_count"));
             String gene = bigQueryService.getString(row, rm.get("genes"));
-            Long geneCount = bigQueryService.getLong(row, rm.get("gene_count"));
+            String conseq = bigQueryService.getString(row, rm.get("consequence"));
             Long minCount = bigQueryService.getLong(row, rm.get("min_count"));
             Long maxCount = bigQueryService.getLong(row, rm.get("max_count"));
             SVGenomicFilterOption genomicFilterOption = new SVGenomicFilterOption();
             if (option.equals("Gene")) {
                 genomicFilterOption.setOption(gene);
-                genomicFilterOption.setCount(geneCount);
                 genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 geneFilters.add(genomicFilterOption);
             } else if (option.equals("Variant Type")) {
                 genomicFilterOption.setOption(varType);
-                genomicFilterOption.setCount(variantTypeCount);
                 genomicFilterOption.setChecked(false);
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 varTypeFilters.add(genomicFilterOption);
+            } else if (option.equals("Consequence")) {
+                genomicFilterOption.setOption(conseq);
+                genomicFilterOption.setChecked(false);
+                genomicFilterOption.setMin(0L);
+                genomicFilterOption.setMax(0L);
+                conFilters.add(genomicFilterOption);
             } else if (option.equals("Allele Count")) {
                 genomicFilterOption.setOption("");
                 genomicFilterOption.setCount(0L);
@@ -1451,7 +1544,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         geneFilterList.setItems(geneFilters);
         geneFilterList.setFilterActive(false);
 
+        conFilterList.setItems(conFilters);
+        conFilterList.setFilterActive(false);
 
+        genomicFilters.consequence(conFilterList);
         genomicFilters.variantType(varTypeFilterList);
         genomicFilters.gene(geneFilterList);
         genomicFilters.alleleCount(alleleCountFilter);
@@ -1490,6 +1586,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .setUseLegacySql(false)
                 .build();
+
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
@@ -1533,6 +1630,65 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .totalHomozygoteCount(bigQueryService.getLong(row, rm.get("total_homozygote_count")));
         return ResponseEntity.ok(variantInfo);
     }
+
+    @Override
+    public ResponseEntity<SVVariantInfo> getSVVariantDetails(String variant_id) {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch(NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+
+        String finalSql = SV_VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID;
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
+                .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+        List<FieldValue> row = result.iterateAll().iterator().next();
+        SVVariantInfo variantInfo = new SVVariantInfo()
+                .variantId(variant_id)
+                .variantType(bigQueryService.getString(row, rm.get("variant_type")))
+                .consequenceGenes(bigQueryService.getString(row, rm.get("consequence_genes")))
+                .position(bigQueryService.getString(row, rm.get("position")))
+                .size(bigQueryService.getLong(row, rm.get("size")))
+                .afrAlleleCount(bigQueryService.getLong(row, rm.get("afr_allele_count")))
+                .afrAlleleNumber(bigQueryService.getLong(row, rm.get("afr_allele_number")))
+                .afrAlleleFrequency(bigQueryService.getDouble(row, rm.get("afr_allele_frequency")))
+                .afrHomozygoteCount(bigQueryService.getLong(row, rm.get("afr_homozygote_count")))
+                .easAlleleCount(bigQueryService.getLong(row, rm.get("eas_allele_count")))
+                .easAlleleNumber(bigQueryService.getLong(row, rm.get("eas_allele_number")))
+                .easAlleleFrequency(bigQueryService.getDouble(row, rm.get("eas_allele_frequency")))
+                .easHomozygoteCount(bigQueryService.getLong(row, rm.get("eas_homozygote_count")))
+                .eurAlleleCount(bigQueryService.getLong(row, rm.get("eur_allele_count")))
+                .eurAlleleNumber(bigQueryService.getLong(row, rm.get("eur_allele_number")))
+                .eurAlleleFrequency(bigQueryService.getDouble(row, rm.get("eur_allele_frequency")))
+                .eurHomozygoteCount(bigQueryService.getLong(row, rm.get("eur_homozygote_count")))
+                .amrAlleleCount(bigQueryService.getLong(row, rm.get("amr_allele_count")))
+                .amrAlleleNumber(bigQueryService.getLong(row, rm.get("amr_allele_number")))
+                .amrAlleleFrequency(bigQueryService.getDouble(row, rm.get("amr_allele_frequency")))
+                .amrHomozygoteCount(bigQueryService.getLong(row, rm.get("amr_homozygote_count")))
+                .midAlleleCount(bigQueryService.getLong(row, rm.get("mid_allele_count")))
+                .midAlleleNumber(bigQueryService.getLong(row, rm.get("mid_allele_number")))
+                .midAlleleFrequency(bigQueryService.getDouble(row, rm.get("mid_allele_frequency")))
+                .midHomozygoteCount(bigQueryService.getLong(row, rm.get("mid_homozygote_count")))
+                .sasAlleleCount(bigQueryService.getLong(row, rm.get("sas_allele_count")))
+                .sasAlleleNumber(bigQueryService.getLong(row, rm.get("sas_allele_number")))
+                .sasAlleleFrequency(bigQueryService.getDouble(row, rm.get("sas_allele_frequency")))
+                .sasHomozygoteCount(bigQueryService.getLong(row, rm.get("sas_homozygote_count")))
+                .othAlleleCount(bigQueryService.getLong(row, rm.get("oth_allele_count")))
+                .othAlleleNumber(bigQueryService.getLong(row, rm.get("oth_allele_number")))
+                .othAlleleFrequency(bigQueryService.getDouble(row, rm.get("oth_allele_frequency")))
+                .othHomozygoteCount(bigQueryService.getLong(row, rm.get("oth_homozygote_count")))
+                .totalAlleleCount(bigQueryService.getLong(row, rm.get("total_allele_count")))
+                .totalAlleleNumber(bigQueryService.getLong(row, rm.get("total_allele_number")))
+                .totalAlleleFrequency(bigQueryService.getDouble(row, rm.get("total_allele_frequency")))
+                .totalHomozygoteCount(bigQueryService.getLong(row, rm.get("total_homozygote_count")));
+        return ResponseEntity.ok(variantInfo);
+    }
+
 
     public static GenomicSearchTermType getSearchType(String variantSearchTerm, String searchTerm) {
         GenomicSearchTermType searchTermType = new GenomicSearchTermType();

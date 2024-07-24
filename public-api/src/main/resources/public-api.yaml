@@ -164,6 +164,24 @@ paths:
           schema:
             $ref: "#/definitions/VariantInfo"
 
+  /v1/genomics/sv-variant-details/{variantId}:
+    get:
+      tags:
+        - genomics
+      description: Gets the variant details
+      operationId: "getSVVariantDetails"
+      parameters:
+        - in: path
+          name: variantId
+          type: string
+          required: true
+          description: the variant id
+      responses:
+        200:
+          description: Variant Information
+          schema:
+            $ref: "#/definitions/SVVariantInfo"
+
   /v1/genomics/genomic-filter-options:
     get:
       tags:
@@ -1762,10 +1780,6 @@ definitions:
         description: Variant Type Filters
         type: object
         $ref: "#/definitions/SVGenomicFilterOptionList"
-      clinicalSignificance:
-        description: Clinical Significance Filters
-        type: object
-        $ref: "#/definitions/SVGenomicFilterOptionList"
       alleleCount:
         description: Allele Count Range Filter
         type: object
@@ -1963,6 +1977,156 @@ definitions:
       rsNumber:
         description: rs number
         type: string
+      afrAlleleCount:
+        description: African Ancestry Allele Count
+        type: integer
+        format: int64
+      afrAlleleNumber:
+        description: African Ancestry Allele Number
+        type: integer
+        format: int64
+      afrAlleleFrequency:
+        description: African Ancestry Allele Frequency
+        type: number
+        format: double
+      afrHomozygoteCount:
+        description: African Ancestry Homozygote Count
+        type: integer
+        format: int64
+      easAlleleCount:
+        description: East Asian Ancestry Allele Count
+        type: integer
+        format: int64
+      easAlleleNumber:
+        description: East Asian Ancestry Allele Number
+        type: integer
+        format: int64
+      easAlleleFrequency:
+        description: East Asian Ancestry Allele Frequency
+        type: number
+        format: double
+      easHomozygoteCount:
+        description: East Asian Ancestry Homozygote Count
+        type: integer
+        format: int64
+      eurAlleleCount:
+        description: European Ancestry Allele Count
+        type: integer
+        format: int64
+      eurAlleleNumber:
+        description: European Ancestry Allele Number
+        type: integer
+        format: int64
+      eurAlleleFrequency:
+        description: European Ancestry Allele Frequency
+        type: number
+        format: double
+      eurHomozygoteCount:
+        description: European Ancestry Homozygote Count
+        type: integer
+        format: int64
+      amrAlleleCount:
+        description: Latin American Ancestry Allele Count
+        type: integer
+        format: int64
+      amrAlleleNumber:
+        description: Latin American Ancestry Allele Number
+        type: integer
+        format: int64
+      amrAlleleFrequency:
+        description: Latin American Ancestry Allele Frequency
+        type: number
+        format: double
+      amrHomozygoteCount:
+        description: Latin American Ancestry Homozygote Count
+        type: integer
+        format: int64
+      midAlleleCount:
+        description: Middle Eastern Ancestry Allele Count
+        type: integer
+        format: int64
+      midAlleleNumber:
+        description: Middle Eastern Ancestry Allele Number
+        type: integer
+        format: int64
+      midAlleleFrequency:
+        description: Middle Eastern Ancestry Allele Frequency
+        type: number
+        format: double
+      midHomozygoteCount:
+        description: Middle Eastern Ancestry Homozygote Count
+        type: integer
+        format: int64
+      sasAlleleCount:
+        description: South Asian Ancestry Allele Count
+        type: integer
+        format: int64
+      sasAlleleNumber:
+        description: South Asian Ancestry Allele Number
+        type: integer
+        format: int64
+      sasAlleleFrequency:
+        description: South Asian Ancestry Allele Frequency
+        type: number
+        format: double
+      sasHomozygoteCount:
+        description: South Asian Ancestry Homozygote Count
+        type: integer
+        format: int64
+      othAlleleCount:
+        description: Other Ancestry Allele Count
+        type: integer
+        format: int64
+      othAlleleNumber:
+        description: Other Ancestry Allele Number
+        type: integer
+        format: int64
+      othAlleleFrequency:
+        description: Other Ancestry Allele Frequency
+        type: number
+        format: double
+      othHomozygoteCount:
+        description: Other Homozygote Count
+        type: integer
+        format: int64
+      totalAlleleCount:
+        description: Total Allele Count
+        type: integer
+        format: int64
+      totalAlleleNumber:
+        description: Total Allele Number
+        type: integer
+        format: int64
+      totalAlleleFrequency:
+        description: Total Allele Frequency
+        type: number
+        format: double
+      totalHomozygoteCount:
+        description: Total Homozygote Count
+        type: integer
+        format: int64
+
+  SVVariantInfo:
+    type: object
+    required:
+      - variantId
+    properties:
+      variantId:
+        description: variant id
+        type: string
+      variantType:
+        description: variant type
+        type: string
+      consequenceGenes:
+        description: Consequence(s) + associated gene(s)
+        type: string
+      position:
+        description: POS - END
+        type: string
+      size:
+        description: size
+        type: integer
+        format: int64
       afrAlleleCount:
         description: African Ancestry Allele Count
         type: integer

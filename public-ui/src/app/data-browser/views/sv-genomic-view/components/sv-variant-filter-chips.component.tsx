@@ -14,10 +14,11 @@ interface State {
 }
 
 const lables = {
-    gene: 'Gene',
-    consequence: 'Consequence',
+    variantId: 'Variant Id',
     variantType: 'Variant Type',
-    clinicalSignificance: 'ClinVar Significance',
+    consequence: 'Consequence',
+    position: 'Position',
+    size: 'Size',
     alleleNumber: 'Allele Number',
     alleleFrequency: 'Allele Frequency',
     alleleCount: 'Allele Count',

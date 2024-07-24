@@ -88,7 +88,7 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
     width: 72rem;
@@ -100,7 +100,7 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
         width: 72rem;
     }
 }
