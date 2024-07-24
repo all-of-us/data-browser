@@ -48,7 +48,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
-    private static final String AND_POSITION = " and position <= @high and position >= @low";
+    private static final String AND_POSITION = " and position <= @high and position >= @low\n";
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
 
     // private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
