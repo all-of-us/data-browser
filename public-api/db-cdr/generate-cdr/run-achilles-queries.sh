@@ -560,7 +560,7 @@ with person_race_eth_ans as
 (select person_id, string_agg(distinct cast(value_source_concept_id as string), ', ') as distinct_ans from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob where observation_source_concept_id=1586140
 group by 1),
 race_eth_desc as
-(select person_id, case when distinct_ans like '%, %' then 'More than one race/ethnicity'
+(select person_id, case when distinct_ans like '%, %' then 'More than one category'
 when distinct_ans = '1586143' then 'Black, African American, or African'
 when (distinct_ans like '%1586144%' or distinct_ans like '%1586148%' or distinct_ans like '%1586145%' or distinct_ans like '%903070%') then 'Other'
 when distinct_ans like '%1586146%' then 'White' when distinct_ans like '%1586147%' then 'Hispanic, Latino, or Spanish' when (distinct_ans like '%903079%' or distinct_ans like '%903096%') then 'Prefer Not To Answer'
