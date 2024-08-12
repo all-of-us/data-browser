@@ -1,7 +1,7 @@
 import * as React from "react";
 import _ from "lodash";
 
-import { SVGenomicSearchComponent } from "../sv-genomic-view/components/sv-genomic-search.component";
+import { SVGenomicSearchComponent } from "app/data-browser/views/sv-genomic-view/components/sv-genomic-search.component";
 import { withRouteData } from "app/components/app-router";
 import { GenomicOverviewComponent } from "app/data-browser/views/genomic-view/components/genomic-overview.component";
 import { genomicsApi } from "app/services/swagger-fetch-clients";
