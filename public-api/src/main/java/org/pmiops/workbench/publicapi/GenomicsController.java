@@ -64,9 +64,10 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
 
     private static final String WHERE_CHROM = " where REGEXP_CONTAINS(chrom, @contig)";
-    private static final String AND_POSITION = " and position <= @high and position >= @low";
+    private static final String AND_POSITION = " and position <= @high and position >= @low \n";
 
     private static final String AND_POS = " and pos <= @high and pos >= @low";
+
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
 
     // private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
@@ -956,9 +957,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
             if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
                 if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
+                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) ASC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type DESC";
+                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) DESC";
                 }
             }
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();

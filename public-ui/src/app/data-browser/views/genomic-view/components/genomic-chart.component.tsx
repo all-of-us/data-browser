@@ -79,7 +79,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       "Asian",
       "Black, African American, or African",
       "Hispanic, Latino, or Spanish",
-      "More than one race/ethnicity",
+      "More than one category",
       "Other",
       "Prefer Not To Answer",
     ];
@@ -196,7 +196,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
             fullStratums = ['18-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '89+'];
         } else {
             fullStratums = ["White", "Asian", "Black, African American, or African", "Hispanic, Latino, or Spanish",
-                "More than one race/ethnicity", "Other", "Prefer Not To Answer"];
+                "More than one category", "Other", "Prefer Not To Answer"];
         }
     }
     for (const result of results) {

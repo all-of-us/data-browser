@@ -23,7 +23,7 @@ RUN apt-get update && \
 
 RUN npm install --global yarn n
 # Upgrade to Node 16, above installs 10.
-RUN n 18
+RUN n 22
 
 # Install openapi-generator-cli
 RUN npm install @openapitools/openapi-generator-cli -g
