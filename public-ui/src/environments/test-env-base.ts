@@ -9,5 +9,5 @@ export const testEnvironmentBase = {
   geno: true,
   genoFilters: true,
   fitbitCDRUpdate: true,
-  infiniteSrcoll: true
+  infiniteSrcoll: true,
 };

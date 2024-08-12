@@ -322,7 +322,10 @@ const SurveyAnswerRowComponent = class extends React.Component<
                   <React.Fragment key={index + "subquestion"}>
                     <h6>
                       <ClrIcon shape="child-arrow" />
-                      <span className="sub-question-text">{sq.conceptName}</span> <span className="non-bold-text">({sq.conceptId})</span>
+                      <span className="sub-question-text">
+                        {sq.conceptName}
+                      </span>{" "}
+                      <span className="non-bold-text">({sq.conceptId})</span>
                     </h6>
                     <div className="survey-sub-table">
                       {/* tslint:disable-next-line: no-use-before-declare */}

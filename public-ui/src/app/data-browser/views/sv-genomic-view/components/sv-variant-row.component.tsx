@@ -4,8 +4,8 @@ import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SVVariant, SVVariantInfo } from "publicGenerated";
-import { SVVariantExpandedComponent } from "./sv-variant-expanded.component";
 
+import { SVVariantExpandedComponent } from "./sv-variant-expanded.component";
 
 const styles = reactStyles({
   variant: {
@@ -119,84 +119,72 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     this.setState({
       svVariantExpanded: !this.state.svVariantExpanded,
     });
-   {}
+    {
+    }
   }
 
-
-render() {
-  const { variant } = this.props;
-  const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
-  return (
-    <React.Fragment>
-      <style>{css}</style>
-            {!loadingVarDetails && svVariantExpanded ? (
-              <SVVariantExpandedComponent
-                loading={loadingVarDetails}
-                variant={variant}
-                variantDetails={variantDetails}
-                closed={() => this.handleClick()}
-                hovered={() => this.state.mouseOverExpanded ? this.props.allowParentScroll(true): this.props.allowParentScroll(false)}
-              />
-            ) : (
-        <div className="row-layout">
-          <div
-            onClick={() => this.handleClick(variant.variantId)}
-            style={styles.variant}
-          >
+  render() {
+    const { variant } = this.props;
+    const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
+    return (
+      <React.Fragment>
+        <style>{css}</style>
+        {!loadingVarDetails && svVariantExpanded ? (
+          <SVVariantExpandedComponent
+            loading={loadingVarDetails}
+            variant={variant}
+            variantDetails={variantDetails}
+            closed={() => this.handleClick()}
+            hovered={() =>
+              this.state.mouseOverExpanded
+                ? this.props.allowParentScroll(true)
+                : this.props.allowParentScroll(false)
+            }
+          />
+        ) : (
+          <div className="row-layout">
             <div
-              style={{
-                ...styles.first,
-                ...styles.rowItem,
-                ...styles.variantId,
-              }}
+              onClick={() => this.handleClick(variant.variantId)}
+              style={styles.variant}
             >
-              <div style={styles.variantIdText}>
-                {variant.variantId.length > 40 ? (
-                  <React.Fragment>
-                    {variant.variantId.substr(0, 40)} &#8230;
-                  </React.Fragment>
-                ) : (
-                  variant.variantId
-                )}
-              </div>
-              <div style={styles.variantIconText}>
-                <ClrIcon
-                  style={styles.caretIcon}
-                  onClick={(e) => { }}
-                  size="lg"
-                  shape="caret"
-                  dir="down"
-                />
+              <div
+                style={{
+                  ...styles.first,
+                  ...styles.rowItem,
+                  ...styles.variantId,
+                }}
+              >
+                <div style={styles.variantIdText}>
+                  {variant.variantId.length > 40 ? (
+                    <React.Fragment>
+                      {variant.variantId.substr(0, 40)} &#8230;
+                    </React.Fragment>
+                  ) : (
+                    variant.variantId
+                  )}
+                </div>
+                <div style={styles.variantIconText}>
+                  <ClrIcon
+                    style={styles.caretIcon}
+                    onClick={(e) => {}}
+                    size="lg"
+                    shape="caret"
+                    dir="down"
+                  />
+                </div>
               </div>
             </div>
+            <div style={styles.rowItem}>{variant.variantType}</div>
+            <div style={styles.rowItem}>{variant.consequence}</div>
+            <div style={styles.rowItem}>{variant.position}</div>
+            <div style={styles.rowItem}>{variant.size}</div>
+            <div style={styles.rowItem}>{variant.alleleCount}</div>
+            <div style={styles.rowItem}>{variant.alleleNumber}</div>
+            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+            <div style={styles.rowItem}>{variant.homozygoteCount}</div>
           </div>
-          <div style={styles.rowItem}>
-            {variant.variantType}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.consequence}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.position}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.size}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.alleleCount}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.alleleNumber}
-          </div>
-          <div style={styles.rowItem}>
-            {variant.alleleFrequency}
-          </div>
-          <div style={styles.rowItem}>
-           {variant.homozygoteCount}
-          </div>
-        </div>
         )}
-    </React.Fragment>
-  );
-}
+      </React.Fragment>
+    );
+  }
 }

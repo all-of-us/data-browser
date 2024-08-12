@@ -83,7 +83,7 @@ export const baseOptions = {
   },
   tooltip: {
     borderWidth: 0, // This will remove the border or outline
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     shadow: false,
     followPointer: true,
     outside: false,
@@ -112,10 +112,10 @@ export const baseOptions = {
     enabled: true,
     borderColor: "transparent",
     borderRadius: "0px",
-    padding:0,
+    padding: 0,
     style: {
       color: "#302C71",
-      outline:"none",
+      outline: "none",
       whiteSpace: "normal",
       zIndex: undefined,
     },
@@ -260,11 +260,19 @@ export const baseOptions = {
       },
     },
   },
-  series: [{ name: undefined, data: [], size: undefined, shadow: undefined, innerSize: undefined,
-             showInLegend: undefined,
-             dataLabels: {
-                     enabled: false,
-                   },}],
+  series: [
+    {
+      name: undefined,
+      data: [],
+      size: undefined,
+      shadow: undefined,
+      innerSize: undefined,
+      showInLegend: undefined,
+      dataLabels: {
+        enabled: false,
+      },
+    },
+  ],
 };
 
 export const genomicOptions = {

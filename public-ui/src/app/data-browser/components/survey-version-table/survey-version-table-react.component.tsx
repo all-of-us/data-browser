@@ -72,8 +72,8 @@ export class SurveyVersionTableReactComponent extends React.Component<
 
   render() {
     const { surveyVersions } = this.props;
-    console.log(surveyVersions,'surveyversions');
-    
+    console.log(surveyVersions, "surveyversions");
+
     return (
       <div className="version-box-container">
         <style>{cssStyles}</style>
@@ -87,29 +87,32 @@ export class SurveyVersionTableReactComponent extends React.Component<
             {!!surveyVersions &&
               surveyVersions.map((survey) => {
                 switch (survey.monthName) {
-                  case 'New Year':
-                    survey.pdfLink = survey.pdfLink.replace(' ', '_');
+                  case "New Year":
+                    survey.pdfLink = survey.pdfLink.replace(" ", "_");
                     break;
-                  case 'Nov':
-                    survey.monthName='November'
+                  case "Nov":
+                    survey.monthName = "November";
                     break;
-                  case 'Dec':
-                    survey.monthName='December'
+                  case "Dec":
+                    survey.monthName = "December";
                     break;
-                  case 'Feb':
-                    survey.monthName='February'
+                  case "Feb":
+                    survey.monthName = "February";
                     break;
-
                 }
                 return (
                   <div className="version-box-row" key={survey.monthName}>
                     <span className="version-box-item">
                       {survey.monthName} {survey.year}
                     </span>
-                    <span className="version-box-item" style={{textAlign:"center"}}>
+                    <span
+                      className="version-box-item"
+                      style={{ textAlign: "center" }}
+                    >
                       <a href={survey.pdfLink} download>
                         English
-                      </a>{" "}|{" "}
+                      </a>{" "}
+                      |{" "}
                       <a href={survey.pdfLinkSpanish} download>
                         Spanish
                       </a>

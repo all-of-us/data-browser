@@ -119,99 +119,109 @@ export class VariantRowComponent extends React.Component<Props, State> {
     this.setState({
       variantExpanded: !this.state.variantExpanded,
     });
-   {}
+    {
+    }
   }
 
-
-render() {
-  const { variant } = this.props;
-  const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
-  return (
-    <React.Fragment>
-      <style>{css}</style>
-      {!loadingVarDetails && variantExpanded ? (
-        <VariantExpandedComponent
-          loading={loadingVarDetails}
-          variant={variant}
-          variantDetails={variantDetails}
-          closed={() => this.handleClick()}
-          hovered={() => this.state.mouseOverExpanded ? this.props.allowParentScroll(true): this.props.allowParentScroll(false)}
-        />
-      ) : (
-        <div className="row-layout">
-          <div
-            onClick={() => this.handleClick(variant.variantId)}
-            style={styles.variant}
-          >
+  render() {
+    const { variant } = this.props;
+    const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
+    return (
+      <React.Fragment>
+        <style>{css}</style>
+        {!loadingVarDetails && variantExpanded ? (
+          <VariantExpandedComponent
+            loading={loadingVarDetails}
+            variant={variant}
+            variantDetails={variantDetails}
+            closed={() => this.handleClick()}
+            hovered={() =>
+              this.state.mouseOverExpanded
+                ? this.props.allowParentScroll(true)
+                : this.props.allowParentScroll(false)
+            }
+          />
+        ) : (
+          <div className="row-layout">
             <div
-              style={{
-                ...styles.first,
-                ...styles.rowItem,
-                ...styles.variantId,
-              }}
+              onClick={() => this.handleClick(variant.variantId)}
+              style={styles.variant}
             >
-              <div style={styles.variantIdText}>
-                {variant.variantId.length > 40 ? (
-                  <React.Fragment>
-                    {variant.variantId.substr(0, 40)} &#8230;
-                  </React.Fragment>
+              <div
+                style={{
+                  ...styles.first,
+                  ...styles.rowItem,
+                  ...styles.variantId,
+                }}
+              >
+                <div style={styles.variantIdText}>
+                  {variant.variantId.length > 40 ? (
+                    <React.Fragment>
+                      {variant.variantId.substr(0, 40)} &#8230;
+                    </React.Fragment>
+                  ) : (
+                    variant.variantId
+                  )}
+                </div>
+                <div style={styles.variantIconText}>
+                  <ClrIcon
+                    style={styles.caretIcon}
+                    onClick={(e) => {}}
+                    size="lg"
+                    shape="caret"
+                    dir="down"
+                  />
+                </div>
+              </div>
+            </div>
+            <div style={styles.rowItem}>
+              {variant.genes && variant.genes.length ? (
+                <div>{variant.genes}</div>
+              ) : (
+                <div>-</div>
+              )}
+            </div>
+            <div style={styles.rowItem}>
+              <div style={styles.multipleValVariantItem}>
+                {variant.consequence && variant.consequence.length ? (
+                  <span>{variant.consequence.replace(/_/g, " ")}</span>
                 ) : (
-                  variant.variantId
+                  <span>-</span>
                 )}
               </div>
-              <div style={styles.variantIconText}>
-                <ClrIcon
-                  style={styles.caretIcon}
-                  onClick={(e) => { }}
-                  size="lg"
-                  shape="caret"
-                  dir="down"
-                />
-              </div>
             </div>
-          </div>
-          <div style={styles.rowItem}>
-            {variant.genes && variant.genes.length ? (
-              <div>{variant.genes}</div>
-            ) : (
-              <div>-</div>
-            )}
-          </div>
-          <div style={styles.rowItem}>
-            <div style={styles.multipleValVariantItem}>
-              {variant.consequence && variant.consequence.length ? (
-                <span>{variant.consequence.replace(/_/g, " ")}</span>
+            <div style={styles.rowItem}>
+              {variant.variantType ? (
+                <div style={{ overflowWrap: "anywhere" }}>
+                  {variant.variantType}
+                </div>
               ) : (
-                <span>-</span>
+                <div>–</div>
               )}
             </div>
-          </div>
-          <div style={styles.rowItem}>
-            {variant.variantType ? (
-              <div style={{ overflowWrap: "anywhere" }}>
-                {variant.variantType}
-              </div>
-            ) : (
-              <div>–</div>
-            )}
-          </div>
-          <div style={styles.rowItem}>
-            <div style={styles.multipleValVariantItem}>
-              {variant.clinicalSignificance &&
+            <div style={styles.rowItem}>
+              <div style={styles.multipleValVariantItem}>
+                {variant.clinicalSignificance &&
                 variant.clinicalSignificance.length ? (
-                <span>{variant.clinicalSignificance}</span>
-              ) : (
-                <span>-</span>
-              )}
+                  <span>{variant.clinicalSignificance}</span>
+                ) : (
+                  <span>-</span>
+                )}
+              </div>
+            </div>
+            <div style={styles.rowItem}>
+              {variant.alleleCount.toLocaleString()}
+            </div>
+            <div style={styles.rowItem}>
+              {variant.alleleNumber.toLocaleString()}
+            </div>
+            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+            <div style={styles.rowItem}>
+              {variant.homozygoteCount.toLocaleString()}
             </div>
           </div>
-          <div style={styles.rowItem}>{variant.alleleCount.toLocaleString()}</div>
-          <div style={styles.rowItem}>{variant.alleleNumber.toLocaleString()}</div>
-          <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-          <div style={styles.rowItem}>{variant.homozygoteCount.toLocaleString()}</div>
-        </div>
-      )}
-    </React.Fragment>
-  );
-}
+        )}
+      </React.Fragment>
+    );
+  }
 }

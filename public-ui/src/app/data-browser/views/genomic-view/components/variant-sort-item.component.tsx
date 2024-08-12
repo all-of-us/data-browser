@@ -1,11 +1,12 @@
 import * as React from "react";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 const styles = reactStyles({
   sortItem: {
@@ -18,7 +19,7 @@ const styles = reactStyles({
     color: "#262262",
     letterSpacing: 0,
     lineHeight: "16px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   sortItemClosed: {
     transform: "rotate(90deg)",
@@ -29,7 +30,7 @@ const styles = reactStyles({
   sortItemForm: {
     fontSize: "0.8em",
     display: "flex",
-    overflow: 'visible',
+    overflow: "visible",
     flexDirection: "column",
     paddingLeft: "1rem",
     paddingTop: ".25rem",
@@ -45,15 +46,15 @@ const styles = reactStyles({
     marginTop: "0.1rem",
   },
   sortItemLabel: {
-    width: '80%',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden'
+    width: "80%",
+    whiteSpace: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
     // wordWrap: "break-word",
   },
   activeSort: {
-    fontFamily: 'gothamBold'
-  }
+    fontFamily: "gothamBold",
+  },
 });
 
 const css = `
@@ -91,13 +92,13 @@ const css = `
 `;
 
 const lables = {
-  gene: 'Gene',
-  consequence: 'Consequence',
-  variantType: 'Variant Type',
-  clinicalSignificance: 'ClinVar Significance',
-  alleleNumber: 'Allele Number',
-  alleleFrequency: 'Allele Frequency',
-  alleleCount: 'Allele Count'
+  gene: "Gene",
+  consequence: "Consequence",
+  variantType: "Variant Type",
+  clinicalSignificance: "ClinVar Significance",
+  alleleNumber: "Allele Number",
+  alleleFrequency: "Allele Frequency",
+  alleleCount: "Allele Count",
 };
 
 interface Props {
@@ -120,51 +121,48 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       sortItemOpen: false,
       sortMetadata: props.sortMetadata,
       filterCats: [
-        { display: 'Gene', field: 'gene' },
-        { display: 'Consequence', field: 'consequence' },
-        { display: 'Variant Type', field: 'variantType' },
-        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
-        { display: 'Allele Count', field: 'alleleCount' },
-        { display: 'Allele Number', field: 'alleleNumber' },
-        { display: 'Allele Frequency', field: 'alleleFrequency' },
-        { display: 'Homozygote Count', field: 'homozygoteCount' },
+        { display: "Gene", field: "gene" },
+        { display: "Consequence", field: "consequence" },
+        { display: "Variant Type", field: "variantType" },
+        { display: "ClinVar Significance", field: "clinicalSignificance" },
+        { display: "Allele Count", field: "alleleCount" },
+        { display: "Allele Number", field: "alleleNumber" },
+        { display: "Allele Frequency", field: "alleleFrequency" },
+        { display: "Homozygote Count", field: "homozygoteCount" },
       ],
       sortCats: [
-        { display: 'Variant ID', field: 'variantId'},
-        { display: 'Gene', field: 'gene' },
-        { display: 'Consequence', field: 'consequence' },
-        { display: 'Variant Type', field: 'variantType' },
-        { display: 'ClinVar Significance', field: 'clinicalSignificance' },
-        { display: 'Allele Count', field: 'alleleCount' },
-        { display: 'Allele Number', field: 'alleleNumber' },
-        { display: 'Allele Frequency', field: 'alleleFrequency' },
-        { display: 'Homozygote Count', field: 'homozygoteCount' },
-      ]
+        { display: "Variant ID", field: "variantId" },
+        { display: "Gene", field: "gene" },
+        { display: "Consequence", field: "consequence" },
+        { display: "Variant Type", field: "variantType" },
+        { display: "ClinVar Significance", field: "clinicalSignificance" },
+        { display: "Allele Count", field: "alleleCount" },
+        { display: "Allele Number", field: "alleleNumber" },
+        { display: "Allele Frequency", field: "alleleFrequency" },
+        { display: "Homozygote Count", field: "homozygoteCount" },
+      ],
     };
   }
 
-  componentDidMount(): void {
-  }
+  componentDidMount(): void {}
 
   sortClick() {
     this.setState({ sortItemOpen: !this.state.sortItemOpen });
   }
 
-
-
   clickToSort(field) {
     const { sortMetadata } = this.state;
 
     if (sortMetadata[field].sortActive) {
-      if (sortMetadata[field].sortDirection === 'asc') {
-        sortMetadata[field].sortDirection = 'desc'
+      if (sortMetadata[field].sortDirection === "asc") {
+        sortMetadata[field].sortDirection = "desc";
       } else {
-        sortMetadata[field].sortDirection = 'asc'
+        sortMetadata[field].sortDirection = "asc";
       }
       for (const item in sortMetadata) {
         if (item !== field) {
           sortMetadata[item].sortActive = false;
-          sortMetadata[item].sortDirection = 'desc';
+          sortMetadata[item].sortDirection = "desc";
         }
       }
     } else {
@@ -172,7 +170,7 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
       for (const item in sortMetadata) {
         if (item !== field) {
           sortMetadata[item].sortActive = false;
-          sortMetadata[item].sortDirection = 'asc';
+          sortMetadata[item].sortDirection = "asc";
         }
       }
     }
@@ -183,30 +181,77 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     const { cleared } = this.props;
     const { sortItemOpen, sortMetadata, filterCats, sortCats } = this.state;
 
-    return <React.Fragment>
-      <style>{css}</style>
-      <div onClick={() => this.sortClick()} style={styles.sortItem}>
-        <span style={{ fontFamily: 'gothamBold' }}>Sort By</span>
-        <div><ClrIcon style={!sortItemOpen ? { ...styles.sortItemClosed } : { ...styles.sortItemOpen }} shape='angle' /></div>
-      </div>
-      {(cleared && sortItemOpen) &&
-        <div style={styles.sortItemForm}>
-          {sortCats && sortCats.map((cat, index) => {
-            return <div style={{ cursor: 'pointer', position: 'relative' }} key={index} onClick={(e) => this.clickToSort(cat.field)}>
-              <span style={sortMetadata[cat.field].sortActive ? styles.activeSort : {}}>
-                <div className="tooltip">{cat.display}
-                    <span className="tooltiptext">Click to select <br/>ascending or descending</span>
-                </div>
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'asc' &&
-                <FontAwesomeIcon icon={faArrowUp}  aria-hidden="true"
-                style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}/>}
-              {sortMetadata[cat.field].sortActive && sortMetadata[cat.field].sortDirection === 'desc' &&
-              <FontAwesomeIcon icon={faArrowDown}  aria-hidden="true"
-               style={{ color: 'rgb(33, 111, 180)', marginLeft: '0.5em', cursor: 'pointer' }}/>}
-            </span>
-            </div>
-          })}
-        </div>}
-    </React.Fragment>;
+    return (
+      <React.Fragment>
+        <style>{css}</style>
+        <div onClick={() => this.sortClick()} style={styles.sortItem}>
+          <span style={{ fontFamily: "gothamBold" }}>Sort By</span>
+          <div>
+            <ClrIcon
+              style={
+                !sortItemOpen
+                  ? { ...styles.sortItemClosed }
+                  : { ...styles.sortItemOpen }
+              }
+              shape="angle"
+            />
+          </div>
+        </div>
+        {cleared && sortItemOpen && (
+          <div style={styles.sortItemForm}>
+            {sortCats &&
+              sortCats.map((cat, index) => {
+                return (
+                  <div
+                    style={{ cursor: "pointer", position: "relative" }}
+                    key={index}
+                    onClick={(e) => this.clickToSort(cat.field)}
+                  >
+                    <span
+                      style={
+                        sortMetadata[cat.field].sortActive
+                          ? styles.activeSort
+                          : {}
+                      }
+                    >
+                      <div className="tooltip">
+                        {cat.display}
+                        <span className="tooltiptext">
+                          Click to select <br />
+                          ascending or descending
+                        </span>
+                      </div>
+                      {sortMetadata[cat.field].sortActive &&
+                        sortMetadata[cat.field].sortDirection === "asc" && (
+                          <FontAwesomeIcon
+                            icon={faArrowUp}
+                            aria-hidden="true"
+                            style={{
+                              color: "rgb(33, 111, 180)",
+                              marginLeft: "0.5em",
+                              cursor: "pointer",
+                            }}
+                          />
+                        )}
+                      {sortMetadata[cat.field].sortActive &&
+                        sortMetadata[cat.field].sortDirection === "desc" && (
+                          <FontAwesomeIcon
+                            icon={faArrowDown}
+                            aria-hidden="true"
+                            style={{
+                              color: "rgb(33, 111, 180)",
+                              marginLeft: "0.5em",
+                              cursor: "pointer",
+                            }}
+                          />
+                        )}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
+        )}
+      </React.Fragment>
+    );
   }
 }

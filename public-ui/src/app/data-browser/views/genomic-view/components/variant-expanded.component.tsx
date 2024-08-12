@@ -1,4 +1,6 @@
 import * as React from "react";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PopulationChartReactComponent } from "app/data-browser/views/genomic-view/components/population-chart.component";
 import { reactStyles } from "app/utils";
@@ -6,8 +8,6 @@ import { ClrIcon } from "app/utils/clr-icon";
 import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
 import { Variant, VariantInfo } from "publicGenerated";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 const css = `
 .exit{
@@ -81,7 +81,6 @@ const styles = reactStyles({
     // paddingLeft: "1em",
     zIndex: "9",
     borderTop: "1px solid rgb(204, 204, 204)",
-
   },
   top: {
     position: "relative",
@@ -133,7 +132,7 @@ const styles = reactStyles({
     padding: ".5rem",
     paddingBottom: "0",
     paddingTop: "0",
-    textAlign: "center"
+    textAlign: "center",
   },
   popTableBody: {
     borderBottom: "1px solid #DDE0E4",
@@ -147,7 +146,7 @@ const styles = reactStyles({
     padding: ".5rem",
     display: "flex",
     flexDirection: "row",
-    alignItems: "center"
+    alignItems: "center",
   },
   closeIcon: {
     cursor: "pointer",
@@ -162,16 +161,15 @@ interface Props {
   loading: boolean;
 }
 // tslint:disable-next-line:no-empty-interface
-interface State { }
+interface State {}
 
 export class VariantExpandedComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
   handleMouseOver = () => {
-    this.props.hovered(true)
-
-  }
+    this.props.hovered(true);
+  };
   render() {
     const { variantDetails, variant, loading } = this.props;
     let variantPopulationDetails: any[] = [];
@@ -184,12 +182,14 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
       <React.Fragment>
         <style>{css}</style>
         <div onMouseOver={this.handleMouseOver} style={styles.variantExpanded}>
-          <div style={{minWidth:"600px"}}>
+          <div style={{ minWidth: "600px" }}>
             <div style={styles.top}>
               <span style={styles.variantId}>
                 <strong style={styles.variantIdLabel}>Variant ID: </strong>{" "}
                 {!loading ? (
-                  <span style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}>
+                  <span
+                    style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}
+                  >
                     {variant.variantId}
                   </span>
                 ) : (
@@ -198,7 +198,7 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   </div>
                 )}{" "}
               </span>
-              <div style={{position: "sticky",right: "2px"}} >
+              <div style={{ position: "sticky", right: "2px" }}>
                 <ClrIcon
                   onClick={(e) => this.props.closed()}
                   className="exit"
@@ -213,23 +213,35 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   <div>
                     <span style={styles.catHeading}>Gene:</span>
                     <br />
-                    <span style={styles.catInfo}>{variant.genes ? variant.genes : "-"}</span>
+                    <span style={styles.catInfo}>
+                      {variant.genes ? variant.genes : "-"}
+                    </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>Consequence:</span>
                     <br />
-                    <span style={styles.catInfo}>{variant.consequence ? variant.consequence.replace(/_/g, ' ') : "-"}</span>
+                    <span style={styles.catInfo}>
+                      {variant.consequence
+                        ? variant.consequence.replace(/_/g, " ")
+                        : "-"}
+                    </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
-                    <span style={styles.catInfo}>{variant.variantType ? variant.variantType.replace(/_/g, ' ') : "-"}</span>
+                    <span style={styles.catInfo}>
+                      {variant.variantType
+                        ? variant.variantType.replace(/_/g, " ")
+                        : "-"}
+                    </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>Transcript:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.transcript ? variantDetails.transcript : "-"}
+                      {variantDetails.transcript
+                        ? variantDetails.transcript
+                        : "-"}
                     </span>
                   </div>
                   <div>
@@ -238,33 +250,41 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catInfo}>
                       {variantDetails.rsNumber
                         ? [
-                          <a
-                            href={rsLink}
-                            key={variantDetails.variantId}
-                            style={styles.rsLink}
-                            target="_blank"
-                          >
-                            {variantDetails.rsNumber}
-                          </a>,
-                        ]
+                            <a
+                              href={rsLink}
+                              key={variantDetails.variantId}
+                              style={styles.rsLink}
+                              target="_blank"
+                            >
+                              {variantDetails.rsNumber}
+                            </a>,
+                          ]
                         : "-"}
                     </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>DNA Change:</span>
                     <br />
-                    <span style={styles.catInfo}>{variantDetails.dnaChange ? variantDetails.dnaChange : "-"}</span>
+                    <span style={styles.catInfo}>
+                      {variantDetails.dnaChange
+                        ? variantDetails.dnaChange
+                        : "-"}
+                    </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>Protein Change:</span>
                     <br />
-                    <span style={styles.catInfo}>{variant.proteinChange ? variant.proteinChange : "-"}</span>
+                    <span style={styles.catInfo}>
+                      {variant.proteinChange ? variant.proteinChange : "-"}
+                    </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>ClinVar Significance:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.clinicalSignificance ? variant.clinicalSignificance.replace(/_/g, ' ') : "-"}
+                      {variant.clinicalSignificance
+                        ? variant.clinicalSignificance.replace(/_/g, " ")
+                        : "-"}
                     </span>
                   </div>
                 </div>
@@ -274,16 +294,28 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                     <div className="pop-table">
                       <div style={styles.popTableHeading}></div>
                       <div style={styles.popTableHeading}>
-                        <span style={styles.catHeading}>Allele <br />Count</span>
+                        <span style={styles.catHeading}>
+                          Allele <br />
+                          Count
+                        </span>
                       </div>
                       <div style={styles.popTableHeading}>
-                        <span style={styles.catHeading}>Allele <br />Number</span>
+                        <span style={styles.catHeading}>
+                          Allele <br />
+                          Number
+                        </span>
                       </div>
                       <div style={styles.popTableHeading}>
-                        <span style={styles.catHeading}>Allele <br />Frequency</span>
+                        <span style={styles.catHeading}>
+                          Allele <br />
+                          Frequency
+                        </span>
                       </div>
                       <div style={styles.popTableHeading}>
-                        <span style={styles.catHeading}>Homozygote <br />Count</span>
+                        <span style={styles.catHeading}>
+                          Homozygote <br />
+                          Count
+                        </span>
                       </div>
                     </div>
                     <div style={styles.popTableBody}>
@@ -294,8 +326,14 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                             <div style={styles.popTableData}>
                               {item.Ancestry !== "Total" ? (
                                 <span className="pop-desc">
-                                  <FontAwesomeIcon icon={faCircle}
-                                    style={{ ...colorStyle, marginRight: ".5rem", transform: "scale(1.3)", }} />
+                                  <FontAwesomeIcon
+                                    icon={faCircle}
+                                    style={{
+                                      ...colorStyle,
+                                      marginRight: ".5rem",
+                                      transform: "scale(1.3)",
+                                    }}
+                                  />
                                   {item.Ancestry}{" "}
                                 </span>
                               ) : (

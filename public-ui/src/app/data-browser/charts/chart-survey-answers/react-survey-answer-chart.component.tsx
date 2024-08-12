@@ -1,8 +1,8 @@
 import * as React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import * as highCharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   getBaseOptions,
@@ -154,7 +154,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       tempArr.push({
         name: val,
         data: [],
-        tooltip: []
+        tooltip: [],
       });
     }
     // remove duplicates
@@ -165,14 +165,15 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       if (sortedAnswers.hasOwnProperty(prop)) {
         categoryArr.push(prop);
         tempArr.forEach((stack) => {
-
-          let filterAnswer = sortedAnswers[prop].filter( a => a['stratum4'] === stack.name );
+          const filterAnswer = sortedAnswers[prop].filter(
+            (a) => a.stratum4 === stack.name
+          );
           if (filterAnswer.length > 0) {
             stack.data.push(filterAnswer[0].countValue);
-            stack.tooltip.push('');
+            stack.tooltip.push("");
           } else {
             stack.data.push(0);
-            stack.tooltip.push('Not present in this version of the survey');
+            stack.tooltip.push("Not present in this version of the survey");
           }
           /*
           sortedAnswers[prop].forEach((answer) => {
@@ -182,7 +183,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<
           });
           */
         });
-
       }
     }
     this.setState({ chartSeries: tempArr, categoryArr: categoryArr }, () => {
@@ -223,22 +223,30 @@ export class SurveyAnswerChartReactComponent extends React.Component<
     newBaseOptions.tooltip.backgroundColor = "transparent";
     newBaseOptions.tooltip.formatter = function () {
       const count = this.point.y <= 20 ? "&le; 20" : this.point.y;
-      let cat = this.point.category.split(' ');
-      if (this.point.category === 'New Year 2022') {
-        cat[0] = 'New Year';
-        cat[1] = '2022';
+      const cat = this.point.category.split(" ");
+      if (this.point.category === "New Year 2022") {
+        cat[0] = "New Year";
+        cat[1] = "2022";
       }
       let toolTipText = this.point.series.name;
       const surveyVersion = surveyVersions.find((obj) => {
-        return (obj.monthName === cat[0] && obj.year === cat[1]);
+        return obj.monthName === cat[0] && obj.year === cat[1];
       });
-      const surveyVersionParticipantCounts = surveyVersion ? surveyVersion.participants : 0;
-      let percentage = (this.point.y <= 20) ? ((20 / surveyVersionParticipantCounts) * 100).toFixed() :
-        ((count / surveyVersionParticipantCounts) * 100).toFixed();
-      if (this.point.y == 0 && this.point.series.name.toLowerCase() !== 'did not answer') {
-        toolTipText += '\n This option was not available in this version of the survey';
+      const surveyVersionParticipantCounts = surveyVersion
+        ? surveyVersion.participants
+        : 0;
+      const percentage =
+        this.point.y <= 20
+          ? ((20 / surveyVersionParticipantCounts) * 100).toFixed()
+          : ((count / surveyVersionParticipantCounts) * 100).toFixed();
+      if (
+        this.point.y == 0 &&
+        this.point.series.name.toLowerCase() !== "did not answer"
+      ) {
+        toolTipText +=
+          "\n This option was not available in this version of the survey";
       }
-     this.point.toolTipHelpText = `
+      this.point.toolTipHelpText = `
             <div class="survey-answer-tooltip">
               <strong>${toolTipText}</strong>
               <span>${count.toLocaleString()} Participants </span>

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { environment } from "environments/environment";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
 import { reactStyles } from "app/utils";
@@ -6,14 +7,15 @@ import { ClrIcon } from "app/utils/clr-icon";
 import { Spinner } from "app/utils/spinner";
 import { SVGenomicFilters } from "publicGenerated";
 import { SortSVMetadata } from "publicGenerated/fetch";
-import { SVVariantFilterChips } from './sv-variant-filter-chips.component'
+
 import { SVVariantFilterComponent } from "./sv-variant-filter.component";
+import { SVVariantFilterChips } from "./sv-variant-filter-chips.component";
 
 const styles = reactStyles({
   searchBar: {
     paddingRight: "2rem",
     width: "calc(100% - 16rem)",
-    minWidth: "20rem"
+    minWidth: "20rem",
   },
   searchHelpText: {
     paddingTop: "2em",
@@ -25,22 +27,22 @@ const styles = reactStyles({
     marginLeft: "-1rem",
   },
   resultSize: {
-    fontSize:"1.2em"
+    fontSize: "1.2em",
   },
   filterBtn: {
     fontFamily: "gothamBold",
     color: "#216FB4",
     cursor: "Pointer",
-    width: "fit-content"
+    width: "fit-content",
   },
   filterContainer: {
     position: "relative",
   },
   resultInfo: {
-    display:"grid",
+    display: "grid",
     gridTemplateColumns: "11.5rem 1fr",
-    alignItems: "baseline"
-  }
+    alignItems: "baseline",
+  },
 });
 
 const css = `
@@ -93,16 +95,16 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchWord: '',
+      searchWord: "",
       filterShow: false,
       filteredMetadata: undefined,
       filteredMetaMap: undefined,
       filterMetadata: this.props.filterMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
       sortMetadata: this.props.sortMetadata,
-      scrollClean: this.props.scrollClean
+      scrollClean: this.props.scrollClean,
     };
-    if (this.state.searchWord !== '') {
+    if (this.state.searchWord !== "") {
       this.props.onSearchTerm(this.state.searchWord);
     }
     this.filterWrapperRef = React.createRef();
@@ -110,14 +112,24 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   }
 
   handleChange(val: string) {
-    if (val == '') { this.setState({ scrollClean: true }) }
+    if (val == "") {
+      this.setState({ scrollClean: true });
+    }
     this.props.onSearchTerm(val);
-    this.setState({ searchWord: val, filteredMetaMap: null, filterShow: false });
+    this.setState({
+      searchWord: val,
+      filteredMetaMap: null,
+      filterShow: false,
+    });
   }
 
-  componentWillUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): void {
+  componentWillUpdate(
+    nextProps: Readonly<Props>,
+    nextState: Readonly<State>,
+    nextContext: any
+  ): void {
     if (this.props.scrollClean != nextProps.scrollClean) {
-      this.setState({ scrollClean: nextProps.scrollClean })
+      this.setState({ scrollClean: nextProps.scrollClean });
     }
   }
   componentDidMount() {
@@ -130,7 +142,10 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
 
   handleClickOutside(event) {
     const { filterShow } = this.state;
-    if (this.filterWrapperRef && !this.filterWrapperRef.current.contains(event.target)) {
+    if (
+      this.filterWrapperRef &&
+      !this.filterWrapperRef.current.contains(event.target)
+    ) {
       if (filterShow) {
         this.setState({ filterShow: !this.state.filterShow });
       }
@@ -155,7 +170,10 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
     this.setState({ filterShow: !this.state.filterShow });
   }
 
-  handleFilterSubmit(filteredMetadata: SVGenomicFilters, sortMetadata: SortSVMetadata) {
+  handleFilterSubmit(
+    filteredMetadata: SVGenomicFilters,
+    sortMetadata: SortSVMetadata
+  ) {
     this.setState({ filteredMetadata: filteredMetadata });
     this.props.onFilterSubmit(filteredMetadata, sortMetadata);
     this.setState({ filterShow: false });
@@ -173,53 +191,96 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { searchWord, filterShow, sortMetadata, submittedFilterMetadata, scrollClean } = this.state;
-    const { filterMetadata } = this.props
-    const { variantListSize, loadingResults, loadingVariantListSize } = this.props;
-    const variantListSizeDisplay = variantListSize ? variantListSize.toLocaleString() : 0;
-    return <React.Fragment>
-      <style>{css}</style>
-      <div className='search-container'>
-        <div className="search-bar" style={styles.searchBar}>
-          <SearchComponent value={searchWord} searchTitle='' domain='genomics'
-            onChange={(val: string) => this.handleChange(val)}
-            onClear={() => this.handleChange('')} placeholderText='Search by variant' />
+    const {
+      searchWord,
+      filterShow,
+      sortMetadata,
+      submittedFilterMetadata,
+      scrollClean,
+    } = this.state;
+    const { filterMetadata } = this.props;
+    const { variantListSize, loadingResults, loadingVariantListSize } =
+      this.props;
+    const variantListSizeDisplay = variantListSize
+      ? variantListSize.toLocaleString()
+      : 0;
+    return (
+      <React.Fragment>
+        <style>{css}</style>
+        <div className="search-container">
+          <div className="search-bar" style={styles.searchBar}>
+            <SearchComponent
+              value={searchWord}
+              searchTitle=""
+              domain="genomics"
+              onChange={(val: string) => this.handleChange(val)}
+              onClear={() => this.handleChange("")}
+              placeholderText="Search by variant"
+            />
+          </div>
+          <div style={styles.searchHelpText}>
+            Examples by query type: <br></br>
+            <strong>Variant:</strong> 1-104946932-0fa1 <br></br>
+          </div>
         </div>
-        <div style={styles.searchHelpText}>
-          Examples by query type: <br></br>
-          <strong>Variant:</strong> 1-104946932-0fa1 <br></br>
+        {submittedFilterMetadata && (
+          <SVVariantFilterChips
+            filteredMetadata={submittedFilterMetadata}
+            onChipChange={(changes) => this.handleChipChange(changes)}
+          />
+        )}
+        <div style={styles.resultInfo}>
+          {!loadingResults &&
+          !loadingVariantListSize &&
+          variantListSize > 0 &&
+          environment.genoFilters ? (
+            <div onClick={() => this.showFilter()} style={styles.filterBtn}>
+              <ClrIcon shape="filter-2" /> Filter & Sort
+            </div>
+          ) : scrollClean ? (
+            <div> </div>
+          ) : (
+            <div onClick={() => this.showFilter()} style={styles.filterBtn}>
+              <ClrIcon shape="filter-2" /> Filter & Sort
+            </div>
+          )}
+          <React.Fragment>
+            {!loadingResults && !loadingVariantListSize && searchWord ? (
+              <strong style={styles.resultSize}>
+                {!loadingResults && !loadingVariantListSize ? (
+                  variantListSizeDisplay
+                ) : (
+                  <span style={styles.loading}>
+                    <Spinner />
+                  </span>
+                )}{" "}
+                variants
+              </strong>
+            ) : scrollClean ? (
+              <div> </div>
+            ) : (
+              <strong style={styles.resultSize}>
+                {variantListSizeDisplay} variants
+              </strong>
+            )}
+          </React.Fragment>
         </div>
-      </div>
-      {
-        submittedFilterMetadata &&
-        <SVVariantFilterChips
-          filteredMetadata={submittedFilterMetadata}
-          onChipChange={(changes) => this.handleChipChange(changes)} />
-      }
-      <div style={styles.resultInfo}>
-        {((!loadingResults && !loadingVariantListSize) && (variantListSize > 0) && environment.genoFilters) ? <div onClick={() => this.showFilter()}
-          style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div> :
-          scrollClean ? <div> </div> : <div onClick={() => this.showFilter()}
-            style={styles.filterBtn}><ClrIcon shape='filter-2' /> Filter & Sort</div>}
-        <React.Fragment>
-          {
-            (!loadingResults && !loadingVariantListSize && searchWord) ? <strong style={styles.resultSize} >{(!loadingResults && !loadingVariantListSize) ? variantListSizeDisplay :
-              <span style={styles.loading}><Spinner /></span>} variants</strong> :
-              scrollClean ? <div> </div> : <strong style={styles.resultSize} >{variantListSizeDisplay} variants</strong>
-          }
-        </React.Fragment>
-      </div>
-      {environment.genoFilters && <div style={styles.filterContainer} ref={this.filterWrapperRef}>
-        {filterShow &&
-          <SVVariantFilterComponent
-            filterMetadata={filterMetadata}
-            sortMetadata={sortMetadata}
-            onFilterSubmit={(filteredMetadata: SVGenomicFilters, sortMetadata: SortSVMetadata) => this.handleFilterSubmit(filteredMetadata, sortMetadata)}
-            onSortChange={(e) => this.handleSortChange(e)}
-          />}
-      </div>
-      }
-
-    </React.Fragment>;
+        {environment.genoFilters && (
+          <div style={styles.filterContainer} ref={this.filterWrapperRef}>
+            {filterShow && (
+              <SVVariantFilterComponent
+                filterMetadata={filterMetadata}
+                sortMetadata={sortMetadata}
+                onFilterSubmit={(
+                  filteredMetadata: SVGenomicFilters,
+                  sortMetadata: SortSVMetadata
+                ) => this.handleFilterSubmit(filteredMetadata, sortMetadata)}
+                onSortChange={(e) => this.handleSortChange(e)}
+              />
+            )}
+          </div>
+        )}
+      </React.Fragment>
+    );
   }
 }

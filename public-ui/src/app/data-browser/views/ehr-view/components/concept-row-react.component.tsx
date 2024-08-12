@@ -1,9 +1,9 @@
 import * as React from "react";
+import { faVial } from "@fortawesome/free-solid-svg-icons";
+import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { Component, Input } from "@angular/core";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVial } from '@fortawesome/free-solid-svg-icons';
-import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { ConceptChartReactComponent } from "app/data-browser/views/concept-chart/concept-chart-react.component";
@@ -168,10 +168,10 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showMoreDrugBrands: false,
       showConceptChart: props.selectedConcept
         ? props.selectedConcept &&
-        props.selectedConcept.conceptId === props.concept.conceptId
+          props.selectedConcept.conceptId === props.concept.conceptId
         : props.searchTerm
-          ? parseInt(props.searchTerm, 10) === props.concept.conceptId
-          : false,
+        ? parseInt(props.searchTerm, 10) === props.concept.conceptId
+        : false,
       graphToShow:
         props.domain.name.toLowerCase() === "labs & measurements"
           ? GraphType.Values
@@ -179,18 +179,17 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showCopyAlert: false,
       selectedConcept: this.props.selectedConcept,
     };
-
-
   }
 
   componentDidMount() {
-    const { selectedConcept, concept, searchTerm, counter, totalResults } = this.props;
+    const { selectedConcept, concept, searchTerm, counter, totalResults } =
+      this.props;
     if (
       selectedConcept
         ? selectedConcept && selectedConcept.conceptId === concept.conceptId
         : searchTerm
-          ? parseInt(searchTerm, 10) === concept.conceptId
-          : false
+        ? parseInt(searchTerm, 10) === concept.conceptId
+        : false
     ) {
       this.myRef.current.scrollIntoView();
     }
@@ -259,9 +258,10 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         graphToShow === GraphType.Sources
       ) {
         this.setState({
-          graphToShow: this.props.domain.name.toLowerCase() === "labs & measurements"
-            ? GraphType.Values
-            : GraphType.BiologicalSex,
+          graphToShow:
+            this.props.domain.name.toLowerCase() === "labs & measurements"
+              ? GraphType.Values
+              : GraphType.BiologicalSex,
         });
       } else {
         this.setState({
@@ -270,8 +270,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             chartType === "sources"
               ? GraphType.Sources
               : name.toLowerCase() === "labs & measurements"
-                ? GraphType.Values
-                : GraphType.BiologicalSex,
+              ? GraphType.Values
+              : GraphType.BiologicalSex,
         });
       }
     } else {
@@ -281,8 +281,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
           chartType === "sources"
             ? GraphType.Sources
             : name.toLowerCase() === "labs & measurements"
-              ? GraphType.Values
-              : GraphType.BiologicalSex,
+            ? GraphType.Values
+            : GraphType.BiologicalSex,
       });
     }
   }
@@ -290,14 +290,11 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
   shareConcept(e: any) {
     const { concept, searchTerm } = this.props;
     let path = window.location.pathname;
-    if (searchTerm && (searchTerm.length > 0) && path.indexOf(searchTerm) > 0) {
+    if (searchTerm && searchTerm.length > 0 && path.indexOf(searchTerm) > 0) {
       path = path.substring(0, path.lastIndexOf("/"));
     }
     navigator.clipboard.writeText(
-      window.location.origin +
-      path +
-      "/" +
-      concept.conceptId
+      window.location.origin + path + "/" + concept.conceptId
     );
     this.setState({
       showCopyAlert: true,
@@ -328,7 +325,6 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       showCopyAlert,
     } = this.state;
 
-
     const id = "c" + concept.conceptId;
     const tabIndex = 0;
     const tooltipAction =
@@ -340,8 +336,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     const synonymsStr = showMoreSynonyms
       ? synonymString
       : synonymString
-        ? synonymString.substring(0, 100)
-        : null;
+      ? synonymString.substring(0, 100)
+      : null;
     const drugBrandsStr = showMoreDrugBrands
       ? concept.drugBrands.join(", ")
       : concept.drugBrands.slice(0, 10).join(", ");
@@ -354,11 +350,14 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
         ? "Exact source concept match:"
         : "Standard concept match:";
 
-
     return (
       <React.Fragment>
         <style>{cssStyles}</style>
-        <div style={showConceptChart ? { background: "#f6f6f8" } : {}} id={id} ref={this.myRef}>
+        <div
+          style={showConceptChart ? { background: "#f6f6f8" } : {}}
+          id={id}
+          ref={this.myRef}
+        >
           <div
             className="tbl-exp-r"
             onClick={(e) => {
@@ -410,7 +409,10 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                         className="test-span"
                         style={styles.measurementTypeSpan}
                       >
-                        <FontAwesomeIcon icon={faVial} style={{ transform: "rotate(315deg)", }} />
+                        <FontAwesomeIcon
+                          icon={faVial}
+                          style={{ transform: "rotate(315deg)" }}
+                        />
                         <TooltipReactComponent
                           tooltipKey="valueFilter"
                           label=""
@@ -587,14 +589,22 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                 </div>
               )}
             {showConceptChart && graphToShow && (
-              <div onClick={(e) => e.stopPropagation()} className="row-expansion">
-                <div style={{
-                  float:'right',
-                  padding:'0 1rem',
-                  color: '#262262',
-                  fontSize: '1.3em',
-                  cursor: 'pointer'
-                }} onClick={() => this.expandRow()}><i className="far fa-times fa-1x clear-search-icon"></i></div>
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="row-expansion"
+              >
+                <div
+                  style={{
+                    float: "right",
+                    padding: "0 1rem",
+                    color: "#262262",
+                    fontSize: "1.3em",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => this.expandRow()}
+                >
+                  <i className="far fa-times fa-1x clear-search-icon"></i>
+                </div>
                 <div className="concept-chart">
                   <ConceptChartReactComponent
                     concept={concept}

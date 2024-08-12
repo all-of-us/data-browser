@@ -1,7 +1,7 @@
 import * as React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { reactStyles } from "app/utils";
 
@@ -132,7 +132,12 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
               });
             }}
           >
-          <FontAwesomeIcon icon={faAngleLeft} style={ currentPage !== 1 ? styles.enabledIcon : styles.disabledIcon} />
+            <FontAwesomeIcon
+              icon={faAngleLeft}
+              style={
+                currentPage !== 1 ? styles.enabledIcon : styles.disabledIcon
+              }
+            />
           </button>
           Page {currentPage} of {pageCount}
           <button
@@ -148,7 +153,14 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
               });
             }}
           >
-          <FontAwesomeIcon icon={faAngleRight} style={currentPage !== pageCount ? styles.enabledIcon : styles.disabledIcon} />
+            <FontAwesomeIcon
+              icon={faAngleRight}
+              style={
+                currentPage !== pageCount
+                  ? styles.enabledIcon
+                  : styles.disabledIcon
+              }
+            />
           </button>
         </div>
       </React.Fragment>

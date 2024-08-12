@@ -139,7 +139,8 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           (domain === "ehr" ? x.stratum4 : x.stratum2) ===
           (domain === "ehr" ? a.stratum2 : a.stratum5)
       )[0];
-      const count = a.countValue <= 20 ? "&le; 20" : a.countValue.toLocaleString();
+      const count =
+        a.countValue <= 20 ? "&le; 20" : a.countValue.toLocaleString();
       const totalCount =
         bsResult.countValue <= 20
           ? "&le; 20"
@@ -232,7 +233,10 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
             : genderCountResults[0].countValue;
         genderCountTooltip += "Total Count = <strong>" + totCount + "</strong>";
       }
-      const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue.toLocaleString();
+      const count =
+        concept.countValue <= 20
+          ? "&le; 20"
+          : concept.countValue.toLocaleString();
       pointData.push({
         toolTipHelpText:
           '<div class="bio-sex-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
