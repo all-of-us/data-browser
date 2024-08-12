@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import { environment } from "environments/environment";
-import { SVVariantSearchComponent } from "../../sv-genomic-view/components/sv-variant-search.component";
-import { SVVariantTableComponent } from "../../sv-genomic-view/components/sv-variant-table.component";
+import { SVVariantSearchComponent } from "app/data-browser/views/sv-genomic-view/components/sv-variant-search.component";
+import { SVVariantTableComponent } from "app/data-browser/views/sv-genomic-view/components/sv-variant-table.component";
 import { reactStyles } from "app/utils";
 import { GenomicFilters, SVVariant } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
