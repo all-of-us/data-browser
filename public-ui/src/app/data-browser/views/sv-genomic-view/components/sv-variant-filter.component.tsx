@@ -101,7 +101,7 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
       filterMetadata: this.props.filterMetadata,
       cleared: true,
       ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
+        localStorage.getItem("svOriginalFilterMetadata") || "{}"
       ),
       sortMetadata: this.props.sortMetadata,
     };
@@ -139,7 +139,7 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
 
   handleClear() {
     const ogFilterMetaData = JSON.parse(
-      localStorage.getItem("originalFilterMetadata") || "{}"
+      localStorage.getItem("svOriginalFilterMetadata") || "{}"
     );
     // tslint:disable-next-line: forin
     for (const key in this.state.filteredMetadata) {

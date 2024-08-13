@@ -113,7 +113,7 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
       filteredMetadata[cat.toString()].checked = false;
       try {
         const originalFilterMetadata = JSON.parse(
-          localStorage.getItem("originalFilterMetadata") || "{}"
+          localStorage.getItem("svOriginalFilterMetadata") || "{}"
         );
         filteredMetadata[cat.toString()].min =
           originalFilterMetadata[cat.toString()].min;

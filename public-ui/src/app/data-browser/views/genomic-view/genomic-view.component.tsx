@@ -402,6 +402,7 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .getSVGenomicFilterOptions(searchTerm)
         .then((result) => {
+          console.log(result);
           result.gene.items.forEach((el) => {
             el.checked = false;
           });

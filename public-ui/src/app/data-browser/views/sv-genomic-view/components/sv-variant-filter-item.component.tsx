@@ -109,7 +109,7 @@ export class SVVariantFilterItemComponent extends React.Component<
       filterItemState: props.filterItem || "",
       filterCheckMap: props.filterItem || "",
       ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
+        localStorage.getItem("svOriginalFilterMetadata") || "{}"
       )[this.props.category.field.toString()],
     };
   }
@@ -172,7 +172,6 @@ export class SVVariantFilterItemComponent extends React.Component<
   render(): React.ReactNode {
     const { category, cleared, filterItem } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
-
     return (
       <React.Fragment>
         <style>{css}</style>

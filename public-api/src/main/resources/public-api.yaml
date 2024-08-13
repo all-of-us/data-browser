@@ -1780,6 +1780,10 @@ definitions:
         description: Variant Type Filters
         type: object
         $ref: "#/definitions/SVGenomicFilterOptionList"
+      size:
+        description: Size Filters
+        type: object
+        $ref: "#/definitions/SVGenomicFilterOption"
       alleleCount:
         description: Allele Count Range Filter
         type: object

@@ -171,19 +171,27 @@ public class GenomicsController implements GenomicsApiDelegate {
             "0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id tj, \n" +
             " unnest(split(consequence, ', ')) con\n";
-    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = " group by con),\n" +
+
+    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_SIZE = " group by con),\n" +
             "e as \n" +
+            "(select distinct 'Size' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
+            "min(size) as min_count, max(size) as max_count\n" +
+            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+    private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = "),\n" +
+            "f as \n" +
             "(select distinct 'Allele Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+
+
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
-            "f as \n" +
+            "g as \n" +
             "(select distinct 'Allele Number' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT = "),\n" +
-            "g as \n" +
+            "h as \n" +
             "(select distinct 'Homozygote Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(homozygote_count) as min_count, max(homozygote_count) as max_count\n" +
             "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
@@ -198,7 +206,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             "union all \n" +
             "select * from f \n" +
             "union all \n" +
-            "select * from g;";
+            "select * from g \n" +
+            "union all \n" +
+            "select * from h;";
 
     public GenomicsController() {}
 
@@ -466,6 +476,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String WHERE_VAR_TYPE_IN = "AND variant_type in (";
         String WHERE_CON_NULL = "";
         String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
+        String SIZE_FILTER = "";
         String ALLELE_COUNT_FILTER = "";
         String ALLELE_NUMBER_FILTER = "";
         String ALLELE_FREQUENCY_FILTER = "";
@@ -509,6 +520,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                         }
                     }
                 }
+            }
+            SVGenomicFilterOption sizeFilter = filters.getSize();
+            if (sizeFilter != null && sizeFilter.isChecked()) {
+                Long minVal = sizeFilter.getMin();
+                Long maxVal = sizeFilter.getMax();
+                SIZE_FILTER = " AND size BETWEEN " + minVal + " AND " + maxVal;
             }
             SVGenomicFilterOption acFilter = filters.getAlleleCount();
             if (acFilter != null && acFilter.isChecked()) {
@@ -576,6 +593,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             finalSql += ") ";
         }
 
+        if (SIZE_FILTER.length() > 0) {
+            finalSql += SIZE_FILTER;
+        }
         if (ALLELE_COUNT_FILTER.length() > 0) {
             finalSql += ALLELE_COUNT_FILTER;
         }
@@ -748,7 +768,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         String WHERE_CON_NULL = "";
         String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
 
-
+        String SIZE_FILTER = "";
         String ALLELE_COUNT_FILTER = "";
         String ALLELE_NUMBER_FILTER = "";
         String ALLELE_FREQUENCY_FILTER = "";
@@ -796,6 +816,13 @@ public class GenomicsController implements GenomicsApiDelegate {
                         }
                     }
                 }
+            }
+
+            SVGenomicFilterOption sizeFilter = filters.getSize();
+            if (sizeFilter != null && sizeFilter.isChecked()) {
+                Long minVal = sizeFilter.getMin();
+                Long maxVal = sizeFilter.getMax();
+                SIZE_FILTER = " AND size BETWEEN " + minVal + " AND " + maxVal;
             }
 
             SVGenomicFilterOption acFilter = filters.getAlleleCount();
@@ -866,6 +893,9 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
         }
 
+        if (SIZE_FILTER.length() > 0) {
+            finalSql += SIZE_FILTER;
+        }
         if (ALLELE_COUNT_FILTER.length() > 0) {
             finalSql += ALLELE_COUNT_FILTER;
         }
@@ -1447,6 +1477,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql = SV_FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
+                + SV_FILTER_OPTION_SQL_TEMPLATE_SIZE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT + searchSqlQuery
@@ -1478,6 +1509,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         List<SVGenomicFilterOption> geneFilters = new ArrayList<>();
         List<SVGenomicFilterOption> conFilters = new ArrayList<>();
 
+        SVGenomicFilterOption sizeFilter = new SVGenomicFilterOption();
         SVGenomicFilterOption alleleCountFilter = new SVGenomicFilterOption();
         SVGenomicFilterOption alleleNumberFilter = new SVGenomicFilterOption();
         SVGenomicFilterOption homozygoteCountFilter = new SVGenomicFilterOption();
@@ -1508,6 +1540,13 @@ public class GenomicsController implements GenomicsApiDelegate {
                 genomicFilterOption.setMin(0L);
                 genomicFilterOption.setMax(0L);
                 conFilters.add(genomicFilterOption);
+            } else if (option.equals("Size")) {
+                genomicFilterOption.setOption("");
+                genomicFilterOption.setCount(0L);
+                genomicFilterOption.setChecked(false);
+                genomicFilterOption.setMin(minCount);
+                genomicFilterOption.setMax(maxCount);
+                sizeFilter = genomicFilterOption;
             } else if (option.equals("Allele Count")) {
                 genomicFilterOption.setOption("");
                 genomicFilterOption.setCount(0L);
@@ -1551,6 +1590,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         genomicFilters.consequence(conFilterList);
         genomicFilters.variantType(varTypeFilterList);
         genomicFilters.gene(geneFilterList);
+        genomicFilters.size(sizeFilter);
         genomicFilters.alleleCount(alleleCountFilter);
         genomicFilters.alleleNumber(alleleNumberFilter);
         genomicFilters.alleleFrequency(alleleFrequencyFilter);
