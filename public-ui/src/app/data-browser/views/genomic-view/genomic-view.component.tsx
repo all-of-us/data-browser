@@ -8,6 +8,7 @@ import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { triggerEvent } from "app/utils/google_analytics";
 import { urlParamsStore } from "app/utils/navigation";
+import { environment } from "environments/environment";
 import {
   GenomicFilters,
   SearchSVVariantsRequest,
@@ -282,6 +283,8 @@ export const GenomicViewComponent = withRouteData(
       };
     }
 
+    svVCFBrowserFlag = environment.svVCFBrowser;
+
     topBarItems = [
       {
         id: 2,
@@ -291,11 +294,12 @@ export const GenomicViewComponent = withRouteData(
         id: 1,
         label: "Participant Demographics",
       },
-      {
+      ...(this.svVCFBrowserFlag ? [{
         id: 4,
         label: "SV Variants",
-      },
+      }] : [])
     ];
+
     title = "SNV/Indel Variants";
 
     search = _.debounce((searchTerm: string) => {

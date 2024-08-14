@@ -14,4 +14,5 @@ export const environment = {
   genoFilters: true,
   fitbitCDRUpdate: true,
   infiniteSrcoll: true,
+  svVCFBrowser: false,
 };

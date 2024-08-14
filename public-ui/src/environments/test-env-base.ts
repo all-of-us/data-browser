@@ -10,4 +10,5 @@ export const testEnvironmentBase = {
   genoFilters: true,
   fitbitCDRUpdate: true,
   infiniteSrcoll: true,
+  svVCFBrowser: true,
 };
