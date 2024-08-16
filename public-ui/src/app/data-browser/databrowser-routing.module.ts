@@ -153,6 +153,16 @@ const routes: Routes = [
               },
             },
           },
+          {
+            path: "map",
+            component: AppRouting,
+            data: {
+              title: "Introductory Videos",
+              breadcrumb: {
+                value: "Introductory Videos",
+              },
+            },
+          },
         ],
       },
     ],

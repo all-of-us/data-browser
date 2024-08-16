@@ -9,6 +9,7 @@ import { GenomicViewComponent } from "app/data-browser/views/genomic-view/genomi
 import { IntroVidReactComponent } from "app/data-browser/views/intro-vids/intro-vids-react.component";
 import { PMReactComponent } from "app/data-browser/views/pm/pm-react.component";
 import { dBHomeComponent } from "app/data-browser/views/quick-search/home-view-react.component";
+import { heatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component"
 
 import { SurveyViewReactComponent } from "./data-browser/views/survey-view/survey-react-view.component";
 
@@ -143,6 +144,17 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
             routeData: {
               title: "Physical Measurements",
               breadcrumb: { value: "physical measurements" },
+            },
+          })
+        }
+      />
+      <AppRoute
+        path="/map"
+        component={() =>
+          heatMapReactComponent({
+            routeData: {
+              title: "Heat Map",
+              breadcrumb: { value: "Heat map" }
             },
           })
         }
