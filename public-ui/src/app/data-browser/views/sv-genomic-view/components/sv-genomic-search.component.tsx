@@ -1,12 +1,11 @@
 import * as React from "react";
 
 import { environment } from "environments/environment";
+import { SVVariantSearchComponent } from "app/data-browser/views/sv-genomic-view/components/sv-variant-search.component";
+import { SVVariantTableComponent } from "app/data-browser/views/sv-genomic-view/components/sv-variant-table.component";
 import { reactStyles } from "app/utils";
-import { GenomicFilters, Variant } from "publicGenerated";
+import { GenomicFilters, SVVariant } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
-
-import { VariantSearchComponent } from "./variant-search.component";
-import { VariantTableComponent } from "./variant-table.component";
 
 const styles = reactStyles({
   border: {
@@ -43,7 +42,7 @@ interface Props {
   variantListSize: number;
   loadingVariantListSize: boolean;
   loadingResults: boolean;
-  searchResults: Variant[];
+  svResults: SVVariant[];
   currentPage: number;
   rowCount: number;
   participantCount: string;
@@ -62,7 +61,7 @@ interface State {
   filtered: boolean;
 }
 
-export class GenomicSearchComponent extends React.Component<Props, State> {
+export class SVGenomicSearchComponent extends React.Component<Props, State> {
   scrollDiv: any;
   constructor(props: Props) {
     super(props);
@@ -129,7 +128,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     const {
       currentPage,
       loadingResults,
-      searchResults,
+      svResults,
       variantListSize,
       loadingVariantListSize,
       onSearchInput,
@@ -140,21 +139,10 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       <React.Fragment>
         <div style={styles.titleBox}>
           <p style={styles.boxHeading} ref={this.scrollDiv}>
-            Explore allele frequencies for a gene or genomic region and drill
-            down into variants to view select annotations and genetic ancestry
-            associations. Variants are based on short-read whole genome
-            sequencing and called against the GRCh38/hg38 genome reference.
-            Learn more: &#32;
-            <a
-              style={{ color: "#1f79b8" }}
-              target="_blank"
-              href="https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table"
-            >
-              Variant Annotation Table.
-            </a>
+            TBA
           </p>
         </div>
-        <VariantSearchComponent
+        <SVVariantSearchComponent
           onSearchTerm={(searchWord: string) => {
             onSearchInput(searchWord);
             this.setState({ searchTerm: searchWord });
@@ -172,11 +160,11 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           onSortChange={(e) => this.handleSortClick(e)}
           scrollClean={scrollClean}
         />
-        <VariantTableComponent
+        <SVVariantTableComponent
           loadingResults={loadingResults}
           loadingVariantListSize={loadingVariantListSize}
           variantListSize={variantListSize}
-          searchResults={searchResults}
+          svResults={svResults}
           searchTerm={searchTerm}
           onSearchTerm={(searchWord: string) => {
             onSearchInput(searchWord);

@@ -7,8 +7,8 @@ import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/
 import { ValueReactChartComponent } from "app/data-browser/charts/chart-measurement-values/chart-value-react.component";
 import { SourcesChartReactComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
 import { SourceTreeComponent } from "app/data-browser/components/source-tree/source-tree-react.component";
-import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { TooltipNoIconReactComponent } from "app/data-browser/components/tooltip/tooltip-no-icon-react.component";
+import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
@@ -76,21 +76,21 @@ const styles = reactStyles({
     paddingBottom: "1em",
   },
   valuesChart: {
-    fontSize: '0.8em'
+    fontSize: "0.8em",
   },
   unitPanel: {
-    display: 'flex',
+    display: "flex",
     flexDirection: "row",
-    gap: '1em',
-    justifyContent: 'space-between',
-    flexWrap:"wrap"
+    gap: "1em",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
   },
   noUnitPanel: {
-    display: 'flex',
+    display: "flex",
     flexDirection: "row",
-    gap: '1em',
-    justifyContent: 'center'
-  }
+    gap: "1em",
+    justifyContent: "center",
+  },
 });
 
 const cssStyles = `
@@ -251,19 +251,23 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
   }
 
   selectConceptCode(attrType: string) {
-      const { concept, searchTerm } = this.props;
-      const selectedConcept = this.state.selectedTreeNode ? this.state.selectedTreeNode : concept;
-      const selectedText = (attrType === 'id') ? selectedConcept.conceptId :
-        (selectedConcept.conceptCode ? selectedConcept.conceptCode : selectedConcept.code);
-      navigator.clipboard.writeText(
-        selectedText
-      );
-      this.setState({
-        showConceptCopyAlert: true,
-      });
-      setTimeout(() => {
-        this.setState({ showConceptCopyAlert: false });
-      }, 500);
+    const { concept, searchTerm } = this.props;
+    const selectedConcept = this.state.selectedTreeNode
+      ? this.state.selectedTreeNode
+      : concept;
+    const selectedText =
+      attrType === "id"
+        ? selectedConcept.conceptId
+        : selectedConcept.conceptCode
+        ? selectedConcept.conceptCode
+        : selectedConcept.code;
+    navigator.clipboard.writeText(selectedText);
+    this.setState({
+      showConceptCopyAlert: true,
+    });
+    setTimeout(() => {
+      this.setState({ showConceptCopyAlert: false });
+    }, 500);
   }
 
   selectGraphType(g) {
@@ -464,7 +468,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         this.setState({
           selectedTreeNode: selectedNode,
           selectedTreeConcept: id,
-          sourceConcepts: results.items.length > 10 ? results.items.slice(0, 10) : results.items
+          sourceConcepts:
+            results.items.length > 10
+              ? results.items.slice(0, 10)
+              : results.items,
         });
       })
       .catch((e) => {
@@ -566,26 +573,30 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               </div>
             ) : (
               graphToShow === "Values" && (
-                <div className="chart" key="values-chart" style={styles.valuesChart}>
-                 <div style={styles.unitPanel}>
-                  {unitNames.map((unit, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className={
-                          selectedUnit === unit
-                            ? "active btn btn-link unit-choice"
-                            : "btn btn-link unit-choice"
-                        }
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.showMeasurementGenderHistogram(unit);
-                        }}
-                      >
-                        {unit}
-                      </div>
-                    );
-                  })}
+                <div
+                  className="chart"
+                  key="values-chart"
+                  style={styles.valuesChart}
+                >
+                  <div style={styles.unitPanel}>
+                    {unitNames.map((unit, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={
+                            selectedUnit === unit
+                              ? "active btn btn-link unit-choice"
+                              : "btn btn-link unit-choice"
+                          }
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            this.showMeasurementGenderHistogram(unit);
+                          }}
+                        >
+                          {unit}
+                        </div>
+                      );
+                    })}
                   </div>
                   <div style={styles.noUnitPanel}>
                     {mixtureOfValues &&
@@ -614,28 +625,28 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                       className="ehr-m-chart-layout"
                       style={styles.ehrMChartLayout}
                     >
-                      {genderResults && toDisplayMeasurementGenderAnalysis ? (
-                        genderResults.map((gender, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="ehr-m-chart-item"
-                              style={styles.ehrMChartItem}
-                            >
-                              <ValueReactChartComponent
-                                conceptId={concept.conceptId}
-                                valueAnalysis={
-                                  toDisplayMeasurementGenderAnalysis
-                                }
-                                genderId={gender.stratum2}
-                                chartTitle={this.fetchChartTitle(gender)}
-                              />
-                            </div>
-                          );
-                        })
-                      ) : (
-                        !loading && <p className="no-values">No Values Available</p>
-                      )}
+                      {genderResults && toDisplayMeasurementGenderAnalysis
+                        ? genderResults.map((gender, index) => {
+                            return (
+                              <div
+                                key={index}
+                                className="ehr-m-chart-item"
+                                style={styles.ehrMChartItem}
+                              >
+                                <ValueReactChartComponent
+                                  conceptId={concept.conceptId}
+                                  valueAnalysis={
+                                    toDisplayMeasurementGenderAnalysis
+                                  }
+                                  genderId={gender.stratum2}
+                                  chartTitle={this.fetchChartTitle(gender)}
+                                />
+                              </div>
+                            );
+                          })
+                        : !loading && (
+                            <p className="no-values">No Values Available</p>
+                          )}
                     </div>
                   </div>
                 </div>
@@ -648,9 +659,16 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   style={styles.sourcesChart}
                   key="sources-chart"
                 >
-                {showConceptCopyAlert && ( <div style={{ margin: "-20px -20px 0 0", position: "absolute" }} >
-                <div className="copy-alert">Link copied to clipboard</div>
-                </div> )}
+                  {showConceptCopyAlert && (
+                    <div
+                      style={{
+                        margin: "-20px -20px 0 0",
+                        position: "absolute",
+                      }}
+                    >
+                      <div className="copy-alert">Link copied to clipboard</div>
+                    </div>
+                  )}
                   <div className="concept-box" style={styles.conceptBox}>
                     <div
                       className="concept-box-info"
@@ -663,26 +681,44 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                             : concept.conceptName}
                         </strong>
                       </p>
-                      <div style={styles.conceptBoxInfoP}  onClick={(e) => {e.stopPropagation();
-                      this.selectConceptCode("code"); }}>
-                      <React.Fragment>
-                        {selectedTreeNode
-                          ? selectedTreeNode.type
-                          : concept.vocabularyId}
-                        Code:{" "}
-                        {selectedTreeNode
-                          ? selectedTreeNode.code
-                          : <TooltipNoIconReactComponent tooltipKey='conceptCopyHelpText'
-                            text={concept.conceptCode}></TooltipNoIconReactComponent>
-                          }
-                          </React.Fragment>
+                      <div
+                        style={styles.conceptBoxInfoP}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.selectConceptCode("code");
+                        }}
+                      >
+                        <React.Fragment>
+                          {selectedTreeNode
+                            ? selectedTreeNode.type
+                            : concept.vocabularyId}
+                          Code:{" "}
+                          {selectedTreeNode ? (
+                            selectedTreeNode.code
+                          ) : (
+                            <TooltipNoIconReactComponent
+                              tooltipKey="conceptCopyHelpText"
+                              text={concept.conceptCode}
+                            ></TooltipNoIconReactComponent>
+                          )}
+                        </React.Fragment>
                       </div>
-                      <p style={styles.conceptBoxInfoP} onClick={(e) => {e.stopPropagation(); this.selectConceptCode("id"); }}>
+                      <p
+                        style={styles.conceptBoxInfoP}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.selectConceptCode("id");
+                        }}
+                      >
                         OMOP Concept Id:{" "}
-                        {selectedTreeNode
-                          ? selectedTreeNode.conceptId
-                          : <TooltipNoIconReactComponent tooltipKey='conceptCopyHelpText'
-                            text={concept.conceptId}></TooltipNoIconReactComponent>}
+                        {selectedTreeNode ? (
+                          selectedTreeNode.conceptId
+                        ) : (
+                          <TooltipNoIconReactComponent
+                            tooltipKey="conceptCopyHelpText"
+                            text={concept.conceptId}
+                          ></TooltipNoIconReactComponent>
+                        )}
                       </p>
                       {selectedTreeNode && selectedTreeNode.canSelect === 1 && (
                         <a

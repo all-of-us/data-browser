@@ -73,13 +73,19 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
       useHTML: true,
     };
     newBaseOptions.tooltip.outside = true;
-    newBaseOptions.series = [{
-      name: undefined, data: series, size: undefined, shadow: undefined, innerSize: undefined,
-      showInLegend: undefined,
-      dataLabels: {
-        enabled: false,
+    newBaseOptions.series = [
+      {
+        name: undefined,
+        data: series,
+        size: undefined,
+        shadow: undefined,
+        innerSize: undefined,
+        showInLegend: undefined,
+        dataLabels: {
+          enabled: false,
+        },
       },
-    }];
+    ];
     this.setState({ options: newBaseOptions });
   }
 
@@ -87,7 +93,10 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
     const pointData = [];
     const categoryArr = [];
     for (const concept of concepts.results) {
-      const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue.toLocaleString();
+      const count =
+        concept.countValue <= 20
+          ? "&le; 20"
+          : concept.countValue.toLocaleString();
       const totalCount =
         this.props.countAnalysis && this.props.countAnalysis.results
           ? this.props.countAnalysis.results[0].countValue.toLocaleString()

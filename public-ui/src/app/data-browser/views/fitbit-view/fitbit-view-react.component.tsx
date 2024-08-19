@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-age-react.component";
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
@@ -10,7 +11,6 @@ import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
 import { urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
-import { environment } from "environments/environment";
 
 const styles = reactStyles({
   fmLayout: {
@@ -51,7 +51,7 @@ const styles = reactStyles({
   //     padding: "0.5rem",
   //     fontSize: "0.8em",
   //     borderBottom: "1px solid #0079B8",
-  //     borderTop: "2px solid #0079B8",   
+  //     borderTop: "2px solid #0079B8",
   //     borderLeft: "2px solid #0079B8",
   //     borderRight: "2px solid #0079B8",
   //     cursor: "pointer",
@@ -136,7 +136,6 @@ div.fm-menu-item-container:nth-child(7) > div:nth-child(1){
 }
 `;
 
-
 interface State {
   concepts: any;
   domainCountAnalysis: any;
@@ -176,11 +175,11 @@ export const FitbitReactComponent = withRouteData(
         "Heart Rate (Summary)",
         "Heart rate (minute-level)",
         "Activity Daily Summary",
-        "Activity intraday steps (minute-level)"
+        "Activity intraday steps (minute-level)",
       ];
       if (fitbitUpdateFlag) {
-        FITBIT_MEASUREMENTS.push('Sleep Daily Summary');
-        FITBIT_MEASUREMENTS.push('Sleep Level (Sequence by level)');
+        FITBIT_MEASUREMENTS.push("Sleep Daily Summary");
+        FITBIT_MEASUREMENTS.push("Sleep Level (Sequence by level)");
       }
       dataBrowserApi()
         .getFitbitAnalysisResults(FITBIT_MEASUREMENTS)
@@ -264,9 +263,9 @@ export const FitbitReactComponent = withRouteData(
                     concepts.map((concept, index) => {
                       const conceptClass =
                         selectedDisplay.toLowerCase() ===
-                          concept.displayName.toLowerCase()
-                          ? 'fb-menu-item active'
-                          : 'fb-menu-item ';
+                        concept.displayName.toLowerCase()
+                          ? "fb-menu-item active"
+                          : "fb-menu-item ";
                       return (
                         <div
                           className="fm-menu-item-container"
@@ -278,7 +277,6 @@ export const FitbitReactComponent = withRouteData(
                             className={conceptClass}
                             onClick={() => this.setGraphs(concept)}
                           >
-
                             <div
                               className="fm-menu-item-display"
                               style={styles.fmMenuItemDisplay}

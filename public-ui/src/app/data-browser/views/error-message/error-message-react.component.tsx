@@ -41,10 +41,12 @@ export class ErrorMessageReactComponent extends React.Component<Props, {}> {
             style={{ width: 26, height: 26 }}
           />
           <span className="alert-text">
-            {(dataType === "data") &&
+            {dataType === "data" &&
               "Sorry, the data are currently unavailable. Please try refreshing the page or returning home."}
-            {(dataType === "chart") && "Sorry, the chart cannot be displayed. Please try refreshing the page."}
-            {(dataType === "noResults") && "The search term returned no results. Please try changing it."}
+            {dataType === "chart" &&
+              "Sorry, the chart cannot be displayed. Please try refreshing the page."}
+            {dataType === "noResults" &&
+              "The search term returned no results. Please try changing it."}
           </span>
         </div>
       </React.Fragment>

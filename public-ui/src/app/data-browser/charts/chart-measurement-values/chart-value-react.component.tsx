@@ -28,8 +28,8 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     this.state = {
       options: null,
       pageX: 0,
-      pageY: 0
-     };
+      pageY: 0,
+    };
   }
 
   componentDidMount() {
@@ -47,8 +47,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       pageX: event.pageX,
       pageY: event.pageY,
     });
-  }
-
+  };
 
   getChartOptions() {
     const { conceptId } = this.props;
@@ -198,7 +197,9 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         participantCountText = "Participant Count: <strong> &le; 20 </strong>";
       } else {
         participantCountText =
-          "Participant Count: <strong>" + a.countValue.toLocaleString() + "</strong>";
+          "Participant Count: <strong>" +
+          a.countValue.toLocaleString() +
+          "</strong>";
       }
 
       toolTipText =
@@ -245,7 +246,9 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         participantCountText = "Participant Count: <strong> &le; 20 </strong>";
       } else {
         participantCountText =
-          "Participant Count: <strong>" + a.countValue.toLocaleString() + "</strong>";
+          "Participant Count: <strong>" +
+          a.countValue.toLocaleString() +
+          "</strong>";
       }
       if (a.stratum2 !== "No unit") {
         tooltipText =
@@ -377,16 +380,16 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
   render() {
     const { options } = this.state;
     return (
-    <React.Fragment>
-      <div onMouseMove={this.handleMouseEvent}>
-        {options && (
-          <HighchartsReact
-            highcharts={highCharts}
-            options={options}
-            updateArgs={[true]}
-          />
-        )}
-      </div>
+      <React.Fragment>
+        <div onMouseMove={this.handleMouseEvent}>
+          {options && (
+            <HighchartsReact
+              highcharts={highCharts}
+              options={options}
+              updateArgs={[true]}
+            />
+          )}
+        </div>
       </React.Fragment>
     );
   }

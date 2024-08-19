@@ -265,13 +265,17 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
             : ageCountResults[0].countValue;
         ageCountTooltip += "Total Count = <strong>" + totCount + "</strong>";
       }
-      const count = concept.countValue <= 20 ? "&le; 20" : concept.countValue.toLocaleString();
+      const count =
+        concept.countValue <= 20
+          ? "&le; 20"
+          : concept.countValue.toLocaleString();
       pointData.push({
         toolTipHelpText:
           '<div class="age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;"><strong>' +
           count.toLocaleString() +
           "</strong> participants were ages within range of <strong>" +
-          concept.analysisStratumName + ".</div>",
+          concept.analysisStratumName +
+          ".</div>",
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: "",

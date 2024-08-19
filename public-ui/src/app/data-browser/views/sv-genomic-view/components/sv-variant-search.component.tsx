@@ -2,14 +2,14 @@ import * as React from "react";
 
 import { environment } from "environments/environment";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
-import { VariantFilterComponent } from "app/data-browser/views/genomic-view/components/variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { Spinner } from "app/utils/spinner";
-import { GenomicFilters } from "publicGenerated";
-import { SortMetadata } from "publicGenerated/fetch";
+import { SVGenomicFilters } from "publicGenerated";
+import { SortSVMetadata } from "publicGenerated/fetch";
 
-import { VariantFilterChips } from "./variant-filter-chips.component";
+import { SVVariantFilterComponent } from "./sv-variant-filter.component";
+import { SVVariantFilterChips } from "./sv-variant-filter-chips.component";
 
 const styles = reactStyles({
   searchBar: {
@@ -64,33 +64,33 @@ const css = `
 
 export interface Chip {
   cat: any;
-  data: GenomicFilters;
+  data: SVGenomicFilters;
 }
 interface Props {
   onSearchTerm: Function;
   onFilterSubmit: Function;
   searchTerm: string;
   variantListSize: number;
-  filterMetadata: GenomicFilters;
-  submittedFilterMetadata: GenomicFilters;
-  sortMetadata: SortMetadata;
+  filterMetadata: SVGenomicFilters;
+  submittedFilterMetadata: SVGenomicFilters;
+  sortMetadata: SortSVMetadata;
   onSortChange: Function;
   loadingResults: boolean;
   loadingVariantListSize: boolean;
   scrollClean: boolean;
 }
 interface State {
-  filteredMetadata: GenomicFilters;
-  filteredMetaMap: GenomicFilters;
-  submittedFilterMetadata: GenomicFilters;
-  filterMetadata: GenomicFilters;
-  sortMetadata: SortMetadata;
+  filteredMetadata: SVGenomicFilters;
+  filteredMetaMap: SVGenomicFilters;
+  submittedFilterMetadata: SVGenomicFilters;
+  filterMetadata: SVGenomicFilters;
+  sortMetadata: SortSVMetadata;
   filterShow: Boolean;
   searchWord: string;
   scrollClean: boolean;
 }
 
-export class VariantSearchComponent extends React.Component<Props, State> {
+export class SVVariantSearchComponent extends React.Component<Props, State> {
   private filterWrapperRef;
   constructor(props: Props) {
     super(props);
@@ -171,8 +171,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
   handleFilterSubmit(
-    filteredMetadata: GenomicFilters,
-    sortMetadata: SortMetadata
+    filteredMetadata: SVGenomicFilters,
+    sortMetadata: SortSVMetadata
   ) {
     this.setState({ filteredMetadata: filteredMetadata });
     this.props.onFilterSubmit(filteredMetadata, sortMetadata);
@@ -215,19 +215,16 @@ export class VariantSearchComponent extends React.Component<Props, State> {
               domain="genomics"
               onChange={(val: string) => this.handleChange(val)}
               onClear={() => this.handleChange("")}
-              placeholderText="Search by gene, variant, rs number, or genomic region"
+              placeholderText="Search by variant"
             />
           </div>
           <div style={styles.searchHelpText}>
             Examples by query type: <br></br>
-            <strong>Gene:</strong> BRCA2 <br></br>
-            <strong>Variant:</strong> 13-32355250-T-C <br></br>
-            <strong>RS Number:</strong> rs169547 <br></br>
-            <strong>Genomic Region:</strong> chr13:32355000-32375000
+            <strong>Variant:</strong> 1-104946932-0fa1 <br></br>
           </div>
         </div>
         {submittedFilterMetadata && (
-          <VariantFilterChips
+          <SVVariantFilterChips
             filteredMetadata={submittedFilterMetadata}
             onChipChange={(changes) => this.handleChipChange(changes)}
           />
@@ -271,12 +268,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
         {environment.genoFilters && (
           <div style={styles.filterContainer} ref={this.filterWrapperRef}>
             {filterShow && (
-              <VariantFilterComponent
+              <SVVariantFilterComponent
                 filterMetadata={filterMetadata}
                 sortMetadata={sortMetadata}
                 onFilterSubmit={(
-                  filteredMetadata: GenomicFilters,
-                  sortMetadata: SortMetadata
+                  filteredMetadata: SVGenomicFilters,
+                  sortMetadata: SortSVMetadata
                 ) => this.handleFilterSubmit(filteredMetadata, sortMetadata)}
                 onSortChange={(e) => this.handleSortChange(e)}
               />

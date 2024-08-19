@@ -6,11 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { environment } from "environments/environment";
 import { reactStyles } from "app/utils";
 import { Spinner } from "app/utils/spinner";
-import { Variant } from "publicGenerated";
-import { SortMetadata } from "publicGenerated/fetch";
+import { SVVariant } from "publicGenerated";
+import { SortSVMetadata } from "publicGenerated/fetch";
 
+import { SVVariantRowComponent } from "./sv-variant-row.component";
 import { TablePaginatorComponent } from "./table-paginator.component";
-import { VariantRowComponent } from "./variant-row.component";
 
 const styles = reactStyles({
   tableContainer: {
@@ -90,7 +90,7 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
     width: 72rem;
@@ -102,7 +102,7 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
         width: 72rem;
     }
 }
@@ -134,30 +134,30 @@ interface Props {
   onSortClick: Function;
   onRowCountChange: Function;
   onScrollBottom: Function;
-  searchResults: Variant[];
+  svResults: SVVariant[];
   variantListSize: number;
   loadingVariantListSize: boolean;
   loadingResults: boolean;
   searchTerm: string;
   currentPage: number;
   rowCount: number;
-  sortMetadata: SortMetadata;
+  sortMetadata: SortSVMetadata;
   filtered: boolean;
 }
 
 interface State {
   loading: boolean;
-  searchResults: Variant[];
+  svResults: SVVariant[];
   sortMetadata: any;
   allowParentScroll: Boolean;
 }
 
-export class VariantTableComponent extends React.Component<Props, State> {
+export class SVVariantTableComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       loading: props.loadingResults,
-      searchResults: props.searchResults,
+      svResults: props.svResults,
       sortMetadata: props.sortMetadata,
       allowParentScroll: true,
     };
@@ -180,14 +180,13 @@ export class VariantTableComponent extends React.Component<Props, State> {
   debounceTimer = null;
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchResults, loadingResults, filtered } = this.props;
-    // console.log(loadingResults,'loadingResults');
+    const { svResults, loadingResults, filtered } = this.props;
 
     if (filtered) {
       this.scrollAreaToTop();
     }
-    if (prevProps.searchResults !== searchResults) {
-      this.setState({ searchResults: searchResults, loading: loadingResults });
+    if (prevProps.svResults !== svResults) {
+      this.setState({ svResults: svResults, loading: loadingResults });
     }
   }
 
@@ -270,17 +269,15 @@ export class VariantTableComponent extends React.Component<Props, State> {
       rowCount,
       currentPage,
     } = this.props;
-    const { loading, searchResults, sortMetadata, allowParentScroll } =
-      this.state;
+    const { loading, svResults, sortMetadata, allowParentScroll } = this.state;
     styles.noScroll.overflowX = !allowParentScroll ? "hidden" : "scroll";
-
     return (
       <React.Fragment>
         <style>{css}</style>
         {!loading &&
         !loadingVariantListSize &&
-        searchResults &&
-        searchResults.length ? (
+        svResults &&
+        svResults.length ? (
           <div
             ref={this.scrollAreaRef}
             onScroll={this.handleScrollEnd}
@@ -298,17 +295,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
               <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Gene</span>
-                {sortMetadata.gene.sortActive && (
-                  <React.Fragment>
-                    <FontAwesomeIcon
-                      icon={this.setArrowIcon("gene")}
-                      style={{
-                        color: "rgb(33, 111, 180)",
-                        marginLeft: "0.5em",
-                      }}
-                    />
-                  </React.Fragment>
+                <span style={styles.headingLabel}>Variant Type</span>
+                {sortMetadata.variantType.sortActive && (
+                  <FontAwesomeIcon
+                    icon={this.setArrowIcon("variantType")}
+                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+                  />
                 )}
               </div>
               <div style={styles.headingItem}>
@@ -321,19 +313,19 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
               <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Variant Type</span>
-                {sortMetadata.variantType.sortActive && (
+                <span style={styles.headingLabel}>Position</span>
+                {sortMetadata.position.sortActive && (
                   <FontAwesomeIcon
-                    icon={this.setArrowIcon("variantType")}
+                    icon={this.setArrowIcon("position")}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
               </div>
               <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>ClinVar Significance</span>
-                {sortMetadata.clinicalSignificance.sortActive && (
+                <span style={styles.headingLabel}>Size</span>
+                {sortMetadata.size.sortActive && (
                   <FontAwesomeIcon
-                    icon={this.setArrowIcon("clinicalSignificance")}
+                    icon={this.setArrowIcon("size")}
                     style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
                   />
                 )}
@@ -376,10 +368,10 @@ export class VariantTableComponent extends React.Component<Props, State> {
               </div>
             </div>
 
-            {searchResults &&
-              searchResults.map((variant, index) => {
+            {svResults &&
+              svResults.map((variant, index) => {
                 return (
-                  <VariantRowComponent
+                  <SVVariantRowComponent
                     key={index}
                     variant={variant}
                     allowParentScroll={() =>
@@ -405,47 +397,19 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 <Spinner />{" "}
               </div>
             )}
-            {(!searchResults ||
-              (searchResults && searchResults.length === 0)) && (
+            {(!svResults || (svResults && svResults.length === 0)) && (
               <div style={styles.helpTextContainer}>
                 <div style={styles.helpText}>
                   Enter a query in the search bar or get started with an example
                   query:
                 </div>
                 <div style={styles.helpText}>
-                  <strong>Gene:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("BRCA2")}
-                    style={styles.helpSearchDiv}
-                  >
-                    BRCA2
-                  </div>
-                </div>
-                <div style={styles.helpText}>
                   <strong>Variant:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("13-32355250-T-C")}
+                    onClick={() => this.searchItem("1-104946932-0fa1")}
                     style={styles.helpSearchDiv}
                   >
-                    13-32355250-T-C
-                  </div>
-                </div>
-                <div style={styles.helpText}>
-                  <strong>RS Number:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("rs169547")}
-                    style={styles.helpSearchDiv}
-                  >
-                    rs169547
-                  </div>
-                </div>
-                <div style={styles.helpText}>
-                  <strong>Genomic region:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("chr13:32355000-32375000")}
-                    style={styles.helpSearchDiv}
-                  >
-                    chr13:32355000-32375000
+                    1-104946932-0fa1
                   </div>
                 </div>
               </div>
@@ -454,7 +418,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
         )}
         {!loading &&
           !loadingVariantListSize &&
-          searchResults &&
+          svResults &&
           variantListSize > rowCount && (
             <div className="paginator">
               {!environment.infiniteSrcoll && (
@@ -462,7 +426,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   pageCount={Math.ceil(variantListSize / rowCount)}
                   variantListSize={variantListSize}
                   currentPage={currentPage}
-                  resultsSize={searchResults.length}
+                  resultsSize={svResults.length}
                   rowCount={rowCount}
                   onPageChange={(info) => {
                     this.handlePageClick(info);

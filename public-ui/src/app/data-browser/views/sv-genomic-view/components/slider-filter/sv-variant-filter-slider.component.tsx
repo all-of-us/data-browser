@@ -25,7 +25,7 @@ interface State {
   max: Number;
 }
 
-export const VariantFilterSliderComponent = class extends React.Component<
+export const SVVariantFilterSliderComponent = class extends React.Component<
   Props,
   State
 > {

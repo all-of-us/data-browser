@@ -14,10 +14,11 @@ interface State {
 }
 
 const lables = {
-  gene: "Gene",
-  consequence: "Consequence",
+  variantId: "Variant Id",
   variantType: "Variant Type",
-  clinicalSignificance: "ClinVar Significance",
+  consequence: "Consequence",
+  position: "Position",
+  size: "Size",
   alleleNumber: "Allele Number",
   alleleFrequency: "Allele Frequency",
   alleleCount: "Allele Count",
@@ -52,7 +53,7 @@ const styles = reactStyles({
     alignItems: "center",
   },
 });
-export class VariantFilterChips extends React.Component<Props, State> {
+export class SVVariantFilterChips extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -63,7 +64,10 @@ export class VariantFilterChips extends React.Component<Props, State> {
   formatChips(filteredMetadata): Array<any> {
     const displayArr = [];
     for (const key in filteredMetadata) {
-      if (Object.prototype.hasOwnProperty.call(filteredMetadata, key)) {
+      if (
+        Object.prototype.hasOwnProperty.call(filteredMetadata, key) &&
+        filteredMetadata[key] !== undefined
+      ) {
         const allChecked =
           Array.isArray(filteredMetadata[key]) &&
           filteredMetadata[key].every((t) => t.checked);
@@ -109,7 +113,7 @@ export class VariantFilterChips extends React.Component<Props, State> {
       filteredMetadata[cat.toString()].checked = false;
       try {
         const originalFilterMetadata = JSON.parse(
-          localStorage.getItem("originalFilterMetadata") || "{}"
+          localStorage.getItem("svOriginalFilterMetadata") || "{}"
         );
         filteredMetadata[cat.toString()].min =
           originalFilterMetadata[cat.toString()].min;

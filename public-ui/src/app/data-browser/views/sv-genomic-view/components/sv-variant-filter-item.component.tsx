@@ -1,10 +1,10 @@
 import * as React from "react";
 
-import { Cat } from "app/data-browser/views/genomic-view/components/variant-filter.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 
-import { VariantFilterSliderComponent } from "./slider-filter/variant-filter-slider.component";
+import { SVVariantFilterSliderComponent } from "./slider-filter/sv-variant-filter-slider.component";
+import { Cat } from "./sv-variant-filter.component";
 
 const styles = reactStyles({
   filterItem: {
@@ -98,7 +98,10 @@ interface State {
   ogFilterMetaData: string;
 }
 
-export class VariantFilterItemComponent extends React.Component<Props, State> {
+export class SVVariantFilterItemComponent extends React.Component<
+  Props,
+  State
+> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -106,7 +109,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemState: props.filterItem || "",
       filterCheckMap: props.filterItem || "",
       ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
+        localStorage.getItem("svOriginalFilterMetadata") || "{}"
       )[this.props.category.field.toString()],
     };
   }
@@ -121,7 +124,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   filterClick() {
-    console.log("Am i clicked ?");
     this.setState({ filterItemOpen: !this.state.filterItemOpen });
   }
 
@@ -170,7 +172,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   render(): React.ReactNode {
     const { category, cleared, filterItem } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
-
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -222,7 +223,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         ) : (
           <div>
             {filterItemOpen && (
-              <VariantFilterSliderComponent
+              <SVVariantFilterSliderComponent
                 category={category.field.toString()}
                 filterItem={filterItemState}
                 ogFilterItem={ogFilterMetaData}

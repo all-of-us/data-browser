@@ -7,7 +7,7 @@ import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
-import { Variant, VariantInfo } from "publicGenerated";
+import { SVVariant, SVVariantInfo } from "publicGenerated";
 
 const css = `
 .exit{
@@ -156,14 +156,14 @@ const styles = reactStyles({
 interface Props {
   closed: Function;
   hovered: Function;
-  variant: Variant;
-  variantDetails: VariantInfo;
+  variant: SVVariant;
+  variantDetails: SVVariantInfo;
   loading: boolean;
 }
 // tslint:disable-next-line:no-empty-interface
 interface State {}
 
-export class VariantExpandedComponent extends React.Component<Props, State> {
+export class SVVariantExpandedComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
   }
@@ -173,11 +173,11 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
   render() {
     const { variantDetails, variant, loading } = this.props;
     let variantPopulationDetails: any[] = [];
-    const rsLink =
-      "https://www.ncbi.nlm.nih.gov/snp/?term=" + variantDetails.rsNumber;
+    // const rsLink =  "https://www.ncbi.nlm.nih.gov/snp/?term=" + variantDetails.rsNumber;
     if (!loading) {
       variantPopulationDetails = prepVariantPopulationDetails(variantDetails);
     }
+
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -211,80 +211,35 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
               <React.Fragment>
                 <div className="body">
                   <div>
-                    <span style={styles.catHeading}>Gene:</span>
-                    <br />
-                    <span style={styles.catInfo}>
-                      {variant.genes ? variant.genes : "-"}
-                    </span>
-                  </div>
-                  <div>
-                    <span style={styles.catHeading}>Consequence:</span>
-                    <br />
-                    <span style={styles.catInfo}>
-                      {variant.consequence
-                        ? variant.consequence.replace(/_/g, " ")
-                        : "-"}
-                    </span>
-                  </div>
-                  <div>
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType
-                        ? variant.variantType.replace(/_/g, " ")
+                      {variant.variantType ? variant.variantType : "-"}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>
+                      Consequence(s) + associated gene(s):
+                    </span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variantDetails.consequenceGenes
+                        ? variantDetails.consequenceGenes.replace(/;/g, "\n")
                         : "-"}
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>Transcript:</span>
+                    <span style={styles.catHeading}>Position:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.transcript
-                        ? variantDetails.transcript
-                        : "-"}
+                      {variant.position ? variant.position : "-"}
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>RS Number:</span>
+                    <span style={styles.catHeading}>Size:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.rsNumber
-                        ? [
-                            <a
-                              href={rsLink}
-                              key={variantDetails.variantId}
-                              style={styles.rsLink}
-                              target="_blank"
-                            >
-                              {variantDetails.rsNumber}
-                            </a>,
-                          ]
-                        : "-"}
-                    </span>
-                  </div>
-                  <div>
-                    <span style={styles.catHeading}>DNA Change:</span>
-                    <br />
-                    <span style={styles.catInfo}>
-                      {variantDetails.dnaChange
-                        ? variantDetails.dnaChange
-                        : "-"}
-                    </span>
-                  </div>
-                  <div>
-                    <span style={styles.catHeading}>Protein Change:</span>
-                    <br />
-                    <span style={styles.catInfo}>
-                      {variant.proteinChange ? variant.proteinChange : "-"}
-                    </span>
-                  </div>
-                  <div>
-                    <span style={styles.catHeading}>ClinVar Significance:</span>
-                    <br />
-                    <span style={styles.catInfo}>
-                      {variant.clinicalSignificance
-                        ? variant.clinicalSignificance.replace(/_/g, " ")
-                        : "-"}
+                      {variantDetails.size ? variantDetails.size : "-"}
                     </span>
                   </div>
                 </div>

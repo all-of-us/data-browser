@@ -3,9 +3,9 @@ import * as React from "react";
 import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { Variant, VariantInfo } from "publicGenerated";
+import { SVVariant, SVVariantInfo } from "publicGenerated";
 
-import { VariantExpandedComponent } from "./variant-expanded.component";
+import { SVVariantExpandedComponent } from "./sv-variant-expanded.component";
 
 const styles = reactStyles({
   variant: {
@@ -60,7 +60,7 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
     align-items: center;
     width: 72rem;
     background: white;
@@ -71,7 +71,7 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
         width: 72rem;
     }
 }
@@ -79,22 +79,22 @@ const css = `
 `;
 
 interface Props {
-  variant: Variant;
+  variant: SVVariant;
   allowParentScroll: Function;
 }
 
 interface State {
-  variantExpanded: boolean;
+  svVariantExpanded: boolean;
   mouseOverExpanded: boolean;
-  variantDetails: VariantInfo;
+  variantDetails: SVVariantInfo;
   loadingVarDetails: boolean;
 }
 
-export class VariantRowComponent extends React.Component<Props, State> {
+export class SVVariantRowComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      variantExpanded: false,
+      svVariantExpanded: false,
       mouseOverExpanded: false,
       variantDetails: null,
       loadingVarDetails: true,
@@ -103,8 +103,8 @@ export class VariantRowComponent extends React.Component<Props, State> {
 
   getVariantDetails(variantId: string) {
     genomicsApi()
-      .getVariantDetails(variantId)
-      .then((results: VariantInfo) => {
+      .getSVVariantDetails(variantId)
+      .then((results: SVVariantInfo) => {
         this.setState({
           variantDetails: results,
           loadingVarDetails: false,
@@ -117,7 +117,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
       this.getVariantDetails(variantId);
     }
     this.setState({
-      variantExpanded: !this.state.variantExpanded,
+      svVariantExpanded: !this.state.svVariantExpanded,
     });
     {
     }
@@ -125,12 +125,12 @@ export class VariantRowComponent extends React.Component<Props, State> {
 
   render() {
     const { variant } = this.props;
-    const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
+    const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
-        {!loadingVarDetails && variantExpanded ? (
-          <VariantExpandedComponent
+        {!loadingVarDetails && svVariantExpanded ? (
+          <SVVariantExpandedComponent
             loading={loadingVarDetails}
             variant={variant}
             variantDetails={variantDetails}
@@ -174,51 +174,14 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div style={styles.rowItem}>
-              {variant.genes && variant.genes.length ? (
-                <div>{variant.genes}</div>
-              ) : (
-                <div>-</div>
-              )}
-            </div>
-            <div style={styles.rowItem}>
-              <div style={styles.multipleValVariantItem}>
-                {variant.consequence && variant.consequence.length ? (
-                  <span>{variant.consequence.replace(/_/g, " ")}</span>
-                ) : (
-                  <span>-</span>
-                )}
-              </div>
-            </div>
-            <div style={styles.rowItem}>
-              {variant.variantType ? (
-                <div style={{ overflowWrap: "anywhere" }}>
-                  {variant.variantType}
-                </div>
-              ) : (
-                <div>–</div>
-              )}
-            </div>
-            <div style={styles.rowItem}>
-              <div style={styles.multipleValVariantItem}>
-                {variant.clinicalSignificance &&
-                variant.clinicalSignificance.length ? (
-                  <span>{variant.clinicalSignificance}</span>
-                ) : (
-                  <span>-</span>
-                )}
-              </div>
-            </div>
-            <div style={styles.rowItem}>
-              {variant.alleleCount.toLocaleString()}
-            </div>
-            <div style={styles.rowItem}>
-              {variant.alleleNumber.toLocaleString()}
-            </div>
+            <div style={styles.rowItem}>{variant.variantType}</div>
+            <div style={styles.rowItem}>{variant.consequence}</div>
+            <div style={styles.rowItem}>{variant.position}</div>
+            <div style={styles.rowItem}>{variant.size}</div>
+            <div style={styles.rowItem}>{variant.alleleCount}</div>
+            <div style={styles.rowItem}>{variant.alleleNumber}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-            <div style={styles.rowItem}>
-              {variant.homozygoteCount.toLocaleString()}
-            </div>
+            <div style={styles.rowItem}>{variant.homozygoteCount}</div>
           </div>
         )}
       </React.Fragment>

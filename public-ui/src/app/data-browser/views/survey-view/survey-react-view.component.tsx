@@ -4,8 +4,8 @@ import _ from "lodash";
 import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { NoResultSearchComponent } from "app/components/db-no-results/no-results-search.component";
-import { SurveyVersionTableReactComponent } from "app/data-browser/components/survey-version-table/survey-version-table-react.component";
 import { PfhhSurveyTableReactComponent } from "app/data-browser/components/survey-version-table/pfhh-survey-table-react.component";
+import { SurveyVersionTableReactComponent } from "app/data-browser/components/survey-version-table/survey-version-table-react.component";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
 import { SurveyQuestionReactComponent } from "app/data-browser/views/survey-view/components/survey-question-react.component";
 import { SurveyDescReactComponent } from "app/data-browser/views/survey-view/survey-desc.component";
@@ -26,7 +26,7 @@ const styles = reactStyles({
     fontSize: "14px",
     fontWeight: 500,
     lineHeight: "14px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   dbCard: {
     overflowX: "auto",
@@ -37,7 +37,7 @@ const styles = reactStyles({
   },
   surveyHead: {
     display: "flex",
-    justifyContent:"space-between",
+    justifyContent: "space-between",
     position: "relative",
     marginBottom: "calc(18px * 4)",
   },
@@ -62,7 +62,7 @@ const styles = reactStyles({
     flexDirection: "column",
     width: "50%",
     postion: "relative",
-    top: "3rem"
+    top: "3rem",
   },
   versionTable: {
     width: "50%",
@@ -253,9 +253,10 @@ export const SurveyViewReactComponent = withRouteData(
       api.getDomainTotals(searchWord, 1, 1).then((data: any) => {
         data.surveyModules.forEach((survey) => {
           if (survey.conceptId === 43529712) {
-
-
-            this.setState({ pfhhQC: survey.questionCount, pfhhPC: survey.participantCount });
+            this.setState({
+              pfhhQC: survey.questionCount,
+              pfhhPC: survey.participantCount,
+            });
           }
           const surveyRoute =
             survey.conceptId === 43528895
@@ -282,23 +283,23 @@ export const SurveyViewReactComponent = withRouteData(
       const surveyPdfUrl =
         surveyConceptId === 43528895
           ? "/assets/surveys/" +
-          "Health Care Access Utilization".split(" ").join("_") +
-          ".pdf"
-          : surveyConceptId === 1740639
-            ? "/assets/surveys/" +
-            "Personal_and_Family_Health_History" +
+            "Health Care Access Utilization".split(" ").join("_") +
             ".pdf"
-            : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
-            const surveyPdfUrlSpanish =
+          : surveyConceptId === 1740639
+          ? "/assets/surveys/" + "Personal_and_Family_Health_History" + ".pdf"
+          : "/assets/surveys/" + survey.name.split(" ").join("_") + ".pdf";
+      const surveyPdfUrlSpanish =
         surveyConceptId === 43528895
           ? "/assets/surveys/" +
-          "Health Care Access Utilization".split(" ").join("_") +
-          "_Spanish.pdf"
+            "Health Care Access Utilization".split(" ").join("_") +
+            "_Spanish.pdf"
           : surveyConceptId === 1740639
-            ? "/assets/surveys/" +
+          ? "/assets/surveys/" +
             "Personal_and_Family_Health_History" +
             "_Spanish.pdf"
-            : "/assets/surveys/" + survey.name.split(" ").join("_") + "_Spanish.pdf";
+          : "/assets/surveys/" +
+            survey.name.split(" ").join("_") +
+            "_Spanish.pdf";
       const copeFlag =
         surveyConceptId === 1333342 || surveyConceptId === 765936;
       const combinedPfhhFlag = surveyConceptId === 43529712;
@@ -439,12 +440,14 @@ export const SurveyViewReactComponent = withRouteData(
         questions,
         surveyVersions,
         surveyPdfUrl,
-        surveyPdfUrlSpanish
+        surveyPdfUrlSpanish,
       } = this.state;
-      const statClass = (isCopeSurvey || isCombinedPfhh) ? "cope-stat-layout" : "stat-layout";
-      const statStyle = (isCopeSurvey || isCombinedPfhh)
-        ? styles.copeStatLayout
-        : styles.statLayout;
+      const statClass =
+        isCopeSurvey || isCombinedPfhh ? "cope-stat-layout" : "stat-layout";
+      const statStyle =
+        isCopeSurvey || isCombinedPfhh
+          ? styles.copeStatLayout
+          : styles.statLayout;
       const matchingQuestions = questions.filter((question) =>
         question.type.toLowerCase().includes("question")
       );
@@ -539,28 +542,40 @@ export const SurveyViewReactComponent = withRouteData(
                         </div>
                       ) : null}
                     </div>
-                    {surveyVersions.length > 0 ?
-                      <div className="version-table"
-                        style={{...styles.versionTable, paddingTop:"1rem"}} >
+                    {surveyVersions.length > 0 ? (
+                      <div
+                        className="version-table"
+                        style={{ ...styles.versionTable, paddingTop: "1rem" }}
+                      >
                         <SurveyVersionTableReactComponent
-                          surveyVersions={surveyVersions} />
+                          surveyVersions={surveyVersions}
+                        />
                       </div>
-                      : isCombinedPfhh ?
-                        <div className="version-table" style={styles.versionTable}>
-                          <PfhhSurveyTableReactComponent questionCount={pfhhQC} participantCount={pfhhPC} />
-                        </div>
-                        :
-                        <div className="pdf-link" style={styles.pdfLink}>
-                          Download Survey<br />
-                          <a href={surveyPdfUrl} download> English
-                          </a>
-                          &#32;| &#32;
-                          <a href={surveyPdfUrlSpanish} download> Spanish
-                          </a>
-                        </div>
-                    }
-
-
+                    ) : isCombinedPfhh ? (
+                      <div
+                        className="version-table"
+                        style={styles.versionTable}
+                      >
+                        <PfhhSurveyTableReactComponent
+                          questionCount={pfhhQC}
+                          participantCount={pfhhPC}
+                        />
+                      </div>
+                    ) : (
+                      <div className="pdf-link" style={styles.pdfLink}>
+                        Download Survey
+                        <br />
+                        <a href={surveyPdfUrl} download>
+                          {" "}
+                          English
+                        </a>
+                        &#32;| &#32;
+                        <a href={surveyPdfUrlSpanish} download>
+                          {" "}
+                          Spanish
+                        </a>
+                      </div>
+                    )}
                   </div>
                   {questions && (
                     <div
