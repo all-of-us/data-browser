@@ -1,11 +1,9 @@
 import * as React from "react";
 import ReactPaginate from "react-paginate";
 import _ from "lodash";
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faVial } from '@fortawesome/free-solid-svg-icons';
-import { faFileSignature } from '@fortawesome/free-solid-svg-icons';
-
+import { faVial } from "@fortawesome/free-solid-svg-icons";
+import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { withRouteData } from "app/components/app-router";
 import { NoResultSearchComponent } from "app/components/db-no-results/no-results-search.component";
@@ -33,7 +31,7 @@ const styles = reactStyles({
     fontSize: "14px",
     fontWeight: 500,
     lineHeight: "14px",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   results: {
     paddingTop: "36px",
@@ -60,7 +58,7 @@ const styles = reactStyles({
     borderRadius: "10px",
     padding: ".5rem 1rem",
     lineHeight: "1.5",
-    margin: "0.5rem 0"
+    margin: "0.5rem 0",
   },
   resultsGrid: {
     width: "100%",
@@ -70,8 +68,8 @@ const styles = reactStyles({
   dropdownToggle: {
     background: "transparent",
     border: "none",
-    marginLeft: "0.2em"
-  }
+    marginLeft: "0.2em",
+  },
 });
 
 const cssStyles = `
@@ -316,7 +314,7 @@ interface State {
   selectedMeasurementTypeFilter: boolean;
   measurementTestFilter: boolean;
   measurementOrderFilter: boolean;
-  endReached: boolean
+  endReached: boolean;
 }
 
 export const EhrViewReactComponent = withRouteData(
@@ -350,7 +348,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementOrderFilter: true,
         showTopConcepts: true,
         matchType: MatchType.NAME,
-        endReached: false
+        endReached: false,
       };
     }
     debounceTimer = null;
@@ -364,11 +362,11 @@ export const EhrViewReactComponent = withRouteData(
 
     componentDidMount() {
       this.getDomainTotals();
-      window.addEventListener('scroll', this.handleScrollEnd);
+      window.addEventListener("scroll", this.handleScrollEnd);
     }
 
     componentWillUnmount(): void {
-      window.removeEventListener('scroll', this.handleScrollEnd);
+      window.removeEventListener("scroll", this.handleScrollEnd);
     }
 
     changeUrl() {
@@ -448,12 +446,18 @@ export const EhrViewReactComponent = withRouteData(
         }
       }
       this.setState({
-        concepts: append ? [...this.state.concepts, ...results.items] : results.items,
+        concepts: append
+          ? [...this.state.concepts, ...results.items]
+          : results.items,
         standardConcepts: conceptStandardConcepts,
         standardConceptIds: conceptStandardConcepts.map((a) => a.conceptId),
         matchType: results.matchType,
         top10Results:
-          currentPage === 1 ? results.items.slice(0, 10) : (top10Results ? top10Results : results.items.slice(0, 10)),
+          currentPage === 1
+            ? results.items.slice(0, 10)
+            : top10Results
+            ? top10Results
+            : results.items.slice(0, 10),
         loading: false,
         medlineTerm: medlineTerm,
         medlinePlusLink: medlinePlusLink,
@@ -503,7 +507,12 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     handleChange(val) {
-      this.setState({ searchWord: val, currentPage: 1, showTopConcepts: true }, () => {localStorage.setItem("searchText", val);});
+      this.setState(
+        { searchWord: val, currentPage: 1, showTopConcepts: true },
+        () => {
+          localStorage.setItem("searchText", val);
+        }
+      );
       this.domainTotals();
     }
 
@@ -531,8 +540,8 @@ export const EhrViewReactComponent = withRouteData(
         ? top10Results.length === 1
           ? top10Results.length + " " + title.slice(0, -1)
           : top10Results.length < 10
-            ? top10Results.length + " " + title
-            : 10 + " " + title
+          ? top10Results.length + " " + title
+          : 10 + " " + title
         : "No results available";
     }
 
@@ -556,7 +565,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementOrders: measurementOrderFilter ? 1 : 0,
       };
       this.setState({
-        currentPage: data + 1
+        currentPage: data + 1,
       });
       this.fetchConcepts(searchRequest, true);
     };
@@ -564,16 +573,17 @@ export const EhrViewReactComponent = withRouteData(
     handleScrollEnd = (event) => {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => {
-        
         // Calculate the height of the viewport
         const viewportHeight = window.innerHeight;
-        
-        // Calculate the scroll position as a percentage
-        const scrollPosition = (window.scrollY / (document.documentElement.scrollHeight - viewportHeight)) * 100;
-        if (scrollPosition >= 60) {
 
+        // Calculate the scroll position as a percentage
+        const scrollPosition =
+          (window.scrollY /
+            (document.documentElement.scrollHeight - viewportHeight)) *
+          100;
+        if (scrollPosition >= 60) {
           // You can perform your actions here
-              this.addMoreResults();
+          this.addMoreResults();
         }
       }, 150);
       // Detect when it is scrolled down 60%
@@ -585,7 +595,9 @@ export const EhrViewReactComponent = withRouteData(
 
     flipMeasurementTypeFilter() {
       const { selectedMeasurementTypeFilter } = this.state;
-      this.setState({ selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter });
+      this.setState({
+        selectedMeasurementTypeFilter: !selectedMeasurementTypeFilter,
+      });
     }
 
     getDropdownDisplayStyle() {
@@ -594,9 +606,7 @@ export const EhrViewReactComponent = withRouteData(
       }
       return { display: "none" };
     }
-    handleEnd() {
-
-    }
+    handleEnd() {}
 
     render() {
       const {
@@ -621,7 +631,7 @@ export const EhrViewReactComponent = withRouteData(
         measurementTestFilter,
         measurementOrderFilter,
         top10Results,
-        endReached
+        endReached,
       } = this.state;
       const maxResults = 50;
       const noMatchFilter = 1;
@@ -649,9 +659,12 @@ export const EhrViewReactComponent = withRouteData(
               />
             </div>
             {loading && <Spinner />}
-            {domain && !loading && ((concepts && concepts.length > 0) ||
-              (domain.domain.toLowerCase() === "measurement" && !measurementTestFilter && !measurementOrderFilter))
-              && (
+            {domain &&
+              !loading &&
+              ((concepts && concepts.length > 0) ||
+                (domain.domain.toLowerCase() === "measurement" &&
+                  !measurementTestFilter &&
+                  !measurementOrderFilter)) && (
                 <div className="results" style={styles.results}>
                   <a
                     className="btn btn-link btn-sm main-search-link"
@@ -710,7 +723,10 @@ export const EhrViewReactComponent = withRouteData(
                           </h5>
                         </section>
                         <section>
-                          <div className="results-grid" style={styles.resultsGrid}>
+                          <div
+                            className="results-grid"
+                            style={styles.resultsGrid}
+                          >
                             <React.Fragment>
                               <div className="domain-info-layout">
                                 <span>
@@ -769,8 +785,8 @@ export const EhrViewReactComponent = withRouteData(
                                     className="medline-link"
                                     style={styles.medlineLink}
                                   >
-                                    Interested in general health information related
-                                    to "{medlineTerm}"?
+                                    Interested in general health information
+                                    related to "{medlineTerm}"?
                                     <br />
                                     <a
                                       href={medlinePlusLink}
@@ -785,15 +801,19 @@ export const EhrViewReactComponent = withRouteData(
                               {concepts.length === 1 &&
                                 concepts[0].standardConcept !== "S" &&
                                 standardConcepts.length > 0 && (
-                                  <div className="db-alert" style={styles.dbAlert}>
+                                  <div
+                                    className="db-alert"
+                                    style={styles.dbAlert}
+                                  >
                                     Note: {concepts[0].vocabularyId}{" "}
                                     {concepts[0].conceptCode}'
                                     {concepts[0].conceptName}' maps to Standard
-                                    Vocabulary {standardConcepts[0].vocabularyId}
+                                    Vocabulary{" "}
+                                    {standardConcepts[0].vocabularyId}
                                     {standardConcepts[0].conceptCode} '
                                     {standardConcepts[0].conceptName}'. Standard
-                                    vocabularies capture data across a variety of
-                                    source vocabularies.
+                                    vocabularies capture data across a variety
+                                    of source vocabularies.
                                   </div>
                                 )}
                               <div className="tbl-r tbl-head">
@@ -829,18 +849,27 @@ export const EhrViewReactComponent = withRouteData(
                                   />
                                 </div>
 
-                                {domain.domain.toLowerCase() === "measurement" && (
+                                {domain.domain.toLowerCase() ===
+                                  "measurement" && (
                                   <div className="tbl-d body-lead info-text">
                                     Data Type
                                     <div className="dropdown">
-                                      <button className="dropbtn" style={styles.dropdownToggle}>
+                                      <button
+                                        className="dropbtn"
+                                        style={styles.dropdownToggle}
+                                      >
                                         <ClrIcon
                                           shape="filter-grid"
                                           className={filterIconClass}
-                                          onClick={() => this.flipMeasurementTypeFilter()}
+                                          onClick={() =>
+                                            this.flipMeasurementTypeFilter()
+                                          }
                                         />
                                       </button>
-                                      <div className="dropdown-content" style={this.getDropdownDisplayStyle()}>
+                                      <div
+                                        className="dropdown-content"
+                                        style={this.getDropdownDisplayStyle()}
+                                      >
                                         <div className="checkbox-input">
                                           <input
                                             type="checkbox"
@@ -858,13 +887,20 @@ export const EhrViewReactComponent = withRouteData(
                                                 }
                                               )
                                             }
-                                            defaultChecked={measurementTestFilter}
+                                            defaultChecked={
+                                              measurementTestFilter
+                                            }
                                           />
                                           <label
                                             htmlFor="checkbox1"
                                             className="checkbox-label"
                                           >
-                                            <FontAwesomeIcon icon={faVial} style={{ transform: "rotate(315deg)", }} />
+                                            <FontAwesomeIcon
+                                              icon={faVial}
+                                              style={{
+                                                transform: "rotate(315deg)",
+                                              }}
+                                            />
                                             Tests
                                           </label>
                                         </div>
@@ -893,7 +929,9 @@ export const EhrViewReactComponent = withRouteData(
                                             htmlFor="checkbox2"
                                             className="checkbox-label"
                                           >
-                                            <FontAwesomeIcon icon={faFileSignature} />{" "}
+                                            <FontAwesomeIcon
+                                              icon={faFileSignature}
+                                            />{" "}
                                             Orders
                                           </label>
                                         </div>
@@ -914,7 +952,7 @@ export const EhrViewReactComponent = withRouteData(
                                           domain={domain}
                                           totalResults={totalResults}
                                           maxResults={maxResults}
-                                          currentPage={1} //always on page one if infinite
+                                          currentPage={1} // always on page one if infinite
                                           counter={index}
                                           searchTerm={searchWord}
                                           totalParticipants={totalParticipants}
@@ -930,11 +968,22 @@ export const EhrViewReactComponent = withRouteData(
                                               ? "standard"
                                               : "source"
                                           }
-                                          endReached={() => this.setState({ endReached: true })}
+                                          endReached={() =>
+                                            this.setState({ endReached: true })
+                                          }
                                         />
                                       );
                                     })}
-                                  {!endReached && <span style={{ marginTop: '1rem', display: 'block' }}><Spinner /></span>}
+                                  {!endReached && (
+                                    <span
+                                      style={{
+                                        marginTop: "1rem",
+                                        display: "block",
+                                      }}
+                                    >
+                                      <Spinner />
+                                    </span>
+                                  )}
                                 </div>
                               )}
                             </React.Fragment>

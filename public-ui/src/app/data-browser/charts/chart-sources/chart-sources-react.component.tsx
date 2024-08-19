@@ -72,7 +72,10 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
       return a.sourceCountValue < b.sourceCountValue;
     });
     for (const a of concepts) {
-      const count = a.sourceCountValue <= 20 ? "&le; 20" : a.sourceCountValue.toLocaleString();
+      const count =
+        a.sourceCountValue <= 20
+          ? "&le; 20"
+          : a.sourceCountValue.toLocaleString();
       const toolTipText =
         '<div id="sources-chart" class="sources-tooltip" style="position: relative; white-space:normal;width: fit-content;">' +
         a.conceptName +

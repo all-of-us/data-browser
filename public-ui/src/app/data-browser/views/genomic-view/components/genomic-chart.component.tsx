@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as highCharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   AGE_STRATUM_MAP,
@@ -65,7 +65,9 @@ export class GenomicChartComponent extends React.Component<Props, State> {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.selectedGenotype !== this.state.selectedGenotype) {
-      this.setState({ selectedGenotype: nextProps.selectedGenotype }, () => {this.dataToOptions();});
+      this.setState({ selectedGenotype: nextProps.selectedGenotype }, () => {
+        this.dataToOptions();
+      });
     }
   }
 
@@ -85,7 +87,9 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     ];
     const sortingSexArr = ["Female", "Male", "Other"];
     let participantTypeCount = 0;
-    participantTypeCount = counts.results.filter((c) => c.stratum4 === selectedGenotype)[0].countValue;
+    participantTypeCount = counts.results.filter(
+      (c) => c.stratum4 === selectedGenotype
+    )[0].countValue;
     let selectedData: Array<any> = [];
     chartOptions.chart.type = data.chartType;
     chartOptions.xAxis.categories = [];
@@ -97,22 +101,27 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         result.stratum2 = GENDER_STRATUM_MAP[result.stratum2];
       } else if (AGE_STRATUM_MAP[result.stratum2]) {
         result.stratum2 = AGE_STRATUM_MAP[result.stratum2];
-      }});
-    let selectedResults = data.results.filter((r) => r.stratum4 === selectedGenotype);
+      }
+    });
+    const selectedResults = data.results.filter(
+      (r) => r.stratum4 === selectedGenotype
+    );
     this.addMissingDemoResults(selectedResults, data.analysisId);
     selectedResults.forEach((result) => {
-      const percent: any =
-         (result.countValue / participantTypeCount) * 100;
-      let resultText = result.countValue <= 20 ? "&le; 20" : result.countValue.toLocaleString();
+      const percent: any = (result.countValue / participantTypeCount) * 100;
+      const resultText =
+        result.countValue <= 20
+          ? "&le; 20"
+          : result.countValue.toLocaleString();
       toolTipHelpText =
-          `<strong>` +
-          result.stratum2 +
-          `</strong> <br> ` +
-          resultText +
-          `
+        `<strong>` +
+        result.stratum2 +
+        `</strong> <br> ` +
+        resultText +
+        `
                 participants, ` +
-          parseFloat(percent).toFixed(2) +
-          `%`;
+        parseFloat(percent).toFixed(2) +
+        `%`;
       if (result.stratum4 === selectedGenotype) {
         selectedData.push({
           cat: result.stratum2,
@@ -141,7 +150,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         name: selectedGenotype,
         data: selectedData,
         color: this.props.color,
-      }
+      },
     ];
     this.setState({
       options: chartOptions,
@@ -154,16 +163,16 @@ export class GenomicChartComponent extends React.Component<Props, State> {
 
   render() {
     const { options, selectedGenotype } = this.state;
-    const { title,color } = this.props;
+    const { title, color } = this.props;
     let legendText = selectedGenotype;
-    if (selectedGenotype === 'micro-array') {
-        legendText = 'Genotyping Arrays';
-    } else if (selectedGenotype === 'wgs_longread') {
-        legendText = 'Long-Read WGS';
-    } else if (selectedGenotype === 'wgs_shortread') {
-        legendText = 'Short-Read WGS';
-    } else if (selectedGenotype === 'wgs_structural_variants') {
-        legendText = 'Short-Read WGS Structural Variants';
+    if (selectedGenotype === "micro-array") {
+      legendText = "Genotyping Arrays";
+    } else if (selectedGenotype === "wgs_longread") {
+      legendText = "Long-Read WGS";
+    } else if (selectedGenotype === "wgs_shortread") {
+      legendText = "Short-Read WGS";
+    } else if (selectedGenotype === "wgs_structural_variants") {
+      legendText = "Short-Read WGS Structural Variants";
     }
 
     return (
@@ -190,14 +199,30 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     const uniqueStratums: string[] = [];
     let fullStratums = [];
     if (analysisId === 3501) {
-        fullStratums = ["Other", "Male", "Female"];
+      fullStratums = ["Other", "Male", "Female"];
     } else {
-        if (analysisId === 3502) {
-            fullStratums = ['18-29', '30-39', '40-49', '50-59', '60-69', '70-79', '80-89', '89+'];
-        } else {
-            fullStratums = ["White", "Asian", "Black, African American, or African", "Hispanic, Latino, or Spanish",
-                "More than one category", "Other", "Prefer Not To Answer"];
-        }
+      if (analysisId === 3502) {
+        fullStratums = [
+          "18-29",
+          "30-39",
+          "40-49",
+          "50-59",
+          "60-69",
+          "70-79",
+          "80-89",
+          "89+",
+        ];
+      } else {
+        fullStratums = [
+          "White",
+          "Asian",
+          "Black, African American, or African",
+          "Hispanic, Latino, or Spanish",
+          "More than one category",
+          "Other",
+          "Prefer Not To Answer",
+        ];
+      }
     }
     for (const result of results) {
       if (uniqueStratums.indexOf(result.stratum2) <= -1) {

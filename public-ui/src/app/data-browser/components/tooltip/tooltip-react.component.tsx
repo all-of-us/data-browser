@@ -1,8 +1,8 @@
 import * as React from "react";
+
 import { getTooltip } from "app/data-browser/services/tooltip.service";
 import { ClrIcon } from "app/utils/clr-icon";
 import { triggerEvent } from "app/utils/google_analytics";
-
 
 export const tooltipCss = `
 .tooltip {
@@ -66,22 +66,19 @@ export class TooltipReactComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       overflowX: 0,
-      left: 0
-    }
+      left: 0,
+    };
   }
 
   divRef: any = React.createRef();
 
   componentDidMount() {
-    document.addEventListener('resize', this.tooltipHover);
+    document.addEventListener("resize", this.tooltipHover);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.tooltipHover);
+    window.removeEventListener("resize", this.tooltipHover);
   }
-
-
-
 
   detectOverflow = () => {
     const div = this.divRef.current;
@@ -91,14 +88,17 @@ export class TooltipReactComponent extends React.Component<Props, State> {
       const divRect = div.getBoundingClientRect();
       const bodyRect = body.getBoundingClientRect();
       if (divRect && bodyRect) {
-        const overflowX = divRect.right + 150 > bodyRect.right ? divRect.right - bodyRect.right + 150 : 0;
+        const overflowX =
+          divRect.right + 150 > bodyRect.right
+            ? divRect.right - bodyRect.right + 150
+            : 0;
         this.setState({
           overflowX: overflowX,
-          left: divRect.left
-        })
+          left: divRect.left,
+        });
       }
     }
-  }
+  };
 
   tooltipHover(e) {
     triggerEvent(
@@ -124,11 +124,11 @@ export class TooltipReactComponent extends React.Component<Props, State> {
     const { overflowX, left } = this.state;
     const move = overflowX > 0 ? -overflowX - 28 : 0;
 
-
     return (
       <React.Fragment>
         <style>{tooltipCss}</style>
-        <div ref={this.divRef}
+        <div
+          ref={this.divRef}
           id="tooltip"
           tabIndex={tabIndex}
           className="tooltip"
@@ -141,9 +141,13 @@ export class TooltipReactComponent extends React.Component<Props, State> {
             className={iconClass}
             style={{ width: 18, height: 18 }}
           />
-          <span style={{
-            left: move
-          }} id="tooltiptext" className="tooltiptext">
+          <span
+            style={{
+              left: move,
+            }}
+            id="tooltiptext"
+            className="tooltiptext"
+          >
             {getTooltip(this.props.tooltipKey).map((tooltip, index) => {
               if (index === 1 || index === 3) {
                 return (

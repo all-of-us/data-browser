@@ -13,7 +13,7 @@ const styles = reactStyles({
   sliderFormat: { display: "flex" },
 });
 
-export class VariantFilterSliderComponent extends React.Component<Props, {}> {
+export class SVVariantFilterSliderComponent extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props);
   }
@@ -22,7 +22,6 @@ export class VariantFilterSliderComponent extends React.Component<Props, {}> {
     const { min, max, ogFilterItem } = this.props;
     // const {sliderValue} = this.state
     console.log(ogFilterItem, "realy");
-    console.log("Am i here");
 
     return (
       <React.Fragment>

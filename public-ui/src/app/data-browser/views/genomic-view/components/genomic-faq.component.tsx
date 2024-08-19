@@ -50,7 +50,7 @@ interface Props {
   closed: Function;
 }
 // tslint:disable-next-line:no-empty-interface
-interface State { }
+interface State {}
 
 const css = `
 `;
@@ -92,8 +92,8 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
             </div>
             <div style={styles.answer}>
               The Data Browser allows researchers to plan studies using
-              <em> All of Us</em> data. Using the Variant Search, researchers can
-              conduct preliminary exploration of allele frequencies by broad
+              <em> All of Us</em> data. Using the Variant Search, researchers
+              can conduct preliminary exploration of allele frequencies by broad
               genetic ancestry categories and can observe how patterns of
               variation might differ between groups with different genetic
               ancestries. However, researchers may wish to conduct more in-depth

@@ -1,10 +1,11 @@
 import * as React from "react";
 
-import { VariantFilterItemComponent } from "app/data-browser/views/genomic-view/components/variant-filter-item.component";
-import { VariantSortItemComponent } from "app/data-browser/views/genomic-view/components/variant-sort-item.component";
 import { reactStyles } from "app/utils";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
+
+import { SVVariantFilterItemComponent } from "./sv-variant-filter-item.component";
+import { SVVariantSortItemComponent } from "./sv-variant-sort-item.component";
 
 const styles = reactStyles({
   filterBox: {
@@ -81,15 +82,16 @@ interface State {
   sortMetadata: SortMetadata;
 }
 
-export class VariantFilterComponent extends React.Component<Props, State> {
+export class SVVariantFilterComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       filterCats: [
-        { display: "Gene", field: "gene" },
-        { display: "Consequence", field: "consequence" },
+        { display: "Variant ID", field: "variantId" },
         { display: "Variant Type", field: "variantType" },
-        { display: "ClinVar Significance", field: "clinicalSignificance" },
+        { display: "Consequence", field: "consequence" },
+        { display: "Position", field: "position" },
+        { display: "Size", field: "size" },
         { display: "Allele Count", field: "alleleCount" },
         { display: "Allele Number", field: "alleleNumber" },
         { display: "Allele Frequency", field: "alleleFrequency" },
@@ -99,7 +101,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
       filterMetadata: this.props.filterMetadata,
       cleared: true,
       ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
+        localStorage.getItem("svOriginalFilterMetadata") || "{}"
       ),
       sortMetadata: this.props.sortMetadata,
     };
@@ -137,7 +139,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
   handleClear() {
     const ogFilterMetaData = JSON.parse(
-      localStorage.getItem("originalFilterMetadata") || "{}"
+      localStorage.getItem("svOriginalFilterMetadata") || "{}"
     );
     // tslint:disable-next-line: forin
     for (const key in this.state.filteredMetadata) {
@@ -177,7 +179,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                   cleared &&
                   filterMetadata &&
                   filteredMetadata && (
-                    <VariantFilterItemComponent
+                    <SVVariantFilterItemComponent
                       onFilterChange={(e) => this.handleFilterChange(e, cat)}
                       key={key}
                       category={cat}
@@ -190,7 +192,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
             })}
             <div style={styles.sortByContainer}>
               {
-                <VariantSortItemComponent
+                <SVVariantSortItemComponent
                   cleared={cleared}
                   onSortChange={(e) => this.handleSortChange(e)}
                   sortMetadata={sortMetadata}

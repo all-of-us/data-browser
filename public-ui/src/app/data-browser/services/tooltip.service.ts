@@ -8,7 +8,9 @@ export interface Tooltip {
 // Const for tooltip component
 export const tooltips = {
   genomicsCTA: {
-    texts: ["Register for the Researcher Workbench to access the full genomic dataset and start your project.",]
+    texts: [
+      "Register for the Researcher Workbench to access the full genomic dataset and start your project.",
+    ],
   },
   "Search Across Data Types": {
     texts: [
@@ -25,7 +27,7 @@ export const tooltips = {
     ],
   },
   conceptCopyHelpText: {
-    texts: [`Click to copy`]
+    texts: [`Click to copy`],
   },
   conceptCodeHelpText: {
     texts: [
@@ -278,7 +280,7 @@ export class TooltipService {
       ],
     },
     conceptCopyHelpText: {
-        texts: [`Click to copy`]
+      texts: [`Click to copy`],
     },
     conceptCodeHelpText: {
       texts: [
@@ -298,11 +300,10 @@ export class TooltipService {
     genderIdentityQuestionHelpText: {
       texts: [
         `Participants self-identify their race and ethnicity.`,
-         `All of Us`,
-         `does not ask for verification of Tribal enrollment or descendancy from participants
+        `All of Us`,
+        `does not ask for verification of Tribal enrollment or descendancy from participants
          who self-identify as American Indian/Alaska Native. Because participants can select
-         more than one option, counts and percentages may not add up to 100%.`
-
+         more than one option, counts and percentages may not add up to 100%.`,
       ],
     },
     matchingConceptsHelpText: {
@@ -372,7 +373,7 @@ export class TooltipService {
                                 participants' immediate biological family members`,
     "personal and family health history": `This survey collects information about the medical history of
                                                           participant and their immediate biological family members`,
-  "personal & family health history": `This survey collects information about the medical history of
+    "personal & family health history": `This survey collects information about the medical history of
                                                           participant and their immediate biological family members`,
     "health care access & utilization": `This survey asks questions about participants' access
                                            to and use of health care.`,

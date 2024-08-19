@@ -1,8 +1,5 @@
 import * as React from "react";
 
-
-
-
 export const loadingCss = `
 a:link,a:visited,a{
   color:#2aa3d8;

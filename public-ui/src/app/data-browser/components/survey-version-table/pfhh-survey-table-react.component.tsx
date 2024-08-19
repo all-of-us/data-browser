@@ -56,8 +56,8 @@ div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
 const containerElementName = "root";
 
 interface Props {
-    questionCount: number;
-    participantCount: number;
+  questionCount: number;
+  participantCount: number;
 }
 
 export class PfhhSurveyTableReactComponent extends React.Component<
@@ -72,13 +72,18 @@ export class PfhhSurveyTableReactComponent extends React.Component<
   }
 
   render() {
-    const fhh_survey_pdf_link = '/assets/surveys/Family_Health_History_Survey_English.pdf';
-    const fhh_survey_pdf_link_spanish = '/assets/surveys/Family_Health_History_Survey_Spanish.pdf';
-    const pmh_survey_pdf_link = '/assets/surveys/Personal_Medical_History_Survey_English.pdf';
-    const pmh_survey_pdf_link_spanish = '/assets/surveys/Personal_Medical_History_Survey_Spanish.pdf';
-    const pafhh_survey_pdf_link = '/assets/surveys/Survey_PaFHH_Eng_Src.pdf';
-    const pafhh_survey_pdf_link_spanish = '/assets/surveys/Survey_PaFHH_spn_Src.pdf';
-    const {questionCount, participantCount} = this.props;
+    const fhh_survey_pdf_link =
+      "/assets/surveys/Family_Health_History_Survey_English.pdf";
+    const fhh_survey_pdf_link_spanish =
+      "/assets/surveys/Family_Health_History_Survey_Spanish.pdf";
+    const pmh_survey_pdf_link =
+      "/assets/surveys/Personal_Medical_History_Survey_English.pdf";
+    const pmh_survey_pdf_link_spanish =
+      "/assets/surveys/Personal_Medical_History_Survey_Spanish.pdf";
+    const pafhh_survey_pdf_link = "/assets/surveys/Survey_PaFHH_Eng_Src.pdf";
+    const pafhh_survey_pdf_link_spanish =
+      "/assets/surveys/Survey_PaFHH_spn_Src.pdf";
+    const { questionCount, participantCount } = this.props;
 
     console.log(questionCount);
 
@@ -92,43 +97,47 @@ export class PfhhSurveyTableReactComponent extends React.Component<
             <div className="version-box-item">PDF</div>
           </div>
           <div className="version-box-body">
-          <div className="version-box-row">
-            <span className="version-box-item">Personal and Family Health History</span>
-            <span className="version-box-item">
-                      <a href={pafhh_survey_pdf_link} download>
-                        English
-                      </a>{" "}|{" "}
-                      <a href={pafhh_survey_pdf_link_spanish} download>
-                        Spanish
-                      </a>
-            </span>
-          </div>
-          <div className="version-box-row">
-            <span className="version-box-item">Personal Medical History</span>
-            <span className="version-box-item">
-                      <a href={pmh_survey_pdf_link} download>
-                        English
-                      </a>{" "}|{" "}
-                      <a href={pmh_survey_pdf_link_spanish} download>
-                        Spanish
-                      </a>
-            </span>
-          </div>
-          <div className="version-box-row">
-            <span className="version-box-item">Family Health History</span>
-            <span className="version-box-item">
-                      <a href={fhh_survey_pdf_link} download>
-                        English
-                      </a>{" "}|{" "}
-                      <a href={fhh_survey_pdf_link_spanish} download>
-                        Spanish
-                      </a>
-            </span>
-          </div>
+            <div className="version-box-row">
+              <span className="version-box-item">
+                Personal and Family Health History
+              </span>
+              <span className="version-box-item">
+                <a href={pafhh_survey_pdf_link} download>
+                  English
+                </a>{" "}
+                |{" "}
+                <a href={pafhh_survey_pdf_link_spanish} download>
+                  Spanish
+                </a>
+              </span>
+            </div>
+            <div className="version-box-row">
+              <span className="version-box-item">Personal Medical History</span>
+              <span className="version-box-item">
+                <a href={pmh_survey_pdf_link} download>
+                  English
+                </a>{" "}
+                |{" "}
+                <a href={pmh_survey_pdf_link_spanish} download>
+                  Spanish
+                </a>
+              </span>
+            </div>
+            <div className="version-box-row">
+              <span className="version-box-item">Family Health History</span>
+              <span className="version-box-item">
+                <a href={fhh_survey_pdf_link} download>
+                  English
+                </a>{" "}
+                |{" "}
+                <a href={fhh_survey_pdf_link_spanish} download>
+                  Spanish
+                </a>
+              </span>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 }
-

@@ -17,16 +17,16 @@ const styles = reactStyles({
     color: "#0079b8",
     marginRight: "0.5em",
     textDecoration: "none",
-    cursor: "pointer"
+    cursor: "pointer",
   },
   crumb: {
     color: "#2b266d",
     marginRight: "0.5em",
   },
   crumbContainer: {
-    paddingLeft:'1rem',
+    paddingLeft: "1rem",
     paddingTop: "1rem",
-    margin: "0 calc(10%)"
+    margin: "0 calc(10%)",
   },
   separator: {
     marginRight: "0.5em",
