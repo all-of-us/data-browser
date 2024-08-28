@@ -469,7 +469,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3,
 (select count(distinct a.person_id) from
-(SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+(SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union distinct
@@ -634,7 +634,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3300 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, cast(b.gender_concept_id as string) as stratum_4, count(distinct a.person_id) as count_value, 0 as source_count_value from
-(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union distinct
 SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union distinct
@@ -717,7 +717,7 @@ with all_fibit_data as
 union all
 select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union all
-select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 union all
