@@ -73,7 +73,7 @@ else
   bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
-GENOMICS_DATASET="2022q4r6_genomics"
+GENOMICS_DATASET="2024q3r2_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
@@ -149,7 +149,7 @@ if [ "$SEARCH_VAT" = true ]; then
   gvs_all_sc,
 ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     CASE
-      WHEN transcript IN (SELECT DISTINCT transcript FROM `aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat`) THEN 1
+      WHEN transcript IN (SELECT DISTINCT transcript FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\`) THEN 1
       ELSE 2
     END,
     CASE
