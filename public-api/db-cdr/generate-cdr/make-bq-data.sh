@@ -117,7 +117,7 @@ if [ "$SEARCH_VAT" = true ]; then
   "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
   with distinct_transcripts as
   (
-  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\` d
+  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\` d
   ),
   mane_transcripts as
   (SELECT d.transcript from distinct_transcripts d join \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts\` AS m ON d.transcript LIKE CONCAT('%', m.transcript, '%'))
@@ -200,12 +200,12 @@ ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     END,
     transcript ASC
 ) AS row_number
-  FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
      GROUP BY vid
   )
   SELECT
