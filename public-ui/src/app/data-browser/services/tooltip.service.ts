@@ -126,6 +126,8 @@ export const tooltips = {
                                                           participant and their immediate biological family members`,
   "health care access & utilization": `This survey asks questions about participants' access
                                            to and use of health care.`,
+  "health care access and utilization": `This survey asks questions about participants' access
+                                             to and use of health care.`,
   "covid-19 participant experience (cope)":
     "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
   "summer 2021 minute survey on covid-19 vaccines":
@@ -377,6 +379,8 @@ export class TooltipService {
                                                           participant and their immediate biological family members`,
     "health care access & utilization": `This survey asks questions about participants' access
                                            to and use of health care.`,
+    "health care access and utilization": `This survey asks questions about participants' access
+                                               to and use of health care.`,
     "covid-19 participant experience (cope)":
       "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
     "summer 2021 minute survey on covid-19 vaccines":

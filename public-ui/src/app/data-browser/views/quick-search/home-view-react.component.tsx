@@ -942,7 +942,7 @@ export const dBHomeComponent = withRouteData(
                       }}
                     >
                       <span style={{ position: "relative", bottom: "2px" }}>
-                        EHR Domains
+                        Electronic Health Records (EHR)
                       </span>
                     </h5>
                   )}
@@ -1010,7 +1010,7 @@ export const dBHomeComponent = withRouteData(
                           }}
                         >
                           <span style={{ position: "relative", bottom: "2px" }}>
-                            Measurements and Wearables
+                            Measurements & Wearables
                           </span>
                         </h5>
                         <div className="pm-boxes">
@@ -1047,7 +1047,7 @@ export const dBHomeComponent = withRouteData(
                       marginTop: "3rem",
                     }}
                   >
-                    Survey Questions
+                    Surveys
                   </h5>
                   <div className="survey-result-boxes">
                     {surveyInfo.map((survey, index) => {
