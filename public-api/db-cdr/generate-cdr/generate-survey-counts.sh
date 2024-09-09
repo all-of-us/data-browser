@@ -211,9 +211,9 @@ order by answers_count desc),
 basics_category_rows as
 (select o.*, sq.survey_concept_id, sq.order_number, sq.path,
 case WHEN o.person_id IN (SELECT person_id FROM single_answered_people) THEN
-(case when o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070) then CAST(o.value_source_concept_id as string) else '903070' end) else '' end as stratum_3,
+(case when o.value_source_concept_id not in (1586144,1586148,1586145,903070) then CAST(o.value_source_concept_id as string) else '903070' end) else '' end as stratum_3,
 case WHEN o.person_id IN (SELECT person_id FROM single_answered_people) THEN
-(case when o.value_source_concept_id not in (1586141,1586144,1586148,1586145,903070) then c.concept_name else 'Other' end) else 'More than one race/ethnicity' end as stratum_4
+(case when o.value_source_concept_id not in (1586144,1586148,1586145,903070) then c.concept_name else 'Other' end) else 'More than one race/ethnicity' end as stratum_4
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` sq
 On o.observation_source_concept_id=sq.concept_id
 left join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id

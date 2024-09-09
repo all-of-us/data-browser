@@ -67,7 +67,7 @@ const routes: Routes = [
             data: {
               title: "View Full Results",
               breadcrumb: {
-                value: ":id Domain",
+                value: ":id",
               },
             },
           },
@@ -77,7 +77,7 @@ const routes: Routes = [
             data: {
               title: "View Full Results",
               breadcrumb: {
-                value: ":id Domain",
+                value: ":id",
               },
             },
           },

@@ -73,7 +73,7 @@ else
   bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
-GENOMICS_DATASET="2022q4r6_genomics"
+GENOMICS_DATASET="2024q3r2_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
@@ -117,7 +117,7 @@ if [ "$SEARCH_VAT" = true ]; then
   "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
   with distinct_transcripts as
   (
-  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\` d
+  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\` d
   ),
   mane_transcripts as
   (SELECT d.transcript from distinct_transcripts d join \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts\` AS m ON d.transcript LIKE CONCAT('%', m.transcript, '%'))
@@ -149,7 +149,7 @@ if [ "$SEARCH_VAT" = true ]; then
   gvs_all_sc,
 ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     CASE
-      WHEN transcript IN (SELECT DISTINCT transcript FROM `aou-db-prod.2022q4r6_genomics.mane_transcripts_in_vat`) THEN 1
+      WHEN transcript IN (SELECT DISTINCT transcript FROM \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\`) THEN 1
       ELSE 2
     END,
     CASE
@@ -200,12 +200,12 @@ ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     END,
     transcript ASC
 ) AS row_number
-  FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$BQ_PROJECT.$BQ_DATASET.delta_vat_v2\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
      GROUP BY vid
   )
   SELECT

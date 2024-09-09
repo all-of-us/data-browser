@@ -135,7 +135,7 @@ export const VARIANT_POPULATION_DETAILS = [
     color: "#F8C854",
   },
   {
-    Ancestry: "Latin American",
+    Ancestry: "Americas",
     AlleleCount: 0,
     AlleleNumber: 0,
     AlleleFrequency: 0,

@@ -44,7 +44,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           EhrViewReactComponent({
             routeData: {
               title: "View Full Results",
-              breadcrumb: { value: ":id Domain" },
+              breadcrumb: { value: ":id" },
             },
           })
         }
@@ -55,7 +55,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           EhrViewReactComponent({
             routeData: {
               title: "View Full Results",
-              breadcrumb: { value: ":id Domain" },
+              breadcrumb: { value: ":id" },
             },
           })
         }

@@ -1743,7 +1743,7 @@ with all_fibit_data as
 union all
 select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union all
-select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 union all
@@ -1832,7 +1832,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
 with all_fibit_data as
-(select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`),
+(select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`),
 min_dates as
 (select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
 m_age as

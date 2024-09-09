@@ -89,8 +89,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}._mapping_measurement\` where src_dataset_id like '%ehr%')
     and (m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0)
     and ((m.measurement_concept_id is null or m.measurement_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))
-    and (m.measurement_source_concept_id is null or m.measurement_source_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)))
-    and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+    and (m.measurement_source_concept_id is null or m.measurement_source_concept_id not in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)))"
 
     echo "CREATE VIEWS - v_full_measurement_with_grouped_units"
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -100,8 +99,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
     m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.source_standard_unit_map\` suc
     on suc.source_concept = m.unit_concept_id
-    where (m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) or m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))
-    and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+    where (m.measurement_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120) or m.measurement_source_concept_id in (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120))"
 
     for index in "${!view_names[@]}"; do
         view_table_name="${view_table_names[$index]}";
@@ -117,8 +115,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
         select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m join \`${BQ_PROJECT}.${BQ_DATASET}.${view_mapping_table_name}\` mm
         on m.${view_table_id} = mm.${view_table_id}
         where mm.src_dataset_id=(select distinct src_dataset_id from \`${BQ_PROJECT}.${BQ_DATASET}.${view_mapping_table_name}\` where src_dataset_id like '%ehr%')
-        and (m.${concept_id} > 0 or m.${source_concept_id} > 0)
-        and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+        and (m.${concept_id} > 0 or m.${source_concept_id} > 0)"
     done
 
 else
@@ -130,8 +127,7 @@ else
     m.range_low, m.range_high, m.provider_id, m.visit_occurrence_id, m.measurement_source_value, m.measurement_source_concept_id, m.unit_source_value, m.value_source_value
     from \`${BQ_PROJECT}.${BQ_DATASET}.measurement\` m
      left outer join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.source_standard_unit_map\` suc on m.unit_concept_id = suc.source_concept
-    where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0
-    and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+    where m.measurement_concept_id > 0 or m.measurement_source_concept_id > 0"
 
     for index in "${!view_names[@]}"; do
         view_table_name="${view_table_names[$index]}";
@@ -145,22 +141,18 @@ else
         bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
         "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${view_name}\` AS
         select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.${view_table_name}\` m
-        where m.${concept_id} > 0 or m.${source_concept_id} > 0
-        and person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+        where m.${concept_id} > 0 or m.${source_concept_id} > 0"
     done
 fi
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` AS
-select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
-where p.person_id not in
-(select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+select p.* from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "CREATE OR REPLACE TABLE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` AS
 select m.* from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` m
-where (m.observation_concept_id > 0 or m.observation_source_concept_id > 0)
-and m.person_id not in (select distinct person_id from \`${BQ_PROJECT}.${BQ_DATASET}.observation\` where value_source_concept_id=1586141)"
+where (m.observation_concept_id > 0 or m.observation_source_concept_id > 0)"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "UPDATE \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` a
@@ -477,7 +469,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_3, count_value, source_count_value)
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3,
 (select count(distinct a.person_id) from
-(SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+(SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union distinct
@@ -565,6 +557,7 @@ when distinct_ans = '1586143' then 'Black, African American, or African'
 when (distinct_ans like '%1586144%' or distinct_ans like '%1586148%' or distinct_ans like '%1586145%' or distinct_ans like '%903070%') then 'Other'
 when distinct_ans like '%1586146%' then 'White' when distinct_ans like '%1586147%' then 'Hispanic, Latino, or Spanish' when (distinct_ans like '%903079%' or distinct_ans like '%903096%') then 'Prefer Not To Answer'
 when distinct_ans like '%1586142%' then 'Asian'
+when distinct_ans like '%1586141%' then 'American Indian / Alaska Native'
 else distinct_ans end as race_eth from person_race_eth_ans)
 select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2,
 'Genomics' as stratum_3, 'micro-array' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
@@ -641,7 +634,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_3, stratum_4, count_value, source_count_value)
 select 0 as id, 3300 as analysis_id, '0' as stratum_1, 'Fitbit' as stratum_3, cast(b.gender_concept_id as string) as stratum_4, count(distinct a.person_id) as count_value, 0 as source_count_value from
-(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+(SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union distinct
 SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union distinct
@@ -724,7 +717,7 @@ with all_fibit_data as
 union all
 select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 union all
-select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_minute_level\`
+select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 union all
 select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 union all
