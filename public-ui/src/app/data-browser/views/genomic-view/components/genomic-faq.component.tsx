@@ -151,6 +151,24 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               hundreds of years ago.
             </div>
             <div style={styles.question}>
+              <strong>
+                Who does the genetic ancestry group ‘Americas’ include?
+              </strong>
+            </div>
+            <div style={styles.answer}>
+              This genetic ancestry group includes people who may be able to trace at least some of their distant
+              ancestors back to North, Central, or South America. However, many of these people may also have some
+              ancestors who came from other places, like Europe and Africa.
+              People with combinations of Indigenous American genetic ancestry with European and/or African genetic
+              ancestry are included in this category. It is important to acknowledge that these combinations are
+              common in large part because of the shameful history of colonization and slavery in the Americas.
+            </div>
+            <div style={styles.answer}>
+            It’s also important to recognize that having American genetic ancestry does not necessarily mean someone is a
+            citizen of a Tribal Nation or a member of a Tribal community. Only Tribes and Tribal communities decide how to
+            define their membership.
+            </div>
+            <div style={styles.question}>
               <strong>What does the category ‘Remaining’ mean?</strong>
             </div>
             <div style={styles.answer}>
