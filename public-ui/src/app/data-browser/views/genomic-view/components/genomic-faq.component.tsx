@@ -162,11 +162,11 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               People with combinations of Indigenous American genetic ancestry with European and/or African genetic
               ancestry are included in this category. It is important to acknowledge that these combinations are
               common in large part because of the shameful history of colonization and slavery in the Americas.
-            </div>
-            <div style={styles.answer}>
-            It’s also important to recognize that having American genetic ancestry does not necessarily mean someone is a
-            citizen of a Tribal Nation or a member of a Tribal community. Only Tribes and Tribal communities decide how to
-            define their membership.
+              <br/>
+              <br />
+              It’s also important to recognize that having American genetic ancestry does not necessarily mean someone is a
+                          citizen of a Tribal Nation or a member of a Tribal community. Only Tribes and Tribal communities decide how to
+                          define their membership.
             </div>
             <div style={styles.question}>
               <strong>What does the category ‘Remaining’ mean?</strong>
