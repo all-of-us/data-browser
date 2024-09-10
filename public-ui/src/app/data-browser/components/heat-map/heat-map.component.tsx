@@ -21,13 +21,15 @@ export const heatMapReactComponent = withRouteData(
             this.state = {
                 options: {
                     chart: {
-                        map: mapData
+                        map: mapData,
+                        height: "1000",
+                        panning: false 
                     },
                     title: {
                         text: 'Highcharts Map of the US'
                     },
                     mapNavigation: {
-                        enabled: true,
+                        enabled: false,
                         buttonOptions: {
                             verticalAlign: 'bottom'
                         }
@@ -42,6 +44,7 @@ export const heatMapReactComponent = withRouteData(
                             ['us-ny', 2],
                             ['us-fl', 3]
                         ],
+                        borderColor: null,
                         name: 'Random data',
                         states: {
                             hover: {
@@ -70,6 +73,7 @@ export const heatMapReactComponent = withRouteData(
             return (
                 <div>
                     <HighchartsReact
+                         style={{height:"50rem"}}
                         highcharts={Highcharts}
                         options={this.state.options}
                         constructorType={'mapChart'}
