@@ -460,7 +460,7 @@ for index in "${!domain_names[@]}"; do
     FROM source_condition_counts src
     LEFT JOIN condition_counts co
     ON src.condition_concept_id = co.condition_concept_id
-    WHERE co.condition_concept_id IS NULL;
+    WHERE co.condition_concept_id IS NULL;"
 
     # Domain Participant Counts
     echo "Getting domain participant counts"
