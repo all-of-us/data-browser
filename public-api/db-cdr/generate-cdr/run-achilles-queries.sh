@@ -410,8 +410,8 @@ for index in "${!domain_names[@]}"; do
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     WITH state_information AS (
         SELECT person_id, c.*
-        FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.observation\` ob
-        JOIN \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.concept\` c
+        FROM \`${$BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+        JOIN \`${$BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
         WHERE observation_source_concept_id = 1585249
     ),
