@@ -402,7 +402,65 @@ for index in "${!domain_names[@]}"; do
     join current_person_age_stratum p1
     on p1.person_id = co1.person_id
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
-    group by co1.${source_concept_id}, stratum_2"
+    group by co1.${source_concept_id}, stratum_2;"
+
+    # Get the location counts
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+    WITH state_information AS (
+        SELECT person_id, c.*
+        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON ob.value_source_concept_id = c.concept_id
+        WHERE observation_source_concept_id = 1585249
+    ),
+    condition_counts AS (
+        SELECT
+            co1.${concept_id} as concept_id,
+            si.concept_name,
+            COUNT(DISTINCT co1.person_id) AS person_count
+        FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+        JOIN state_information si ON co1.person_id = si.person_id
+        WHERE co1.${concept_id} > 0
+        GROUP BY co1.${concept_id}, si.concept_name
+    ),
+    source_condition_counts AS (
+        SELECT
+            co2.${source_concept_id} AS concept_id,
+            si2.concept_name,
+            COUNT(DISTINCT co2.person_id) AS source_person_count
+        FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
+        JOIN state_information si2 ON co2.person_id = si2.person_id
+        GROUP BY co2.${source_concept_id}, si2.concept_name
+    )
+
+    SELECT
+        0 AS id,
+        3108 AS analysis_id,
+        CAST(co.concept_id AS STRING) AS stratum_1,
+        co.concept_name AS stratum_2,
+        \"${domain_stratum}\" AS stratum_3,
+        co.person_count AS count_value,
+        COALESCE(src.source_person_count, 0) AS source_count_value
+    FROM condition_counts co
+    LEFT JOIN source_condition_counts src
+    ON co.concept_id = src.concept_id AND co.concept_name = src.concept_name
+
+    UNION ALL
+
+    SELECT
+        0 AS id,
+        3108 AS analysis_id,
+        CAST(src.concept_id AS STRING) AS stratum_1,
+        src.concept_name AS stratum_2,
+        \"${domain_stratum}\" AS stratum_3,
+        src.source_person_count AS count_value,
+        src.source_person_count AS source_count_value
+    FROM source_condition_counts src
+    LEFT JOIN condition_counts co
+    ON src.concept_id = co.concept_id
+    WHERE co.concept_id IS NULL;"
 
     # Domain Participant Counts
     echo "Getting domain participant counts"

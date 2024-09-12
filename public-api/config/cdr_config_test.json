@@ -119,12 +119,12 @@
     "name": "v0-5-rc14 Release version of 2024q3r2_combined",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
-    "bigqueryDataset": "2024q3r2_combined",
+    "bigqueryDataset": "2024q3r2_combined_release",
     "genomicsProject": "aou-db-prod",
     "genomicsDataset": "2024q3r2_genomics",
     "creationTime": "2023-12-19 15:55:44Z",
     "releaseNumber": 15,
     "numParticipants": 633540,
-    "publicDbName": "p_2024q3_5"
+    "publicDbName": "p_2024q3_13"
   }
 ]
