@@ -1186,6 +1186,10 @@ definitions:
         description: participant count by date analysis
         type: object
         $ref: "#/definitions/Analysis"
+      locationAnalysis:
+        description: Participant Count by location
+        type: object
+        $ref: "#/definitions/Analysis"
 
   ConceptAnalysisListResponse:
     type: object
@@ -1278,6 +1282,7 @@ definitions:
       - GENO_GENDER_ANALYSIS
       - GENO_AGE_ANALYSIS
       - GENO_RACE_ANALYSIS
+      - LOCATION_ANALYSIS_ID
 
   VariantResultSizeRequest:
     type: object

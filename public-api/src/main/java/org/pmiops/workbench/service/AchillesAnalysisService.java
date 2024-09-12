@@ -45,6 +45,8 @@ public class AchillesAnalysisService {
     public static Map<String, String> ageStratumNameMap = new HashMap<String, String>();
     public static Map<String, String> genderStratumNameMap = new HashMap<String, String>();
 
+    public static Map<String, String> locationStratumNameMap = new HashMap<String, String>();
+
     public static void setAgeStratumNameMap() {
         ageStratumNameMap.put("2", "18-29");
         ageStratumNameMap.put("3", "30-39");
@@ -68,9 +70,73 @@ public class AchillesAnalysisService {
         genderStratumNameMap.put("0", "Other");
     }
 
+    public static void setLocationStratumNameMap() {
+        locationStratumNameMap.put("PII State: NV", "Nevada");
+        locationStratumNameMap.put("PII State: UT", "Utah");
+        locationStratumNameMap.put("PII State: MI", "Michigan");
+        locationStratumNameMap.put("PII State: IL", "Illinois");
+        locationStratumNameMap.put("PII State: IN", "Indiana");
+        locationStratumNameMap.put("PII State: PW", "Palau");
+        locationStratumNameMap.put("PII State: ID", "Idaho");
+        locationStratumNameMap.put("PII State: PA", "Pennsylvania");
+        locationStratumNameMap.put("PII State: SC", "South Carolina");
+        locationStratumNameMap.put("PII State: LA", "Louisiana");
+        locationStratumNameMap.put("PII State: RI", "Rhode Island");
+        locationStratumNameMap.put("PII State: NY", "New York");
+        locationStratumNameMap.put("PII State: SD", "South Dakota");
+        locationStratumNameMap.put("PII State: KY", "Kentucky");
+        locationStratumNameMap.put("PII State: OK", "Oklahoma");
+        locationStratumNameMap.put("PII State: AR", "Arkansas");
+        locationStratumNameMap.put("PII State: PR", "Puerto Rico");
+        locationStratumNameMap.put("PII State: MO", "Missouri");
+        locationStratumNameMap.put("PII State: IA", "Iowa");
+        locationStratumNameMap.put("PII State: NJ", "New Jersey");
+        locationStratumNameMap.put("PII State: VT", "Vermont");
+        locationStratumNameMap.put("PII State: NM", "New Mexico");
+        locationStratumNameMap.put("PII State: CA", "California");
+        locationStratumNameMap.put("PII State: WI", "Wisconsin");
+        locationStratumNameMap.put("PII State: VI", "Virgin Islands");
+        locationStratumNameMap.put("PII State: AK", "Alaska");
+        locationStratumNameMap.put("PII State: TX", "Texas");
+        locationStratumNameMap.put("PII State: WV", "West Virginia");
+        locationStratumNameMap.put("PII State: OH", "Ohio");
+        locationStratumNameMap.put("PII State: AZ", "Arizona");
+        locationStratumNameMap.put("PII State: MP", "Northern Mariana Islands");
+        locationStratumNameMap.put("PII State: ME", "Maine");
+        locationStratumNameMap.put("PII State: HI", "Hawaii");
+        locationStratumNameMap.put("PII State: FL", "Florida");
+        locationStratumNameMap.put("PII State: DE", "Delaware");
+        locationStratumNameMap.put("PII State: MS", "Mississippi");
+        locationStratumNameMap.put("PII State: NE", "Nebraska");
+        locationStratumNameMap.put("PII State: TN", "Tennessee");
+        locationStratumNameMap.put("PII State: WA", "Washington");
+        locationStratumNameMap.put("PII State: DC", "District of Columbia");
+        locationStratumNameMap.put("PII State: MN", "Minnesota");
+        locationStratumNameMap.put("PII State: GU", "Guam");
+        locationStratumNameMap.put("PII State: OR", "Oregon");
+        locationStratumNameMap.put("PII State: CT", "Connecticut");
+        locationStratumNameMap.put("PII State: VA", "Virginia");
+        locationStratumNameMap.put("PII State: NC", "North Carolina");
+        locationStratumNameMap.put("PII State: MT", "Montana");
+        locationStratumNameMap.put("PII State: FM", "Federated States of Micronesia");
+        locationStratumNameMap.put("PII State: ND", "North Dakota");
+        locationStratumNameMap.put("PII State: AL", "Alabama");
+        locationStratumNameMap.put("PII State: GA", "Georgia");
+        locationStratumNameMap.put("PII State: MD", "Maryland");
+        locationStratumNameMap.put("PII State: MH", "Marshall Islands");
+        locationStratumNameMap.put("PII State: MA", "Massachusetts");
+        locationStratumNameMap.put("PII State: NH", "New Hampshire");
+        locationStratumNameMap.put("PII State: CO", "Colorado");
+        locationStratumNameMap.put("PII State: WY", "Wyoming");
+        locationStratumNameMap.put("PII State: KS", "Kansas");
+        locationStratumNameMap.put("PII State: AS", "American Samoa");
+    }
+
+
     static {
         setAgeStratumNameMap();
         setGenderStratumNameMap();
+        setLocationStratumNameMap();
     }
 
     @Autowired
@@ -215,9 +281,14 @@ public class AchillesAnalysisService {
             ConceptAnalysis conceptAnalysis=new ConceptAnalysis();
             boolean isMeasurement = false;
 
-            List<Analysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID))).stream()
+            List<Analysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,
+                    ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID),
+                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))).stream()
                     .map(achillesMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
@@ -245,6 +316,9 @@ public class AchillesAnalysisService {
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID))) {
                     addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(aa);
+                } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))) {
+                    addLocationStratum(aa, 2, conceptId, null);
+                    conceptAnalysis.setLocationAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID))) {
                     Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
 
@@ -414,6 +488,70 @@ public class AchillesAnalysisService {
                 }
             }
         }
+    }
+
+    public void addLocationStratum(Analysis aa, int stratum, String conceptId, List<DbAchillesResult> ehrCountResults){
+        Set<String> uniqueLocationStratums = new TreeSet<String>();
+        String domainConceptId = null;
+        for(AchillesResult ar: aa.getResults()){
+            String analysisStratumName = ar.getAnalysisStratumName();
+            if (analysisStratumName == null || analysisStratumName.equals("")) {
+                if (stratum == 1) {
+                    uniqueLocationStratums.add(ar.getStratum1());
+                    ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum1()));
+                } else if (stratum == 2) {
+                    uniqueLocationStratums.add(ar.getStratum2());
+                    ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum2()));
+                } else if (stratum == 3) {
+                    uniqueLocationStratums.add(ar.getStratum3());
+                    ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum3()));
+                } else if (stratum == 4) {
+                    domainConceptId = ar.getStratum1();
+                    uniqueLocationStratums.add(ar.getStratum4());
+                    ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum4()));
+                }
+            }
+        }
+
+        // List of all possible locations
+        Set<String> completeLocationStratumList = new TreeSet<String>(Arrays.asList(
+                "PII State: NV", "PII State: UT", "PII State: MI", "PII State: IL", "PII State: IN",
+                "PII State: PW", "PII State: ID", "PII State: PA", "PII State: SC", "PII State: LA",
+                "PII State: RI", "PII State: NY", "PII State: SD", "PII State: KY", "PII State: OK",
+                "PII State: AR", "PII State: PR", "PII State: MO", "PII State: IA", "PII State: NJ",
+                "PII State: VT", "PII State: NM", "PII State: CA", "PII State: WI", "PII State: VI",
+                "PII State: AK", "PII State: TX", "PII State: WV", "PII State: OH", "PII State: AZ",
+                "PII State: MP", "PII State: ME", "PII State: HI", "PII State: FL", "PII State: DE",
+                "PII State: MS", "PII State: NE", "PII State: TN", "PII State: WA", "PII State: DC",
+                "PII State: MN", "PII State: GU", "PII State: OR", "PII State: CT", "PII State: VA",
+                "PII State: NC", "PII State: MT", "PII State: FM", "PII State: ND", "PII State: AL",
+                "PII State: GA", "PII State: MD", "PII State: MH", "PII State: MA", "PII State: NH",
+                "PII State: CO", "PII State: WY", "PII State: KS", "PII State: AS"
+        ));
+
+        // Remove already existing locations from the complete list
+        completeLocationStratumList.removeAll(uniqueLocationStratums);
+
+        // Add missing location strata
+        for (String missingLocation : completeLocationStratumList) {
+            AchillesResult missingResult = null;
+            if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)) {
+                missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingLocation, null, null, null, 20L, 20L);
+            } else {
+                if (stratum == 1) {
+                    missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), missingLocation, null, null, null, null, null, null, 20L, 20L);
+                } else if (stratum == 2) {
+                    missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), conceptId, missingLocation, null, null, null, null, null, 20L, 20L);
+                } else if (stratum == 3) {
+                    missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), conceptId, null, missingLocation, null, null, null, null, 20L, 20L);
+                }
+            }
+            missingResult.setAnalysisStratumName(locationStratumNameMap.get(missingLocation));
+            aa.getResults().add(missingResult);
+        }
+
+        // Filter results with null analysisStratumName
+        aa.setResults(aa.getResults().stream().filter(ar -> ar.getAnalysisStratumName() != null).collect(Collectors.toList()));
     }
 
     public static HashMap<String,List<AchillesResult>> seperateUnitResults(Analysis aa){

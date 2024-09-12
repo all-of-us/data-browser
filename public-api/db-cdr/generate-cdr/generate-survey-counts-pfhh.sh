@@ -51,6 +51,30 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on ob.person_id = p.person_id
 and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8;"
 
+
+# New 3118 query by location (similar to 3111 but using location)
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
+WITH state_information AS (
+        SELECT person_id, c.concept_name as location
+        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON ob.value_source_concept_id = c.concept_id
+        WHERE observation_source_concept_id = 1585249
+    )
+select 0 as id, 3118 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
+CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
+cast(si.location as string) stratum_5,
+sm2.path as stratum_6,
+Count(distinct ob.person_id) as count_value, 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on sm2.concept_id = sm.question_concept_id
+join state_information si on ob.person_id = si.person_id
+and ob.value_source_concept_id = sm.answer_concept_id
+group by 4, 5, 6, 7, 8;"
+
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
@@ -109,6 +133,29 @@ from survey_age_stratum ob1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.sur
 On ob1.concept_id=sq.concept_id
 where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
 group by stratum_2"
+
+# New 3118 query by location (similar to 3101 but using location)
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
+WITH state_information AS (
+        SELECT person_id, c.concept_name as location
+        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON ob.value_source_concept_id = c.concept_id
+        WHERE observation_source_concept_id = 1585249
+    )
+select 0, 3108 as analysis_id,
+'43529712' as stratum_1,
+CAST(si.location AS STRING) as stratum_2,'Survey' as stratum_3,
+COUNT(distinct p1.PERSON_ID) as count_value,COUNT(distinct p1.PERSON_ID) as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.person\` p1
+inner join \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob1 on p1.person_id = ob1.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sq
+On ob1.concept_id=sq.concept_id
+join state_information si on p1.person_id = si.person_id
+where (ob1.concept_id > 0 and ob1.value_source_concept_id > 0)
+group by si.location"
 
 # Count of people who took each survey
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \

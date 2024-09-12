@@ -123,6 +123,64 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      and co1.measurement_source_concept_id not in (select distinct measurement_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`)
      group by co1.measurement_source_concept_id, p1.gender_concept_id"
 
+     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+     "INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+     WITH state_information AS (
+         SELECT person_id, c.*
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE observation_source_concept_id = 1585249
+     ),
+     measurement_counts AS (
+         SELECT
+             co1.measurement_concept_id,
+             p1.concept_name,
+             COUNT(DISTINCT p1.person_id) AS count_value
+         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
+         JOIN state_information p1 ON co1.person_id = p1.person_id
+         WHERE co1.measurement_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+         GROUP BY co1.measurement_concept_id, p1.concept_name
+     ),
+     source_measurement_counts AS (
+         SELECT
+             co2.measurement_source_concept_id AS measurement_concept_id,
+             p2.concept_name,
+             COUNT(DISTINCT co2.person_id) AS source_count_value
+         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2
+         JOIN state_information p2 ON co2.person_id = p2.person_id
+         WHERE co2.measurement_source_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
+         GROUP BY co2.measurement_source_concept_id, p2.concept_name
+     )
+
+     SELECT
+         0 AS id,
+         3108 AS analysis_id,
+         CAST(co.measurement_concept_id AS STRING) AS stratum_1,
+         co.concept_name AS stratum_2,
+         'Measurement' AS stratum_3,
+         co.count_value AS count_value,
+         COALESCE(src.source_count_value, 0) AS source_count_value
+     FROM measurement_counts co
+     LEFT JOIN source_measurement_counts src
+     ON co.measurement_concept_id = src.measurement_concept_id AND co.concept_name = src.concept_name
+
+     UNION ALL
+
+     SELECT
+         0 AS id,
+         3108 AS analysis_id,
+         CAST(src.measurement_concept_id AS STRING) AS stratum_1,
+         src.concept_name AS stratum_2,
+         'Measurement' AS stratum_3,
+         src.source_count_value AS count_value,
+         src.source_count_value AS source_count_value
+     FROM source_measurement_counts src
+     LEFT JOIN measurement_counts co
+     ON src.measurement_concept_id = co.measurement_concept_id
+     WHERE co.measurement_concept_id IS NULL;"
+
       # Pregnancy concept by gender
       bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
       "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
@@ -150,6 +208,66 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       where co1.observation_source_concept_id in (903120)
       and co1.observation_source_concept_id not in (select distinct observation_concept_id from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\`)
       group by co1.observation_source_concept_id, p1.gender_concept_id"
+
+      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+      "INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+      WITH state_information AS (
+          SELECT person_id, c.concept_name AS location
+          FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+          JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+          ON ob.value_source_concept_id = c.concept_id
+          WHERE observation_source_concept_id = 1585249
+      ),
+      location_counts AS (
+          SELECT
+              co1.observation_concept_id AS concept_id,
+              si.location AS location,
+              COUNT(DISTINCT si.person_id) AS count_value
+          FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co1
+          JOIN state_information si
+          ON si.person_id = co1.person_id
+          WHERE co1.observation_concept_id IN (903120)
+          GROUP BY co1.observation_concept_id, si.location
+      ),
+      source_location_counts AS (
+          SELECT
+              co2.observation_source_concept_id AS concept_id,
+              si2.location AS location,
+              COUNT(DISTINCT co2.person_id) AS source_count_value
+          FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co2
+          JOIN state_information si2
+          ON si2.person_id = co2.person_id
+          WHERE co2.observation_source_concept_id IN (903120)
+          GROUP BY co2.observation_source_concept_id, si2.location
+      )
+
+      SELECT
+          0 AS id,
+          3108 AS analysis_id,
+          CAST(lc.concept_id AS STRING) AS stratum_1,
+          lc.location AS stratum_2,
+          'Measurement' AS stratum_3,
+          lc.count_value AS count_value,
+          COALESCE(src.source_count_value, 0) AS source_count_value
+      FROM location_counts lc
+      LEFT JOIN source_location_counts src
+      ON lc.concept_id = src.concept_id AND lc.location = src.location
+
+      UNION ALL
+
+      SELECT
+          0 AS id,
+          3108 AS analysis_id,
+          CAST(src.concept_id AS STRING) AS stratum_1,
+          src.location AS stratum_2,
+          'Measurement' AS stratum_3,
+          src.source_count_value AS count_value,
+          src.source_count_value AS source_count_value
+      FROM source_location_counts src
+      LEFT JOIN location_counts lc
+      ON src.concept_id = lc.concept_id AND src.location = lc.location
+      WHERE lc.concept_id IS NULL;"
 
      # Measurement by age deciles
      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -1734,300 +1852,738 @@ select * from yes_values_1
 union distinct
 select * from yes_values_2"
 
-echo "Generating any fitbit data counts"
+echo "Generating any fitbit data counts with location information"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
-union all
-select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
-union all
-select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
-union all
-select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
-union all
-SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
-union all
-SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+WITH all_fitbit_data AS (
+    SELECT person_id, date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
+    UNION ALL
+    SELECT person_id, date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
+    UNION ALL
+    SELECT person_id, datetime AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
+    UNION ALL
+    SELECT person_id, datetime AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
+    UNION ALL
+    SELECT person_id, sleep_date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
+    UNION ALL
+    SELECT person_id, sleep_date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
 ),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Any Fitbit Data' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Any Fitbit Data' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Any Fitbit Data' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
 
-echo "Generating any fitbit data counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Heart Rate (Summary)' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Heart Rate (Summary)' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Heart Rate (Summary)' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Any Fitbit Data' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
 
-echo "Generating any fitbit data counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Heart rate (minute-level)' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Heart rate (minute-level)' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Heart rate (minute-level)' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Any Fitbit Data' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
 
-echo "Generating any fitbit data counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, datetime as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Activity intraday steps (minute-level)' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Any Fitbit Data' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
 
-echo "Generating any fitbit data counts"
-bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Activity daily summary' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Activity daily summary' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Activity daily summary' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Any Fitbit Data' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
 
-echo "Generating sleep daily summary data counts"
+echo "Generating any fitbit data counts with location"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, sleep_date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Sleep Daily Summary' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Sleep Daily Summary' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Sleep Daily Summary' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+WITH all_fitbit_data AS (
+    SELECT person_id, date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
 
-echo "Generating sleep daily summary data counts"
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Heart Rate (Summary)' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Heart Rate (Summary)' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Heart Rate (Summary)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Heart Rate (Summary)' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
+
+echo "Generating any fitbit data counts with location"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
-with all_fibit_data as
-(select person_id, sleep_date as data_date from \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`),
-min_dates as
-(select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
-m_age as
-(select co.person_id,
-IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR) - 1,
-  DATE_DIFF(join_date, cast(birth_datetime as DATE), YEAR)) as age
-from min_dates  co join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id=co.person_id),
-     m_age_stratum as
-     (
-     select *,
-     case when age >= 18 and age <= 29 then '2'
-     when age > 89 then '9'
-     when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-     when age < 18 then '0' end as age_stratum from m_age
-     ),
-year_counts as
-(SELECT extract(year from join_date) as join_year, count(distinct person_id) as people_count from min_dates
-group by 1
-order by 1 asc),
-year_rolling_counts as
-(SELECT join_year,people_count,
-SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
-FROM year_counts)
-select 0 as id, 3107 as analysis_id, 'Sleep Level (Sequence by level)' as stratum_1, cast(join_year as string) as stratum_2, 'Fitbit' as stratum_3, RunningTotal as count_value, RunningTotal as source_count_value
-from year_rolling_counts
-union all
-select 0 as id, 3101 as analysis_id, 'Sleep Level (Sequence by level)' as stratum_1, cast(gender_concept_id as string) as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from min_dates a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id
-group by 4
-union all
-select 0 as id, 3102 as analysis_id, 'Sleep Level (Sequence by level)' as stratum_1, age_stratum as stratum_2, 'Fitbit' as stratum_3, count(distinct a.person_id) as count_value, count(distinct a.person_id) as source_count_value
-from m_age_stratum a
-group by 4;"
+WITH all_fitbit_data AS (
+    SELECT person_id, datetime AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
+
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Heart rate (minute-level)' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Heart rate (minute-level)' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Heart rate (minute-level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Heart rate (minute-level)' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
+
+echo "Generating any fitbit data counts with location"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+WITH all_fitbit_data AS (
+    SELECT person_id, datetime AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
+
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Activity intraday steps (minute-level)' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Activity intraday steps (minute-level)' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Activity intraday steps (minute-level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Activity intraday steps (minute-level)' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
+
+echo "Generating any fitbit data counts with location"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+WITH all_fitbit_data AS (
+    SELECT person_id, date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
+
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Activity daily summary' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Activity daily summary' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Activity daily summary' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Activity daily summary' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
+
+echo "Generating sleep daily summary data counts with location"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+WITH all_fitbit_data AS (
+    SELECT person_id, sleep_date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
+
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Sleep Daily Summary' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Sleep Daily Summary' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Sleep Daily Summary' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Sleep Daily Summary' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
+
+echo "Generating sleep level (sequence by level) data counts with location"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
+WITH all_fitbit_data AS (
+    SELECT person_id, sleep_date AS data_date
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
+),
+state_information AS (
+    SELECT person_id, c.concept_name AS location
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+    ON ob.value_source_concept_id = c.concept_id
+    WHERE observation_source_concept_id = 1585249
+),
+min_dates AS (
+    SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
+    FROM all_fitbit_data a
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON a.person_id = p.person_id
+    GROUP BY 1
+),
+m_age AS (
+    SELECT co.person_id,
+    IF(EXTRACT(DAYOFYEAR FROM join_date) < EXTRACT(DAYOFYEAR FROM birth_datetime),
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR) - 1,
+      DATE_DIFF(join_date, CAST(birth_datetime AS DATE), YEAR)) AS age
+    FROM min_dates co
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON p.person_id = co.person_id
+),
+m_age_stratum AS (
+    SELECT *,
+    CASE
+        WHEN age >= 18 AND age <= 29 THEN '2'
+        WHEN age > 89 THEN '9'
+        WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age / 10) AS STRING)
+        WHEN age < 18 THEN '0'
+    END AS age_stratum
+    FROM m_age
+),
+year_counts AS (
+    SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
+    FROM min_dates
+    GROUP BY 1
+    ORDER BY 1 ASC
+),
+year_rolling_counts AS (
+    SELECT join_year, people_count,
+    SUM(people_count) OVER (ORDER BY join_year) AS RunningTotal
+    FROM year_counts
+)
+
+-- Fitbit data count by year with running total
+SELECT
+    0 AS id,
+    3107 AS analysis_id,
+    'Sleep Level (Sequence by level)' AS stratum_1,
+    CAST(join_year AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    RunningTotal AS count_value,
+    RunningTotal AS source_count_value
+FROM year_rolling_counts
+
+-- Fitbit data count by gender
+UNION ALL
+SELECT
+    0 AS id,
+    3101 AS analysis_id,
+    'Sleep Level (Sequence by level)' AS stratum_1,
+    CAST(gender_concept_id AS STRING) AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` b ON a.person_id = b.person_id
+GROUP BY 4
+
+-- Fitbit data count by age
+UNION ALL
+SELECT
+    0 AS id,
+    3102 AS analysis_id,
+    'Sleep Level (Sequence by level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_stratum a
+GROUP BY 4
+
+-- Fitbit data count by location
+UNION ALL
+SELECT
+    0 AS id,
+    3108 AS analysis_id,
+    'Sleep Level (Sequence by level)' AS stratum_1,
+    location AS stratum_2,
+    'Fitbit' AS stratum_3,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM min_dates a
+JOIN state_information si ON a.person_id = si.person_id
+GROUP BY 4;"
