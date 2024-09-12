@@ -58,6 +58,7 @@ public class CommonStorageEnums {
                   .put(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID, 1815L)
                   .put(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID, 1900L)
                   .put(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID, 1910L)
+                  .put(AnalysisIdConstant.LOCATION_ANALYSIS_ID, 3108L)
                   .put(AnalysisIdConstant.RACE_ANALYSIS, 4L)
                   .put(AnalysisIdConstant.ETHNICITY_ANALYSIS, 5L)
                   .put(AnalysisIdConstant.GENDER_ANALYSIS, 2L)
