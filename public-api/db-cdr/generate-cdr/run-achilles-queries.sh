@@ -402,7 +402,7 @@ for index in "${!domain_names[@]}"; do
     join current_person_age_stratum p1
     on p1.person_id = co1.person_id
     where co1.${source_concept_id} not in (select distinct ${concept_id} from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
-    group by co1.${source_concept_id}, stratum_2"
+    group by co1.${source_concept_id}, stratum_2;"
 
     # Get the location counts
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -410,8 +410,8 @@ for index in "${!domain_names[@]}"; do
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     WITH state_information AS (
         SELECT person_id, c.*
-        FROM \`${$BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${$BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
         WHERE observation_source_concept_id = 1585249
     ),
