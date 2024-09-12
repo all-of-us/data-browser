@@ -417,50 +417,50 @@ for index in "${!domain_names[@]}"; do
     ),
     condition_counts AS (
         SELECT
-            co1.condition_concept_id,
+            co1.${concept_id} as concept_id,
             si.concept_name,
             COUNT(DISTINCT co1.person_id) AS person_count
         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
         JOIN state_information si ON co1.person_id = si.person_id
-        WHERE co1.condition_concept_id > 0
-        GROUP BY co1.condition_concept_id, si.concept_name
+        WHERE co1.${concept_id} > 0
+        GROUP BY co1.${concept_id}, si.concept_name
     ),
     source_condition_counts AS (
         SELECT
-            co2.condition_source_concept_id AS condition_concept_id,
+            co2.${source_concept_id} AS concept_id,
             si2.concept_name,
             COUNT(DISTINCT co2.person_id) AS source_person_count
         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
         JOIN state_information si2 ON co2.person_id = si2.person_id
-        GROUP BY co2.condition_source_concept_id, si2.concept_name
+        GROUP BY co2.${source_concept_id}, si2.concept_name
     )
 
     SELECT
         0 AS id,
         3108 AS analysis_id,
-        CAST(co.condition_concept_id AS STRING) AS stratum_1,
+        CAST(co.concept_id AS STRING) AS stratum_1,
         co.concept_name AS stratum_2,
         \"${domain_stratum}\" AS stratum_3,
         co.person_count AS count_value,
         COALESCE(src.source_person_count, 0) AS source_count_value
     FROM condition_counts co
     LEFT JOIN source_condition_counts src
-    ON co.condition_concept_id = src.condition_concept_id AND co.concept_name = src.concept_name
+    ON co.concept_id = src.concept_id AND co.concept_name = src.concept_name
 
     UNION ALL
 
     SELECT
         0 AS id,
         3108 AS analysis_id,
-        CAST(src.condition_concept_id AS STRING) AS stratum_1,
+        CAST(src.concept_id AS STRING) AS stratum_1,
         src.concept_name AS stratum_2,
         \"${domain_stratum}\" AS stratum_3,
         src.source_person_count AS count_value,
         src.source_person_count AS source_count_value
     FROM source_condition_counts src
     LEFT JOIN condition_counts co
-    ON src.condition_concept_id = co.condition_concept_id
-    WHERE co.condition_concept_id IS NULL;"
+    ON src.concept_id = co.concept_id
+    WHERE co.concept_id IS NULL;"
 
     # Domain Participant Counts
     echo "Getting domain participant counts"
