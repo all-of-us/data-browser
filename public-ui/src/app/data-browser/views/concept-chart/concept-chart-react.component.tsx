@@ -6,6 +6,7 @@ import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
 import { ValueReactChartComponent } from "app/data-browser/charts/chart-measurement-values/chart-value-react.component";
 import { SourcesChartReactComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component"
 import { SourceTreeComponent } from "app/data-browser/components/source-tree/source-tree-react.component";
 import { TooltipNoIconReactComponent } from "app/data-browser/components/tooltip/tooltip-no-icon-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
@@ -154,7 +155,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
           ? ["Values", "Sex Assigned at Birth", "Age", "Sources"]
-          : ["Sex Assigned at Birth", "Age", "Sources"],
+          : ["Sex Assigned at Birth", "Age", "Sources","Map"],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
         : this.props.domain === "labs & measurements"
@@ -274,6 +275,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     const { conceptAnalyses } = this.state;
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
+    console.log(conceptAnalyses,'conceptAnalyses');
+    
     switch (g) {
       case GraphType.Age:
         selectedAnalysis = conceptAnalyses.ageAnalysis;
@@ -507,6 +510,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       sourcesLoading,
       showConceptCopyAlert,
     } = this.state;
+    
+    
     const tabIndex = 0;
     return (
       <React.Fragment>
@@ -561,6 +566,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   genderCountAnalysis={countAnalysis.genderCountAnalysis}
                   selectedResult=""
                 />
+              </div>
+            ) : graphToShow === "Map" ? (
+              <div className="chart" key="map-chart">
+                <HeatMapReactComponent/>
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">

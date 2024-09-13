@@ -13,7 +13,7 @@ interface State {
     options: any
 }
 
-export const heatMapReactComponent = withRouteData(
+export const HeatMapReactComponent = 
     class extends React.Component<{}, State> {
         constructor(props) {
             super(props);
@@ -84,4 +84,4 @@ export const heatMapReactComponent = withRouteData(
         }
     }
 
-)
+
