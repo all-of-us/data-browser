@@ -65,6 +65,7 @@ public class CommonStorageEnums {
                   .put(AnalysisIdConstant.GENDER_ANALYSIS, 2L)
                   .put(AnalysisIdConstant.GENO_GENDER_ANALYSIS, 3501L)
                   .put(AnalysisIdConstant.GENO_AGE_ANALYSIS, 3502L)
+                  .put(AnalysisIdConstant.GENO_LOCATION_ANALYSIS, 3508L)
                   .put(AnalysisIdConstant.GENO_RACE_ANALYSIS, 3503L)
                   .build();
 
