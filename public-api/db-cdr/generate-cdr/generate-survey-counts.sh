@@ -219,11 +219,13 @@ On o.observation_source_concept_id=sq.concept_id
 left join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
 where (o.observation_source_concept_id = 1586140)),
 state_information AS (
-        SELECT person_id, c.concept_name as location
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 )
 SELECT 0 as id, 3110 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(observation_source_concept_id as string) as stratum_2,
 stratum_3, stratum_4,
@@ -333,11 +335,13 @@ with ppi_path as (
   from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\`
 ),
 state_information AS (
-        SELECT person_id, c.concept_name as location
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 main_questions_count as (
   select
@@ -451,11 +455,13 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 WITH state_information AS (
-    SELECT ob.person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE ob.observation_source_concept_id = 1585249
+              SELECT
+                  ob.person_id,
+                  LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+              FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+              JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+              ON ob.value_source_concept_id = c.concept_id
+              WHERE ob.observation_source_concept_id = 1585249
 )
 SELECT
     0 AS id,

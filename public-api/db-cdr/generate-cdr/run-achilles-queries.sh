@@ -409,11 +409,13 @@ for index in "${!domain_names[@]}"; do
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     WITH state_information AS (
-        SELECT person_id, c.*
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
+                  SELECT
+                      ob.person_id,
+                      LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+                  FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+                  JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+                  ON ob.value_source_concept_id = c.concept_id
+                  WHERE ob.observation_source_concept_id = 1585249
     ),
     condition_counts AS (
         SELECT
@@ -642,11 +644,13 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 WITH state_information AS (
-    SELECT ob.person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE ob.observation_source_concept_id = 1585249
+              SELECT
+                  ob.person_id,
+                  LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+              FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+              JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+              ON ob.value_source_concept_id = c.concept_id
+              WHERE ob.observation_source_concept_id = 1585249
 )
 SELECT
     0 AS id,

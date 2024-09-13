@@ -127,12 +127,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      "INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
      (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
      WITH state_information AS (
-         SELECT person_id, c.*
-         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-         ON ob.value_source_concept_id = c.concept_id
-         WHERE observation_source_concept_id = 1585249
-     ),
+                   SELECT
+                       ob.person_id,
+                       LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+                   FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+                   JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+                   ON ob.value_source_concept_id = c.concept_id
+                   WHERE ob.observation_source_concept_id = 1585249
+          ),
      measurement_counts AS (
          SELECT
              co1.measurement_concept_id,
@@ -213,12 +215,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       "INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
       (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
       WITH state_information AS (
-          SELECT person_id, c.concept_name AS location
-          FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-          JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-          ON ob.value_source_concept_id = c.concept_id
-          WHERE observation_source_concept_id = 1585249
-      ),
+                    SELECT
+                        ob.person_id,
+                        LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+                    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+                    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+                    ON ob.value_source_concept_id = c.concept_id
+                    WHERE ob.observation_source_concept_id = 1585249
+     ),
       location_counts AS (
           SELECT
               co1.observation_concept_id AS concept_id,
@@ -1876,11 +1880,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -1979,11 +1985,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_summary\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -2082,11 +2090,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.heart_rate_intraday\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -2185,11 +2195,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -2288,11 +2300,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.activity_summary\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -2391,11 +2405,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
@@ -2494,11 +2510,13 @@ WITH all_fitbit_data AS (
     FROM \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 ),
 state_information AS (
-    SELECT person_id, c.concept_name AS location
-    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-    ON ob.value_source_concept_id = c.concept_id
-    WHERE observation_source_concept_id = 1585249
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
 ),
 min_dates AS (
     SELECT DISTINCT a.person_id, MIN(data_date) AS join_date
