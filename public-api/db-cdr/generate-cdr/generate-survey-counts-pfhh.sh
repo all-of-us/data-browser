@@ -57,12 +57,14 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
 WITH state_information AS (
-        SELECT person_id, c.concept_name as location
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
-    )
+         SELECT
+             ob.person_id,
+             LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON ob.value_source_concept_id = c.concept_id
+         WHERE ob.observation_source_concept_id = 1585249
+)
 select 0 as id, 3118 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
 CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
 cast(si.location as string) stratum_5,
@@ -139,12 +141,14 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 WITH state_information AS (
-        SELECT person_id, c.concept_name as location
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
-    )
+              SELECT
+                  ob.person_id,
+                  LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+              FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+              JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+              ON ob.value_source_concept_id = c.concept_id
+              WHERE ob.observation_source_concept_id = 1585249
+     )
 select 0, 3108 as analysis_id,
 '43529712' as stratum_1,
 CAST(si.location AS STRING) as stratum_2,'Survey' as stratum_3,

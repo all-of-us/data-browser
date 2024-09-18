@@ -25,6 +25,7 @@ public class DbSurveyMetadata {
     private DbAchillesAnalysis countAnalysis;
     private DbAchillesAnalysis genderAnalysis;
     private DbAchillesAnalysis ageAnalysis;
+    private DbAchillesAnalysis locationAnalysis;
     private DbAchillesAnalysis versionAnalysis;
     private DbAchillesAnalysis participantCountAnalysis;
     private DbSurveyMetadataId dbSurveyMetadataId;
@@ -240,6 +241,20 @@ public class DbSurveyMetadata {
 
     public DbSurveyMetadata ageAnalysis(DbAchillesAnalysis analysis) {
         this.ageAnalysis = analysis;
+        return this;
+    }
+
+    @Transient
+    public DbAchillesAnalysis getLocationAnalysis() {
+        return this.locationAnalysis;
+    }
+
+    public void setLocationAnalysis(DbAchillesAnalysis analysis) {
+        this.locationAnalysis = analysis;
+    }
+
+    public DbSurveyMetadata locationAnalysis(DbAchillesAnalysis analysis) {
+        this.locationAnalysis = analysis;
         return this;
     }
 
