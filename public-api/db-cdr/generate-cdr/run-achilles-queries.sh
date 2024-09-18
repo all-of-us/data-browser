@@ -409,11 +409,13 @@ for index in "${!domain_names[@]}"; do
     "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
     (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
     WITH state_information AS (
-        SELECT person_id, c.*
-        FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
-        JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
-        ON ob.value_source_concept_id = c.concept_id
-        WHERE observation_source_concept_id = 1585249
+                  SELECT
+                      ob.person_id,
+                      LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+                  FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+                  JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+                  ON ob.value_source_concept_id = c.concept_id
+                  WHERE ob.observation_source_concept_id = 1585249
     ),
     condition_counts AS (
         SELECT
@@ -636,6 +638,93 @@ select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2, 'G
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
 group by 4;"
+
+echo "Getting genomic location counts"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
+WITH state_information AS (
+              SELECT
+                  ob.person_id,
+                  LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
+              FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+              JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+              ON ob.value_source_concept_id = c.concept_id
+              WHERE ob.observation_source_concept_id = 1585249
+)
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'micro-array' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'wgs_shortread' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+WHERE a.sample_name NOT IN ('BI_HG-003', 'BI_HG-002', 'UW_HG-002', 'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen')
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'wgs_longread' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_longreads_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'wgs_structural_variants' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+GROUP BY stratum_2;"
+
 
 echo "Getting genomic current age counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \

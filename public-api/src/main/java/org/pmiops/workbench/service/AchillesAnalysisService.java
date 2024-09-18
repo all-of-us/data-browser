@@ -71,65 +71,65 @@ public class AchillesAnalysisService {
     }
 
     public static void setLocationStratumNameMap() {
-        locationStratumNameMap.put("PII State: NV", "Nevada");
-        locationStratumNameMap.put("PII State: UT", "Utah");
-        locationStratumNameMap.put("PII State: MI", "Michigan");
-        locationStratumNameMap.put("PII State: IL", "Illinois");
-        locationStratumNameMap.put("PII State: IN", "Indiana");
-        locationStratumNameMap.put("PII State: PW", "Palau");
-        locationStratumNameMap.put("PII State: ID", "Idaho");
-        locationStratumNameMap.put("PII State: PA", "Pennsylvania");
-        locationStratumNameMap.put("PII State: SC", "South Carolina");
-        locationStratumNameMap.put("PII State: LA", "Louisiana");
-        locationStratumNameMap.put("PII State: RI", "Rhode Island");
-        locationStratumNameMap.put("PII State: NY", "New York");
-        locationStratumNameMap.put("PII State: SD", "South Dakota");
-        locationStratumNameMap.put("PII State: KY", "Kentucky");
-        locationStratumNameMap.put("PII State: OK", "Oklahoma");
-        locationStratumNameMap.put("PII State: AR", "Arkansas");
-        locationStratumNameMap.put("PII State: PR", "Puerto Rico");
-        locationStratumNameMap.put("PII State: MO", "Missouri");
-        locationStratumNameMap.put("PII State: IA", "Iowa");
-        locationStratumNameMap.put("PII State: NJ", "New Jersey");
-        locationStratumNameMap.put("PII State: VT", "Vermont");
-        locationStratumNameMap.put("PII State: NM", "New Mexico");
-        locationStratumNameMap.put("PII State: CA", "California");
-        locationStratumNameMap.put("PII State: WI", "Wisconsin");
-        locationStratumNameMap.put("PII State: VI", "Virgin Islands");
-        locationStratumNameMap.put("PII State: AK", "Alaska");
-        locationStratumNameMap.put("PII State: TX", "Texas");
-        locationStratumNameMap.put("PII State: WV", "West Virginia");
-        locationStratumNameMap.put("PII State: OH", "Ohio");
-        locationStratumNameMap.put("PII State: AZ", "Arizona");
-        locationStratumNameMap.put("PII State: MP", "Northern Mariana Islands");
-        locationStratumNameMap.put("PII State: ME", "Maine");
-        locationStratumNameMap.put("PII State: HI", "Hawaii");
-        locationStratumNameMap.put("PII State: FL", "Florida");
-        locationStratumNameMap.put("PII State: DE", "Delaware");
-        locationStratumNameMap.put("PII State: MS", "Mississippi");
-        locationStratumNameMap.put("PII State: NE", "Nebraska");
-        locationStratumNameMap.put("PII State: TN", "Tennessee");
-        locationStratumNameMap.put("PII State: WA", "Washington");
-        locationStratumNameMap.put("PII State: DC", "District of Columbia");
-        locationStratumNameMap.put("PII State: MN", "Minnesota");
-        locationStratumNameMap.put("PII State: GU", "Guam");
-        locationStratumNameMap.put("PII State: OR", "Oregon");
-        locationStratumNameMap.put("PII State: CT", "Connecticut");
-        locationStratumNameMap.put("PII State: VA", "Virginia");
-        locationStratumNameMap.put("PII State: NC", "North Carolina");
-        locationStratumNameMap.put("PII State: MT", "Montana");
-        locationStratumNameMap.put("PII State: FM", "Federated States of Micronesia");
-        locationStratumNameMap.put("PII State: ND", "North Dakota");
-        locationStratumNameMap.put("PII State: AL", "Alabama");
-        locationStratumNameMap.put("PII State: GA", "Georgia");
-        locationStratumNameMap.put("PII State: MD", "Maryland");
-        locationStratumNameMap.put("PII State: MH", "Marshall Islands");
-        locationStratumNameMap.put("PII State: MA", "Massachusetts");
-        locationStratumNameMap.put("PII State: NH", "New Hampshire");
-        locationStratumNameMap.put("PII State: CO", "Colorado");
-        locationStratumNameMap.put("PII State: WY", "Wyoming");
-        locationStratumNameMap.put("PII State: KS", "Kansas");
-        locationStratumNameMap.put("PII State: AS", "American Samoa");
+        locationStratumNameMap.put("us-nv", "Nevada");
+        locationStratumNameMap.put("us-ut", "Utah");
+        locationStratumNameMap.put("us-mi", "Michigan");
+        locationStratumNameMap.put("us-il", "Illinois");
+        locationStratumNameMap.put("us-in", "Indiana");
+        locationStratumNameMap.put("us-pw", "Palau");
+        locationStratumNameMap.put("us-id", "Idaho");
+        locationStratumNameMap.put("us-pa", "Pennsylvania");
+        locationStratumNameMap.put("us-sc", "South Carolina");
+        locationStratumNameMap.put("us-la", "Louisiana");
+        locationStratumNameMap.put("us-ri", "Rhode Island");
+        locationStratumNameMap.put("us-ny", "New York");
+        locationStratumNameMap.put("us-sd", "South Dakota");
+        locationStratumNameMap.put("us-ky", "Kentucky");
+        locationStratumNameMap.put("us-ok", "Oklahoma");
+        locationStratumNameMap.put("us-ar", "Arkansas");
+        locationStratumNameMap.put("us-pr", "Puerto Rico");
+        locationStratumNameMap.put("us-mo", "Missouri");
+        locationStratumNameMap.put("us-ia", "Iowa");
+        locationStratumNameMap.put("us-nj", "New Jersey");
+        locationStratumNameMap.put("us-vt", "Vermont");
+        locationStratumNameMap.put("us-nm", "New Mexico");
+        locationStratumNameMap.put("us-ca", "California");
+        locationStratumNameMap.put("us-wi", "Wisconsin");
+        locationStratumNameMap.put("us-vi", "Virgin Islands");
+        locationStratumNameMap.put("us-ak", "Alaska");
+        locationStratumNameMap.put("us-tx", "Texas");
+        locationStratumNameMap.put("us-wv", "West Virginia");
+        locationStratumNameMap.put("us-oh", "Ohio");
+        locationStratumNameMap.put("us-az", "Arizona");
+        locationStratumNameMap.put("us-mp", "Northern Mariana Islands");
+        locationStratumNameMap.put("us-me", "Maine");
+        locationStratumNameMap.put("us-hi", "Hawaii");
+        locationStratumNameMap.put("us-fl", "Florida");
+        locationStratumNameMap.put("us-de", "Delaware");
+        locationStratumNameMap.put("us-ms", "Mississippi");
+        locationStratumNameMap.put("us-ne", "Nebraska");
+        locationStratumNameMap.put("us-tn", "Tennessee");
+        locationStratumNameMap.put("us-wa", "Washington");
+        locationStratumNameMap.put("us-dc", "District of Columbia");
+        locationStratumNameMap.put("us-mn", "Minnesota");
+        locationStratumNameMap.put("us-gu", "Guam");
+        locationStratumNameMap.put("us-or", "Oregon");
+        locationStratumNameMap.put("us-ct", "Connecticut");
+        locationStratumNameMap.put("us-va", "Virginia");
+        locationStratumNameMap.put("us-nc", "North Carolina");
+        locationStratumNameMap.put("us-mt", "Montana");
+        locationStratumNameMap.put("us-fm", "Federated States of Micronesia");
+        locationStratumNameMap.put("us-nd", "North Dakota");
+        locationStratumNameMap.put("us-al", "Alabama");
+        locationStratumNameMap.put("us-ga", "Georgia");
+        locationStratumNameMap.put("us-md", "Maryland");
+        locationStratumNameMap.put("us-mh", "Marshall Islands");
+        locationStratumNameMap.put("us-ma", "Massachusetts");
+        locationStratumNameMap.put("us-nh", "New Hampshire");
+        locationStratumNameMap.put("us-co", "Colorado");
+        locationStratumNameMap.put("us-wy", "Wyoming");
+        locationStratumNameMap.put("us-ks", "Kansas");
+        locationStratumNameMap.put("us-as", "American Samoa");
     }
 
 
@@ -235,8 +235,11 @@ public class AchillesAnalysisService {
     }
 
     public List<ConceptAnalysis> getFitbitConceptAnalyses(List<String> concepts) {
-        List<Analysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
-                CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID), CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)), "Fitbit").stream()
+        List<Analysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
+                        CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
+                        CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID),
+                        CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
+                        CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)), "Fitbit").stream()
                 .map(achillesMapper::dbModelToClient)
                 .collect(Collectors.toList());
         List<ConceptAnalysis> conceptAnalysisList=new ArrayList<>();
@@ -250,21 +253,25 @@ public class AchillesAnalysisService {
             Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)));
             Analysis ageAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)));
             Analysis genderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)));
+            Analysis locationAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)));
             Analysis participantCountAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)));
 
             countAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)).getResults());
             ageAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             genderAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
+            locationAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             participantCountAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             participantCountAnalysis.getResults().sort(Comparator.comparing(AchillesResult::getStratum2));
 
             addGenderStratum(genderAnalysis,2, concept, null);
             addAgeStratum(ageAnalysis, concept, null, 2);
+            addLocationStratum(locationAnalysis, 2, concept, null);
 
             conceptAnalysis.setConceptId(concept);
             conceptAnalysis.setCountAnalysis(countAnalysis);
             conceptAnalysis.setGenderAnalysis(genderAnalysis);
             conceptAnalysis.setAgeAnalysis(ageAnalysis);
+            conceptAnalysis.setLocationAnalysis(locationAnalysis);
             conceptAnalysis.setParticipantCountAnalysis(participantCountAnalysis);
             conceptAnalysisList.add(conceptAnalysis);
         }
@@ -282,13 +289,13 @@ public class AchillesAnalysisService {
             boolean isMeasurement = false;
 
             List<Analysis> analysisList = achillesAnalysisDao.findConceptAnalysisResults(conceptId,
-                    ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID),
-                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))).stream()
+                            ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))).stream()
                     .map(achillesMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
@@ -515,19 +522,14 @@ public class AchillesAnalysisService {
 
         // List of all possible locations
         Set<String> completeLocationStratumList = new TreeSet<String>(Arrays.asList(
-                "PII State: NV", "PII State: UT", "PII State: MI", "PII State: IL", "PII State: IN",
-                "PII State: PW", "PII State: ID", "PII State: PA", "PII State: SC", "PII State: LA",
-                "PII State: RI", "PII State: NY", "PII State: SD", "PII State: KY", "PII State: OK",
-                "PII State: AR", "PII State: PR", "PII State: MO", "PII State: IA", "PII State: NJ",
-                "PII State: VT", "PII State: NM", "PII State: CA", "PII State: WI", "PII State: VI",
-                "PII State: AK", "PII State: TX", "PII State: WV", "PII State: OH", "PII State: AZ",
-                "PII State: MP", "PII State: ME", "PII State: HI", "PII State: FL", "PII State: DE",
-                "PII State: MS", "PII State: NE", "PII State: TN", "PII State: WA", "PII State: DC",
-                "PII State: MN", "PII State: GU", "PII State: OR", "PII State: CT", "PII State: VA",
-                "PII State: NC", "PII State: MT", "PII State: FM", "PII State: ND", "PII State: AL",
-                "PII State: GA", "PII State: MD", "PII State: MH", "PII State: MA", "PII State: NH",
-                "PII State: CO", "PII State: WY", "PII State: KS", "PII State: AS"
+                "us-nv", "us-ut", "us-mi", "us-il", "us-in", "us-pw", "us-id", "us-pa", "us-sc", "us-la",
+                "us-ri", "us-ny", "us-sd", "us-ky", "us-ok", "us-ar", "us-pr", "us-mo", "us-ia", "us-nj",
+                "us-vt", "us-nm", "us-ca", "us-wi", "us-vi", "us-ak", "us-tx", "us-wv", "us-oh", "us-az",
+                "us-mp", "us-me", "us-hi", "us-fl", "us-de", "us-ms", "us-ne", "us-tn", "us-wa", "us-dc",
+                "us-mn", "us-gu", "us-or", "us-ct", "us-va", "us-nc", "us-mt", "us-fm", "us-nd", "us-al",
+                "us-ga", "us-md", "us-mh", "us-ma", "us-nh", "us-co", "us-wy", "us-ks", "us-as"
         ));
+
 
         // Remove already existing locations from the complete list
         completeLocationStratumList.removeAll(uniqueLocationStratums);
@@ -890,6 +892,8 @@ public class AchillesAnalysisService {
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
         Multimap<String, AchillesResult> ageAnalysisResultsByQuestion = Multimaps.index(
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
+        Multimap<String, AchillesResult> locationAnalysisResultsByQuestion = Multimaps.index(
+                analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_LOCATION_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
         Multimap<String, AchillesResult> participantCountAnalysisResultsByQuestion = Multimaps.index(
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
 
@@ -914,6 +918,13 @@ public class AchillesAnalysisService {
                 aa.setResults(new ArrayList<>(
                         ageAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
                 q.setAgeAnalysis(aa);
+            }
+            Analysis locationAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_LOCATION_ANALYSIS_ID));
+            if (locationAnalysis != null) {
+                Analysis aa = achillesMapper.makeCopyAnalysis(locationAnalysis);
+                aa.setResults(new ArrayList<>(
+                        locationAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));
+                q.setLocationAnalysis(aa);
             }
             Analysis participantCountAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID));
             if (ageAnalysis != null) {

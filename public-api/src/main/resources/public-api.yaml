@@ -910,6 +910,9 @@ definitions:
       ageAnalysis:
         description: age analysis
         $ref: "#/definitions/Analysis"
+      locationAnalysis:
+        description: location analysis
+        $ref: "#/definitions/Analysis"
       versionAnalysis:
         description: version analysis
         $ref: "#/definitions/Analysis"
@@ -1268,6 +1271,7 @@ definitions:
       - SURVEY_GENDER_ANALYSIS_ID
       - SURVEY_AGE_ANALYSIS_ID
       - SURVEY_VERSION_ANALYSIS_ID
+      - SURVEY_LOCATION_ANALYSIS_ID
       - SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID
       - SURVEY_QUESTION_AGE_COUNT_ANALYSIS_ID
       - EHR_GENDER_COUNT_ANALYSIS_ID
@@ -1282,6 +1286,7 @@ definitions:
       - GENO_GENDER_ANALYSIS
       - GENO_AGE_ANALYSIS
       - GENO_RACE_ANALYSIS
+      - GENO_LOCATION_ANALYSIS
       - LOCATION_ANALYSIS_ID
 
   VariantResultSizeRequest:
