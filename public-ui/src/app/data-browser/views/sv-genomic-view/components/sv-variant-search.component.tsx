@@ -70,13 +70,13 @@ interface Props {
   onSearchTerm: Function;
   onFilterSubmit: Function;
   searchTerm: string;
-  variantListSize: number;
+  svVariantListSize: number;
   filterMetadata: SVGenomicFilters;
   submittedFilterMetadata: SVGenomicFilters;
   sortMetadata: SortSVMetadata;
   onSortChange: Function;
   loadingResults: boolean;
-  loadingVariantListSize: boolean;
+  loadingSVVariantListSize: boolean;
   scrollClean: boolean;
 }
 interface State {
@@ -94,8 +94,9 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   private filterWrapperRef;
   constructor(props: Props) {
     super(props);
+    console.log(props);
     this.state = {
-      searchWord: "",
+      searchWord: this.props.searchTerm || "",
       filterShow: false,
       filteredMetadata: undefined,
       filteredMetaMap: undefined,
@@ -199,10 +200,10 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
       scrollClean,
     } = this.state;
     const { filterMetadata } = this.props;
-    const { variantListSize, loadingResults, loadingVariantListSize } =
+    const { svVariantListSize, loadingResults, loadingSVVariantListSize } =
       this.props;
-    const variantListSizeDisplay = variantListSize
-      ? variantListSize.toLocaleString()
+    const variantListSizeDisplay = svVariantListSize
+      ? svVariantListSize.toLocaleString()
       : 0;
     return (
       <React.Fragment>
@@ -231,8 +232,8 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
         )}
         <div style={styles.resultInfo}>
           {!loadingResults &&
-          !loadingVariantListSize &&
-          variantListSize > 0 &&
+          !loadingSVVariantListSize &&
+          svVariantListSize > 0 &&
           environment.genoFilters ? (
             <div onClick={() => this.showFilter()} style={styles.filterBtn}>
               <ClrIcon shape="filter-2" /> Filter & Sort
@@ -245,9 +246,9 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
             </div>
           )}
           <React.Fragment>
-            {!loadingResults && !loadingVariantListSize && searchWord ? (
+            {!loadingResults && !loadingSVVariantListSize && searchWord ? (
               <strong style={styles.resultSize}>
-                {!loadingResults && !loadingVariantListSize ? (
+                {!loadingResults && !loadingSVVariantListSize ? (
                   variantListSizeDisplay
                 ) : (
                   <span style={styles.loading}>

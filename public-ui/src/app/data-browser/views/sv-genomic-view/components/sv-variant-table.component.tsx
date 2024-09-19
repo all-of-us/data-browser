@@ -135,8 +135,8 @@ interface Props {
   onRowCountChange: Function;
   onScrollBottom: Function;
   svResults: SVVariant[];
-  variantListSize: number;
-  loadingVariantListSize: boolean;
+  svVariantListSize: number;
+  loadingSVVariantListSize: boolean;
   loadingResults: boolean;
   searchTerm: string;
   currentPage: number;
@@ -202,7 +202,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         if (
           scrolledToBottom &&
           this.props.currentPage <
-            this.props.variantListSize / this.props.rowCount
+            this.props.svVariantListSize / this.props.rowCount
         ) {
           // Fetch new data and append
           this.props.onScrollBottom();
@@ -263,9 +263,9 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
 
   render() {
     const {
-      loadingVariantListSize,
+      loadingSVVariantListSize,
       loadingResults,
-      variantListSize,
+      svVariantListSize,
       rowCount,
       currentPage,
     } = this.props;
@@ -275,7 +275,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       <React.Fragment>
         <style>{css}</style>
         {!loading &&
-        !loadingVariantListSize &&
+        !loadingSVVariantListSize &&
         svResults &&
         svResults.length ? (
           <div
@@ -384,7 +384,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
               })}
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
-                {currentPage < variantListSize / rowCount && loadingResults && (
+                {currentPage < svVariantListSize / rowCount && loadingResults && (
                   <Spinner />
                 )}
               </div>
@@ -392,7 +392,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
           </div>
         ) : (
           <div style={styles.tableFrame}>
-            {(loading || loadingVariantListSize || loadingResults) && (
+            {(loading || loadingSVVariantListSize || loadingResults) && (
               <div style={styles.center}>
                 <Spinner />{" "}
               </div>
@@ -417,14 +417,14 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
           </div>
         )}
         {!loading &&
-          !loadingVariantListSize &&
+          !loadingSVVariantListSize &&
           svResults &&
-          variantListSize > rowCount && (
+          svVariantListSize > rowCount && (
             <div className="paginator">
               {!environment.infiniteSrcoll && (
                 <TablePaginatorComponent
-                  pageCount={Math.ceil(variantListSize / rowCount)}
-                  variantListSize={variantListSize}
+                  pageCount={Math.ceil(svVariantListSize / rowCount)}
+                  variantListSize={svVariantListSize}
                   currentPage={currentPage}
                   resultsSize={svResults.length}
                   rowCount={rowCount}

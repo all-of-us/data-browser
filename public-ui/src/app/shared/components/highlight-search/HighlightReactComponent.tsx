@@ -47,25 +47,27 @@ export function highlightSearchTerm(
     }
   }
 
-  return (
-    <React.Fragment>
-      {words.map((word, w) => (
-        <span
-          key={w}
-          style={
-            matchString.test(word.toLowerCase())
-              ? {
-                  fontFamily: "GothamBold, Arial, san-serif",
-                  fontWeight: 700,
-                }
-              : {}
-          }
-        >
-          {word}
-        </span>
-      ))}
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        {words.map((word, w) => {
+          return (
+            <span
+              key={w}
+              style={
+                word && matchString.test(word.toLowerCase()) // Check if word is defined
+                  ? {
+                      fontFamily: "GothamBold, Arial, san-serif",
+                      fontWeight: 700,
+                    }
+                  : {}
+              }
+            >
+              {word}
+            </span>
+          );
+        })}
+      </React.Fragment>
+    );
 }
 
 interface Props {

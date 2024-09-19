@@ -95,7 +95,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      searchWord: "",
+      searchWord: this.props.searchTerm || "",
       filterShow: false,
       filteredMetadata: undefined,
       filteredMetaMap: undefined,
@@ -204,6 +204,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     const variantListSizeDisplay = variantListSize
       ? variantListSize.toLocaleString()
       : 0;
+    console.log(searchWord);
+    console.log(searchWord.length);
     return (
       <React.Fragment>
         <style>{css}</style>
