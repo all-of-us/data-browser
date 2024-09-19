@@ -8,6 +8,7 @@ import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { triggerEvent } from "app/utils/google_analytics";
 import { urlParamsStore } from "app/utils/navigation";
+import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { environment } from "environments/environment";
 import {
   GenomicFilters,
@@ -118,6 +119,14 @@ const styles = reactStyles({
   },
 });
 
+interface Props {
+  routeData: {
+    title: string;
+    breadcrumb: { value: string };
+  };
+  selectionId: number;
+}
+
 interface State {
   selectionId: number;
   searchResults: Variant[];
@@ -125,6 +134,8 @@ interface State {
   loadingResults: boolean;
   variantListSize: number;
   loadingVariantListSize: boolean;
+  svVariantListSize: number;
+  loadingSVVariantListSize: boolean;
   searchTerm: string;
   svSearchTerm: string;
   currentPage: number;
@@ -232,20 +243,22 @@ const css = `
 `;
 
 export const GenomicViewComponent = withRouteData(
-  class extends React.Component<{}, State> {
+  class extends React.Component<Props, State> {
     loading: boolean;
-    constructor(props: {}) {
+    constructor(props: Props) {
       super(props);
       this.componentCleanup = this.componentCleanup.bind(this);
       this.state = {
-        selectionId: 2,
+        selectionId: props.selectionId,
         searchResults: [],
         searchSVResults: [],
         loadingResults: null,
         variantListSize: null,
         loadingVariantListSize: null,
-        searchTerm: " ",
-        svSearchTerm: " ",
+        svVariantListSize: null,
+        loadingSVVariantListSize: null,
+        searchTerm: "",
+        svSearchTerm: "",
         currentPage: null,
         rowCount: 50,
         participantCount: null,
@@ -296,7 +309,7 @@ export const GenomicViewComponent = withRouteData(
       },
       ...(this.svVCFBrowserFlag ? [{
         id: 4,
-        label: "SV Variants",
+        label: "Structural Variants",
       }] : [])
     ];
 
@@ -310,6 +323,7 @@ export const GenomicViewComponent = withRouteData(
 
     svSearch = _.debounce((svSearchTerm: string) => {
       this.getSVVariantSearch(svSearchTerm);
+      this.changeSVUrl();
     }, 1000);
 
     clearSortMetadata() {
@@ -328,6 +342,15 @@ export const GenomicViewComponent = withRouteData(
       let url = "variants";
       if (searchTerm) {
         url += "/" + searchTerm;
+      }
+      window.history.replaceState(null, "Genomic Variants", url);
+    }
+
+    changeSVUrl() {
+      const { svSearchTerm } = this.state;
+      let url = "structural-variants";
+      if (svSearchTerm) {
+        url += "/" + svSearchTerm;
       }
       window.history.replaceState(null, "Genomic Variants", url);
     }
@@ -366,8 +389,8 @@ export const GenomicViewComponent = withRouteData(
         .getSVVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
           this.setState({
-            variantListSize: searchTerm !== "" ? result : 0,
-            loadingVariantListSize: false,
+            svVariantListSize: searchTerm !== "" ? result : 0,
+            loadingSVVariantListSize: false,
           });
         })
         .catch((e) => {
@@ -406,7 +429,6 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .getSVGenomicFilterOptions(searchTerm)
         .then((result) => {
-          console.log(result);
           result.gene.items.forEach((el) => {
             el.checked = false;
           });
@@ -474,6 +496,12 @@ export const GenomicViewComponent = withRouteData(
           searchSVResults: null,
           loadingResults: false,
         });
+      }
+    }
+
+    componentDidUpdate(prevProps: Props) {
+      if (prevProps.selectionId !== this.props.selectionId) {
+        this.setState({ selectionId: this.props.selectionId });
       }
     }
 
@@ -644,8 +672,6 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .searchSVVariants(searchRequest)
         .then((results) => {
-          console.log("Am i here with results?");
-          console.log(results);
           this.setState({
             searchSVResults: results.items,
             loadingResults: false,
@@ -655,9 +681,21 @@ export const GenomicViewComponent = withRouteData(
 
     topBarClick(selected: number) {
       this.setState({
-        selectionId: selected,
+        selectionId: selected
+      }, () => {
+        if (selected === 4) {
+          // Change URL to Structural Variants path
+          window.history.pushState({}, '', '/structural-variants');
+        } else if (selected === 2) {
+          // Change URL to Variant Search path
+          window.history.pushState({}, '', '/variants');
+        } else if (selected === 1) {
+          // Change URL to Participant Demographics path
+          window.history.pushState({}, '', '/participant-demographics');
+        }
       });
     }
+
 
     handleFaqClose() {
       this.setState({ selectionId: 2 });
@@ -684,7 +722,7 @@ export const GenomicViewComponent = withRouteData(
             svFilterMetadata: null,
             svSearchTerm: searchTerm,
             loadingResults: true,
-            loadingVariantListSize: true,
+            loadingSVVariantListSize: true,
           },
           () => this.svSearch(searchTerm)
         );
@@ -797,12 +835,26 @@ export const GenomicViewComponent = withRouteData(
         });
     }
 
+    getTitle() {
+      const { selectionId } = this.state;
+      return selectionId === 4 ? "Structural Variants" : "SNV/Indel Variants";
+    }
+
+    getBreadcrumbTitle() {
+      const { selectionId } = this.state;
+      return selectionId === 4
+        ? "Structural Variants"
+        : "SNV/Indel Variants";
+    }
+
     render() {
       const {
         currentPage,
         selectionId,
         loadingVariantListSize,
         variantListSize,
+        loadingSVVariantListSize,
+        svVariantListSize,
         loadingResults,
         searchResults,
         searchSVResults,
@@ -810,6 +862,7 @@ export const GenomicViewComponent = withRouteData(
         chartData,
         rowCount,
         searchTerm,
+        svSearchTerm,
         filterMetadata,
         svFilterMetadata,
         sortMetadata,
@@ -823,7 +876,7 @@ export const GenomicViewComponent = withRouteData(
           <style>{css}</style>
           <div style={styles.pageHeader}>
             <div style={styles.titleContainer}>
-              <h1 style={styles.title}>{this.title}</h1>
+              <h1 style={styles.title}>{this.getTitle()}</h1>
             </div>
             <div style={styles.viewLayout}>
               <div style={styles.topBarLayout} id="topBar">
@@ -930,12 +983,12 @@ export const GenomicViewComponent = withRouteData(
                   onScrollBottom={() => this.handleSVScrollBottom()}
                   currentPage={currentPage}
                   rowCount={rowCount}
-                  variantListSize={variantListSize}
-                  loadingVariantListSize={loadingVariantListSize}
+                  svVariantListSize={svVariantListSize}
+                  loadingSVVariantListSize={loadingSVVariantListSize}
                   loadingResults={loadingResults}
                   svResults={searchSVResults}
                   participantCount={participantCount}
-                  searchTerm={searchTerm}
+                  searchTerm={svSearchTerm}
                   filterMetadata={svFilterMetadata}
                   submittedFilterMetadata={submittedSVFilterMetadata}
                   sortMetadata={svSortMetadata}

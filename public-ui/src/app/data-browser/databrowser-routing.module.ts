@@ -86,9 +86,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "SNV/Indel Variants",
+              title: "Variants",
               breadcrumb: {
-                value: "SNV/Indel Variants",
+                value: "Variants",
               },
             },
           },
@@ -97,9 +97,31 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "SNV/Indel Variants",
+              title: "Variants",
               breadcrumb: {
-                value: "SNV/Indel Variants",
+                value: "Variants",
+              },
+            },
+          },
+          {
+            path: "structural-variants",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Variants",
+              breadcrumb: {
+                value: "Variants",
+              },
+            },
+          },
+          {
+            path: "structural-variants/:search",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Variants",
+              breadcrumb: {
+                value: "Variants",
               },
             },
           },
