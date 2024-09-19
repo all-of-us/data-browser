@@ -68,7 +68,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     super(props);
     this.scrollDiv = React.createRef();
     this.state = {
-      searchTerm: null,
+      searchTerm: this.props.searchTerm || "",
       filterMetadata: this.props.filterMetadata,
       sortMetadata: this.props.sortMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,

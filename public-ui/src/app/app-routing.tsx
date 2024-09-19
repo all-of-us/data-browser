@@ -107,9 +107,10 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         path="/variants"
         component={() =>
           GenomicViewComponent({
+            selectionId: 2,
             routeData: {
-              title: "SNV/Indel Variants",
-              breadcrumb: { value: "SNV/Indel Variants" },
+              title: "Variants",
+              breadcrumb: { value: "Variants" },
             },
           })
         }
@@ -118,9 +119,34 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         path="/variants/:search"
         component={() =>
           GenomicViewComponent({
+            selectionId: 2,
             routeData: {
-              title: "SNVIndel Variants",
-              breadcrumb: { value: "SNV/Indel Variants" },
+              title: "Variants",
+              breadcrumb: { value: "Variants" },
+            },
+          })
+        }
+      />
+      <AppRoute
+        path="/structural-variants"
+        component={() =>
+          GenomicViewComponent({
+            selectionId: 4,
+            routeData: {
+              title: "Variants",
+              breadcrumb: { value: "Variants" },
+            },
+          })
+        }
+      />
+      <AppRoute
+        path="/structural-variants/:search"
+        component={() =>
+          GenomicViewComponent({
+            selectionId: 4,
+            routeData: {
+              title: "Variants",
+              breadcrumb: { value: "Variants" },
             },
           })
         }

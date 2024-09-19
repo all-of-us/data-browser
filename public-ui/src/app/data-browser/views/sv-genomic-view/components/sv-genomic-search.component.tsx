@@ -39,8 +39,8 @@ interface Props {
   onSortClick: Function;
   onFilterSubmit: Function;
   onScrollBottom: Function;
-  variantListSize: number;
-  loadingVariantListSize: boolean;
+  svVariantListSize: number;
+  loadingSVVariantListSize: boolean;
   loadingResults: boolean;
   svResults: SVVariant[];
   currentPage: number;
@@ -65,9 +65,10 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
   scrollDiv: any;
   constructor(props: Props) {
     super(props);
+    console.log(props);
     this.scrollDiv = React.createRef();
     this.state = {
-      searchTerm: null,
+      searchTerm: this.props.searchTerm || "", // Set searchTerm from props
       filterMetadata: this.props.filterMetadata,
       sortMetadata: this.props.sortMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
@@ -77,12 +78,18 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
+
+    // Update state if searchTerm in props changes
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
     }
+
+    // Update state if filterMetadata in props changes
     if (prevProps.filterMetadata !== filterMetadata) {
       this.setState({ filterMetadata: filterMetadata });
     }
+
+    // Update state if submittedFilterMetadata in props changes
     if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
       this.setState({ submittedFilterMetadata: submittedFilterMetadata });
     }
@@ -129,12 +136,13 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
       currentPage,
       loadingResults,
       svResults,
-      variantListSize,
-      loadingVariantListSize,
+      svVariantListSize,
+      loadingSVVariantListSize,
       onSearchInput,
       rowCount,
       scrollClean,
     } = this.props;
+
     return (
       <React.Fragment>
         <div style={styles.titleBox}>
@@ -151,9 +159,9 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
             this.handleFilterSubmit(filteredMetadata, sortMetadata);
           }}
           loadingResults={loadingResults}
-          loadingVariantListSize={loadingVariantListSize}
-          searchTerm={searchTerm}
-          variantListSize={variantListSize}
+          loadingSVVariantListSize={loadingSVVariantListSize}
+          searchTerm={searchTerm} // Use searchTerm from state
+          svVariantListSize={svVariantListSize}
           filterMetadata={filterMetadata}
           sortMetadata={sortMetadata}
           submittedFilterMetadata={submittedFilterMetadata}
@@ -162,10 +170,10 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
         />
         <SVVariantTableComponent
           loadingResults={loadingResults}
-          loadingVariantListSize={loadingVariantListSize}
-          variantListSize={variantListSize}
+          loadingSVVariantListSize={loadingSVVariantListSize}
+          svVariantListSize={svVariantListSize}
           svResults={svResults}
-          searchTerm={searchTerm}
+          searchTerm={searchTerm} // Use searchTerm from state
           onSearchTerm={(searchWord: string) => {
             onSearchInput(searchWord);
             this.setState({ searchTerm: searchWord });

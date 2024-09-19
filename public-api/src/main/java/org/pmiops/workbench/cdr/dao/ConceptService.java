@@ -136,6 +136,7 @@ public class ConceptService {
     public Slice<DbConcept> searchConcepts(String query, StandardConceptFilter standardConceptFilter, List<Long> conceptIds, List<String> vocabularyIds, String domainId, int limit, int minCount, int page,
                                          TestFilter testFilter, OrderFilter orderFilter) {
 
+
         Specification<DbConcept> conceptSpecification =
                 (root, criteriaQuery, criteriaBuilder) -> {
                     List<Predicate> predicates = new ArrayList<>();
@@ -151,6 +152,7 @@ public class ConceptService {
                     Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
                     if (keyword != null && regex.matcher(keyword).find() && keyword.length() == 1) {
                         keyword = "\"" + keyword + "\"";
+                        keyword = escapeSpecialCharacters(keyword);
                     }
 
                     Expression<Double> matchExp = null;
@@ -261,10 +263,17 @@ public class ConceptService {
                 .collect(Collectors.toList());
     }
 
+    // Escaping function to safely handle special characters
+    private String escapeSpecialCharacters(String input) {
+        return input.replaceAll("<", "\\<")  // Escape less-than
+                .replaceAll(">", "\\>"); // Escape greater-than
+    }
+
     public List<Long> getDrugIngredientsByBrand(String query) {
         Pattern regex = Pattern.compile("[$&+,:;=\\\\?@#|/'<>.^*()%!-]");
         if (query != null && regex.matcher(query).find() && query.length() == 1) {
            query = "\"" + query + "\"";
+           query = escapeSpecialCharacters(query);
         }
         return conceptDao.findDrugIngredientsByBrand(query);
     }

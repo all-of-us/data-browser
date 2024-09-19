@@ -63,6 +63,9 @@ export const BreadCrumbComponent = class extends React.Component<
       if (breadcrumb === 'Labs And Measurements') {
             breadcrumb = 'Labs & Measurements';
       }
+      if (breadcrumb === 'SNV/Indel Variants') {
+           // breadcrumb = 'Test';
+      }
       this.setState({ breadcrumb });
     });
   }
@@ -72,6 +75,7 @@ export const BreadCrumbComponent = class extends React.Component<
   }
 
   render() {
+    console.log('Am i here ???');
     const { breadcrumb } = this.state;
     return (
       <div style={styles.crumbContainer}>
