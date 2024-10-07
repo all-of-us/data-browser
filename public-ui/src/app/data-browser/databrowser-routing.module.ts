@@ -6,16 +6,12 @@ import { NavStore } from "app/utils/navigation";
 import { EmergencyComponent } from "app/views/emergency/emergency.component";
 
 const routes: Routes = [
-  {
-    path: "error",
-    pathMatch: "full",
-    component: EmergencyComponent,
-    data: { title: "ERROR" },
-  },
+
   {
     path: "ehr",
     redirectTo: "",
     pathMatch: "full",
+    data: { title: "Data Browser" },
   },
   {
     path: "survey",
@@ -179,6 +175,12 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: "error",
+    pathMatch: "full",
+    component: EmergencyComponent,
+    data: { title: "" },
+  }
 ];
 
 @NgModule({
