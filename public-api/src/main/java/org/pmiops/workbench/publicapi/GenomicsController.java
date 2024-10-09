@@ -55,7 +55,9 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
-    private static final String svVariantIdRegex = "(?i)([1-9]|1[0-9]|2[0-2]|X|Y)-\\d{1,}-[0-9a-fA-F]{4}";
+    private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
+    private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
+
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
 
@@ -609,11 +611,6 @@ public class GenomicsController implements GenomicsApiDelegate {
             finalSql += HOMOZYGOTE_COUNT_FILTER;
         }
 
-        System.out.println("######################################################");
-        System.out.println(finalSql);
-        System.out.println("######################################################");
-
-
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
@@ -627,10 +624,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         List<FieldValue> row = result.iterateAll().iterator().next();
-
-        System.out.println("######################################################");
-        System.out.println(rm.get("count"));
-        System.out.println("######################################################");
 
         return ResponseEntity.ok(bigQueryService.getLong(row, rm.get("count")));
     }
@@ -911,9 +904,9 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
-        System.out.println("**************************");
+        System.out.println("*************************************************************");
         System.out.println(finalSql);
-        System.out.println("**************************");
+        System.out.println("*************************************************************");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
@@ -1249,13 +1242,6 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         }
 
-        System.out.println(contig);
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-        System.out.println(finalSql);
-        System.out.println("-------------------------------------------------");
-        System.out.println("-------------------------------------------------");
-
         VariantListResponse variantListResponse = new VariantListResponse();
         variantListResponse.setItems(variantList);
         return ResponseEntity.ok(variantListResponse);
@@ -1482,10 +1468,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                 + SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_UNION;
-
-        System.out.println("Test");
-        System.out.println(finalSql);
-        System.out.println("Test");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1818,7 +1800,18 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         boolean whereContigFlag = false;
 
-        if (searchTerm.matches(genomicRegionRegex)) {
+
+        if (searchTerm.matches(svVariantIdRegexV7)) {
+            // Check if the search term matches variant id v7 pattern
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID;
+        } else if (searchTerm.matches(svVariantIdRegexV8)) {
+            // Check if the search term matches variant id v8 pattern
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID;
+        } else if (searchTerm.matches(genomicRegionRegex)) {
             String[] regionTermSplit = new String[0];
             if (searchTerm.contains(":")) {
                 regionTermSplit = searchTerm.split(":");
@@ -1839,11 +1832,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                     System.out.println("Trying to convert bad number.");
                 }
             }
-        } else if (searchTerm.matches(svVariantIdRegex)) {
-            // Check if the search term matches variant id pattern
-            variant_id = searchTerm;
-            whereVariantIdFlag = true;
-            searchSql += WHERE_VARIANT_ID;
         } else {// Check if the search term matches gene coding pattern
             whereGeneFlag = true;
             if (variantSearchTerm.startsWith("~")) {

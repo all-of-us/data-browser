@@ -300,15 +300,15 @@ export const GenomicViewComponent = withRouteData(
 
     topBarItems = [
       {
-        id: 2,
-        label: "Variant Search",
+        id: 1,
+        label: "SNV/Indel Variants",
       },
       {
-        id: 1,
+        id: 3,
         label: "Participant Demographics",
       },
       ...(this.svVCFBrowserFlag ? [{
-        id: 4,
+        id: 2,
         label: "Structural Variants",
       }] : [])
     ];
@@ -683,13 +683,13 @@ export const GenomicViewComponent = withRouteData(
       this.setState({
         selectionId: selected
       }, () => {
-        if (selected === 4) {
+        if (selected === 2) {
           // Change URL to Structural Variants path
           window.history.pushState({}, '', '/structural-variants');
-        } else if (selected === 2) {
+        } else if (selected === 1) {
           // Change URL to Variant Search path
           window.history.pushState({}, '', '/variants');
-        } else if (selected === 1) {
+        } else if (selected === 3) {
           // Change URL to Participant Demographics path
           window.history.pushState({}, '', '/participant-demographics');
         }
@@ -698,7 +698,7 @@ export const GenomicViewComponent = withRouteData(
 
 
     handleFaqClose() {
-      this.setState({ selectionId: 2 });
+      this.setState({ selectionId: 1 });
     }
 
     handleSearchTerm(searchTerm: string) {
@@ -732,10 +732,21 @@ export const GenomicViewComponent = withRouteData(
     componentDidMount() {
       window.addEventListener("beforeunload", this.componentCleanup);
       const { search } = urlParamsStore.getValue();
+      const currentUrl = window.location.href;
+      console.log(currentUrl);
+      console.log(currentUrl.includes('variants'));
+      console.log(currentUrl.includes('structural-variants'));
+
       if (search) {
-        this.setState({ searchTerm: search }, () => {
-          this.getVariantSearch(search);
-        });
+          if (currentUrl.includes('structural-variants')) {
+              this.setState({ svSearchTerm: search }, () => {
+                this.getSVVariantSearch(search);
+              });
+          } else if (currentUrl.includes('variants')) {
+              this.setState({ searchTerm: search }, () => {
+                this.getVariantSearch(search);
+              });
+          }
       }
       this.getGenomicParticipantCounts();
       this.getGenomicChartData();
@@ -837,14 +848,7 @@ export const GenomicViewComponent = withRouteData(
 
     getTitle() {
       const { selectionId } = this.state;
-      return selectionId === 4 ? "Structural Variants" : "SNV/Indel Variants";
-    }
-
-    getBreadcrumbTitle() {
-      const { selectionId } = this.state;
-      return selectionId === 4
-        ? "Structural Variants"
-        : "SNV/Indel Variants";
+      return "Genomic Variants";
     }
 
     render() {
@@ -871,6 +875,7 @@ export const GenomicViewComponent = withRouteData(
         submittedSVFilterMetadata,
         scrollClean,
       } = this.state;
+      this.topBarItems = this.topBarItems.sort((a, b) => a.id - b.id);
       return (
         <React.Fragment>
           <style>{css}</style>
@@ -907,7 +912,7 @@ export const GenomicViewComponent = withRouteData(
                 </div>
               </div>
             </div>
-            {selectionId === 1 && (
+            {selectionId === 3 && (
               <div style={styles.innerContainer}>
                 <p style={styles.desc}>
                   View the self-reported categories, sex assigned at birth, and
@@ -917,13 +922,13 @@ export const GenomicViewComponent = withRouteData(
               </div>
             )}
             <div style={styles.innerContainer} id="childView">
-              {selectionId === 1 && (
+              {selectionId === 3 && (
                 <GenomicOverviewComponent
                   participantCount={participantCount}
                   chartData={chartData}
                 />
               )}
-              {selectionId === 2 && (
+              {selectionId === 1 && (
                 <GenomicSearchComponent
                   onSearchInput={(searchWord: string) => {
                     this.handleSearchTerm(searchWord);
@@ -959,7 +964,7 @@ export const GenomicViewComponent = withRouteData(
                   scrollClean={scrollClean}
                 />
               )}
-              {selectionId === 4 && (
+              {selectionId === 2 && (
                 <SVGenomicSearchComponent
                   onSearchInput={(svSearchWord: string) => {
                     this.handleSVSearchTerm(svSearchWord);
@@ -996,7 +1001,7 @@ export const GenomicViewComponent = withRouteData(
                 />
               )}
 
-              {selectionId === 3 && (
+              {selectionId === 4 && (
                 <GenomicFaqComponent closed={() => this.handleFaqClose()} />
               )}
               <div style={styles.faqHeading}>
@@ -1004,7 +1009,7 @@ export const GenomicViewComponent = withRouteData(
                   Questions about genetic ancestry?
                   <span
                     style={styles.faqLink}
-                    onClick={() => this.topBarClick(3)}
+                    onClick={() => this.topBarClick(4)}
                   >
                     Learn More
                   </span>
