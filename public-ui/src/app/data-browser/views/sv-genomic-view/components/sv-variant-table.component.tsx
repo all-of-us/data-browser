@@ -404,13 +404,27 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   query:
                 </div>
                 <div style={styles.helpText}>
+                  <strong>Gene:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("BRCA2")}
+                    style={styles.helpSearchDiv}
+                  >BRCA2</div>
+                </div>
+                <div style={styles.helpText}>
                   <strong>Variant:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("1-104946932-0fa1")}
+                    onClick={() => this.searchItem("AoUSVPhaseI.chr1.final_cleanup_BND_chr1_1024")}
                     style={styles.helpSearchDiv}
                   >
-                    1-104946932-0fa1
+                    AoUSVPhaseI.chr1.final_cleanup_BND_chr1_1024
                   </div>
+                </div>
+                <div style={styles.helpText}>
+                  <strong>Genomic region:</strong>{" "}
+                  <div
+                    onClick={() => this.searchItem("chr13:32355000-32375000")}
+                    style={styles.helpSearchDiv}
+                  >chr13:32355000-32375000</div>
                 </div>
               </div>
             )}
