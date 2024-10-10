@@ -82,9 +82,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Variants",
+              title: "Genomic Variants",
               breadcrumb: {
-                value: "Variants",
+                value: "Genomic Variants",
               },
             },
           },
@@ -93,9 +93,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Variants",
+              title: "Genomic Variants",
               breadcrumb: {
-                value: "Variants",
+                value: "Genomic Variants",
               },
             },
           },
@@ -104,9 +104,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Variants",
+              title: "Genomic Variants",
               breadcrumb: {
-                value: "Variants",
+                value: "Genomic Variants",
               },
             },
           },
@@ -115,9 +115,9 @@ const routes: Routes = [
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
-              title: "Variants",
+              title: "Genomic Variants",
               breadcrumb: {
-                value: "Variants",
+                value: "Genomic Variants",
               },
             },
           },
