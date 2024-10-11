@@ -275,7 +275,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     const { conceptAnalyses } = this.state;
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
-    console.log(conceptAnalyses,'conceptAnalyses');
     
     switch (g) {
       case GraphType.Age:
@@ -288,6 +287,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = conceptAnalyses.measurementValueGenderAnalysis;
         measurementGenderCountAnalysis =
           conceptAnalyses.measurementGenderCountAnalysis;
+        break;
+      case GraphType.map:
+        selectedAnalysis = conceptAnalyses.locationAnalysis;
         break;
       default:
         selectedAnalysis = conceptAnalyses.genderAnalysis;
@@ -569,7 +571,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               </div>
             ) : graphToShow === "Map" ? (
               <div className="chart" key="map-chart">
-                <HeatMapReactComponent/>
+                <HeatMapReactComponent
+                  locationAnalysis={selectedChartAnalysis}/>
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">

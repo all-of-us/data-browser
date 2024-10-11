@@ -9,12 +9,15 @@ import mapData from '@highcharts/map-collection/countries/us/custom/us-all-terri
 // north-america.svg   c
 // Initialize the map module
 HighchartsMap(Highcharts);
+interface Props {
+    locationAnalysis: any
+}
 interface State {
     options: any
 }
 
 export const HeatMapReactComponent = 
-    class extends React.Component<{}, State> {
+    class extends React.Component<Props, State> {
         constructor(props) {
             super(props);
 
@@ -62,9 +65,11 @@ export const HeatMapReactComponent =
         chartRef = React.createRef();
 
         componentDidMount() {
+            console.log(this.props);
+            
             if (this.chartRef.current) {
                 // this.chartRef.current.chart.reflow();
-                console.log(this.chartRef.current,'wfjwofjwo');
+                // console.log(this.chartRef.current,'wfjwofjwo');
                 
             }
         }
