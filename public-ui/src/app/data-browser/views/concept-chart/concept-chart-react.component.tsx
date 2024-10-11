@@ -15,6 +15,7 @@ import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { GraphType } from "app/utils/enum-defs";
 import { LoadingDots, Spinner } from "app/utils/spinner";
+import { environment } from "environments/environment";
 
 const styles = reactStyles({
   sourceLayout: {
@@ -155,7 +156,12 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
           ? ["Values", "Sex Assigned at Birth", "Age", "Sources"]
-          : ["Sex Assigned at Birth", "Age", "Sources","Map"],
+          : [
+            "Sex Assigned at Birth",
+            "Age",
+            "Sources",  
+            ...(environment.heatmap ? ["Map"] : []),
+          ],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
         : this.props.domain === "labs & measurements"
