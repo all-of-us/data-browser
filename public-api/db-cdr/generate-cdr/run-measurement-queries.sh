@@ -138,35 +138,35 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      measurement_counts AS (
          SELECT
              co1.measurement_concept_id,
-             p1.concept_name,
+             p1.location,
              COUNT(DISTINCT p1.person_id) AS count_value
          FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
          JOIN state_information p1 ON co1.person_id = p1.person_id
          WHERE co1.measurement_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-         GROUP BY co1.measurement_concept_id, p1.concept_name
+         GROUP BY co1.measurement_concept_id, p1.location
      ),
      source_measurement_counts AS (
          SELECT
              co2.measurement_source_concept_id AS measurement_concept_id,
-             p2.concept_name,
+             p2.location,
              COUNT(DISTINCT co2.person_id) AS source_count_value
          FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2
          JOIN state_information p2 ON co2.person_id = p2.person_id
          WHERE co2.measurement_source_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-         GROUP BY co2.measurement_source_concept_id, p2.concept_name
+         GROUP BY co2.measurement_source_concept_id, p2.location
      )
 
      SELECT
          0 AS id,
          3108 AS analysis_id,
          CAST(co.measurement_concept_id AS STRING) AS stratum_1,
-         co.concept_name AS stratum_2,
+         co.location AS stratum_2,
          'Measurement' AS stratum_3,
          co.count_value AS count_value,
          COALESCE(src.source_count_value, 0) AS source_count_value
      FROM measurement_counts co
      LEFT JOIN source_measurement_counts src
-     ON co.measurement_concept_id = src.measurement_concept_id AND co.concept_name = src.concept_name
+     ON co.measurement_concept_id = src.measurement_concept_id and co.location = src.location
 
      UNION ALL
 
@@ -174,13 +174,13 @@ if [[ "$tables" == *"_mapping_"* ]]; then
          0 AS id,
          3108 AS analysis_id,
          CAST(src.measurement_concept_id AS STRING) AS stratum_1,
-         src.concept_name AS stratum_2,
+         src.location AS stratum_2,
          'Measurement' AS stratum_3,
          src.source_count_value AS count_value,
          src.source_count_value AS source_count_value
      FROM source_measurement_counts src
      LEFT JOIN measurement_counts co
-     ON src.measurement_concept_id = co.measurement_concept_id
+     ON src.measurement_concept_id = co.measurement_concept_id and src.location = co.location
      WHERE co.measurement_concept_id IS NULL;"
 
       # Pregnancy concept by gender
