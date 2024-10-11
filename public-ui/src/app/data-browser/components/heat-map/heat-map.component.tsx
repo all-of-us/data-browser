@@ -16,17 +16,22 @@ interface State {
     options: any
 }
 
-export const HeatMapReactComponent = 
+export const HeatMapReactComponent =
     class extends React.Component<Props, State> {
         constructor(props) {
             super(props);
-
             this.state = {
                 options: {
                     chart: {
                         map: mapData,
                         height: "1000",
-                        panning: false 
+                        panning: false
+                    },
+                    tooltip: {
+                        formatter: function () {
+                            const tooltipText = `${this.point.name} <br> ${this.point.value} ` 
+                            return tooltipText; // Only show the y-value in the tooltip
+                        }
                     },
                     title: {
                         text: 'Highcharts Map of the US'
@@ -41,21 +46,15 @@ export const HeatMapReactComponent =
                         min: 0
                     },
                     series: [{
-                        data: [
-                            ['us-tx', 0],
-                            ['us-ca', 1],
-                            ['us-ny', 2],
-                            ['us-fl', 3]
-                        ],
+                        data: this.formatLocationData(this.props.locationAnalysis.results),
                         borderColor: null,
-                        name: 'Random data',
                         states: {
                             hover: {
                                 color: '#BADA55'
                             }
                         },
                         dataLabels: {
-                            enabled: true,
+                            enabled: false,
                             format: '{point.name}'
                         }
                     }]
@@ -64,25 +63,46 @@ export const HeatMapReactComponent =
         }
         chartRef = React.createRef();
 
-        componentDidMount() {
-            console.log(this.props);
-            
+        componentDidMount() {            
             if (this.chartRef.current) {
                 // this.chartRef.current.chart.reflow();
                 // console.log(this.chartRef.current,'wfjwofjwo');
-                
+
             }
+        }
+        formatLocationData(data) {
+            const territories: any[] = [
+                'gu-3605',
+                'mp-ti',
+                'mp-sa',
+                'mp-ro',
+                'as-6514',
+                'pr-3614',
+                'vi-6398',
+                'vi-6399'
+            ]
+            const output: any[] = [];
+            for (const item of data) {
+                if (item.stratum2 === 'us-vi') {
+                    for (const territory of territories)
+                        output.push([territory, item.countValue]);
+
+                } else {
+                    output.push([item.stratum2, item.countValue]);
+                }
+            }
+            return output;
         }
 
         render() {
             return (
                 <div>
                     <HighchartsReact
-                         style={{height:"50rem"}}
+                        style={{ height: "50rem" }}
                         highcharts={Highcharts}
                         options={this.state.options}
                         constructorType={'mapChart'}
-                        // ref={this.chartRef}
+                    // ref={this.chartRef}
                     />
                 </div>
             );
