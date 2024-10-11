@@ -8,6 +8,7 @@ export enum GraphType {
   Sources = "Sources",
   Values = "Values",
   None = "",
+  map = "Map",
 }
 
 export enum Domain {

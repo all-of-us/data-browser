@@ -251,6 +251,7 @@ export const tooltips = {
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
   sortVariants: `Click to select ascending or descending`,
+  Map: `this is a map`,
 };
 
 export const getTooltip = (textKey) => {
