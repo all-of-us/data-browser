@@ -441,7 +441,7 @@ for index in "${!domain_names[@]}"; do
         0 AS id,
         3108 AS analysis_id,
         CAST(co.concept_id AS STRING) AS stratum_1,
-        co.concept_name AS stratum_2,
+        co.location AS stratum_2,
         \"${domain_stratum}\" AS stratum_3,
         co.person_count AS count_value,
         COALESCE(src.source_person_count, 0) AS source_count_value
@@ -455,7 +455,7 @@ for index in "${!domain_names[@]}"; do
         0 AS id,
         3108 AS analysis_id,
         CAST(src.concept_id AS STRING) AS stratum_1,
-        src.concept_name AS stratum_2,
+        src.location AS stratum_2,
         \"${domain_stratum}\" AS stratum_3,
         src.source_person_count AS count_value,
         src.source_person_count AS source_count_value
