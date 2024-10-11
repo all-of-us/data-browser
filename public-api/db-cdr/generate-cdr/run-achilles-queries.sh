@@ -447,7 +447,7 @@ for index in "${!domain_names[@]}"; do
         COALESCE(src.source_person_count, 0) AS source_count_value
     FROM condition_counts co
     LEFT JOIN source_condition_counts src
-    ON co.concept_id = src.concept_id AND co.concept_name = src.concept_name
+    ON co.concept_id = src.concept_id
 
     UNION ALL
 
