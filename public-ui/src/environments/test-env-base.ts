@@ -11,4 +11,5 @@ export const testEnvironmentBase = {
   fitbitCDRUpdate: true,
   infiniteSrcoll: true,
   svVCFBrowser: true,
+  heatmap: true,
 };
