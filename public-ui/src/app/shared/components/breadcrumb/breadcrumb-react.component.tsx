@@ -75,6 +75,7 @@ export const BreadCrumbComponent = class extends React.Component<
   }
 
   render() {
+    console.log('Am i here ???');
     const { breadcrumb } = this.state;
     return (
       <div style={styles.crumbContainer}>
