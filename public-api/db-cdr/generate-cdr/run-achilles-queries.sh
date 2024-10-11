@@ -420,12 +420,12 @@ for index in "${!domain_names[@]}"; do
     condition_counts AS (
         SELECT
             co1.${concept_id} as concept_id,
-            si.concept_name,
+            si.location,
             COUNT(DISTINCT co1.person_id) AS person_count
         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
         JOIN state_information si ON co1.person_id = si.person_id
         WHERE co1.${concept_id} > 0
-        GROUP BY co1.${concept_id}, si.concept_name
+        GROUP BY co1.${concept_id}, si.location
     ),
     source_condition_counts AS (
         SELECT

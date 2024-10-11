@@ -327,7 +327,8 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id,stratum_1,stratum_2, domain, count_value, analysis_id)
 WITH state_information AS (
-        SELECT person_id, c.*
+        SELECT ob.person_id,
+        LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
@@ -335,7 +336,7 @@ WITH state_information AS (
 )
 select concept_id, location, 'location', 'Procedure', cnt, 3108
 from
-  (select ancestor_concept_id as concept_id, si.concept_name as location, count(distinct b.person_id) cnt
+  (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -363,7 +364,8 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc;"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 WITH state_information AS (
-        SELECT person_id, c.*
+        SELECT ob.person_id,
+        LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
@@ -371,7 +373,7 @@ WITH state_information AS (
 )
 select concept_id, location, 'biological_sex', 'Condition', cnt, 3101
 from
-  (select ancestor_concept_id as concept_id, si.concept_name as location, count(distinct b.person_id) cnt
+  (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -399,7 +401,8 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 WITH state_information AS (
-        SELECT person_id, c.*
+        SELECT ob.person_id,
+        LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
@@ -407,7 +410,7 @@ WITH state_information AS (
 )
 select concept_id, location, 'location', 'Condition', cnt, 3101
 from
-  (select ancestor_concept_id as concept_id, si.concept_name as location, count(distinct b.person_id) cnt
+  (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -435,7 +438,8 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc;"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 WITH state_information AS (
-        SELECT person_id, c.*
+        SELECT ob.person_id,
+        LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
         FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
         JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
         ON ob.value_source_concept_id = c.concept_id
@@ -443,7 +447,7 @@ WITH state_information AS (
 )
 select concept_id, location, 'location', 'Condition', cnt, 3101
 from
-  (select ancestor_concept_id as concept_id, si.concept_name as location, count(distinct b.person_id) cnt
+  (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
