@@ -30,7 +30,7 @@ export const HeatMapReactComponent =
                     tooltip: {
                         formatter: function () {
                             const tooltipText = `${this.point.name} <br> ${this.point.value} ` 
-                            return tooltipText; // Only show the y-value in the tooltip
+                            return tooltipText;
                         }
                     },
                     title: {
