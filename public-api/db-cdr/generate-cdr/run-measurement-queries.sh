@@ -124,14 +124,14 @@ if [[ "$tables" == *"_mapping_"* ]]; then
      group by co1.measurement_source_concept_id, p1.gender_concept_id"
 
      bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-     "INSERT INTO `${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results`
+     "INSERT INTO \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
           (id, analysis_id, stratum_1, stratum_2, stratum_3, count_value, source_count_value)
      WITH state_information AS (
           SELECT
               ob.person_id,
               LOWER(CONCAT('us-', REGEXP_EXTRACT(c.concept_name, r'PII State: (.*)'))) AS location
-          FROM `${BQ_PROJECT}.${BQ_DATASET}.observation` ob
-          JOIN `${BQ_PROJECT}.${BQ_DATASET}.concept` c
+          FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\` ob
+          JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
           ON ob.value_source_concept_id = c.concept_id
           WHERE ob.observation_source_concept_id = 1585249
       )
@@ -143,12 +143,12 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           COUNT(DISTINCT p1.person_id) AS count_value,
           (
               SELECT COUNT(DISTINCT co2.person_id)
-              FROM `${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement` co2
+              FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2
               JOIN state_information s2 ON s2.person_id = co2.person_id  -- Location join
               WHERE co2.measurement_source_concept_id = co1.measurement_concept_id
                 AND s2.location = p1.location
           ) AS source_count_value
-      FROM `${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement` co1
+      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
       JOIN state_information s1 ON s1.person_id = p1.person_id  -- Join to get location
       WHERE co1.measurement_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
       GROUP BY co1.measurement_concept_id, p1.location
@@ -162,12 +162,12 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           'Measurement' AS stratum_3,
           COUNT(DISTINCT p1.person_id) AS count_value,
           COUNT(DISTINCT p1.person_id) AS source_count_value
-      FROM `${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement` co1
+      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
       JOIN state_information s1 ON s1.person_id = co1.person_id
       WHERE co1.measurement_source_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
         AND co1.measurement_source_concept_id NOT IN (
           SELECT DISTINCT measurement_concept_id
-          FROM `${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement`
+          FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`
       )
       GROUP BY co1.measurement_source_concept_id, p1.location;"
 
