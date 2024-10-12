@@ -424,7 +424,7 @@ for index in "${!domain_names[@]}"; do
          \"${domain_stratum}\" AS stratum_3,
          COUNT(DISTINCT co1.person_id) AS count_value,
          (
-             SELECT COUNT(DISTINCT p2.person_id)
+             SELECT COUNT(DISTINCT co2.person_id)
              FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
              JOIN state_information s2 ON s2.person_id = co2.person_id
              WHERE co2.${source_concept_id} = co1.${concept_id} AND s2.location = s1.location
