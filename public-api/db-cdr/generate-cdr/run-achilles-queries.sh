@@ -421,7 +421,7 @@ for index in "${!domain_names[@]}"; do
          0, 3108 AS analysis_id,
          CAST(co1.${concept_id} AS STRING) AS stratum_1,
          p1.location AS stratum_2,
-         "${domain_stratum}" AS stratum_3,
+         \"${domain_stratum}\" AS stratum_3,
          COUNT(DISTINCT p1.person_id) AS count_value,
          (
              SELECT COUNT(DISTINCT p2.person_id)
@@ -432,7 +432,7 @@ for index in "${!domain_names[@]}"; do
      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
      ON c.concept_id = co1.${concept_id}
-     AND c.domain_id = "${domain_stratum}"
+     AND c.domain_id = \"${domain_stratum}\"
      JOIN state_information s1 ON s1.person_id = p1.person_id  -- Join to get location
      WHERE co1.${concept_id} > 0
      GROUP BY co1.${concept_id}, p1.location
@@ -443,13 +443,13 @@ for index in "${!domain_names[@]}"; do
          0, 3108 AS analysis_id,
          CAST(co1.${source_concept_id} AS STRING) AS stratum_1,
          p1.location AS stratum_2,
-         "${domain_stratum}" AS stratum_3,
+         \"${domain_stratum}\" AS stratum_3,
          COUNT(DISTINCT p1.person_id) AS count_value,
          COUNT(DISTINCT p1.person_id) AS source_count_value
      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
      ON c.concept_id = co1.${source_concept_id}
-     AND c.domain_id = "${domain_stratum}"
+     AND c.domain_id = \"${domain_stratum}\"
      JOIN state_information s1 ON s1.person_id = p1.person_id  -- Join to get location
      WHERE co1.${source_concept_id} NOT IN (
          SELECT DISTINCT ${concept_id}
