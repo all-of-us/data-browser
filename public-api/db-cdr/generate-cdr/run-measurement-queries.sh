@@ -138,30 +138,30 @@ if [[ "$tables" == *"_mapping_"* ]]; then
       SELECT
           0, 3108 AS analysis_id,
           CAST(co1.measurement_concept_id AS STRING) AS stratum_1,
-          p1.location AS stratum_2,
+          s1.location AS stratum_2,
           'Measurement' AS stratum_3,
-          COUNT(DISTINCT p1.person_id) AS count_value,
+          COUNT(DISTINCT co1.person_id) AS count_value,
           (
               SELECT COUNT(DISTINCT co2.person_id)
               FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co2
               JOIN state_information s2 ON s2.person_id = co2.person_id  -- Location join
               WHERE co2.measurement_source_concept_id = co1.measurement_concept_id
-                AND s2.location = p1.location
+                AND s2.location = s1.location
           ) AS source_count_value
       FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
-      JOIN state_information s1 ON s1.person_id = p1.person_id  -- Join to get location
+      JOIN state_information s1 ON s1.person_id = co1.person_id  -- Join to get location
       WHERE co1.measurement_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
-      GROUP BY co1.measurement_concept_id, p1.location
+      GROUP BY co1.measurement_concept_id, s1.location
 
       UNION ALL
 
       SELECT
           0, 3108 AS analysis_id,
           CAST(co1.measurement_source_concept_id AS STRING) AS stratum_1,
-          p1.location AS stratum_2,
+          s1.location AS stratum_2,
           'Measurement' AS stratum_3,
-          COUNT(DISTINCT p1.person_id) AS count_value,
-          COUNT(DISTINCT p1.person_id) AS source_count_value
+          COUNT(DISTINCT co1.person_id) AS count_value,
+          COUNT(DISTINCT co1.person_id) AS source_count_value
       FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\` co1
       JOIN state_information s1 ON s1.person_id = co1.person_id
       WHERE co1.measurement_source_concept_id IN (903118, 903115, 903133, 903121, 903135, 903136, 903126, 903111, 903120)
@@ -169,7 +169,7 @@ if [[ "$tables" == *"_mapping_"* ]]; then
           SELECT DISTINCT measurement_concept_id
           FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_measurement\`
       )
-      GROUP BY co1.measurement_source_concept_id, p1.location;"
+      GROUP BY co1.measurement_source_concept_id, s1.location;"
 
       # Pregnancy concept by gender
       bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
