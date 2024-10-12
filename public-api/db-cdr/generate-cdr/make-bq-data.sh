@@ -713,7 +713,7 @@ insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,count_value,source_count_value)
 SELECT 0,t1.analysis_id,cast(t1.concept_id as string),cast(t1.stratum_1 as string),t1.domain,t1.count_value,0
 FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` t1
-LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2 ON t2.stratum_1 = cast(t1.concept_id as string) and t1.analysis_id=t2.analysis_id and cast(t1.stratum_1 as string)=t2.stratum_2
+LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2 ON t2.stratum_1 = cast(t1.concept_id as string) and t1.analysis_id=t2.analysis_id and t1.stratum_1=t2.stratum_2
 and t2.stratum_3=t1.domain
 WHERE t2.stratum_1 IS NULL
 group by t1.analysis_id, t1.concept_id, t1.stratum_1,t1.domain,t1.count_value;
@@ -725,7 +725,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
-where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=cast(sub_cr.stratum as string) and c.stratum_3=sub_cr.domain"
+where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=sub_cr.stratum and c.stratum_3=sub_cr.domain"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c

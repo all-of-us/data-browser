@@ -47,7 +47,7 @@ fi
 echo "copying counts of procedure child concepts from achilles results"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select distinct c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Procedure', ar.count_value, 3101 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+select distinct c.concept_id,ar.stratum_2 as stratum_1,'biological_sex' as stratum_2, 'Procedure', ar.count_value, 3101 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.full_text like '%rank1%' and ar.stratum_3='Procedure' and cr.domain_id='PROCEDURE'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
@@ -76,7 +76,7 @@ from
 echo "Copying age counts into criteria_stratum for procedure child concepts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select distinct c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Procedure', ar.count_value, 3102 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+select distinct c.concept_id,ar.stratum_2 as stratum_1,'age' as stratum_2, 'Procedure', ar.count_value, 3102 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.domain_id='PROCEDURE' and cr.full_text like '%procedure_rank1%' and ar.stratum_3='Procedure'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
@@ -104,7 +104,7 @@ with y as
   group by 1,2,3),
   min_y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
-  select concept_id, CAST(age AS INT64) AS stratum_1, 'age', 'Procedure', count(distinct person_id) as cnt, 3102 from min_y
+  select concept_id, age AS stratum_1, 'age', 'Procedure', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
   order by concept_id asc"
 
@@ -113,7 +113,7 @@ echo "Inserting snomed condition counts"
 echo "biological sex child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
+select c.concept_id, ar.stratum_2 as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -143,7 +143,7 @@ from
 echo "age child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
+select c.concept_id,ar.stratum_2 as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -172,7 +172,7 @@ with y as
   group by 1,2,3),
   min_y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
-  select concept_id, CAST(age AS INT64) AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  select concept_id, age AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
   order by concept_id asc
 "
@@ -182,7 +182,7 @@ echo "Inserting icd9cm condition counts"
 echo "biological sex child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
+select c.concept_id, ar.stratum_2 as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD9CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -212,7 +212,7 @@ from
 echo "age child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
+select c.concept_id, ar.stratum_2 as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD9CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -241,7 +241,7 @@ with y as
   group by 1,2,3),
   min_y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
-  select concept_id, CAST(age AS INT64) AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  select concept_id, age AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
   order by concept_id asc
 "
@@ -251,7 +251,7 @@ echo "Inserting ICD10CM condition counts"
 echo "biological sex child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
+select c.concept_id, ar.stratum_2 as stratum_1,'biological_sex' as stratum_2, 'Condition', ar.count_value, 3101
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -281,7 +281,7 @@ from
 echo "age child concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select c.concept_id,cast(ar.stratum_2 as int64) as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
+select c.concept_id, ar.stratum_2 as stratum_1,'age' as stratum_2, 'Condition', ar.count_value, 3102
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
@@ -310,7 +310,7 @@ with y as
   group by 1,2,3),
   min_y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
-  select concept_id, CAST(age AS INT64) AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
+  select concept_id, age AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
   order by concept_id asc
 "
