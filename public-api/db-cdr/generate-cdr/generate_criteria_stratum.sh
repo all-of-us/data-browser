@@ -55,7 +55,7 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "Inserting biological sex rolled up counts for procedure parent concepts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id,stratum_1,stratum_2, domain, count_value, analysis_id)
-select concept_id, gender, 'biological_sex', 'Procedure', cnt, 3101
+select concept_id, cast(gender as string), 'biological_sex', 'Procedure', cnt, 3101
 from
   (select ancestor_concept_id as concept_id, p.gender_concept_id as gender, count(distinct b.person_id) cnt
   from
@@ -122,7 +122,7 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "biological sex parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, gender, 'biological_sex', 'Condition', cnt, 3101
+select concept_id, cast(gender as string), 'biological_sex', 'Condition', cnt, 3101
 from
   (select ancestor_concept_id as concept_id, p.gender_concept_id as gender, count(distinct b.person_id) cnt
   from
@@ -191,7 +191,7 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "biological sex parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, gender, 'biological_sex', 'Condition', cnt, 3101
+select concept_id, cast(gender as string), 'biological_sex', 'Condition', cnt, 3101
 from
   (select ancestor_concept_id as concept_id, p.gender_concept_id as gender, count(distinct b.person_id) cnt
   from
@@ -260,7 +260,7 @@ group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 echo "biological sex parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
-select concept_id, gender, 'biological_sex', 'Condition', cnt, 3101
+select concept_id, cast(gender as string), 'biological_sex', 'Condition', cnt, 3101
 from
   (select ancestor_concept_id as concept_id, p.gender_concept_id as gender, count(distinct b.person_id) cnt
   from
