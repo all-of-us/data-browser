@@ -427,7 +427,7 @@ for index in "${!domain_names[@]}"; do
              SELECT COUNT(DISTINCT p2.person_id)
              FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
              JOIN state_information s2 ON s2.person_id = co2.person_id
-             WHERE co2.${source_concept_id} = co1.${concept_id} AND s2.location = p1.location
+             WHERE co2.${source_concept_id} = co1.${concept_id} AND s2.location = s1.location
          ) AS source_count_value
      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
