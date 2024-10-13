@@ -322,6 +322,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 select distinct c.concept_id, ar.stratum_2 as stratum_1,'location' as stratum_2, 'Procedure', ar.count_value, 3108 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3108 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.full_text like '%rank1%' and ar.stratum_3='Procedure' and cr.domain_id='PROCEDURE'
+where ar.stratum_2 is not null
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -350,6 +351,7 @@ from
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
   join state_information si on si.person_id = p.person_id
   group by 1,2) y
+  where location is not null
   group by concept_id,location,cnt
   order by concept_id asc;"
 
@@ -359,6 +361,7 @@ select c.concept_id, ar.stratum_2 as stratum_1,'location' as stratum_2, 'Conditi
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3108 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+where ar.stratum_2 is not null
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc;"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -387,6 +390,7 @@ from
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   join state_information si on p.person_id = si.person_id
   group by 1,2) y
+  where location is not null
   group by concept_id,location,cnt
   order by concept_id asc"
 
@@ -396,6 +400,7 @@ select c.concept_id, ar.stratum_2 as stratum_1,'location' as stratum_2, 'Conditi
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3108 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD9CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+where ar.stratum_2 is not null
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -424,6 +429,7 @@ from
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   join state_information si on si.person_id = p.person_id
   group by 1,2) y
+  where location is not null
   group by concept_id,location,cnt
   order by concept_id asc;"
 
@@ -433,6 +439,7 @@ select c.concept_id, ar.stratum_2 as stratum_1,'location' as stratum_2, 'Conditi
 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
 on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3108 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+where ar.stratum_2 is not null
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc;"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -461,5 +468,6 @@ from
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   join state_information si on p.person_id = si.person_id
   group by 1,2) y
+  where location is not null
   group by concept_id, location,cnt
   order by concept_id asc"
