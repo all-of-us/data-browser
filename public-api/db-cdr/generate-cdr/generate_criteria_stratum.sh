@@ -374,7 +374,7 @@ WITH state_information AS (
         ON ob.value_source_concept_id = c.concept_id
         WHERE observation_source_concept_id = 1585249
 )
-select concept_id, location, 'biological_sex', 'Condition', cnt, 3101
+select concept_id, location, 'biological_sex', 'Condition', cnt, 3108
 from
   (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
@@ -413,7 +413,7 @@ WITH state_information AS (
         ON ob.value_source_concept_id = c.concept_id
         WHERE observation_source_concept_id = 1585249
 )
-select concept_id, location, 'location', 'Condition', cnt, 3101
+select concept_id, location, 'location', 'Condition', cnt, 3108
 from
   (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
@@ -452,7 +452,7 @@ WITH state_information AS (
         ON ob.value_source_concept_id = c.concept_id
         WHERE observation_source_concept_id = 1585249
 )
-select concept_id, location, 'location', 'Condition', cnt, 3101
+select concept_id, location, 'location', 'Condition', cnt, 3108
 from
   (select ancestor_concept_id as concept_id, si.location as location, count(distinct b.person_id) cnt
   from
