@@ -12,7 +12,7 @@
 	{
 		"mode": "REQUIRED",
 		"name": "stratum_1",
-		"type": "INTEGER"
+		"type": "STRING"
 	}, 
 	{
 		"mode": "REQUIRED",

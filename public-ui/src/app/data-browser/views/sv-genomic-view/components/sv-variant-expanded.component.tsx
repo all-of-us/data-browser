@@ -170,6 +170,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
   handleMouseOver = () => {
     this.props.hovered(true);
   };
+  replaceTag(variantType: string) {
+    return variantType.replace(/^<|>$/g, '');
+  }
   render() {
     const { variantDetails, variant, loading } = this.props;
     let variantPopulationDetails: any[] = [];
@@ -214,7 +217,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType ? variant.variantType : "-"}
+                      {variant.variantType ? this.replaceTag(variant.variantType) : "-"}
                     </span>
                   </div>
                   <div>
