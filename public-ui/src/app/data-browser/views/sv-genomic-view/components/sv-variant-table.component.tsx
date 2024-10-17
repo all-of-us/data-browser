@@ -304,7 +304,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                 )}
               </div>
               <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Consequence</span>
+                <span style={styles.headingLabel}>Predicted Consequences</span>
                 {sortMetadata.consequence.sortActive && (
                   <FontAwesomeIcon
                     icon={this.setArrowIcon("consequence")}
