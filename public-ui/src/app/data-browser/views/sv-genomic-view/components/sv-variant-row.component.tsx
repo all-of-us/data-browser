@@ -116,6 +116,13 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return variantType.replace(/^<|>$/g, '');
   }
 
+  removePredictedPrefix(consequence: string) {
+    return consequence
+      .split(', ')
+      .map(value => value.replace(/^PREDICTED_/, '')) // Remove the PREDICTED_prefix from each value
+      .join(', ');
+  }
+
   handleClick(variantId?: string) {
     if (variantId) {
       this.getVariantDetails(variantId);
@@ -179,7 +186,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
               </div>
             </div>
             <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
-            <div style={styles.rowItem}>{variant.consequence}</div>
+            <div style={styles.rowItem}>{this.removePredictedPrefix(variant.consequence)}</div>
             <div style={styles.rowItem}>{variant.position}</div>
             <div style={styles.rowItem}>{variant.size}</div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
