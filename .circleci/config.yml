@@ -176,10 +176,6 @@ jobs:
           - public-ui-cache-
       - gcloud-auth-login
       - run:
-          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
-          working_directory: ~/data-browser
-          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
-      - run:
           working_directory: ~/data-browser/public-ui
           command: yarn install --frozen-lockfile && yarn codegen
       - save_cache:
@@ -204,10 +200,6 @@ jobs:
     steps:
       - checkout-code
       - gcloud-auth-login
-      - run:
-          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
-          working_directory: ~/data-browser
-          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
       # Use the ui-build-test workspace here to avoid redoing the setup.
       - attach_workspace:
           at: .
@@ -235,10 +227,6 @@ jobs:
           keys:
           - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
           - v7-gradle-cache-
-      - run:
-          name: "Download .npmrc file with Fontawesome Pro license key so FA icon SVG packages can be installed"
-          working_directory: ~/data-browser
-          command: gsutil cp gs://aou-db-test-credentials/.npmrc .
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
