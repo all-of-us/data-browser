@@ -2131,6 +2131,9 @@ definitions:
       variantType:
         description: variant type
         type: string
+      variantIDVCF:
+        description: variant id from sv vcf table
+        type: string
       consequenceGenes:
         description: Consequence(s) + associated gene(s)
         type: string
