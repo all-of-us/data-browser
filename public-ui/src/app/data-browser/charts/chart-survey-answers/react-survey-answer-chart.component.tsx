@@ -235,7 +235,6 @@ export class SurveyAnswerChartReactComponent extends React.Component<
       const surveyVersionParticipantCounts = surveyVersion
         ? surveyVersion.participants
         : 0;
-      console.log(surveyVersion);
       const percentage =
         this.point.y <= 20
           ? ((20 / surveyVersionParticipantCounts) * 100).toFixed()
