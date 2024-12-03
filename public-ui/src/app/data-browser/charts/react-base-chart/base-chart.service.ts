@@ -29,9 +29,9 @@ export const VERSION_NAME_MAP_COPE = {
   "1": "May 2020",
   "2": "June 2020",
   "3": "July 2020",
-  "4": "Nov 2020",
-  "5": "Dec 2020",
-  "6": "Feb 2021",
+  "4": "November 2020",
+  "5": "December 2020",
+  "6": "February 2021",
 };
 
 export const VERSION_NAME_MAP_COPE_MINUTE = {
