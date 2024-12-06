@@ -72,7 +72,6 @@ export class SurveyVersionTableReactComponent extends React.Component<
 
   render() {
     const { surveyVersions } = this.props;
-    console.log(surveyVersions, "surveyversions");
 
     return (
       <div className="version-box-container">
