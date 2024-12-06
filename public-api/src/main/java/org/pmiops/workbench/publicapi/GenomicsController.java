@@ -58,6 +58,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
     private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
 
+    private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{4}";
+
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
 
@@ -92,7 +94,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_oth_ac as oth_allele_count, gvs_oth_an as oth_allele_number, gvs_oth_af as oth_allele_frequency, gvs_oth_hc as oth_homozygote_count, " +
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.wgs_variant";
 
-    private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, \n" +
+    private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, variant_id_vcf, \n" +
             "afr_ac as afr_allele_count, afr_an as afr_allele_number, afr_af as afr_allele_frequency, afr_n_homalt as afr_homozygote_count, \n" +
             "eas_ac as eas_allele_count, eas_an as eas_allele_number, eas_af as eas_allele_frequency, eas_n_homalt as eas_homozygote_count, \n" +
             "eur_ac as eur_allele_count, eur_an as eur_allele_number, eur_af as eur_allele_frequency, eur_n_homalt as eur_homozygote_count, \n" +
@@ -1675,6 +1677,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         SVVariantInfo variantInfo = new SVVariantInfo()
                 .variantId(variant_id)
                 .variantType(bigQueryService.getString(row, rm.get("variant_type")))
+                .variantIDVCF(bigQueryService.getString(row, rm.get("variant_id_vcf")))
                 .consequenceGenes(bigQueryService.getString(row, rm.get("consequence_genes")))
                 .position(bigQueryService.getString(row, rm.get("position")))
                 .size(bigQueryService.getLong(row, rm.get("size")))
@@ -1807,6 +1810,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereVariantIdFlag = true;
             searchSql += WHERE_VARIANT_ID;
         } else if (searchTerm.matches(svVariantIdRegexV8)) {
+            // Check if the search term matches variant id v8 pattern
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID;
+        } else if (searchTerm.matches(svVariantIdRegexRandom)) {
             // Check if the search term matches variant id v8 pattern
             variant_id = searchTerm;
             whereVariantIdFlag = true;
