@@ -40,6 +40,16 @@ const routes: Routes = [
             },
           },
           {
+            path: "survey/:id/:search",
+            component: AppRouting,
+            data: {
+              title: "View Survey Questions and Answers",
+              breadcrumb: {
+                value: ":id survey",
+              },
+            },
+          },
+          {
             path: "ehr/:id",
             component: AppRouting,
             data: {
@@ -47,7 +57,110 @@ const routes: Routes = [
               breadcrumb: { value: ":id" },
             },
           },
-          // Other routes remain unchanged
+          {
+            path: "ehr/:id/:search",
+            component: AppRouting,
+            data: {
+              title: "View Full Results",
+              breadcrumb: {
+                value: ":id",
+              },
+            },
+          },
+          {
+            path: "snvindel-variants",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Genomic Variants",
+              breadcrumb: {
+                value: "Genomic Variants",
+              },
+            },
+          },
+          {
+            path: "snvindel-variants/:search",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Genomic Variants",
+              breadcrumb: {
+                value: "Genomic Variants",
+              },
+            },
+          },
+          {
+            path: "structural-variants",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Genomic Variants",
+              breadcrumb: {
+                value: "Genomic Variants",
+              },
+            },
+          },
+          {
+            path: "structural-variants/:search",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Genomic Variants",
+              breadcrumb: {
+                value: "Genomic Variants",
+              },
+            },
+          },
+          {
+            path: "physical-measurements",
+            component: AppRouting,
+            data: {
+              title: "Physical Measurements",
+              breadcrumb: {
+                value: "Physical Measurements",
+              },
+            },
+          },
+          {
+            path: "physical-measurements/:search",
+            component: AppRouting,
+            data: {
+              title: "Physical Measurements",
+              breadcrumb: {
+                value: "Physical Measurements",
+              },
+            },
+          },
+          {
+            path: "fitbit",
+            component: AppRouting,
+            data: {
+              title: "Fitbit Data",
+              breadcrumb: {
+                value: "Fitbit Data",
+              },
+            },
+          },
+          {
+            path: "fitbit/:search",
+            component: AppRouting,
+            data: {
+              title: "Fitbit Data",
+              breadcrumb: {
+                value: "Fitbit Data",
+              },
+            },
+          },
+          {
+            path: "introductory-videos",
+            component: AppRouting,
+            data: {
+              title: "Introductory Videos",
+              breadcrumb: {
+                value: "Introductory Videos",
+              },
+            },
+          },
         ],
       },
     ],
