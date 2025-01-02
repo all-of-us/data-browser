@@ -32,37 +32,37 @@ export class PopulationChartReactComponent extends React.Component<
     this.getChartOptions();
   }
 
-    getChartOptions() {
-        const { variantPopulationDetails } = this.props;
-        const newBaseOptions = getBaseOptions();
-        newBaseOptions.chart.type = "pie";
-        newBaseOptions.title.text =
-          '<div style="color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
-        newBaseOptions.title.verticalAlign = "middle";
-        newBaseOptions.title.style = {
+  getChartOptions() {
+    const { variantPopulationDetails } = this.props;
+    const newBaseOptions = getBaseOptions();
+    newBaseOptions.chart.type = "pie";
+    newBaseOptions.title.text =
+        '<div style="color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
+    newBaseOptions.title.verticalAlign = "middle";
+    newBaseOptions.title.style = {
           color: "black",
           fontSize: "15px",
           wordBreak: "break-word",
           zIndex: 0,
           fontFamily: "GothamBook",
           fontWeight: "normal",
-        };
-        newBaseOptions.tooltip.outside = true;
-        newBaseOptions.tooltip.style = {
+    };
+    newBaseOptions.tooltip.outside = true;
+    newBaseOptions.tooltip.style = {
           color: "black",
           whiteSpace: "nowrap", // Prevent wrapping in the tooltip
           zIndex: 9998,
-        };
-        newBaseOptions.tooltip.useHTML = true; // Enable custom HTML in tooltips
-        newBaseOptions.tooltip.formatter = function () {
-          return this.point.toolTipHelpText;
-        };
-        const chartData = [];
-        const totalAlleleCount = variantPopulationDetails.filter(
-          (v) => v.Ancestry === "Total"
+    };
+    newBaseOptions.tooltip.useHTML = true; // Enable custom HTML in tooltips
+    newBaseOptions.tooltip.formatter = function () {
+        return this.point.toolTipHelpText;
+    };
+    const chartData = [];
+    const totalAlleleCount = variantPopulationDetails.filter(
+        (v) => v.Ancestry === "Total"
         )[0].AlleleCount;
-        for (const variantDet of variantPopulationDetails) {
-          if (variantDet.Ancestry !== "Total") {
+    for (const variantDet of variantPopulationDetails) {
+        if (variantDet.Ancestry !== "Total") {
             const roundedPercentage = (
               (variantDet.AlleleCount / totalAlleleCount) *
               100
@@ -80,8 +80,8 @@ export class PopulationChartReactComponent extends React.Component<
               ),
             });
           }
-        }
-        newBaseOptions.series = [
+    }
+    newBaseOptions.series = [
           {
             name: "Alleles",
             data: chartData,
@@ -93,9 +93,9 @@ export class PopulationChartReactComponent extends React.Component<
               enabled: false,
             },
           },
-        ];
-        this.setState({ options: newBaseOptions });
-    }
+    ];
+    this.setState({ options: newBaseOptions });
+  }
 
   getTooltipHelpText(name: string, percentage: any, count: number) {
         return (
