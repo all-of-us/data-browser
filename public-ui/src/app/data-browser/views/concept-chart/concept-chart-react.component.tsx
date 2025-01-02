@@ -83,8 +83,8 @@ const styles = reactStyles({
   unitPanel: {
     display: "flex",
     flexDirection: "row",
-    gap: "1em",
-    justifyContent: "space-between",
+    gap: "1em 3em",
+    justifyContent: "center",
     flexWrap: "wrap",
   },
   noUnitPanel: {
@@ -100,6 +100,8 @@ const cssStyles = `
   border-style: solid;
   border-color: #bee1ff;
   border-radius: 2px 2px 2px 2px;
+  margin: 1.5px 0;
+  padding: 0 5px;
 }
 
 .measurement-filter-choice.active {
