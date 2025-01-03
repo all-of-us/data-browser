@@ -79,6 +79,12 @@ const cssStyles = `
     }
 }
 
+@media (max-width: 768px) {
+  .top-results-container {
+    display: none; /* Hide top results on mobile */
+  }
+}
+
 .dropbtn {
   background-color: #04AA6D;
   color: white;
@@ -684,44 +690,44 @@ export const EhrViewReactComponent = withRouteData(
                           data disclaimer
                         </button>
                         <section>
-                          <h5 className="secondary-display domain-summary">
-                            <React.Fragment>
-                              <div
-                                className="toggle-link"
-                                onClick={() =>
-                                  this.setState({
-                                    showTopConcepts: !showTopConcepts,
-                                  })
-                                }
-                              >
-                                Top {this.getTopResultsSize()} by Descending
-                                Participant Counts
-                                <div className="toggle-icon">
-                                  {showTopConcepts ? (
-                                    <ClrIcon
-                                      shape="caret"
-                                      dir="down"
-                                      style={{ width: 20, height: 20 }}
-                                    />
-                                  ) : (
-                                    <ClrIcon
-                                      shape="caret"
-                                      dir="right"
-                                      style={{ width: 20, height: 20 }}
-                                    />
-                                  )}
+                          <div className="top-results-container">
+                            <h5 className="secondary-display domain-summary">
+                              <React.Fragment>
+                                <div
+                                  className="toggle-link"
+                                  onClick={() =>
+                                    this.setState({
+                                      showTopConcepts: !showTopConcepts,
+                                    })
+                                  }
+                                >
+                                  Top {this.getTopResultsSize()} by Descending
+                                  Participant Counts
+                                  <div className="toggle-icon">
+                                    {showTopConcepts ? (
+                                      <ClrIcon
+                                        shape="caret"
+                                        dir="down"
+                                        style={{ width: 20, height: 20 }}
+                                      />
+                                    ) : (
+                                      <ClrIcon
+                                        shape="caret"
+                                        dir="right"
+                                        style={{ width: 20, height: 20 }}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                              {showTopConcepts &&
-                                top10Results &&
-                                top10Results.length > 0 && (
+                                {showTopConcepts && top10Results && top10Results.length > 0 && (
                                   <TopResultsChartReactComponent
                                     concepts={top10Results}
                                     onClick={(e) => this.selectConcept(e)}
                                   />
                                 )}
-                            </React.Fragment>
-                          </h5>
+                              </React.Fragment>
+                            </h5>
+                          </div>
                         </section>
                         <section>
                           <div
