@@ -235,7 +235,7 @@ const css = `
 .top-bar-item-container {
   width: fit-content;
 }
-#topBar > div:nth-child(4){
+#topBar > div:last-child{
   width: 100vw;
 }
 
