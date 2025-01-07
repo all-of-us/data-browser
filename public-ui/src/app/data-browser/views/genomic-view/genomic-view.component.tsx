@@ -301,7 +301,7 @@ export const GenomicViewComponent = withRouteData(
     topBarItems = [
       {
         id: 1,
-        label: "SNV/Indel Variants",
+        label: "SNVs/Indels",
       },
       {
         id: 3,
@@ -313,7 +313,7 @@ export const GenomicViewComponent = withRouteData(
       }] : [])
     ];
 
-    title = "SNV/Indel Variants";
+    title = "SNVs/Indels";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();

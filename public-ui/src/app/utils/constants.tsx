@@ -27,7 +27,7 @@ export const routeToDomain = {
 };
 
 export const genomicTileMetadata = {
-  name: "SNV/Indel Variants",
+  name: "SNVs/Indels",
   description:
     "View aggregate counts of participants with any genomic data, Whole Genomic Sequence (WGS) data, \
     or Array data in the All of Us dataset.",

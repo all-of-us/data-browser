@@ -63,7 +63,7 @@ export const BreadCrumbComponent = class extends React.Component<
       if (breadcrumb === 'Labs And Measurements') {
             breadcrumb = 'Labs & Measurements';
       }
-      if (breadcrumb === 'SNV/Indel Variants') {
+      if (breadcrumb === 'SNVs/Indels') {
            // breadcrumb = 'Test';
       }
       this.setState({ breadcrumb });
