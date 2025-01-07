@@ -2144,6 +2144,15 @@ definitions:
         description: size
         type: integer
         format: int64
+      cpxIntervals:
+        description: cpx intervals
+        type: string
+      cpxType:
+        description: cpx type
+        type: string
+      filter:
+        description: filter
+        type: string
       afrAlleleCount:
         description: African Ancestry Allele Count
         type: integer

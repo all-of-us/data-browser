@@ -95,6 +95,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, variant_id_vcf, \n" +
+            "cpx_intervals as cpx_intervals, cpx_type as cpx_type, a.filter as filter, \n" +
             "afr_ac as afr_allele_count, afr_an as afr_allele_number, afr_af as afr_allele_frequency, afr_n_homalt as afr_homozygote_count, \n" +
             "eas_ac as eas_allele_count, eas_an as eas_allele_number, eas_af as eas_allele_frequency, eas_n_homalt as eas_homozygote_count, \n" +
             "eur_ac as eur_allele_count, eur_an as eur_allele_number, eur_af as eur_allele_frequency, eur_n_homalt as eur_homozygote_count, \n" +
@@ -102,7 +103,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "mid_ac as mid_allele_count, mid_an as mid_allele_number, mid_af as mid_allele_frequency, mid_n_homalt as mid_homozygote_count, \n" +
             "sas_ac as sas_allele_count, sas_an as sas_allele_number, sas_af as sas_allele_frequency, sas_n_homalt as sas_homozygote_count, \n" +
             "oth_ac as oth_allele_count, oth_an as oth_allele_number, oth_af as oth_allele_frequency, oth_n_homalt as oth_homozygote_count, \n" +
-            "allele_count as total_allele_count, allele_number as total_allele_number, allele_frequency as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "allele_count as total_allele_count, allele_number as total_allele_number, allele_frequency as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id a \n";
 
     private static final String FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
             "(select 'Gene' as option, genes as genes, '' as conseq, '' as variant_type, '' as clin_significance, count(*) as gene_count, " +
@@ -1681,6 +1682,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .consequenceGenes(bigQueryService.getString(row, rm.get("consequence_genes")))
                 .position(bigQueryService.getString(row, rm.get("position")))
                 .size(bigQueryService.getLong(row, rm.get("size")))
+                .cpxIntervals(bigQueryService.getString(row, rm.get("cpx_intervals")))
+                .cpxType(bigQueryService.getString(row, rm.get("cpx_type")))
+                .filter(bigQueryService.getString(row, rm.get("filter")))
                 .afrAlleleCount(bigQueryService.getLong(row, rm.get("afr_allele_count")))
                 .afrAlleleNumber(bigQueryService.getLong(row, rm.get("afr_allele_number")))
                 .afrAlleleFrequency(bigQueryService.getDouble(row, rm.get("afr_allele_frequency")))
