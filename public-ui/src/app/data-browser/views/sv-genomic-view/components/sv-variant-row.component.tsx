@@ -180,7 +180,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             </div>
             <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
             <div style={styles.rowItem}>{variant.consequence}</div>
-            <div style={styles.rowItem}>{variant.position}</div>
+            <div style={styles.rowItem}>{variant.position ? `chr${variant.position}` : "-"}</div>
             <div style={styles.rowItem}>{variant.size}</div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
