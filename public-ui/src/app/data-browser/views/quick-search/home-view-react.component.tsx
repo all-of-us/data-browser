@@ -464,8 +464,8 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
         NavStore.navigateByUrl(url);
       } else if (info.name === "SNVs/Indels") {
         const url = this.props.searchWord
-          ? "snvindel-variants/" + this.props.searchWord
-          : "snvindel-variants";
+          ? "snvsindels/" + this.props.searchWord
+          : "snvsindels";
         NavStore.navigateByUrl(url);
       }
     }

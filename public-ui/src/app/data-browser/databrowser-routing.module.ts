@@ -68,7 +68,7 @@ const routes: Routes = [
             },
           },
           {
-            path: "snvindel-variants",
+            path: "snvsindels",
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {
@@ -79,7 +79,7 @@ const routes: Routes = [
             },
           },
           {
-            path: "snvindel-variants/:search",
+            path: "snvsindels/:search",
             component: AppRouting,
             canActivate: [IsSafeGuard],
             data: {

@@ -104,7 +104,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         }
       />
       <AppRoute
-        path="/snvindel-variants"
+        path="/snvsindels"
         component={() =>
           GenomicViewComponent({
             selectionId: 1,
@@ -116,7 +116,7 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
         }
       />
       <AppRoute
-        path="/snvindel-variants/:search"
+        path="/snvsindels/:search"
         component={() =>
           GenomicViewComponent({
             selectionId: 1,

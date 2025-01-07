@@ -339,7 +339,7 @@ export const GenomicViewComponent = withRouteData(
 
     changeUrl() {
       const { searchTerm } = this.state;
-      let url = "snvindel-variants";
+      let url = "snvsindels";
       if (searchTerm) {
         url += "/" + searchTerm;
       }
@@ -688,7 +688,7 @@ export const GenomicViewComponent = withRouteData(
           window.history.pushState({}, '', '/structural-variants');
         } else if (selected === 1) {
           // Change URL to Variant Search path
-          window.history.pushState({}, '', '/snvindel-variants');
+          window.history.pushState({}, '', '/snvsindels');
         } else if (selected === 3) {
           // Change URL to Participant Demographics path
           window.history.pushState({}, '', '/participant-demographics');
