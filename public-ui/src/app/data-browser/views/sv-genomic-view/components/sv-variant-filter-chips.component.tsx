@@ -14,10 +14,8 @@ interface State {
 }
 
 const lables = {
-  variantId: "Variant Id",
   variantType: "Variant Type",
   consequence: "Consequence",
-  position: "Position",
   size: "Size",
   alleleNumber: "Allele Number",
   alleleFrequency: "Allele Frequency",

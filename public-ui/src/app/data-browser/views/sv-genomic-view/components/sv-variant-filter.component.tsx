@@ -87,10 +87,8 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       filterCats: [
-        { display: "Variant ID", field: "variantId" },
         { display: "Variant Type", field: "variantType" },
         { display: "Consequence", field: "consequence" },
-        { display: "Position", field: "position" },
         { display: "Size", field: "size" },
         { display: "Allele Count", field: "alleleCount" },
         { display: "Allele Number", field: "alleleNumber" },

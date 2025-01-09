@@ -235,7 +235,7 @@ const css = `
 .top-bar-item-container {
   width: fit-content;
 }
-#topBar > div:nth-child(4){
+#topBar > div:last-child{
   width: 100vw;
 }
 
@@ -301,7 +301,7 @@ export const GenomicViewComponent = withRouteData(
     topBarItems = [
       {
         id: 1,
-        label: "SNV/Indel Variants",
+        label: "SNVs/Indels",
       },
       {
         id: 3,
@@ -313,7 +313,7 @@ export const GenomicViewComponent = withRouteData(
       }] : [])
     ];
 
-    title = "SNV/Indel Variants";
+    title = "SNVs/Indels";
 
     search = _.debounce((searchTerm: string) => {
       this.clearSortMetadata();
@@ -339,7 +339,7 @@ export const GenomicViewComponent = withRouteData(
 
     changeUrl() {
       const { searchTerm } = this.state;
-      let url = "snvindel-variants";
+      let url = "snvsindels";
       if (searchTerm) {
         url += "/" + searchTerm;
       }
@@ -688,7 +688,7 @@ export const GenomicViewComponent = withRouteData(
           window.history.pushState({}, '', '/structural-variants');
         } else if (selected === 1) {
           // Change URL to Variant Search path
-          window.history.pushState({}, '', '/snvindel-variants');
+          window.history.pushState({}, '', '/snvsindels');
         } else if (selected === 3) {
           // Change URL to Participant Demographics path
           window.history.pushState({}, '', '/participant-demographics');

@@ -169,7 +169,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
       url += "fitbit";
       localStorage.setItem("searchText", searchValue);
       navigateByUrl(url);
-    } else if (type === "SNV/Indel variants") {
+    } else if (type === "SNVs/Indels") {
       url += "variants";
       url += "/" + searchValue;
       navigateByUrl(url);
@@ -270,11 +270,11 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
                 onClick={() =>
                   this.handleOnClick(
                     variantSearchResultSize,
-                    "SNV/Indel variants"
+                    "SNVs/Indels"
                   )
                 }
               >
-                SNV/Indel variants
+                SNVs/Indels
               </a>
             </div>
           )}
