@@ -257,7 +257,11 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <br />
                     <span style={styles.catInfo}>
                       {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
-                        ? variantDetails.cpxIntervals || "-"
+                        ? variantDetails.cpxIntervals
+                          ? variantDetails.cpxIntervals.split(',').map((interval, index) => (
+                              <div key={index}>{interval.trim()}</div>
+                            ))
+                          : "-"
                         : "N/A"}
                     </span>
                   </div>
