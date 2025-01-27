@@ -13,7 +13,7 @@ import {
   routeConfigDataStore,
   urlParamsStore,
 } from "app/utils/navigation";
-import { filter, map } from "rxjs/operators";
+import { filter } from "rxjs/operators";
 
 export const overriddenUrlKey = "allOfUsApiUrlOverride";
 export const overriddenPublicUrlKey = "publicApiUrlOverride";
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   public testReact: boolean;
 
   constructor(
+    /* Angular's */
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private titleService: Title
@@ -41,45 +42,6 @@ export class AppComponent implements OnInit {
     localStorage.removeItem("treeHighlight");
     this.overriddenUrl = localStorage.getItem(overriddenUrlKey);
 
-    // Initialize the global base title
-    this.baseTitle = environment.displayTag
-      ? environment.displayTag.toLowerCase() === "prod"
-        ? "All of Us Public Data Browser"
-        : `[${environment.displayTag}] All of Us Public Data Browser`
-      : "All of Us Public Data Browser";
-
-    // Subscribe to router events to dynamically set page titles
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        map(() => this.getLeafRoute()), // Get the deepest activated route
-        map((route) => route.snapshot.data?.title || ""), // Extract the route title
-      )
-      .subscribe((routeTitle: string) => {
-        const fullTitle = routeTitle
-          ? `${routeTitle} | ${this.baseTitle}`
-          : this.baseTitle; // Avoid adding a pipe if title is empty
-        this.titleService.setTitle(fullTitle);
-        console.log("Route Title Set:", fullTitle); // For debugging
-      });
-
-    // Handle additional router events for query params and dynamic navigation
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe(() => {
-        const {
-          snapshot: { params, queryParams, routeConfig },
-        } = this.getLeafRoute();
-        urlParamsStore.next(params);
-        queryParamsStore.next(queryParams);
-        routeConfigDataStore.next(routeConfig?.data || {});
-        this.noHeaderMenu = this.router.url === "/"; // Set noHeaderMenu for the home page
-      });
-
-    // Initialize analytics
-    initializeAnalytics();
-
-    // Public API URL override function
     window.setPublicApiUrl = (url: string) => {
       if (url) {
         if (!url.match(/^https?:[/][/][a-z0-9.:-]+$/)) {
@@ -93,18 +55,63 @@ export class AppComponent implements OnInit {
       }
       window.location.reload();
     };
+    // this log looks useful
+    // console.log('To override the API URLs, try:\n' +
+    //   'setAllOfUsApiUrl(\'https://host.example.com:1234\')\n' +
+    //   'setPublicApiUrl(\'https://host.example.com:5678\')');
+
+    // Pick up the global site title from HTML, and (for non-prod) add a tag
+    // naming the current environment.
+    this.baseTitle = this.titleService.getTitle();
+    if (environment.displayTag) {
+      this.baseTitle =
+        environment.displayTag.toLowerCase() === "prod"
+          ? `${this.baseTitle}`
+          : `[${environment.displayTag}] ${this.baseTitle}`;
+      this.titleService.setTitle(this.baseTitle);
+    }
+
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: RouterEvent) => {
+        // Set the db header no menu if we are on home page
+        // Not sure why an instance of RouteConfigLoadStart comes in here when we filter
+        if (event instanceof NavigationEnd && event.url === "/") {
+          this.noHeaderMenu = true;
+        }
+        if (event instanceof NavigationEnd) {
+          const {
+            snapshot: { params, queryParams, routeConfig },
+          } = this.getLeafRoute();
+          urlParamsStore.next(params);
+          queryParamsStore.next(queryParams);
+          routeConfigDataStore.next(routeConfig.data);
+        }
+        this.setTitleFromRoute(event);
+      });
+
+    initializeAnalytics();
   }
 
-  /**
-   * Recursively gets the deepest active route.
-   */
   getLeafRoute(route = this.activatedRoute) {
     return route.firstChild ? this.getLeafRoute(route.firstChild) : route;
   }
 
   /**
-   * Scroll to the top of the page when a new component is activated.
+   * Uses the title service to set the page title after nagivation events
    */
+  private setTitleFromRoute(event: RouterEvent): void {
+    let currentRoute = this.activatedRoute;
+    while (currentRoute.firstChild) {
+      currentRoute = currentRoute.firstChild;
+    }
+    if (currentRoute.outlet === "primary") {
+      currentRoute.data.subscribe((value) =>
+        this.titleService.setTitle(`${value.title} | ${this.baseTitle}`)
+      );
+    }
+  }
+
   onActivate() {
     window.scroll(0, 0);
   }
