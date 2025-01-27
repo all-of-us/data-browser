@@ -252,6 +252,35 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       {variantDetails.size ? variantDetails.size : "-"}
                     </span>
                   </div>
+                  <div>
+                    <span style={styles.catHeading}>CPX_INTERVALS:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
+                        ? variantDetails.cpxIntervals
+                          ? variantDetails.cpxIntervals.split(',').map((interval, index) => (
+                              <div key={index}>{interval.trim()}</div>
+                            ))
+                          : "-"
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>CPX_TYPE:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
+                        ? variantDetails.cpxType || "-"
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={styles.catHeading}>FILTER:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variantDetails.filter ? variantDetails.filter : "-"}
+                    </span>
+                  </div>
                 </div>
                 <h4 className="pop-title">Genetic Ancestry Populations</h4>
                 <div className="pop-table-container">
