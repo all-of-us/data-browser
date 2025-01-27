@@ -6,6 +6,7 @@ import { NavStore } from "app/utils/navigation";
 import { EmergencyComponent } from "app/views/emergency/emergency.component";
 
 const routes: Routes = [
+
   {
     path: "ehr",
     redirectTo: "",
@@ -16,7 +17,6 @@ const routes: Routes = [
     path: "survey",
     redirectTo: "",
     pathMatch: "full",
-    data: { title: "Survey" },
   },
   {
     path: "",
@@ -27,16 +27,24 @@ const routes: Routes = [
         path: "",
         data: {
           title: "Data Browser",
-          breadcrumb: { value: "Data Browser" },
+          breadcrumb: {
+            value: "Data Browser",
+          },
         },
         children: [
-          { path: "", component: AppRouting, data: {} },
+          {
+            path: "",
+            component: AppRouting,
+            data: {},
+          },
           {
             path: "survey/:id",
             component: AppRouting,
             data: {
               title: "View Survey Questions and Answers",
-              breadcrumb: { value: ":id survey" },
+              breadcrumb: {
+                value: ":id survey",
+              },
             },
           },
           {
@@ -54,7 +62,9 @@ const routes: Routes = [
             component: AppRouting,
             data: {
               title: "View Full Results",
-              breadcrumb: { value: ":id" },
+              breadcrumb: {
+                value: ":id",
+              },
             },
           },
           {
@@ -169,8 +179,8 @@ const routes: Routes = [
     path: "error",
     pathMatch: "full",
     component: EmergencyComponent,
-    data: { title: "Error Page" },
-  },
+    data: { title: "" },
+  }
 ];
 
 @NgModule({
@@ -185,7 +195,10 @@ const routes: Routes = [
 })
 export class DataBrowserRoutingModule {
   constructor(public router: Router) {
-    NavStore.navigate = (commands, extras) => this.router.navigate(commands, extras);
-    NavStore.navigateByUrl = (url, extras) => this.router.navigateByUrl(url, extras);
+    NavStore.navigate = (commands, extras) =>
+      this.router.navigate(commands, extras);
+    NavStore.navigateByUrl = (url, extras) =>
+      this.router.navigateByUrl(url, extras);
+    this.router.events.subscribe((event) => {});
   }
 }
