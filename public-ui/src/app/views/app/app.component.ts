@@ -106,9 +106,11 @@ export class AppComponent implements OnInit {
       currentRoute = currentRoute.firstChild;
     }
     if (currentRoute.outlet === "primary") {
-      currentRoute.data.subscribe((value) =>
-        this.titleService.setTitle(`${value.title} | ${this.baseTitle}`)
-      );
+      currentRoute.data.subscribe((value) => {
+        const title = value.title;
+        const fullTitle = this.baseTitle ? `${title} | ${this.baseTitle}` : title;
+        this.titleService.setTitle(fullTitle);
+      });
     }
   }
 
