@@ -6,11 +6,13 @@ class CloudSqlProxyContext < ServiceAccountContext
   def run()
     # TODO(dmohs): An error here does not cause the main thread to die.
     super do
+      instance = "#{@project}:us-central1:databrowsermaindb"
       @ps = fork do
         exec(*%W{
           cloud_sql_proxy
-            -instances #{@project}:us-central1:databrowsermaindb=tcp:0.0.0.0:3307
-            -credential_file=#{@path}
+            --port 3307
+            #{instance}
+            --credentials-file=#{@path}
         })
       end
       begin
