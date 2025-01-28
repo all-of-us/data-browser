@@ -23,6 +23,7 @@ interface Props {
 }
 
 export class ValueReactChartComponent extends React.Component<Props, State> {
+  chartRef: React.RefObject<any>;
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +31,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       pageX: 0,
       pageY: 0,
     };
+    this.chartRef = React.createRef();
   }
 
   componentDidMount() {
@@ -169,12 +171,24 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
         useHTML: true,
       };
     }
+
     newBaseOptions.tooltip.positioner = (width, height, point) => {
-      return {
-        x: this.state.pageX - 144,
-        y: this.state.pageY - 90,
-      };
+      const chart = this.chartRef.current?.chart; // Access chart via ref
+      if (!chart) return { x: 0, y: 0 };
+
+      const chartWidth = chart.chartWidth;
+      const chartHeight = chart.chartHeight;
+
+      const xPos = point.plotX + chart.plotLeft + point.shapeArgs.width;
+      const yPos = point.plotY + chart.plotTop - height / 2;
+
+      // Ensure the tooltip stays within chart bounds
+      const adjustedX = Math.max(0, Math.min(chartWidth - width, xPos));
+      const adjustedY = Math.max(0, Math.min(chartHeight - height, yPos));
+
+      return { x: adjustedX, y: adjustedY };
     };
+
     this.setState({ options: newBaseOptions });
   }
 
