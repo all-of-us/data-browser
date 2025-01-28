@@ -393,7 +393,7 @@ for index in "${!domain_names[@]}"; do
          CAST(co1.${concept_id} AS STRING) AS stratum_1,
          age_stratum AS stratum_2,
          \"${domain_stratum}\" AS stratum_3,
-         gender AS stratum_4,
+         CAST(gender AS STRING) AS stratum_4,
          COUNT(DISTINCT co1.person_id) AS count_value,
          (
              SELECT COUNT(DISTINCT co2.PERSON_ID)
@@ -420,7 +420,7 @@ for index in "${!domain_names[@]}"; do
          CAST(co1.${source_concept_id} AS STRING) AS stratum_1,
          age_stratum AS stratum_2,
          \"${domain_stratum}\" AS stratum_3,
-         gender AS stratum_4,
+         CAST(gender AS STRING) AS stratum_4,
          COUNT(DISTINCT co1.person_id) AS count_value,
          COUNT(DISTINCT co1.person_id) AS source_count_value
      FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
