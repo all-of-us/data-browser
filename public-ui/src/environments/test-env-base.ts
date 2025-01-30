@@ -12,4 +12,5 @@ export const testEnvironmentBase = {
   infiniteSrcoll: true,
   svVCFBrowser: true,
   heatmap: true,
+  combinedAgeGenderChart: true,
 };
