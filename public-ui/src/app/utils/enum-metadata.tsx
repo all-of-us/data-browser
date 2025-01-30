@@ -8,6 +8,7 @@ export const enum GraphType {
   Sources = "Sources",
   Values = "Values",
   None = "",
+  ageGenderStacked = "Age + Sex assigned at birth",
 }
 
 export const enum DomainType {

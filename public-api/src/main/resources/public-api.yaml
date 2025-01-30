@@ -1193,6 +1193,9 @@ definitions:
         description: Participant Count by location
         type: object
         $ref: "#/definitions/Analysis"
+      combinedAgeGenderAnalysis:
+        description: combined age gender analysis
+        $ref: "#/definitions/Analysis"
 
   ConceptAnalysisListResponse:
     type: object
@@ -1265,6 +1268,7 @@ definitions:
       - GENDER_ANALYSIS_ID
       - PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID
       - AGE_ANALYSIS_ID
+      - AGE_GENDER_COMBINED_ANALYSIS_ID
       - SURVEY_VERSION_PARTICIPANT_COUNT_ANALYSIS_ID
       - SURVEY_VERSION_QUESTION_COUNT_ANALYSIS_ID
       - SURVEY_COUNT_ANALYSIS_ID

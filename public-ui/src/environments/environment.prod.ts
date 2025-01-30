@@ -15,4 +15,5 @@ export const environment = {
   infiniteSrcoll: true,
   svVCFBrowser: false,
   heatmap: false,
+  combinedAgeGenderChart: false,
 };
