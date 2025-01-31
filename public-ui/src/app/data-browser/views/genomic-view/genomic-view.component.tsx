@@ -733,16 +733,13 @@ export const GenomicViewComponent = withRouteData(
       window.addEventListener("beforeunload", this.componentCleanup);
       const { search } = urlParamsStore.getValue();
       const currentUrl = window.location.href;
-      console.log(currentUrl);
-      console.log(currentUrl.includes('variants'));
-      console.log(currentUrl.includes('structural-variants'));
 
       if (search) {
           if (currentUrl.includes('structural-variants')) {
               this.setState({ svSearchTerm: search }, () => {
                 this.getSVVariantSearch(search);
               });
-          } else if (currentUrl.includes('variants')) {
+          } else if (currentUrl.includes('snvsindels')) {
               this.setState({ searchTerm: search }, () => {
                 this.getVariantSearch(search);
               });
