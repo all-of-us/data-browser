@@ -121,7 +121,6 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   filterClick() {
-    console.log("Am i clicked ?");
     this.setState({ filterItemOpen: !this.state.filterItemOpen });
   }
 

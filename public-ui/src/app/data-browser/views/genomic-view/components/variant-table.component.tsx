@@ -181,7 +181,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchResults, loadingResults, filtered } = this.props;
-    // console.log(loadingResults,'loadingResults');
 
     if (filtered) {
       this.scrollAreaToTop();

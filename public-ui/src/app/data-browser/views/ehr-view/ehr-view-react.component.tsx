@@ -495,7 +495,6 @@ export const EhrViewReactComponent = withRouteData(
     }
 
     fetchConcepts(searchRequest: any, append: boolean) {
-      console.log('Fetching ????');
       dataBrowserApi()
         .searchConcepts(searchRequest)
         .then((results) => {

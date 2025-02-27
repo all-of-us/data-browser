@@ -94,7 +94,6 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   private filterWrapperRef;
   constructor(props: Props) {
     super(props);
-    console.log(props);
     this.state = {
       searchWord: this.props.searchTerm || "",
       filterShow: false,
