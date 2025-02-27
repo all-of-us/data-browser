@@ -23,6 +23,7 @@ interface Props {
 }
 
 export class ValueReactChartComponent extends React.Component<Props, State> {
+  chartRef: React.RefObject<any>;
   constructor(props) {
     super(props);
     this.state = {
@@ -30,6 +31,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       pageX: 0,
       pageY: 0,
     };
+    this.chartRef = React.createRef();
   }
 
   componentDidMount() {
@@ -127,83 +129,68 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
     this.setState({ options: newBaseOptions });
   }
 
-    setValueChartOptions(
-      analysisName: string,
-      categories: any,
-      series: any,
-      chartTitle: any,
-      unitName: any
-    ) {
-      const newBaseOptions = getBaseOptions();
-      newBaseOptions.chart.type = "bar";
-      newBaseOptions.xAxis.categories = categories;
-      delete newBaseOptions.color;
-      newBaseOptions.series = [series];
-      newBaseOptions.title.text = chartTitle;
-      newBaseOptions.legend.enabled = false;
-      newBaseOptions.yAxis.gridLineColor = "transparent";
-      newBaseOptions.title.style.color = "#262262";
-      newBaseOptions.title.style.fontSize = "18px";
-      newBaseOptions.title.style.fontWeight = "400";
-      newBaseOptions.yAxis.title.text = "Participant Count";
-      newBaseOptions.xAxis.title.text = unitName ? unitName : "";
-      newBaseOptions.xAxis.labels.style.fontSize = "12px";
-      newBaseOptions.tooltip.outside = true;
-
-      if ("dataOnlyLT20" in series) {
-        newBaseOptions.yAxis.min = series.dataOnlyLT20 ? 20 : 0;
-        newBaseOptions.yAxis.labels = {
-          style: {
-            fontSize: "12px",
-            whiteSpace: "wrap",
-            textOverflow: "ellipsis",
-            color: "#262262",
-          },
-          formatter: function () {
-            const label = this.axis.defaultLabelFormatter.call(this);
-            // Change <= 20 count to display '<= 20'
-            if (series.dataOnlyLT20 && label <= 20) {
-              return "&#8804; 20";
-            }
-            return label;
-          },
-          useHTML: true,
-        };
-      }
-
-      // Tooltip position logic:
-      newBaseOptions.tooltip.positioner = (width, height, point) => {
-        // Check if point is valid
-        if (!point || !point.series || !point.series.chart) {
-          return { x: 0, y: 0 }; // Return default position if the point or chart is unavailable
-        }
-
-        // Calculate the X and Y position of the tooltip based on the hovered point
-        const chart = point.series.chart;
-        const chartAreaWidth = chart.chartWidth;
-        const chartAreaHeight = chart.chartHeight;
-        const tooltipWidth = width;
-        const tooltipHeight = height;
-
-        // Calculate the X position, centered over the hovered bar
-        const xPos = point.plotX + chart.plotLeft - tooltipWidth / 2;
-
-        // Calculate the Y position, placing it above the hovered point (bar)
-        const yPos = point.plotY + chart.plotTop - tooltipHeight - 20; // Adjust Y to be above the bar
-
-        // Ensure the tooltip stays within the bounds of the chart
-        const adjustedX = Math.max(0, Math.min(chartAreaWidth - tooltipWidth, xPos));
-        const adjustedY = Math.max(0, Math.min(chartAreaHeight - tooltipHeight, yPos));
-
-        return {
-          x: adjustedX,
-          y: adjustedY,
-        };
+  setValueChartOptions(
+    analysisName: string,
+    categories: any,
+    series: any,
+    chartTitle: any,
+    unitName: any
+  ) {
+    const newBaseOptions = getBaseOptions();
+    newBaseOptions.chart.type = "bar";
+    newBaseOptions.xAxis.categories = categories;
+    delete newBaseOptions.color;
+    newBaseOptions.series = [series];
+    newBaseOptions.title.text = chartTitle;
+    newBaseOptions.legend.enabled = false;
+    newBaseOptions.yAxis.gridLineColor = "transparent";
+    newBaseOptions.title.style.color = "#262262";
+    newBaseOptions.title.style.fontSize = "18px";
+    newBaseOptions.title.style.fontWeight = "400";
+    newBaseOptions.yAxis.title.text = "Participant Count";
+    newBaseOptions.xAxis.title.text = unitName ? unitName : "";
+    newBaseOptions.xAxis.labels.style.fontSize = "12px";
+    newBaseOptions.tooltip.outside = true;
+    if ("dataOnlyLT20" in series) {
+      newBaseOptions.yAxis.min = series.dataOnlyLT20 ? 20 : 0;
+      newBaseOptions.yAxis.labels = {
+        style: {
+          fontSize: "12px",
+          whiteSpace: "wrap",
+          textOverflow: "ellipsis",
+          color: "#262262",
+        },
+        formatter: function () {
+          const label = this.axis.defaultLabelFormatter.call(this);
+          // Change <= 20 count to display '<= 20'
+          if (series.dataOnlyLT20 && label <= 20) {
+            return "&#8804; 20";
+          }
+          return label;
+        },
+        useHTML: true,
       };
-
-      this.setState({ options: newBaseOptions });
     }
 
+    newBaseOptions.tooltip.positioner = (width, height, point) => {
+      const chart = this.chartRef.current?.chart; // Access chart via ref
+      if (!chart) return { x: 0, y: 0 };
+
+      const chartWidth = chart.chartWidth;
+      const chartHeight = chart.chartHeight;
+
+      const xPos = point.plotX + chart.plotLeft + point.shapeArgs.width;
+      const yPos = point.plotY + chart.plotTop - height / 2;
+
+      // Ensure the tooltip stays within chart bounds
+      const adjustedX = Math.max(0, Math.min(chartWidth - width, xPos));
+      const adjustedY = Math.max(0, Math.min(chartHeight - height, yPos));
+
+      return { x: adjustedX, y: adjustedY };
+    };
+
+    this.setState({ options: newBaseOptions });
+  }
 
   prepStackedCatsAndData(valueAnalysisResults) {
     const {

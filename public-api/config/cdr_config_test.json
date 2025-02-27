@@ -122,9 +122,9 @@
     "bigqueryDataset": "2024q3r2_combined_release",
     "genomicsProject": "aou-db-prod",
     "genomicsDataset": "2024q3r2_genomics",
-    "creationTime": "2023-12-19 15:55:44Z",
+    "creationTime": "2023-10-01 15:55:44Z",
     "releaseNumber": 15,
     "numParticipants": 633540,
-    "publicDbName": "p_2024q3_18"
+    "publicDbName": "p_2024q3_22"
   }
 ]

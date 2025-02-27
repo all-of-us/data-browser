@@ -1,5 +1,6 @@
 require "open3"
 require "set"
+require "logger"
 require_relative "../../aou-utils/serviceaccounts"
 require_relative "../../aou-utils/utils/common"
 require_relative "../../aou-utils/workbench"
