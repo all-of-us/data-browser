@@ -52,6 +52,7 @@ domain_names=(condition drug procedure observation measurement)
 domain_stratum_names=(Condition Drug Procedure Observation Measurement)
 domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation v_ehr_measurement)
 actual_table_names=(condition_occurrence drug_exposure procedure_occurrence observation measurement)
+id_column_names=(condition_occurrence_id drug_exposure_id procedure_occurrence_id observation_id measurement_id)
 datetime_names_3102=(condition_start_datetime drug_exposure_start_datetime procedure_datetime observation_datetime measurement_datetime)
 concept_ids_to_exclude=(19 0 0 0 0)
 domain_concept_ids=(19 13 10 27 21)
@@ -269,6 +270,7 @@ group by RACE_CONCEPT_ID,ETHNICITY_CONCEPT_ID"
 for index in "${!domain_names[@]}"; do
     domain_name="${domain_names[$index]}";
     domain_table_name="${domain_table_names[$index]}";
+    id_column_name="${id_column_names[$index]}";
     table_id="${actual_table_names[$index]}_id";
     datetime_name="${datetime_names_3102[$index]}";
     domain_concept_id="${domain_concept_ids[$index]}";
@@ -360,6 +362,78 @@ for index in "${!domain_names[@]}"; do
      WHERE
      co1.${source_concept_id} NOT IN (SELECT DISTINCT ${concept_id} FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`)
      GROUP BY co1.${source_concept_id}, stratum_2"
+
+    bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+    "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+    (id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
+     WITH ehr_age AS (
+         SELECT
+             ${id_column_name},
+             CEIL(TIMESTAMP_DIFF(${datetime_name}, birth_datetime, DAY)/365.25) AS age,
+             p.gender_concept_id AS gender
+         FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co
+         JOIN \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p
+             ON p.person_id = co.person_id
+     ),
+     ehr_age_stratum AS (
+         SELECT
+             ${id_column_name},
+             CASE
+                 WHEN age >= 18 AND age <= 29 THEN '2'
+                 WHEN age > 89 THEN '9'
+                 WHEN age >= 30 AND age <= 89 THEN CAST(FLOOR(age/10) AS STRING)
+                 WHEN age < 18 THEN '0'
+             END AS age_stratum,
+             gender
+         FROM ehr_age
+     )
+     SELECT
+         0,
+         3105 AS analysis_id,
+         CAST(co1.${concept_id} AS STRING) AS stratum_1,
+         age_stratum AS stratum_2,
+         \"${domain_stratum}\" AS stratum_3,
+         CAST(gender AS STRING) AS stratum_4,
+         COUNT(DISTINCT co1.person_id) AS count_value,
+         (
+             SELECT COUNT(DISTINCT co2.PERSON_ID)
+             FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co2
+             JOIN ehr_age_stratum ca2
+                 ON co2.${id_column_name} = ca2.${id_column_name}
+             WHERE co2.${source_concept_id} = co1.${concept_id}
+             AND ca2.age_stratum = ca.age_stratum
+         ) AS source_count_value
+     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+     JOIN ehr_age_stratum ca
+         ON co1.${id_column_name} = ca.${id_column_name}
+     JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON c.concept_id = co1.${concept_id}
+         AND c.domain_id = \"${domain_stratum}\"
+     WHERE co1.${concept_id} > 0
+     GROUP BY co1.${concept_id}, stratum_2, stratum_4
+
+     UNION ALL
+
+     SELECT
+         0,
+         3105 AS analysis_id,
+         CAST(co1.${source_concept_id} AS STRING) AS stratum_1,
+         age_stratum AS stratum_2,
+         \"${domain_stratum}\" AS stratum_3,
+         CAST(gender AS STRING) AS stratum_4,
+         COUNT(DISTINCT co1.person_id) AS count_value,
+         COUNT(DISTINCT co1.person_id) AS source_count_value
+     FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\` co1
+     JOIN ehr_age_stratum ca
+         ON co1.${id_column_name} = ca.${id_column_name}
+     JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+         ON c.concept_id = co1.${source_concept_id}
+         AND c.domain_id = \"${domain_stratum}\"
+     WHERE co1.${source_concept_id} NOT IN (
+             SELECT DISTINCT ${concept_id}
+             FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.${domain_table_name}\`
+         )
+     GROUP BY co1.${source_concept_id}, stratum_2, stratum_4;"
 
     # Get the current age counts
     bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
