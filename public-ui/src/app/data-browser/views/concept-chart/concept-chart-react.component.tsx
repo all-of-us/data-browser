@@ -155,7 +155,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     this.state = {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
-          ? ["Values", "Sex Assigned at Birth", "Age", "Sources"]
+          ? ["Values", "Sex Assigned at Birth", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []) ]
           : [
             "Sex Assigned at Birth",
             "Age",
