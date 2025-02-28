@@ -6,7 +6,8 @@ import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
 import { ValueReactChartComponent } from "app/data-browser/charts/chart-measurement-values/chart-value-react.component";
 import { SourcesChartReactComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
-import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component"
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
+import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { SourceTreeComponent } from "app/data-browser/components/source-tree/source-tree-react.component";
 import { TooltipNoIconReactComponent } from "app/data-browser/components/tooltip/tooltip-no-icon-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
@@ -161,8 +162,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
           : [
             "Sex Assigned at Birth",
             "Age",
-            "Sources",  
+            "Sources",
             ...(environment.heatmap ? ["Map"] : []),
+            ...(environment.combinedAgeGenderChart ? ["Age + Sex assigned at birth"] : []),
           ],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
@@ -298,6 +300,13 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         break;
       case GraphType.map:
         selectedAnalysis = conceptAnalyses.locationAnalysis;
+        break;
+      case GraphType.ageGenderStacked:
+        console.log('Am i here ?');
+        console.log(g);
+        console.log(conceptAnalyses);
+        console.log(conceptAnalyses.combinedAgeGenderAnalysis);
+        selectedAnalysis = conceptAnalyses.combinedAgeGenderAnalysis;
         break;
       default:
         selectedAnalysis = conceptAnalyses.genderAnalysis;
@@ -581,6 +590,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               <div className="chart" key="map-chart">
                 <HeatMapReactComponent
                   locationAnalysis={selectedChartAnalysis}/>
+              </div>
+            ) : graphToShow === "Age + Sex assigned at birth" ? (
+              <div className="chart" key="age-gender-stacked-chart">
+                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} />
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">

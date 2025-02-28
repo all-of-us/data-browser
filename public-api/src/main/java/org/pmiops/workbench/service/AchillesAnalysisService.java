@@ -292,6 +292,7 @@ public class AchillesAnalysisService {
                             ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
+                                    CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID),
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID),
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_DIST_ANALYSIS_ID),
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_UNIT_ANALYSIS_ID),
@@ -324,14 +325,11 @@ public class AchillesAnalysisService {
                     addAgeStratum(aa, conceptId, null, 2);
                     conceptAnalysis.setAgeAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))) {
-
-                    System.out.println("****************************************************************");
-                    System.out.println("LOCATION ANALYSIS");
-                    System.out.println("****************************************************************");
-
-
                     addLocationStratum(aa, 2, conceptId, null);
                     conceptAnalysis.setLocationAnalysis(aa);
+                } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID))) {
+                    addAgeGenderStratum(aa, conceptId, null);
+                    conceptAnalysis.setCombinedAgeGenderAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID))) {
                     Map<String, List<AchillesResult>> results = seperateUnitResults(aa);
 
@@ -503,6 +501,42 @@ public class AchillesAnalysisService {
         }
     }
 
+    public void addAgeGenderStratum(Analysis aa, String conceptId, List<DbAchillesResult> ehrCountResults) {
+        // Set to track unique age-gender combinations that already exist
+        Set<String> uniqueAgeGenderCombinations = new TreeSet<String>();
+
+        // Loop over the existing results and check if the combinations are already present
+        for (AchillesResult ar : aa.getResults()) {
+            if (ar.getStratum2() != null && !ar.getStratum2().equals("0")) {
+                String ageGenderKey = ar.getStratum2() + "-" + ar.getStratum4(); // Combine age and gender to create a unique key
+                uniqueAgeGenderCombinations.add(ageGenderKey);
+                ar.setAnalysisStratumName(ageStratumNameMap.get(ar.getStratum2()) + " " + genderStratumNameMap.get(ar.getStratum4())); // Set combined name
+            }
+        }
+
+        // Define the complete age and gender combinations
+        Set<String> completeAgeStratums = new TreeSet<String>(Arrays.asList("2", "3", "4", "5", "6", "7", "8", "9"));
+        Set<String> completeGenderStratumList = new TreeSet<String>(Arrays.asList("8507", "8532", "0"));
+
+        // Loop through missing combinations
+        for (String missingAge : completeAgeStratums) {
+            for (String missingGender : completeGenderStratumList) {
+                String ageGenderKey = missingAge + "-" + missingGender;
+                // If this combination is missing, create a missing result
+                if (!uniqueAgeGenderCombinations.contains(ageGenderKey)) {
+                    AchillesResult missingResult = null;
+                    // Check the analysis ID and create the result accordingly
+                    missingResult = achillesMapper.makeCopyAchillesResult(
+                            aa.getAnalysisId(), conceptId, missingAge, null, missingGender, null, null, null, 20L, 20L);
+
+                    // Set the combined analysis stratum name (age and gender)
+                    missingResult.setAnalysisStratumName(ageStratumNameMap.get(missingAge) + " " + genderStratumNameMap.get(missingGender));
+
+                    aa.getResults().add(missingResult);
+                }
+            }
+        }
+    }
     public void addLocationStratum(Analysis aa, int stratum, String conceptId, List<DbAchillesResult> ehrCountResults){
         Set<String> uniqueLocationStratums = new TreeSet<String>();
         String domainConceptId = null;

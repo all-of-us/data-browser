@@ -9,6 +9,7 @@ export enum GraphType {
   Values = "Values",
   None = "",
   map = "Map",
+  ageGenderStacked = "Age + Sex assigned at birth",
 }
 
 export enum Domain {

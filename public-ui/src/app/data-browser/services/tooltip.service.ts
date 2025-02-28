@@ -252,6 +252,7 @@ export const tooltips = {
     "such as Fahrenheit or Celsius for body temperature.",
   sortVariants: `Click to select ascending or descending`,
   Map: `this is a map`,
+  "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart for EHR domains',
 };
 
 export const getTooltip = (textKey) => {
@@ -497,6 +498,8 @@ export class TooltipService {
              Values can also be reported in different units,
              such as Fahrenheit or Celsius for body temperature.`,
     sortVariants: `Click to select ascending or descending`,
+    ageGenderStacked: 'combined age + sex assigned at birth chart for EHR domains',
+    "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart for EHR domains',
   };
   constructor() {}
 }
