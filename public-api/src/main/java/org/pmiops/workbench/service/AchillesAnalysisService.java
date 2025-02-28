@@ -300,6 +300,10 @@ public class AchillesAnalysisService {
                     .map(achillesMapper::dbModelToClient)
                     .collect(Collectors.toList());
 
+            System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
+            System.out.println(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID));
+            System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
+
             HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
             for (Analysis aa : analysisList) {
                 analysisHashMap.put(aa.getAnalysisId(), aa);
@@ -328,6 +332,9 @@ public class AchillesAnalysisService {
                     addLocationStratum(aa, 2, conceptId, null);
                     conceptAnalysis.setLocationAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID))) {
+                    System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
+                    System.out.println("Am i here at all ?");
+                    System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
                     addAgeGenderStratum(aa, conceptId, null);
                     conceptAnalysis.setCombinedAgeGenderAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID))) {
@@ -547,7 +554,6 @@ public class AchillesAnalysisService {
                     uniqueLocationStratums.add(ar.getStratum1());
                     ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum1()));
                 } else if (stratum == 2) {
-                    System.out.println(ar.getStratum2());
                     uniqueLocationStratums.add(ar.getStratum2());
                     ar.setAnalysisStratumName(locationStratumNameMap.get(ar.getStratum2()));
                 } else if (stratum == 3) {
@@ -577,7 +583,6 @@ public class AchillesAnalysisService {
 
         // Add missing location strata
         for (String missingLocation : completeLocationStratumList) {
-            System.out.println("Missing");
             AchillesResult missingResult = null;
             if (aa.getAnalysisId() == CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)) {
                 missingResult = achillesMapper.makeCopyAchillesResult(aa.getAnalysisId(), domainConceptId, null, conceptId, missingLocation, null, null, null, 20L, 20L);
