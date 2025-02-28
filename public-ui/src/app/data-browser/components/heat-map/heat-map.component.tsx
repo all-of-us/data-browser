@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { withRouteData } from "app/components/app-router";
-import * as highCharts from "highcharts";
 import Highcharts from 'highcharts/highmaps';
 import HighchartsReact from "highcharts-react-official";
 import HighchartsMap from 'highcharts/modules/map';
-import mapData from '../../../../assets/maps/us_and_terr.json';
+import mapData from 'assets/maps/us_and_terr.json';
 // import mapData from '@highcharts/map-collection/countries/us/custom/us-all-territories.topo.json';
 
 HighchartsMap(Highcharts);
