@@ -16,16 +16,11 @@ const styles = reactStyles({
 
 export class VariantFilterSliderComponent extends React.Component<Props, {}> {
   constructor(props: Props) {
-    console.log(props.ref, "propsreeef");
-
     super(props);
   }
 
   render(): React.ReactNode {
     const { min, max, ogFilterItem } = this.props;
-    // const {sliderValue} = this.state
-    console.log(ogFilterItem, "realy");
-
     return (
       <React.Fragment>
         <div style={styles.sliderFormat}>

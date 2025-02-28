@@ -59,7 +59,6 @@ export const BreadCrumbComponent = class extends React.Component<
       } else if (routeData.breadcrumb) {
         breadcrumb = routeData.breadcrumb.value;
       }
-      console.log(breadcrumb);
       if (breadcrumb === 'Labs And Measurements') {
             breadcrumb = 'Labs & Measurements';
       }

@@ -20,10 +20,6 @@ export class VariantFilterSliderComponent extends React.Component<Props, {}> {
 
   render(): React.ReactNode {
     const { min, max, ogFilterItem } = this.props;
-    // const {sliderValue} = this.state
-    console.log(ogFilterItem, "realy");
-    console.log("Am i here");
-
     return (
       <React.Fragment>
         <div style={styles.sliderFormat}>

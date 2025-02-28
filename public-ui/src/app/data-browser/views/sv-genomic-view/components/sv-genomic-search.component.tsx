@@ -65,7 +65,6 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
   scrollDiv: any;
   constructor(props: Props) {
     super(props);
-    console.log(props);
     this.scrollDiv = React.createRef();
     this.state = {
       searchTerm: this.props.searchTerm || "", // Set searchTerm from props

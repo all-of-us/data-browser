@@ -204,9 +204,6 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
           <div style={styles.sortItemForm}>
             {sortCats &&
               sortCats.map((cat, index) => {
-                console.log(cat);
-                console.log(cat.field);
-                console.log(sortMetadata);
                 return (
                   <div
                     style={{ cursor: "pointer", position: "relative" }}
