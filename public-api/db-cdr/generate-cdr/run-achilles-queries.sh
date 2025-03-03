@@ -164,13 +164,14 @@ b1.observation_id=b2.observation_id and b2.observation_source_value='cdc_covid_1
 where a.observation_id=b.observation_id;"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` AS
+"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` AS
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age,
+p.gender_concept_id AS gender
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
-group by observation_id,age
+group by observation_id,age,gender
 ),
 survey_age_stratum_temp as
 (
@@ -178,8 +179,9 @@ select observation_id,
 case when age >= 18 and age <= 29 then '2'
 when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-when age < 18 then '0' end as age_stratum from survey_age
-group by observation_id,age_stratum
+when age < 18 then '0' end as age_stratum, gender
+from survey_age
+group by observation_id,age_stratum, gender
 )
 select * from survey_age_stratum_temp"
 

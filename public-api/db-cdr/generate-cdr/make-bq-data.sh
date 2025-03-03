@@ -914,7 +914,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_gender_stratum\`"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_observation\`"

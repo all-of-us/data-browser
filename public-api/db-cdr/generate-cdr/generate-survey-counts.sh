@@ -231,12 +231,14 @@ SELECT 0 as id, 3110 as analysis_id,CAST(survey_concept_id as string) as stratum
 stratum_3, stratum_4,
 cast(order_number as string) stratum_5,
 CAST(observation_source_concept_id as string) as stratum_6,
+'' as stratum_7,
 Count(distinct person_id) as count_value, 0 as source_count_value
 from basics_category_rows
 group by observation_source_concept_id, survey_concept_id, order_number, stratum_3, stratum_4
 union all
 select 0,3111 as analysis_id,CAST(survey_concept_id as string) as stratum_1,CAST(observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
 CAST(p.gender_concept_id as string) as stratum_5, path as stratum_6,
+'' as stratum_7,
 count(distinct p.person_id) as count_value,0 as source_count_value
 FROM basics_category_rows bcr join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = bcr.person_id
 group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, p.gender_concept_id, order_number, path
@@ -244,14 +246,24 @@ union all
 select 0, 3112 as analysis_id,CAST(survey_concept_id as string) as stratum_1,
 CAST(bcr.observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
 age_stratum as stratum_5, path as stratum_6,
+'' as stratum_7,
 COUNT(distinct bcr.PERSON_ID) as count_value,0 as source_count_value
-from basics_category_rows bcr join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=bcr.observation_id
+from basics_category_rows bcr join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=bcr.observation_id
 group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, stratum_5, order_number, path
+union all
+select 0, 3115 as analysis_id, CAST(survey_concept_id as string) as stratum_1,
+CAST(bcr.observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
+age_stratum as stratum_5, path as stratum_6,
+CAST(sa.gender as string) as stratum_7,
+COUNT(distinct bcr.PERSON_ID) as count_value,0 as source_count_value
+from basics_category_rows bcr join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=bcr.observation_id
+group by survey_concept_id, observation_source_concept_id, stratum_3, stratum_4, stratum_5, order_number, path, gender
 union all
 -- Location-based analysis (new analysis 3118)
 select 0, 3118 as analysis_id, CAST(survey_concept_id as string) as stratum_1,
 CAST(observation_source_concept_id as string) as stratum_2, stratum_3, stratum_4,
 si.location as stratum_5, path as stratum_6,
+'' as stratum_7,
 count(distinct si.person_id) as count_value, 0 as source_count_value
 FROM basics_category_rows bcr
 join state_information si
@@ -317,6 +329,53 @@ order by CAST(sq.order_number as int64) asc)
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from main_questions_count
 union all
 select 0 as id, 3111 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,count_value,source_count_value from sub_questions_count"
+
+# Survey question answers count for combined age gender chart for all questions except basics q2 and fmh questions
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2,stratum_3,stratum_4,stratum_5,stratum_6, stratum_7, count_value,source_count_value)
+with ppi_path
+as
+(select survey_concept_id,concept_id,order_number,path,sub,ARRAY_LENGTH(SPLIT(path, '.')) as level,
+parent_question_concept_id, parent_answer_concept_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\`),
+main_questions_count as
+(select 0,3115 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
+p.age_stratum as stratum_5,sq.path as stratum_6,
+cast(p.gender as string) as stratum_7,
+count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
+join ppi_path sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
+and sq.sub=0
+group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.age_stratum,sq.order_number,sq.path,p.gender
+order by CAST(sq.order_number as int64) asc),
+sub_questions_count as
+(
+select 0,3115 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
+p.age_stratum as stratum_5,sq.path as stratum_6,
+cast(p.gender as string) as stratum_7,
+count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
+join ppi_path sq
+On o.observation_source_concept_id=sq.concept_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
+where (o.observation_source_concept_id > 0 and o.value_source_concept_id > 0 and o.observation_source_concept_id != 1586140)
+and sq.sub=1
+and
+(exists (select * from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` where questionnaire_response_id=o.questionnaire_response_id
+and observation_source_concept_id=parent_question_concept_id and value_source_concept_id=parent_answer_concept_id )
+or sq.concept_id in (1333105, 1332735, 1332734, 1310134, 1332738, 1332762, 1333324, 1333235, 1310148, 1332769, 713888, 596885, 596888, 1310135, 1310136, 1310138, 1310141, 1310144, 1310148, 1332737, 1332769, 1332793, 1332796, 1332830, 1332831,
+1333014, 1333020, 1333021, 1333022, 1333235, 1333326) or sq.path in ('1585838.1585841.1585348', '1585838.1585842.1585348'))
+group by sq.survey_concept_id,o.observation_source_concept_id,o.value_source_concept_id,c.concept_name,p.age_stratum,sq.order_number,sq.path,p.gender
+order by CAST(sq.order_number as int64) asc)
+select 0 as id, 3115 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from main_questions_count
+union all
+select 0 as id, 3115 as analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value from sub_questions_count"
 
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -451,6 +510,21 @@ where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.val
 group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,p.gender_concept_id,sq.order_number,sq.path
 order by CAST(sq.order_number as int64) asc"
 
+# Survey question answers count for combined age gender chart (value_as_number not null)
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6, stratum_7 ,count_value,source_count_value)
+select 0,3115 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
+CAST(o.value_as_number as string) as stratum_4,p.age_stratum as stratum_5,sq.path as stratum_6,
+CAST(p.gender_concept_id as string) as stratum_7,
+count(distinct p.person_id) as count_value,0 as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` sq
+On o.observation_source_concept_id=sq.concept_id
+where (o.observation_source_concept_id > 0 and o.value_as_number >= 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null))
+group by sq.survey_concept_id,o.observation_source_concept_id,o.value_as_number,p.age_stratum,sq.order_number,sq.path,p.gender
+order by CAST(sq.order_number as int64) asc"
+
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6,count_value,source_count_value)
@@ -513,7 +587,7 @@ main_questions_count as
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 age_stratum as stratum_5,sq.path as stratum_6,
 COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
@@ -527,7 +601,7 @@ sub_questions_count as
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 age_stratum as stratum_5,sq.path as stratum_6,
 COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
@@ -553,7 +627,7 @@ select 0, 3112 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,
 CAST(o.value_as_number as string) as stratum_4,
 age_stratum as stratum_5,sq.path as stratum_6,
 COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=o.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` sq
 On o.observation_source_concept_id=sq.concept_id
 where (o.observation_source_concept_id > 0 and (o.value_source_concept_id=0 or o.value_source_concept_id is null) and o.value_as_number >= 0)
@@ -586,7 +660,7 @@ CAST(sq.survey_concept_id AS STRING) as stratum_1,
 age_stratum as stratum_2,
   'Survey' as stratum_3,
 COUNT(distinct ob1.PERSON_ID) as count_value,COUNT(distinct ob1.PERSON_ID) as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob1 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on
 sa.observation_id = ob1.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` sq
 On ob1.observation_source_concept_id=sq.concept_id
@@ -640,7 +714,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 (id,analysis_id,stratum_1,stratum_2,count_value,source_count_value)
 select 0 as id, 3201 as analysis_id, cast(cr.survey_concept_id as string) as stratum_1, sa.age_stratum as stratum_2, count(distinct ob.person_id) as count_value, count(distinct ob.person_id) as source_count_value
  from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` ob
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=ob.observation_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=ob.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` cr
 on ob.observation_source_concept_id=cr.concept_id
 group by stratum_1, stratum_2"
@@ -701,7 +775,7 @@ main_questions_count as
 (select 0, 3321 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 age_stratum as stratum_5,sq.path as stratum_6,
 COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 where o.observation_source_concept_id > 0 and value_source_concept_id != 903096
@@ -712,7 +786,7 @@ sub_questions_count as
 (select 0, 3321 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 age_stratum as stratum_5,sq.path as stratum_6,
 COUNT(distinct o.PERSON_ID) as count_value,0 as source_count_value
-from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` sa on sa.observation_id=o.observation_id
+from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` sa on sa.observation_id=o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 where o.observation_source_concept_id > 0 and value_source_concept_id != 903096
