@@ -62,7 +62,7 @@ cast(p.gender as string) as stratum_7,
 Count(distinct ob.person_id) as count_value, 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on sm2.concept_id = sm.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p on ob.person_id = p.person_id
+join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p on ob.observation_id = p.observation_id
 and ob.value_source_concept_id = sm.answer_concept_id
 group by 4, 5, 6, 7, 8, 9;"
 
