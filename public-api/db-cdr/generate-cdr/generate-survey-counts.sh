@@ -516,7 +516,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 (id, analysis_id, stratum_1, stratum_2,stratum_4,stratum_5,stratum_6, stratum_7 ,count_value,source_count_value)
 select 0,3115 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,CAST(o.observation_source_concept_id as string) as stratum_2,
 CAST(o.value_as_number as string) as stratum_4,p.age_stratum as stratum_5,sq.path as stratum_6,
-CAST(p.gender_concept_id as string) as stratum_7,
+CAST(p.gender as string) as stratum_7,
 count(distinct o.person_id) as count_value,0 as source_count_value
 FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.observation_id = o.observation_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_wo_pfhh\` sq
