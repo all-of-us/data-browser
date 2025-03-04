@@ -344,8 +344,8 @@ main_questions_count as
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 p.age_stratum as stratum_5,sq.path as stratum_6,
 cast(p.gender as string) as stratum_7,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
+count(distinct o.person_id) as count_value,0 as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.observation_id = o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
@@ -359,8 +359,8 @@ select 0,3115 as analysis_id,CAST(sq.survey_concept_id as string) as stratum_1,C
 CAST(o.value_source_concept_id as string) as stratum_3,c.concept_name as stratum_4,
 p.age_stratum as stratum_5,sq.path as stratum_6,
 cast(p.gender as string) as stratum_7,
-count(distinct p.person_id) as count_value,0 as source_count_value
-FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.person_id = o.person_id
+count(distinct o.person_id) as count_value,0 as source_count_value
+FROM \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p inner join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_observation\` o on p.observation_id = o.observation_id
 join ppi_path sq
 On o.observation_source_concept_id=sq.concept_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c on c.concept_id = o.value_source_concept_id
