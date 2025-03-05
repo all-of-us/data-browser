@@ -54,17 +54,35 @@ group by 4, 5, 6, 7, 8;"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
 (id,analysis_id,stratum_1,stratum_2,stratum_3,stratum_4,stratum_5,stratum_6,stratum_7,count_value,source_count_value)
-select 0 as id, 3115 as analysis_id, '43529712' as stratum_1, CAST(ob.concept_id as string) as stratum_2,
-CAST(ob.value_source_concept_id as string) as stratum_3, sm.answer as stratum_4,
-p.age_stratum as stratum_5,
-sm2.path as stratum_6,
-cast(p.gender as string) as stratum_7,
-Count(distinct ob.person_id) as count_value, 0 as source_count_value
-from \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
+WITH survey_age_gender_stratum AS (
+    SELECT DISTINCT cbs.*,
+        CASE
+            WHEN age_at_event >= 18 AND age_at_event <= 29 THEN '2'
+            WHEN age_at_event > 89 THEN '9'
+            WHEN age_at_event >= 30 AND age_at_event <= 89 THEN CAST(FLOOR(age_at_event/10) AS STRING)
+            WHEN age_at_event < 18 THEN '0'
+        END AS age_stratum,
+        p.gender_concept_id AS gender
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.cb_search_all_events\` cbs
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON cbs.person_id = p.person_id
+)
+SELECT
+    0 AS id,
+    3115 AS analysis_id,
+    '43529712' AS stratum_1,
+    CAST(ob.concept_id AS STRING) AS stratum_2,
+    CAST(ob.value_source_concept_id AS STRING) AS stratum_3,
+    sm.answer AS stratum_4,
+    ob.age_stratum AS stratum_5,
+    sm2.path AS stratum_6,
+    CAST(ob.gender AS STRING) AS stratum_7,
+    COUNT(DISTINCT ob.person_id) AS count_value,
+    0 AS source_count_value
+from survey_age_gender_stratum ob join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.pfhh_qa_metadata\` sm on ob.concept_id = sm.question_concept_id
 join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_metadata_w_pfhh\` sm2 on sm2.concept_id = sm.question_concept_id
-join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` p on ob.observation_id = p.observation_id
 and ob.value_source_concept_id = sm.answer_concept_id
-group by 4, 5, 6, 7, 8, 9;"
+GROUP BY stratum_2, stratum_3, stratum_4, stratum_5, stratum_6, stratum_7;"
 
 
 # New 3118 query by location (similar to 3111 but using location)
