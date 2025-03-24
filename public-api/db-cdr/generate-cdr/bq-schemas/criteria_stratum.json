@@ -20,7 +20,7 @@
 		"type": "STRING"
 	},
 	{
-		"mode": "REQUIRED",
+		"mode": "NULLABLE",
 		"name": "stratum_3",
 		"type": "STRING"
 	},
