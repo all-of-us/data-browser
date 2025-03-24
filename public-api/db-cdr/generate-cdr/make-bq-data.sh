@@ -715,7 +715,7 @@ SELECT 0,t1.analysis_id,cast(t1.concept_id as string),cast(t1.stratum_1 as strin
 FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` t1
 LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2 ON t2.stratum_1 = cast(t1.concept_id as string) and t1.analysis_id=t2.analysis_id and t1.stratum_1=t2.stratum_2
 and t2.stratum_3=t1.domain
-WHERE t2.stratum_1 IS NULL
+WHERE t1.analysis_id in (3101, 3102) and t2.stratum_1 IS NULL
 group by t1.analysis_id, t1.concept_id, t1.stratum_1,t1.domain,t1.count_value;
 "
 
@@ -725,7 +725,58 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
-where cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=sub_cr.stratum and c.stratum_3=sub_cr.domain"
+where c.analysis_id in (3101, 3102)
+cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=sub_cr.stratum and c.stratum_3=sub_cr.domain"
+
+echo "Inserting rows in achilles_results for the concepts that are not in there and that have combined age + gender counts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"
+INSERT INTO \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
+SELECT
+  0,
+  t1.analysis_id,
+  CAST(t1.concept_id AS STRING),
+  CAST(t1.stratum_1 AS STRING),
+  t1.domain,
+  t1.stratum_2, -- stratum_4 holds gender here
+  t1.count_value,
+  0
+FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` t1
+LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2
+  ON t2.stratum_1 = CAST(t1.concept_id AS STRING)
+  AND t2.analysis_id = t1.analysis_id
+  AND t2.stratum_2 = t1.stratum_1
+  AND t2.stratum_4 = t1.stratum_2
+  AND t2.stratum_3 = t1.domain
+WHERE t1.analysis_id = 3105
+  AND t2.stratum_1 IS NULL
+GROUP BY t1.analysis_id, t1.concept_id, t1.stratum_1, t1.domain, t1.stratum_2, t1.count_value;
+"
+
+echo "Updating counts in achilles_results with the ones generated in criteria_stratum (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"
+UPDATE \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` c
+SET c.count_value = sub_cr.cnt
+FROM (
+  SELECT
+    analysis_id,
+    concept_id,
+    stratum_1 AS stratum,
+    stratum_2 AS gender,
+    stratum_3 AS domain,
+    MAX(count_value) AS cnt
+  FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
+  WHERE analysis_id = 3105
+  GROUP BY analysis_id, concept_id, stratum, gender, domain
+) AS sub_cr
+WHERE c.analysis_id = 3105
+  AND CAST(sub_cr.concept_id AS STRING) = c.stratum_1
+  AND c.stratum_2 = sub_cr.stratum
+  AND c.stratum_4 = sub_cr.gender
+  AND c.stratum_3 = sub_cr.domain;
+"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "Update \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
