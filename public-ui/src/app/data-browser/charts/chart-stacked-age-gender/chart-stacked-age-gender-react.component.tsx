@@ -23,17 +23,12 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                     height: getBaseOptions().chart.height, // Ensure consistency with other charts
                 },
                 title: {
-                    text: 'Age and Gender Distribution',
-                    style: {
-                        ...getBaseOptions().title.style,
-                        color: "#262262",
-                        fontSize: "22px",
-                    },
+                    text: null,
                 },
                 xAxis: {
                     categories: this.formatAgeCategories(this.props.ageGenderAnalysis),
                     title: {
-                        text: 'Age Groups',
+                        text: 'Age at First Occurrence in Participant Record',
                         style: {
                             ...getBaseOptions().xAxis.title.style,
                             color: "#262262",
@@ -43,15 +38,18 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                 },
                 yAxis: {
                     min: 0,
+                    lineWidth: 1,
+                    lineColor: '#262262', // or keep '#ECF1F4' if lighter is preferred
+                    gridLineWidth: 1,       // <- ensures horizontal grid lines are visible
+                    gridLineColor: '#ECF1F4', // <- soft gray like in your image
                     title: {
                         text: 'Participant Count',
-                        align: 'high',
+                        align: 'middle',
                         style: {
                             color: "#262262",
                             fontSize: "14px",
                         }
                     },
-                    gridLineColor: "#ECF1F4",
                     labels: {
                         style: {
                             fontSize: "14px",
