@@ -159,7 +159,7 @@ with y as
     FROM y
     GROUP BY 1, 2, 3
   )
-  select concept_id, age AS stratum_1, gender, 'combined_age_gender', 'Procedure', count(distinct person_id) as cnt, 3105 from min_y
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Procedure', count(distinct person_id) as cnt, 3105 from min_y
   group by concept_id,age,gender
   order by concept_id asc"
 
@@ -267,7 +267,7 @@ with y as
   group by 1,2,3,4),
   min_y as
   (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
-  select concept_id, age AS stratum_1, gender, 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
   group by concept_id,age,gender
   order by concept_id asc
 "
@@ -378,7 +378,7 @@ with y as
   group by 1,2,3,4),
   min_y as
   (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
-  select concept_id, age AS stratum_1, gender, 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
   group by concept_id,age, gender
   order by concept_id asc
 "
@@ -487,7 +487,7 @@ with y as
   group by 1,2,3,4),
   min_y as
   (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
-  select concept_id, age AS stratum_1, gender AS stratum_2, 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  select concept_id, age AS stratum_1, cast(gender as string) AS stratum_2, 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
   group by concept_id,age,gender
   order by concept_id asc
 "
