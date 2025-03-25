@@ -725,7 +725,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
-where c.analysis_id in (3101, 3102)
+where c.analysis_id in (3101, 3102) and
 cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=sub_cr.stratum and c.stratum_3=sub_cr.domain"
 
 echo "Inserting rows in achilles_results for the concepts that are not in there and that have combined age + gender counts (3105)"
