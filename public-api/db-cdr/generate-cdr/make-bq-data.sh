@@ -765,7 +765,7 @@ FROM (
     concept_id,
     stratum_1 AS stratum,
     stratum_2 AS gender,
-    stratum_3 AS domain,
+    domain AS domain,
     MAX(count_value) AS cnt
   FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
   WHERE analysis_id = 3105
