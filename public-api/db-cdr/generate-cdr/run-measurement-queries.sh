@@ -1900,6 +1900,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -1949,7 +1963,19 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
-
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Any Fitbit Data' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 -- Fitbit data count by location
 UNION ALL
 SELECT
@@ -2005,6 +2031,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2054,7 +2094,19 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
-
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Heart Rate (Summary)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 -- Fitbit data count by location
 UNION ALL
 SELECT
@@ -2110,6 +2162,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2159,7 +2225,19 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
-
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Heart rate (minute-level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 -- Fitbit data count by location
 UNION ALL
 SELECT
@@ -2215,6 +2293,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2264,6 +2356,20 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
+
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Activity intraday steps (minute-level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 
 -- Fitbit data count by location
 UNION ALL
@@ -2320,6 +2426,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2369,6 +2489,20 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
+
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Activity daily summary' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 
 -- Fitbit data count by location
 UNION ALL
@@ -2425,6 +2559,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2474,6 +2622,20 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
+
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    Sleep Daily Summary' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 
 -- Fitbit data count by location
 UNION ALL
@@ -2530,6 +2692,20 @@ m_age_stratum AS (
     END AS age_stratum
     FROM m_age
 ),
+m_age_gender_stratum AS (
+    SELECT m.person_id, m.age, m.age_stratum, p.gender_concept_id as gender,
+    CONCAT(
+            m.age_stratum,
+            '-',
+            CASE
+                WHEN p.gender_concept_id = 8507 THEN 'M'
+                WHEN p.gender_concept_id = 8532 THEN 'F'
+                ELSE 'O'
+            END
+        ) AS age_gender_stratum
+    FROM m_age_stratum m
+    JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p ON m.person_id = p.person_id
+),
 year_counts AS (
     SELECT EXTRACT(YEAR FROM join_date) AS join_year, COUNT(DISTINCT person_id) AS people_count
     FROM min_dates
@@ -2579,6 +2755,20 @@ SELECT
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_stratum a
 GROUP BY 4
+
+-- Fitbit combined age gender chart data
+UNION ALL
+SELECT
+    0 AS id,
+    3105 AS analysis_id,
+    'Sleep Level (Sequence by level)' AS stratum_1,
+    age_stratum AS stratum_2,
+    'Fitbit' AS stratum_3,
+    gender as stratum_4,
+    COUNT(DISTINCT a.person_id) AS count_value,
+    COUNT(DISTINCT a.person_id) AS source_count_value
+FROM m_age_gender_stratum a
+GROUP BY 4,6
 
 -- Fitbit data count by location
 UNION ALL
