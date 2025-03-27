@@ -23,17 +23,12 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                     height: getBaseOptions().chart.height, // Ensure consistency with other charts
                 },
                 title: {
-                    text: 'Age and Gender Distribution',
-                    style: {
-                        ...getBaseOptions().title.style,
-                        color: "#262262",
-                        fontSize: "22px",
-                    },
+                    text: null,
                 },
                 xAxis: {
                     categories: this.formatAgeCategories(this.props.ageGenderAnalysis),
                     title: {
-                        text: 'Age Groups',
+                        text: 'Age at First Occurrence in Participant Record',
                         style: {
                             ...getBaseOptions().xAxis.title.style,
                             color: "#262262",
@@ -43,15 +38,18 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                 },
                 yAxis: {
                     min: 0,
+                    lineWidth: 1,
+                    lineColor: '#262262', // or keep '#ECF1F4' if lighter is preferred
+                    gridLineWidth: 1,       // <- ensures horizontal grid lines are visible
+                    gridLineColor: '#ECF1F4', // <- soft gray like in your image
                     title: {
                         text: 'Participant Count',
-                        align: 'high',
+                        align: 'middle',
                         style: {
                             color: "#262262",
                             fontSize: "14px",
                         }
                     },
-                    gridLineColor: "#ECF1F4",
                     labels: {
                         style: {
                             fontSize: "14px",
@@ -60,17 +58,26 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                     }
                 },
                 tooltip: {
-                    shared: true,
-                    formatter: function () {
-                        let tooltipText = `<strong>${this.x}</strong><br>`;
-                        this.points.forEach(point => {
-                            const value = point.y <= 20 ? '≤20' : point.y;
-                            tooltipText += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: ${value}<br>`;
-                        });
-                        return tooltipText;
-                    },
+                    shared: false,
+                    useHTML: true, // Allow HTML formatting for alignment
                     style: {
                         fontSize: "14px",
+                    },
+                    formatter: function () {
+                        const ageGroup = this.series.chart.xAxis[0].categories[this.point.index];
+                        const count = this.y;
+                        const totalInGroup = this.series.chart.series
+                            .map(s => s.data[this.point.index]?.y || 0)
+                            .reduce((a, b) => a + b, 0);
+                        const percent = totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : '0';
+
+                        return `
+                            <div style="text-align: left;">
+                                <div><strong>${this.series.name} ${ageGroup}</strong></div>
+                                <div>${count.toLocaleString().padStart(6, ' ')} Participants</div>
+                                <div>${percent.toString().padStart(5, ' ')}% of age group</div>
+                            </div>
+                        `;
                     }
                 },
                 plotOptions: {
@@ -80,6 +87,11 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                         pointWidth: 50,
                         dataLabels: {
                             enabled: false,
+                        },
+                        states: {
+                            hover: {
+                                brightness: 0.1 // Subtle highlight
+                            }
                         }
                     }
                 },

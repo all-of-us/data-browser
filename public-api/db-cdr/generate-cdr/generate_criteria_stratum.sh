@@ -108,6 +108,61 @@ with y as
   group by concept_id,age
   order by concept_id asc"
 
+echo "Copying combined age + gender counts into criteria_stratum for procedure child concepts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+select
+distinct c.concept_id,
+ar.stratum_2 as stratum_1,
+ar.stratum_4 as stratum_2,
+'combined_age_gender' as stratum_3,
+'Procedure',
+ar.count_value, 3105 from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1
+and analysis_id=3105
+join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1
+and cr.type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM') and cr.domain_id='PROCEDURE'
+and cr.full_text like '%procedure_rank1%' and ar.stratum_3='Procedure'
+group by c.concept_id,ar.stratum_2,ar.stratum_4,ar.count_value order by concept_id asc"
+
+echo "Inserting combined age + gender stratum counts for parent pcs concepts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id,stratum_1,stratum_2, stratum_3, domain, count_value, analysis_id)
+with y as
+  (select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(procedure_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
+  p.gender_concept_id as gender
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type in ('SNOMED', 'ICD9Proc', 'ICD10PCS', 'CPT4', 'ICD9CM')
+    and domain_id = 'PROCEDURE'
+    and is_group = 1 and full_text like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.procedure_occurrence\` b on a.descendant_concept_id = b.procedure_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+  group by 1,2,3,4),
+  min_y AS (
+    SELECT
+      concept_id,
+      person_id,
+      gender,
+      MIN(age) AS age
+    FROM y
+    GROUP BY 1, 2, 3
+  )
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Procedure', count(distinct person_id) as cnt, 3105 from min_y
+  group by concept_id,age,gender
+  order by concept_id asc"
+
 echo "Inserting snomed condition counts"
 
 echo "biological sex child concept counts"
@@ -174,6 +229,46 @@ with y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
   select concept_id, age AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
+  order by concept_id asc
+"
+
+echo "biological sex child concept counts"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+select c.concept_id, ar.stratum_2 as stratum_1, ar.stratum_4 as stratum_2, 'combined_age_gender' as stratum_3, 'Condition', ar.count_value, 3105
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3105 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+group by c.concept_id,ar.stratum_2,ar.stratum_4,ar.count_value order by concept_id asc"
+
+echo "combined age + gender parent concept counts 3105"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
+  p.gender_concept_id as gender
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'SNOMED'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and full_text like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  group by 1,2,3,4),
+  min_y as
+  (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  group by concept_id,age,gender
   order by concept_id asc
 "
 
@@ -246,6 +341,48 @@ with y as
   order by concept_id asc
 "
 
+echo "combined age + gender child concept counts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+select c.concept_id, ar.stratum_2 as stratum_1, ar.stratum_4 as stratum_2,
+'combined_age_gender' as stratum_3, 'Condition', ar.count_value, 3105
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3105 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD9CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+group by c.concept_id,ar.stratum_2,ar.stratum_4,ar.count_value order by concept_id asc"
+
+
+echo "combined age + gender parent concept counts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
+  p.gender_concept_id as gender
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD9CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and full_text like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  group by 1,2,3,4),
+  min_y as
+  (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
+  select concept_id, age AS stratum_1, cast(gender as string), 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  group by concept_id,age, gender
+  order by concept_id asc
+"
+
 echo "Inserting ICD10CM condition counts"
 
 echo "biological sex child concept counts"
@@ -312,6 +449,46 @@ with y as
   (select concept_id, person_id, min(age) as age from y group by 1, 2)
   select concept_id, age AS stratum_1, 'age', 'Condition', count(distinct person_id) as cnt, 3102 from min_y
   group by concept_id,age
+  order by concept_id asc
+"
+
+echo "combined age + gender child concept counts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+select c.concept_id, ar.stratum_2 as stratum_1, ar.stratum_4 as stratum_2,'combined_age_gender' as stratum_3, 'Condition', ar.count_value, 3105
+from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` ar join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.concept\` c
+on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3105 join \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\` cr on c.concept_id = cr.concept_id
+and cr.is_group=0 and cr.is_selectable=1 and cr.type='ICD10CM' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
+group by c.concept_id,ar.stratum_2,ar.stratum_4,ar.count_value order by concept_id asc"
+
+echo "combined age + gender parent concept counts (3105)"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
+(concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
+with y as
+(select ancestor_concept_id as concept_id, b.person_id,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
+  p.gender_concept_id as gender
+  from
+  (select *
+  from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
+  where ancestor_concept_id in
+    (select distinct concept_id
+    from  \`$OUTPUT_PROJECT.$OUTPUT_DATASET.cb_criteria\`
+    where type = 'ICD10CM'
+    and domain_id = 'CONDITION'
+    and is_group = 1 and full_text like '%rank1%')) a
+  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
+  group by 1,2,3,4),
+  min_y as
+  (select concept_id, person_id, gender, min(age) as age from y group by 1, 2, 3)
+  select concept_id, age AS stratum_1, cast(gender as string) AS stratum_2, 'combined_age_gender', 'Condition', count(distinct person_id) as cnt, 3105 from min_y
+  group by concept_id,age,gender
   order by concept_id asc
 "
 
