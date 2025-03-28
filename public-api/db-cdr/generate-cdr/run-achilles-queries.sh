@@ -857,11 +857,11 @@ select 0 as id, 3505 as analysis_id,
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a
 join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
   on cast(a.sample_name as int64)=b.research_id
-join `aou-res-curation-prod.2024q3r2_combined_release.person` p
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
   on b.person_id=p.person_id
 join person_age_gender pag
   on pag.person_id=p.person_id
-group by 4
+group by 3, 4
 
 union all
 
@@ -878,7 +878,7 @@ select 0 as id, 3505 as analysis_id,
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a
 join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
   on cast(a.sample_name as int64)=b.research_id
-join `aou-res-curation-prod.2024q3r2_combined_release.person` p
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
   on b.person_id=p.person_id
 join person_age_gender pag
   on pag.person_id=p.person_id
@@ -886,7 +886,7 @@ where a.sample_name not in (
   'BI_HG-003', 'BI_HG-002', 'UW_HG-002',
   'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen'
 )
-group by 4
+group by 3, 4
 
 union all
 
@@ -903,11 +903,11 @@ select 0 as id, 3505 as analysis_id,
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_longreads_metadata\` a
 join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
   on cast(a.sample_name as int64)=b.research_id
-join `aou-res-curation-prod.2024q3r2_combined_release.person` p
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
   on b.person_id=p.person_id
 join person_age_gender pag
   on pag.person_id=p.person_id
-group by 4
+group by 3, 4
 
 union all
 
@@ -928,7 +928,7 @@ join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
   on b.person_id=p.person_id
 join person_age_gender pag
   on pag.person_id=p.person_id
-group by 4"
+group by 3, 4"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
