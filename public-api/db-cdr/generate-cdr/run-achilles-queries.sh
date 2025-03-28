@@ -836,7 +836,7 @@ group by 4;"
 echo "Getting genomic age + gender counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
-(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, stratum_5, count_value, source_count_value)
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
 with person_age_gender as (
   select
     person_id,
@@ -851,7 +851,7 @@ select 0 as id, 3505 as analysis_id,
          when age >= 30 and age <= 89 then cast(floor(age/10) as string)
          when age < 18 then '0'
        end as stratum_1,
-       gender as stratum_2,
+       cast(gender as string) as stratum_2,
        'Genomics' as stratum_3, 'micro-array' as stratum_4,
        count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a
@@ -872,7 +872,7 @@ select 0 as id, 3505 as analysis_id,
          when age >= 30 and age <= 89 then cast(floor(age/10) as string)
          when age < 18 then '0'
        end as stratum_1,
-       gender as stratum_2,
+       cast(gender as string) as stratum_2,
        'Genomics' as stratum_3, 'wgs_shortread' as stratum_4,
        count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a
@@ -897,7 +897,7 @@ select 0 as id, 3505 as analysis_id,
          when age >= 30 and age <= 89 then cast(floor(age/10) as string)
          when age < 18 then '0'
        end as stratum_1,
-       gender as stratum_2,
+       cast(gender as string) as stratum_2,
        'Genomics' as stratum_3, 'wgs_longread' as stratum_4,
        count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_longreads_metadata\` a
@@ -918,7 +918,7 @@ select 0 as id, 3505 as analysis_id,
          when age >= 30 and age <= 89 then cast(floor(age/10) as string)
          when age < 18 then '0'
        end as stratum_1,
-       gender as stratum_2,
+       cast(gender as string) as stratum_2,
        'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4,
        count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a
