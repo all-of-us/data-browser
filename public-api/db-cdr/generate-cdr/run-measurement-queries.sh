@@ -1974,7 +1974,7 @@ SELECT
     'Any Fitbit Data' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2109,7 +2109,7 @@ SELECT
     'Heart Rate (Summary)' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2244,7 +2244,7 @@ SELECT
     'Heart rate (minute-level)' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2380,7 +2380,7 @@ SELECT
     'Activity intraday steps (minute-level)' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2517,7 +2517,7 @@ SELECT
     'Activity daily summary' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2654,7 +2654,7 @@ SELECT
     Sleep Daily Summary' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
@@ -2791,7 +2791,7 @@ SELECT
     'Sleep Level (Sequence by level)' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
-    gender as stratum_4,
+    cast(gender as string) as stratum_4,
     COUNT(DISTINCT a.person_id) AS count_value,
     COUNT(DISTINCT a.person_id) AS source_count_value
 FROM m_age_gender_stratum a
