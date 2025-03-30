@@ -2651,7 +2651,7 @@ UNION ALL
 SELECT
     0 AS id,
     3105 AS analysis_id,
-    Sleep Daily Summary' AS stratum_1,
+    'Sleep Daily Summary' AS stratum_1,
     age_stratum AS stratum_2,
     'Fitbit' AS stratum_3,
     cast(gender as string) as stratum_4,
