@@ -48,13 +48,14 @@ const styleCss = `
       text-align: left;
     }
     .survey-row-expanded {
-        margin-top: -1em;
+        // margin-top: -1em;
         border-left: #cccccc 1px solid;
         border-right: #cccccc 1px solid;
         background: #f6f6f8;
     }
     .active-row {
         background: #f6f6f8;
+        height: 2.5rem;
     }
     .sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
         padding-top: 1rem;
