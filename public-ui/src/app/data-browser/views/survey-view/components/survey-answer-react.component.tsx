@@ -12,6 +12,7 @@ import { SurveyChartReactComponent } from "app/data-browser/views/survey-chart/s
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { ClrIcon } from "app/utils/clr-icon";
 import { countPercentage } from "app/utils/survey-utils";
+import { LoadingDots } from "app/utils/spinner";
 
 const styleCss = `
     .survey-tbl {
@@ -90,6 +91,7 @@ interface SurveyRowState {
   drawerOpen: boolean;
   subQuestions: Array<any>;
   nextLevel: number;
+  drawerLoading: boolean;
 }
 
 const SurveyAnswerRowComponent = class extends React.Component<
@@ -100,6 +102,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
     super(props);
 
     this.state = {
+      drawerLoading: false,
       drawerOpen: false,
       subQuestions: [],
       nextLevel: props.hasSubQuestions === "1" ? props.level + 1 : undefined,
@@ -118,6 +121,9 @@ const SurveyAnswerRowComponent = class extends React.Component<
   }
 
   getSubQuestions(path: string) {
+    this.setState({
+      drawerLoading: true,
+    });
     dataBrowserApi()
       .getSubQuestions(
         this.props.surveyConceptId,
@@ -129,6 +135,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       .then((results) => {
         this.setState({
           subQuestions: this.processResults(results.questions.items),
+          drawerLoading: false
         });
       })
       .catch((e) => console.log(e, "error"));
@@ -136,6 +143,9 @@ const SurveyAnswerRowComponent = class extends React.Component<
 
   processResults(questions: Array<any>) {
     const { countValue } = this.props;
+    this.setState({
+      drawerLoading: true
+    });
     questions.forEach((q) => {
       q.countAnalysis.results = q.countAnalysis.results.filter(
         (a) => a.stratum6 === q.path
@@ -170,6 +180,9 @@ const SurveyAnswerRowComponent = class extends React.Component<
       return q;
     });
     questions.sort((a, b) => a.id - b.id);
+    this.setState({
+      drawerLoading: false
+    });
     return questions;
   }
 
@@ -245,7 +258,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       searchTerm,
       surveyConceptId,
     } = this.props;
-    const { drawerOpen, subQuestions } = this.state;
+    const { drawerOpen, subQuestions, drawerLoading } = this.state;
     const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
@@ -291,25 +304,31 @@ const SurveyAnswerRowComponent = class extends React.Component<
               {isCopeSurvey
                 ? answerConceptId
                 : countPercent
-                ? countPercent.toFixed(2)
-                : participantPercentage}
+                  ? countPercent.toFixed(2)
+                  : participantPercentage}
               {isCopeSurvey ? null : "%"}
             </div>
             <div className="survey-tbl-d display-body info-text survey-answer-level-1">
               {hasSubQuestions === "1" ? (
-                <ClrIcon
-                  shape="caret"
-                  className="survey-row-icon"
-                  style={{ color: "#216fb4" }}
-                  dir={drawerOpen ? "down" : "right"}
-                />
+                drawerLoading ? (
+                  <div style={{ marginLeft: "-1rem" }}>
+                  <LoadingDots />
+                  </div>
+                ) : (
+                  <ClrIcon
+                    shape="caret"
+                    className="survey-row-icon"
+                    style={{ color: "#216fb4" }}
+                    dir={drawerOpen ? "down" : "right"}
+                  />
+                )
               ) : answerValueString !== "Did not answer" ? (
-                <ClrIcon
-                  className={
-                    drawerOpen ? "is-solid survey-row-icon" : "survey-row-icon"
-                  }
-                  shape="bar-chart"
-                />
+              <ClrIcon
+                className={
+                  drawerOpen ? "is-solid survey-row-icon" : "survey-row-icon"
+                }
+                shape="bar-chart"
+              />
               ) : null}
             </div>
           </div>
