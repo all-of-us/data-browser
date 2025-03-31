@@ -48,7 +48,6 @@ const styleCss = `
       text-align: left;
     }
     .survey-row-expanded {
-        // margin-top: -1em;
         border-left: #cccccc 1px solid;
         border-right: #cccccc 1px solid;
         background: #f6f6f8;
