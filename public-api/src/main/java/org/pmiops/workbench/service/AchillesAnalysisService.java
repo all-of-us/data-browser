@@ -237,6 +237,7 @@ public class AchillesAnalysisService {
     public List<ConceptAnalysis> getFitbitConceptAnalyses(List<String> concepts) {
         List<Analysis> analysisList = achillesAnalysisDao.findAnalysisByIdsAndDomain(ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID),
                         CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID),
+                        CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID),
                         CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID),
                         CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID),
                         CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)), "Fitbit").stream()
@@ -253,18 +254,21 @@ public class AchillesAnalysisService {
             Analysis countAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)));
             Analysis ageAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)));
             Analysis genderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)));
+            Analysis combinedAgeGenderAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID)));
             Analysis locationAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)));
             Analysis participantCountAnalysis = achillesMapper.makeCopyAnalysis(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)));
 
             countAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.COUNT_ANALYSIS_ID)).getResults());
             ageAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             genderAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENDER_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
+            combinedAgeGenderAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             locationAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             participantCountAnalysis.setResults(analysisHashMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_BY_DATE_ANALYSIS_ID)).getResults().stream().filter(ar -> ar.getStratum1().toLowerCase().equals(concept.toLowerCase())).collect(Collectors.toList()));
             participantCountAnalysis.getResults().sort(Comparator.comparing(AchillesResult::getStratum2));
 
             addGenderStratum(genderAnalysis,2, concept, null);
             addAgeStratum(ageAnalysis, concept, null, 2);
+            addAgeGenderStratum(combinedAgeGenderAnalysis, concept, null);
             addLocationStratum(locationAnalysis, 2, concept, null);
 
             conceptAnalysis.setConceptId(concept);
@@ -273,6 +277,7 @@ public class AchillesAnalysisService {
             conceptAnalysis.setAgeAnalysis(ageAnalysis);
             conceptAnalysis.setLocationAnalysis(locationAnalysis);
             conceptAnalysis.setParticipantCountAnalysis(participantCountAnalysis);
+            conceptAnalysis.setCombinedAgeGenderAnalysis(combinedAgeGenderAnalysis);
             conceptAnalysisList.add(conceptAnalysis);
         }
         return conceptAnalysisList;
@@ -299,10 +304,6 @@ public class AchillesAnalysisService {
                                     CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.LOCATION_ANALYSIS_ID))).stream()
                     .map(achillesMapper::dbModelToClient)
                     .collect(Collectors.toList());
-
-            System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
-            System.out.println(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID));
-            System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
 
             HashMap<Long, Analysis> analysisHashMap = new HashMap<>();
             for (Analysis aa : analysisList) {

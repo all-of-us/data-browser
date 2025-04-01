@@ -324,10 +324,6 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
-        System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
-        System.out.println("Testing start ...");
-        System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
-
         ConceptAnalysisListResponse resp=new ConceptAnalysisListResponse();
         resp.setItems(achillesAnalysisService.getConceptAnalyses(conceptIds, domainId));
         return ResponseEntity.ok(resp);
