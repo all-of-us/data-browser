@@ -111,6 +111,9 @@ export class SurveyQuestionReactComponent extends React.Component<
         questionWithResults.ageAnalysis = results.items.filter(
           (a) => a.analysisId === 3112
         )[0];
+        questionWithResults.combinedAgeSexAnalysis = results.items.filter(
+          (a) => a.analysisId === 3115
+        )[0];
         questionWithResults.versionAnalysis = results.items.filter(
           (a) => a.analysisId === 3113
         )[0];

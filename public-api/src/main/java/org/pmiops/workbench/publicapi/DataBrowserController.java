@@ -244,7 +244,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             questionIds.add(String.valueOf(qc.getConceptId()));
         }
 
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L, 3118L), questionIds);
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSubQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L, 3115L, 3118L), questionIds);
 
         SurveyMetadataListResponse questionResp = new SurveyMetadataListResponse();
         questionResp.setItems(achillesAnalysisService.mapAnalysesToQuestions(surveyAnalysisList, questions, surveyConceptId));
@@ -263,7 +263,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         }
 
         AnalysisListResponse analysisListResponse = new AnalysisListResponse();
-        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L, 3118L), String.valueOf(surveyConceptId), String.valueOf(conceptId), questionPath);
+        List<Analysis> surveyAnalysisList = achillesAnalysisService.findSurveyQuestionResults(ImmutableList.of(3110L, 3111L, 3112L, 3113L, 3203L, 3115L, 3118L), String.valueOf(surveyConceptId), String.valueOf(conceptId), questionPath);
         analysisListResponse.setItems(surveyAnalysisList);
 
         return ResponseEntity.ok(analysisListResponse);

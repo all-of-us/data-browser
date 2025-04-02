@@ -137,6 +137,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
   processResults(questions: Array<any>) {
     const { countValue } = this.props;
     questions.forEach((q) => {
+    console.log(q);
       q.countAnalysis.results = q.countAnalysis.results.filter(
         (a) => a.stratum6 === q.path
       );
@@ -144,6 +145,9 @@ const SurveyAnswerRowComponent = class extends React.Component<
         (a) => a.stratum6 === q.path
       );
       q.ageAnalysis.results = q.ageAnalysis.results.filter(
+        (a) => a.stratum6 === q.path
+      );
+      q.combinedAgeSexAnalysis.results = q.combinedAgeSexAnalysis.results.filter(
         (a) => a.stratum6 === q.path
       );
       if (q.versionAnalysis && q.versionAnalysis.results) {
@@ -191,43 +195,83 @@ const SurveyAnswerRowComponent = class extends React.Component<
         )
       );
     }
+    if (q.combinedAgeGenderAnalysis) {
+      this.addMissingAnalysisResults(
+        q.combinedAgeGenderAnalysis,
+        q.combinedAgeGenderAnalysis.results.filter(
+          (r) => r.stratum3 !== null && r.stratum3 === a.stratum3
+        )
+      );
+    }
   }
 
-  public addMissingAnalysisResults(analysis: any, results: any) {
-    const uniqueStratums: string[] = [];
-    const fullStratums =
-      analysis.analysisId === 3111
-        ? ["8507", "8532", "0"]
-        : ["2", "3", "4", "5", "6", "7", "8", "9"];
-    for (const result of results) {
-      if (uniqueStratums.indexOf(result.stratum5) <= -1) {
-        uniqueStratums.push(result.stratum5);
+    public addMissingAnalysisResults(analysis: any, results: any) {
+      const fullGenderStratums = ["8507", "8532", "0"];
+      const fullAgeStratums = ["2", "3", "4", "5", "6", "7", "8", "9"];
+
+      const uniquePairs = new Set<string>();
+
+      for (const result of results) {
+        if (analysis.analysisId === 3115) {
+          const key = `${result.stratum5}|${result.stratum6}`;
+          uniquePairs.add(key);
+        } else {
+          const strat = result.stratum5;
+          if (!uniquePairs.has(strat)) {
+            uniquePairs.add(strat);
+          }
+        }
+      }
+
+      if (analysis.analysisId === 3115) {
+        for (const age of fullAgeStratums) {
+          for (const gender of fullGenderStratums) {
+            const key = `${age}|${gender}`;
+            if (!uniquePairs.has(key) && results.length > 0) {
+              const base = results[0];
+              const missingResult = {
+                analysisId: 3115,
+                countValue: 20,
+                countPercent: countPercentage(20, this.props.countValue),
+                stratum1: base.stratum1,
+                stratum2: base.stratum2,
+                stratum3: base.stratum3,
+                stratum4: base.stratum4,
+                stratum5: age,
+                stratum6: gender,
+                analysisStratumName: `${AGE_STRATUM_MAP[age]} | ${GENDER_STRATUM_MAP[gender]}`,
+              };
+              analysis.results.push(missingResult);
+            }
+          }
+        }
+      } else {
+        const fullStratums =
+          analysis.analysisId === 3111 ? fullGenderStratums : fullAgeStratums;
+        for (const missingStratum of fullStratums) {
+          if (!uniquePairs.has(missingStratum) && results.length > 0) {
+            const base = results[0];
+            const missingResult = {
+              analysisId: analysis.analysisId,
+              countValue: 20,
+              countPercent: countPercentage(20, this.props.countValue),
+              stratum1: base.stratum1,
+              stratum2: base.stratum2,
+              stratum3: base.stratum3,
+              stratum4: base.stratum4,
+              stratum5: missingStratum,
+              stratum6: base.stratum6,
+              analysisStratumName:
+                analysis.analysisId === 3111
+                  ? GENDER_STRATUM_MAP[missingStratum]
+                  : AGE_STRATUM_MAP[missingStratum],
+            };
+            analysis.results.push(missingResult);
+          }
+        }
       }
     }
-    const missingStratums = fullStratums.filter(
-      (item) => uniqueStratums.indexOf(item) < 0
-    );
-    for (const missingStratum of missingStratums) {
-      if (results.length > 0) {
-        const missingResult = {
-          analysisId: analysis.analysisId,
-          countValue: 20,
-          countPercent: countPercentage(20, this.props.countValue),
-          stratum1: results[0].stratum1,
-          stratum2: results[0].stratum2,
-          stratum3: results[0].stratum3,
-          stratum4: results[0].stratum4,
-          stratum5: missingStratum,
-          stratum6: results[0].stratum6,
-          analysisStratumName:
-            analysis.analysisId === 3111
-              ? GENDER_STRATUM_MAP[missingStratum]
-              : AGE_STRATUM_MAP[missingStratum],
-        };
-        analysis.results.push(missingResult);
-      }
-    }
-  }
+
 
   render() {
     const {
@@ -246,7 +290,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       surveyConceptId,
     } = this.props;
     const { drawerOpen, subQuestions } = this.state;
-    const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken"];
+    const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken", "Age + Sex assigned at birth"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
     }

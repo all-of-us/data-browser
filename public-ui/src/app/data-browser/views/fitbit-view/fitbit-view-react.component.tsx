@@ -68,10 +68,12 @@ const styles = reactStyles({
     justifyContent: "space-between",
   },
   fmBodyBottom: {
-    paddingTop: "1rem",
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
+      paddingTop: "1rem",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "100%",
+      gap: "1rem",
   },
   fmBottomChart: {
     background: "#216fb40d",
