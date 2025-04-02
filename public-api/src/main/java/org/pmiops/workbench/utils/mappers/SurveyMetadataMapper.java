@@ -17,6 +17,7 @@ public interface SurveyMetadataMapper {
     @Mapping(target = "countAnalysis.distResults", source="db.countAnalysis.achillesResultDistList")
     @Mapping(target = "genderAnalysis.distResults", source="db.genderAnalysis.achillesResultDistList")
     @Mapping(target = "ageAnalysis.distResults", source="db.ageAnalysis.achillesResultDistList")
+    @Mapping(target = "combinedAgeSexAnalysis.distResults", source="db.combinedAgeSexAnalysis.achillesResultDistList")
     @Mapping(target = "locationAnalysis.distResults", source="db.locationAnalysis.achillesResultDistList")
     @Mapping(target = "versionAnalysis.distResults", source="db.versionAnalysis.achillesResultDistList")
     @Mapping(target = "participantCountAnalysis.distResults", source="db.participantCountAnalysis.achillesResultDistList")
