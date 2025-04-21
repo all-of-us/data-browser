@@ -302,10 +302,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = conceptAnalyses.locationAnalysis;
         break;
       case GraphType.ageGenderStacked:
-        console.log('Am i here ?');
-        console.log(g);
-        console.log(conceptAnalyses);
-        console.log(conceptAnalyses.combinedAgeGenderAnalysis);
         selectedAnalysis = conceptAnalyses.combinedAgeGenderAnalysis;
         break;
       default:

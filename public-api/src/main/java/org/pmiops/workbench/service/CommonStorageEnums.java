@@ -49,6 +49,7 @@ public class CommonStorageEnums {
                   .put(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID, 3110L)
                   .put(AnalysisIdConstant.SURVEY_GENDER_ANALYSIS_ID, 3111L)
                   .put(AnalysisIdConstant.SURVEY_AGE_ANALYSIS_ID, 3112L)
+                  .put(AnalysisIdConstant.SURVEY_COMBINED_AGE_SEX_ANALYSIS_ID, 3115L)
                   .put(AnalysisIdConstant.SURVEY_VERSION_ANALYSIS_ID, 3113L)
                   .put(AnalysisIdConstant.SURVEY_LOCATION_ANALYSIS_ID, 3118L)
                   .put(AnalysisIdConstant.SURVEY_QUESTION_GENDER_COUNT_ANALYSIS_ID, 3320L)
@@ -66,6 +67,7 @@ public class CommonStorageEnums {
                   .put(AnalysisIdConstant.GENDER_ANALYSIS, 2L)
                   .put(AnalysisIdConstant.GENO_GENDER_ANALYSIS, 3501L)
                   .put(AnalysisIdConstant.GENO_AGE_ANALYSIS, 3502L)
+                  .put(AnalysisIdConstant.GENO_COMBINED_AGE_GENDER_ANALYSIS, 3505L)
                   .put(AnalysisIdConstant.GENO_LOCATION_ANALYSIS, 3508L)
                   .put(AnalysisIdConstant.GENO_RACE_ANALYSIS, 3503L)
                   .build();

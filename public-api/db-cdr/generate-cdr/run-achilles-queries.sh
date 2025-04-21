@@ -164,13 +164,14 @@ b1.observation_id=b2.observation_id and b2.observation_source_value='cdc_covid_1
 where a.observation_id=b.observation_id;"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_stratum\` AS
+"CREATE OR REPLACE VIEW \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.survey_age_gender_stratum\` AS
 with survey_age as
 (
 select observation_id,
-ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age
+ceil(TIMESTAMP_DIFF(observation_datetime, birth_datetime, DAY)/365.25) as age,
+p.gender_concept_id AS gender
 from \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_full_observation\` co join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` p on p.person_id=co.person_id
-group by observation_id,age
+group by observation_id,age,gender
 ),
 survey_age_stratum_temp as
 (
@@ -178,11 +179,11 @@ select observation_id,
 case when age >= 18 and age <= 29 then '2'
 when age > 89 then '9'
 when age >= 30 and age <= 89 then cast(floor(age/10) as string)
-when age < 18 then '0' end as age_stratum from survey_age
-group by observation_id,age_stratum
+when age < 18 then '0' end as age_stratum, gender
+from survey_age
+group by observation_id,age_stratum, gender
 )
 select * from survey_age_stratum_temp"
-
 
 # Next Populate achilles_results
 echo "Running achilles queries..."
@@ -831,6 +832,103 @@ when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs_structura
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
 group by 4;"
+
+echo "Getting genomic age + gender counts"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"insert into \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.achilles_results\`
+(id, analysis_id, stratum_1, stratum_2, stratum_3, stratum_4, count_value, source_count_value)
+with person_age_gender as (
+  select
+    person_id,
+    ceil(TIMESTAMP_DIFF(CURRENT_TIMESTAMP(), birth_datetime, DAY)/365.25) as age,
+    gender_concept_id as gender
+  from \`${BQ_PROJECT}.${BQ_DATASET}.person\`
+)
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'micro-array' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_microarray_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'wgs_shortread' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_wgs_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+where a.sample_name not in (
+  'BI_HG-003', 'BI_HG-002', 'UW_HG-002',
+  'HG-004_dragen', 'HG-003_dragen', 'HG-005_dragen', 'HG-001_dragen'
+)
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'wgs_longread' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_longreads_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4"
 
 echo "Getting physical measurement participant counts by gender"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \

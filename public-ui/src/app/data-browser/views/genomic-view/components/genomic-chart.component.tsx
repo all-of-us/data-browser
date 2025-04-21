@@ -40,7 +40,6 @@ const styles = reactStyles({
   },
 });
 
-// tslint:disable-next-line:no-empty-interface
 interface Props {
   data: Analysis;
   counts: any;
@@ -48,7 +47,7 @@ interface Props {
   selectedGenotype: string;
   color: string;
 }
-// tslint:disable-next-line:no-empty-interface
+
 interface State {
   options: any;
   selectedGenotype: string;
@@ -71,11 +70,15 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     }
   }
 
+  componentDidMount() {
+    this.dataToOptions();
+  }
+
   dataToOptions() {
     const chartOptions = getGenomicOptions();
     const { selectedGenotype } = this.state;
     const { data, counts } = this.props;
-    let toolTipHelpText;
+
     const sortingDemoArr = [
       "White",
       "Asian",
@@ -85,7 +88,97 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       "Other",
       "Prefer Not To Answer",
     ];
+
     const sortingSexArr = ["Female", "Male", "Other"];
+
+    const isCombinedAgeSex = data.analysisId === 3505;
+
+    if (isCombinedAgeSex) {
+      const ageGroups = Object.keys(AGE_STRATUM_MAP);
+      const maleSeries = [];
+      const femaleSeries = [];
+      const otherSeries = [];
+
+      chartOptions.chart.type = "column";
+      chartOptions.xAxis.categories = ageGroups.map(
+        (code) => AGE_STRATUM_MAP[code]
+      );
+
+      ageGroups.forEach((ageCode) => {
+        const maleCount = data.results
+          .filter(
+            (r) =>
+              r.stratum1 === ageCode &&
+              r.stratum2 === "8507" &&
+              r.stratum4 === selectedGenotype
+          )
+          .reduce((sum, r) => sum + r.countValue, 0);
+
+        const femaleCount = data.results
+          .filter(
+            (r) =>
+              r.stratum1 === ageCode &&
+              r.stratum2 === "8532" &&
+              r.stratum4 === selectedGenotype
+          )
+          .reduce((sum, r) => sum + r.countValue, 0);
+
+        const otherCount = data.results
+          .filter(
+            (r) =>
+              r.stratum1 === ageCode &&
+              r.stratum2 === "0" &&
+              r.stratum4 === selectedGenotype
+          )
+          .reduce((sum, r) => sum + r.countValue, 0);
+
+        maleSeries.push(maleCount);
+        femaleSeries.push(femaleCount);
+        otherSeries.push(otherCount);
+      });
+
+      chartOptions.series = [
+        { name: "Male", data: maleSeries, color: "#1F78B4" },
+        { name: "Female", data: femaleSeries, color: "#A27BD7" },
+        { name: "Other", data: otherSeries, color: "#B2AEAD" },
+      ];
+
+      chartOptions.plotOptions = {
+        column: {
+          stacking: 'normal',
+          groupPadding: 0.4,
+          pointWidth: 50,
+          dataLabels: { enabled: false },
+          states: { hover: { brightness: 0.1 } },
+        }
+      };
+
+      chartOptions.tooltip = {
+        shared: false,
+        useHTML: true,
+        formatter: function () {
+          const ageGroup = this.series.chart.xAxis[0].categories[this.point.index];
+          const count = this.y;
+          const totalInGroup = this.series.chart.series
+            .map((s) => s.data[this.point.index]?.y || 0)
+            .reduce((a, b) => a + b, 0);
+          const percent = totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : "0";
+
+          return `
+            <div style="text-align: left;">
+              <div><strong>${this.series.name} ${ageGroup}</strong></div>
+              <div>${count.toLocaleString()} Participants</div>
+              <div>${percent}% of age group</div>
+            </div>
+          `;
+        }
+      };
+
+      this.setState({ options: chartOptions });
+      return;
+    }
+
+    // Existing logic for non-3505 analysis
     let participantTypeCount = 0;
     participantTypeCount = counts.results.filter(
       (c) => c.stratum4 === selectedGenotype
@@ -113,15 +206,15 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         result.countValue <= 20
           ? "&le; 20"
           : result.countValue.toLocaleString();
-      toolTipHelpText =
+      const toolTipHelpText =
         `<strong>` +
         result.stratum2 +
         `</strong> <br> ` +
         resultText +
-        `
-                participants, ` +
+        ` participants, ` +
         parseFloat(percent).toFixed(2) +
         `%`;
+
       if (result.stratum4 === selectedGenotype) {
         selectedData.push({
           cat: result.stratum2,
@@ -131,20 +224,19 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         chartOptions.xAxis.categories.push(result.stratum2);
       }
     });
-    // ordering the categories to match mockup
-    chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort(
-      (a, b) => {
-        const sortArr =
-          data.analysisId === 3503 ? sortingDemoArr : sortingSexArr;
-        return sortArr.indexOf(a) - sortArr.indexOf(b);
-      }
-    );
+
+    chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort((a, b) => {
+      const sortArr = data.analysisId === 3503 ? sortingDemoArr : sortingSexArr;
+      return sortArr.indexOf(a) - sortArr.indexOf(b);
+    });
+
     selectedData = selectedData.sort((a, b) => {
       return (
         chartOptions.xAxis.categories.indexOf(a.cat) -
         chartOptions.xAxis.categories.indexOf(b.cat)
       );
     });
+
     chartOptions.series = [
       {
         name: selectedGenotype,
@@ -152,13 +244,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         color: this.props.color,
       },
     ];
-    this.setState({
-      options: chartOptions,
-    });
-  }
-
-  componentDidMount() {
-    this.dataToOptions();
+    this.setState({ options: chartOptions });
   }
 
   render() {
@@ -180,7 +266,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
           <div style={styles.legend}>
-            <FontAwesomeIcon icon={faCircle} style={{ color: color }} />{" "}
+            <FontAwesomeIcon icon={faCircle} style={{ color: color }} />
             <span style={styles.legendItem}>{legendText}</span>
           </div>
         </div>
@@ -200,30 +286,20 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     let fullStratums = [];
     if (analysisId === 3501) {
       fullStratums = ["Other", "Male", "Female"];
+    } else if (analysisId === 3502) {
+      fullStratums = Object.values(AGE_STRATUM_MAP);
     } else {
-      if (analysisId === 3502) {
-        fullStratums = [
-          "18-29",
-          "30-39",
-          "40-49",
-          "50-59",
-          "60-69",
-          "70-79",
-          "80-89",
-          "89+",
-        ];
-      } else {
-        fullStratums = [
-          "White",
-          "Asian",
-          "Black, African American, or African",
-          "Hispanic, Latino, or Spanish",
-          "More than one category",
-          "Other",
-          "Prefer Not To Answer",
-        ];
-      }
+      fullStratums = [
+        "White",
+        "Asian",
+        "Black, African American, or African",
+        "Hispanic, Latino, or Spanish",
+        "More than one category",
+        "Other",
+        "Prefer Not To Answer",
+      ];
     }
+
     for (const result of results) {
       if (uniqueStratums.indexOf(result.stratum2) <= -1) {
         uniqueStratums.push(result.stratum2);
