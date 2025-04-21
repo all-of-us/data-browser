@@ -291,7 +291,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
 >
   {showAllGenes ? "Show less" : (
     <>
-      <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> See More
+      <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> Show More
     </>
   )}
 </button>
