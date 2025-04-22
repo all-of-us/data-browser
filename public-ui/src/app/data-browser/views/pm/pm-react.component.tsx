@@ -554,7 +554,7 @@ export const PMReactComponent = withRouteData(
                           selectedConcept.analyses
                             .measurementValueGenderAnalysis ? (
                             <div className="bs-title" style={styles.bsTitle}>
-                              Sex Assigned At Birth
+                              Sex
                               <TooltipReactComponent
                                 tooltipKey="pmValueChartHelpText"
                                 label="Physical Measurements tooltip hover"

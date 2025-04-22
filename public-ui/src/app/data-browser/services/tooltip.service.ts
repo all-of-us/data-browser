@@ -253,6 +253,7 @@ export const tooltips = {
   sortVariants: `Click to select ascending or descending`,
   Map: `this is a map`,
   "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
+  "Age + Sex": 'combined age + sex assigned at birth chart',
 };
 
 export const getTooltip = (textKey) => {
@@ -500,6 +501,7 @@ export class TooltipService {
     sortVariants: `Click to select ascending or descending`,
     ageGenderStacked: 'combined age + sex assigned at birth chart for EHR domains',
     "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
+    "Age + Sex": 'combined age + sex assigned at birth chart',
   };
   constructor() {}
 }
