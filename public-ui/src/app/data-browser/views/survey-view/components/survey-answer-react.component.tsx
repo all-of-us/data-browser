@@ -13,6 +13,7 @@ import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { ClrIcon } from "app/utils/clr-icon";
 import { countPercentage } from "app/utils/survey-utils";
 import { LoadingDots } from "app/utils/spinner";
+import { environment } from "environments/environment";
 
 const styleCss = `
     .survey-tbl {
@@ -262,6 +263,9 @@ const SurveyAnswerRowComponent = class extends React.Component<
     const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
+    }
+    if (environment.heatmap)  {
+      graphButtons.push("Map");
     }
     const participantPercentage = (
       (this.props.countValue / this.props.participantCount) *

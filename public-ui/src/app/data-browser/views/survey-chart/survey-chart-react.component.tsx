@@ -128,6 +128,14 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       case GraphType.SurveyVersion:
         selectedAnalysis = question.versionAnalysis;
         break;
+      case GraphType.ageGenderStacked:
+        selectedAnalysis = question.combinedAgeSexAnalysis;
+        break;
+      case GraphType.map:
+        alert("Map is not available yet");
+        console.log(question,'question');
+        
+        break;
       default:
         selectedAnalysis = question.genderAnalysis;
         break;
