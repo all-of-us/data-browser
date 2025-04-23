@@ -253,7 +253,7 @@ export const tooltips = {
   sortVariants: `Click to select ascending or descending`,
   Map: `this is a map`,
   "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
-  "Age + Sex": 'combined age + sex assigned at birth chart',
+  "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
 };
 
 export const getTooltip = (textKey) => {
@@ -501,7 +501,7 @@ export class TooltipService {
     sortVariants: `Click to select ascending or descending`,
     ageGenderStacked: 'combined age + sex assigned at birth chart for EHR domains',
     "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
-    "Age + Sex": 'combined age + sex assigned at birth chart',
+    "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
   };
   constructor() {}
 }
