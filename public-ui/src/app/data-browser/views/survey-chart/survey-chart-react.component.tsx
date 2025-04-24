@@ -175,6 +175,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       return "versionChartHelpText";
     } else if (g === "Age When Survey Was Taken") {
       return "surveyAgeChartHelpText";
+    } else if (g === 'Age + Sex') {
+      return "surveyAgeSexChartHelpText";
     } else {
       return g;
     }

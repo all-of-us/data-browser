@@ -285,7 +285,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     const { conceptAnalyses } = this.state;
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
-    
+
     switch (g) {
       case GraphType.Age:
         selectedAnalysis = conceptAnalyses.ageAnalysis;
@@ -525,8 +525,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       sourcesLoading,
       showConceptCopyAlert,
     } = this.state;
-    
-    
+
+
     const tabIndex = 0;
     return (
       <React.Fragment>
@@ -547,17 +547,22 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   key={index}
                 >
                   <span>{g}</span>
-                  <TooltipReactComponent
-                    tooltipKey={g}
-                    label="EHR Tooltip Hover"
-                    searchTerm={searchTerm}
-                    action={
-                      "Concept graph " +
-                      g +
-                      " tooltip hover on concept " +
-                      concept.conceptName
-                    }
-                  ></TooltipReactComponent>
+                <TooltipReactComponent
+                  tooltipKey={
+                    g === "Age + Sex"
+                      ? "ehrAgeSexChartHelpText"
+                      : g
+                  }
+                  label="EHR Tooltip Hover"
+                  searchTerm={searchTerm}
+                  action={
+                    "Concept graph " +
+                    g +
+                    " tooltip hover on concept " +
+                    concept.conceptName
+                  }
+                />
+
                 </div>
               );
             })}
