@@ -585,7 +585,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             ) : graphToShow === "Map" ? (
               <div className="chart" key="map-chart">
                 <HeatMapReactComponent
-                  locationAnalysis={selectedChartAnalysis}/>
+                  locationAnalysis={selectedChartAnalysis}
+                  domain={"ehr"}/>
               </div>
             ) : graphToShow === "Age + Sex assigned at birth" ? (
               <div className="chart" key="age-gender-stacked-chart">

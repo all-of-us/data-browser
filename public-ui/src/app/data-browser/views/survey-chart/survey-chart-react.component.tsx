@@ -9,6 +9,7 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import { GraphType } from "app/utils/enum-defs";
 import { triggerEvent } from "app/utils/google_analytics";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 
 interface State {
   graphToShow: string;
@@ -132,9 +133,9 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.combinedAgeSexAnalysis;
         break;
       case GraphType.map:
-        alert("Map is not available yet");
-        console.log(question,'question');
-        
+        selectedAnalysis = question.locationCountAnalysis;  
+        console.log(selectedAnalysis);
+              
         break;
       default:
         selectedAnalysis = question.genderAnalysis;
@@ -271,7 +272,15 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               surveyConceptId={surveyConceptId}
             />
           </div>
-        ) : null}
+        ) : isLoaded && selectedChartAnalysis.analysisId === 3118 ? (
+          <div className="chart" key="heat-map-chart">
+            <HeatMapReactComponent
+              locationAnalysis={selectedChartAnalysis}
+              domain={"survey"}
+            />
+          </div>
+        )
+        : null}
       </React.Fragment>
     );
   }

@@ -9,7 +9,8 @@ import mapData from 'assets/maps/us_and_terr.json';
 
 HighchartsMap(Highcharts);
 interface Props {
-    locationAnalysis: any
+    locationAnalysis: any,
+    domain: string
 }
 interface State {
 
@@ -66,6 +67,7 @@ export const HeatMapReactComponent =
             chart: {
                 map: mapData,
                 panning: false,
+                backgroundColor: '#ffffff',
                 animation: { duration: 10 }
 
             },
@@ -136,7 +138,7 @@ export const HeatMapReactComponent =
                 enabled: false
             },
             series: [{
-                data: this.formatLocationData(this.props.locationAnalysis.results),
+                data: this.formatLocationData(this.props.locationAnalysis.results, this.props.domain),
                 borderColor: '#ffffff',
                 borderWidth: .1,
                 states: {
@@ -158,6 +160,7 @@ export const HeatMapReactComponent =
 
 
         componentDidMount() {
+            console.log('locatoionAnalysis', this.props.locationAnalysis);
             // Save a reference to the Highcharts chart object
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
@@ -214,8 +217,9 @@ export const HeatMapReactComponent =
         }
 
 
-        formatLocationData(data) {
+        formatLocationData(data, domain) {
             const output: any[] = [];
+      
             const keyGroups = {
                 'us-vi': { keys: HeatMapReactComponent.keyGroups.VI_KEYS, name: 'U.S. Virgin Islands' },
                 'us-mp': { keys: HeatMapReactComponent.keyGroups.NMI_KEYS, name: 'Northern Mariana Islands' },
@@ -225,18 +229,19 @@ export const HeatMapReactComponent =
             };
 
             for (const item of data) {
-                if (keyGroups[item.stratum2]) {
-                    keyGroups[item.stratum2].keys.forEach(territory => {
+                const state = domain === 'survey' ? item.stratum5 : item.stratum2;
+                if (keyGroups[state]) {
+                    keyGroups[state].keys.forEach(territory => {
                         output.push([territory, item.countValue]);
                         output.push({
                             'hc-key': territory,
                             value: item.countValue,
-                            name: keyGroups[item.stratum2].name
+                            name: keyGroups[state].name
                         });
                     });
                 } else {
                     // Normal flow for all other stratum2 codes
-                    output.push([item.stratum2, item.countValue]);
+                    output.push([state, item.countValue]);
                 }
             }
             return output;
