@@ -122,10 +122,7 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               </strong>
             </div>
             <div style={styles.answer}>
-              Genetic ancestry is not the same as race and ethnicity. Race and
-              ethnicity are concepts created by humans and are not determined by
-              DNA. They are usually based on physical features, such as skin
-              color, or shared language and culture. People of the same race or
+              Genetic ancestry is not the same as race and ethnicity. People of the same race or
               ethnicity may share the same genetic ancestry, but this is not
               always the case.
             </div>

@@ -164,7 +164,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             "Age",
             "Sources",
             ...(environment.heatmap ? ["Map"] : []),
-            ...(environment.combinedAgeGenderChart ? ["Age + Sex assigned at birth"] : []),
+            ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : []),
           ],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
@@ -588,7 +588,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   locationAnalysis={selectedChartAnalysis}
                   domain={"ehr"}/>
               </div>
-            ) : graphToShow === "Age + Sex assigned at birth" ? (
+            ) : graphToShow === "Age + Sex" ? (
               <div className="chart" key="age-gender-stacked-chart">
                 <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} />
               </div>

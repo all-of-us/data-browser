@@ -6,6 +6,7 @@ import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
 import { ChartFitbitReactComponent } from "app/data-browser/charts/chart-fitbit/chart-fitbit-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
+import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
@@ -67,10 +68,12 @@ const styles = reactStyles({
     justifyContent: "space-between",
   },
   fmBodyBottom: {
-    paddingTop: "1rem",
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
+      paddingTop: "1rem",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      width: "100%",
+      gap: "1rem",
   },
   fmBottomChart: {
     background: "#216fb40d",
@@ -197,6 +200,7 @@ export const FitbitReactComponent = withRouteData(
             totalCountAnalysis = item.countAnalysis;
             fitbitConcept.participantCountAnalysis =
               item.participantCountAnalysis;
+            fitbitConcept.combinedAgeGenderAnalysis = item.combinedAgeGenderAnalysis;
           }
           let selectedItem = this.state.selectedItem;
           let selectedDisplay = this.state.selectedDisplay;
@@ -350,6 +354,16 @@ export const FitbitReactComponent = withRouteData(
                           }
                           domain="fitbit"
                           selectedResult={selectedResult}
+                        />
+                      )}
+                    </div>
+                    <div className="fm-chart" style={styles.fmBottomChart}>
+                      <div className="display-body" style={styles.chartDisplayBody}>
+                        Age + Sex
+                      </div>
+                      {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
+                        <StackedColumnChartReactComponent
+                          ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
                         />
                       )}
                     </div>

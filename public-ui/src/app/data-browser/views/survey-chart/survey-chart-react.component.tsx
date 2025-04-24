@@ -10,6 +10,7 @@ import { ErrorMessageReactComponent } from "app/data-browser/views/error-message
 import { GraphType } from "app/utils/enum-defs";
 import { triggerEvent } from "app/utils/google_analytics";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
+import { StackedColumnChartReactComponent } from 'app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component';
 
 interface State {
   graphToShow: string;
@@ -122,6 +123,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       null
     );
     let selectedAnalysis;
+    console.log(g);
     switch (g) {
       case GraphType.AgeWhenSurveyWasTaken:
         selectedAnalysis = question.ageAnalysis;
@@ -133,14 +135,13 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.combinedAgeSexAnalysis;
         break;
       case GraphType.map:
-        selectedAnalysis = question.locationCountAnalysis;  
-        console.log(selectedAnalysis);
-              
+        selectedAnalysis = question.locationCountAnalysis;   
         break;
       default:
         selectedAnalysis = question.genderAnalysis;
         break;
     }
+    console.log(selectedAnalysis);
     this.setState({
       graphToShow: g,
       selectedChartAnalysis: selectedAnalysis,
@@ -214,6 +215,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       selectedChartAnalysis,
     } = this.state;
     const tabIndex = 0;
+    console.log('Am i here?');
     return (
       <React.Fragment>
         <style>{chartStyleCss}</style>
@@ -272,6 +274,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               surveyConceptId={surveyConceptId}
             />
           </div>
+
         ) : isLoaded && selectedChartAnalysis.analysisId === 3118 ? (
           <div className="chart" key="heat-map-chart">
             <HeatMapReactComponent
@@ -279,8 +282,13 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               domain={"survey"}
             />
           </div>
-        )
-        : null}
+        ) : isLoaded && selectedChartAnalysis.analysisId === 3115 ? (
+            <div className="chart" key="age-gender-stacked-chart">
+              <StackedColumnChartReactComponent
+                ageGenderAnalysis={selectedChartAnalysis}
+              />
+            </div>
+        ) : null}
       </React.Fragment>
     );
   }

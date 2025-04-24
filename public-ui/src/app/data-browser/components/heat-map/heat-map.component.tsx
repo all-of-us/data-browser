@@ -74,7 +74,8 @@ export const HeatMapReactComponent =
             colorAxis: {
                 stops: [
                     [0, '#d0eafc'],  // Low value color 
-                    [1, '#006699']  // High value color 
+                    [0.5, '#006699'],  // mid value color 
+                    [1, '#262262']  // High value color 
                 ]
             },
             tooltip: {
@@ -113,7 +114,7 @@ export const HeatMapReactComponent =
                                     this.originalColor = this.color;
                                 } else {
                                     // If it's not, change the color to the default hover color
-                                    this.update({ borderWidth: undefined, borderColor: undefined, color: '#262262' }, false);
+                                    this.update({ borderWidth: undefined, borderColor: undefined, color: '#a27bd7' }, false);
                                     this.series.chart.redraw();
                                 }
                             },
@@ -143,7 +144,7 @@ export const HeatMapReactComponent =
                 borderWidth: .1,
                 states: {
                     hover: {
-                        color: '#BADA55'
+                        color: '#a27bd7'
                     },
                     inactive: {
                         enabled: false, // Disable the inactive state
@@ -205,7 +206,7 @@ export const HeatMapReactComponent =
             // Loop over all paths in the group and change their color
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
-                pathEl.style.fill = '#262262';
+                pathEl.style.fill = '#a27bd7';
             });
         }
         handleMouseLeaveGroup(groupName) {

@@ -115,6 +115,7 @@ interface State {
   raceEthData: any;
   sexAtBirthData: any;
   currentAgeData: any;
+  combinedAgeSexData: any;
   participantCounts: any[];
   selectedGenotype: string;
   color: string;
@@ -128,6 +129,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       raceEthData: [],
       sexAtBirthData: [],
       currentAgeData: [],
+      combinedAgeSexData: [],
       participantCounts: [],
       selectedGenotype: "wgs_shortread",
       color: "#6F98A0",
@@ -138,6 +140,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
   raceEthArr: any[] = [];
   sexAtBirthArr: any[] = [];
   currentAgeArr: any[] = [];
+  combinedAgeSexArr: any[] = [];
   participantCountsArr: any[] = [];
 
   componentDidMount() {
@@ -156,6 +159,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
           break;
         case 3502:
           this.currentAgeArr.push(item);
+          break;
+        case 3505:
+          this.combinedAgeSexArr.push(item);
           break;
         case 3000:
           this.participantCountsArr.push(item);
@@ -180,6 +186,10 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         this.currentAgeArr && this.currentAgeArr[0]
           ? this.currentAgeArr[0]
           : null,
+      combinedAgeSexData:
+        this.combinedAgeSexArr && this.combinedAgeSexArr[0]
+            ? this.combinedAgeSexArr[0]
+            : null,
       participantCounts: this.participantCountsArr,
       loading: false,
     });
@@ -208,6 +218,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       raceEthData,
       sexAtBirthData,
       currentAgeData,
+      combinedAgeSexData,
       participantCounts,
       selectedGenotype,
       loading,
@@ -236,6 +247,8 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         (r) => r.stratum4 === "micro-array"
       )[0].countValue;
     }
+
+    console.log(combinedAgeSexData);
 
     return (
       <React.Fragment>
@@ -329,6 +342,13 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 counts={participantCounts[0]}
                 title="Current age"
                 data={currentAgeData}
+                selectedGenotype={selectedGenotype}
+                color={color}
+              />
+              <GenomicChartComponent
+                counts={participantCounts[0]}
+                title="Combined age + sex"
+                data={combinedAgeSexData}
                 selectedGenotype={selectedGenotype}
                 color={color}
               />

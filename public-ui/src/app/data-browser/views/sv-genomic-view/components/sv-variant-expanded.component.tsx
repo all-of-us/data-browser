@@ -9,6 +9,8 @@ import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
 import { SVVariant, SVVariantInfo } from "publicGenerated";
 
+import { ConsequenceGeneDisplay } from "app/data-browser/views/sv-genomic-view/components/consequence-gene-display-component";
+
 const css = `
 .exit{
     width:2rem;
@@ -210,8 +212,6 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
     const consequenceEntries = Object.entries(consequenceMap);
     const hasMore = consequenceEntries.some(([, genes]) => genes.length > 5);
 
-    console.log(consequenceMap);
-
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -251,53 +251,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       {variant.variantType ? this.replaceTag(variant.variantType) : "-"}
                     </span>
                   </div>
-<div>
-  <span style={styles.catHeading}>
-    Consequence(s) + associated gene(s):
-  </span>
-  <br />
-  <div style={{ ...styles.catInfo, whiteSpace: "pre-line", marginTop: '4px' }}>
-    {consequenceString === "-" ? (
-      "-"
-    ) : (
-      consequenceEntries.map(([label, genes], idx) => {
-        const displayedGenes = showAllGenes ? genes : genes.slice(0, 5);
-        return (
-          <div key={idx} style={{ marginBottom: "0.5em" }}>
-            <strong>{label}:</strong>{" "}
-            {displayedGenes.join(", ")}
-            {!showAllGenes && genes.length > 5 && " ..."}
-          </div>
-        );
-      })
-    )}
-  </div>
-  {hasMore && (
-<button
-  type="button"
-  onClick={() =>
-    this.setState((prev) => ({ showAllGenes: !prev.showAllGenes }))
-  }
-  style={{
-    background: "none",
-    border: "none",
-    padding: 0,
-    color: "#007bff",
-    cursor: "pointer",
-    fontSize: "13px",
-    display: "inline-block",
-    marginTop: "4px",
-  }}
->
-  {showAllGenes ? "Show less" : (
-    <>
-      <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> See More
-    </>
-  )}
-</button>
-
-  )}
-</div>
+                  <ConsequenceGeneDisplay consequenceString={variantDetails.consequenceGenes || "-"} />
 
                   <div>
                     <span style={styles.catHeading}>Position:</span>

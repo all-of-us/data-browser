@@ -715,7 +715,7 @@ SELECT 0,t1.analysis_id,cast(t1.concept_id as string),cast(t1.stratum_1 as strin
 FROM \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` t1
 LEFT JOIN \`$OUTPUT_PROJECT.$OUTPUT_DATASET.achilles_results\` t2 ON t2.stratum_1 = cast(t1.concept_id as string) and t1.analysis_id=t2.analysis_id and t1.stratum_1=t2.stratum_2
 and t2.stratum_3=t1.domain
-WHERE t1.analysis_id in (3101, 3102) and t2.stratum_1 IS NULL
+WHERE t1.analysis_id in (3101, 3102, 3108) and t2.stratum_1 IS NULL
 group by t1.analysis_id, t1.concept_id, t1.stratum_1,t1.domain,t1.count_value;
 "
 
@@ -725,7 +725,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 set c.count_value=sub_cr.cnt
 from (select analysis_id, concept_id, stratum_1 as stratum, domain, max(count_value) as cnt from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` cr
 group by analysis_id, concept_id, stratum, domain) as sub_cr
-where c.analysis_id in (3101, 3102) and
+where c.analysis_id in (3101, 3102, 3108) and
 cast(sub_cr.concept_id as string)=c.stratum_1 and c.analysis_id=sub_cr.analysis_id and c.stratum_2=sub_cr.stratum and c.stratum_3=sub_cr.domain"
 
 echo "Inserting rows in achilles_results for the concepts that are not in there and that have combined age + gender counts (3105)"
@@ -965,7 +965,7 @@ bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.drug_brand_names_by_ingredients\`"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
-"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_stratum\`"
+"DROP VIEW IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_age_gender_stratum\`"
 
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "DROP TABLE IF EXISTS \`$OUTPUT_PROJECT.$OUTPUT_DATASET.survey_observation\`"
