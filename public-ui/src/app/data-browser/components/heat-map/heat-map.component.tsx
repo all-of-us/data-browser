@@ -67,7 +67,7 @@ export const HeatMapReactComponent =
             chart: {
                 map: mapData,
                 panning: false,
-                backgroundColor: '#ffffff',
+                backgroundColor: '#f6f6f8',
                 animation: { duration: 10 }
 
             },
