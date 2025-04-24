@@ -140,7 +140,7 @@ export const tooltips = {
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
   "minute survey on covid-19 vaccines":
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-  "social determinants of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
+  "social factors of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
     social life, stress, and feelings about everyday life.`,
   genomics:
     "Search and explore SNV/Indel variant data available within the dataset.",
@@ -253,6 +253,7 @@ export const tooltips = {
   sortVariants: `Click to select ascending or descending`,
   Map: `this is a map`,
   "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
+  "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
 };
 
 export const getTooltip = (textKey) => {
@@ -395,7 +396,7 @@ export class TooltipService {
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
     "minute survey on covid-19 vaccines":
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-    "social determinants of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
+    "social factors of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
        social life, stress, and feelings about everyday life.`,
     genomics:
       "Search and explore SNV/Indel variant data available within the dataset.",
@@ -500,6 +501,7 @@ export class TooltipService {
     sortVariants: `Click to select ascending or descending`,
     ageGenderStacked: 'combined age + sex assigned at birth chart for EHR domains',
     "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
+    "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
   };
   constructor() {}
 }

@@ -9,6 +9,32 @@ interface ConsequenceState {
   showAll: boolean;
 }
 
+const css = `
+  .consequence-wrapper {
+    font-family: gothamBook, Arial, Helvetica, sans-serif;
+  }
+
+  .consequence-heading {
+    font-family: gothamBold, Arial, Helvetica, sans-serif;
+    font-weight: bold;
+  }
+
+  .consequence-item {
+    margin-bottom: 0.5em;
+  }
+
+  .consequence-toggle {
+    background: none;
+    border: none;
+    padding: 0;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 13px;
+    display: inline-block;
+    margin-top: 4px;
+  }
+`;
+
 export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, ConsequenceState> {
   constructor(props: ConsequenceProps) {
     super(props);
@@ -26,10 +52,9 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
     const { showAll } = this.state;
 
     if (consequenceString === "-" || !consequenceString.trim()) {
-      return <div>-</div>;
+      return <div className="consequence-wrapper">-</div>;
     }
 
-    // Parse the consequence string into a map
     const consequenceMap: Record<string, string[]> = {};
     consequenceString.split(";").forEach((line) => {
       const [label, geneStr] = line.split(" - ");
@@ -42,7 +67,6 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
     const firstEntry = consequenceEntries[0];
     const restEntries = consequenceEntries.slice(1);
 
-    // Limit the first entry genes to 45 characters
     let truncatedGeneStr = "";
     let shouldTruncate = false;
 
@@ -60,14 +84,14 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
     }
 
     return (
-      <div>
-        <span style={{ fontWeight: "bold" }}>
-          Consequence(s) + associated gene(s):
-        </span>
+      <div className="consequence-wrapper">
+        <style>{css}</style>
+
+        <span className="consequence-heading">Consequence(s) + associated gene(s):</span>
         <br />
         <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
           {firstEntry && (
-            <div style={{ marginBottom: "0.5em" }}>
+            <div className="consequence-item">
               <i>{firstEntry[0]}:</i>{" "}
               {showAll ? firstEntry[1].join(", ") : truncatedGeneStr}
             </div>
@@ -75,7 +99,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
 
           {showAll &&
             restEntries.map(([label, genes], idx) => (
-              <div key={idx} style={{ marginBottom: "0.5em" }}>
+              <div key={idx} className="consequence-item">
                 <i>{label}:</i> {genes.join(", ")}
               </div>
             ))}
@@ -85,16 +109,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
           <button
             type="button"
             onClick={this.toggleShowAll}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              color: "#007bff",
-              cursor: "pointer",
-              fontSize: "13px",
-              display: "inline-block",
-              marginTop: "4px",
-            }}
+            className="consequence-toggle"
           >
             {showAll ? "Show less" : (
               <>

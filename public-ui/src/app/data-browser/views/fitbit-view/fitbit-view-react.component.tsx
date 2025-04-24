@@ -359,7 +359,7 @@ export const FitbitReactComponent = withRouteData(
                     </div>
                     <div className="fm-chart" style={styles.fmBottomChart}>
                       <div className="display-body" style={styles.chartDisplayBody}>
-                        Age + Sex assigned at birth
+                        Age + Sex
                       </div>
                       {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
                         <StackedColumnChartReactComponent
