@@ -6,6 +6,7 @@ import { getBaseOptions } from 'app/data-browser/charts/react-base-chart/base-ch
 interface Props {
     ageGenderAnalysis: any;
     selectedResult: any;
+    domain: string;
 }
 
 interface State {
@@ -16,7 +17,7 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
     constructor(props) {
         super(props);
 
-        const isSurvey = props.ageGenderAnalysis.results?.[0]?.stratum5;
+        const isSurvey = props.domain === "survey";
         const filteredData = this.getFilteredData(props.ageGenderAnalysis, props.selectedResult, isSurvey);
 
         this.state = {

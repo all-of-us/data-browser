@@ -274,6 +274,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               <StackedColumnChartReactComponent
                 ageGenderAnalysis={selectedChartAnalysis}
                 selectedResult={selectedResult}
+                domain = "survey"
               />
             </div>
         ) : null}

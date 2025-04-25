@@ -137,7 +137,6 @@ const SurveyAnswerRowComponent = class extends React.Component<
   processResults(questions: Array<any>) {
     const { countValue } = this.props;
     questions.forEach((q) => {
-    console.log(q);
       q.countAnalysis.results = q.countAnalysis.results.filter(
         (a) => a.stratum6 === q.path
       );

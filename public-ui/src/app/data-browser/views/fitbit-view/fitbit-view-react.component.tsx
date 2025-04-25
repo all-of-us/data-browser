@@ -365,6 +365,7 @@ export const FitbitReactComponent = withRouteData(
                         <StackedColumnChartReactComponent
                           ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
                           selectedResult=""
+                          domain="fitbit"
                         />
                       )}
                     </div>
