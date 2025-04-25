@@ -912,7 +912,7 @@ export const GenomicViewComponent = withRouteData(
             {selectionId === 3 && (
               <div style={styles.innerContainer}>
                 <p style={styles.desc}>
-                  View the self-reported categories, sex assigned at birth, and
+                  View the self-reported categories, sex, and
                   age of participants whose genomic data are available within
                   the Researcher Workbench.{" "}
                 </p>

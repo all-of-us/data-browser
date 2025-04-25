@@ -322,7 +322,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                        Sex assigned at birth
+                        Sex
                       </div>
                       {selectedAnalyses &&
                         totalCountAnalysis &&

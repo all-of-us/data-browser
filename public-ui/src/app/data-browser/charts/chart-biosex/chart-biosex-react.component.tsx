@@ -57,7 +57,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
     newBaseOptions.title.style.color = "#262262";
     newBaseOptions.title.style.fontSize = "22px";
     newBaseOptions.color = "#2691D0";
-    newBaseOptions.xAxis.title.text = "Sex Assigned at Birth";
+    newBaseOptions.xAxis.title.text = "Sex";
     newBaseOptions.yAxis.title.text = "Participant Count";
     newBaseOptions.xAxis.categories = categories;
     if ("dataOnlyLT20" in series[0]) {
@@ -198,7 +198,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
       count.toLocaleString() +
       "</strong> participants who had <strong>" +
       analysisStratumName +
-      "</strong> as sex assigned at birth." +
+      "</strong> as sex." +
       "</div>";
     return toolTipHelpText;
   }
@@ -244,7 +244,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
           "</strong>" +
           " participants who had <strong>" +
           concept.analysisStratumName +
-          "</strong> as sex assigned at birth.</div>",
+          "</strong> as sex.</div>",
         name: concept.analysisStratumName,
         y: concept.countValue,
         concept: "",

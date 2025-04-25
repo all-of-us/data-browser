@@ -158,9 +158,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     this.state = {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
-          ? ["Values", "Sex Assigned at Birth", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []),  ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : [])]
+          ? ["Values", "Sex", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []),  ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : [])]
           : [
-            "Sex Assigned at Birth",
+            "Sex",
             "Age",
             "Sources",
             ...(environment.heatmap ? ["Map"] : []),
@@ -578,7 +578,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedChartAnalysis &&
             countAnalysis &&
             countAnalysis.genderCountAnalysis &&
-            graphToShow === "Sex Assigned at Birth" ? (
+            graphToShow === "Sex" ? (
               <div className="chart" key="biosex-chart">
                 <BioSexChartReactComponent
                   domain="ehr"

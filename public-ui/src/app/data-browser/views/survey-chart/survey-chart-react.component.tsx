@@ -167,7 +167,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipKey(g: string) {
-    if (g === "Sex Assigned at Birth") {
+    if (g === "Sex") {
       return "surveyBSChart";
     } else if (g === "Survey Versions") {
       return "versionChartHelpText";

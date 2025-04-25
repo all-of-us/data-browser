@@ -289,7 +289,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       surveyConceptId,
     } = this.props;
     const { drawerOpen, subQuestions } = this.state;
-    const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken", "Age + Sex"];
+    const graphButtons = ["Sex", "Age When Survey Was Taken", "Age + Sex"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
     }
