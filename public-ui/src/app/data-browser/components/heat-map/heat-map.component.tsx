@@ -80,7 +80,7 @@ export const HeatMapReactComponent =
             },
             tooltip: {
                 formatter: function () {
-                    const value = this.point.value <= 20 ? '≤ 20' : this.point.value;
+                    const value = this.point.value <= 20 ? '≤ 20' : this.point.value.toLocaleString();
                     const tooltipText = `${this.point.name} <br> ${value} `
                     return tooltipText;
                 }
