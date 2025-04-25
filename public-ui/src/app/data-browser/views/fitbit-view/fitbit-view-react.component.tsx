@@ -7,6 +7,7 @@ import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/
 import { ChartFitbitReactComponent } from "app/data-browser/charts/chart-fitbit/chart-fitbit-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
@@ -201,6 +202,7 @@ export const FitbitReactComponent = withRouteData(
             fitbitConcept.participantCountAnalysis =
               item.participantCountAnalysis;
             fitbitConcept.combinedAgeGenderAnalysis = item.combinedAgeGenderAnalysis;
+            fitbitConcept.locationAnalysis = item.locationAnalysis;
           }
           let selectedItem = this.state.selectedItem;
           let selectedDisplay = this.state.selectedDisplay;
@@ -365,6 +367,16 @@ export const FitbitReactComponent = withRouteData(
                         <StackedColumnChartReactComponent
                           ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
                         />
+                      )}
+                    </div>
+                    <div className="fm-chart" style={styles.fmBottomChart}>
+                      <div className="display-body" style={styles.chartDisplayBody}>
+                        Location of data collection
+                      </div>
+                      {selectedAnalyses && selectedAnalyses.locationAnalysis && (
+                        <HeatMapReactComponent
+                          locationAnalysis={selectedAnalyses?.locationAnalysis}
+                          domain="fitbit"/>
                       )}
                     </div>
                   </div>

@@ -120,6 +120,9 @@ export class SurveyQuestionReactComponent extends React.Component<
         questionWithResults.participantCountAnalysis = results.items.filter(
           (a) => a.analysisId === 3203
         )[0];
+        questionWithResults.locationCountAnalysis = results.items.filter(
+          (a) => a.analysisId === 3118
+        )[0];
         questionWithResults.countAnalysis.results.sort((a1, a2) => {
           if (a1.countValue > a2.countValue) {
             return -1;

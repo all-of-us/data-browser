@@ -9,6 +9,7 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import { GraphType } from "app/utils/enum-defs";
 import { triggerEvent } from "app/utils/google_analytics";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { StackedColumnChartReactComponent } from 'app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component';
 
 interface State {
@@ -132,6 +133,9 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         break;
       case GraphType.ageGenderStacked:
         selectedAnalysis = question.combinedAgeSexAnalysis;
+        break;
+      case GraphType.map:
+        selectedAnalysis = question.locationCountAnalysis;   
         break;
       default:
         selectedAnalysis = question.genderAnalysis;
@@ -268,6 +272,14 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               surveyVersionAnalysis={versionAnalysis}
               selectedResult={selectedResult}
               surveyConceptId={surveyConceptId}
+            />
+          </div>
+
+        ) : isLoaded && selectedChartAnalysis.analysisId === 3118 ? (
+          <div className="chart" key="heat-map-chart">
+            <HeatMapReactComponent
+              locationAnalysis={selectedChartAnalysis}
+              domain={"survey"}
             />
           </div>
         ) : isLoaded && selectedChartAnalysis.analysisId === 3115 ? (

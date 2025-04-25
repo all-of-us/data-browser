@@ -257,12 +257,17 @@ export const tooltips = {
 };
 
 export const getTooltip = (textKey) => {
-  if (typeof tooltips[textKey] === "string") {
-    return [tooltips[textKey]];
+  const entry = tooltips[textKey];
+
+  if (typeof entry === "string") {
+    return [entry];
+  } else if (entry && typeof entry === "object" && Array.isArray(entry.texts)) {
+    return entry.texts;
   } else {
-    return tooltips[textKey].texts;
+    return []; // fallback, or you could return null or a default message
   }
 };
+
 
 @Injectable({
   providedIn: "root",
