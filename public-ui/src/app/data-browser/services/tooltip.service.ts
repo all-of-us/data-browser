@@ -247,18 +247,23 @@ export const tooltips = {
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
   sortVariants: `Click to select ascending or descending`,
-  Map: `this is a map`,
+  Map: `This chart displays a distribution of residential locations self-reported in participants' records.`,
   "ehrAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
   "surveyAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which participants took the survey, stratified by participant sex.`,
 };
 
 export const getTooltip = (textKey) => {
-  if (typeof tooltips[textKey] === "string") {
-    return [tooltips[textKey]];
+  const entry = tooltips[textKey];
+
+  if (typeof entry === "string") {
+    return [entry];
+  } else if (entry && typeof entry === "object" && Array.isArray(entry.texts)) {
+    return entry.texts;
   } else {
-    return tooltips[textKey].texts;
+    return []; // fallback, or you could return null or a default message
   }
 };
+
 
 @Injectable({
   providedIn: "root",

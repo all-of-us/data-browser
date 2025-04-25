@@ -122,6 +122,17 @@ const routes: Routes = [
             },
           },
           {
+            path: "participant-demographics",
+            component: AppRouting,
+            canActivate: [IsSafeGuard],
+            data: {
+              title: "Genomic Variants",
+              breadcrumb: {
+                value: "Genomic Variants",
+              },
+            },
+          },
+          {
             path: "physical-measurements",
             component: AppRouting,
             data: {

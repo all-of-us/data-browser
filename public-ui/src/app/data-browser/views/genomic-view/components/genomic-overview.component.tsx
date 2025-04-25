@@ -3,6 +3,7 @@ import * as React from "react";
 import { reactStyles } from "app/utils";
 
 import { GenomicChartComponent } from "./genomic-chart.component";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 
 const css = `
 label {
@@ -73,6 +74,11 @@ input[type='radio']:before {
   // justify-content: space-between;
 }
 
+.chart-container {
+background: #f3f8fb;
+}
+
+
 
 @media only screen and (max-width: 900px) {
     .heading-layout {
@@ -105,6 +111,16 @@ const styles = reactStyles({
     width: "80%",
     // minWidth: " 5rem"
   },
+  chartContainer: {
+    background: "rgba(33,111,180,0.05)",
+    padding: "1em",
+    paddingTop: ".25em",
+    marginBottom: "1em",
+  },
+  chartTitle: {
+    fontSize: "1em",
+    paddingBottom: ".5em",
+  },
 });
 interface Props {
   participantCount: string;
@@ -118,6 +134,7 @@ interface State {
   combinedAgeSexData: any;
   participantCounts: any[];
   selectedGenotype: string;
+  locationData: any;
   color: string;
 }
 
@@ -131,6 +148,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       currentAgeData: [],
       combinedAgeSexData: [],
       participantCounts: [],
+      locationData: {},
       selectedGenotype: "wgs_shortread",
       color: "#6F98A0",
     };
@@ -142,6 +160,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
   currentAgeArr: any[] = [];
   combinedAgeSexArr: any[] = [];
   participantCountsArr: any[] = [];
+  locationData: object = {};
 
   componentDidMount() {
     // { this.props.chartData && this.getGenomicChartData(); }
@@ -162,6 +181,10 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
           break;
         case 3505:
           this.combinedAgeSexArr.push(item);
+          break;
+        case 3508:
+          this.locationData = item;
+          console.log(this.locationData, "locationData");
           break;
         case 3000:
           this.participantCountsArr.push(item);
@@ -188,8 +211,9 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
           : null,
       combinedAgeSexData:
         this.combinedAgeSexArr && this.combinedAgeSexArr[0]
-            ? this.combinedAgeSexArr[0]
-            : null,
+          ? this.combinedAgeSexArr[0]
+          : null,
+      locationData: this.locationData ? this.locationData : null,
       participantCounts: this.participantCountsArr,
       loading: false,
     });
@@ -219,6 +243,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       sexAtBirthData,
       currentAgeData,
       combinedAgeSexData,
+      locationData,
       participantCounts,
       selectedGenotype,
       loading,
@@ -247,8 +272,6 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
         (r) => r.stratum4 === "micro-array"
       )[0].countValue;
     }
-
-    console.log(combinedAgeSexData);
 
     return (
       <React.Fragment>
@@ -352,6 +375,13 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 selectedGenotype={selectedGenotype}
                 color={color}
               />
+              <div style={styles.chartContainer}>
+                <h3 style={styles.chartTitle}>Genomic Variant Locations</h3>
+                <HeatMapReactComponent
+                  locationAnalysis={locationData}
+                  domain="genomic"
+                />
+              </div>
             </React.Fragment>
           )}
         </div>
