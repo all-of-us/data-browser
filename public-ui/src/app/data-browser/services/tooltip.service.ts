@@ -158,9 +158,7 @@ export const tooltips = {
     "The age bar chart displays a binned distribution of the ages at " +
     "which the participants had the physical measurement taken.",
   histogramUnitChartText: "Toggle here to view unit specific histograms",
-  surveyBSChart: `The sex assigned to a child at birth, most often based on
-                    the child’s external anatomy. Counts are the total sum of participants of the
-                    sex assigned who selected this answer.`,
+  surveyBSChart: `The sex bar chart shows the sex of participants who selected this response.`,
   surveyAgeChartHelpText:
     "The age bar chart displays a binned distribution of the " +
     "ages at which the participants took the indicated survey.",
@@ -218,9 +216,7 @@ export const tooltips = {
   orderFilter: `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
   conceptSynonyms: `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names
     and descriptions, if available, are listed for each medical concept.`,
-  "Sex Assigned at Birth": `The sex assigned to a child at birth, most often based on the child’s external anatomy. \n
-   Counts are the total sum of participants with the medical
-                          concept mentioned in their electronic health record (EHR).`,
+  "Sex": `The sex bar chart shows the sex of participants with this concept in their records.`,
   "Gender Identity": `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
                             or may not correspond to a person’s \n`,
   "Race / Ethnicity": `“Race” refers to physical differences that groups and cultures
@@ -252,8 +248,8 @@ export const tooltips = {
     "such as Fahrenheit or Celsius for body temperature.",
   sortVariants: `Click to select ascending or descending`,
   Map: `This chart displays a distribution of residential locations self-reported in participants' records.`,
-  "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
-  "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
+  "ehrAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
+  "surveyAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which participants took the survey, stratified by participant sex.`,
 };
 
 export const getTooltip = (textKey) => {
@@ -416,9 +412,7 @@ export class TooltipService {
       "The age bar chart displays a binned distribution of the ages at " +
       "which the participants had the physical measurement taken.",
     histogramUnitChartText: "Toggle here to view unit specific histograms",
-    surveyBSChart: `The sex assigned to a child at birth, most often based on
-                   the child’s external anatomy. Counts are the total sum of participants of the
-                   sex assigned who selected this answer.`,
+    surveyBSChart: `The sex bar chart shows the sex of participants who selected this response.`,
     surveyAgeChartHelpText:
       "The age bar chart displays a binned distribution of the " +
       "ages at which the participants took the indicated survey.",
@@ -477,9 +471,7 @@ export class TooltipService {
     orderFilter: `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
     conceptSynonyms: `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names
         and descriptions, if available, are listed for each medical concept.`,
-    "Sex Assigned at Birth": `The sex assigned to a child at birth, most often based on the child’s external anatomy.
-    \n Counts are the total sum of participants with the medical
-                            concept mentioned in their electronic health record (EHR).`,
+    "Sex": `The sex bar chart shows the sex of participants with this concept in their records.`,
     "Gender Identity": `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
                               or may not correspond to a person’s \n`,
     "Race / Ethnicity": `“Race” refers to physical differences that groups and cultures
@@ -505,8 +497,8 @@ export class TooltipService {
              such as Fahrenheit or Celsius for body temperature.`,
     sortVariants: `Click to select ascending or descending`,
     ageGenderStacked: 'combined age + sex assigned at birth chart for EHR domains',
-    "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
-    "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
+    "ehrAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
+    "surveyAgeSexChartHelpText": `This chart displays a binned distribution of the ages at which participants took the survey, stratified by participant sex.`,
   };
   constructor() {}
 }

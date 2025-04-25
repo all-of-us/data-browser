@@ -123,7 +123,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       null
     );
     let selectedAnalysis;
-    console.log(g);
     switch (g) {
       case GraphType.AgeWhenSurveyWasTaken:
         selectedAnalysis = question.ageAnalysis;
@@ -141,7 +140,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.genderAnalysis;
         break;
     }
-    console.log(selectedAnalysis);
     this.setState({
       graphToShow: g,
       selectedChartAnalysis: selectedAnalysis,
@@ -173,12 +171,14 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipKey(g: string) {
-    if (g === "Sex Assigned at Birth") {
+    if (g === "Sex") {
       return "surveyBSChart";
     } else if (g === "Survey Versions") {
       return "versionChartHelpText";
     } else if (g === "Age When Survey Was Taken") {
       return "surveyAgeChartHelpText";
+    } else if (g === 'Age + Sex') {
+      return "surveyAgeSexChartHelpText";
     } else {
       return g;
     }
@@ -215,7 +215,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       selectedChartAnalysis,
     } = this.state;
     const tabIndex = 0;
-    console.log('Am i here?');
     return (
       <React.Fragment>
         <style>{chartStyleCss}</style>
@@ -286,6 +285,8 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
             <div className="chart" key="age-gender-stacked-chart">
               <StackedColumnChartReactComponent
                 ageGenderAnalysis={selectedChartAnalysis}
+                selectedResult={selectedResult}
+                domain = "survey"
               />
             </div>
         ) : null}

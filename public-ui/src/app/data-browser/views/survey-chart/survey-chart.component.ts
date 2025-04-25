@@ -121,7 +121,7 @@ export class SurveyChartComponent implements OnInit {
   }
 
   public getTooltipKey(g: string) {
-    if (g === "Sex Assigned at Birth") {
+    if (g === "Sex") {
       return "surveyBSChart";
     } else if (g === "Survey Versions") {
       return "versionChartHelpText";

@@ -158,9 +158,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     this.state = {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
-          ? ["Values", "Sex Assigned at Birth", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []) ]
+          ? ["Values", "Sex", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []),  ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : [])]
           : [
-            "Sex Assigned at Birth",
+            "Sex",
             "Age",
             "Sources",
             ...(environment.heatmap ? ["Map"] : []),
@@ -285,7 +285,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     const { conceptAnalyses } = this.state;
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
-    
+
     switch (g) {
       case GraphType.Age:
         selectedAnalysis = conceptAnalyses.ageAnalysis;
@@ -525,8 +525,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       sourcesLoading,
       showConceptCopyAlert,
     } = this.state;
-    
-    
+
+
     const tabIndex = 0;
     return (
       <React.Fragment>
@@ -547,17 +547,22 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   key={index}
                 >
                   <span>{g}</span>
-                  <TooltipReactComponent
-                    tooltipKey={g}
-                    label="EHR Tooltip Hover"
-                    searchTerm={searchTerm}
-                    action={
-                      "Concept graph " +
-                      g +
-                      " tooltip hover on concept " +
-                      concept.conceptName
-                    }
-                  ></TooltipReactComponent>
+                <TooltipReactComponent
+                  tooltipKey={
+                    g === "Age + Sex"
+                      ? "ehrAgeSexChartHelpText"
+                      : g
+                  }
+                  label="EHR Tooltip Hover"
+                  searchTerm={searchTerm}
+                  action={
+                    "Concept graph " +
+                    g +
+                    " tooltip hover on concept " +
+                    concept.conceptName
+                  }
+                />
+
                 </div>
               );
             })}
@@ -573,7 +578,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedChartAnalysis &&
             countAnalysis &&
             countAnalysis.genderCountAnalysis &&
-            graphToShow === "Sex Assigned at Birth" ? (
+            graphToShow === "Sex" ? (
               <div className="chart" key="biosex-chart">
                 <BioSexChartReactComponent
                   domain="ehr"
@@ -590,7 +595,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               </div>
             ) : graphToShow === "Age + Sex" ? (
               <div className="chart" key="age-gender-stacked-chart">
-                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} />
+                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} selectedResult="" domain="ehr"/>
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">

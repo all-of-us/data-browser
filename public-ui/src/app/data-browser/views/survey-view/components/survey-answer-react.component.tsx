@@ -148,7 +148,6 @@ const SurveyAnswerRowComponent = class extends React.Component<
       drawerLoading: true
     });
     questions.forEach((q) => {
-    console.log(q);
       q.countAnalysis.results = q.countAnalysis.results.filter(
         (a) => a.stratum6 === q.path
       );
@@ -304,7 +303,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       surveyConceptId,
     } = this.props;
     const { drawerOpen, subQuestions, drawerLoading } = this.state;
-    const graphButtons = ["Sex Assigned at Birth", "Age When Survey Was Taken", "Age + Sex"];
+    const graphButtons = ["Sex", "Age When Survey Was Taken", "Age + Sex"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
     }

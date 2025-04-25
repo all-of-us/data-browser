@@ -324,7 +324,7 @@ export const FitbitReactComponent = withRouteData(
                         className="display-body"
                         style={styles.chartDisplayBody}
                       >
-                        Sex assigned at birth
+                        Sex
                       </div>
                       {selectedAnalyses &&
                         totalCountAnalysis &&
@@ -366,6 +366,8 @@ export const FitbitReactComponent = withRouteData(
                       {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
                         <StackedColumnChartReactComponent
                           ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
+                          selectedResult=""
+                          domain="fitbit"
                         />
                       )}
                     </div>

@@ -356,7 +356,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
               />
               <GenomicChartComponent
                 counts={participantCounts[0]}
-                title="Sex assigned at birth"
+                title="Sex"
                 data={sexAtBirthData}
                 selectedGenotype={selectedGenotype}
                 color={color}

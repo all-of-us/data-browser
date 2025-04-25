@@ -217,7 +217,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
       }
 
       toolTipText =
-        '<div class="bio-sex-tooltip"> Sex Assigned At Birth: ' +
+        '<div class="bio-sex-tooltip"> Sex: ' +
         "<b>" +
         a.analysisStratumName +
         "</b>" +
