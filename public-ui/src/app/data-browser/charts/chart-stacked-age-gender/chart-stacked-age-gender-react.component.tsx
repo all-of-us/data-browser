@@ -77,6 +77,7 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                         const totalInGroup = this.series.chart.series
                             .map(s => s.data[this.point.index]?.y || 0)
                             .reduce((a, b) => a + b, 0);
+                        console.log(totalInGroup);
                         const percent = totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : '0';
 
                         return `
