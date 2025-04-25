@@ -594,7 +594,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               </div>
             ) : graphToShow === "Age + Sex" ? (
               <div className="chart" key="age-gender-stacked-chart">
-                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} />
+                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} selectedResult="" />
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">

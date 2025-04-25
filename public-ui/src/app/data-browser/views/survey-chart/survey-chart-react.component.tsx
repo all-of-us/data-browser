@@ -122,7 +122,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       null
     );
     let selectedAnalysis;
-    console.log(g);
     switch (g) {
       case GraphType.AgeWhenSurveyWasTaken:
         selectedAnalysis = question.ageAnalysis;
@@ -137,7 +136,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.genderAnalysis;
         break;
     }
-    console.log(selectedAnalysis);
     this.setState({
       graphToShow: g,
       selectedChartAnalysis: selectedAnalysis,
@@ -213,7 +211,6 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       selectedChartAnalysis,
     } = this.state;
     const tabIndex = 0;
-    console.log('Am i here?');
     return (
       <React.Fragment>
         <style>{chartStyleCss}</style>
@@ -276,6 +273,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
             <div className="chart" key="age-gender-stacked-chart">
               <StackedColumnChartReactComponent
                 ageGenderAnalysis={selectedChartAnalysis}
+                selectedResult={selectedResult}
               />
             </div>
         ) : null}
