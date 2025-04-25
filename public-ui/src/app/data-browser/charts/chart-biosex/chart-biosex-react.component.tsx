@@ -23,7 +23,6 @@ interface Props {
 export class BioSexChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = { options: null };
   }
 
@@ -96,7 +95,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 
   getFitbitChartOptions() {
     const newBaseOptions = getBaseOptions();
-    newBaseOptions.chart.type = "column";
+    newBaseOptions.chart.type = "bar";
     newBaseOptions.plotOptions.series.pointWidth = 50;
     newBaseOptions.yAxis.title.text = "Participant Count";
     newBaseOptions.xAxis.title.text = "";

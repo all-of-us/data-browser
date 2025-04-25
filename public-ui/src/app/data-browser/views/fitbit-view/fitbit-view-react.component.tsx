@@ -93,10 +93,10 @@ const styles = reactStyles({
   },
   fmChart: {
     background: "#216fb40d",
+    width: "calc(50% - 0.5rem)",
     padding: "1rem",
     borderRadius: "3px",
     minWidth: "15rem",
-    width: "100%",
   },
   displayName: {
     textTransform: "capitalize",
@@ -303,6 +303,20 @@ export const FitbitReactComponent = withRouteData(
                 <div className="fm-body" style={styles.fmBody}>
                   <h2 style={styles.selectedDisplayH}>{selectedDisplay} </h2>
                   <div className="fm-body-top" style={styles.fmBodyTop}>
+                    <div className="fm-chart" style={styles.fmChart}>
+                      <div
+                        className="display-body"
+                        style={styles.chartDisplayBody}
+                      >
+                        Participants over time
+                      </div>
+                      {selectedAnalyses && totalCountAnalysis && (
+                        <ChartFitbitReactComponent
+                          concepts={selectedAnalyses.participantCountAnalysis}
+                          countAnalysis={totalCountAnalysis}
+                        />
+                      )}
+                    </div>
                     <div className="fm-chart" style={styles.fmChart}>
                       <div
                         className="display-body"
