@@ -114,7 +114,7 @@ export class RhHeader extends React.Component<{}, State> {
                           </a>
                           <div className="item-expand" />
                         </li>
-                        <li
+                        {/* <li
                           id="menu-item-666"
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-666"
                         >
@@ -122,7 +122,7 @@ export class RhHeader extends React.Component<{}, State> {
                             Research Hub Updates
                           </a>
                           <div className="item-expand" />
-                        </li>
+                        </li> */}
                         <li
                           id="menu-item-100"
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-100"
@@ -232,7 +232,7 @@ export class RhHeader extends React.Component<{}, State> {
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3525"
                         >
                           <a href="https://www.researchallofus.org/research-projects-directory/">
-                            Research Projects Directory
+                          Research Project Directory
                           </a>
                           <div className="item-expand" />
                         </li>
@@ -241,23 +241,7 @@ export class RhHeader extends React.Component<{}, State> {
                           className="menu-item menu-item-type-post_type_archive menu-item-object-publication menu-item-3277"
                         >
                           <a href="https://www.researchallofus.org/publications/">
-                            Publications
-                          </a>
-                          <div className="item-expand" />
-                        </li>
-                        <li
-                          id="menu-item-4073"
-                          className="menu-item menu-item-type-custom menu-item-object-custom menu-item-4073"
-                        >
-                          <a href="/spotlight">Spotlights</a>
-                          <div className="item-expand" />
-                        </li>
-                        <li
-                          id="menu-item-4620"
-                          className="menu-item menu-item-type-post_type menu-item-object-page menu-item-4620"
-                        >
-                          <a href="https://www.researchallofus.org/discover/covid-19-research-initiatives/">
-                            COVID-19 Research Initiatives
+                            Publications Directory
                           </a>
                           <div className="item-expand" />
                         </li>
