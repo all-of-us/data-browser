@@ -254,6 +254,7 @@ export const FitbitReactComponent = withRouteData(
       const { search } = urlParamsStore.getValue();
       const tabIndex = 0;
       const selectedResult = null;
+      console.log('Test');
       return (
         <React.Fragment>
           <style>{styleCss}</style>
