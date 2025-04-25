@@ -251,7 +251,7 @@ export const tooltips = {
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
   sortVariants: `Click to select ascending or descending`,
-  Map: `this is a map`,
+  Map: `This chart displays a distribution of residential locations self-reported in participants' records.`,
   "Age + Sex assigned at birth": 'combined age + sex assigned at birth chart',
   "Age + Sex": `This chart displays a binned distribution of the ages at which medical concepts first occurred in participants' electronic health records, stratified by participant sex.`,
 };
