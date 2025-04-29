@@ -241,7 +241,7 @@ export class RhHeader extends React.Component<{}, State> {
                           className="menu-item menu-item-type-post_type_archive menu-item-object-publication menu-item-3277"
                         >
                           <a href="https://www.researchallofus.org/publications/">
-                            Publications Directory
+                            Publication Directory
                           </a>
                           <div className="item-expand" />
                         </li>

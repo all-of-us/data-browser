@@ -16,7 +16,6 @@ const css = `
 
   .consequence-heading {
     font-family: gothamBold, Arial, Helvetica, sans-serif;
-    font-weight: bold;
   }
 
   .consequence-item {
