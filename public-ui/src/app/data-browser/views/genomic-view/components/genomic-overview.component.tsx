@@ -4,6 +4,7 @@ import { reactStyles } from "app/utils";
 
 import { GenomicChartComponent } from "./genomic-chart.component";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
+import { environment } from "environments/environment";
 
 const css = `
 label {
@@ -368,13 +369,16 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 selectedGenotype={selectedGenotype}
                 color={color}
               />
-              <GenomicChartComponent
-                counts={participantCounts[0]}
-                title="Combined age + sex"
-                data={combinedAgeSexData}
-                selectedGenotype={selectedGenotype}
-                color={color}
-              />
+              {environment.combinedAgeGenderChart && (
+                  <GenomicChartComponent
+                    counts={participantCounts[0]}
+                    title="Combined age + sex"
+                    data={combinedAgeSexData}
+                    selectedGenotype={selectedGenotype}
+                    color={color}
+                  />
+              )}
+              {environment.heatmap && (
               <div style={styles.chartContainer}>
                 <h3 style={styles.chartTitle}>Genomic Variant Locations</h3>
                 <HeatMapReactComponent
@@ -382,6 +386,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                   domain="genomic"
                 />
               </div>
+              )}
             </React.Fragment>
           )}
         </div>

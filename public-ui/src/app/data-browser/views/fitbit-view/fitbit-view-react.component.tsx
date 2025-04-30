@@ -359,18 +359,21 @@ export const FitbitReactComponent = withRouteData(
                         />
                       )}
                     </div>
-                    <div className="fm-chart" style={styles.fmBottomChart}>
-                      <div className="display-body" style={styles.chartDisplayBody}>
-                        Age + Sex
+                    {environment.combinedAgeGenderChart && (
+                      <div className="fm-chart" style={styles.fmBottomChart}>
+                        <div className="display-body" style={styles.chartDisplayBody}>
+                          Age + Sex
+                        </div>
+                        {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
+                          <StackedColumnChartReactComponent
+                            ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
+                            selectedResult=""
+                            domain="fitbit"
+                          />
+                        )}
                       </div>
-                      {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
-                        <StackedColumnChartReactComponent
-                          ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
-                          selectedResult=""
-                          domain="fitbit"
-                        />
-                      )}
-                    </div>
+                    )}
+                    {environment.heatmap && (
                     <div className="fm-chart" style={styles.fmBottomChart}>
                       <div className="display-body" style={styles.chartDisplayBody}>
                         Location of data collection
@@ -381,6 +384,7 @@ export const FitbitReactComponent = withRouteData(
                           domain="fitbit"/>
                       )}
                     </div>
+                    )}
                   </div>
                 </div>
               </div>

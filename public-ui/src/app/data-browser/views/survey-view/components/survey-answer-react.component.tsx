@@ -303,12 +303,15 @@ const SurveyAnswerRowComponent = class extends React.Component<
       surveyConceptId,
     } = this.props;
     const { drawerOpen, subQuestions, drawerLoading } = this.state;
-    const graphButtons = ["Sex", "Age When Survey Was Taken", "Age + Sex"];
+    const graphButtons = ["Sex", "Age When Survey Was Taken"];
     if (isCopeSurvey) {
       graphButtons.unshift("Survey Versions");
     }
     if (environment.heatmap)  {
       graphButtons.push("Map");
+    }
+    if (environment.combinedAgeGenderChart)  {
+      graphButtons.push("Age + Sex");
     }
     const participantPercentage = (
       (this.props.countValue / this.props.participantCount) *
