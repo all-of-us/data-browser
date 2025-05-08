@@ -682,12 +682,6 @@ export const EhrViewReactComponent = withRouteData(
                   <div className="result-list">
                     <div className="db-card">
                       <div className="db-card-inner">
-                        <button
-                          className="disclaimer-btn"
-                          onClick={() => this.setState({ showStatement: true })}
-                        >
-                          data disclaimer
-                        </button>
                         <section>
                           <div className="top-results-container">
                             <h5 className="secondary-display domain-summary">
@@ -1027,12 +1021,6 @@ export const EhrViewReactComponent = withRouteData(
                   measurementOrderFilter={noMatchFilter}
                 />
               </div>
-            )}
-            {showStatement && (
-              <PopUpReactComponent
-                helpText="EhrViewPopUp"
-                onClose={() => this.setState({ showStatement: false })}
-              />
             )}
           </div>
         </React.Fragment>
