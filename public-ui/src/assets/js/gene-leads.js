@@ -50,17 +50,20 @@ function onClickAnnot(annot) {
 }
 
 waitForElm('.search-container').then((searchContainer) => {
-  const style = `
-    <style>
-      #_ideogramLegend {
-        font: 0.8em;
-        font-family: GothamBook, Arial, sans-serif;
-      }
-      #_ideogramTooltip a {
-        color: #0366d6;
-      }
-    </style>
-  `;
+const style = `
+  <style>
+    #_ideogramLegend {
+      font: 0.8em;
+      font-family: GothamBook, Arial, sans-serif;
+    }
+    #_ideogramTooltip a {
+      color: #0366d6;
+    }
+    #_ideogramInnerWrap {
+      margin-top: 1.5rem;
+    }
+  </style>
+`;
 
   const div = `
     <div style="height: 120px; width: 100%">

@@ -11,6 +11,14 @@ import { SortMetadata } from "publicGenerated/fetch";
 
 import { VariantFilterChips } from "./variant-filter-chips.component";
 
+declare global {
+  interface Window {
+    GeneLeads: any;
+    Ideogram: any;
+    ideogram: any;
+  }
+}
+
 const styles = reactStyles({
   searchBar: {
     paddingRight: "2rem",
@@ -52,7 +60,7 @@ const css = `
     display: flex;
     flex-wrap:wrap-reverse;
     align-items: flex-end;
-    
+
 }
 @media (max-width: 1220px) {
     .search-container {
@@ -121,6 +129,10 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       filteredMetaMap: null,
       filterShow: false,
     });
+  // Dynamically update the gene in GeneLeads
+  // if (window.ideogram && val.trim()) {
+    // window.ideogram.plotRelatedGenes(val.trim());
+  // }
   }
 
   componentWillUpdate(
