@@ -27,6 +27,23 @@ import {
 import { GenomicFaqComponent } from "./components/genomic-faq.component";
 import { GenomicSearchComponent } from "./components/genomic-search.component";
 
+declare global {
+  interface Window {
+    GeneLeads: any;
+    Ideogram: any;
+    ideogram: any;
+    loadGeneLeadsStyling: () => void;
+  }
+}
+
+function waitForIdeogram(callback: () => void) {
+  if (window.ideogram) {
+    callback();
+  } else {
+    setTimeout(() => waitForIdeogram(callback), 50); // check again in 50ms
+  }
+}
+
 const styles = reactStyles({
   title: {
     fontSize: "35px",
@@ -152,6 +169,7 @@ interface State {
   svFilteredMetadata: SVGenomicFilters;
   filterChipsShow: boolean;
   scrollClean: boolean;
+  firstGene: string;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -293,6 +311,7 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 8),
           new SortColumnDetailsClass(false, "asc", 9)
         ),
+        firstGene: "",
       };
     }
 
@@ -499,11 +518,49 @@ export const GenomicViewComponent = withRouteData(
       }
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: Props, prevState: State) {
       if (prevProps.selectionId !== this.props.selectionId) {
         this.setState({ selectionId: this.props.selectionId });
       }
+
+      const { firstGene } = this.state;
+
+      if (
+        prevState.firstGene !== firstGene &&
+        firstGene &&
+        typeof window.ideogram?.plotRelatedGenes === 'function'
+      ) {
+        waitForIdeogram(async () => {
+          console.log("Attempting to plot gene:", firstGene);
+
+          try {
+            // Use Promise.resolve() to safely handle both async/sync exceptions
+            await Promise.resolve(window.ideogram.plotRelatedGenes(firstGene.trim()));
+
+            if (window.loadGeneLeadsStyling) {
+              setTimeout(() => window.loadGeneLeadsStyling(), 50);
+            }
+
+            // Make sure ideogram is visible again
+            const container = document.querySelector('#ideogram-container');
+            if (container instanceof HTMLElement) {
+              container.style.display = '';
+            }
+
+          } catch (err) {
+            console.error(`Error plotting gene "${firstGene}":`, err);
+
+            // Hide ideogram if gene is invalid
+            const container = document.querySelector('#ideogram-container');
+            if (container instanceof HTMLElement) {
+              container.style.display = 'none';
+            }
+          }
+        });
+      }
     }
+
+
 
     componentCleanup() {
       // this will hold the cleanup code
@@ -604,6 +661,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
@@ -653,6 +721,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
@@ -809,6 +888,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: [...this.state.searchResults, ...results.items],
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
