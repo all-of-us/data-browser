@@ -1,39 +1,36 @@
 function waitForElm(selector) {
   return new Promise(resolve => {
-    function startObserving() {
-      const targetNode = document.body;
-      if (!targetNode) {
-        // Wait until document.body is available
-        return requestAnimationFrame(startObserving);
+      if (document.querySelector(selector)) {
+          return resolve(document.querySelector(selector));
       }
 
-      const found = document.querySelector(selector);
-      if (found) {
-        return resolve(found);
-      }
-
-      const observer = new MutationObserver(() => {
-        const el = document.querySelector(selector);
-        if (el) {
-          observer.disconnect();
-          resolve(el);
-        }
+      const observer = new MutationObserver(mutations => {
+          if (document.querySelector(selector)) {
+              observer.disconnect();
+              resolve(document.querySelector(selector));
+          }
       });
 
-      observer.observe(targetNode, {
-        childList: true,
-        subtree: true
+      // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+      observer.observe(document.documentElement, {
+          childList: true,
+          subtree: true
       });
-    }
-
-    startObserving();
   });
 }
 
 async function loadGeneLeads() {
-  await window.ideogram.plotRelatedGenes('LDLR');
+  // Check if a gene is already plotted
+  const selected = window.ideogram;
 
-  // Center position of ideogram below search input
+  console.log(selected);
+
+  if (!selected || selected.length === 0) {
+    // If no gene is selected, load default gene
+    await window.ideogram.plotRelatedGenes('LDLR');
+  }
+
+  // Apply layout styling
   const innerWrap = document.querySelector('#_ideogramInnerWrap');
   const ideogramEl = document.querySelector('#_ideogram');
   const gear = document.querySelector('#gear');
@@ -45,45 +42,45 @@ async function loadGeneLeads() {
   if (legend) legend.style.left = '808px';
 }
 
-function onClickAnnot(annot) {
-  window.ideogram.plotRelatedGenes(annot.name);
-}
 
-waitForElm('.search-container').then((searchContainer) => {
-const style = `
-  <style>
-    #_ideogramLegend {
-      font: 0.8em;
-      font-family: GothamBook, Arial, sans-serif;
-    }
-    #_ideogramTooltip a {
-      color: #0366d6;
-    }
-    #_ideogramInnerWrap {
-      margin-top: 1.5rem;
-    }
-  </style>
-`;
+waitForElm('.search-container').then((elm) => {
+  searchContainer = document.querySelector('.search-container')
 
-  const div = `
-    <div style="height: 120px; width: 100%">
-      <div id="ideogram-container" style="height: 120px; width: 100%"></div>
-      ${style}
-    </div>
-  `;
+  const style =
+    '<style>' +
+    '#_ideogramLegend { ' +
+      'font: 0.8em; ' +
+      'font-family: GothamBook, Arial, sans-serif; ' +
+    '}' +
+    '#_ideogramTooltip a { ' +
+      'color: #0366d6; ' +
+    '}' +
+    '</style>'
 
-  searchContainer.insertAdjacentHTML('afterBegin', div);
+  div =
+    '<div style="height: 120px; width: 100%">' +
+      '<div id="ideogram-container" style="height: 120px; width: 100%"></div>' +
+      style +
+    '</div>'
+  searchContainer.insertAdjacentHTML('afterBegin', div)
 
-  const config = {
+  // Ideogram configuration object
+  config = {
     organism: 'homo-sapiens',
     onLoad: loadGeneLeads,
     container: '#ideogram-container',
     onClickAnnot,
     relatedGenesMode: 'related',
-    chrFillColor: { arm: '#DDD', centromere: '#DDF' }
-  };
+    chrFillColor: {arm: '#DDD', centromere: '#DDF'}
+  }
 
   setTimeout(() => {
-    window.ideogram = window.Ideogram.initRelatedGenes(config, 'all');
-  }, 0);
+    ideogram = Ideogram.initRelatedGenes(config, 'all')
+  }, 0)
 });
+
+
+/** Upon clicking a triangular annotation or tooltip, plot that gene */
+function onClickAnnot(annot) {
+  ideogram.plotRelatedGenes(annot.name);
+}

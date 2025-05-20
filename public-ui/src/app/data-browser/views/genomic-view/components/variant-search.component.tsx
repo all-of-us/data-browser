@@ -16,6 +16,15 @@ declare global {
     GeneLeads: any;
     Ideogram: any;
     ideogram: any;
+    loadGeneLeadsStyling: () => void;
+  }
+}
+
+function waitForIdeogram(callback: () => void) {
+  if (window.ideogram) {
+    callback();
+  } else {
+    setTimeout(() => waitForIdeogram(callback), 50); // check again in 50ms
   }
 }
 
@@ -120,6 +129,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
   handleChange(val: string) {
+    console.log("User typed search word:", val);
     if (val == "") {
       this.setState({ scrollClean: true });
     }
@@ -129,10 +139,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       filteredMetaMap: null,
       filterShow: false,
     });
-  // Dynamically update the gene in GeneLeads
-  // if (window.ideogram && val.trim()) {
-    // window.ideogram.plotRelatedGenes(val.trim());
-  // }
   }
 
   componentWillUpdate(
@@ -168,7 +174,27 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
 
     if (prevProps.searchTerm !== searchTerm) {
-      this.setState({ searchWord: searchTerm });
+        console.log("Updated searchTerm prop:", searchTerm);
+        this.setState({ searchWord: searchTerm });
+
+        if (
+          searchTerm &&
+          !searchTerm.includes(":") &&
+          !searchTerm.includes("-") &&
+          !searchTerm.toLowerCase().startsWith("rs")
+        ) {
+          waitForIdeogram(() => {
+            console.log("Inside ideogram block, plotting gene:", searchTerm);
+            window.ideogram.plotRelatedGenes(searchTerm.trim());
+
+            if (window.loadGeneLeadsStyling) {
+              setTimeout(() => window.loadGeneLeadsStyling(), 50);
+            }
+          });
+        }
+
+
+
     }
     if (prevProps.filterMetadata !== filterMetadata) {
       this.setState({ filterMetadata: filterMetadata });
