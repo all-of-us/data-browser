@@ -134,7 +134,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         selectedAnalysis = question.combinedAgeSexAnalysis;
         break;
       case GraphType.map:
-        selectedAnalysis = question.locationCountAnalysis;   
+        selectedAnalysis = question.locationAnalysis;
         break;
       default:
         selectedAnalysis = question.genderAnalysis;
@@ -277,6 +277,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
         ) : isLoaded && selectedChartAnalysis.analysisId === 3118 ? (
           <div className="chart" key="heat-map-chart">
             <HeatMapReactComponent
+              selectedResult={selectedResult}
               locationAnalysis={selectedChartAnalysis}
               domain={"survey"}
             />

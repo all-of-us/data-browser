@@ -10,6 +10,7 @@ import mapData from 'assets/maps/us_and_terr.json';
 HighchartsMap(Highcharts);
 interface Props {
     locationAnalysis: any,
+    selectedResult: any,
     domain: string
 }
 interface State {
@@ -161,7 +162,8 @@ export const HeatMapReactComponent =
 
 
         componentDidMount() {
-            console.log('locatoionAnalysis', this.props.locationAnalysis);
+            console.log('Am i here at all?');
+            console.log('locationAnalysis', this.props.locationAnalysis);
             // Save a reference to the Highcharts chart object
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
@@ -228,6 +230,12 @@ export const HeatMapReactComponent =
                 'us-pr': { keys: HeatMapReactComponent.keyGroups.PR_KEYS, name: 'Puerto Rico' },
                 'us-gu': { keys: HeatMapReactComponent.keyGroups.GU_KEYS, name: 'Guam' },
             };
+
+            if (domain === 'survey' && this.props.selectedResult) {
+                data = data.filter(
+                      (r) => r.stratum4 === this.props.selectedResult.stratum4
+                );
+            }
 
             for (const item of data) {
                 const state = domain === 'survey' ? item.stratum5 : item.stratum2;

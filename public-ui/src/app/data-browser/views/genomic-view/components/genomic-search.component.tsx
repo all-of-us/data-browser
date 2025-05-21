@@ -52,6 +52,7 @@ interface Props {
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   scrollClean: boolean;
+  firstGene?: string;
 }
 
 interface State {
@@ -171,6 +172,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           submittedFilterMetadata={submittedFilterMetadata}
           onSortChange={(e) => this.handleSortClick(e)}
           scrollClean={scrollClean}
+          firstGene={this.props.firstGene}
         />
         <VariantTableComponent
           loadingResults={loadingResults}

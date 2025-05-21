@@ -1,10 +1,6 @@
-import { environment } from "environments/environment";
-
-declare let gtag: Function;
-
 export function initializeAnalytics() {
-  gtag("js", new Date());
-  gtag("config", environment.gaId);
+  // GTM handles initialization; nothing required here
+  console.info("GTM initialized via HTML tag");
 }
 
 export function triggerEvent(
@@ -15,13 +11,16 @@ export function triggerEvent(
   searchTerm: string,
   tooltipAction: string
 ) {
-  if (window.gtag) {
-    gtag("event", eventName, {
-      event_category: "Data Browser " + eventCategory,
-      event_action: eventAction,
-      event_label: searchTerm,
+  if ((window as any).dataLayer) {
+    (window as any).dataLayer.push({
+      event: eventName,
+      eventCategory: `Data Browser ${eventCategory}`,
+      eventAction: eventAction,
+      eventLabel: eventLabel,
+      searchTerm: searchTerm,
+      tooltipAction: tooltipAction
     });
   } else {
-    console.error("Google Analytics gtag.js has not been loaded");
+    console.error("dataLayer is not available");
   }
 }

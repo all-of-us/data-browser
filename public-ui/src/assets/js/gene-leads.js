@@ -19,27 +19,34 @@ function waitForElm(selector) {
   });
 }
 
-async function loadGeneLeads() {
+function restyleIdeogramElements() {
+  const innerWrap = document.querySelector('#_ideogramInnerWrap');
+  const ideogramEl = document.querySelector('#_ideogram');
+  const gear = document.querySelector('#gear');
+  const legend = document.querySelector('#_ideogramLegend');
+
+  if (innerWrap) innerWrap.style.maxWidth = '1057px';
+  if (ideogramEl) ideogramEl.style.left = '-35px';
+  if (gear) gear.style.right = '310px';
+  if (legend) legend.style.left = '808px';
+}
+
+async function loadGeneLeads(geneName = 'LDLR') {
   try {
     const selected = window.ideogram;
+
     if (!selected || selected.length === 0) {
-      // Default fallback gene
-      await window.ideogram.plotRelatedGenes('LDLR');
+      await window.ideogram.plotRelatedGenes(geneName);
     }
 
-    const innerWrap = document.querySelector('#_ideogramInnerWrap');
-    const ideogramEl = document.querySelector('#_ideogram');
-    const gear = document.querySelector('#gear');
-    const legend = document.querySelector('#_ideogramLegend');
-
-    if (innerWrap) innerWrap.style.maxWidth = '1057px';
-    if (ideogramEl) ideogramEl.style.left = '-35px';
-    if (gear) gear.style.right = '310px';
-    if (legend) legend.style.left = '808px';
+    // Re-apply styling after rendering
+    setTimeout(restyleIdeogramElements, 100);
   } catch (err) {
-    console.error("Error loading gene leads:", err);
+    console.error(`Error loading gene leads for "${geneName}":`, err);
     const container = document.querySelector('#ideogram-container');
-    if (container) container.remove(); // Remove on failure
+    if (container instanceof HTMLElement) {
+      container.remove();
+    }
   }
 }
 
@@ -86,6 +93,9 @@ waitForElm('.search-container').then((searchContainer) => {
 function onClickAnnot(annot) {
   try {
     ideogram.plotRelatedGenes(annot.name);
+
+    // Re-style after DOM update
+    setTimeout(restyleIdeogramElements, 100);
   } catch (err) {
     console.warn(`Error plotting related gene ${annot.name}:`, err);
   }

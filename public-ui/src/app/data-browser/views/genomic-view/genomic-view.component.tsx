@@ -27,23 +27,6 @@ import {
 import { GenomicFaqComponent } from "./components/genomic-faq.component";
 import { GenomicSearchComponent } from "./components/genomic-search.component";
 
-declare global {
-  interface Window {
-    GeneLeads: any;
-    Ideogram: any;
-    ideogram: any;
-    loadGeneLeadsStyling: () => void;
-  }
-}
-
-function waitForIdeogram(callback: () => void) {
-  if (window.ideogram) {
-    callback();
-  } else {
-    setTimeout(() => waitForIdeogram(callback), 50); // check again in 50ms
-  }
-}
-
 const styles = reactStyles({
   title: {
     fontSize: "35px",
@@ -525,42 +508,11 @@ export const GenomicViewComponent = withRouteData(
 
       const { firstGene } = this.state;
 
-      if (
-        prevState.firstGene !== firstGene &&
-        firstGene &&
-        typeof window.ideogram?.plotRelatedGenes === 'function'
-      ) {
-        waitForIdeogram(async () => {
-          console.log("Attempting to plot gene:", firstGene);
-
-          try {
-            // Use Promise.resolve() to safely handle both async/sync exceptions
-            await Promise.resolve(window.ideogram.plotRelatedGenes(firstGene.trim()));
-
-            if (window.loadGeneLeadsStyling) {
-              setTimeout(() => window.loadGeneLeadsStyling(), 50);
-            }
-
-            // Make sure ideogram is visible again
-            const container = document.querySelector('#ideogram-container');
-            if (container instanceof HTMLElement) {
-              container.style.display = '';
-            }
-
-          } catch (err) {
-            console.error(`Error plotting gene "${firstGene}":`, err);
-
-            // Hide ideogram if gene is invalid
-            const container = document.querySelector('#ideogram-container');
-            if (container instanceof HTMLElement) {
-              container.style.display = 'none';
-            }
-          }
-        });
+      // Only log the first gene when it changes; rendering will be handled in child components
+      if (prevState.firstGene !== firstGene && firstGene) {
+        console.log("Updated firstGene:", firstGene);
       }
     }
-
-
 
     componentCleanup() {
       // this will hold the cleanup code
@@ -1049,6 +1001,7 @@ export const GenomicViewComponent = withRouteData(
                   submittedFilterMetadata={submittedFilterMetadata}
                   sortMetadata={sortMetadata}
                   scrollClean={scrollClean}
+                  firstGene={this.state.firstGene}
                 />
               )}
               {selectionId === 2 && (
