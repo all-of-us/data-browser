@@ -162,8 +162,6 @@ export const HeatMapReactComponent =
 
 
         componentDidMount() {
-            console.log('Am i here at all?');
-            console.log('locationAnalysis', this.props.locationAnalysis);
             // Save a reference to the Highcharts chart object
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
