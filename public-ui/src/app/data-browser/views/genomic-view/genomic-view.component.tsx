@@ -152,7 +152,6 @@ interface State {
   svFilteredMetadata: SVGenomicFilters;
   filterChipsShow: boolean;
   scrollClean: boolean;
-  firstGene: string;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -294,7 +293,6 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 8),
           new SortColumnDetailsClass(false, "asc", 9)
         ),
-        firstGene: "",
       };
     }
 
@@ -501,16 +499,9 @@ export const GenomicViewComponent = withRouteData(
       }
     }
 
-    componentDidUpdate(prevProps: Props, prevState: State) {
+    componentDidUpdate(prevProps: Props) {
       if (prevProps.selectionId !== this.props.selectionId) {
         this.setState({ selectionId: this.props.selectionId });
-      }
-
-      const { firstGene } = this.state;
-
-      // Only log the first gene when it changes; rendering will be handled in child components
-      if (prevState.firstGene !== firstGene && firstGene) {
-        console.log("Updated firstGene:", firstGene);
       }
     }
 
@@ -542,7 +533,7 @@ export const GenomicViewComponent = withRouteData(
     getGenomicChartData() {
       return genomicsApi()
         .getChartData()
-        .then((results) => {      
+        .then((results) => {
           this.setState({ chartData: results.items });
         });
     }
@@ -613,17 +604,6 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
-
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
-            }
-
-
         });
     }
 
@@ -673,17 +653,6 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
-
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
-            }
-
-
         });
     }
 
@@ -764,7 +733,7 @@ export const GenomicViewComponent = withRouteData(
       window.addEventListener("beforeunload", this.componentCleanup);
       const { search } = urlParamsStore.getValue();
       const currentUrl = window.location.href;
-  
+
       if (search) {
           if (currentUrl.includes('structural-variants')) {
               this.setState({ svSearchTerm: search }, () => {
@@ -840,17 +809,6 @@ export const GenomicViewComponent = withRouteData(
             searchResults: [...this.state.searchResults, ...results.items],
             loadingResults: false,
           });
-
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
-            }
-
-
         });
     }
 
@@ -961,7 +919,7 @@ export const GenomicViewComponent = withRouteData(
               </div>
             )}
             <div style={styles.innerContainer} id="childView">
-              {selectionId === 3 && chartData && (                
+              {selectionId === 3 && chartData && (
                 <GenomicOverviewComponent
                   participantCount={participantCount}
                   chartData={chartData}
@@ -1001,7 +959,6 @@ export const GenomicViewComponent = withRouteData(
                   submittedFilterMetadata={submittedFilterMetadata}
                   sortMetadata={sortMetadata}
                   scrollClean={scrollClean}
-                  firstGene={this.state.firstGene}
                 />
               )}
               {selectionId === 2 && (

@@ -9,10 +9,6 @@ import { Spinner } from "app/utils/spinner";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
 
-import { GeneIdeogram } from "app/components/GeneIdeogram";
-import { RelatedGenesIdeogramComponent } from "app/components/RelatedGenesIdeogramComponent";
-import { GeneLeadsIdeogram } from "app/components/GeneLeadsIdeogram";
-
 import { VariantFilterChips } from "./variant-filter-chips.component";
 
 const styles = reactStyles({
@@ -82,7 +78,6 @@ interface Props {
   loadingResults: boolean;
   loadingVariantListSize: boolean;
   scrollClean: boolean;
-  firstGene?: string;
 }
 interface State {
   filteredMetadata: GenomicFilters;
@@ -231,11 +226,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             <strong>Genomic Region:</strong> chr13:32355000-32375000
           </div>
         </div>
-        {this.props.firstGene && (
-          <div style={{ width: '100%', paddingTop: '1em' }}>
-            <GeneLeadsIdeogram gene={this.props.firstGene} />
-          </div>
-        )}
         {submittedFilterMetadata && (
           <VariantFilterChips
             filteredMetadata={submittedFilterMetadata}
