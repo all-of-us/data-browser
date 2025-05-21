@@ -140,7 +140,7 @@ export const tooltips = {
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
   "minute survey on covid-19 vaccines":
     "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-  "social factors of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
+  "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
     social life, stress, and feelings about everyday life.`,
   genomics:
     "Search and explore SNV/Indel variant data available within the dataset.",
@@ -397,7 +397,7 @@ export class TooltipService {
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
     "minute survey on covid-19 vaccines":
       "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-    "social factors of health": `This survey includes information about the social determinants of health, including a participant’s neighborhood,
+    "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
        social life, stress, and feelings about everyday life.`,
     genomics:
       "Search and explore SNV/Indel variant data available within the dataset.",
