@@ -157,26 +157,28 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
   }
 
-    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
+    componentDidUpdate(prevProps: Readonly<Props>) {
       const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
 
       if (prevProps.searchTerm !== searchTerm) {
         this.setState({ searchWord: searchTerm });
       }
       if (prevProps.filterMetadata !== filterMetadata) {
-        this.setState({ filterMetadata: filterMetadata });
+        this.setState({ filterMetadata });
       }
       if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-        this.setState({ submittedFilterMetadata: submittedFilterMetadata });
+        this.setState({ submittedFilterMetadata });
       }
 
-      if (prevProps.firstGene !== firstGene) {
-        console.log('Am i here?');
-        console.log(prevProps.firstGene);
-        console.log(firstGene);
-        this.setState({ currentGene: firstGene }); // ✅ update currentGene when prop changes
+      // Only update currentGene if it's not already set
+      if (
+        prevProps.firstGene !== firstGene &&
+        firstGene
+      ) {
+        this.setState({ currentGene: firstGene });
       }
     }
+
 
   showFilter() {
     this.setState({ filterShow: !this.state.filterShow });
@@ -216,7 +218,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     const variantListSizeDisplay = variantListSize
       ? variantListSize.toLocaleString()
       : 0;
-    console.log(this.state.currentGene);
     return (
       <React.Fragment>
         <style>{css}</style>

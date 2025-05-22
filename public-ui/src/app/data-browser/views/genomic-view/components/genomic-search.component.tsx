@@ -69,6 +69,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.scrollDiv = React.createRef();
+    console.log(this.props);
     this.state = {
       searchTerm: this.props.searchTerm || "",
       filterMetadata: this.props.filterMetadata,
@@ -80,7 +81,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
+    const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
     }
@@ -89,6 +90,9 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     }
     if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
       this.setState({ submittedFilterMetadata: submittedFilterMetadata });
+    }
+    if (prevProps.firstGene !== firstGene) {
+      this.setState({ firstGene: firstGene });
     }
   }
 
@@ -110,8 +114,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
   handleGeneClick = (gene: string) => {
-    console.log('I am clicked to refresh ideogram', gene);
-    console.log(this.state.firstGene);
+    console.log(gene);
     this.setState({ firstGene: gene });
   };
 
