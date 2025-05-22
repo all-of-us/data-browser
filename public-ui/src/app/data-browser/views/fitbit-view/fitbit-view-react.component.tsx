@@ -381,7 +381,8 @@ export const FitbitReactComponent = withRouteData(
                       {selectedAnalyses && selectedAnalyses.locationAnalysis && (
                         <HeatMapReactComponent
                           locationAnalysis={selectedAnalyses?.locationAnalysis}
-                          domain="fitbit"/>
+                          domain="fitbit"
+                          selectedResult = "" />
                       )}
                     </div>
                     )}

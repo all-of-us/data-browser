@@ -1721,6 +1721,29 @@ public class GenomicsController implements GenomicsApiDelegate {
         return ResponseEntity.ok(variantInfo);
     }
 
+    @Override
+    public ResponseEntity<String> getSearchTermType(String query) {
+        String searchTerm = query.trim();
+        if (searchTerm.isEmpty()) {
+            return ResponseEntity.badRequest().body("Search term cannot be empty.");
+        }
+
+        String type;
+
+        if (searchTerm.matches(genomicRegionRegex)) {
+            type = "genomic_region";
+        } else if (searchTerm.matches(variantIdRegex)) {
+            type = "variant_id";
+        } else if (searchTerm.matches(rsNumberRegex)) {
+            type = "rs_id";
+        } else {
+            type = "gene";
+        }
+
+        return ResponseEntity.ok(type);
+    }
+
+
 
     public static GenomicSearchTermType getSearchType(String variantSearchTerm, String searchTerm) {
         GenomicSearchTermType searchTermType = new GenomicSearchTermType();

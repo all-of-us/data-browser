@@ -591,7 +591,8 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
               <div className="chart" key="map-chart">
                 <HeatMapReactComponent
                   locationAnalysis={selectedChartAnalysis}
-                  domain={"ehr"}/>
+                  domain={"ehr"}
+                  selectedResult = "" />
               </div>
             ) : graphToShow === "Age + Sex" ? (
               <div className="chart" key="age-gender-stacked-chart">

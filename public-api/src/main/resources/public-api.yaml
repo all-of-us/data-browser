@@ -91,6 +91,27 @@ paths:
           schema:
             $ref: "#/definitions/VariantListResponse"
 
+  /v1/genomics/search-term-type:
+    get:
+      tags:
+        - genomics
+      description: >
+        Determines and returns the type of a genomic search term.
+        Possible types include: 'genomic_region', 'variant_id', 'rs_id', and 'gene'.
+      operationId: getSearchTermType
+      parameters:
+        - name: query
+          in: query
+          required: true
+          description: Genomic search string (e.g., BRCA2, rs12345, 1:12345-67890)
+          type: string
+      responses:
+        200:
+          description: Type of the genomic search term
+          schema:
+            type: string
+
+
   /v1/genomics/variant-search-result-size:
     post:
       tags:

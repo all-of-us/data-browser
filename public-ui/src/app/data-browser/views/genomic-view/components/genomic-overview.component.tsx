@@ -384,6 +384,7 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 <HeatMapReactComponent
                   locationAnalysis={locationData}
                   domain="genomic"
+                  selectedResult = ""
                 />
               </div>
               )}
