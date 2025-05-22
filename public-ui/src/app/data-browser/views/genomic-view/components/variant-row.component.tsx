@@ -81,6 +81,7 @@ const css = `
 interface Props {
   variant: Variant;
   allowParentScroll: Function;
+  onGeneClick: (gene: string) => void;
 }
 
 interface State {
@@ -176,7 +177,22 @@ export class VariantRowComponent extends React.Component<Props, State> {
             </div>
             <div style={styles.rowItem}>
               {variant.genes && variant.genes.length ? (
-                <div>{variant.genes}</div>
+                <div>
+                  {variant.genes.split(',').map((gene, idx, arr) => (
+                    <React.Fragment key={idx}>
+                      <span
+                        onClick={() => this.props.onGeneClick(gene.trim())}
+                        style={{
+                          cursor: 'pointer',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        {gene.trim()}
+                      </span>
+                      {idx < arr.length - 1 && ', '}
+                    </React.Fragment>
+                  ))}
+                </div>
               ) : (
                 <div>-</div>
               )}

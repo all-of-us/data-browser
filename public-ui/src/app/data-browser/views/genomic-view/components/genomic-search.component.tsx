@@ -52,6 +52,7 @@ interface Props {
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   scrollClean: boolean;
+  firstGene?: string;
 }
 
 interface State {
@@ -60,6 +61,7 @@ interface State {
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   filtered: boolean;
+  firstGene?: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -73,6 +75,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       sortMetadata: this.props.sortMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
       filtered: false,
+      firstGene: this.props.firstGene || "",
     };
   }
 
@@ -105,6 +108,12 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   handleSortClick(sortMetadata) {
     this.props.onSortClick(sortMetadata);
   }
+
+  handleGeneClick = (gene: string) => {
+    console.log('I am clicked to refresh ideogram', gene);
+    console.log(this.state.firstGene);
+    this.setState({ firstGene: gene });
+  };
 
   handleFilterSubmit(filteredMetadata, sortMetadata) {
     this.props.onFilterSubmit(filteredMetadata, sortMetadata);
@@ -171,6 +180,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           submittedFilterMetadata={submittedFilterMetadata}
           onSortChange={(e) => this.handleSortClick(e)}
           scrollClean={scrollClean}
+          firstGene={this.state.firstGene}
         />
         <VariantTableComponent
           loadingResults={loadingResults}
@@ -194,6 +204,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           rowCount={rowCount}
           sortMetadata={sortMetadata}
           filtered={filtered}
+          onGeneClick={this.handleGeneClick}
         />
       </React.Fragment>
     );

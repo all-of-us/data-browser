@@ -9,6 +9,8 @@ import { Spinner } from "app/utils/spinner";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
 
+import { GeneLeadsIdeogram } from "app/components/GeneLeadsIdeogram";
+
 import { VariantFilterChips } from "./variant-filter-chips.component";
 
 const styles = reactStyles({
@@ -78,6 +80,7 @@ interface Props {
   loadingResults: boolean;
   loadingVariantListSize: boolean;
   scrollClean: boolean;
+  firstGene?: string;
 }
 interface State {
   filteredMetadata: GenomicFilters;
@@ -88,6 +91,7 @@ interface State {
   filterShow: Boolean;
   searchWord: string;
   scrollClean: boolean;
+  currentGene?: string;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -103,6 +107,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       submittedFilterMetadata: this.props.submittedFilterMetadata,
       sortMetadata: this.props.sortMetadata,
       scrollClean: this.props.scrollClean,
+      currentGene: this.props.firstGene || "",
     };
     if (this.state.searchWord !== "") {
       this.props.onSearchTerm(this.state.searchWord);
@@ -152,19 +157,26 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
+    componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
+      const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
 
-    if (prevProps.searchTerm !== searchTerm) {
-      this.setState({ searchWord: searchTerm });
+      if (prevProps.searchTerm !== searchTerm) {
+        this.setState({ searchWord: searchTerm });
+      }
+      if (prevProps.filterMetadata !== filterMetadata) {
+        this.setState({ filterMetadata: filterMetadata });
+      }
+      if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+        this.setState({ submittedFilterMetadata: submittedFilterMetadata });
+      }
+
+      if (prevProps.firstGene !== firstGene) {
+        console.log('Am i here?');
+        console.log(prevProps.firstGene);
+        console.log(firstGene);
+        this.setState({ currentGene: firstGene }); // ✅ update currentGene when prop changes
+      }
     }
-    if (prevProps.filterMetadata !== filterMetadata) {
-      this.setState({ filterMetadata: filterMetadata });
-    }
-    if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-      this.setState({ submittedFilterMetadata: submittedFilterMetadata });
-    }
-  }
 
   showFilter() {
     this.setState({ filterShow: !this.state.filterShow });
@@ -198,12 +210,13 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       submittedFilterMetadata,
       scrollClean,
     } = this.state;
-    const { filterMetadata } = this.props;
+    const { filterMetadata, firstGene } = this.props;
     const { variantListSize, loadingResults, loadingVariantListSize } =
       this.props;
     const variantListSizeDisplay = variantListSize
       ? variantListSize.toLocaleString()
       : 0;
+    console.log(this.state.currentGene);
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -226,6 +239,11 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             <strong>Genomic Region:</strong> chr13:32355000-32375000
           </div>
         </div>
+        {this.state.currentGene && (
+          <div style={{ width: '100%', paddingTop: '1em' }}>
+            <GeneLeadsIdeogram gene={this.state.currentGene} />
+          </div>
+        )}
         {submittedFilterMetadata && (
           <VariantFilterChips
             filteredMetadata={submittedFilterMetadata}
