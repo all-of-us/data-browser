@@ -211,6 +211,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       sortMetadata,
       submittedFilterMetadata,
       scrollClean,
+      currentGene,
     } = this.state;
     const { filterMetadata, firstGene } = this.props;
     const { variantListSize, loadingResults, loadingVariantListSize } =
@@ -240,7 +241,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             <strong>Genomic Region:</strong> chr13:32355000-32375000
           </div>
         </div>
-        {this.state.currentGene && (
+        {environment.geneLeads && currentGene && (
           <div style={{ width: '100%', paddingTop: '1em' }}>
             <GeneLeadsIdeogram gene={this.state.currentGene} />
           </div>

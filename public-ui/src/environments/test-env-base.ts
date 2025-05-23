@@ -13,4 +13,5 @@ export const testEnvironmentBase = {
   svVCFBrowser: true,
   heatmap: true,
   combinedAgeGenderChart: true,
+  geneLeads: true,
 };

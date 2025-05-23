@@ -35,6 +35,11 @@ const styles = reactStyles({
 });
 
 const styleCss = `
+  #_ideogram {
+        padding-right: 2rem;
+        width: calc(100% - 16rem);
+        min-width: 20rem;
+  }
   #_ideogramLegend {
     font: 0.8em;
     font-family: GothamBook, Arial, sans-serif;
