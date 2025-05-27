@@ -8,6 +8,17 @@ declare global {
   }
 }
 
+function waitForElement(id: string): Promise<HTMLElement> {
+  return new Promise((resolve) => {
+    const check = () => {
+      const el = document.getElementById(id);
+      if (el) return resolve(el);
+      setTimeout(check, 50);
+    };
+    check();
+  });
+}
+
 const styles = reactStyles({
   container: {
     height: "14em",
@@ -36,14 +47,30 @@ const styles = reactStyles({
 
 const styleCss = `
   #_ideogram {
-        padding-right: 2rem;
-        width: calc(100% - 16rem);
-        min-width: 20rem;
+      min-width: 1150px;
+      display: flex;
   }
+
+  #_ideogramInnerWrap {
+    max-width: 1057px;
+  }
+
+  #ideogram-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  #gear {
+    right: 310px !important;
+  }
+
   #_ideogramLegend {
     font: 0.8em;
     font-family: GothamBook, Arial, sans-serif;
+    position: relative;
+    left: 808px;
   }
+
   #_ideogramTooltip a {
     color: #0366d6;
     text-decoration: underline;
@@ -68,44 +95,77 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
     };
   }
 
+  async adjustIdeogramLayout() {
+    try {
+      const wrap = await waitForElement("_ideogramOuterWrap");
+      const ideogram = await waitForElement("_ideogram");
+      const legend = await waitForElement("_ideogramLegend");
+      const gear = await waitForElement("gear");
+      const screenWidth = window.innerWidth;
+
+      wrap.style.maxWidth = "1200px";
+      ideogram.style.position = "relative";
+
+
+      if (screenWidth < 768) {
+        ideogram.style.left = "-20px";
+        gear.style.right = "20px";
+        legend.style.left = "300px";
+      } else if (screenWidth < 1024) {
+        ideogram.style.left = "-60px";
+        gear.style.right = "40px";
+        legend.style.left = "500px";
+      } else if (screenWidth <= 1212) {
+          // Narrow desktop or small laptop
+          ideogram.style.left = "-80px";
+          gear.style.right = "45px";
+          legend.style.left = "680px";
+      } else {
+        ideogram.style.left = "-95px";
+        gear.style.right = "50px";
+        legend.style.left = "738px";
+      }
+    } catch (error) {
+      console.error("Error adjusting layout: ", error);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+  }
+
   componentDidMount() {
     this.initIdeogram(this.props.gene);
   }
 
-componentDidUpdate(prevProps: Props, prevState: State) {
-  const { gene } = this.props;
+    componentDidUpdate(prevProps: Props) {
+      const { gene } = this.props;
 
-  // Log when isLoading changes
-  if (prevState.isLoading !== this.state.isLoading) {
-    console.log("isLoading changed:", this.state.isLoading);
-  }
-
-  if (prevProps.gene !== gene && typeof window.ideogram?.plotRelatedGenes === 'function') {
-        const container = document.getElementById("gene-leads-ideogram-container");
-
+      if (
+        prevProps.gene !== gene &&
+        typeof window.ideogram?.plotRelatedGenes === "function"
+      ) {
         this.setState({ isLoading: true });
 
-        if (container) {
-          container.style.display = "block"; // reset ideogram visibility
-        }
+        const container = document.getElementById("gene-leads-ideogram-container");
+        if (container) container.style.display = "block";
 
-    Promise.resolve()
-      .then(() => window.ideogram.plotRelatedGenes(gene))
-      .then((result: any) => {
-        this.setState({ isLoading: false });
-        console.log(`plotRelatedGenes result for "${gene}":`);
-      })
-      .catch((err: any) => {
-        console.warn(`Exception: Gene "${gene}" not found in Homo sapiens`, err);
-        this.setState({ isLoading: false });
-          const container = document.getElementById("gene-leads-ideogram-container");
-          if (container) {
-            container.style.display = "none";
-          }
-      });
-  }
-}
+        Promise.resolve()
+          .then(async () => {
+            await window.ideogram.plotRelatedGenes(gene);
+            await this.adjustIdeogramLayout();
 
+            const wrap = document.getElementById("_ideogramOuterWrap");
+            if (wrap) wrap.style.height = "150px";
+          })
+          .catch((err) => {
+            console.warn(`Exception: Gene "${gene}" not found`, err);
+            const container = document.getElementById("gene-leads-ideogram-container");
+            if (container) container.style.display = "none";
+          })
+          .finally(() => {
+            this.setState({ isLoading: false });
+          });
+      }
+    }
 
   initIdeogram(gene: string) {
     if (!window.Ideogram || !this.containerRef.current) return;
@@ -116,84 +176,76 @@ componentDidUpdate(prevProps: Props, prevState: State) {
 
     const config = {
       container: `#${this.containerRef.current.id}`,
+      chromosomes: [
+        "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+        "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "X", "Y"
+      ],
       organism: taxon,
       chrWidth: 9,
       chrHeight: 150,
       chrLabelSize: 12,
       annotationHeight: 7,
       showVariantInTooltip: false,
-      showGeneStructureInTooltip: showAdvanced,
-      showProteinInTooltip: showAdvanced,
-      showParalogNeighborhoods: showAdvanced,
+      showGeneStructureInTooltip: true,
+      showProteinInTooltip: true,
+      showParalogNeighborhoods: true,
+      showAnnotTooltip: true,
 
-    onClickAnnot: (annot: any) => {
-      Promise.resolve()
-        .then(() => {
-          console.log(`Clicked gene "${annot.name}"`);
-          return window.ideogram.plotRelatedGenes(annot.name);
-        })
-        .catch((err: any) => {
+      onClickAnnot: (annot: any) => {
+        window.ideogram.plotRelatedGenes(annot.name).catch((err: any) => {
           console.warn(`Click error for "${annot.name}":`, err);
         });
-    },
+      },
 
-    onLoad: () => {
-      if (!window.ideogram?.chromosomesArray?.length) return;
+      onLoad: async () => {
+        if (!window.ideogram?.chromosomesArray?.length) return;
 
-      this.setState({ isLoading: true });
+        this.setState({ isLoading: true });
 
-      const container = document.getElementById("gene-leads-ideogram-container");
-      if (container) {
-        container.style.display = "block"; // reset ideogram visibility
-      }
+        const container = document.getElementById("gene-leads-ideogram-container");
+        if (container) container.style.display = "block";
 
-      Promise.resolve()
-        .then(() => {
-          const result = window.ideogram.plotRelatedGenes(gene);
-          this.setState({ isLoading: false });
-          console.log(`onLoad plotting for "${gene}":`, result);
-          return result;
-        })
-        .catch((err: any) => {
+        try {
+          await window.ideogram.plotRelatedGenes(gene);
+          await this.adjustIdeogramLayout();
+        } catch (err) {
           console.warn(`onLoad error for "${gene}":`, err);
           this.setState({ isLoading: false });
           const container = document.getElementById("gene-leads-ideogram-container");
-          if (container) {
-            container.style.display = "none";
-          }
-        });
+          if (container) container.style.display = "none";
+        } finally {
+            this.setState({ isLoading: false });
+        }
 
-      const wrap = document.getElementById("_ideogramOuterWrap");
-      if (wrap) {
-        wrap.style.height = "150px";
-      }
-    },
+        const wrap = document.getElementById("_ideogramOuterWrap");
+        if (wrap) wrap.style.height = "150px";
+      },
     };
 
     window.ideogram = window.Ideogram.initRelatedGenes(config, genesInScope);
   }
 
-render() {
-  const { isLoading } = this.state;
+  render() {
+    const { isLoading } = this.state;
 
-  return (
-    <>
-      <style>{styleCss}</style>
-      {isLoading && (
-        <div style={styles.spinner}>Loading gene ideogram...</div>
-      )}
-      <div
-        id="gene-leads-ideogram-container"
-        className="related-genes-container"
-        style={{ ...styles.container, display: isLoading ? "none" : "block" }}
-      >
+    return (
+      <>
+        <style>{styleCss}</style>
+        {isLoading && (
+          <div style={styles.spinner}>Loading gene ideogram...</div>
+        )}
         <div
-          id="ideogram-container"
-          ref={this.containerRef}
-          style={styles.ideogram}
-        />
-      </div>
-    </>
-  );
-}
+          id="gene-leads-ideogram-container"
+          className="related-genes-container"
+          style={{ ...styles.container, display: isLoading ? "none" : "block" }}
+        >
+          <div
+            id="ideogram-container"
+            ref={this.containerRef}
+            style={styles.ideogram}
+          />
+        </div>
+      </>
+    );
+  }
 }
