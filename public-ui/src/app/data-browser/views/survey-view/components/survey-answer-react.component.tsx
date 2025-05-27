@@ -49,14 +49,25 @@ const styleCss = `
       margin-top: 1em;
       text-align: left;
     }
-    .survey-row-expanded {
-        border-left: #cccccc 1px solid;
-        border-right: #cccccc 1px solid;
-        background: #f6f6f8;
-    }
     .active-row {
-        background: #f6f6f8;
-        height: 2.5rem;
+      background: #f6f6f8;
+      min-height: 4rem; /* increase height from 2.5rem */
+      z-index: 1;
+      position: relative;
+    }
+
+    .survey-tbl-exp-r {
+      position: relative;
+      z-index: 2;
+    }
+
+    .survey-row-expanded {
+      position: relative;
+      z-index: 3; /* ensures it sits above .active-row */
+      background: #f6f6f8;
+      border-left: #cccccc 1px solid;
+      border-right: #cccccc 1px solid;
+      padding-top: 0.5rem;
     }
     .sub-table-1 .sub-question-text, .sub-table-2 .sub-question-text {
         padding-top: 1rem;
