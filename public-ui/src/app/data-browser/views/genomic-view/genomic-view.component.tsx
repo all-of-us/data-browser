@@ -152,6 +152,7 @@ interface State {
   svFilteredMetadata: SVGenomicFilters;
   filterChipsShow: boolean;
   scrollClean: boolean;
+  firstGene: string;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -293,6 +294,7 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 8),
           new SortColumnDetailsClass(false, "asc", 9)
         ),
+        firstGene: "",
       };
     }
 
@@ -499,10 +501,12 @@ export const GenomicViewComponent = withRouteData(
       }
     }
 
-    componentDidUpdate(prevProps: Props) {
+    componentDidUpdate(prevProps: Props, prevState: State) {
       if (prevProps.selectionId !== this.props.selectionId) {
         this.setState({ selectionId: this.props.selectionId });
       }
+
+      const { firstGene } = this.state;
     }
 
     componentCleanup() {
@@ -604,6 +608,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
@@ -653,6 +668,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: results.items,
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
@@ -809,6 +835,17 @@ export const GenomicViewComponent = withRouteData(
             searchResults: [...this.state.searchResults, ...results.items],
             loadingResults: false,
           });
+
+            if (results.items.length > 0) {
+              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
+              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+              if (firstGene) {
+                console.log("First gene from results:", firstGene);
+                this.setState({ firstGene });
+              }
+            }
+
+
         });
     }
 
@@ -959,6 +996,7 @@ export const GenomicViewComponent = withRouteData(
                   submittedFilterMetadata={submittedFilterMetadata}
                   sortMetadata={sortMetadata}
                   scrollClean={scrollClean}
+                  firstGene={this.state.firstGene}
                 />
               )}
               {selectionId === 2 && (
