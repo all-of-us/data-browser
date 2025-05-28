@@ -47,11 +47,8 @@ const styles = reactStyles({
 
 const styleCss = `
   #_ideogram {
-      min-width: 1150px;
       display: flex;
-  }
-  #_ideogramInnerWrap {
-    max-width: 1057px;
+      position: relative;
   }
   #ideogram-container {
     width: 100%;
@@ -60,8 +57,6 @@ const styleCss = `
   #_ideogramLegend {
     font: 0.8em;
     font-family: GothamBook, Arial, sans-serif;
-    position: relative;
-    left: 808px;
   }
   #_ideogramTooltip a {
     color: #0366d6;
@@ -87,61 +82,65 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
     };
   }
 
-  async adjustIdeogramLayout() {
-    try {
-      const wrap = await waitForElement("_ideogramOuterWrap");
-      const ideogram = await waitForElement("_ideogram");
-      const legend = await waitForElement("_ideogramLegend");
-      const gear = await waitForElement("gear");
-      const screenWidth = window.innerWidth;
+    async adjustIdeogramLayout() {
+      try {
+        const wrap = await waitForElement("_ideogramOuterWrap");
+        const innerWrap = await waitForElement("_ideogramInnerWrap");
+        const ideogram = await waitForElement("_ideogram");
+        const legend = await waitForElement("_ideogramLegend");
+        const gear = await waitForElement("gear");
 
-      wrap.style.maxWidth = "1200px";
-      ideogram.style.position = "relative";
+        const screenWidth = window.innerWidth;
+        wrap.style.maxWidth = "100%";
+        ideogram.style.position = "relative";
+        innerWrap.style.removeProperty("overflow");
 
-
-        if (screenWidth < 480) {
-          // Extra small (phones)
-          ideogram.style.left = "-10px";
-          gear.style.right = "10px";
-          legend.style.left = "250px";
-          console.log('1');
+        // Responsive adjustments based on screen width
+        if (screenWidth < 576) {
+          // Extra small (mobile)
+          ideogram.style.left = "-10%";
+          legend.style.left = "60%";
+          gear.style.right = "5%";
+          gear.style.top = "5%";
         } else if (screenWidth < 768) {
-          // Small devices (mobile landscape, small tablets)
-          ideogram.style.left = "-25px";
-          gear.style.right = "20px";
-          legend.style.left = "300px";
-          console.log('2');
+          // Small (mobile landscape, small tablets)
+          ideogram.style.left = "-12%";
+          legend.style.left = "65%";
+          gear.style.right = "8%";
+          gear.style.top = "6%";
         } else if (screenWidth < 992) {
           // Medium tablets
-          ideogram.style.left = "-50px";
-          gear.style.right = "30px";
-          legend.style.left = "450px";
-          console.log('3');
-        } else if (screenWidth < 1212) {
-          // Small desktops / laptops
-          ideogram.style.left = "-70px";
-          gear.style.right = "40px";
-          legend.style.left = "620px";
-          console.log('4');
-        } else if (screenWidth < 1440) {
-          // Regular desktops
-          ideogram.style.left = "-85px";
-          gear.style.right = "55px";
-          legend.style.left = "738px";
-          console.log('5');
+          ideogram.style.left = "-13%";
+          legend.style.left = "70%";
+          gear.style.right = "12%";
+          gear.style.top = "7%";
+        } else if (screenWidth < 1200) {
+          // Laptops
+          ideogram.style.left = "-14%";
+          legend.style.left = "68%";
+          gear.style.right = "20%";
+          gear.style.top = "8%";
+        } else if (screenWidth < 2000) {
+          // Desktops
+          ideogram.style.left = "-14%";
+          legend.style.left = "78%";
+          gear.style.right = "25%";
+          gear.style.top = "8%";
         } else {
-          // Wide screens / monitors
-          ideogram.style.left = "-35px";
-          gear.style.right = "21px";
-          legend.style.left = "736px";
-          console.log('6');
+          // Extra large screens (e.g., 2560px width and above)
+          ideogram.style.left = "-16%";
+          legend.style.left = "78%";
+          gear.style.right = "29%";
+          gear.style.top = "8%";
         }
-    } catch (error) {
-      console.error("Error adjusting layout: ", error);
-    } finally {
-      this.setState({ isLoading: false });
+
+
+      } catch (error) {
+        console.error("Error adjusting layout: ", error);
+      } finally {
+        this.setState({ isLoading: false });
+      }
     }
-  }
 
   componentDidMount() {
     this.initIdeogram(this.props.gene);
@@ -168,7 +167,7 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
         Promise.resolve()
           .then(async () => {
             await window.ideogram.plotRelatedGenes(gene);
-            // await this.adjustIdeogramLayout();
+            await this.adjustIdeogramLayout();
 
             const wrap = document.getElementById("_ideogramOuterWrap");
             if (wrap) wrap.style.height = "150px";
@@ -212,7 +211,7 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
         onClickAnnot: async (annot: any) => {
           try {
             await window.ideogram.plotRelatedGenes(annot.name);
-            // await this.adjustIdeogramLayout(); // ⬅️ Adjust layout after click
+            await this.adjustIdeogramLayout(); // ⬅️ Adjust layout after click
           } catch (err) {
             console.warn(`Click error for "${annot.name}":`, err);
           }
@@ -228,7 +227,7 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
 
         try {
           await window.ideogram.plotRelatedGenes(gene);
-          // await this.adjustIdeogramLayout();
+          await this.adjustIdeogramLayout();
         } catch (err) {
           console.warn(`onLoad error for "${gene}":`, err);
           this.setState({ isLoading: false });
