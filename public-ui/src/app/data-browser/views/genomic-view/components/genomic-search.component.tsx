@@ -52,6 +52,7 @@ interface Props {
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   scrollClean: boolean;
+  firstGene?: string;
 }
 
 interface State {
@@ -60,6 +61,7 @@ interface State {
   submittedFilterMetadata: GenomicFilters;
   sortMetadata: SortMetadata;
   filtered: boolean;
+  firstGene?: string;
 }
 
 export class GenomicSearchComponent extends React.Component<Props, State> {
@@ -73,11 +75,12 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
       sortMetadata: this.props.sortMetadata,
       submittedFilterMetadata: this.props.submittedFilterMetadata,
       filtered: false,
+      firstGene: this.props.firstGene || "",
     };
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
+    const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
     }
@@ -86,6 +89,9 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     }
     if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
       this.setState({ submittedFilterMetadata: submittedFilterMetadata });
+    }
+    if (prevProps.firstGene !== firstGene) {
+      this.setState({ firstGene: firstGene });
     }
   }
 
@@ -101,6 +107,11 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
     this.props.onRowCountChange(info);
     this.scrollDiv.current.scrollIntoView({ behavior: "smooth" });
   }
+
+  handleGeneClick = (gene: string) => {
+    console.log(gene);
+    this.setState({ firstGene: gene });
+  };
 
   handleSortClick(sortMetadata) {
     this.props.onSortClick(sortMetadata);
@@ -171,6 +182,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           submittedFilterMetadata={submittedFilterMetadata}
           onSortChange={(e) => this.handleSortClick(e)}
           scrollClean={scrollClean}
+          firstGene={this.state.firstGene}
         />
         <VariantTableComponent
           loadingResults={loadingResults}
@@ -194,6 +206,7 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
           rowCount={rowCount}
           sortMetadata={sortMetadata}
           filtered={filtered}
+          onGeneClick={this.handleGeneClick}
         />
       </React.Fragment>
     );

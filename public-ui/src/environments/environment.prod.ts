@@ -16,4 +16,5 @@ export const environment = {
   svVCFBrowser: false,
   heatmap: false,
   combinedAgeGenderChart: false,
+  geneLeads: false,
 };

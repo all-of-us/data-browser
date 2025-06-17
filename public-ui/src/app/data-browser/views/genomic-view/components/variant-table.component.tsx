@@ -143,6 +143,7 @@ interface Props {
   rowCount: number;
   sortMetadata: SortMetadata;
   filtered: boolean;
+  onGeneClick: (gene: string) => void;
 }
 
 interface State {
@@ -386,6 +387,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                         allowParentScroll: !this.state.allowParentScroll,
                       })
                     }
+                    onGeneClick={this.props.onGeneClick}
                   />
                 );
               })}
