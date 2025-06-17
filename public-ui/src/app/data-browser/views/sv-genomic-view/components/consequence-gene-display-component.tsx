@@ -112,7 +112,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
           >
             {showAll ? "Show less" : (
               <>
-                <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> Show More
+                <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> Show more
               </>
             )}
           </button>
