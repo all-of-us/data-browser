@@ -2180,6 +2180,10 @@ definitions:
       cpxType:
         description: cpx type
         type: string
+      noCallRate:
+        description: No Call Rate
+        type: number
+        format: double
       filter:
         description: filter
         type: string

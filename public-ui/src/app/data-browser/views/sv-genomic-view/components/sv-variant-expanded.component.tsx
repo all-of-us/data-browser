@@ -82,7 +82,6 @@ const styles = reactStyles({
   },
   variantExpanded: {
     position: "sticky",
-    overflowX: "scroll",
     width: "100%",
     background: "#ECF1F4",
     left: "0px",
@@ -268,7 +267,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>CPX_INTERVALS:</span>
+                    <span style={styles.catHeading}>CPX Intervals:</span>
                     <br />
                     <span style={styles.catInfo}>
                       {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
@@ -281,7 +280,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>CPX_TYPE:</span>
+                    <span style={styles.catHeading}>CPX Type:</span>
                     <br />
                     <span style={styles.catInfo}>
                       {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
@@ -290,7 +289,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>FILTER:</span>
+                    <span style={styles.catHeading}>Filter:</span>
                     <br />
                     <span style={styles.catInfo}>
                       {variantDetails.filter ? variantDetails.filter : "-"}
