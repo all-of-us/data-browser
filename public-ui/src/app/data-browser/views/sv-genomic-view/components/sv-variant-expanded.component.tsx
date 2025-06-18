@@ -267,6 +267,15 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
+                    <span style={styles.catHeading}>CPX Type:</span>
+                    <br />
+                    <span style={styles.catInfo}>
+                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
+                        ? variantDetails.cpxType || "-"
+                        : "N/A"}
+                    </span>
+                  </div>
+                  <div>
                     <span style={styles.catHeading}>CPX Intervals:</span>
                     <br />
                     <span style={styles.catInfo}>
@@ -280,12 +289,10 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>CPX Type:</span>
+                    <span style={styles.catHeading}>No-call Rate:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
-                        ? variantDetails.cpxType || "-"
-                        : "N/A"}
+                      {variantDetails.noCallRate? variantDetails.noCallRate : '-'}
                     </span>
                   </div>
                   <div>
