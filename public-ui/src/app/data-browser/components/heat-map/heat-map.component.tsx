@@ -233,8 +233,6 @@ export const HeatMapReactComponent =
                 data = data.filter(
                       (r) => r.stratum4 === this.props.selectedResult.stratum4
                 );
-
-                console.log('Filtered survey data:', data);
             }
 
             for (const item of data) {
