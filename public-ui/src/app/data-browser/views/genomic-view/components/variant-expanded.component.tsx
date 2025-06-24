@@ -73,7 +73,6 @@ const styles = reactStyles({
   },
   variantExpanded: {
     position: "sticky",
-    overflowX: "scroll",
     width: "100%",
     background: "#ECF1F4",
     left: "0px",

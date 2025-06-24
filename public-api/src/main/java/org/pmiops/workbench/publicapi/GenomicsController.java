@@ -63,7 +63,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
 
-    private static final String SV_COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.selected_sv_fields_db_with_id";
+    private static final String SV_COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed";
 
     private static final String WHERE_CONTIG = " where REGEXP_CONTAINS(contig, @contig)";
 
@@ -85,7 +85,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "variant_type, protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency, homozygote_count FROM ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String SV_VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, variant_type, consequence, position, a.size, \n" +
-            "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count FROM ${projectId}.${dataSetId}.selected_sv_fields_db_with_id a";
+            "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count FROM ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed a";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_afr_hc as afr_homozygote_count, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, gvs_eas_hc as eas_homozygote_count, " +
             "gvs_eur_ac as eur_allele_count, gvs_eur_an as eur_allele_number, gvs_eur_af as eur_allele_frequency, gvs_eur_hc as eur_homozygote_count, " +
             "gvs_amr_ac as amr_allele_count, gvs_amr_an as amr_allele_number, gvs_amr_af as amr_allele_frequency, gvs_amr_hc as amr_homozygote_count, " +
@@ -95,7 +95,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, variant_id_vcf, \n" +
-            "cpx_intervals as cpx_intervals, cpx_type as cpx_type, a.filter as filter, \n" +
+            "cpx_intervals as cpx_intervals, cpx_type as cpx_type, a.filter as filter, a.no_call_rate as no_call_rate, \n" +
             "afr_ac as afr_allele_count, afr_an as afr_allele_number, afr_af as afr_allele_frequency, afr_n_homalt as afr_homozygote_count, \n" +
             "eas_ac as eas_allele_count, eas_an as eas_allele_number, eas_af as eas_allele_frequency, eas_n_homalt as eas_homozygote_count, \n" +
             "eur_ac as eur_allele_count, eur_an as eur_allele_number, eur_af as eur_allele_frequency, eur_n_homalt as eur_homozygote_count, \n" +
@@ -103,7 +103,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "mid_ac as mid_allele_count, mid_an as mid_allele_number, mid_af as mid_allele_frequency, mid_n_homalt as mid_homozygote_count, \n" +
             "sas_ac as sas_allele_count, sas_an as sas_allele_number, sas_af as sas_allele_frequency, sas_n_homalt as sas_homozygote_count, \n" +
             "oth_ac as oth_allele_count, oth_an as oth_allele_number, oth_af as oth_allele_frequency, oth_n_homalt as oth_homozygote_count, \n" +
-            "allele_count as total_allele_count, allele_number as total_allele_number, allele_frequency as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id a \n";
+            "allele_count as total_allele_count, allele_number as total_allele_number, allele_frequency as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed a \n";
 
     private static final String FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
             "(select 'Gene' as option, genes as genes, '' as conseq, '' as variant_type, '' as clin_significance, count(*) as gene_count, " +
@@ -162,44 +162,44 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_GENE = "with a as\n" +
             "(select distinct 'Gene' as option, genes as genes, '' as variant_type, '' as consequence, \n" +
             "0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id tj, \n" +
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed tj, \n" +
             " unnest(split(genes, ', ')) gene\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE = " group by genes),\n" +
             "b as \n" +
             "(select distinct 'Variant Type' as option, '' as genes, variant_type as variant_type, '' as consequence, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_CON = " group by variant_type), \n" +
             "c as\n" +
             "(select distinct 'Consequence' as option, '' as genes, '' as variant_type, con as consequence,\n" +
             "0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id tj, \n" +
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed tj, \n" +
             " unnest(split(consequence, ', ')) con\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_SIZE = " group by con),\n" +
             "e as \n" +
             "(select distinct 'Size' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(size) as min_count, max(size) as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed\n";
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_COUNT = "),\n" +
             "f as \n" +
             "(select distinct 'Allele Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_count) as min_count, max(allele_count) as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed\n";
 
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER = "),\n" +
             "g as \n" +
             "(select distinct 'Allele Number' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(allele_number) as min_count, max(allele_number) as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed\n";
 
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT = "),\n" +
             "h as \n" +
             "(select distinct 'Homozygote Count' as option, '' as genes, '' as variant_type, '' as consequence, \n" +
             "min(homozygote_count) as min_count, max(homozygote_count) as max_count\n" +
-            "from ${projectId}.${dataSetId}.selected_sv_fields_db_with_id\n";
+            "from ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed\n";
     private static final String SV_FILTER_OPTION_SQL_TEMPLATE_UNION = ")\n" +
             "select * from a \n" +
             "union all \n" +
@@ -1685,6 +1685,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .size(bigQueryService.getLong(row, rm.get("size")))
                 .cpxIntervals(bigQueryService.getString(row, rm.get("cpx_intervals")))
                 .cpxType(bigQueryService.getString(row, rm.get("cpx_type")))
+                .noCallRate(bigQueryService.getDouble(row, rm.get("no_call_rate")))
                 .filter(bigQueryService.getString(row, rm.get("filter")))
                 .afrAlleleCount(bigQueryService.getLong(row, rm.get("afr_allele_count")))
                 .afrAlleleNumber(bigQueryService.getLong(row, rm.get("afr_allele_number")))
