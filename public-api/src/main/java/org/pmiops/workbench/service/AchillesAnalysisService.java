@@ -333,9 +333,6 @@ public class AchillesAnalysisService {
                     addLocationStratum(aa, 2, conceptId, null);
                     conceptAnalysis.setLocationAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.AGE_GENDER_COMBINED_ANALYSIS_ID))) {
-                    System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
-                    System.out.println("Am i here at all ?");
-                    System.out.println("*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&*&");
                     addAgeGenderStratum(aa, conceptId, null);
                     conceptAnalysis.setCombinedAgeGenderAnalysis(aa);
                 } else if (analysisId.equals(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.MEASUREMENT_GENDER_ANALYSIS_ID))) {
@@ -947,8 +944,6 @@ public class AchillesAnalysisService {
         Multimap<String, AchillesResult> participantCountAnalysisResultsByQuestion = Multimaps.index(
                 analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_PARTICIPANT_COUNT_ANALYSIS_ID)).getResults(), AchillesResult::getStratum2);
 
-        System.out.println("Here ?????");
-
         for(SurveyMetadata q: questions) {
             Analysis countAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COUNT_ANALYSIS_ID));
             if (countAnalysis != null) {
@@ -973,9 +968,7 @@ public class AchillesAnalysisService {
             }
 
             Analysis combinedAgeSexAnalysis = analysisMap.get(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.SURVEY_COMBINED_AGE_SEX_ANALYSIS_ID));
-            System.out.println("Am i here ????? Test");
             if (combinedAgeSexAnalysis != null) {
-                System.out.println("Am i here ????? Test");
                 Analysis aa = achillesMapper.makeCopyAnalysis(combinedAgeSexAnalysis);
                 aa.setResults(new ArrayList<>(
                         combinedAgeSexAnalysisResultsByQuestion.get(String.valueOf(q.getConceptId()))));

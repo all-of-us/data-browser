@@ -6,6 +6,7 @@ import { SurveyAnswerChartReactComponent } from "app/data-browser/charts/chart-s
 import {
   AGE_STRATUM_MAP,
   GENDER_STRATUM_MAP,
+  LOCATION_STRATUM_MAP,
 } from "app/data-browser/charts/react-base-chart/base-chart.service";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { SurveyChartReactComponent } from "app/data-browser/views/survey-chart/survey-chart-react.component";
@@ -227,11 +228,20 @@ const SurveyAnswerRowComponent = class extends React.Component<
         )
       );
     }
+    if (q.locationAnalysis) {
+        this.addMissingAnalysisResults(
+          q.locationAnalysis,
+          q.locationAnalysis.results.filter(
+            (r) => r.stratum3 !== null && r.stratum3 === a.stratum3
+          )
+        );
+    }
   }
 
     public addMissingAnalysisResults(analysis: any, results: any) {
       const fullGenderStratums = ["8507", "8532", "0"];
       const fullAgeStratums = ["2", "3", "4", "5", "6", "7", "8", "9"];
+      const fullLocationStratums = Object.keys(LOCATION_STRATUM_MAP);
 
       const uniquePairs = new Set<string>();
 
@@ -239,6 +249,11 @@ const SurveyAnswerRowComponent = class extends React.Component<
         if (analysis.analysisId === 3115) {
           const key = `${result.stratum5}|${result.stratum6}`;
           uniquePairs.add(key);
+        } else if (analysis.analysisId === 3118) {
+          const strat = result.stratum5;
+          if (!uniquePairs.has(strat)) {
+            uniquePairs.add(strat);
+          }
         } else {
           const strat = result.stratum5;
           if (!uniquePairs.has(strat)) {
@@ -269,6 +284,26 @@ const SurveyAnswerRowComponent = class extends React.Component<
             }
           }
         }
+      } else if (analysis.analysisId === 3118) {
+            for (const location of fullLocationStratums) {
+              if (!uniquePairs.has(location) && results.length > 0) {
+                const base = results[0];
+                const missingResult = {
+                  analysisId: 3118,
+                  countValue: 20,
+                  countPercent: countPercentage(20, this.props.countValue),
+                  stratum1: base.stratum1,
+                  stratum2: base.stratum2,
+                  stratum3: base.stratum3,
+                  stratum4: base.stratum4,
+                  stratum5: location,
+                  stratum6: base.stratum6,
+                  stratum7: base.stratum7,
+                  analysisStratumName: LOCATION_STRATUM_MAP[location],
+                };
+                analysis.results.push(missingResult);
+              }
+            }
       } else {
         const fullStratums =
           analysis.analysisId === 3111 ? fullGenderStratums : fullAgeStratums;
