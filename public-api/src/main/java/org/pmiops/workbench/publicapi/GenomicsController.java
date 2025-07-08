@@ -58,7 +58,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
     private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
 
-    private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{4}";
+    private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{2}";
 
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";

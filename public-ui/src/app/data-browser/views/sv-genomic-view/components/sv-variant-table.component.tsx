@@ -413,10 +413,10 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                 <div style={styles.helpText}>
                   <strong>Variant:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("1-23409220-0000")}
+                    onClick={() => this.searchItem("1-23409220-00")}
                     style={styles.helpSearchDiv}
                   >
-                    1-23409220-0000
+                    1-23409220-00
                   </div>
                 </div>
                 <div style={styles.helpText}>

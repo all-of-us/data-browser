@@ -62,6 +62,9 @@ const styleCss = `
     color: #0366d6;
     text-decoration: underline;
   }
+  #_ideogram .chromosome {
+    fill: #dae6ed !important;
+  }
 `;
 
 interface Props {

@@ -73,7 +73,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
       let tempStr = "";
       for (let i = 0; i < firstEntry[1].length; i++) {
         const nextGene = (i === 0 ? "" : ", ") + firstEntry[1][i];
-        if (tempStr.length + nextGene.length > 45) {
+        if (tempStr.length + nextGene.length > 50) {
           shouldTruncate = true;
           break;
         }
@@ -104,7 +104,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
             ))}
         </div>
 
-        {consequenceEntries.length > 1 && (
+        {(consequenceEntries.length > 1 || shouldTruncate) && (
           <button
             type="button"
             onClick={this.toggleShowAll}
