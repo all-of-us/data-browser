@@ -256,7 +256,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Position:</span>
                     <br />
                     <span style={styles.catInfo}>
-                    {variant.position ? `chr${variant.position}` : "-"}
+                    {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
                     </span>
                     </div>
                   <div>
