@@ -221,7 +221,7 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
           <div style={styles.searchHelpText}>
             Examples by query type: <br></br>
             <strong>Gene:</strong> BRCA2 <br></br>
-            <strong>Variant:</strong> 1-23409220-0000 <br></br>
+            <strong>Variant:</strong> 1-23409220-00 <br></br>
             <strong>Genomic Region:</strong> chr13:32355000-42375000
           </div>
         </div>
