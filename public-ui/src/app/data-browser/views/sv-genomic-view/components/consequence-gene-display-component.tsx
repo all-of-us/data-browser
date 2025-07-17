@@ -29,8 +29,8 @@ const css = `
     color: #007bff;
     cursor: pointer;
     font-size: 13px;
-    display: inline-block;
-    margin-top: 4px;
+    display: inline;
+    margin-left: 6px;
   }
 `;
 
@@ -46,78 +46,87 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
     this.setState((prev) => ({ showAll: !prev.showAll }));
   };
 
-  render() {
-    const { consequenceString } = this.props;
-    const { showAll } = this.state;
+render() {
+  const { consequenceString } = this.props;
+  const { showAll } = this.state;
 
-    if (consequenceString === "-" || !consequenceString.trim()) {
-      return <div className="consequence-wrapper">-</div>;
+  if (consequenceString === "-" || !consequenceString.trim()) {
+    return <div className="consequence-wrapper">-</div>;
+  }
+
+  const consequenceMap: Record<string, string[]> = {};
+  consequenceString.split(";").forEach((line) => {
+    const [label, geneStr] = line.split(" - ");
+    if (label && geneStr) {
+      consequenceMap[label.trim()] = geneStr.split(",").map((g) => g.trim());
     }
+  });
 
-    const consequenceMap: Record<string, string[]> = {};
-    consequenceString.split(";").forEach((line) => {
-      const [label, geneStr] = line.split(" - ");
-      if (label && geneStr) {
-        consequenceMap[label.trim()] = geneStr.split(",").map((g) => g.trim());
+  const consequenceEntries = Object.entries(consequenceMap);
+  const firstEntry = consequenceEntries[0];
+  const restEntries = consequenceEntries.slice(1);
+
+  let truncatedGeneStr = "";
+  let shouldTruncate = false;
+
+  if (firstEntry) {
+    let tempStr = "";
+    for (let i = 0; i < firstEntry[1].length; i++) {
+      const nextGene = (i === 0 ? "" : ", ") + firstEntry[1][i];
+      if (tempStr.length + nextGene.length > 50) {
+        shouldTruncate = true;
+        break;
       }
-    });
-
-    const consequenceEntries = Object.entries(consequenceMap);
-    const firstEntry = consequenceEntries[0];
-    const restEntries = consequenceEntries.slice(1);
-
-    let truncatedGeneStr = "";
-    let shouldTruncate = false;
-
-    if (firstEntry) {
-      let tempStr = "";
-      for (let i = 0; i < firstEntry[1].length; i++) {
-        const nextGene = (i === 0 ? "" : ", ") + firstEntry[1][i];
-        if (tempStr.length + nextGene.length > 50) {
-          shouldTruncate = true;
-          break;
-        }
-        tempStr += nextGene;
-      }
-      truncatedGeneStr = shouldTruncate ? tempStr + " ..." : tempStr;
+      tempStr += nextGene;
     }
+    truncatedGeneStr = shouldTruncate ? tempStr.trim() : tempStr;
+  }
 
-    return (
-      <div className="consequence-wrapper">
-        <style>{css}</style>
+  return (
+    <div className="consequence-wrapper">
+      <style>{css}</style>
 
-        <span className="consequence-heading">Predicted Consequence(s):</span>
-        <br />
-        <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
-          {firstEntry && (
-            <div className="consequence-item">
-              <i>{firstEntry[0]}:</i>{" "}
+      <span className="consequence-heading">Predicted Consequence(s):</span>
+      <br />
+      <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
+        {firstEntry && (
+          <div className="consequence-item">
+            <i>{firstEntry[0]}:</i>{" "}
+            <span style={{ display: "inline" }}>
               {showAll ? firstEntry[1].join(", ") : truncatedGeneStr}
+              {!showAll && (shouldTruncate || consequenceEntries.length > 1) && (
+                <button
+                  type="button"
+                  onClick={this.toggleShowAll}
+                  className="consequence-toggle"
+                >
+                  <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> Show more
+                </button>
+              )}
+            </span>
+          </div>
+        )}
+
+        {showAll &&
+          restEntries.map(([label, genes], idx) => (
+            <div key={idx} className="consequence-item">
+              <i>{label}:</i> {genes.join(", ")}
             </div>
-          )}
+          ))}
 
-          {showAll &&
-            restEntries.map(([label, genes], idx) => (
-              <div key={idx} className="consequence-item">
-                <i>{label}:</i> {genes.join(", ")}
-              </div>
-            ))}
-        </div>
-
-        {(consequenceEntries.length > 1 || shouldTruncate) && (
-          <button
-            type="button"
-            onClick={this.toggleShowAll}
-            className="consequence-toggle"
-          >
-            {showAll ? "Show less" : (
-              <>
-                <ClrIcon shape="ellipsis-horizontal" style={{ color: "#2691D0" }} /> Show more
-              </>
-            )}
-          </button>
+        {showAll && (shouldTruncate || consequenceEntries.length > 1) && (
+          <div style={{ marginTop: "4px" }}>
+            <button
+              type="button"
+              onClick={this.toggleShowAll}
+              className="consequence-toggle"
+            >
+              Show less
+            </button>
+          </div>
         )}
       </div>
-    );
-  }
+    </div>
+  );
+}
 }
