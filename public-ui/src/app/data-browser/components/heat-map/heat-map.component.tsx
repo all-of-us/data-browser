@@ -11,7 +11,8 @@ HighchartsMap(Highcharts);
 interface Props {
     locationAnalysis: any,
     selectedResult: any,
-    domain: string
+    domain: string,
+    color: any,
 }
 interface State {
 
@@ -64,7 +65,14 @@ export const HeatMapReactComponent =
             GU_KEYS: ['gu-3605']
         };
 
-        options = {
+        getHoverColor = () => {
+            if (typeof this.props.color === 'string') {
+                return this.props.color;
+            }
+            return this.props.color?.hover || '#a27bd7'; // Fallback to original color if not provided
+        }
+
+        getOptions = () => ({
             chart: {
                 map: mapData,
                 panning: false,
@@ -74,9 +82,9 @@ export const HeatMapReactComponent =
             },
             colorAxis: {
                 stops: [
-                    [0, '#d0eafc'],  // Low value color 
-                    [0.5, '#006699'],  // mid value color 
-                    [1, '#262262']  // High value color 
+                    [0, '#d0eafc'],  // Low value color
+                    [0.5, '#006699'],  // mid value color
+                    [1, '#262262']  // High value color
                 ]
             },
             tooltip: {
@@ -99,7 +107,7 @@ export const HeatMapReactComponent =
                 series: {
                     states: {
                         hover: {
-                            enabled: false  // We'll do it manually 
+                            enabled: false  // We'll do it manually
                         },
                         inactive: {
                             enabled: false, // Disable the inactive state globally
@@ -114,8 +122,9 @@ export const HeatMapReactComponent =
                                     // If it is, save the original color
                                     this.originalColor = this.color;
                                 } else {
-                                    // If it's not, change the color to the default hover color
-                                    this.update({ borderWidth: undefined, borderColor: undefined, color: '#a27bd7' }, false);
+                                    // If it's not, change the color to the hover color from props
+                                    const hoverColor = (this.series.chart as any).hoverColor || '#a27bd7';
+                                    this.update({ borderWidth: undefined, borderColor: undefined, color: hoverColor }, false);
                                     this.series.chart.redraw();
                                 }
                             },
@@ -145,7 +154,7 @@ export const HeatMapReactComponent =
                 borderWidth: .1,
                 states: {
                     hover: {
-                        color: '#a27bd7'
+                        color: this.getHoverColor()
                     },
                     inactive: {
                         enabled: false, // Disable the inactive state
@@ -158,61 +167,85 @@ export const HeatMapReactComponent =
 
             },
             ]
-        }
+        })
 
 
         componentDidMount() {
-            // Save a reference to the Highcharts chart object
+            this.setupEventListeners();
+        }
+
+        componentDidUpdate(prevProps) {
+            if (prevProps.color !== this.props.color) {
+                const chartObj = this.chartRef.current?.chart;
+                if (chartObj) {
+                    (chartObj as any).hoverColor = this.getHoverColor();
+
+                    if (chartObj.series && chartObj.series[0]) {
+                        (chartObj.series[0] as any).update({
+                            states: {
+                                hover: {
+                                    color: this.getHoverColor()
+                                },
+                                inactive: {
+                                    enabled: false
+                                }
+                            }
+                        } as any);
+                    }
+                }
+            }
+        }
+
+        setupEventListeners() {
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
 
+            (chartObj as any).hoverColor = this.getHoverColor();
+
             const chartContainer = chartObj.container;
 
-            // For each group in keyGroups...
             Object.keys(HeatMapReactComponent.keyGroups).forEach(groupName => {
                 const hcKeys = HeatMapReactComponent.keyGroups[groupName]; // e.g. ['vi-6398','vi-6399','vi-3617']
 
                 hcKeys.forEach(hcKey => {
-                    // Build a CSS selector. The "Highcharts map" paths typically have "highcharts-key-<hc-key>" as a class.
-                    // e.g. "path.highcharts-key-vi-6398"
-                    // We'll use this to find the paths in the DOM
                     const selector = `path.highcharts-key-${hcKey}`;
                     const foundPaths = chartContainer.querySelectorAll(selector);
 
                     foundPaths.forEach(pathEl => {
-                        // Add to our store
                         this.domPathsByGroup[groupName].push(pathEl);
 
-                        // Attach listeners. We'll use the same handler for all in this group:
                         pathEl.addEventListener('mouseenter', () => this.handleMouseEnterGroup(groupName));
                         pathEl.addEventListener('mouseleave', () => this.handleMouseLeaveGroup(groupName));
                     });
                 });
             });
-
         }
         componentWillUnmount() {
-            // Loop over all groups
+            this.cleanupEventListeners();
+        }
+
+        cleanupEventListeners() {
             Object.keys(this.domPathsByGroup).forEach(groupName => {
                 const paths = this.domPathsByGroup[groupName];
                 paths.forEach(pathEl => {
-                    // Easiest is to replace them with clones that have no listeners:
-                    pathEl.replaceWith(pathEl.cloneNode(true));
+                    if (pathEl.parentNode) {
+                        pathEl.replaceWith(pathEl.cloneNode(true));
+                    }
                 });
+                this.domPathsByGroup[groupName] = [];
             });
         }
-        
+
         handleMouseEnterGroup(groupName) {
-            // Loop over all paths in the group and change their color
             const pathsInGroup = this.domPathsByGroup[groupName];
+            const hoverColor = this.getHoverColor();
             pathsInGroup.forEach(pathEl => {
-                pathEl.style.fill = '#a27bd7';
+                pathEl.style.fill = hoverColor;
             });
         }
         handleMouseLeaveGroup(groupName) {
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
-                // Reset to original or any color you wish
                 pathEl.style.fill = HeatMapReactComponent.originalColor;
             });
         }
@@ -220,7 +253,7 @@ export const HeatMapReactComponent =
 
         formatLocationData(data, domain) {
             const output: any[] = [];
-      
+
             const keyGroups = {
                 'us-vi': { keys: HeatMapReactComponent.keyGroups.VI_KEYS, name: 'U.S. Virgin Islands' },
                 'us-mp': { keys: HeatMapReactComponent.keyGroups.NMI_KEYS, name: 'Northern Mariana Islands' },
@@ -247,7 +280,6 @@ export const HeatMapReactComponent =
                         });
                     });
                 } else {
-                    // Normal flow for all other stratum2 codes
                     output.push([state, item.countValue]);
                 }
             }
@@ -261,7 +293,6 @@ export const HeatMapReactComponent =
                 }
             });
 
-            // Now redraw once after updating all points
             series.chart.redraw();
         }
 
@@ -272,9 +303,10 @@ export const HeatMapReactComponent =
                 <style>{style}</style>
                 <div>
                     <HighchartsReact
+                        key={this.getHoverColor()} // Force re-render when color changes
                         style={{ height: "50rem" }}
                         highcharts={Highcharts}
-                        options={this.options}
+                        options={this.getOptions()}
                         constructorType={'mapChart'}
                         ref={this.chartRef}
                     />
@@ -283,5 +315,3 @@ export const HeatMapReactComponent =
             );
         }
     }
-
-

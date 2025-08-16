@@ -139,7 +139,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
 
       chartOptions.series = [
         { name: "Male", data: maleSeries, color: "#1F78B4" },
-        { name: "Female", data: femaleSeries, color: "#A27BD7" },
+        { name: "Female", data: femaleSeries, color: this.props.color },
         { name: "Other", data: otherSeries, color: "#B2AEAD" },
       ];
 
@@ -265,10 +265,6 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       <div style={styles.chartContainer}>
         <div style={styles.legendLayout}>
           <h3 style={styles.chartTitle}>{title}</h3>
-          <div style={styles.legend}>
-            <FontAwesomeIcon icon={faCircle} style={{ color: color }} />
-            <span style={styles.legendItem}>{legendText}</span>
-          </div>
         </div>
         {options && (
           <HighchartsReact

@@ -304,62 +304,8 @@ export const FitbitReactComponent = withRouteData(
                 </div>
                 <div className="fm-body" style={styles.fmBody}>
                   <h2 style={styles.selectedDisplayH}>{selectedDisplay} </h2>
-                  <div className="fm-body-top" style={styles.fmBodyTop}>
-                    <div className="fm-chart" style={styles.fmChart}>
-                      <div
-                        className="display-body"
-                        style={styles.chartDisplayBody}
-                      >
-                        Participants over time
-                      </div>
-                      {selectedAnalyses && totalCountAnalysis && (
-                        <ChartFitbitReactComponent
-                          concepts={selectedAnalyses.participantCountAnalysis}
-                          countAnalysis={totalCountAnalysis}
-                        />
-                      )}
-                    </div>
-                    <div className="fm-chart" style={styles.fmChart}>
-                      <div
-                        className="display-body"
-                        style={styles.chartDisplayBody}
-                      >
-                        Sex
-                      </div>
-                      {selectedAnalyses &&
-                        totalCountAnalysis &&
-                        domainCountAnalysis && (
-                          <BioSexChartReactComponent
-                            genderAnalysis={selectedAnalyses.genderAnalysis}
-                            genderCountAnalysis={
-                              domainCountAnalysis.genderCountAnalysis
-                            }
-                            domain="fitbit"
-                            selectedResult={selectedResult}
-                          />
-                        )}
-                    </div>
-                  </div>
+
                   <div className="fm-body-bottom" style={styles.fmBodyBottom}>
-                    <div className="fm-chart" style={styles.fmBottomChart}>
-                      <div
-                        className="display-body"
-                        style={styles.chartDisplayBody}
-                      >
-                        Age at data collection
-                      </div>
-                      {selectedAnalyses && domainCountAnalysis && (
-                        <AgeChartReactComponent
-                          ageAnalysis={selectedAnalyses.ageAnalysis}
-                          ageCountAnalysis={
-                            domainCountAnalysis.ageCountAnalysis
-                          }
-                          domain="fitbit"
-                          selectedResult={selectedResult}
-                        />
-                      )}
-                    </div>
-                    {environment.combinedAgeGenderChart && (
                       <div className="fm-chart" style={styles.fmBottomChart}>
                         <div className="display-body" style={styles.chartDisplayBody}>
                           Age + Sex
@@ -372,20 +318,18 @@ export const FitbitReactComponent = withRouteData(
                           />
                         )}
                       </div>
-                    )}
-                    {environment.heatmap && (
                     <div className="fm-chart" style={styles.fmBottomChart}>
                       <div className="display-body" style={styles.chartDisplayBody}>
-                        Location of data collection
+                        Location
                       </div>
                       {selectedAnalyses && selectedAnalyses.locationAnalysis && (
                         <HeatMapReactComponent
                           locationAnalysis={selectedAnalyses?.locationAnalysis}
                           domain="fitbit"
-                          selectedResult = "" />
+                          selectedResult = ""
+                          color = "" />
                       )}
                     </div>
-                    )}
                   </div>
                 </div>
               </div>

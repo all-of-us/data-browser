@@ -133,7 +133,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       case GraphType.ageGenderStacked:
         selectedAnalysis = question.combinedAgeSexAnalysis;
         break;
-      case GraphType.map:
+      case GraphType.location:
         selectedAnalysis = question.locationAnalysis;
         break;
       default:
@@ -280,6 +280,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               selectedResult={selectedResult}
               locationAnalysis={selectedChartAnalysis}
               domain={"survey"}
+              color = ""
             />
           </div>
         ) : isLoaded && selectedChartAnalysis.analysisId === 3115 ? (
