@@ -25,6 +25,12 @@ const style = `
 }
 `
 
+const getHoverColor = (color: any) => {
+    if (typeof color === 'string' && color) {
+        return color;
+    }
+    return color?.hover || '#a27bd7'; // Fallback to #a27bd7 if color is empty or not provided
+}
 
 export const HeatMapReactComponent =
     class extends React.Component<Props, State> {
@@ -65,14 +71,7 @@ export const HeatMapReactComponent =
             GU_KEYS: ['gu-3605']
         };
 
-        getHoverColor = () => {
-            if (typeof this.props.color === 'string') {
-                return this.props.color;
-            }
-            return this.props.color?.hover || '#a27bd7'; // Fallback to original color if not provided
-        }
-
-        getOptions = () => ({
+        options = {
             chart: {
                 map: mapData,
                 panning: false,
@@ -122,9 +121,8 @@ export const HeatMapReactComponent =
                                     // If it is, save the original color
                                     this.originalColor = this.color;
                                 } else {
-                                    // If it's not, change the color to the hover color from props
-                                    const hoverColor = (this.series.chart as any).hoverColor || '#a27bd7';
-                                    this.update({ borderWidth: undefined, borderColor: undefined, color: hoverColor }, false);
+                                    // If it's not, change the color to the color from props
+                                    this.update({ borderWidth: undefined, borderColor: undefined, color: getHoverColor(this.series.chart.userOptions.hoverColor) }, false);
                                     this.series.chart.redraw();
                                 }
                             },
@@ -154,7 +152,7 @@ export const HeatMapReactComponent =
                 borderWidth: .1,
                 states: {
                     hover: {
-                        color: this.getHoverColor()
+                        color: getHoverColor(this.props.color)
                     },
                     inactive: {
                         enabled: false, // Disable the inactive state
@@ -166,54 +164,78 @@ export const HeatMapReactComponent =
                 },
 
             },
-            ]
-        })
+            ],
+            hoverColor: this.props.color
+        }
 
 
         componentDidMount() {
-            this.setupEventListeners();
+            // Save a reference to the Highcharts chart object
+            const chartObj = this.chartRef.current?.chart;
+            if (!chartObj) return;
+
+            // Wait for chart to be fully rendered
+            setTimeout(() => {
+                this.applyTerritoryColors();
+                this.setupEventListeners();
+            }, 100);
         }
 
-        componentDidUpdate(prevProps) {
-            if (prevProps.color !== this.props.color) {
-                const chartObj = this.chartRef.current?.chart;
-                if (chartObj) {
-                    (chartObj as any).hoverColor = this.getHoverColor();
+        applyTerritoryColors() {
+            const chartObj = this.chartRef.current?.chart;
+            if (!chartObj || !chartObj.series || !chartObj.series[0]) return;
 
-                    if (chartObj.series && chartObj.series[0]) {
-                        (chartObj.series[0] as any).update({
-                            states: {
-                                hover: {
-                                    color: this.getHoverColor()
-                                },
-                                inactive: {
-                                    enabled: false
-                                }
-                            }
-                        } as any);
+            const series = chartObj.series[0];
+            const colorAxis = (chartObj as any).colorAxis?.[0];
+
+            if (!colorAxis) return;
+
+            // Apply colors to territories based on their data values
+            Object.keys(HeatMapReactComponent.keyGroups).forEach(groupName => {
+                const hcKeys = HeatMapReactComponent.keyGroups[groupName];
+
+                hcKeys.forEach(hcKey => {
+                    // Find the data point for this territory
+                    const dataPoint = series.data.find(point => point['hc-key'] === hcKey);
+                    if (dataPoint && dataPoint.value !== undefined) {
+                        // Get the color from the color axis
+                        const color = colorAxis.toColor(dataPoint.value, dataPoint);
+
+                        // Apply color to the DOM element
+                        const selector = `path.highcharts-key-${hcKey}`;
+                        const pathElement = chartObj.container.querySelector(selector);
+                        if (pathElement) {
+                            (pathElement as HTMLElement).style.fill = color;
+                            // Store original color for hover restoration
+                            (pathElement as any).dataset.originalColor = color;
+                        }
                     }
-                }
-            }
+                });
+            });
         }
 
         setupEventListeners() {
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
 
-            (chartObj as any).hoverColor = this.getHoverColor();
-
             const chartContainer = chartObj.container;
 
+            // For each group in keyGroups...
             Object.keys(HeatMapReactComponent.keyGroups).forEach(groupName => {
                 const hcKeys = HeatMapReactComponent.keyGroups[groupName]; // e.g. ['vi-6398','vi-6399','vi-3617']
 
                 hcKeys.forEach(hcKey => {
+                    // Build a CSS selector. The "Highcharts map" paths typically have "highcharts-key-<hc-key>" as a class.
+                    // e.g. "path.highcharts-key-vi-6398"
+                    // We'll use this to find the paths in the DOM
                     const selector = `path.highcharts-key-${hcKey}`;
                     const foundPaths = chartContainer.querySelectorAll(selector);
 
                     foundPaths.forEach(pathEl => {
+                        // Add to our store
                         this.domPathsByGroup[groupName].push(pathEl);
 
+                        // Attach listeners. We'll use the same handler for all in this group:
                         pathEl.addEventListener('mouseenter', () => this.handleMouseEnterGroup(groupName));
                         pathEl.addEventListener('mouseleave', () => this.handleMouseLeaveGroup(groupName));
                     });
@@ -221,32 +243,36 @@ export const HeatMapReactComponent =
             });
         }
         componentWillUnmount() {
-            this.cleanupEventListeners();
-        }
-
-        cleanupEventListeners() {
+            // Loop over all groups
             Object.keys(this.domPathsByGroup).forEach(groupName => {
                 const paths = this.domPathsByGroup[groupName];
                 paths.forEach(pathEl => {
-                    if (pathEl.parentNode) {
-                        pathEl.replaceWith(pathEl.cloneNode(true));
-                    }
+                    // Easiest is to replace them with clones that have no listeners:
+                    pathEl.replaceWith(pathEl.cloneNode(true));
                 });
-                this.domPathsByGroup[groupName] = [];
             });
         }
 
         handleMouseEnterGroup(groupName) {
+            // Loop over all paths in the group and change their color
             const pathsInGroup = this.domPathsByGroup[groupName];
-            const hoverColor = this.getHoverColor();
             pathsInGroup.forEach(pathEl => {
-                pathEl.style.fill = hoverColor;
+                // Store current color if not already stored
+                if (!(pathEl as any).dataset.originalColor) {
+                    (pathEl as any).dataset.originalColor = (pathEl as HTMLElement).style.fill || getComputedStyle(pathEl as HTMLElement).fill;
+                }
+                (pathEl as HTMLElement).style.fill = getHoverColor(this.props.color);
             });
         }
         handleMouseLeaveGroup(groupName) {
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
-                pathEl.style.fill = HeatMapReactComponent.originalColor;
+                // Restore original color
+                if ((pathEl as any).dataset.originalColor) {
+                    (pathEl as HTMLElement).style.fill = (pathEl as any).dataset.originalColor;
+                } else {
+                    (pathEl as HTMLElement).style.fill = '';
+                }
             });
         }
 
@@ -280,6 +306,7 @@ export const HeatMapReactComponent =
                         });
                     });
                 } else {
+                    // Normal flow for all other stratum2 codes
                     output.push([state, item.countValue]);
                 }
             }
@@ -293,6 +320,7 @@ export const HeatMapReactComponent =
                 }
             });
 
+            // Now redraw once after updating all points
             series.chart.redraw();
         }
 
@@ -303,10 +331,9 @@ export const HeatMapReactComponent =
                 <style>{style}</style>
                 <div>
                     <HighchartsReact
-                        key={this.getHoverColor()} // Force re-render when color changes
                         style={{ height: "50rem" }}
                         highcharts={Highcharts}
-                        options={this.getOptions()}
+                        options={this.options}
                         constructorType={'mapChart'}
                         ref={this.chartRef}
                     />
