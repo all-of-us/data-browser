@@ -158,13 +158,11 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     this.state = {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
-          ? ["Values", "Sex", "Age", "Sources", ...(environment.heatmap ? ["Map"] : []),  ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : [])]
+          ? ["Values", "Age + Sex", "Location", "Sources"]
           : [
-            "Sex",
-            "Age",
+            "Age + Sex",
+            "Location",
             "Sources",
-            ...(environment.heatmap ? ["Map"] : []),
-            ...(environment.combinedAgeGenderChart ? ["Age + Sex"] : []),
           ],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
@@ -298,7 +296,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
         measurementGenderCountAnalysis =
           conceptAnalyses.measurementGenderCountAnalysis;
         break;
-      case GraphType.map:
+      case GraphType.location:
         selectedAnalysis = conceptAnalyses.locationAnalysis;
         break;
       case GraphType.ageGenderStacked:
@@ -587,12 +585,13 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   selectedResult=""
                 />
               </div>
-            ) : graphToShow === "Map" ? (
+            ) : graphToShow === "Location" ? (
               <div className="chart" key="map-chart">
                 <HeatMapReactComponent
                   locationAnalysis={selectedChartAnalysis}
                   domain={"ehr"}
-                  selectedResult = "" />
+                  selectedResult = ""
+                  color = "" />
               </div>
             ) : graphToShow === "Age + Sex" ? (
               <div className="chart" key="age-gender-stacked-chart">

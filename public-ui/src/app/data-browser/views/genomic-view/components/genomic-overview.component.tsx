@@ -23,7 +23,7 @@ input[type='radio']{
 }
 input:focus{
   outline:none;
-  
+
 }
 input[type='radio']:before {
   content: '';
@@ -355,39 +355,22 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
                 selectedGenotype={selectedGenotype}
                 color={color}
               />
-              <GenomicChartComponent
-                counts={participantCounts[0]}
-                title="Sex"
-                data={sexAtBirthData}
-                selectedGenotype={selectedGenotype}
-                color={color}
-              />
-              <GenomicChartComponent
-                counts={participantCounts[0]}
-                title="Current age"
-                data={currentAgeData}
-                selectedGenotype={selectedGenotype}
-                color={color}
-              />
-              {environment.combinedAgeGenderChart && (
                   <GenomicChartComponent
                     counts={participantCounts[0]}
-                    title="Combined age + sex"
+                    title="Age + Sex"
                     data={combinedAgeSexData}
                     selectedGenotype={selectedGenotype}
                     color={color}
                   />
-              )}
-              {environment.heatmap && (
               <div style={styles.chartContainer}>
-                <h3 style={styles.chartTitle}>Genomic Variant Locations</h3>
+                <h3 style={styles.chartTitle}>Location</h3>
                 <HeatMapReactComponent
                   locationAnalysis={locationData}
                   domain="genomic"
                   selectedResult = ""
+                  color={color}
                 />
               </div>
-              )}
             </React.Fragment>
           )}
         </div>

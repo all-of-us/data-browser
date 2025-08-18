@@ -8,7 +8,7 @@ export enum GraphType {
   Sources = "Sources",
   Values = "Values",
   None = "",
-  map = "Map",
+  location = "Location",
   ageGenderStacked = "Age + Sex",
 }
 
