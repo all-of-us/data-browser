@@ -175,7 +175,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       graphToShow:
         props.domain.name.toLowerCase() === "labs & measurements"
           ? GraphType.Values
-          : GraphType.BiologicalSex,
+          : "Age + Sex",
       showCopyAlert: false,
       selectedConcept: this.props.selectedConcept,
     };
@@ -213,7 +213,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
           graphToShow:
             name.toLowerCase() === "labs & measurements"
               ? GraphType.Values
-              : GraphType.BiologicalSex,
+              : "Age + Sex",
         });
       } else {
         this.setState({ showConceptChart: false });
@@ -234,7 +234,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
       graphToShow:
         this.props.domain.name.toLowerCase() === "labs & measurements"
           ? GraphType.Values
-          : GraphType.BiologicalSex,
+          : "Age + Sex",
     });
   }
 
@@ -246,7 +246,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     if (showConceptChart) {
       if (
         chartType === "sources" &&
-        (graphToShow === GraphType.BiologicalSex ||
+        (graphToShow === "Age + Sex" ||
           graphToShow === GraphType.Age ||
           graphToShow === GraphType.Values)
       ) {
@@ -261,7 +261,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
           graphToShow:
             this.props.domain.name.toLowerCase() === "labs & measurements"
               ? GraphType.Values
-              : GraphType.BiologicalSex,
+              : "Age + Sex",
         });
       } else {
         this.setState({
@@ -271,7 +271,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
               ? GraphType.Sources
               : name.toLowerCase() === "labs & measurements"
               ? GraphType.Values
-              : GraphType.BiologicalSex,
+              : "Age + Sex",
         });
       }
     } else {
@@ -282,7 +282,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
             ? GraphType.Sources
             : name.toLowerCase() === "labs & measurements"
             ? GraphType.Values
-            : GraphType.BiologicalSex,
+            : "Age + Sex",
       });
     }
   }

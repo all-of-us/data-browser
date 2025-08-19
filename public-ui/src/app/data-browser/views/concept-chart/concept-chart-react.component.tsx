@@ -166,9 +166,9 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
           ],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
-        : this.props.domain === "labs & measurements"
+        : this.props.domain.name.toLowerCase() === "labs & measurements"
         ? GraphType.Values
-        : GraphType.BiologicalSex,
+        : "Age + Sex",
       displayGraphErrorMessage: false,
       selectedChartAnalysis: null,
       conceptAnalyses: null,
@@ -211,7 +211,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
             selectedChartAnalysis:
               name.toLowerCase() === "labs & measurements"
                 ? results.items[0].measurementValueGenderAnalysis
-                : results.items[0].genderAnalysis,
+                : results.items[0].combinedAgeGenderAnalysis,
             measurementGenderCountAnalysis:
               name.toLowerCase() === "labs & measurements"
                 ? results.items[0].measurementGenderCountAnalysis
@@ -284,6 +284,10 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
     let selectedAnalysis;
     let measurementGenderCountAnalysis;
 
+    if (!conceptAnalyses) {
+      return;
+    }
+
     switch (g) {
       case GraphType.Age:
         selectedAnalysis = conceptAnalyses.ageAnalysis;
@@ -299,6 +303,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       case GraphType.location:
         selectedAnalysis = conceptAnalyses.locationAnalysis;
         break;
+      case "Age + Sex":
       case GraphType.ageGenderStacked:
         selectedAnalysis = conceptAnalyses.combinedAgeGenderAnalysis;
         break;
@@ -593,7 +598,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   selectedResult = ""
                   color = "" />
               </div>
-            ) : graphToShow === "Age + Sex" ? (
+            ) : graphToShow === "Age + Sex" && selectedChartAnalysis ? (
               <div className="chart" key="age-gender-stacked-chart">
                 <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} selectedResult="" domain="ehr"/>
               </div>

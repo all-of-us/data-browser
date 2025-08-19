@@ -75,7 +75,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
     this.state = {
       graphToShow: this.props.isCopeSurvey
         ? GraphType.SurveyVersion
-        : GraphType.BiologicalSex,
+        : "Age + Sex",
       displayGraphErrorMessage: false,
       isLoaded: false,
       selectedChartAnalysis: null,
@@ -130,6 +130,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       case GraphType.SurveyVersion:
         selectedAnalysis = question.versionAnalysis;
         break;
+      case "Age + Sex":
       case GraphType.ageGenderStacked:
         selectedAnalysis = question.combinedAgeSexAnalysis;
         break;
