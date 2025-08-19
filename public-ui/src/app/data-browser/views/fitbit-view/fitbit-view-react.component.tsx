@@ -237,9 +237,6 @@ export const FitbitReactComponent = withRouteData(
     }
 
     setGraphs(concept) {
-      console.log('Selected concept:', concept.displayName);
-      console.log('Chart data:', concept.combinedAgeGenderAnalysis);
-
       this.setState({
         selectedAnalyses: concept,
         selectedItem: concept.displayName,

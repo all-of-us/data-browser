@@ -111,8 +111,6 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
     componentDidUpdate(prevProps) {
         // Check if the data has changed
         if (prevProps.ageGenderAnalysis !== this.props.ageGenderAnalysis) {
-            console.log('Chart data changed, updating chart...');
-
             const isSurvey = this.props.domain === "survey";
             const filteredData = this.getFilteredData(this.props.ageGenderAnalysis, this.props.selectedResult, this.props.domain);
 
@@ -134,11 +132,6 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
         if (domain && domain === "survey" && selectedResult) {
             const filteredResults = data.results.filter(r => r.stratum4 === selectedResult.stratum4);
             return { ...data, results: filteredResults };
-        }
-        if (domain && domain === "fitbit") {
-            console.log('Fitbit here ?');
-            console.log(data);
-            console.log(selectedResult);
         }
         return data;
     }
