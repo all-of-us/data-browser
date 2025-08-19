@@ -237,6 +237,9 @@ export const FitbitReactComponent = withRouteData(
     }
 
     setGraphs(concept) {
+      console.log('Selected concept:', concept.displayName);
+      console.log('Chart data:', concept.combinedAgeGenderAnalysis);
+
       this.setState({
         selectedAnalyses: concept,
         selectedItem: concept.displayName,
@@ -313,7 +316,7 @@ export const FitbitReactComponent = withRouteData(
                         {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
                           <StackedColumnChartReactComponent
                             ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
-                            selectedResult=""
+                            selectedResult={selectedResult}
                             domain="fitbit"
                           />
                         )}
@@ -326,7 +329,7 @@ export const FitbitReactComponent = withRouteData(
                         <HeatMapReactComponent
                           locationAnalysis={selectedAnalyses?.locationAnalysis}
                           domain="fitbit"
-                          selectedResult = ""
+                          selectedResult={selectedResult}
                           color = "" />
                       )}
                     </div>
