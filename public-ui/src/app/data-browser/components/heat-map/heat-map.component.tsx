@@ -181,6 +181,20 @@ export const HeatMapReactComponent =
             }, 100);
         }
 
+        componentDidUpdate(prevProps) {
+            if (prevProps.color !== this.props.color) {
+                // Update the chart's userOptions so regular states get the new hover color
+                const chartObj = this.chartRef.current?.chart;
+                if (chartObj) {
+                    (chartObj.userOptions as any).hoverColor = this.props.color;
+                }
+
+                // Update the options object with new color
+                this.options.hoverColor = this.props.color;
+                this.options.series[0].states.hover.color = getHoverColor(this.props.color);
+            }
+        }
+
         applyTerritoryColors() {
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj || !chartObj.series || !chartObj.series[0]) return;
@@ -242,6 +256,7 @@ export const HeatMapReactComponent =
                 });
             });
         }
+
         componentWillUnmount() {
             // Loop over all groups
             Object.keys(this.domPathsByGroup).forEach(groupName => {
@@ -264,6 +279,7 @@ export const HeatMapReactComponent =
                 (pathEl as HTMLElement).style.fill = getHoverColor(this.props.color);
             });
         }
+
         handleMouseLeaveGroup(groupName) {
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
@@ -312,6 +328,7 @@ export const HeatMapReactComponent =
             }
             return output;
         }
+
         static getOriginalColor(series, keys: string[]) {
             keys.forEach(key => {
                 const point = series.data.find(pt => pt['hc-key'] === key);
@@ -323,8 +340,6 @@ export const HeatMapReactComponent =
             // Now redraw once after updating all points
             series.chart.redraw();
         }
-
-
 
         render() {
             return (<>

@@ -313,7 +313,7 @@ export const FitbitReactComponent = withRouteData(
                         {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
                           <StackedColumnChartReactComponent
                             ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
-                            selectedResult=""
+                            selectedResult={selectedResult}
                             domain="fitbit"
                           />
                         )}
@@ -326,7 +326,7 @@ export const FitbitReactComponent = withRouteData(
                         <HeatMapReactComponent
                           locationAnalysis={selectedAnalyses?.locationAnalysis}
                           domain="fitbit"
-                          selectedResult = ""
+                          selectedResult={selectedResult}
                           color = "" />
                       )}
                     </div>

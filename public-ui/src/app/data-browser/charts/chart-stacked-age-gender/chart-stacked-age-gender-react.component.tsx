@@ -18,7 +18,7 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
         super(props);
 
         const isSurvey = props.domain === "survey";
-        const filteredData = this.getFilteredData(props.ageGenderAnalysis, props.selectedResult, isSurvey);
+        const filteredData = this.getFilteredData(props.ageGenderAnalysis, props.selectedResult, props.domain);
 
         this.state = {
             options: {
@@ -77,7 +77,6 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
                         const totalInGroup = this.series.chart.series
                             .map(s => s.data[this.point.index]?.y || 0)
                             .reduce((a, b) => a + b, 0);
-                        console.log(totalInGroup);
                         const percent = totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : '0';
 
                         return `
@@ -109,8 +108,28 @@ export const StackedColumnChartReactComponent = class extends React.Component<Pr
         };
     }
 
-    getFilteredData(data, selectedResult, isSurvey) {
-        if (isSurvey && selectedResult) {
+    componentDidUpdate(prevProps) {
+        // Check if the data has changed
+        if (prevProps.ageGenderAnalysis !== this.props.ageGenderAnalysis) {
+            const isSurvey = this.props.domain === "survey";
+            const filteredData = this.getFilteredData(this.props.ageGenderAnalysis, this.props.selectedResult, this.props.domain);
+
+            // Update the chart options with new data
+            this.setState({
+                options: {
+                    ...this.state.options,
+                    xAxis: {
+                        ...this.state.options.xAxis,
+                        categories: this.formatAgeCategories(filteredData)
+                    },
+                    series: this.formatAgeGenderData(filteredData)
+                }
+            });
+        }
+    }
+
+    getFilteredData(data, selectedResult, domain) {
+        if (domain && domain === "survey" && selectedResult) {
             const filteredResults = data.results.filter(r => r.stratum4 === selectedResult.stratum4);
             return { ...data, results: filteredResults };
         }
