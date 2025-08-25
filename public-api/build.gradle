@@ -37,7 +37,7 @@ plugins {
     id 'idea'
     id 'war'
     id 'org.springframework.boot' version '3.2.0'
-    id 'org.owasp.dependencycheck' version '7.4.4'
+    id 'org.owasp.dependencycheck' version '12.1.0'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'org.hidetake.swagger.generator' version '2.19.2'
     id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.8.0'
@@ -237,7 +237,7 @@ dependencies {
     implementation 'com.google.guava:guava:32.0.1-jre'
     implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
     implementation 'com.google.protobuf:protobuf-java:3.25.3'
-    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20211018.2'
+    implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20240325.1'
     implementation "org.hibernate.orm:hibernate-core:$project.ext.HIBERNATE_VERSION"
     implementation "org.hibernate.orm:hibernate-community-dialects:$project.ext.HIBERNATE_VERSION"
     implementation('org.apache.tomcat:tomcat-jdbc:10.0.23')
