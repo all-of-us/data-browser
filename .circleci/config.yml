@@ -66,22 +66,33 @@ jobs:
     steps:
       - checkout-code
       - run:
-          name: Clean corrupted Gradle cache and refresh dependencies
-          working_directory: ~/data-browser/public-api
+          name: Complete Gradle cache cleanup
           command: |
-            # Stop any running Gradle daemons
-            ./gradlew --stop || true
+            # Stop any running Gradle daemons first
+            cd ~/data-browser/public-api && ./gradlew --stop || true
             
-            # Remove corrupted cache
-            rm -rf ~/.gradle/caches/jars-9/
-            rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+            # Nuclear option - remove entire Gradle user home
+            rm -rf ~/.gradle/
             
-            # Ensure proper permissions
-            mkdir -p ~/.gradle/caches
+            # Also remove any project-specific build cache
+            rm -rf ~/data-browser/public-api/.gradle/
+            rm -rf ~/data-browser/public-api/build/
+            
+            # Recreate with proper permissions
+            mkdir -p ~/.gradle
             chmod -R 755 ~/.gradle/
             
-            # Refresh dependencies
-            ./gradlew clean --refresh-dependencies
+            # Check disk space
+            df -h
+            
+            echo "Complete cache cleanup finished"
+      - run:
+          name: Download dependencies with offline disabled
+          working_directory: ~/data-browser/public-api
+          command: |
+            # Force online mode and disable parallel downloads to avoid conflicts
+            GRADLE_OPTS="-Dorg.gradle.parallel=false -Dorg.gradle.daemon=false" \
+            ./gradlew --no-daemon --refresh-dependencies --no-build-cache dependencies
       - restore_cache:
           keys:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
