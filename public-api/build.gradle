@@ -37,7 +37,7 @@ plugins {
     id 'idea'
     id 'war'
     id 'org.springframework.boot' version '3.2.0'
-    id 'org.owasp.dependencycheck' version '7.4.4'
+    id 'org.owasp.dependencycheck' version '8.4.0'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'org.hidetake.swagger.generator' version '2.19.2'
     id 'com.google.cloud.tools.appengine-appenginewebxml' version '2.8.0'
