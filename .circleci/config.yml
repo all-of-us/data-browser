@@ -66,10 +66,22 @@ jobs:
     steps:
       - checkout-code
       - run:
-          name: Clean corrupted Gradle cache
+          name: Clean corrupted Gradle cache and refresh dependencies
+          working_directory: ~/data-browser/public-api
           command: |
+            # Stop any running Gradle daemons
+            ./gradlew --stop || true
+            
+            # Remove corrupted cache
             rm -rf ~/.gradle/caches/jars-9/
             rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
+            
+            # Ensure proper permissions
+            mkdir -p ~/.gradle/caches
+            chmod -R 755 ~/.gradle/
+            
+            # Refresh dependencies
+            ./gradlew clean --refresh-dependencies
       - restore_cache:
           keys:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
@@ -108,8 +120,18 @@ jobs:
             fi
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
+      - run:
+          name: Refresh dependencies if cache miss
+          working_directory: ~/data-browser/public-api
+          command: |
+            if [ ! -d ~/.gradle/caches ] || [ ! "$(ls -A ~/.gradle/caches 2>/dev/null)" ]; then
+              echo "Cache miss detected, refreshing dependencies..."
+              ./gradlew clean --refresh-dependencies
+            else
+              echo "Cache found, skipping dependency refresh"
+            fi
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
@@ -140,8 +162,12 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
+      - run:
+          name: Refresh dependencies for deployment
+          working_directory: ~/data-browser/public-api
+          command: ./gradlew --refresh-dependencies
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -161,6 +187,10 @@ jobs:
     steps:
       - checkout-code
       - run:
+          name: Refresh dependencies for security scan
+          working_directory: ~/data-browser/public-api
+          command: ./gradlew --refresh-dependencies
+      - run:
           name: Scan dependencies for vulnerabilities
           working_directory: ~/data-browser/public-api
           command: |
@@ -177,8 +207,8 @@ jobs:
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
-          - public-ui-cache-
+            - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+            - public-ui-cache-
       - gcloud-auth-login
       - run:
           working_directory: ~/data-browser/public-ui
@@ -230,8 +260,12 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
+      - run:
+          name: Refresh dependencies for staging deployment
+          working_directory: ~/data-browser/public-api
+          command: ./gradlew --refresh-dependencies
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
