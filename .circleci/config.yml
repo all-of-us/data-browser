@@ -65,10 +65,15 @@ jobs:
       MYSQL_ROOT_PASSWORD: ubuntu
     steps:
       - checkout-code
+      - run:
+          name: Clean corrupted Gradle cache
+          command: |
+            rm -rf ~/.gradle/caches/jars-9/
+            rm -rf ~/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
