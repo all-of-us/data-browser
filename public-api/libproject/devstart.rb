@@ -169,7 +169,10 @@ def run_local_migrations()
   Dir.chdir('db-cdr/generate-cdr') do
     common.run_inline %W{./init-new-cdr-db.sh --cdr-db-name public}
   end
+  common.run_inline %W{rm -rf /home/circleci/.gradle/caches/jars-9/}
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=main -Pconfig_file=config/config_local.json --refresh-dependencies}
+
+  common.run_inline %W{rm -rf /home/circleci/.gradle/caches/jars-9/}
   common.run_inline %W{./gradlew :loadConfig -Pconfig_key=cdrBigQuerySchema -Pconfig_file=config/cdm/cdm_5_2.json}
   common.run_inline %W{./gradlew :updateCdrConfig -PappArgs=['config/cdr_config_local.json',false]}
 end
