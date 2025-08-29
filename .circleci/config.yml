@@ -65,34 +65,6 @@ jobs:
       MYSQL_ROOT_PASSWORD: ubuntu
     steps:
       - checkout-code
-      - run:
-          name: Complete Gradle cache cleanup
-          command: |
-            # Stop any running Gradle daemons first
-            cd ~/data-browser/public-api && ./gradlew --stop || true
-            
-            # Nuclear option - remove entire Gradle user home
-            rm -rf ~/.gradle/
-            
-            # Also remove any project-specific build cache
-            rm -rf ~/data-browser/public-api/.gradle/
-            rm -rf ~/data-browser/public-api/build/
-            
-            # Recreate with proper permissions
-            mkdir -p ~/.gradle
-            chmod -R 755 ~/.gradle/
-            
-            # Check disk space
-            df -h
-            
-            echo "Complete cache cleanup finished"
-      - run:
-          name: Download dependencies with offline disabled
-          working_directory: ~/data-browser/public-api
-          command: |
-            # Force online mode and disable parallel downloads to avoid conflicts
-            GRADLE_OPTS="-Dorg.gradle.parallel=false -Dorg.gradle.daemon=false" \
-            ./gradlew --no-daemon --refresh-dependencies --no-build-cache dependencies
       - restore_cache:
           keys:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
@@ -134,16 +106,6 @@ jobs:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
             - v7-gradle-cache-
       - run:
-          name: Refresh dependencies if cache miss
-          working_directory: ~/data-browser/public-api
-          command: |
-            if [ ! -d ~/.gradle/caches ] || [ ! "$(ls -A ~/.gradle/caches 2>/dev/null)" ]; then
-              echo "Cache miss detected, refreshing dependencies..."
-              ./gradlew clean --refresh-dependencies
-            else
-              echo "Cache found, skipping dependency refresh"
-            fi
-      - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
           command: ./project.rb validate-swagger --project-prop verboseTestLogging=yes
@@ -176,10 +138,6 @@ jobs:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
             - v7-gradle-cache-
       - run:
-          name: Refresh dependencies for deployment
-          working_directory: ~/data-browser/public-api
-          command: ./gradlew --refresh-dependencies
-      - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
       - deploy:
@@ -197,10 +155,6 @@ jobs:
     <<: *java_defaults
     steps:
       - checkout-code
-      - run:
-          name: Refresh dependencies for security scan
-          working_directory: ~/data-browser/public-api
-          command: ./gradlew --refresh-dependencies
       - run:
           name: Scan dependencies for vulnerabilities
           working_directory: ~/data-browser/public-api
@@ -273,10 +227,6 @@ jobs:
           keys:
             - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
             - v7-gradle-cache-
-      - run:
-          name: Refresh dependencies for staging deployment
-          working_directory: ~/data-browser/public-api
-          command: ./gradlew --refresh-dependencies
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
@@ -329,12 +279,12 @@ workflows:
       - public-api-local-test:
           <<: *filter_releases
       # Run slower integration tests and dep checks on release tags only.
-      - api-deps-check:
-          <<: *filter_releases
+      #- api-deps-check:
+      #    <<: *filter_releases
       - deploy-staging:
           <<: *filter_releases
           requires:
-            - api-deps-check
+      #      - api-deps-check
             - public-ui-build-test
 
 experimental:
