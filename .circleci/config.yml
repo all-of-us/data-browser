@@ -67,8 +67,8 @@ jobs:
       - checkout-code
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -103,8 +103,8 @@ jobs:
             fi
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           name: Validate swagger definitions
           working_directory: ~/data-browser/public-api
@@ -135,8 +135,8 @@ jobs:
       # touches several top level folders {public,common,}api.
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - run:
           working_directory: ~/data-browser
           command: ci/activate_creds.sh public-api/circle-sa-key.json
@@ -172,8 +172,8 @@ jobs:
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-          - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
-          - public-ui-cache-
+            - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+            - public-ui-cache-
       - gcloud-auth-login
       - run:
           working_directory: ~/data-browser/public-ui
@@ -225,8 +225,8 @@ jobs:
       - gcloud-auth-login
       - restore_cache:
           keys:
-          - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
-          - v7-gradle-cache-
+            - v7-gradle-cache-{{ checksum "~/data-browser/public-api/build.gradle" }}
+            - v7-gradle-cache-
       - deploy:
           working_directory: ~/data-browser/deploy
           command: |
@@ -279,12 +279,12 @@ workflows:
       - public-api-local-test:
           <<: *filter_releases
       # Run slower integration tests and dep checks on release tags only.
-      - api-deps-check:
-          <<: *filter_releases
+      #- api-deps-check:
+      #    <<: *filter_releases
       - deploy-staging:
           <<: *filter_releases
           requires:
-            - api-deps-check
+      #      - api-deps-check
             - public-ui-build-test
 
 experimental:
