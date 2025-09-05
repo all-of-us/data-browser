@@ -8,7 +8,7 @@ buildscript {
         SPRING_FRAMEWORK_VERSION = '6.1.5'
         SPRING_SECURITY_VERSION = '6.2.3'
         LOGBACK_VERSION = '1.5.5'
-        JACKSON_VERSION = '2.16.1'
+        JACKSON_VERSION = '2.18.2'
         SPRING_DEPENDENCY_MANAGEMENT_VERSION = '1.0.13.RELEASE'
         OKHTTP_VERSION = '4.12.0'
         LIQUIBASE_VERSION = '4.27.0'
@@ -70,7 +70,6 @@ configurations {
     integrationRuntime.extendsFrom testRuntime
     integrationImplementation.extendsFrom implementation
     integrationRuntimeOnly.extendsFrom runtimeOnly
-    __swaggerCodegenV3__
     generatedCompile
     all { exclude group: 'com.google.guava', module: 'guava-jdk5' }
     toolsImplementation.extendsFrom implementation
@@ -174,9 +173,11 @@ repositories {
     mavenCentral()
 }
 
+
+
 dependencies {
+    swaggerCodegen "io.swagger.codegen.v3:swagger-codegen-cli:$project.ext.SWAGGER_3_CODEGEN_VERSION"
     annotationProcessor "org.mapstruct:mapstruct-processor:$project.ext.MAPSTRUCT_VERSION"
-    __swaggerCodegenV3__ "io.swagger.codegen.v3:swagger-codegen-cli:$project.ext.SWAGGER_3_CODEGEN_VERSION"
     generatedCompile "org.springframework.boot:spring-boot-starter-data-rest:$project.ext.SPRING_BOOT_VERSION"
     generatedCompile "org.springframework.boot:spring-boot-starter-validation:$project.ext.SPRING_BOOT_VERSION"
     generatedCompile "com.squareup.okhttp3:okhttp:$project.ext.OKHTTP_VERSION"
@@ -319,7 +320,6 @@ swaggerSources {
     databrowser {
         inputFile = file('src/main/resources/public-api.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV3__
             language = 'spring'
             outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
@@ -340,7 +340,6 @@ swaggerSources {
     databrowserApiClient {
         inputFile = file('src/main/resources/public-api.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV3__
             language = 'java'
             outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
@@ -361,7 +360,6 @@ swaggerSources {
     workbenchClient {
         inputFile = file('src/main/resources/private-workbench.yaml')
         code {
-            configuration = configurations.__swaggerCodegenV3__
             language = 'java'
             outputDir = file(SWAGGER_3_CODEGEN_DIR)
             templateDir = file(SWAGGER_TEMPLATE_DIR)
@@ -463,3 +461,4 @@ group = 'org.pmiops.allofus.workbench'
 version = '0.1.0'
 sourceCompatibility = 17
 targetCompatibility = 17
+
