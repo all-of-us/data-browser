@@ -1,6 +1,7 @@
 package org.pmiops.workbench.publicapi;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -53,6 +54,51 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
+    // Consequence types ordered from most severe to least severe
+    private static final List<String> CONSEQUENCE_SEVERITY_ORDER = Arrays.asList(
+            "transcript_ablation",
+            "splice_acceptor_variant",
+            "splice_donor_variant",
+            "stop_gained",
+            "frameshift_variant",
+            "stop_lost",
+            "start_lost",
+            "transcript_amplification",
+            "feature_elongation",
+            "feature_truncation",
+            "inframe_insertion",
+            "inframe_deletion",
+            "missense_variant",
+            "protein_altering_variant",
+            "splice_donor_5th_base_variant",
+            "splice_region_variant",
+            "splice_donor_region_variant",
+            "splice_polypyrimidine_tract_variant",
+            "incomplete_terminal_codon_variant",
+            "start_retained_variant",
+            "stop_retained_variant",
+            "synonymous_variant",
+            "coding_sequence_variant",
+            "mature_miRNA_variant",
+            "5_prime_UTR_variant",
+            "3_prime_UTR_variant",
+            "non_coding_transcript_exon_variant",
+            "intron_variant",
+            "NMD_transcript_variant",
+            "non_coding_transcript_variant",
+            "coding_transcript_variant",
+            "upstream_gene_variant",
+            "downstream_gene_variant",
+            "TFBS_ablation",
+            "TFBS_amplification",
+            "TF_binding_site_variant",
+            "regulatory_region_ablation",
+            "regulatory_region_amplification",
+            "regulatory_region_variant",
+            "intergenic_variant",
+            "sequence_variant"
+    );
+
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
@@ -81,9 +127,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
     private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(genes, @genes)";
     // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
-    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
+    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by " + getSeverityOrderClause("asc") + ") FROM UNNEST(consequence) d) as cons_agg_str, " +
             "variant_type, protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency, homozygote_count FROM ${projectId}.${dataSetId}.wgs_variant";
-
     private static final String SV_VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, variant_type, consequence, position, a.size, \n" +
             "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count FROM ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed a";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_afr_hc as afr_homozygote_count, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, gvs_eas_hc as eas_homozygote_count, " +
@@ -974,10 +1019,14 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                if (consequenceColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) ASC";
+                String direction = consequenceColumnSortMetadata.getSortDirection();
+                String severityOrder = getSeverityOrderClause(direction);
+                if (direction.equals("asc")) {
+                    // least severe first
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by " + severityOrder + ") FROM UNNEST(consequence) d) ASC";
                 } else {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
+                    // most severe first
+                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by " + severityOrder + ") FROM UNNEST(consequence) d) DESC";
                 }
             }
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
@@ -1744,6 +1793,27 @@ public class GenomicsController implements GenomicsApiDelegate {
         return ResponseEntity.ok(type);
     }
 
+    private static String getSeverityOrderClause(String direction) {
+        StringBuilder caseClause = new StringBuilder("CASE ");
+
+        if ("desc".equals(direction)) {
+            // from most severe to least severe default order
+            for (int i = 0; i < CONSEQUENCE_SEVERITY_ORDER.size(); i++) {
+                caseClause.append("WHEN d = \"").append(CONSEQUENCE_SEVERITY_ORDER.get(i))
+                        .append("\" THEN ").append(i).append(" ");
+            }
+        } else {
+            // from least severe to most severe reverse order
+            for (int i = 0; i < CONSEQUENCE_SEVERITY_ORDER.size(); i++) {
+                int reverseIndex = CONSEQUENCE_SEVERITY_ORDER.size() - 1 - i;
+                caseClause.append("WHEN d = \"").append(CONSEQUENCE_SEVERITY_ORDER.get(i))
+                        .append("\" THEN ").append(reverseIndex).append(" ");
+            }
+        }
+
+        caseClause.append("ELSE 9999 END");
+        return caseClause.toString();
+    }
 
 
     public static GenomicSearchTermType getSearchType(String variantSearchTerm, String searchTerm) {
