@@ -1,6 +1,3 @@
-
-version: "3.4"
-
 # x- indicates an "extension", so docker-compose will ignore the attribute. The
 # name is not important, it's just the necessary syntax to create a YAML anchor
 # for reuse across the below services.
@@ -21,7 +18,7 @@ x-api-defaults: &api-defaults
   env_file:
     - db/vars.env
   volumes:
-    - db-sync:/w:nocopy
+    - ..:/w:cached
     - gradle-cache:/.gradle
     - ~/.config:/.config:cached
     - ~/.gsutil:/.gsutil:cached
@@ -125,5 +122,3 @@ volumes:
   db:
   gradle-cache:
   gradle-public-api-cache:
-  db-sync:
-    external: true

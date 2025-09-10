@@ -3,6 +3,8 @@ package org.pmiops.workbench.publicapi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RestController;
 import org.pmiops.workbench.service.AchillesAnalysisService;
@@ -53,6 +55,69 @@ public class GenomicsController implements GenomicsApiDelegate {
     @Autowired
     private BigQueryService bigQueryService;
 
+    private static final Map<String, Integer> CONSEQUENCE_SEVERITY_RANKS;
+    static {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("transcript_ablation", 42);
+        map.put("splice_acceptor_variant", 41);
+        map.put("splice_donor_variant", 40);
+        map.put("stop_gained", 39);
+        map.put("frameshift_variant", 38);
+        map.put("stop_lost", 37);
+        map.put("start_lost", 36);
+        map.put("transcript_amplification", 35);
+        map.put("feature_elongation", 34);
+        map.put("feature_truncation", 33);
+        map.put("inframe_insertion", 32);
+        map.put("inframe_deletion", 31);
+        map.put("missense_variant", 30);
+        map.put("protein_altering_variant", 29);
+        map.put("splice_donor_5th_base_variant", 28);
+        map.put("splice_region_variant", 27);
+        map.put("splice_donor_region_variant", 26);
+        map.put("splice_polypyrimidine_tract_variant", 25);
+        map.put("incomplete_terminal_codon_variant", 24);
+        map.put("start_retained_variant", 23);
+        map.put("stop_retained_variant", 22);
+        map.put("synonymous_variant", 21);
+        map.put("coding_sequence_variant", 20);
+        map.put("mature_miRNA_variant", 19);
+        map.put("5_prime_UTR_variant", 18);
+        map.put("3_prime_UTR_variant", 17);
+        map.put("non_coding_transcript_exon_variant", 16);
+        map.put("intron_variant", 15);
+        map.put("NMD_transcript_variant", 14);
+        map.put("non_coding_transcript_variant", 13);
+        map.put("coding_transcript_variant", 12);
+        map.put("upstream_gene_variant", 11);
+        map.put("downstream_gene_variant", 10);
+        map.put("transcript_variant", 9);
+        map.put("TFBS_ablation", 8);
+        map.put("TFBS_amplification", 7);
+        map.put("TF_binding_site_variant", 6);
+        map.put("regulatory_region_ablation", 5);
+        map.put("regulatory_region_amplification", 4);
+        map.put("regulatory_region_variant", 3);
+        map.put("intergenic_variant", 2);
+        map.put("sequence_variant", 1);
+        CONSEQUENCE_SEVERITY_RANKS = Collections.unmodifiableMap(map);
+    }
+
+    private static final String CONSEQ_ORDER_BY_FOR_FILTERS =
+            " ORDER BY " + getConsequenceSeverityCaseStatement("conseq") + " DESC";
+
+    private static String buildConsequenceSeverityOrderBy(boolean ascending) {
+        StringBuilder caseStatement = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : CONSEQUENCE_SEVERITY_RANKS.entrySet()) {
+            caseStatement.append("WHEN d = '").append(entry.getKey()).append("' THEN ").append(entry.getValue()).append(" ");
+        }
+
+        // ascending=true means "least to most severe" → DESC order by rank (42 to 1)
+        // ascending=false means "most to least severe" → ASC order by rank (1 to 42)
+        String direction = ascending ? "ASC" : "DESC";
+        return " ORDER BY (SELECT MIN(CASE " + caseStatement.toString() + "ELSE 999 END) FROM UNNEST(consequence) d) " + direction;
+    }
+
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
@@ -81,9 +146,16 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String WHERE_RS_NUMBER_EXACT = " where @rs_id in unnest(rs_number)";
     private static final String WHERE_GENE_REGEX = " where REGEXP_CONTAINS(genes, @genes)";
     // private static final String WHERE_GENE_EXACT = " where @genes in unnest(split(lower(genes), ', '))";
-    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) as cons_agg_str, " +
-            "variant_type, protein_change, (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, allele_count, allele_number, allele_frequency, homozygote_count FROM ${projectId}.${dataSetId}.wgs_variant";
 
+    private static final String VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, genes, " +
+            "(SELECT STRING_AGG(d, \", \") FROM (" +
+            "SELECT DISTINCT d FROM UNNEST(consequence) d " +
+            "ORDER BY " + getConsequenceSeverityCaseStatement("d") +
+            ") AS sorted_consequences) as cons_agg_str, " +
+            "variant_type, protein_change, " +
+            "(SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, " +
+            "allele_count, allele_number, allele_frequency, homozygote_count " +
+            "FROM ${projectId}.${dataSetId}.wgs_variant";
     private static final String SV_VARIANT_LIST_SQL_TEMPLATE = "SELECT variant_id, variant_type, consequence, position, a.size, \n" +
             "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count FROM ${projectId}.${dataSetId}.AoU_srWGS_SV_v7_1_processed a";
     private static final String VARIANT_DETAIL_SQL_TEMPLATE = "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, gvs_afr_ac as afr_allele_count, gvs_afr_an as afr_allele_number, gvs_afr_af as afr_allele_frequency, gvs_afr_hc as afr_homozygote_count, gvs_eas_ac as eas_allele_count, gvs_eas_an as eas_allele_number, gvs_eas_af as eas_allele_frequency, gvs_eas_hc as eas_homozygote_count, " +
@@ -116,10 +188,11 @@ public class GenomicsController implements GenomicsApiDelegate {
             "(select 'Consequence' as option, '' as genes, conseq, '' as variant_type, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant left join unnest(consequence) AS conseq\n";
 
-    private static final String FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE = " group by conseq),\n" +
-            "c as\n" +
-            "(select 'Variant Type' as option, '' as genes, '' as conseq, variant_type as variant_type, '' as clin_significance, 0 as gene_count, 0 as con_count, count(*) as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
-            "from ${projectId}.${dataSetId}.wgs_variant\n";
+    private static final String FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE =
+            " group by conseq" + CONSEQ_ORDER_BY_FOR_FILTERS + "),\n" +
+                    "c as\n" +
+                    "(select 'Variant Type' as option, '' as genes, '' as conseq, variant_type as variant_type, '' as clin_significance, 0 as gene_count, 0 as con_count, count(*) as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
+                    "from ${projectId}.${dataSetId}.wgs_variant\n";
     private static final String FILTER_OPTION_SQL_TEMPLATE_CLIN = " group by variant_type),\n" +
             "d as\n" +
             "(select 'Clinical Significance' as option, '' as genes, '' as consequence, '' as variant_type, clin as clin_significance, \n" +
@@ -214,6 +287,19 @@ public class GenomicsController implements GenomicsApiDelegate {
             "select * from g \n" +
             "union all \n" +
             "select * from h;";
+
+    private static String getConsequenceSeverityCaseStatement(String colAlias) {
+        StringBuilder caseStatement = new StringBuilder("CASE ");
+        for (Map.Entry<String, Integer> entry : CONSEQUENCE_SEVERITY_RANKS.entrySet()) {
+            caseStatement
+                    .append("WHEN ").append(colAlias).append(" = '")
+                    .append(entry.getKey()).append("' THEN ")
+                    .append(entry.getValue()).append(" ");
+        }
+        caseStatement.append("ELSE 999 END");
+        return caseStatement.toString();
+    }
+
 
     public GenomicsController() {}
 
@@ -972,14 +1058,13 @@ public class GenomicsController implements GenomicsApiDelegate {
                     ORDER_BY_CLAUSE = " ORDER BY genes DESC";
                 }
             }
+
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                if (consequenceColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(consequence) d) DESC";
-                }
+                boolean ascending = consequenceColumnSortMetadata.getSortDirection().equals("asc");
+                ORDER_BY_CLAUSE = buildConsequenceSeverityOrderBy(ascending);
             }
+
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
             if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
                 if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
@@ -1028,7 +1113,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     ORDER_BY_CLAUSE = " ORDER BY homozygote_count DESC";
                 }
             }
-           }
+        }
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -1215,6 +1300,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
+        
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1299,6 +1385,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_UNION;
+
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1401,6 +1488,12 @@ public class GenomicsController implements GenomicsApiDelegate {
         alleleFrequencyFilter.setChecked(false);
         alleleFrequencyFilter.setMin(0L);
         alleleFrequencyFilter.setMax(1L);
+
+        conseqFilters.sort((a, b) -> {
+            int rankA = CONSEQUENCE_SEVERITY_RANKS.getOrDefault(a.getOption(), 0);
+            int rankB = CONSEQUENCE_SEVERITY_RANKS.getOrDefault(b.getOption(), 0);
+            return Integer.compare(rankA, rankB); // Ascending order (lowest rank first)
+        });
 
         geneFilterList.setItems(geneFilters);
         geneFilterList.setFilterActive(false);
