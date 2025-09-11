@@ -1022,11 +1022,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
 
-        System.out.println("*************************************************************");
-        System.out.println(finalSql);
-        System.out.println("*************************************************************");
-
-
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
@@ -1330,11 +1325,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
-
-        System.out.println("*************************************************************");
-        System.out.println(finalSql);
-        System.out.println("*************************************************************");
-        
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
