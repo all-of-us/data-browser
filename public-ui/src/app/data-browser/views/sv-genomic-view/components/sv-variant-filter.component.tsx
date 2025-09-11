@@ -188,15 +188,6 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
                 );
               }
             })}
-            <div style={styles.sortByContainer}>
-              {
-                <SVVariantSortItemComponent
-                  cleared={cleared}
-                  onSortChange={(e) => this.handleSortChange(e)}
-                  sortMetadata={sortMetadata}
-                />
-              }
-            </div>
           </div>
           <div style={styles.actionBtnContainer}>
             <button onClick={() => this.handleClear()} style={styles.clearBtn}>

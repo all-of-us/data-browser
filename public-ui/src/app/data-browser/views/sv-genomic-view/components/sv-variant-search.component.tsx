@@ -237,13 +237,13 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
           svVariantListSize > 0 &&
           environment.genoFilters ? (
             <div onClick={() => this.showFilter()} style={styles.filterBtn}>
-              <ClrIcon shape="filter-2" /> Filter & Sort
+              <ClrIcon shape="filter-2" /> Filter
             </div>
           ) : scrollClean ? (
             <div> </div>
           ) : (
             <div onClick={() => this.showFilter()} style={styles.filterBtn}>
-              <ClrIcon shape="filter-2" /> Filter & Sort
+              <ClrIcon shape="filter-2" /> Filter
             </div>
           )}
           <React.Fragment>
