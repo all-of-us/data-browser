@@ -183,7 +183,9 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
             {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
             </div>
-            <div style={styles.rowItem}>{variant.size}</div>
+            <div style={styles.rowItem}>
+              {variant.size && variant.size >= 0 ? variant.size : ""}
+            </div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
