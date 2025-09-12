@@ -39,9 +39,11 @@ const styles = reactStyles({
     paddingTop: ".5rem",
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
+    cursor: "pointer",
+    position: "relative",
+    userSelect: "none",
   },
   headingLabel: {
-    borderBottom: "1px dashed",
   },
   first: {
     paddingLeft: ".5rem",
@@ -106,26 +108,26 @@ const css = `
         width: 72rem;
     }
 }
+.paginator {
+    background: #f9f9fa;
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    border-left: 1px solid #CCCCCC;
+    border-top: none;
+    border-radius: 0 0 3px 3px;
+    display: flex;
+    flex-direction: row;
+    gap: 2em;
+    justify-content: space-between;
+}
+@media (max-width: 600px) {
     .paginator {
-        background: #f9f9fa;
-        border-bottom: 1px solid #CCCCCC;
-        border-right: 1px solid #CCCCCC;
-        border-left: 1px solid #CCCCCC;
-        border-top: none;
-        border-radius: 0 0 3px 3px;
-        display: flex;
-        flex-direction: row;
-        gap: 2em;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 0;
     }
-    @media (max-width: 600px) {
-        .paginator {
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-            gap: 0;
-        }
-    }
+}
 `;
 
 interface Props {
@@ -154,19 +156,8 @@ interface State {
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      loading: props.loadingResults,
-      searchResults: props.searchResults,
-      sortMetadata: props.sortMetadata,
-      allowParentScroll: true,
-    };
-  }
   scrollAreaRef: React.RefObject<HTMLDivElement> = React.createRef();
-
   observer = null;
-
   columnNames = [
     "Variant ID",
     "Gene",
@@ -179,6 +170,16 @@ export class VariantTableComponent extends React.Component<Props, State> {
     "Homozygote Count",
   ];
   debounceTimer = null;
+
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      loading: props.loadingResults,
+      searchResults: props.searchResults,
+      sortMetadata: props.sortMetadata,
+      allowParentScroll: true,
+    };
+  }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
     const { searchResults, loadingResults, filtered } = this.props;
@@ -198,14 +199,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
       if (scrollArea) {
         const scrollTop = scrollArea.scrollTop;
         const scrollHeight = scrollArea.scrollHeight;
-        // trigger scroll at 35%
         const scrolledToBottom = scrollTop / scrollHeight > 0.35;
         if (
           scrolledToBottom &&
-          this.props.currentPage <
-            this.props.variantListSize / this.props.rowCount
+          this.props.currentPage < this.props.variantListSize / this.props.rowCount
         ) {
-          // Fetch new data and append
           this.props.onScrollBottom();
         }
       }
@@ -248,7 +246,6 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.props.onSearchTerm(searchTerm);
   }
 
-  // Function to scroll the div with class 'scroll-area' to the top
   scrollAreaToTop = () => {
     if (this.scrollAreaRef.current) {
       this.scrollAreaRef.current.scrollTop = 0;
@@ -257,10 +254,28 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
   setArrowIcon(varName: string) {
     const { sortMetadata } = this.state;
-    return sortMetadata[varName].sortDirection === "asc"
-      ? faArrowUp
-      : faArrowDown;
+    return sortMetadata[varName].sortDirection === "asc" ? faArrowUp : faArrowDown;
   }
+
+  renderColumnHeader = (columnKey: string, displayName: string, additionalStyles = {}) => {
+    const { sortMetadata } = this.state;
+    return (
+      <div
+        className="heading-item"
+        style={{ ...styles.headingItem, ...additionalStyles }}
+        onClick={() => this.sortClick(columnKey)}
+        title = "Click to sort"
+      >
+        <span style={styles.headingLabel}>{displayName}</span>
+        {sortMetadata[columnKey].sortActive && (
+          <FontAwesomeIcon
+            icon={this.setArrowIcon(columnKey)}
+            style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
+          />
+        )}
+      </div>
+    );
+  };
 
   render() {
     const {
@@ -270,8 +285,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
       rowCount,
       currentPage,
     } = this.props;
-    const { loading, searchResults, sortMetadata, allowParentScroll } =
-      this.state;
+    const { loading, searchResults, allowParentScroll } = this.state;
     styles.noScroll.overflowX = !allowParentScroll ? "hidden" : "scroll";
 
     return (
@@ -288,92 +302,15 @@ export class VariantTableComponent extends React.Component<Props, State> {
             style={{ ...styles.tableContainer, ...styles.noScroll }}
           >
             <div className="header-layout">
-              <div style={{ ...styles.headingItem, ...styles.first }}>
-                <span style={styles.headingLabel}>Variant ID</span>
-                {sortMetadata.variantId.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("variantId")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Gene</span>
-                {sortMetadata.gene.sortActive && (
-                  <React.Fragment>
-                    <FontAwesomeIcon
-                      icon={this.setArrowIcon("gene")}
-                      style={{
-                        color: "rgb(33, 111, 180)",
-                        marginLeft: "0.5em",
-                      }}
-                    />
-                  </React.Fragment>
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Consequence</span>
-                {sortMetadata.consequence.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("consequence")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Variant Type</span>
-                {sortMetadata.variantType.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("variantType")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>ClinVar Significance</span>
-                {sortMetadata.clinicalSignificance.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("clinicalSignificance")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Allele Count</span>
-                {sortMetadata.alleleCount.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("alleleCount")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Allele Number</span>
-                {sortMetadata.alleleNumber.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("alleleNumber")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={styles.headingItem}>
-                <span style={styles.headingLabel}>Allele Frequency</span>
-                {sortMetadata.alleleFrequency.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("alleleFrequency")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
-              <div style={{ ...styles.headingItem, ...styles.last }}>
-                <span style={styles.headingLabel}>Homozygote Count</span>
-                {sortMetadata.homozygoteCount.sortActive && (
-                  <FontAwesomeIcon
-                    icon={this.setArrowIcon("homozygoteCount")}
-                    style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-                  />
-                )}
-              </div>
+              {this.renderColumnHeader("variantId", "Variant ID", styles.first)}
+              {this.renderColumnHeader("gene", "Gene")}
+              {this.renderColumnHeader("consequence", "Consequence")}
+              {this.renderColumnHeader("variantType", "Variant Type")}
+              {this.renderColumnHeader("clinicalSignificance", "ClinVar Significance")}
+              {this.renderColumnHeader("alleleCount", "Allele Count")}
+              {this.renderColumnHeader("alleleNumber", "Allele Number")}
+              {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
+              {this.renderColumnHeader("homozygoteCount", "Homozygote Count", styles.last)}
             </div>
 
             {searchResults &&
@@ -403,7 +340,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
           <div style={styles.tableFrame}>
             {(loading || loadingVariantListSize || loadingResults) && (
               <div style={styles.center}>
-                <Spinner />{" "}
+                <Spinner />
               </div>
             )}
             {(!searchResults ||

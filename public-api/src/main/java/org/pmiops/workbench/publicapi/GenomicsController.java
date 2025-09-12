@@ -103,19 +103,51 @@ public class GenomicsController implements GenomicsApiDelegate {
         CONSEQUENCE_SEVERITY_RANKS = Collections.unmodifiableMap(map);
     }
 
+    private static final Map<String, Integer> SV_CONSEQUENCE_SEVERITY_RANKS;
+    static {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("LOF", 16);
+        map.put("COPY_GAIN", 15);
+        map.put("INTRAGENIC_EXON_DUP", 14);
+        map.put("PARTIAL_EXON_DUP", 13);
+        map.put("TSS_DUP", 12);
+        map.put("DUP_PARTIAL", 11);
+        map.put("INV_SPAN", 10);
+        map.put("MSV_EXON_OVERLAP", 9);
+        map.put("UTR", 8);
+        map.put("INTRONIC", 7);
+        map.put("BREAKEND_EXONIC", 6);
+        map.put("PROMOTER", 5);
+        map.put("INTERGENIC", 4);
+        map.put("NEAREST_TSS", 3);
+        map.put("NONCODING_SPAN", 2);
+        map.put("NONCODING_BREAKPOINT", 1);
+        SV_CONSEQUENCE_SEVERITY_RANKS = Collections.unmodifiableMap(map);
+    }
+
+    private static String buildSVConsequenceSeverityOrderBy(boolean ascending) {
+        StringBuilder caseStatement = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : SV_CONSEQUENCE_SEVERITY_RANKS.entrySet()) {
+            caseStatement.append("WHEN TRIM(con) = '").append(entry.getKey()).append("' THEN ").append(entry.getValue()).append(" ");
+        }
+
+        String direction = ascending ? "ASC" : "DESC";
+        return " ORDER BY (SELECT MAX(CASE " + caseStatement.toString() + "ELSE 0 END) FROM UNNEST(SPLIT(consequence, ', ')) con) " + direction;
+    }
+
     private static final String CONSEQ_ORDER_BY_FOR_FILTERS =
             " ORDER BY " + getConsequenceSeverityCaseStatement("conseq") + " DESC";
 
     private static String buildConsequenceSeverityOrderBy(boolean ascending) {
         StringBuilder caseStatement = new StringBuilder();
         for (Map.Entry<String, Integer> entry : CONSEQUENCE_SEVERITY_RANKS.entrySet()) {
-            caseStatement.append("WHEN d = '").append(entry.getKey()).append("' THEN ").append(entry.getValue()).append(" ");
+            caseStatement.append("WHEN TRIM(d) = '").append(entry.getKey()).append("' THEN ").append(entry.getValue()).append(" ");
         }
 
-        // ascending=true means "least to most severe" → DESC order by rank (42 to 1)
-        // ascending=false means "most to least severe" → ASC order by rank (1 to 42)
+        // ascending=true means "least to most severe" → ASC order by rank (1 to 42)
+        // ascending=false means "most to least severe" → DESC order by rank (42 to 1)
         String direction = ascending ? "ASC" : "DESC";
-        return " ORDER BY (SELECT MIN(CASE " + caseStatement.toString() + "ELSE 999 END) FROM UNNEST(consequence) d) " + direction;
+        return " ORDER BY (SELECT MAX(CASE " + caseStatement.toString() + "ELSE 0 END) FROM UNNEST(consequence) d) " + direction;
     }
 
     private static final String genomicRegionRegex = "(?i)([\"]*)(chr([0-9]{1,})*[XYxy]*:{0,}).*";
@@ -296,7 +328,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     .append(entry.getKey()).append("' THEN ")
                     .append(entry.getValue()).append(" ");
         }
-        caseStatement.append("ELSE 999 END");
+        caseStatement.append("ELSE 0 END");
         return caseStatement.toString();
     }
 
@@ -755,11 +787,8 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                if (consequenceColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY consequence DESC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY consequence ASC";
-                }
+                boolean ascending = consequenceColumnSortMetadata.getSortDirection().equals("asc");
+                ORDER_BY_CLAUSE = buildSVConsequenceSeverityOrderBy(ascending);
             }
 
             SortColumnDetails positionColumnSortMetadata = sortMetadata.getPosition();
@@ -992,10 +1021,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
-
-        System.out.println("*************************************************************");
-        System.out.println(finalSql);
-        System.out.println("*************************************************************");
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
@@ -1300,7 +1325,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
         finalSql += ORDER_BY_CLAUSE;
         finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
-        
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1661,6 +1685,12 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         geneFilterList.setItems(geneFilters);
         geneFilterList.setFilterActive(false);
+
+        conFilters.sort((a, b) -> {
+            int rankA = SV_CONSEQUENCE_SEVERITY_RANKS.getOrDefault(a.getOption(), 0);
+            int rankB = SV_CONSEQUENCE_SEVERITY_RANKS.getOrDefault(b.getOption(), 0);
+            return Integer.compare(rankA, rankB);
+        });
 
         conFilterList.setItems(conFilters);
         conFilterList.setFilterActive(false);
