@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.liquibase.gradle' version '2.1.1'
+    id 'org.liquibase.gradle' version '2.2.0'
 }
 
 
@@ -31,46 +31,42 @@ dependencies {
 liquibase {
     activities {
         schema {
-            changeLogFile "changelog-schema/db.changelog-master.xml"
+            changelogFile "changelog-schema/db.changelog-master.xml"
             url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
-            showBanner false
         }
         data {
             if (project.hasProperty('contexts')) {
                 contexts contexts
             }
-            changeLogFile "changelog-data/db.changelog-master.xml"
+            changelogFile "changelog-data/db.changelog-master.xml"
             url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
-            showBanner false
         }
         add_bigdata_indexes {
             if (project.hasProperty('contexts')) {
                 contexts contexts
             }
-            changeLogFile "changelog-bigdata/db.changelog-add-indexes.xml"
+            changelogFile "changelog-bigdata/db.changelog-add-indexes.xml"
             url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
-            showBanner false
         }
         drop_bigdata_indexes {
             if (project.hasProperty('contexts')) {
                 contexts contexts
             }
-            changeLogFile "changelog-bigdata/db.changelog-drop-indexes.xml"
+            changelogFile "changelog-bigdata/db.changelog-drop-indexes.xml"
             url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
-            showBanner false
         }
-        runList = project.ext.runList
+        runList = project.hasProperty('runList') ? project.getProperty('runList') : 'schema'
     }
 }

@@ -1,6 +1,6 @@
 plugins {
     id 'application'
-    id 'org.liquibase.gradle' version '2.1.1'
+    id 'org.liquibase.gradle' version '2.2.0'
 }
 
 repositories {
@@ -28,11 +28,11 @@ dependencies {
 liquibase {
     activities {
         main {
-            changeLogFile "changelog/db.changelog-master.xml"
+            changelogFile "changelog/db.changelog-master.xml"
             url "jdbc:mysql://${db_host}:${db_port}/databrowser"
             username "liquibase"
             password "${liquibase_password}"
         }
-        runList = project.ext.runList
+        runList = project.hasProperty('runList') ? project.getProperty('runList') : 'main'
     }
 }
