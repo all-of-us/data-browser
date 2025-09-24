@@ -36,3 +36,7 @@ strong {
     font-weight: bold;
     padding:.5em;
 }
+
+.version-box-item > a:link {
+    color: #0079b8;
+}
