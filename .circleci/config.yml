@@ -159,7 +159,7 @@ jobs:
           name: Scan dependencies for vulnerabilities
           working_directory: ~/data-browser/public-api
           command: |
-            ./project.rb gradle dependencyCheckAnalyze --info
+            ./gradlew dependencyCheckAnalyze --info
 
   public-ui-build-test:
     <<: *defaults
