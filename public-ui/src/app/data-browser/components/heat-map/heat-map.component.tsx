@@ -5,7 +5,6 @@ import Highcharts from 'highcharts/highmaps';
 import HighchartsReact from "highcharts-react-official";
 import HighchartsMap from 'highcharts/modules/map';
 import mapData from 'assets/maps/us_and_terr.json';
-// import mapData from '@highcharts/map-collection/countries/us/custom/us-all-territories.topo.json';
 
 HighchartsMap(Highcharts);
 interface Props {
@@ -29,7 +28,7 @@ const getHoverColor = (color: any) => {
     if (typeof color === 'string' && color) {
         return color;
     }
-    return color?.hover || '#a27bd7'; // Fallback to #a27bd7 if color is empty or not provided
+    return color?.hover || '#a27bd7';
 }
 
 export const HeatMapReactComponent =
@@ -71,6 +70,13 @@ export const HeatMapReactComponent =
             GU_KEYS: ['gu-3605']
         };
 
+        // Calculate total value across all states/territories
+        calculateTotal = (data) => {
+            return data.reduce((sum, point) => {
+                return sum + (point.value || 0);
+            }, 0);
+        }
+
         options = {
             chart: {
                 map: mapData,
@@ -81,15 +87,24 @@ export const HeatMapReactComponent =
             },
             colorAxis: {
                 stops: [
-                    [0, '#d0eafc'],  // Low value color
-                    [0.5, '#006699'],  // mid value color
-                    [1, '#262262']  // High value color
+                    [0, '#d0eafc'],
+                    [0.5, '#006699'],
+                    [1, '#262262']
                 ]
             },
             tooltip: {
+                useHTML: true,
                 formatter: function () {
                     const value = this.point.value <= 20 ? '≤ 20' : this.point.value.toLocaleString();
-                    const tooltipText = `${this.point.name} <br> ${value} `
+                    const total = this.series.chart.userOptions.totalValue || 1;
+                    const percentage = ((this.point.value / total) * 100).toFixed(1);
+
+                    const tooltipText = `
+                        <div style="text-align: center;">
+                            <div style="font-weight: bold; margin-bottom: 4px;">${this.point.name}</div>
+                            <div>${value} participants | ${percentage}%</div>
+                        </div>
+                    `;
                     return tooltipText;
                 }
             },
@@ -106,22 +121,19 @@ export const HeatMapReactComponent =
                 series: {
                     states: {
                         hover: {
-                            enabled: false  // We'll do it manually
+                            enabled: false
                         },
                         inactive: {
-                            enabled: false, // Disable the inactive state globally
+                            enabled: false,
                         },
                     },
                     point: {
                         events: {
                             mouseOver: function () {
-                                // Check if the key is in any of the key groups
                                 const matchedKey = Object.keys(HeatMapReactComponent.keyGroups).find(group => HeatMapReactComponent.keyGroups[group].includes(this['hc-key']));
                                 if (matchedKey) {
-                                    // If it is, save the original color
                                     this.originalColor = this.color;
                                 } else {
-                                    // If it's not, change the color to the color from props
                                     this.update({ borderWidth: undefined, borderColor: undefined, color: getHoverColor(this.series.chart.userOptions.hoverColor) }, false);
                                     this.series.chart.redraw();
                                 }
@@ -155,7 +167,7 @@ export const HeatMapReactComponent =
                         color: getHoverColor(this.props.color)
                     },
                     inactive: {
-                        enabled: false, // Disable the inactive state
+                        enabled: false,
                     },
                 },
                 dataLabels: {
@@ -165,16 +177,20 @@ export const HeatMapReactComponent =
 
             },
             ],
-            hoverColor: this.props.color
+            hoverColor: this.props.color,
+            totalValue: 0
         }
 
 
         componentDidMount() {
-            // Save a reference to the Highcharts chart object
             const chartObj = this.chartRef.current?.chart;
             if (!chartObj) return;
 
-            // Wait for chart to be fully rendered
+            // Calculate and store total value
+            const seriesData = chartObj.series[0].data;
+            const total = this.calculateTotal(seriesData);
+            (chartObj.userOptions as any).totalValue = total;
+
             setTimeout(() => {
                 this.applyTerritoryColors();
                 this.setupEventListeners();
@@ -182,16 +198,39 @@ export const HeatMapReactComponent =
         }
 
         componentDidUpdate(prevProps) {
+            const chartObj = this.chartRef.current?.chart;
+
             if (prevProps.color !== this.props.color) {
-                // Update the chart's userOptions so regular states get the new hover color
-                const chartObj = this.chartRef.current?.chart;
                 if (chartObj) {
                     (chartObj.userOptions as any).hoverColor = this.props.color;
                 }
 
-                // Update the options object with new color
                 this.options.hoverColor = this.props.color;
                 this.options.series[0].states.hover.color = getHoverColor(this.props.color);
+            }
+
+            // Rebuild chart if selectedResult changed (for genomic domain)
+            if (prevProps.selectedResult !== this.props.selectedResult && this.props.domain === 'genomic') {
+                // Update the data
+                const newData = this.formatLocationData(this.props.locationAnalysis.results, this.props.domain);
+                if (chartObj && chartObj.series[0]) {
+                    chartObj.series[0].setData(newData, true);
+
+                    // Recalculate total with new filtered data
+                    const total = this.calculateTotal(chartObj.series[0].data);
+                    (chartObj.userOptions as any).totalValue = total;
+
+                    // Reapply territory colors
+                    setTimeout(() => {
+                        this.applyTerritoryColors();
+                    }, 100);
+                }
+            }
+
+            // Recalculate total if data changed
+            if (chartObj && chartObj.series[0]) {
+                const total = this.calculateTotal(chartObj.series[0].data);
+                (chartObj.userOptions as any).totalValue = total;
             }
         }
 
@@ -204,23 +243,18 @@ export const HeatMapReactComponent =
 
             if (!colorAxis) return;
 
-            // Apply colors to territories based on their data values
             Object.keys(HeatMapReactComponent.keyGroups).forEach(groupName => {
                 const hcKeys = HeatMapReactComponent.keyGroups[groupName];
 
                 hcKeys.forEach(hcKey => {
-                    // Find the data point for this territory
                     const dataPoint = series.data.find(point => point['hc-key'] === hcKey);
                     if (dataPoint && dataPoint.value !== undefined) {
-                        // Get the color from the color axis
                         const color = colorAxis.toColor(dataPoint.value, dataPoint);
 
-                        // Apply color to the DOM element
                         const selector = `path.highcharts-key-${hcKey}`;
                         const pathElement = chartObj.container.querySelector(selector);
                         if (pathElement) {
                             (pathElement as HTMLElement).style.fill = color;
-                            // Store original color for hover restoration
                             (pathElement as any).dataset.originalColor = color;
                         }
                     }
@@ -234,22 +268,16 @@ export const HeatMapReactComponent =
 
             const chartContainer = chartObj.container;
 
-            // For each group in keyGroups...
             Object.keys(HeatMapReactComponent.keyGroups).forEach(groupName => {
-                const hcKeys = HeatMapReactComponent.keyGroups[groupName]; // e.g. ['vi-6398','vi-6399','vi-3617']
+                const hcKeys = HeatMapReactComponent.keyGroups[groupName];
 
                 hcKeys.forEach(hcKey => {
-                    // Build a CSS selector. The "Highcharts map" paths typically have "highcharts-key-<hc-key>" as a class.
-                    // e.g. "path.highcharts-key-vi-6398"
-                    // We'll use this to find the paths in the DOM
                     const selector = `path.highcharts-key-${hcKey}`;
                     const foundPaths = chartContainer.querySelectorAll(selector);
 
                     foundPaths.forEach(pathEl => {
-                        // Add to our store
                         this.domPathsByGroup[groupName].push(pathEl);
 
-                        // Attach listeners. We'll use the same handler for all in this group:
                         pathEl.addEventListener('mouseenter', () => this.handleMouseEnterGroup(groupName));
                         pathEl.addEventListener('mouseleave', () => this.handleMouseLeaveGroup(groupName));
                     });
@@ -258,21 +286,17 @@ export const HeatMapReactComponent =
         }
 
         componentWillUnmount() {
-            // Loop over all groups
             Object.keys(this.domPathsByGroup).forEach(groupName => {
                 const paths = this.domPathsByGroup[groupName];
                 paths.forEach(pathEl => {
-                    // Easiest is to replace them with clones that have no listeners:
                     pathEl.replaceWith(pathEl.cloneNode(true));
                 });
             });
         }
 
         handleMouseEnterGroup(groupName) {
-            // Loop over all paths in the group and change their color
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
-                // Store current color if not already stored
                 if (!(pathEl as any).dataset.originalColor) {
                     (pathEl as any).dataset.originalColor = (pathEl as HTMLElement).style.fill || getComputedStyle(pathEl as HTMLElement).fill;
                 }
@@ -283,7 +307,6 @@ export const HeatMapReactComponent =
         handleMouseLeaveGroup(groupName) {
             const pathsInGroup = this.domPathsByGroup[groupName];
             pathsInGroup.forEach(pathEl => {
-                // Restore original color
                 if ((pathEl as any).dataset.originalColor) {
                     (pathEl as HTMLElement).style.fill = (pathEl as any).dataset.originalColor;
                 } else {
@@ -310,11 +333,21 @@ export const HeatMapReactComponent =
                 );
             }
 
+            if (domain === 'genomic' && this.props.selectedResult) {
+                data = data.filter(
+                      (r) => r.stratum4 === this.props.selectedResult
+                );
+            }
+
+            // Track which states have data
+            const statesWithData = new Set();
+
             for (const item of data) {
                 const state = domain === 'survey' ? item.stratum5 : item.stratum2;
+                statesWithData.add(state);
+
                 if (keyGroups[state]) {
                     keyGroups[state].keys.forEach(territory => {
-                        output.push([territory, item.countValue]);
                         output.push({
                             'hc-key': territory,
                             value: item.countValue,
@@ -322,10 +355,38 @@ export const HeatMapReactComponent =
                         });
                     });
                 } else {
-                    // Normal flow for all other stratum2 codes
                     output.push([state, item.countValue]);
                 }
             }
+
+            // Add missing states with value of 20 (only for genomic domain)
+            if (domain === 'genomic') {
+                const allStates = [
+                    'us-al', 'us-ak', 'us-az', 'us-ar', 'us-ca', 'us-co', 'us-ct', 'us-de', 'us-fl', 'us-ga',
+                    'us-hi', 'us-id', 'us-il', 'us-in', 'us-ia', 'us-ks', 'us-ky', 'us-la', 'us-me', 'us-md',
+                    'us-ma', 'us-mi', 'us-mn', 'us-ms', 'us-mo', 'us-mt', 'us-ne', 'us-nv', 'us-nh', 'us-nj',
+                    'us-nm', 'us-ny', 'us-nc', 'us-nd', 'us-oh', 'us-ok', 'us-or', 'us-pa', 'us-ri', 'us-sc',
+                    'us-sd', 'us-tn', 'us-tx', 'us-ut', 'us-vt', 'us-va', 'us-wa', 'us-wv', 'us-wi', 'us-wy',
+                    'us-dc', 'us-pr', 'us-vi', 'us-gu', 'us-as', 'us-mp'
+                ];
+
+                allStates.forEach(state => {
+                    if (!statesWithData.has(state)) {
+                        if (keyGroups[state]) {
+                            keyGroups[state].keys.forEach(territory => {
+                                output.push({
+                                    'hc-key': territory,
+                                    value: 20,
+                                    name: keyGroups[state].name
+                                });
+                            });
+                        } else {
+                            output.push([state, 20]);
+                        }
+                    }
+                });
+            }
+
             return output;
         }
 
@@ -337,7 +398,6 @@ export const HeatMapReactComponent =
                 }
             });
 
-            // Now redraw once after updating all points
             series.chart.redraw();
         }
 
