@@ -154,8 +154,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String variantIdRegex = "(?i)([\"]*)((\\d{1,}|X|Y)-\\d{5,}-[A,C,T,G]{1,}-[A,C,T,G]{1,}).*";
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL)_chr[1-9XY][0-9]?_\\d+";
     private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
-
     private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{2}";
+
 
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
@@ -170,6 +170,10 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String AND_POS = " and pos <= @high and pos >= @low";
 
     private static final String WHERE_VARIANT_ID = " where variant_id = @variant_id";
+
+    // Add new constant for OR clause to search both variant_id and variant_id_vcf
+    private static final String WHERE_VARIANT_ID_OR_VCF = " where variant_id = @variant_id OR variant_id_vcf = @variant_id";
+
 
     // private static final String WHERE_GENE = ", unnest(split(genes, ', ')) AS gene\n" +
     //         " where REGEXP_CONTAINS(gene, @genes)";
@@ -1790,7 +1794,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
 
-        String finalSql = SV_VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID;
+        String finalSql = SV_VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID_OR_VCF;
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .setUseLegacySql(false)
@@ -1955,22 +1959,24 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long high = 0L;
         boolean whereContigFlag = false;
 
-
         if (searchTerm.matches(svVariantIdRegexV7)) {
             // Check if the search term matches variant id v7 pattern
+            // Search on both variant_id and variant_id_vcf columns
             variant_id = searchTerm;
             whereVariantIdFlag = true;
-            searchSql += WHERE_VARIANT_ID;
+            searchSql += WHERE_VARIANT_ID_OR_VCF;
         } else if (searchTerm.matches(svVariantIdRegexV8)) {
             // Check if the search term matches variant id v8 pattern
+            // Search on both variant_id and variant_id_vcf columns
             variant_id = searchTerm;
             whereVariantIdFlag = true;
-            searchSql += WHERE_VARIANT_ID;
+            searchSql += WHERE_VARIANT_ID_OR_VCF;
         } else if (searchTerm.matches(svVariantIdRegexRandom)) {
-            // Check if the search term matches variant id v8 pattern
+            // Check if the search term matches variant id random pattern
+            // Search on both variant_id and variant_id_vcf columns
             variant_id = searchTerm;
             whereVariantIdFlag = true;
-            searchSql += WHERE_VARIANT_ID;
+            searchSql += WHERE_VARIANT_ID_OR_VCF;
         } else if (searchTerm.matches(genomicRegionRegex)) {
             String[] regionTermSplit = new String[0];
             if (searchTerm.contains(":")) {
@@ -1992,17 +1998,17 @@ public class GenomicsController implements GenomicsApiDelegate {
                     System.out.println("Trying to convert bad number.");
                 }
             }
-        } else {// Check if the search term matches gene coding pattern
+        } else {
+            // Check if the search term matches gene coding pattern
             whereGeneFlag = true;
             if (variantSearchTerm.startsWith("~")) {
                 genes = searchTerm.toUpperCase();
             } else {
-                // genes = "r\'(?i)(^|,)\\s*" + searchTerm.toUpperCase() + "\\s*(,|$)\'";
-                // genes = "\\b" + searchTerm.toUpperCase() + "\\b";
                 genes = "(?i)(^|,)\\s*" + searchTerm.toUpperCase() + "\\s*(,|$)";
             }
             searchSql += WHERE_GENE_REGEX;
         }
+
         searchTermType.setVariantId(variant_id);
         searchTermType.setWhereVariantIdFlag(whereVariantIdFlag);
         searchTermType.setGenes(genes);
@@ -2012,8 +2018,8 @@ public class GenomicsController implements GenomicsApiDelegate {
         searchTermType.setHigh(high);
         searchTermType.setWhereContigFlag(whereContigFlag);
         searchTermType.setWherePositionFlag(wherePositionFlag);
-
         searchTermType.setSearchSqlQuery(searchSql);
+
         return searchTermType;
     }
 }
