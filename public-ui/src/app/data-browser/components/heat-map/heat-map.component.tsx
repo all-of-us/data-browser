@@ -97,12 +97,15 @@ export const HeatMapReactComponent =
                 formatter: function () {
                     const value = this.point.value <= 20 ? '≤ 20' : this.point.value.toLocaleString();
                     const total = this.series.chart.userOptions.totalValue || 1;
-                    const percentage = ((this.point.value / total) * 100).toFixed(1);
+                    const percentage = (this.point.value / total) * 100;
+
+                    // In the map tooltip, let’s display < 0.1% instead of 0.0 when a value is less than 0.05 (looks like standard rounding)
+                    const percentageDisplay = percentage < 0.05 ? '< 0.1%' : `${percentage.toFixed(1)}%`;
 
                     const tooltipText = `
                         <div style="text-align: center;">
                             <div style="font-weight: bold; margin-bottom: 4px;">${this.point.name}</div>
-                            <div>${value} participants | ${percentage}%</div>
+                            <div>${value} participants | ${percentageDisplay}</div>
                         </div>
                     `;
                     return tooltipText;
@@ -220,9 +223,13 @@ export const HeatMapReactComponent =
                     const total = this.calculateTotal(chartObj.series[0].data);
                     (chartObj.userOptions as any).totalValue = total;
 
-                    // Reapply territory colors
+                    // Clear old event listeners by resetting the domPathsByGroup
+                    this.clearEventListeners();
+
+                    // Reapply territory colors and setup event listeners
                     setTimeout(() => {
                         this.applyTerritoryColors();
+                        this.setupEventListeners();
                     }, 100);
                 }
             }
@@ -292,6 +299,7 @@ export const HeatMapReactComponent =
                     pathEl.replaceWith(pathEl.cloneNode(true));
                 });
             });
+            this.clearEventListeners();
         }
 
         handleMouseEnterGroup(groupName) {
@@ -399,6 +407,20 @@ export const HeatMapReactComponent =
             });
 
             series.chart.redraw();
+        }
+
+        clearEventListeners() {
+            // Remove old event listeners and clear the domPathsByGroup
+            Object.keys(this.domPathsByGroup).forEach(groupName => {
+                const paths = this.domPathsByGroup[groupName];
+                paths.forEach(pathEl => {
+                    // Clone node to remove all event listeners
+                    const newPath = pathEl.cloneNode(true);
+                    pathEl.parentNode?.replaceChild(newPath, pathEl);
+                });
+                // Clear the array
+                this.domPathsByGroup[groupName] = [];
+            });
         }
 
         render() {

@@ -263,7 +263,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Size:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.size ? variantDetails.size : "-"}
+                    {(variantDetails.variantType?.includes('CTX') || variantDetails.variantType?.includes('BND'))
+                      ? 'N/A'
+                      : (variantDetails.size != null && variantDetails.size >= 0 ? variantDetails.size : '-')}
                     </span>
                   </div>
                   <div>

@@ -179,12 +179,15 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
               </div>
             </div>
             <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
-            <div style={styles.rowItem}>{variant.consequence}</div>
+            <div style={styles.rowItem}>
+              {variant.consequence ? variant.consequence.toLowerCase() : variant.consequence}
+            </div>
             <div style={styles.rowItem}>
             {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
             </div>
             <div style={styles.rowItem}>
-              {variant.size && variant.size >= 0 ? variant.size : ""}
+            {(variant.variantType?.includes('CTX') || variant.variantType?.includes('BND'))
+            ? 'N/A' : (variant.size != null && variant.size >= 0 ? variant.size : '-')}
             </div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
