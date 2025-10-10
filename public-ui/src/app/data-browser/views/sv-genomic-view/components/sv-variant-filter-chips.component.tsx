@@ -60,6 +60,7 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
   }
 
   formatChips(filteredMetadata): Array<any> {
+    console.log('formatChips - filteredMetadata:', filteredMetadata);
     const displayArr = [];
     for (const key in filteredMetadata) {
       if (
@@ -79,10 +80,12 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
               el.max = +el.max.toFixed(2);
             }
           }
+          console.log(`formatChips - Adding chip for ${key}:`, el);
           displayArr.push({ cat: key, data: el });
         }
       }
     }
+    console.log('formatChips - displayArr:', displayArr);
     return displayArr;
   }
 
@@ -92,12 +95,20 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     snapshot?: any
   ): void {
     if (prevProps !== this.props) {
-      this.setState({ chips: this.formatChips(this.props.filteredMetadata) });
+      console.log('componentDidUpdate - prevProps.filteredMetadata:', prevProps.filteredMetadata);
+      console.log('componentDidUpdate - this.props.filteredMetadata:', this.props.filteredMetadata);
+      const formattedChips = this.formatChips(this.props.filteredMetadata);
+      console.log('componentDidUpdate - formattedChips:', formattedChips);
+      this.setState({ chips: formattedChips });
     }
   }
 
   removeChip(item, cat) {
+    console.log('removeChip - item:', item);
+    console.log('removeChip - cat:', cat);
     const { filteredMetadata } = this.props;
+    console.log('removeChip - filteredMetadata before:', JSON.parse(JSON.stringify(filteredMetadata)));
+
     if (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
       filteredMetadata[cat.toString()].items = filteredMetadata[
         cat.toString()
@@ -113,12 +124,13 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
         const originalFilterMetadata = JSON.parse(
           localStorage.getItem("svOriginalFilterMetadata") || "{}"
         );
+        console.log('removeChip - originalFilterMetadata:', originalFilterMetadata);
         filteredMetadata[cat.toString()].min =
           originalFilterMetadata[cat.toString()].min;
         filteredMetadata[cat.toString()].max =
           originalFilterMetadata[cat.toString()].max;
       } catch (e) {
-        console.log("Error");
+        console.log("Error loading original filter metadata:", e);
       }
     }
     const allFalse =
@@ -131,15 +143,18 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     ) {
       filteredMetadata[cat.toString()].filterActive = false;
     }
+    console.log('removeChip - filteredMetadata after:', JSON.parse(JSON.stringify(filteredMetadata)));
     this.props.onChipChange(filteredMetadata);
   }
 
   render() {
     const { chips } = this.state;
+    console.log('render - chips:', chips);
     return (
       <div style={styles.chipFormat}>
         {chips.length > 0 &&
           chips.map((el, count) => {
+            console.log(`render - chip ${count}:`, el);
             if (el.data.hasOwnProperty("filterActive")) {
               return (
                 <div key={count}>
@@ -148,9 +163,19 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                     <div style={styles.chipCat}>
                       {lables[el.cat.toString()]}
                       {el.data.items.map((item, i) => {
-                        const chipLabel = item.option
+                        let chipLabel = item.option
                           ? item.option
                           : "(undefined)";
+
+                        // Remove < and > brackets for variant type display only
+                        if (el.cat === 'variantType') {
+                          chipLabel = chipLabel.replace(/[<>]/g, '');
+                        }
+                        if (el.cat === 'consequence') {
+                          chipLabel = chipLabel.trim().toLowerCase();
+                        }
+
+                        console.log(`render - chip item ${count}-${i}:`, item, 'label:', chipLabel);
                         return (
                           <div style={styles.chipLayout} key={i}>
                             {item.checked && (

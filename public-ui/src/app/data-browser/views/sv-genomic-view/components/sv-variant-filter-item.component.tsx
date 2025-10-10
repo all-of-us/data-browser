@@ -198,7 +198,17 @@ export class SVVariantFilterItemComponent extends React.Component<
                 </div> */}
             {filterItemState.items.map((item: any, index: number) => {
               const key = "option" + index;
-              const itemLabel = item.option ? item.option : "(undefined)";
+              let itemLabel = item.option ? item.option : "(undefined)";
+
+              // Remove < and > brackets for variant type display only
+              if (category.field === 'variantType') {
+                itemLabel = itemLabel.replace(/[<>]/g, '');
+              }
+
+              if (category.field === 'consequence') {
+                itemLabel = itemLabel.trim().toLowerCase();
+              }
+
               return (
                 <span
                   title={item.option}

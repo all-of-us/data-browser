@@ -91,7 +91,7 @@ render() {
       <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
         {firstEntry && (
           <div className="consequence-item">
-            <i>{firstEntry[0]}:</i>{" "}
+            <i>{firstEntry[0].toLowerCase()}:</i>{" "}
             <span style={{ display: "inline" }}>
               {showAll ? firstEntry[1].join(", ") : truncatedGeneStr}
               {!showAll && (shouldTruncate || consequenceEntries.length > 1) && (
@@ -110,7 +110,7 @@ render() {
         {showAll &&
           restEntries.map(([label, genes], idx) => (
             <div key={idx} className="consequence-item">
-              <i>{label}:</i> {genes.join(", ")}
+              <i>{label.toLowerCase()}:</i> {genes.join(", ")}
             </div>
           ))}
 
