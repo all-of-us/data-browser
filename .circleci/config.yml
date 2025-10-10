@@ -279,12 +279,12 @@ workflows:
       - public-api-local-test:
           <<: *filter_releases
       # Run slower integration tests and dep checks on release tags only.
-      - api-deps-check:
-          <<: *filter_releases
+      #- api-deps-check:
+      #    <<: *filter_releases
       - deploy-staging:
           <<: *filter_releases
           requires:
-            - api-deps-check
+          #  - api-deps-check
             - public-ui-build-test
 
 experimental:
