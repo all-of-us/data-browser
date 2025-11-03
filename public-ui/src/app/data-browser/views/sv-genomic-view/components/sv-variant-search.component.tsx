@@ -220,9 +220,9 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
           </div>
           <div style={styles.searchHelpText}>
             Examples by query type: <br></br>
-            <strong>Gene:</strong> BRCA2 <br></br>
-            <strong>Variant:</strong> 1-23409220-00 <br></br>
-            <strong>Genomic Region:</strong> chr13:32355000-42375000
+            <strong>Gene:</strong> AAK1 <br></br>
+            <strong>Variant:</strong> 2-15199481 <br></br>
+            <strong>Genomic Region:</strong> chr2:15100000-15200000
           </div>
         </div>
         {submittedFilterMetadata && (
