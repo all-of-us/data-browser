@@ -345,8 +345,9 @@ export const GenomicViewComponent = withRouteData(
       if (searchTerm) {
         url += "/" + searchTerm;
       }
-      window.history.replaceState(null, "Genomic Variants", url);
+      window.history.pushState(null, "Genomic Variants", url);
     }
+
 
     changeSVUrl() {
       const { svSearchTerm } = this.state;
@@ -354,8 +355,48 @@ export const GenomicViewComponent = withRouteData(
       if (svSearchTerm) {
         url += "/" + svSearchTerm;
       }
-      window.history.replaceState(null, "Genomic Variants", url);
+      window.history.pushState(null, "Genomic Variants", url);
     }
+
+    handlePopState = () => {
+      const currentUrl = window.location.pathname;
+      const pathParts = currentUrl.split('/');
+
+      if (currentUrl.includes('structural-variants')) {
+        const searchTerm = pathParts[pathParts.length - 1] !== 'structural-variants'
+          ? decodeURIComponent(pathParts[pathParts.length - 1])
+          : '';
+
+        this.setState({
+          selectionId: 2,
+          svSearchTerm: searchTerm,
+          loadingResults: true,
+          loadingSVVariantListSize: true
+        }, () => {
+          if (searchTerm) {
+            this.getSVVariantSearch(searchTerm);
+          }
+        });
+      } else if (currentUrl.includes('snvsindels')) {
+        const searchTerm = pathParts[pathParts.length - 1] !== 'snvsindels'
+          ? decodeURIComponent(pathParts[pathParts.length - 1])
+          : '';
+
+        this.setState({
+          selectionId: 1,
+          searchTerm: searchTerm,
+          loadingResults: true,
+          loadingVariantListSize: true
+        }, () => {
+          if (searchTerm) {
+            this.getVariantSearch(searchTerm);
+          }
+        });
+      } else if (currentUrl.includes('participant-demographics')) {
+        this.setState({ selectionId: 3 });
+      }
+    }
+
 
     getSearchSize(searchTerm: string, filtered: boolean) {
       if (!filtered) {
@@ -517,7 +558,8 @@ export const GenomicViewComponent = withRouteData(
     componentWillUnmount() {
       localStorage.setItem("searchWord", "");
       this.componentCleanup();
-      window.removeEventListener("beforeunload", this.componentCleanup); // remove the event handler for normal unmounting
+      window.removeEventListener("beforeunload", this.componentCleanup);
+      window.removeEventListener("popstate", this.handlePopState);
     }
 
     getGenomicParticipantCounts() {
@@ -710,13 +752,10 @@ export const GenomicViewComponent = withRouteData(
         selectionId: selected
       }, () => {
         if (selected === 2) {
-          // Change URL to Structural Variants path
           window.history.pushState({}, '', '/structural-variants');
         } else if (selected === 1) {
-          // Change URL to Variant Search path
           window.history.pushState({}, '', '/snvsindels');
         } else if (selected === 3) {
-          // Change URL to Participant Demographics path
           window.history.pushState({}, '', '/participant-demographics');
         }
       });
@@ -757,19 +796,21 @@ export const GenomicViewComponent = withRouteData(
 
     componentDidMount() {
       window.addEventListener("beforeunload", this.componentCleanup);
+      window.addEventListener("popstate", this.handlePopState);
+
       const { search } = urlParamsStore.getValue();
       const currentUrl = window.location.href;
 
       if (search) {
-          if (currentUrl.includes('structural-variants')) {
-              this.setState({ svSearchTerm: search }, () => {
-                this.getSVVariantSearch(search);
-              });
-          } else if (currentUrl.includes('snvsindels')) {
-              this.setState({ searchTerm: search }, () => {
-                this.getVariantSearch(search);
-              });
-          }
+        if (currentUrl.includes('structural-variants')) {
+          this.setState({ svSearchTerm: search }, () => {
+            this.getSVVariantSearch(search);
+          });
+        } else if (currentUrl.includes('snvsindels')) {
+          this.setState({ searchTerm: search }, () => {
+            this.getVariantSearch(search);
+          });
+        }
       }
       this.getGenomicParticipantCounts();
       this.getGenomicChartData();

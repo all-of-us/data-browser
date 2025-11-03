@@ -117,7 +117,7 @@ const cssStyles = `
     display: flex;
     justify-content: space-between;
     align-items: end;
-    
+
 }
 
 .primary-display
@@ -328,6 +328,7 @@ export const EhrViewReactComponent = withRouteData(
     constructor(props: {}) {
       super(props);
       this.changeResults = this.changeResults.bind(this);
+      this.handlePopState = this.handlePopState.bind(this); // NEW
       // TODO add url params and change them based on search value
       const { search } = urlParamsStore.getValue();
       this.state = {
@@ -357,7 +358,7 @@ export const EhrViewReactComponent = withRouteData(
         endReached: false,
       };
     }
-    debounceTimer = null;
+    debounceTimer: any = null;
     domainTotals = _.debounce(() => {
       this.setState({ loading: true }, () => {
         this.getDomainTotals();
@@ -367,20 +368,52 @@ export const EhrViewReactComponent = withRouteData(
     }, 1000);
 
     componentDidMount() {
+      // Seed the current URL state without creating a new history entry
+      const seededUrl = `ehr/${this.state.domainId}${this.state.searchWord ? "/" + encodeURIComponent(this.state.searchWord) : ""}`;
+      window.history.replaceState({ search: this.state.searchWord }, "Ehr View", seededUrl);
+
       this.getDomainTotals();
       window.addEventListener("scroll", this.handleScrollEnd);
+      window.addEventListener("popstate", this.handlePopState); // NEW
     }
 
     componentWillUnmount(): void {
       window.removeEventListener("scroll", this.handleScrollEnd);
+      window.removeEventListener("popstate", this.handlePopState); // NEW
+    }
+
+    // NEW: Handle browser back/forward to restore domain + search from URL
+    handlePopState(_evt: PopStateEvent) {
+      const path = window.location.pathname; // e.g. "/ehr/conditions/diabetes"
+      const parts = path.split("/").filter(Boolean);
+      const ehrIdx = parts.indexOf("ehr");
+      const domainId = ehrIdx >= 0 ? parts[ehrIdx + 1] : this.state.domainId;
+      const search = ehrIdx >= 0 && parts[ehrIdx + 2] ? decodeURIComponent(parts[ehrIdx + 2]) : "";
+
+      this.setState(
+        {
+          domainId,
+          searchWord: search,
+          currentPage: 1,
+          showTopConcepts: true,
+          concepts: [],
+          standardConcepts: [],
+          loading: true,
+          endReached: false,
+        },
+        () => {
+          this.getDomainTotals(); // will also call getTopConcepts()
+        }
+      );
     }
 
     changeUrl() {
       let url = "ehr/" + this.state.domainId;
       if (this.state.searchWord) {
-        url += "/" + this.state.searchWord;
+        url += "/" + encodeURIComponent(this.state.searchWord);
       }
-      window.history.replaceState(null, "Ehr View", url);
+      // Use pushState so Back navigates to previous searches
+      window.history.pushState({ search: this.state.searchWord }, "", url);
     }
 
     getDomainTotals() {
@@ -576,7 +609,7 @@ export const EhrViewReactComponent = withRouteData(
       this.fetchConcepts(searchRequest, true);
     };
 
-    handleScrollEnd = (event) => {
+    handleScrollEnd = (_event) => {
       clearTimeout(this.debounceTimer);
       this.debounceTimer = setTimeout(() => {
         // Calculate the height of the viewport
@@ -608,9 +641,9 @@ export const EhrViewReactComponent = withRouteData(
 
     getDropdownDisplayStyle() {
       if (this.state.selectedMeasurementTypeFilter) {
-        return { display: "block" };
+        return { display: "block" } as React.CSSProperties;
       }
-      return { display: "none" };
+      return { display: "none" } as React.CSSProperties;
     }
     handleEnd() {}
 
@@ -829,8 +862,7 @@ export const EhrViewReactComponent = withRouteData(
                                 </div>
                                 <div className="tbl-d body-lead">
                                   {" "}
-                                  Participants of{" "}
-                                  {totalParticipants.toLocaleString()}
+                                  Participants of {totalParticipants.toLocaleString()}
                                   <TooltipReactComponent
                                     tooltipKey="participantCountHelpText"
                                     label="EHR Tooltip Hover"
