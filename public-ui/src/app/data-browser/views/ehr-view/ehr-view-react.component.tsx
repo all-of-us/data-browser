@@ -328,7 +328,7 @@ export const EhrViewReactComponent = withRouteData(
     constructor(props: {}) {
       super(props);
       this.changeResults = this.changeResults.bind(this);
-      this.handlePopState = this.handlePopState.bind(this); // NEW
+      this.handlePopState = this.handlePopState.bind(this);
       // TODO add url params and change them based on search value
       const { search } = urlParamsStore.getValue();
       this.state = {
@@ -368,23 +368,21 @@ export const EhrViewReactComponent = withRouteData(
     }, 1000);
 
     componentDidMount() {
-      // Seed the current URL state without creating a new history entry
       const seededUrl = `ehr/${this.state.domainId}${this.state.searchWord ? "/" + encodeURIComponent(this.state.searchWord) : ""}`;
       window.history.replaceState({ search: this.state.searchWord }, "Ehr View", seededUrl);
 
       this.getDomainTotals();
       window.addEventListener("scroll", this.handleScrollEnd);
-      window.addEventListener("popstate", this.handlePopState); // NEW
+      window.addEventListener("popstate", this.handlePopState);
     }
 
     componentWillUnmount(): void {
       window.removeEventListener("scroll", this.handleScrollEnd);
-      window.removeEventListener("popstate", this.handlePopState); // NEW
+      window.removeEventListener("popstate", this.handlePopState);
     }
 
-    // NEW: Handle browser back/forward to restore domain + search from URL
     handlePopState(_evt: PopStateEvent) {
-      const path = window.location.pathname; // e.g. "/ehr/conditions/diabetes"
+      const path = window.location.pathname;
       const parts = path.split("/").filter(Boolean);
       const ehrIdx = parts.indexOf("ehr");
       const domainId = ehrIdx >= 0 ? parts[ehrIdx + 1] : this.state.domainId;
@@ -402,7 +400,7 @@ export const EhrViewReactComponent = withRouteData(
           endReached: false,
         },
         () => {
-          this.getDomainTotals(); // will also call getTopConcepts()
+          this.getDomainTotals();
         }
       );
     }
@@ -412,7 +410,6 @@ export const EhrViewReactComponent = withRouteData(
       if (this.state.searchWord) {
         url += "/" + encodeURIComponent(this.state.searchWord);
       }
-      // Use pushState so Back navigates to previous searches
       window.history.pushState({ search: this.state.searchWord }, "", url);
     }
 
