@@ -231,7 +231,7 @@ export class RhHeader extends React.Component<{}, State> {
                           id="menu-item-3525"
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3525"
                         >
-                          <a href="https://www.researchallofus.org/research-projects-directory/">
+                          <a href="https://www.researchallofus.org/research-project-directory/">
                           Research Project Directory
                           </a>
                           <div className="item-expand" />
@@ -240,8 +240,17 @@ export class RhHeader extends React.Component<{}, State> {
                           id="menu-item-3277"
                           className="menu-item menu-item-type-post_type_archive menu-item-object-publication menu-item-3277"
                         >
-                          <a href="https://www.researchallofus.org/publications/">
+                          <a href="https://www.researchallofus.org/publication-directory/">
                             Publication Directory
+                          </a>
+                          <div className="item-expand" />
+                        </li>
+                        <li
+                          id="menu-item-3299"
+                          className="menu-item menu-item-type-post_type_archive menu-item-object-imputation menu-item-3299"
+                        >
+                          <a href="https://imputation.researchallofus.org/" target="_blank" rel="noopener noreferrer">
+                            Imputation Service
                           </a>
                           <div className="item-expand" />
                         </li>
