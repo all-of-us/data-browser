@@ -156,6 +156,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
     private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{2}";
 
+    private static final String svVariantIdRegexRefined = "(?i)(\\d{1,2}|X|Y)-(\\d{1,10})([a-z])?";
+
 
     private static final String rsNumberRegex = "(?i)(rs)(\\d{1,})";
     private static final String COUNT_SQL_TEMPLATE = "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
@@ -1972,6 +1974,12 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereVariantIdFlag = true;
             searchSql += WHERE_VARIANT_ID_OR_VCF;
         } else if (searchTerm.matches(svVariantIdRegexRandom)) {
+            // Check if the search term matches variant id random pattern
+            // Search on both variant_id and variant_id_vcf columns
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID_OR_VCF;
+        } else if (searchTerm.matches(svVariantIdRegexRefined)) {
             // Check if the search term matches variant id random pattern
             // Search on both variant_id and variant_id_vcf columns
             variant_id = searchTerm;
