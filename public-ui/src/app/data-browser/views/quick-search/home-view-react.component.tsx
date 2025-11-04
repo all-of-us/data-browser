@@ -176,7 +176,7 @@ export const homeCss = `
   text-align: center;
   color:#302c71;
   width:35%;
-  
+
 }
 .faq-btn:hover {
   color:#302c71;
@@ -257,7 +257,7 @@ export const homeCss = `
 		grid-template-columns: 98.5%;
 	}
   .faq-btn-container{
-    grid-column: 1; 
+    grid-column: 1;
     order: -1;
     justify-content:center;
     margin-top:0;
@@ -691,10 +691,31 @@ export const dBHomeComponent = withRouteData(
       };
     }
 
+    changeUrl() {
+      const { searchWord } = this.state;
+      let url = "/";
+      if (searchWord) {
+        url += "?search=" + encodeURIComponent(searchWord);
+      }
+      window.history.pushState(null, "Data Browser", url);
+    }
+
+    handlePopState = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchWord = urlParams.get('search') || '';
+
+      this.setState({ searchWord, loading: true }, () => {
+        localStorage.setItem("searchText", searchWord);
+        this.getDomainInfos();
+        this.getVariantResultSize();
+      });
+    }
+
     search = _.debounce((val) => {
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
+      this.changeUrl();
     }, 1000);
 
     handleChange(val) {
@@ -711,15 +732,26 @@ export const dBHomeComponent = withRouteData(
       }
     }
 
-    // life cycle hook
     componentDidMount() {
+      // Initialize search from URL if present
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlSearch = urlParams.get('search');
+      if (urlSearch && urlSearch !== this.state.searchWord) {
+        this.setState({ searchWord: urlSearch }, () => {
+          localStorage.setItem("searchText", urlSearch);
+        });
+      }
+
       this.getDomainInfos();
       this.getVariantResultSize();
       this.getGenomicParticipantCounts();
       window.addEventListener("resize", this.handleResize);
+      window.addEventListener("popstate", this.handlePopState);
     }
+
     componentWillUnmount() {
       window.removeEventListener("resize", this.handleResize);
+      window.removeEventListener("popstate", this.handlePopState);
     }
 
     getGenomicParticipantCounts() {

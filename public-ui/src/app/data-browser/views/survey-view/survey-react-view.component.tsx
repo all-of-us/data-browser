@@ -216,8 +216,7 @@ export const SurveyViewReactComponent = withRouteData(
           null
         );
       }
-      const { id } = urlParamsStore.getValue();
-      navigate(["survey", id, val]);
+      this.changeUrl(val);
     }, 1000);
 
     constructor(props: {}) {
@@ -240,8 +239,33 @@ export const SurveyViewReactComponent = withRouteData(
       };
     }
 
+    changeUrl(searchWord: string) {
+      const { surveyId } = this.state;
+      let url = "survey/" + surveyId;
+      if (searchWord) {
+        url += "/" + encodeURIComponent(searchWord);
+      }
+      window.history.pushState(null, "Survey View", url);
+    }
+
+    handlePopState = () => {
+      const pathParts = window.location.pathname.split('/');
+      const searchWord = pathParts.length > 3 && pathParts[3]
+        ? decodeURIComponent(pathParts[3])
+        : '';
+
+      this.setState({ searchWord, loading: true }, () => {
+        this.fetchSurvey(this.state.surveyId);
+      });
+    }
+
     componentDidMount() {
       this.fetchSurvey(this.state.surveyId);
+      window.addEventListener("popstate", this.handlePopState);
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener("popstate", this.handlePopState);
     }
 
     fetchSurvey(domain) {
