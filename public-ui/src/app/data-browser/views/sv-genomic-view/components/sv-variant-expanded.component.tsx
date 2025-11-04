@@ -31,11 +31,14 @@ const css = `
     margin-top: 2rem;
 }
 .alt-variant-id {
-    font-family: gothamBold,Arial, Helvetica, sans-serif;
-    font-size: 10px;
-    font-color: #b2aead;
+    font-family: gothamBook, Arial, Helvetica, sans-serif;
+    font-size: 12px;
     align-items: center;
     margin-bottom: 1rem;
+}
+
+.alt-variant-id strong {
+    font-family: gothamBold, Arial, Helvetica, sans-serif;
 }
 .pop-table {
         display: grid;
@@ -415,9 +418,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                   <PopulationChartReactComponent
                     variantPopulationDetails={variantPopulationDetails}
                   />
-                  <div className="alt-variant-id">
-                  Alternate ID: {variantDetails.variantIDVCF}
-                  </div>
+                <div className="alt-variant-id">
+                  <strong>Alternate ID:</strong> {variantDetails.variantIDVCF}
+                </div>
                 </div>
               </React.Fragment>
             )}

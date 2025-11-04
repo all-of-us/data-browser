@@ -349,25 +349,25 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                 <div style={styles.helpText}>
                   <strong>Gene:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("BRCA2")}
+                    onClick={() => this.searchItem("AAK1")}
                     style={styles.helpSearchDiv}
-                  >BRCA2</div>
+                  >AAK1</div>
                 </div>
                 <div style={styles.helpText}>
                   <strong>Variant:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("1-23409220-00")}
+                    onClick={() => this.searchItem("2-15199481")}
                     style={styles.helpSearchDiv}
                   >
-                    1-23409220-00
+                    2-15199481
                   </div>
                 </div>
                 <div style={styles.helpText}>
                   <strong>Genomic region:</strong>{" "}
                   <div
-                    onClick={() => this.searchItem("chr13:32355000-32375000")}
+                    onClick={() => this.searchItem("chr2:15100000-15200000")}
                     style={styles.helpSearchDiv}
-                  >chr13:32355000-32375000</div>
+                  >chr2:15100000-15200000</div>
                 </div>
               </div>
             )}
