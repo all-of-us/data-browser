@@ -282,8 +282,6 @@ const styles = reactStyles({
     color: "#337ab7",
     fontFamily: "GothamBook,Arial, sans-serif",
     display: "flex",
-    // padding: "16px",
-    // paddingBottom: "3px",
     margin: "0",
     fontSize: "16px",
     flexDirection: "row",
@@ -295,8 +293,6 @@ const styles = reactStyles({
     color: "#302c71",
     fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "14px",
-    // padding: "16px",
-    // paddingTop: "0px",
     display: "flex",
     flexDirection: "column",
   },
@@ -310,21 +306,14 @@ const styles = reactStyles({
   participantText: {
     display: "block",
   },
-  resultBoxLink: {
-    // padding: "1rem",
-    // display: "flex",
-    // alignItems:"center",
-    // background:"yellow"
-  },
+  resultBoxLink: {},
   resultHeading: {
     fontFamily: "GothamBook, Arial, sans-serif",
     fontSize: "23px",
     height: "0rem",
     paddingLeft: "0",
   },
-  resultBodyItem: {
-    // padding: "6px 0",
-  },
+  resultBodyItem: {},
   resultStat: {
     color: "#302c71",
     fontFamily: "GothamBook, Arial, sans-serif",
@@ -363,27 +352,27 @@ const styles = reactStyles({
     padding: "2rem",
     textAlign: "center",
   },
-  resultBodyDescription: {
-    // paddingBottom:"1rem"
-  },
+  resultBodyDescription: {},
 });
 
 interface ResultLinkProps {
   name: string;
-  description: string;
-  description2: string;
-  questionCount: number;
-  standardConceptCount: number;
-  domain: string;
-  participantCount: number;
+  description?: string;
+  description2?: string;
+  questionCount?: number;
+  standardConceptCount?: number;
+  domain?: string;
+  participantCount?: number;
   searchWord: string;
   domainType: string;
-  wgsSRParticipantCount: number;
-  wgsLRParticipantCount: number;
-  wgsSVParticipantCount: number;
-  microarrayParticipantCount: number;
-  variantListSize: number;
-  loadingVariantListSize: boolean;
+  wgsSRParticipantCount?: number;
+  wgsLRParticipantCount?: number;
+  wgsSVParticipantCount?: number;
+  microarrayParticipantCount?: number;
+  variantListSize?: number;
+  loadingVariantListSize?: boolean;
+  svVariantListSize?: number;
+  loadingSVVariantListSize?: boolean;
   typing: boolean;
 }
 
@@ -467,9 +456,15 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
           ? "snvsindels/" + this.props.searchWord
           : "snvsindels";
         NavStore.navigateByUrl(url);
+      } else if (info.name === "Structural Variants") {
+        const url = this.props.searchWord
+          ? "structural-variants/" + this.props.searchWord
+          : "structural-variants";
+        NavStore.navigateByUrl(url);
       }
     }
   }
+
   render() {
     const {
       name,
@@ -486,8 +481,15 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       microarrayParticipantCount,
       variantListSize,
       loadingVariantListSize,
+      svVariantListSize,
+      loadingSVVariantListSize,
       typing,
     } = this.props;
+
+    console.log(domain);
+    console.log(name);
+    console.log(domainType);
+    console.log(domain ? domain.toLowerCase() : name.toLowerCase());
 
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
@@ -497,7 +499,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             <TooltipReactComponent
               label="Homepage Tooltip Hover"
               action={"Hover on " + name + "tile tooltip"}
-              tooltipKey={domain ? domain.toLowerCase() : name.toLowerCase()}
+              tooltipKey={domain && domain.toLowerCase() === "genomics" ? domainType : (domain ? domain.toLowerCase() : name.toLowerCase())}
               searchTerm=""
             />
           </div>
@@ -517,7 +519,8 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               </span>
             </span>
           )}
-          {domainType === "genomics" && !searchWord && (
+          {/* SNVs/Indels without search */}
+          {domainType === "snvs" && name === "SNVs/Indels" && !searchWord && (
             <React.Fragment>
               <span className="result-box-body-item">
                 <span className="result-stat">
@@ -541,6 +544,33 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                     SNVs/Indels
                   </span>
                 </React.Fragment>
+              </span>
+            </React.Fragment>
+          )}
+          {/* Structural Variants without search */}
+          {domainType === "svs" && name === "Structural Variants" && !searchWord && (
+            <React.Fragment>
+              <span className="result-box-body-item">
+                <span className="result-stat">
+                  {wgsSVParticipantCount.toLocaleString()}
+                </span>
+                <div style={{ paddingTop: ".25rem" }}>
+                  Participants in the Short-Read WGS Structural<br />
+                  Variants dataset
+                </div>
+
+                <React.Fragment>
+                  <span
+                    style={{ paddingTop: "1rem", fontSize: "28px" }}
+                    className="result-stat"
+                  >
+                    {svVariantListSize.toLocaleString()}
+                  </span>
+                  <span className="result-box-stat-label">
+                    Structural Variants
+                  </span>
+                </React.Fragment>
+
               </span>
             </React.Fragment>
           )}
@@ -594,12 +624,14 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
           )}
-          {participantCount && !(domainType === "genomics") && (
+          {participantCount && !(domainType === "snvs") && (
             <span className="result-box-body-item participant-count">
               <strong> {participantCount.toLocaleString()}</strong> participants
             </span>
           )}
-          {domainType === "genomics" &&
+          {/* SNVs/Indels with search */}
+          {domainType === "snvs" &&
+            name === "SNVs/Indels" &&
             searchWord &&
             !loadingVariantListSize &&
             variantListSize > 0 && (
@@ -629,6 +661,36 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 </span>
               </React.Fragment>
             )}
+          {/* Structural Variants with search */}
+          {domainType === "svs" &&
+            name === "Structural Variants" &&
+            searchWord &&
+            !loadingSVVariantListSize &&
+            svVariantListSize > 0 && (
+              <React.Fragment>
+                <span className="result-box-body-item">
+                  <span className="result-stat">
+                    {wgsSVParticipantCount.toLocaleString()}
+                  </span>
+                  <div style={{ paddingTop: ".25rem" }}>
+                    Participants in Short-Read <br></br>
+                    WGS Structural Variants dataset
+                  </div>
+
+                  <React.Fragment>
+                    <span
+                      style={{ paddingTop: "1rem", fontSize: "28px" }}
+                      className="result-stat"
+                    >
+                      {svVariantListSize.toLocaleString()}
+                    </span>
+                    <span className="result-box-stat-label">
+                      Structural Variants
+                    </span>
+                  </React.Fragment>
+                </span>
+              </React.Fragment>
+            )}
           {name.toLowerCase() === "physical measurements" && (
             <span style={styles.resultBodyDescription}>
               Participants have the option to provide a standard set of physical
@@ -644,8 +706,10 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
         <div style={styles.resultBoxLink}>
           {questionCount ? (
             <a className="result-bottom-link">View Complete Survey</a>
-          ) : domain === "Genomics" ? (
+          ) : name === "SNVs/Indels" ? (
             <a className="result-bottom-link">View SNVs/Indels</a>
+          ) : name === "Structural Variants" ? (
+            <a className="result-bottom-link">View Structural Variants</a>
           ) : (
             <a className="result-bottom-link">View {name}</a>
           )}
@@ -661,6 +725,8 @@ interface State {
   genomicInfo: any;
   variantListSize: number;
   loadingVariantListSize: boolean;
+  svVariantListSize: number;
+  loadingSVVariantListSize: boolean;
   physicalMeasurementsInfo: any[];
   searchWord: string;
   popUp: boolean;
@@ -680,6 +746,8 @@ export const dBHomeComponent = withRouteData(
         genomicInfo: null,
         variantListSize: null,
         loadingVariantListSize: false,
+        svVariantListSize: null,
+        loadingSVVariantListSize: false,
         physicalMeasurementsInfo: [],
         searchWord: localStorage.getItem("searchText")
           ? localStorage.getItem("searchText")
@@ -708,6 +776,7 @@ export const dBHomeComponent = withRouteData(
         localStorage.setItem("searchText", searchWord);
         this.getDomainInfos();
         this.getVariantResultSize();
+        this.getSVVariantResultSize();
       });
     }
 
@@ -715,6 +784,7 @@ export const dBHomeComponent = withRouteData(
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
+      this.getSVVariantResultSize();
       this.changeUrl();
     }, 1000);
 
@@ -726,6 +796,7 @@ export const dBHomeComponent = withRouteData(
       this.search(val);
       this.typing = false;
     }
+
     iconClickEvent(iconString: string) {
       if (iconString === "introductory-videos") {
         NavStore.navigateByUrl("/" + iconString);
@@ -744,6 +815,7 @@ export const dBHomeComponent = withRouteData(
 
       this.getDomainInfos();
       this.getVariantResultSize();
+      this.getSVVariantResultSize();
       this.getGenomicParticipantCounts();
       window.addEventListener("resize", this.handleResize);
       window.addEventListener("popstate", this.handlePopState);
@@ -787,7 +859,6 @@ export const dBHomeComponent = withRouteData(
         query: searchWord,
         filterMetadata: null,
       };
-      this.setState({ loadingVariantListSize: true });
       genomicsApi()
         .getVariantSearchResultSize(variantSizeRequest)
         .then((result) => {
@@ -799,6 +870,27 @@ export const dBHomeComponent = withRouteData(
         .catch((e) => {
           console.log(e, "error");
           this.setState({ loadingVariantListSize: false });
+        });
+    }
+
+    getSVVariantResultSize() {
+      const { searchWord } = this.state;
+      this.setState({ loadingSVVariantListSize: true });
+      const variantSizeRequest = {
+        query: searchWord,
+        filterMetadata: null,
+      };
+      genomicsApi()
+        .getSVVariantSearchResultSize(variantSizeRequest)
+        .then((result) => {
+          this.setState({
+            svVariantListSize: result,
+            loadingSVVariantListSize: false,
+          });
+        })
+        .catch((e) => {
+          console.log(e, "error");
+          this.setState({ loadingSVVariantListSize: false });
         });
     }
 
@@ -849,11 +941,13 @@ export const dBHomeComponent = withRouteData(
           this.setState({ loading: false });
         });
     }
+
     closePopUp() {
       this.setState({
         popUp: !this.state.popUp,
       });
     }
+
     handleResize = () => {
       this.setState({
         winWidth: window.innerWidth,
@@ -872,6 +966,8 @@ export const dBHomeComponent = withRouteData(
         genomicInfo,
         variantListSize,
         loadingVariantListSize,
+        svVariantListSize,
+        loadingSVVariantListSize,
         winHeight,
         winWidth,
       } = this.state;
@@ -879,11 +975,18 @@ export const dBHomeComponent = withRouteData(
         domainInfo.length === 0 &&
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0 &&
-        variantListSize === 0;
+        variantListSize === 0 &&
+        svVariantListSize === 0;
       const noConceptData =
         domainInfo.length === 0 &&
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0;
+
+      const showGenomicsSection = environment.geno && genomicInfo &&
+        (!loadingVariantListSize && !loadingSVVariantListSize) &&
+        ((!searchWord && (variantListSize > 0 || svVariantListSize !== null)) ||
+         (searchWord && (variantListSize > 0 || svVariantListSize > 0)));
+
       return (
         <React.Fragment>
           <style>{homeCss}</style>
@@ -940,7 +1043,7 @@ export const dBHomeComponent = withRouteData(
             </div>
           </div>
 
-          {loading || loadingVariantListSize ? (
+          {loading || loadingVariantListSize || loadingSVVariantListSize ? (
             <div
               style={{
                 height: "15vh",
@@ -954,7 +1057,7 @@ export const dBHomeComponent = withRouteData(
             </div>
           ) : (
             <section style={styles.results}>
-              {noConceptData && variantListSize === 0 && (
+              {noConceptData && variantListSize === 0 && svVariantListSize === 0 && (
                 <ErrorMessageReactComponent dataType="noResults" />
               )}
               {true && (
@@ -999,38 +1102,53 @@ export const dBHomeComponent = withRouteData(
                     </React.Fragment>
                   )}
                   <div className="genomic-pm">
-                    {environment.geno &&
-                      genomicInfo &&
-                      !loadingVariantListSize &&
-                      variantListSize > 0 && (
-                        <div>
-                          <h5
-                            style={{
-                              ...globalStyles.secondaryDisplay,
-                              ...styles.resultHeading,
-                              gridArea: "gHeading",
-                            }}
+                    {showGenomicsSection && (
+                      <div>
+                        <h5
+                          style={{
+                            ...globalStyles.secondaryDisplay,
+                            ...styles.resultHeading,
+                            gridArea: "gHeading",
+                          }}
+                        >
+                          <span
+                            style={{ position: "relative", bottom: "2px" }}
                           >
-                            <span
-                              style={{ position: "relative", bottom: "2px" }}
-                            >
-                              Genomics
-                            </span>
-                          </h5>
-                          <div className="genomic-boxes">
+                            Genomics
+                          </span>
+                        </h5>
+                        <div className="genomic-boxes">
+                          {/* SNVs/Indels tile - show if no search OR if search has results */}
+                          {(!searchWord || (searchWord && variantListSize > 0)) && (
                             <ResultLinksComponent
                               typing={!this.typing}
                               key="genomics-tile"
                               searchWord={searchWord}
                               {...genomicInfo}
-                              domainType="genomics"
+                              name="SNVs/Indels"
+                              domainType="snvs"
                               variantListSize={variantListSize}
                               loadingVariantListSize={loadingVariantListSize}
                             />
-                            <GenomicCallToActionComponent {...genomicInfo} />
-                          </div>
+                          )}
+
+                          {/* Structural Variants tile - show if no search OR if search has results */}
+                          {(!searchWord || (searchWord && svVariantListSize > 0)) && (
+                            <ResultLinksComponent
+                              typing={!this.typing}
+                              key="sv-genomics-tile"
+                              searchWord={searchWord}
+                              {...genomicInfo}
+                              name="Structural Variants"
+                              domainType="svs"
+                              svVariantListSize={svVariantListSize}
+                              loadingSVVariantListSize={loadingSVVariantListSize}
+                            />
+                          )}
+
                         </div>
-                      )}
+                      </div>
+                    )}
                     {physicalMeasurementsInfo.length > 0 && (
                       <div>
                         <h5
