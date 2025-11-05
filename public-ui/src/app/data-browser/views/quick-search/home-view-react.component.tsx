@@ -486,11 +486,6 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       typing,
     } = this.props;
 
-    console.log(domain);
-    console.log(name);
-    console.log(domainType);
-    console.log(domain ? domain.toLowerCase() : name.toLowerCase());
-
     return (
       <div onClick={() => this.resultClick(this.props)} className="result-box">
         <div className="result-box-title">
