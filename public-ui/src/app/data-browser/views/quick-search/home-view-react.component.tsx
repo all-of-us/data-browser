@@ -550,8 +550,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   {wgsSVParticipantCount.toLocaleString()}
                 </span>
                 <div style={{ paddingTop: ".25rem" }}>
-                  Participants in the Short-Read WGS Structural<br />
-                  Variants dataset
+                  Participants in the Short-Read WGS Structural Variants dataset
                 </div>
 
                 <React.Fragment>

@@ -227,6 +227,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         : (sortMetadata[key].sortDirection = "desc");
     } else {
       sortMetadata[key].sortActive = true;
+      sortMetadata[key].sortDirection = "desc";
     }
 
     for (const sKey in sortMetadata) {
