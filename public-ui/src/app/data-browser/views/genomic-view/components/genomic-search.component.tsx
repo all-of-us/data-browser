@@ -155,13 +155,13 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
             down into variants to view select annotations and genetic ancestry
             associations. Variants are based on short-read whole genome
             sequencing and called against the GRCh38/hg38 genome reference.
-            Learn more: &#32;
+            Learn more about{" "}
             <a
-              style={{ color: "#1f79b8" }}
+              style={{ color: "#1f79b8", cursor: "pointer" }}
               target="_blank"
-              href="https://aousupporthelp.zendesk.com/hc/en-us/articles/4615256690836-Variant-Annotation-Table"
+              href="https://support.researchallofus.org/hc/en-us/articles/29475228181908-How-the-All-of-Us-Genomic-data-are-organized/"
             >
-              Variant Annotation Table.
+              how genomic data are organized.
             </a>
           </p>
         </div>

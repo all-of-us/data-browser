@@ -215,7 +215,7 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
               domain="genomics"
               onChange={(val: string) => this.handleChange(val)}
               onClear={() => this.handleChange("")}
-              placeholderText="Search by variant"
+              placeholderText="Search by gene, variant, or genomic region"
             />
           </div>
           <div style={styles.searchHelpText}>
