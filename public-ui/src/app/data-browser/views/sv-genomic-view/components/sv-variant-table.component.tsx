@@ -303,7 +303,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
             <div className="header-layout">
               {this.renderColumnHeader("variantId", "Variant ID", styles.first)}
               {this.renderColumnHeader("variantType", "Variant Type")}
-              {this.renderColumnHeader("consequence", "Predicted Consequence(s)")}
+              {this.renderColumnHeader("consequence", "Pred Consequence(s)")}
               {this.renderColumnHeader("position", "Position")}
               {this.renderColumnHeader("size", "Size")}
               {this.renderColumnHeader("alleleCount", "Allele Count")}
