@@ -34,16 +34,19 @@ const styles = reactStyles({
   filterBtn: {
     fontFamily: "gothamBold",
     color: "#216FB4",
-    cursor: "Pointer",
+    cursor: "pointer",
     width: "fit-content",
+    zIndex: 100,
   },
   filterContainer: {
     position: "relative",
+    zIndex: 100,
   },
   resultInfo: {
     display: "grid",
     gridTemplateColumns: "11.5rem 1fr",
     alignItems: "baseline",
+    zIndex: 100,
   },
 });
 
