@@ -131,15 +131,30 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     });
   }
 
-  componentWillUpdate(
-    nextProps: Readonly<Props>,
-    nextState: Readonly<State>,
-    nextContext: any
-  ): void {
-    if (this.props.scrollClean != nextProps.scrollClean) {
-      this.setState({ scrollClean: nextProps.scrollClean });
+    componentDidUpdate(prevProps: Readonly<Props>) {
+      const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene, scrollClean } = this.props;
+
+      if (prevProps.scrollClean !== scrollClean) {
+        this.setState({ scrollClean: scrollClean });
+      }
+
+      if (prevProps.searchTerm !== searchTerm) {
+        this.setState({ searchWord: searchTerm });
+      }
+      if (prevProps.filterMetadata !== filterMetadata) {
+        this.setState({ filterMetadata });
+      }
+      if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+        this.setState({ submittedFilterMetadata });
+      }
+
+      if (
+        prevProps.firstGene !== firstGene &&
+        firstGene
+      ) {
+        this.setState({ currentGene: firstGene });
+      }
     }
-  }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -159,29 +174,6 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       }
     }
   }
-
-    componentDidUpdate(prevProps: Readonly<Props>) {
-      const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
-
-      if (prevProps.searchTerm !== searchTerm) {
-        this.setState({ searchWord: searchTerm });
-      }
-      if (prevProps.filterMetadata !== filterMetadata) {
-        this.setState({ filterMetadata });
-      }
-      if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-        this.setState({ submittedFilterMetadata });
-      }
-
-      // Only update currentGene if it's not already set
-      if (
-        prevProps.firstGene !== firstGene &&
-        firstGene
-      ) {
-        this.setState({ currentGene: firstGene });
-      }
-    }
-
 
   showFilter() {
     this.setState({ filterShow: !this.state.filterShow });

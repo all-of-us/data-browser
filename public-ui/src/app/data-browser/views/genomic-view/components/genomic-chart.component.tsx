@@ -62,16 +62,17 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.selectedGenotype !== this.state.selectedGenotype) {
-      this.setState({ selectedGenotype: nextProps.selectedGenotype }, () => {
-        this.dataToOptions();
-      });
-    }
-  }
 
   componentDidMount() {
     this.dataToOptions();
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    if (prevProps.selectedGenotype !== this.props.selectedGenotype) {
+      this.setState({ selectedGenotype: this.props.selectedGenotype }, () => {
+        this.dataToOptions();
+      });
+    }
   }
 
   dataToOptions() {

@@ -743,23 +743,23 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                           )}
                         </React.Fragment>
                       </div>
-                      <p
-                        style={styles.conceptBoxInfoP}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          this.selectConceptCode("id");
-                        }}
-                      >
-                        OMOP Concept Id:{" "}
-                        {selectedTreeNode ? (
-                          selectedTreeNode.conceptId
-                        ) : (
-                          <TooltipNoIconReactComponent
-                            tooltipKey="conceptCopyHelpText"
-                            text={concept.conceptId}
-                          ></TooltipNoIconReactComponent>
-                        )}
-                      </p>
+                    <div
+                      style={styles.conceptBoxInfoP}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.selectConceptCode("id");
+                      }}
+                    >
+                      OMOP Concept Id:{" "}
+                      {selectedTreeNode ? (
+                        selectedTreeNode.conceptId
+                      ) : (
+                        <TooltipNoIconReactComponent
+                          tooltipKey="conceptCopyHelpText"
+                          text={concept.conceptId}
+                        ></TooltipNoIconReactComponent>
+                      )}
+                    </div>
                       {selectedTreeNode && selectedTreeNode.canSelect === 1 && (
                         <a
                           href={

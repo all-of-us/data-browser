@@ -47,6 +47,7 @@ export function Handle({
   domain,
   category,
   getHandleProps,
+  disabled = false,
 }) {
   value = category === "alleleFrequency" ? value.toFixed(2) : value;
   const r0 = dims[1] * 0.4; // inner - visible
@@ -98,14 +99,10 @@ Handle.propTypes = {
   disabled: PropTypes.bool,
 };
 
-Handle.defaultProps = {
-  disabled: false,
-};
-
 // *******************************************************
 // TRACK COMPONENT
 // *******************************************************
-export function Track({ source, target, getTrackProps }) {
+export function Track({ source, target, getTrackProps, disabled = false }) {
   const x0 = dims[0] * (source.percent / 100);
   const x1 = dims[0] * (target.percent / 100);
   const h0 = dims[1] * 0.2; // inner - visible
@@ -142,14 +139,10 @@ Track.propTypes = {
   disabled: PropTypes.bool,
 };
 
-Track.defaultProps = {
-  disabled: false,
-};
-
 // *******************************************************
 // TICK COMPONENT
 // *******************************************************
-export function Tick({ tick, count, format }) {
+export function Tick({ tick, count, format = (d) => d }) {
   const x = dims[0] * (tick.percent / 100);
   const h = dims[1] * 0.2; // inner - visible
 
@@ -182,9 +175,5 @@ Tick.propTypes = {
     value: PropTypes.number.isRequired,
     percent: PropTypes.number.isRequired,
   }).isRequired,
-  format: PropTypes.func.isRequired,
-};
-
-Tick.defaultProps = {
-  format: (d) => d,
+  format: PropTypes.func,
 };

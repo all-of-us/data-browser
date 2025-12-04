@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot, Root } from "react-dom/client";
 import * as fp from "lodash/fp";
 
 import {
@@ -18,6 +18,7 @@ import {
 export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
   @ViewChild("root") containerRef: ElementRef;
   initialized = false;
+  private root: Root | null = null;
 
   constructor(
     private WrappedComponent: React.ComponentType,
@@ -33,20 +34,25 @@ export class BaseReactWrapper implements OnChanges, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initialized = true;
+    this.root = createRoot(this.containerRef.nativeElement);
     this.render();
   }
 
   ngOnDestroy(): void {
-    ReactDOM.unmountComponentAtNode(this.containerRef.nativeElement);
+    if (this.root) {
+      this.root.unmount();
+      this.root = null;
+    }
   }
 
   render() {
     const { WrappedComponent, propNames } = this;
-    ReactDOM.render(
-      <WrappedComponent
-        {...fp.fromPairs(propNames.map((name) => [name, this[name]]))}
-      />,
-      this.containerRef.nativeElement
-    );
+    if (this.root) {
+      this.root.render(
+        <WrappedComponent
+          {...fp.fromPairs(propNames.map((name) => [name, this[name]]))}
+        />
+      );
+    }
   }
 }
