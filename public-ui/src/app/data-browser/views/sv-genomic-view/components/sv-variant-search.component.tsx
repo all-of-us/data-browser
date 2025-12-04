@@ -123,19 +123,6 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
     });
   }
 
-  componentWillUpdate(
-    nextProps: Readonly<Props>,
-    nextState: Readonly<State>,
-    nextContext: any
-  ): void {
-    if (this.props.scrollClean != nextProps.scrollClean) {
-      this.setState({ scrollClean: nextProps.scrollClean });
-    }
-  }
-  componentDidMount() {
-    document.addEventListener("mousedown", this.handleClickOutside);
-  }
-
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
@@ -153,17 +140,21 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
-    const { searchTerm, filterMetadata, submittedFilterMetadata } = this.props;
+      const { searchTerm, filterMetadata, submittedFilterMetadata, scrollClean } = this.props;
 
-    if (prevProps.searchTerm !== searchTerm) {
-      this.setState({ searchWord: searchTerm });
-    }
-    if (prevProps.filterMetadata !== filterMetadata) {
-      this.setState({ filterMetadata: filterMetadata });
-    }
-    if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-      this.setState({ submittedFilterMetadata: submittedFilterMetadata });
-    }
+      if (prevProps.scrollClean !== scrollClean) {
+        this.setState({ scrollClean: scrollClean });
+      }
+
+      if (prevProps.searchTerm !== searchTerm) {
+        this.setState({ searchWord: searchTerm });
+      }
+      if (prevProps.filterMetadata !== filterMetadata) {
+        this.setState({ filterMetadata: filterMetadata });
+      }
+      if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+        this.setState({ submittedFilterMetadata: submittedFilterMetadata });
+      }
   }
 
   showFilter() {

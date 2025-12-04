@@ -1,8 +1,15 @@
 import * as React from "react";
 
 import * as PropTypes from "prop-types";
-export default function Surface(props) {
-  const { className, view, trbl, style, children, ...other } = props;
+
+export default function Surface({
+  className = "",
+  view = [1000, 500],
+  trbl = [10, 10, 10, 10],
+  style = {},
+  children = null,
+  ...other
+}) {
   const paddingBottom = `${Math.round((view[1] / view[0]) * 100)}%`;
 
   // uses bottom-padding hack. See https://css-tricks.com/scale-svg/
@@ -48,29 +55,9 @@ export default function Surface(props) {
 }
 
 Surface.propTypes = {
-  /**
-   * SVG children to be rendered
-   */
   children: PropTypes.node,
-  /**
-   * The CSS class name of the root div element.
-   */
   className: PropTypes.string,
-  /**
-   * Styles to be spread on the root div element.
-   */
   style: PropTypes.object,
-  /**
-   * Top, right, bottom, left (trbl) margins.
-   */
   trbl: PropTypes.array,
-  /**
-   * Width and height attributes of the SVG view box.
-   */
   view: PropTypes.array,
-};
-
-Surface.defaultProps = {
-  view: [1000, 500],
-  trbl: [10, 10, 10, 10],
 };
