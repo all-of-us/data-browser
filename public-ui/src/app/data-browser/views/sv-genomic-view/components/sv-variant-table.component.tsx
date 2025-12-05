@@ -14,18 +14,21 @@ import { TablePaginatorComponent } from "./table-paginator.component";
 
 const styles = reactStyles({
   tableContainer: {
-    borderTop: "1px solid #CCCCCC",
-    borderLeft: "1px solid #CCCCCC",
-    borderRight: "1px solid #CCCCCC",
+    border: "1px solid #CCCCCC",
     borderBottom: "none",
     borderRadius: "3px 3px 0 0",
-    background: "#FAFAFA",
     marginTop: "0.5rem",
     overflowY: environment.infiniteSrcoll ? "scroll" : "hidden",
     height: environment.infiniteSrcoll ? "30rem" : "",
+    background: "white",
+    width: "fit-content",
+    maxWidth: "100%",
+  },
+  scrollContent: {
+    width: "fit-content",
   },
   noScroll: {
-    overflowX: "scroll",
+    overflowX: "auto",
   },
   tableFrame: {
     border: "1px solid #CCCCCC",
@@ -48,7 +51,7 @@ const styles = reactStyles({
     paddingLeft: ".5rem",
     position: "sticky",
     left: 0,
-    background: "#f9f9fa",
+    background: "white",
   },
   last: {
     paddingRight: ".5rem",
@@ -91,10 +94,10 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
-    background: #f9f9fa;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 7rem;
+    background: white;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    min-width: 78rem;
+    width: fit-content;
     position: sticky;
     left: 0;
     top:0;
@@ -103,8 +106,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
-        width: 78rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 7rem;
+        width: fit-content;
     }
 }
 .paginator {
@@ -301,33 +304,35 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
             className="scroll-area"
             style={{ ...styles.tableContainer, ...styles.noScroll }}
           >
-            <div className="header-layout">
-              {this.renderColumnHeader("variantId", "Variant ID", styles.first)}
-              {this.renderColumnHeader("variantType", "Variant Type")}
-              {this.renderColumnHeader("consequence", "Pred Consequence(s)")}
-              {this.renderColumnHeader("position", "Position")}
-              {this.renderColumnHeader("size", "Size")}
-              {this.renderColumnHeader("alleleCount", "Allele Count")}
-              {this.renderColumnHeader("alleleNumber", "Allele Number")}
-              {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader("homozygoteCount", "Homozygote Count")}
-              {this.renderColumnHeader("filter", "Filter", styles.last)}
-            </div>
+            <div style={styles.scrollContent}>
+              <div className="header-layout">
+                {this.renderColumnHeader("variantId", "Variant ID", styles.first)}
+                {this.renderColumnHeader("variantType", "Variant Type")}
+                {this.renderColumnHeader("consequence", "Pred Consequence(s)")}
+                {this.renderColumnHeader("position", "Position")}
+                {this.renderColumnHeader("size", "Size")}
+                {this.renderColumnHeader("alleleCount", "Allele Count")}
+                {this.renderColumnHeader("alleleNumber", "Allele Number")}
+                {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
+                {this.renderColumnHeader("homozygoteCount", "Homozygote Count")}
+                {this.renderColumnHeader("filter", "Filter", styles.last)}
+              </div>
 
-            {svResults &&
-              svResults.map((variant, index) => {
-                return (
-                  <SVVariantRowComponent
-                    key={index}
-                    variant={variant}
-                    allowParentScroll={() =>
-                      this.setState({
-                        allowParentScroll: !this.state.allowParentScroll,
-                      })
-                    }
-                  />
-                );
-              })}
+              {svResults &&
+                svResults.map((variant, index) => {
+                  return (
+                    <SVVariantRowComponent
+                      key={index}
+                      variant={variant}
+                      allowParentScroll={() =>
+                        this.setState({
+                          allowParentScroll: !this.state.allowParentScroll,
+                        })
+                      }
+                    />
+                  );
+                })}
+            </div>
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
                 {currentPage < svVariantListSize / rowCount && loadingResults && (

@@ -60,9 +60,9 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 6rem;
     align-items: center;
-    min-width: 78rem;
+    width: 78rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -71,8 +71,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
-        min-width: 78rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 6rem;
+        width: 78rem;
     }
 }
 
@@ -123,6 +123,8 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     this.setState({
       svVariantExpanded: !this.state.svVariantExpanded,
     });
+    {
+    }
   }
 
   render() {
