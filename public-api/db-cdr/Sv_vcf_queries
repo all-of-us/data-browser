@@ -1,14 +1,37 @@
-create or replace table `aou-db-prod.2024q3r2_genomics.sv_vcf_v8` as
+gatk VariantsToTable -SMA -V v7.1_structural_variants_vcf_AoU_srWGS_SV.vcf --show-filtered -O AoU_srWGS_SV_v7.1.tsv \
+-F CHROM -F POS -F FILTER -F ALT \
+-F ID \
+-F QUAL -F SVTYPE \
+-F AC -F AN -F CHR2 -F CPX_INTERVALS -F CPX_TYPE -F END -F END2 \
+-F PREDICTED_BREAKEND_EXONIC -F PREDICTED_COPY_GAIN -F PREDICTED_DUP_PARTIAL \
+-F PREDICTED_INTERGENIC -F PREDICTED_INTRAGENIC_EXON_DUP -F PREDICTED_INTRONIC -F PREDICTED_INV_SPAN \
+-F PREDICTED_LOF -F PREDICTED_MSV_EXON_OVERLAP -F PREDICTED_NEAREST_TSS -F PREDICTED_PARTIAL_EXON_DUP -F PREDICTED_PROMOTER \
+-F PREDICTED_TSS_DUP -F PREDICTED_UTR -F SVLEN -F AF -F N_HOMALT \
+-F AFR_AN -F AFR_AC -F AFR_AF -F AFR_N_HOMALT \
+-F AMR_AN -F AMR_AC -F AMR_AF -F AMR_N_HOMALT \
+-F EAS_AN -F EAS_AC -F EAS_AF -F EAS_N_HOMALT \
+-F EUR_AN -F EUR_AC -F EUR_AF -F EUR_N_HOMALT \
+-F MID_AN -F MID_AC -F MID_AF -F MID_N_HOMALT \
+-F OTH_AN -F OTH_AC -F OTH_AF -F OTH_N_HOMALT \
+-F SAS_AN -F SAS_AC -F SAS_AF -F SAS_N_HOMALT \
+-F NCR
+
+python tsv_csv.py
+
+python find_nulls.py
+
+
+create or replace table `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` as
 SELECT  chrom, pos,
 CASE
     WHEN chrom = chr2 OR chr2 IS NULL
-        THEN CONCAT(b.chrom, ':', CAST(b.POS AS STRING), '-', CAST(b.END AS STRING))
+        THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), '-', CAST(b.END AS STRING))
     WHEN chrom != chr2
-        THEN CONCAT(b.chrom, ':', CAST(b.POS AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.END AS STRING))
+        THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.END AS STRING))
 END AS position,
-alt AS variant_type, filter, ac as allele_count, an as allele_number, chr2, cpx_intervals, cpx_type, b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial, predicted_intergenic, predicted_intragenic_exon_dup, predicted_intronic, predicted_inv_span, predicted_lof, predicted_msv_exon_overlap, predicted_nearest_tss, predicted_partial_exon_dup, predicted_promoter, predicted_tss_dup, predicted_utr, svlen as size, af as allele_frequency, n_homalt as homozygote_count, afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt, eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt, mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt, sas_an, sas_ac, sas_af, sas_n_homalt, id as variant_id
-FROM `aou-db-prod.2024q3r2_genomics.sv_vcf_v8_id_from_vcf` b;
-
+alt AS variant_type, filter, ac as allele_count, an as allele_number, chr2, cpx_intervals, cpx_type, b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial, predicted_intergenic, predicted_intragenic_exon_dup, predicted_intronic, predicted_inv_span, predicted_lof, predicted_msv_exon_overlap, predicted_nearest_tss, predicted_partial_exon_dup, predicted_promoter, predicted_tss_dup, predicted_utr, svlen as size, af as allele_frequency, n_homalt as homozygote_count, afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt, eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt, mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt, sas_an, sas_ac, sas_af, sas_n_homalt, id as variant_id,
+ncr as no_call_rate
+FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1` b;
 
 
 create or replace table `aou-db-prod.2024q3r2_genomics.selected_sv_fields_db_with_id` as
@@ -88,4 +111,157 @@ FROM
 
 
 
+create or replace table `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` as
+SELECT
+  *,
+ARRAY_TO_STRING(
+    ARRAY(
+      SELECT element FROM UNNEST([
+        CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN 'BREAKEND_EXONIC' ELSE NULL END,
+        CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN 'COPY_GAIN' ELSE NULL END,
+        CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN 'DUP_PARTIAL' ELSE NULL END,
+        CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN 'INTRAGENIC_EXON_DUP' ELSE NULL END,
+        CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN 'INTRONIC' ELSE NULL END,
+        CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN 'INV_SPAN' ELSE NULL END,
+        CASE WHEN PREDICTED_LOF IS NOT NULL THEN 'LOF' ELSE NULL END,
+        CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN 'MSV_EXON_OVERLAP' ELSE NULL END,
+        CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN 'INTERGENIC' ELSE NULL END,
+        CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN 'PARTIAL_EXON_DUP' ELSE NULL END,
+        CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN 'PROMOTER' ELSE NULL END,
+        CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN 'TSS_DUP' ELSE NULL END,
+        CASE WHEN PREDICTED_UTR IS NOT NULL THEN 'UTR' ELSE NULL END
+      ]) AS element WHERE element IS NOT NULL
+    ), ', '
+  ) AS consequence,
+ARRAY_TO_STRING(
+  ARRAY(
+    SELECT element FROM UNNEST([
+      CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN CONCAT('BREAKEND_EXONIC - ', PREDICTED_BREAKEND_EXONIC)  ELSE NULL END,
+      CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN CONCAT('COPY_GAIN - ', PREDICTED_COPY_GAIN) ELSE NULL END,
+      CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN CONCAT('DUP_PARTIAL - ', PREDICTED_DUP_PARTIAL) ELSE NULL END,
+      CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN CONCAT('INTRAGENIC_EXON_DUP - ', PREDICTED_INTRAGENIC_EXON_DUP) ELSE NULL END,
+      CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN CONCAT('INTRONIC - ', PREDICTED_INTRONIC) ELSE NULL END,
+      CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN CONCAT('INV_SPAN - ', PREDICTED_INV_SPAN) ELSE NULL END,
+      CASE WHEN PREDICTED_LOF IS NOT NULL THEN CONCAT('LOF - ', PREDICTED_LOF) ELSE NULL END,
+      CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN CONCAT('MSV_EXON_OVERLAP - ', PREDICTED_MSV_EXON_OVERLAP) ELSE NULL END,
+      CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN CONCAT('INTERGENIC - ', PREDICTED_NEAREST_TSS) ELSE NULL END,
+      CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN CONCAT('PARTIAL_EXON_DUP - ', PREDICTED_PARTIAL_EXON_DUP) ELSE NULL END,
+      CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN CONCAT('PROMOTER - ', PREDICTED_PROMOTER) ELSE NULL END,
+      CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN CONCAT('TSS_DUP - ', PREDICTED_TSS_DUP) ELSE NULL END,
+      CASE WHEN PREDICTED_UTR IS NOT NULL THEN CONCAT('UTR - ', PREDICTED_UTR) ELSE NULL END
+    ]) AS element WHERE element IS NOT NULL
+  ), '; '
+) AS consequence_genes
+FROM
+  `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`;
 
+CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` AS
+SELECT
+  *,
+  ARRAY_TO_STRING(
+    ARRAY(
+      SELECT element FROM UNNEST([
+        CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN CAST(PREDICTED_BREAKEND_EXONIC AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN CAST(PREDICTED_COPY_GAIN AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN CAST(PREDICTED_DUP_PARTIAL AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN CAST(PREDICTED_INTRAGENIC_EXON_DUP AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN CAST(PREDICTED_INTRONIC AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN CAST(PREDICTED_INV_SPAN AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_LOF IS NOT NULL THEN CAST(PREDICTED_LOF AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN CAST(PREDICTED_MSV_EXON_OVERLAP AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN CAST(PREDICTED_NEAREST_TSS AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN CAST(PREDICTED_PARTIAL_EXON_DUP AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN CAST(PREDICTED_PROMOTER AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN CAST(PREDICTED_TSS_DUP AS STRING) ELSE NULL END,
+        CASE WHEN PREDICTED_UTR IS NOT NULL THEN CAST(PREDICTED_UTR AS STRING) ELSE NULL END
+      ]) AS element WHERE element IS NOT NULL
+    ), ', '
+  ) AS genes
+FROM
+  `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`;
+
+CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` AS
+-- Step 1: Identify positions (CHROM + POS) that are unique
+WITH single_cnt_ids AS (
+  SELECT chrom, pos, COUNT(*) AS cnt
+  FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`
+  GROUP BY chrom, pos
+  HAVING cnt = 1
+),
+
+-- Step 2: Identify positions that have duplicates (i.e., same CHROM + POS appears multiple times)
+multiple_cnt_ids AS (
+  SELECT chrom, pos, COUNT(*) AS cnt
+  FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`
+  GROUP BY chrom, pos
+  HAVING cnt > 1
+),
+
+-- Step 3: Assign variant_id to unique CHROM + POS rows
+-- No suffix needed since there's only one record for each
+single_random_ids AS (
+  SELECT DISTINCT
+    a.* EXCEPT (variant_id),
+    CONCAT(SUBSTR(a.chrom, 4), '-', CAST(a.pos AS STRING)) AS variant_id
+  FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` a
+  JOIN single_cnt_ids b
+    ON a.chrom = b.chrom AND a.pos = b.pos
+),
+
+-- Step 4: Assign variant_id to duplicated CHROM + POS rows
+-- Use letter suffix (a, b, c, ...) to ensure uniqueness
+multiple_random_ids AS (
+  SELECT
+    a.* EXCEPT (variant_id),
+    CONCAT(
+      SUBSTR(a.chrom, 4), '-',
+      CAST(a.pos AS STRING),
+      CHR(96 + ROW_NUMBER() OVER (PARTITION BY a.chrom, a.pos ORDER BY a.variant_id))
+    ) AS variant_id
+  FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` a
+  JOIN multiple_cnt_ids b
+    ON a.chrom = b.chrom AND a.pos = b.pos
+)
+
+-- Step 5: Combine both sets into a single unified table
+SELECT
+  chrom,
+  pos,
+  CASE
+    WHEN chrom = chr2 OR chr2 IS NULL THEN CONCAT(SUBSTR(a.chrom, 4), ':', CAST(a.pos AS STRING), '-', CAST(a.end AS STRING))
+    ELSE CONCAT(SUBSTR(a.chrom, 4), ':', CAST(a.pos AS STRING), '-', CAST(a.chr2 AS STRING), ':', CAST(a.end AS STRING))
+  END AS position,
+  variant_type, filter, allele_count, allele_number, chr2, cpx_intervals, cpx_type,
+  a.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial,
+  predicted_intergenic, predicted_intragenic_exon_dup, predicted_intronic, predicted_inv_span,
+  predicted_lof, predicted_msv_exon_overlap, predicted_nearest_tss, predicted_partial_exon_dup,
+  predicted_promoter, predicted_tss_dup, predicted_utr, size, allele_frequency, homozygote_count,
+  afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
+  eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
+  mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes,
+  variant_id AS variant_id_vcf,
+  variant_id AS variant_id
+FROM single_random_ids a
+
+UNION ALL
+
+SELECT
+  chrom,
+  pos,
+  CASE
+    WHEN chrom = chr2 OR chr2 IS NULL THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.pos AS STRING), '-', CAST(b.end AS STRING))
+    ELSE CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.pos AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.end AS STRING))
+  END AS position,
+  variant_type, filter, allele_count, allele_number, chr2, cpx_intervals, cpx_type,
+  b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial,
+  predicted_intergenic, predicted_intragenic_exon_dup, predicted_intronic, predicted_inv_span,
+  predicted_lof, predicted_msv_exon_overlap, predicted_nearest_tss, predicted_partial_exon_dup,
+  predicted_promoter, predicted_tss_dup, predicted_utr, size, allele_frequency, homozygote_count,
+  afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
+  eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
+  mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes,
+  variant_id AS variant_id_vcf,
+  variant_id AS variant_id
+FROM multiple_random_ids b;
