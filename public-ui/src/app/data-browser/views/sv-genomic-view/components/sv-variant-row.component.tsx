@@ -60,9 +60,9 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 6rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 7rem;
     align-items: center;
-    width: 78rem;
+    width: fit-content;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -71,8 +71,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 6rem;
-        width: 78rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem 7rem;
+        width: fit-content;
     }
 }
 

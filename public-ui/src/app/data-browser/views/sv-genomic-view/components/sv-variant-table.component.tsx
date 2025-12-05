@@ -20,12 +20,13 @@ const styles = reactStyles({
     marginTop: "0.5rem",
     overflowY: environment.infiniteSrcoll ? "scroll" : "hidden",
     height: environment.infiniteSrcoll ? "30rem" : "",
-    background: "white",
     width: "fit-content",
     maxWidth: "100%",
+    background: "white",
   },
   scrollContent: {
     width: "fit-content",
+    background: "blue",
   },
   noScroll: {
     overflowX: "auto",
