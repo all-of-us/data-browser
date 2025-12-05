@@ -127,6 +127,10 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     }
   }
 
+  formatConsequence(consequence: string) {
+    return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
+  }
+
   render() {
     const { variant } = this.props;
     const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
@@ -180,7 +184,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             </div>
             <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
             <div style={styles.rowItem}>
-              {variant.consequence ? variant.consequence.toLowerCase() : variant.consequence}
+              {this.formatConsequence(variant.consequence)}
             </div>
             <div style={styles.rowItem}>
             {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
