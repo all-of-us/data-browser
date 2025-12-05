@@ -30,6 +30,14 @@ const styles = reactStyles({
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
   },
+  filterItem: {
+    width: "100%",
+    paddingTop: ".5rem",
+    paddingBottom: ".5rem",
+    paddingLeft: ".75rem",
+    wordBreak: "break-word",
+    overflowWrap: "break-word",
+  },
   first: {
     paddingLeft: ".5rem",
   },
@@ -60,9 +68,9 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
     align-items: center;
-    width: 72rem;
+    width: 75rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -71,8 +79,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
-        width: 72rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+        width: 75rem;
     }
 }
 
@@ -130,6 +138,13 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
   formatConsequence(consequence: string) {
     return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
   }
+
+    formatFilter(filter: string) {
+      if (!filter) return '-';
+      return filter.split(',').map((item, index) => (
+        <div key={index}>{item.trim()}</div>
+      ));
+    }
 
   render() {
     const { variant } = this.props;
@@ -197,6 +212,9 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
             <div style={styles.rowItem}>{variant.homozygoteCount}</div>
+            <div style={styles.filterItem}>
+              {this.formatFilter(variant.filter)}
+            </div>
           </div>
         )}
       </React.Fragment>

@@ -94,6 +94,7 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
         { display: "Allele Number", field: "alleleNumber" },
         { display: "Allele Frequency", field: "alleleFrequency" },
         { display: "Homozygote Count", field: "homozygoteCount" },
+        { display: "Filter", field: "filter" },
       ],
       filteredMetadata: this.props.filterMetadata,
       filterMetadata: this.props.filterMetadata,
