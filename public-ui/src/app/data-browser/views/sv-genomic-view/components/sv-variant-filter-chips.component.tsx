@@ -21,6 +21,7 @@ const lables = {
   alleleFrequency: "Allele Frequency",
   alleleCount: "Allele Count",
   homozygoteCount: "Homozygote Count",
+  filter: "Filter",
 };
 
 const styles = reactStyles({
@@ -149,12 +150,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
 
   render() {
     const { chips } = this.state;
-    console.log('render - chips:', chips);
     return (
       <div style={styles.chipFormat}>
         {chips.length > 0 &&
           chips.map((el, count) => {
-            console.log(`render - chip ${count}:`, el);
             if (el.data.hasOwnProperty("filterActive")) {
               return (
                 <div key={count}>
@@ -174,8 +173,6 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                         if (el.cat === 'consequence') {
                           chipLabel = chipLabel.trim().toLowerCase();
                         }
-
-                        console.log(`render - chip item ${count}-${i}:`, item, 'label:', chipLabel);
                         return (
                           <div style={styles.chipLayout} key={i}>
                             {item.checked && (

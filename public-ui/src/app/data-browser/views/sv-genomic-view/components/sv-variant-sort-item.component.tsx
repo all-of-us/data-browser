@@ -101,6 +101,7 @@ const lables = {
   alleleFrequency: "Allele Frequency",
   alleleCount: "Allele Count",
   homozygoteCount: "Homozygote Count",
+  filter: "Filter",
 };
 
 interface Props {
