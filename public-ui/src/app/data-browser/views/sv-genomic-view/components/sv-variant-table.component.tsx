@@ -91,10 +91,10 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 72rem;
+    min-width: 78rem;
     position: sticky;
     left: 0;
     top:0;
@@ -103,8 +103,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
-        width: 72rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
+        width: 78rem;
     }
 }
 .paginator {
@@ -166,6 +166,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
     "Allele Number",
     "Allele Frequency",
     "Homozygote Count",
+    "Filter",
   ];
   debounceTimer = null;
 
@@ -309,7 +310,8 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
               {this.renderColumnHeader("alleleCount", "Allele Count")}
               {this.renderColumnHeader("alleleNumber", "Allele Number")}
               {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader("homozygoteCount", "Homozygote Count", styles.last)}
+              {this.renderColumnHeader("homozygoteCount", "Homozygote Count")}
+              {this.renderColumnHeader("filter", "Filter", styles.last)}
             </div>
 
             {svResults &&

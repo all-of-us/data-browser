@@ -1613,6 +1613,10 @@ definitions:
         description: homozygote count column metadata
         type: object
         $ref: "#/definitions/SortColumnDetails"
+      filter:
+        description: filter metadata
+        type: object
+        $ref: "#/definitions/SortColumnDetails"
 
   SurveyModule:
     type: object
@@ -1758,6 +1762,9 @@ definitions:
         description: number of homozygotes
         type: integer
         format: int64
+      filter:
+        description: filter
+        type: string
 
   SVVariantListResponse:
     type: object
@@ -1840,6 +1847,10 @@ definitions:
         description: Homozygote Count Range Filter
         type: object
         $ref: "#/definitions/SVGenomicFilterOption"
+      filter:
+        description: Filter column Filter
+        type: object
+        $ref: "#/definitions/SVGenomicFilterOptionList"
 
   GenomicFilterOption:
     type: object

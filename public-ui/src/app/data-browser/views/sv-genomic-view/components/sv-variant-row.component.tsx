@@ -60,9 +60,9 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
     align-items: center;
-    width: 72rem;
+    min-width: 78rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -71,8 +71,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
-        width: 72rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem minmax(6rem, 1fr);
+        min-width: 78rem;
     }
 }
 
@@ -116,10 +116,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return variantType.replace(/^<|>$/g, '');
   }
 
-  formatConsequence(consequence: string) {
-    return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
-  }
-
   handleClick(variantId?: string) {
     if (variantId) {
       this.getVariantDetails(variantId);
@@ -127,8 +123,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     this.setState({
       svVariantExpanded: !this.state.svVariantExpanded,
     });
-    {
-    }
   }
 
   render() {
@@ -184,19 +178,20 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             </div>
             <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
             <div style={styles.rowItem}>
-              {this.formatConsequence(variant.consequence)}
+              {variant.consequence ? variant.consequence.toLowerCase() : variant.consequence}
             </div>
             <div style={styles.rowItem}>
-            {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
+              {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
             </div>
             <div style={styles.rowItem}>
-            {(variant.variantType?.includes('CTX') || variant.variantType?.includes('BND'))
-            ? 'N/A' : (variant.size != null && variant.size >= 0 ? variant.size : '-')}
+              {(variant.variantType?.includes('CTX') || variant.variantType?.includes('BND'))
+                ? 'N/A' : (variant.size != null && variant.size >= 0 ? variant.size : '-')}
             </div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
             <div style={styles.rowItem}>{variant.homozygoteCount}</div>
+            <div style={{...styles.rowItem, ...styles.last}}>{variant.filter ?? '-'}</div>
           </div>
         )}
       </React.Fragment>

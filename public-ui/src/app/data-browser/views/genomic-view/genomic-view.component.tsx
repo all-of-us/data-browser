@@ -198,6 +198,7 @@ class SortSVMetadataClass implements SortSVMetadata {
   alleleNumber: any;
   alleleFrequency: any;
   homozygoteCount: any;
+  filter: any;
   constructor(
     variantId: any,
     variantType: any,
@@ -207,7 +208,8 @@ class SortSVMetadataClass implements SortSVMetadata {
     alleleCount: any,
     alleleNumber: any,
     alleleFrequency: any,
-    homozygoteCount: any
+    homozygoteCount: any,
+    filter: any
   ) {
     this.variantId = variantId;
     this.variantType = variantType;
@@ -218,6 +220,7 @@ class SortSVMetadataClass implements SortSVMetadata {
     this.alleleNumber = alleleNumber;
     this.alleleFrequency = alleleFrequency;
     this.homozygoteCount = homozygoteCount;
+    this.filter = filter;
   }
 }
 
@@ -292,7 +295,8 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 6),
           new SortColumnDetailsClass(false, "asc", 7),
           new SortColumnDetailsClass(false, "asc", 8),
-          new SortColumnDetailsClass(false, "asc", 9)
+          new SortColumnDetailsClass(false, "asc", 9),
+          new SortColumnDetailsClass(false, "asc", 10)
         ),
         firstGene: "",
       };
