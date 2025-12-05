@@ -45,6 +45,10 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
     this.setState((prev) => ({ showAll: !prev.showAll }));
   };
 
+  formatConsequence(consequence: string) {
+    return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
+  }
+
   render() {
     const { consequenceString } = this.props;
     const { showAll } = this.state;
@@ -90,7 +94,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
         <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
           {firstEntry && (
             <div className="consequence-item">
-              <i>{firstEntry[0].toLowerCase()}:</i>{" "}
+              <i>{this.formatConsequence(firstEntry[0])}:</i>{" "}
               <span style={{ display: "inline" }}>
                 {showAll ? firstEntry[1].join(", ") : truncatedGeneStr}
                 {!showAll && (shouldTruncate || consequenceEntries.length > 1) && (
@@ -109,7 +113,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
           {showAll &&
             restEntries.map(([label, genes], idx) => (
               <div key={idx} className="consequence-item">
-                <i>{label.toLowerCase()}:</i> {genes.join(", ")}
+                <i>{this.formatConsequence(label)}:</i> {genes.join(", ")}
               </div>
             ))}
 
