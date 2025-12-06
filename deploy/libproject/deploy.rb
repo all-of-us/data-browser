@@ -9,7 +9,7 @@ require_relative "../../public-api/libproject/gcloudcontext"
 require_relative "../../public-api/libproject/wboptionsparser"
 
 
-DOCKER_KEY_FILE_PATH = "/creds/sa-key.json"
+DOCKER_KEY_FILE_PATH = "/tmp/sa-key.json"
 
 STAGING_PROJECT = "aou-db-staging"
 STABLE_PROJECT = "aou-db-stable"
@@ -105,22 +105,43 @@ def setup_and_enter_docker(cmd_name, opts)
   key_file = Tempfile.new(["#{opts.account}-key", ".json"], "/tmp")
   ServiceAccountContext.new(
     opts.project, opts.account, key_file.path).run do
+
+    # Verify the key file exists and read its content
+    unless File.exist?(key_file.path) && File.size(key_file.path) > 0
+      common.error "Service account key file is empty or doesn't exist: #{key_file.path}"
+      exit 1
+    end
+
+    # Base64 encode the key content to avoid quote escaping issues
+    require 'base64'
+    key_content = File.read(key_file.path)
+    key_content_base64 = Base64.strict_encode64(key_content)
+    common.status "Using key file: #{key_file.path} (#{File.size(key_file.path)} bytes)"
+
     common.run_inline %W{docker-compose build deploy}
-    common.run_inline %W{
-      docker-compose run --rm
-      -e DATA_BROWSER_VERSION=#{opts.git_version}
-      -v #{key_file.path}:#{DOCKER_KEY_FILE_PATH}
-      deploy deploy/project.rb #{cmd_name}
-      --account #{opts.account}
-      --project #{opts.project}
-      #{opts.promote ? "--promote" : "--no-promote"}
-      --app-version #{opts.app_version}
-      --git-version #{opts.git_version}
-      --key-file #{DOCKER_KEY_FILE_PATH}
-    } +
-      (opts.circle_url.nil? ? [] : %W{--circle-url #{opts.circle_url}}) +
-      (opts.update_jira ? [] : %W{--no-update-jira}) +
-      (opts.dry_run ? %W{--dry-run} : [])
+
+    # Build the command with proper array handling
+    # Remove /creds/sa-key.json if it exists as a directory, then create the file
+    deploy_cmd = "rm -rf #{DOCKER_KEY_FILE_PATH} && " +
+                 "echo \"$SA_KEY_JSON_BASE64\" | base64 -d > #{DOCKER_KEY_FILE_PATH} && " +
+                 "deploy/project.rb #{cmd_name} " +
+                 "--account #{opts.account} " +
+                 "--project #{opts.project} " +
+                 "#{opts.promote ? "--promote" : "--no-promote"} " +
+                 "--app-version #{opts.app_version} " +
+                 "--git-version #{opts.git_version} " +
+                 "--key-file #{DOCKER_KEY_FILE_PATH}"
+
+    deploy_cmd += " --circle-url #{opts.circle_url}" unless opts.circle_url.nil?
+    deploy_cmd += " --no-update-jira" unless opts.update_jira
+    deploy_cmd += " --dry-run" if opts.dry_run
+
+    common.run_inline [
+      "docker-compose", "run", "--rm",
+      "-e", "DATA_BROWSER_VERSION=#{opts.git_version}",
+      "-e", "SA_KEY_JSON_BASE64=#{key_content_base64}",
+      "deploy", "bash", "-c", deploy_cmd
+    ]
   end
 end
 
