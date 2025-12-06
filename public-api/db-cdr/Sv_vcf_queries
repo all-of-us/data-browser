@@ -34,12 +34,12 @@ ncr as no_call_rate
 FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1` b;
 
 
-create or replace table `aou-db-prod.2024q3r2_genomics.selected_sv_fields_db_with_id` as
+create or replace table `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` as
 with data_except as
 (
-  select * except(consequence, consequence_genes, genes)
+  select *
   FROM
-  `aou-db-prod.2024q3r2_genomics.selected_sv_fields_db_with_id`
+  `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`
 )
 SELECT
   *,
@@ -84,77 +84,6 @@ SELECT
 FROM data_except;
 
 
-CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.selected_sv_fields_db_with_id` AS
-SELECT
-  *,
-  ARRAY_TO_STRING(
-    ARRAY(
-      SELECT element FROM UNNEST([
-        CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN CAST(PREDICTED_BREAKEND_EXONIC AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN CAST(PREDICTED_COPY_GAIN AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN CAST(PREDICTED_DUP_PARTIAL AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN CAST(PREDICTED_INTRAGENIC_EXON_DUP AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN CAST(PREDICTED_INTRONIC AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN CAST(PREDICTED_INV_SPAN AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_LOF IS NOT NULL THEN CAST(PREDICTED_LOF AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN CAST(PREDICTED_MSV_EXON_OVERLAP AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN CAST(PREDICTED_NEAREST_TSS AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN CAST(PREDICTED_PARTIAL_EXON_DUP AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN CAST(PREDICTED_PROMOTER AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN CAST(PREDICTED_TSS_DUP AS STRING) ELSE NULL END,
-        CASE WHEN PREDICTED_UTR IS NOT NULL THEN CAST(PREDICTED_UTR AS STRING) ELSE NULL END
-      ]) AS element WHERE element IS NOT NULL
-    ), ', '
-  ) AS genes
-FROM
-  `aou-db-prod.2024q3r2_genomics.selected_sv_fields_db_with_id`;
-
-
-
-create or replace table `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` as
-SELECT
-  *,
-ARRAY_TO_STRING(
-    ARRAY(
-      SELECT element FROM UNNEST([
-        CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN 'BREAKEND_EXONIC' ELSE NULL END,
-        CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN 'COPY_GAIN' ELSE NULL END,
-        CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN 'DUP_PARTIAL' ELSE NULL END,
-        CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN 'INTRAGENIC_EXON_DUP' ELSE NULL END,
-        CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN 'INTRONIC' ELSE NULL END,
-        CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN 'INV_SPAN' ELSE NULL END,
-        CASE WHEN PREDICTED_LOF IS NOT NULL THEN 'LOF' ELSE NULL END,
-        CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN 'MSV_EXON_OVERLAP' ELSE NULL END,
-        CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN 'INTERGENIC' ELSE NULL END,
-        CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN 'PARTIAL_EXON_DUP' ELSE NULL END,
-        CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN 'PROMOTER' ELSE NULL END,
-        CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN 'TSS_DUP' ELSE NULL END,
-        CASE WHEN PREDICTED_UTR IS NOT NULL THEN 'UTR' ELSE NULL END
-      ]) AS element WHERE element IS NOT NULL
-    ), ', '
-  ) AS consequence,
-ARRAY_TO_STRING(
-  ARRAY(
-    SELECT element FROM UNNEST([
-      CASE WHEN PREDICTED_BREAKEND_EXONIC IS NOT NULL THEN CONCAT('BREAKEND_EXONIC - ', PREDICTED_BREAKEND_EXONIC)  ELSE NULL END,
-      CASE WHEN PREDICTED_COPY_GAIN IS NOT NULL THEN CONCAT('COPY_GAIN - ', PREDICTED_COPY_GAIN) ELSE NULL END,
-      CASE WHEN PREDICTED_DUP_PARTIAL IS NOT NULL THEN CONCAT('DUP_PARTIAL - ', PREDICTED_DUP_PARTIAL) ELSE NULL END,
-      CASE WHEN PREDICTED_INTRAGENIC_EXON_DUP IS NOT NULL THEN CONCAT('INTRAGENIC_EXON_DUP - ', PREDICTED_INTRAGENIC_EXON_DUP) ELSE NULL END,
-      CASE WHEN PREDICTED_INTRONIC IS NOT NULL THEN CONCAT('INTRONIC - ', PREDICTED_INTRONIC) ELSE NULL END,
-      CASE WHEN PREDICTED_INV_SPAN IS NOT NULL THEN CONCAT('INV_SPAN - ', PREDICTED_INV_SPAN) ELSE NULL END,
-      CASE WHEN PREDICTED_LOF IS NOT NULL THEN CONCAT('LOF - ', PREDICTED_LOF) ELSE NULL END,
-      CASE WHEN PREDICTED_MSV_EXON_OVERLAP IS NOT NULL THEN CONCAT('MSV_EXON_OVERLAP - ', PREDICTED_MSV_EXON_OVERLAP) ELSE NULL END,
-      CASE WHEN PREDICTED_NEAREST_TSS IS NOT NULL THEN CONCAT('INTERGENIC - ', PREDICTED_NEAREST_TSS) ELSE NULL END,
-      CASE WHEN PREDICTED_PARTIAL_EXON_DUP IS NOT NULL THEN CONCAT('PARTIAL_EXON_DUP - ', PREDICTED_PARTIAL_EXON_DUP) ELSE NULL END,
-      CASE WHEN PREDICTED_PROMOTER IS NOT NULL THEN CONCAT('PROMOTER - ', PREDICTED_PROMOTER) ELSE NULL END,
-      CASE WHEN PREDICTED_TSS_DUP IS NOT NULL THEN CONCAT('TSS_DUP - ', PREDICTED_TSS_DUP) ELSE NULL END,
-      CASE WHEN PREDICTED_UTR IS NOT NULL THEN CONCAT('UTR - ', PREDICTED_UTR) ELSE NULL END
-    ]) AS element WHERE element IS NOT NULL
-  ), '; '
-) AS consequence_genes
-FROM
-  `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`;
-
 CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` AS
 SELECT
   *,
@@ -179,6 +108,8 @@ SELECT
   ) AS genes
 FROM
   `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed`;
+
+
 
 CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1_processed` AS
 -- Step 1: Identify positions (CHROM + POS) that are unique
@@ -239,7 +170,7 @@ SELECT
   afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
   eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
   mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
-  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, a.no_call_rate,
   variant_id AS variant_id_vcf,
   variant_id AS variant_id
 FROM single_random_ids a
@@ -261,7 +192,7 @@ SELECT
   afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
   eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
   mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
-  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, b.no_call_rate,
   variant_id AS variant_id_vcf,
   variant_id AS variant_id
 FROM multiple_random_ids b;

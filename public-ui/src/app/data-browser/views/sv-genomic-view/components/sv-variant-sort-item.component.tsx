@@ -101,6 +101,7 @@ const lables = {
   alleleFrequency: "Allele Frequency",
   alleleCount: "Allele Count",
   homozygoteCount: "Homozygote Count",
+  filter: "Filter",
 };
 
 interface Props {
@@ -132,6 +133,7 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
         { display: "Allele Number", field: "alleleNumber" },
         { display: "Allele Frequency", field: "alleleFrequency" },
         { display: "Homozygote Count", field: "homozygoteCount" },
+        { display: "Filter", field: "filter" },
       ],
       sortCats: [
         { display: "Variant Type", field: "variantType" },
@@ -143,6 +145,7 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
         { display: "Allele Number", field: "alleleNumber" },
         { display: "Allele Frequency", field: "alleleFrequency" },
         { display: "Homozygote Count", field: "homozygoteCount" },
+        { display: "Filter", field: "filter" },
       ],
     };
   }

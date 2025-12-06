@@ -419,7 +419,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     variantPopulationDetails={variantPopulationDetails}
                   />
                 <div className="alt-variant-id">
-                  <strong>Alternate ID:</strong> {variantDetails.variantIDVCF}
+                  <strong>VCF ID:</strong> {variantDetails.variantIDVCF}
                 </div>
                 </div>
               </React.Fragment>
