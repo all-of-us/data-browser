@@ -9,6 +9,7 @@ import { GenomicViewComponent } from "app/data-browser/views/genomic-view/genomi
 import { IntroVidReactComponent } from "app/data-browser/views/intro-vids/intro-vids-react.component";
 import { PMReactComponent } from "app/data-browser/views/pm/pm-react.component";
 import { dBHomeComponent } from "app/data-browser/views/quick-search/home-view-react.component";
+import { environment } from "environments/environment";
 
 import { SurveyViewReactComponent } from "./data-browser/views/survey-view/survey-react-view.component";
 
@@ -127,30 +128,34 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
           })
         }
       />
-      <AppRoute
-        path="/structural-variants"
-        component={() =>
-          GenomicViewComponent({
-            selectionId: 2,
-            routeData: {
-              title: "Genomic Variants",
-              breadcrumb: { value: "Genomic Variants" },
-            },
-          })
-        }
-      />
-      <AppRoute
-        path="/structural-variants/:search"
-        component={() =>
-          GenomicViewComponent({
-            selectionId: 2,
-            routeData: {
-              title: "Genomic Variants",
-              breadcrumb: { value: "Genomic Variants" },
-            },
-          })
-        }
-      />
+      {environment.svVCFBrowser && (
+        <AppRoute
+          path="/structural-variants"
+          component={() =>
+            GenomicViewComponent({
+              selectionId: 2,
+              routeData: {
+                title: "Genomic Variants",
+                breadcrumb: { value: "Genomic Variants" },
+              },
+            })
+          }
+        />
+      )}
+      {environment.svVCFBrowser && (
+        <AppRoute
+          path="/structural-variants/:search"
+          component={() =>
+            GenomicViewComponent({
+              selectionId: 2,
+              routeData: {
+                title: "Genomic Variants",
+                breadcrumb: { value: "Genomic Variants" },
+              },
+            })
+          }
+        />
+      )}
       <AppRoute
         path="/participant-demographics"
         component={() =>

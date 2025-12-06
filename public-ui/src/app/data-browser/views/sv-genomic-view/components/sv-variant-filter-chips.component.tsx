@@ -62,6 +62,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
 
   formatChips(filteredMetadata): Array<any> {
     const displayArr = [];
+    // Add null/undefined check
+    if (!filteredMetadata) {
+      return displayArr;
+    }
     for (const key in filteredMetadata) {
       if (
         Object.prototype.hasOwnProperty.call(filteredMetadata, key) &&
@@ -93,9 +97,16 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     prevState: Readonly<State>,
     snapshot?: any
   ): void {
-    if (prevProps !== this.props) {
+    if (prevProps.filteredMetadata !== this.props.filteredMetadata) {
       console.log('componentDidUpdate - prevProps.filteredMetadata:', prevProps.filteredMetadata);
       console.log('componentDidUpdate - this.props.filteredMetadata:', this.props.filteredMetadata);
+
+      // Clear chips if filteredMetadata is null/undefined
+      if (!this.props.filteredMetadata) {
+        this.setState({ chips: [] });
+        return;
+      }
+
       const formattedChips = this.formatChips(this.props.filteredMetadata);
       console.log('componentDidUpdate - formattedChips:', formattedChips);
       this.setState({ chips: formattedChips });
@@ -106,6 +117,12 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     console.log('removeChip - item:', item);
     console.log('removeChip - cat:', cat);
     const { filteredMetadata } = this.props;
+
+    // Guard against null/undefined filteredMetadata
+    if (!filteredMetadata) {
+      return;
+    }
+
     console.log('removeChip - filteredMetadata before:', JSON.parse(JSON.stringify(filteredMetadata)));
 
     if (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
@@ -124,10 +141,12 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
           localStorage.getItem("svOriginalFilterMetadata") || "{}"
         );
         console.log('removeChip - originalFilterMetadata:', originalFilterMetadata);
-        filteredMetadata[cat.toString()].min =
-          originalFilterMetadata[cat.toString()].min;
-        filteredMetadata[cat.toString()].max =
-          originalFilterMetadata[cat.toString()].max;
+        if (originalFilterMetadata[cat.toString()]) {
+          filteredMetadata[cat.toString()].min =
+            originalFilterMetadata[cat.toString()].min;
+          filteredMetadata[cat.toString()].max =
+            originalFilterMetadata[cat.toString()].max;
+        }
       } catch (e) {
         console.log("Error loading original filter metadata:", e);
       }

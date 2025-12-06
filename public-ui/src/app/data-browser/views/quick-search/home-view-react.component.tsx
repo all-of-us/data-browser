@@ -767,7 +767,9 @@ export const dBHomeComponent = withRouteData(
         localStorage.setItem("searchText", searchWord);
         this.getDomainInfos();
         this.getVariantResultSize();
-        this.getSVVariantResultSize();
+        if (environment.svVCFBrowser) {
+          this.getSVVariantResultSize();
+        }
       });
     }
 
@@ -775,7 +777,9 @@ export const dBHomeComponent = withRouteData(
       this.typing = true;
       this.getDomainInfos();
       this.getVariantResultSize();
-      this.getSVVariantResultSize();
+      if (environment.svVCFBrowser) {
+        this.getSVVariantResultSize();
+      }
       this.changeUrl();
     }, 1000);
 
@@ -806,7 +810,9 @@ export const dBHomeComponent = withRouteData(
 
       this.getDomainInfos();
       this.getVariantResultSize();
-      this.getSVVariantResultSize();
+      if (environment.svVCFBrowser) {
+        this.getSVVariantResultSize();
+      }
       this.getGenomicParticipantCounts();
       window.addEventListener("resize", this.handleResize);
       window.addEventListener("popstate", this.handlePopState);
@@ -974,9 +980,9 @@ export const dBHomeComponent = withRouteData(
         surveyInfo.length === 0;
 
       const showGenomicsSection = environment.geno && genomicInfo &&
-        (!loadingVariantListSize && !loadingSVVariantListSize) &&
-        ((!searchWord && (variantListSize > 0 || svVariantListSize !== null)) ||
-         (searchWord && (variantListSize > 0 || svVariantListSize > 0)));
+        (!loadingVariantListSize && (!environment.svVCFBrowser || !loadingSVVariantListSize)) &&
+        ((!searchWord && (variantListSize > 0 || (environment.svVCFBrowser && svVariantListSize !== null))) ||
+         (searchWord && (variantListSize > 0 || (environment.svVCFBrowser && svVariantListSize > 0))));
 
       return (
         <React.Fragment>
@@ -1034,7 +1040,7 @@ export const dBHomeComponent = withRouteData(
             </div>
           </div>
 
-          {loading || loadingVariantListSize || loadingSVVariantListSize ? (
+          {loading || loadingVariantListSize || (environment.svVCFBrowser && loadingSVVariantListSize) ? (
             <div
               style={{
                 height: "15vh",
@@ -1048,7 +1054,7 @@ export const dBHomeComponent = withRouteData(
             </div>
           ) : (
             <section style={styles.results}>
-              {noConceptData && variantListSize === 0 && svVariantListSize === 0 && (
+              {noConceptData && variantListSize === 0 && (!environment.svVCFBrowser || svVariantListSize === 0) && (
                 <ErrorMessageReactComponent dataType="noResults" />
               )}
               {true && (
@@ -1123,8 +1129,13 @@ export const dBHomeComponent = withRouteData(
                             />
                           )}
 
+                          {!environment.svVCFBrowser && (
+                            <GenomicCallToActionComponent {...genomicInfo} />
+                          )}
+
+
                           {/* Structural Variants tile - show if no search OR if search has results */}
-                          {(!searchWord || (searchWord && svVariantListSize > 0)) && (
+                          {environment.svVCFBrowser && (!searchWord || (searchWord && svVariantListSize > 0)) && (
                             <ResultLinksComponent
                               typing={!this.typing}
                               key="sv-genomics-tile"
