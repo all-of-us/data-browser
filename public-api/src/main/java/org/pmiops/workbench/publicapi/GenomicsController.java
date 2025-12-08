@@ -586,6 +586,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         boolean whereGeneFlag = false;
+        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
 
         String variantSearchTerm = variantResultSizeRequest.getQuery().trim();
         SVGenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
@@ -606,6 +607,16 @@ public class GenomicsController implements GenomicsApiDelegate {
             contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
+
+            // Store raw gene name and add filter to exclude variants where gene only has INTERGENIC/NEAREST_TSS consequences
+            if (whereGeneFlag) {
+                rawGeneSearchTerm = searchTerm.toUpperCase().trim();
+                finalSql += " AND EXISTS (" +
+                        "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                        "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                        "WHERE UPPER(TRIM(gene)) = @rawGene " +
+                        "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+            }
         }
 
         String WHERE_GENE_IN = " AND genes in (";
@@ -622,6 +633,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         boolean varTypeFilterFlag = false;
         boolean conFilterFlag = false;
         boolean filterFilterFlag = false;
+        if (filters == null && !Strings.isNullOrEmpty(searchTerm)) {
+            WHERE_FILTER_IN = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
+            filterFilterFlag = true;
+        }
         if (filters != null) {
             SVGenomicFilterOptionList geneFilterList = filters.getGene();
             List<SVGenomicFilterOption> geneFilters = geneFilterList.getItems();
@@ -774,6 +789,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("low", QueryParameterValue.int64(low))
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .addNamedParameter("rawGene", QueryParameterValue.string(rawGeneSearchTerm))
                 .setUseLegacySql(false)
                 .build();
 
@@ -784,7 +800,6 @@ public class GenomicsController implements GenomicsApiDelegate {
 
         return ResponseEntity.ok(bigQueryService.getLong(row, rm.get("count")));
     }
-
 
     @Override
     public ResponseEntity<SVVariantListResponse> searchSVVariants(SearchSVVariantsRequest searchVariantsRequest) {
@@ -798,7 +813,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
         SortSVMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
-
         SVGenomicFilters filters = searchVariantsRequest.getFilterMetadata();
 
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
@@ -886,46 +900,79 @@ public class GenomicsController implements GenomicsApiDelegate {
                     ORDER_BY_CLAUSE = " ORDER BY filter DESC";
                 }
             }
-
         }
-        StringBuilder finalSqlBuilder = new StringBuilder(SV_VARIANT_LIST_SQL_TEMPLATE);
+
         String searchTerm = variantSearchTerm;
         String variant_id = "";
         String genes = "";
+        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
         boolean whereVariantIdFlag = false;
         boolean whereGeneFlag = false;
 
         Long low = 0L;
         Long high = 0L;
 
-        String finalSql = SV_VARIANT_LIST_SQL_TEMPLATE;
-
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
 
         String contig = searchTerm;
+        String searchSqlQuery = "";
 
         if (!Strings.isNullOrEmpty(searchTerm)) {
             SVGenomicSearchTermType searchTermType = getSVSearchType(variantSearchTerm, searchTerm);
-            finalSql += searchTermType.getSearchSqlQuery();
+            searchSqlQuery = searchTermType.getSearchSqlQuery();
             genes = searchTermType.getGenes();
             variant_id = searchTermType.getVariantId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
             contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
+
+            // Store raw gene name for consequence filtering (without regex patterns)
+            if (whereGeneFlag) {
+                rawGeneSearchTerm = searchTerm.toUpperCase().trim();
+            }
         }
 
+        if (whereGeneFlag && !rawGeneSearchTerm.isEmpty()) {
+            searchSqlQuery += " AND EXISTS (" +
+                    "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                    "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                    "WHERE UPPER(TRIM(gene)) = @rawGene " +
+                    "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+        }
+
+        // Build dynamic consequence SELECT based on whether it's a gene search
+        String consequenceSelect;
+        if (whereGeneFlag && !rawGeneSearchTerm.isEmpty()) {
+            // When searching by gene, extract only consequences associated with that gene
+            // Format: "CONSEQUENCE1 - GENE1,GENE2; CONSEQUENCE2 - GENE3,GENE4"
+            consequenceSelect =
+                    "(SELECT STRING_AGG(DISTINCT SPLIT(cg, ' - ')[SAFE_OFFSET(0)], ', ') " +
+                            "FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                            "     UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                            "WHERE UPPER(TRIM(gene)) = @rawGene) AS consequence";
+        } else {
+            consequenceSelect = "consequence";
+        }
+
+        // Build the SQL with dynamic consequence select
+        String finalSql = "SELECT variant_id, variant_type, " + consequenceSelect + ", position, a.size, " +
+                "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count, a.filter " +
+                "FROM ${projectId}.${dataSetId}.aou_sv_vcf_7_1_processed a" + searchSqlQuery;
+
         String WHERE_GENE_IN = " AND genes in (";
-
         String WHERE_VAR_TYPE_IN = "AND variant_type in (";
-
         String WHERE_CON_NULL = "";
         String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
-
         String WHERE_FILTER_IN = " AND filter in (";
         boolean filterFilterFlag = false;
+
+        if (filters == null && !Strings.isNullOrEmpty(searchTerm)) {
+            WHERE_FILTER_IN = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
+            filterFilterFlag = true;
+        }
 
         String SIZE_FILTER = "";
         String ALLELE_COUNT_FILTER = "";
@@ -947,7 +994,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                     }
                 }
             }
-
 
             SVGenomicFilterOptionList varTypeFilterList = filters.getVariantType();
             List<SVGenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
@@ -1022,6 +1068,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 }
             }
         }
+
         if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
             geneFilterFlag = true;
             WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
@@ -1052,7 +1099,6 @@ public class GenomicsController implements GenomicsApiDelegate {
             }
             finalSql += WHERE_GENE_IN;
         }
-
 
         if (varTypeFilterFlag) {
             finalSql += WHERE_VAR_TYPE_IN;
@@ -1098,6 +1144,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
                 .addNamedParameter("high", QueryParameterValue.int64(high))
                 .addNamedParameter("low", QueryParameterValue.int64(low))
+                .addNamedParameter("rawGene", QueryParameterValue.string(rawGeneSearchTerm))
                 .setUseLegacySql(false)
                 .build();
 
@@ -1624,6 +1671,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
+        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
 
         String searchTerm = variantSearchTerm.trim();
         boolean whereGeneFlag = false;
@@ -1648,6 +1696,16 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereContigFlag = searchTermType.isWhereContigFlag();
             wherePositionFlag = searchTermType.isWherePositionFlag();
             whereVariantIdFlag = searchTermType.isWhereVariantIdFlag();
+
+            // Store raw gene name and add filter to exclude variants where gene only has INTERGENIC/NEAREST_TSS consequences
+            if (whereGeneFlag) {
+                rawGeneSearchTerm = searchTerm.toUpperCase().trim();
+                searchSqlQuery += " AND EXISTS (" +
+                        "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                        "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                        "WHERE UPPER(TRIM(gene)) = @rawGene " +
+                        "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+            }
         }
 
 
@@ -1667,6 +1725,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("low", QueryParameterValue.int64(low))
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
                 .addNamedParameter("genes", QueryParameterValue.string(genes))
+                .addNamedParameter("rawGene", QueryParameterValue.string(rawGeneSearchTerm))
                 .setUseLegacySql(false)
                 .build();
 

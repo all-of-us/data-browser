@@ -46,7 +46,21 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
   };
 
   formatConsequence(consequence: string) {
-    return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
+      if (!consequence) return consequence;
+
+      const trimmed = consequence.trim().toUpperCase();
+
+      // Special handling for INTERGENIC - display as "intergenic - nearest TSS"
+      if (trimmed === 'INTERGENIC') {
+        return 'intergenic - nearest TSS';
+      }
+
+      // Special handling for NEAREST_TSS - display as "nearest TSS"
+      if (trimmed === 'NEAREST_TSS') {
+        return 'nearest TSS';
+      }
+
+      return consequence.toLowerCase().replace(/_/g, ' ');
   }
 
   render() {

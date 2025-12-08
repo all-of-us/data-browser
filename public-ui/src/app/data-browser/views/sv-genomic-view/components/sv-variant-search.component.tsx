@@ -158,6 +158,7 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
   }
 
   showFilter() {
+    console.log(this.props.submittedFilterMetadata);
     this.setState({ filterShow: !this.state.filterShow });
   }
 
