@@ -35,8 +35,12 @@ const styles = reactStyles({
     paddingTop: ".5rem",
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
-    wordBreak: "break-word",
     overflowWrap: "break-word",
+    wordBreak: "break-word",
+  },
+  filterValue: {
+    marginBottom: "0.1rem",
+    lineHeight: "1.2",
   },
   first: {
     paddingLeft: ".5rem",
@@ -139,12 +143,18 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
   }
 
-    formatFilter(filter: string) {
-      if (!filter) return '-';
-      return filter.split(',').map((item, index) => (
-        <div key={index}>{item.trim()}</div>
-      ));
-    }
+  formatFilter(filter: string) {
+    if (!filter) return '-';
+    return filter.split(',').map((item, index) => {
+      const trimmedItem = item.trim();
+      const formattedLabel = trimmedItem;
+      return (
+        <div key={index} style={styles.filterValue} title={trimmedItem}>
+          {formattedLabel}
+        </div>
+      );
+    });
+  }
 
   render() {
     const { variant } = this.props;
