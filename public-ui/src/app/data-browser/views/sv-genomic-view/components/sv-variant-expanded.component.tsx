@@ -294,10 +294,10 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     </span>
                   </div>
                   <div>
-                    <span style={styles.catHeading}>No-call Rate:</span>
+                    <span style={styles.catHeading}>Quality Score:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.noCallRate? variantDetails.noCallRate : '-'}
+                      {variantDetails.qualityScore? variantDetails.qualityScore : '-'}
                     </span>
                   </div>
                   <div>
