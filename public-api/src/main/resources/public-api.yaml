@@ -2195,6 +2195,10 @@ definitions:
         description: No Call Rate
         type: number
         format: double
+      qualityScore:
+        description: quality score
+        type: number
+        format: double
       filter:
         description: filter
         type: string

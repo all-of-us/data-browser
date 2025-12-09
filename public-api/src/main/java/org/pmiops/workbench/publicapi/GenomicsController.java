@@ -206,7 +206,7 @@ public class GenomicsController implements GenomicsApiDelegate {
             "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, gvs_all_af as total_allele_frequency, homozygote_count as total_homozygote_count from ${projectId}.${dataSetId}.wgs_variant";
 
     private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE = "SELECT variant_type, consequence_genes, position, size, variant_id_vcf, \n" +
-            "cpx_intervals as cpx_intervals, cpx_type as cpx_type, a.filter as filter, a.no_call_rate as no_call_rate, \n" +
+            "cpx_intervals as cpx_intervals, cpx_type as cpx_type, a.filter as filter, a.no_call_rate as no_call_rate, a.quality_score as quality_score, \n" +
             "afr_ac as afr_allele_count, afr_an as afr_allele_number, afr_af as afr_allele_frequency, afr_n_homalt as afr_homozygote_count, \n" +
             "eas_ac as eas_allele_count, eas_an as eas_allele_number, eas_af as eas_allele_frequency, eas_n_homalt as eas_homozygote_count, \n" +
             "eur_ac as eur_allele_count, eur_an as eur_allele_number, eur_af as eur_allele_frequency, eur_n_homalt as eur_homozygote_count, \n" +
@@ -1960,6 +1960,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .cpxIntervals(bigQueryService.getString(row, rm.get("cpx_intervals")))
                 .cpxType(bigQueryService.getString(row, rm.get("cpx_type")))
                 .noCallRate(bigQueryService.getDouble(row, rm.get("no_call_rate")))
+                .qualityScore(bigQueryService.getDouble(row, rm.get("quality_score")))
                 .filter(bigQueryService.getString(row, rm.get("filter")))
                 .afrAlleleCount(bigQueryService.getLong(row, rm.get("afr_allele_count")))
                 .afrAlleleNumber(bigQueryService.getLong(row, rm.get("afr_allele_number")))

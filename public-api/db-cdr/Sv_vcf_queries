@@ -30,7 +30,8 @@ CASE
         THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.END AS STRING))
 END AS position,
 alt AS variant_type, filter, ac as allele_count, an as allele_number, chr2, cpx_intervals, cpx_type, b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial, predicted_intergenic, predicted_intragenic_exon_dup, predicted_intronic, predicted_inv_span, predicted_lof, predicted_msv_exon_overlap, predicted_nearest_tss, predicted_partial_exon_dup, predicted_promoter, predicted_tss_dup, predicted_utr, svlen as size, af as allele_frequency, n_homalt as homozygote_count, afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt, eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt, mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt, sas_an, sas_ac, sas_af, sas_n_homalt, id as variant_id,
-ncr as no_call_rate
+ncr as no_call_rate,
+qual as quality_score
 FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_7_1` b;
 
 
@@ -170,7 +171,7 @@ SELECT
   afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
   eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
   mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
-  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, a.no_call_rate,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, a.no_call_rate, a.quality_score,
   variant_id AS variant_id_vcf,
   variant_id AS variant_id
 FROM single_random_ids a
@@ -192,7 +193,7 @@ SELECT
   afr_an, afr_ac, afr_af, afr_n_homalt, amr_an, amr_ac, amr_af, amr_n_homalt,
   eas_an, eas_ac, eas_af, eas_n_homalt, eur_an, eur_ac, eur_af, eur_n_homalt,
   mid_an, mid_ac, mid_af, mid_n_homalt, oth_an, oth_ac, oth_af, oth_n_homalt,
-  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, b.no_call_rate,
+  sas_an, sas_ac, sas_af, sas_n_homalt, consequence, consequence_genes, genes, b.no_call_rate, b.quality_score,
   variant_id AS variant_id_vcf,
   variant_id AS variant_id
 FROM multiple_random_ids b;
