@@ -333,6 +333,37 @@ public class GenomicsController implements GenomicsApiDelegate {
             "union all \n" +
             "select * from i;";
 
+    private void initCdrVersion() {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch (NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+    }
+
+    private String getSortDirection(String direction, boolean defaultAsc) {
+        if (defaultAsc) {
+            return "desc".equals(direction) ? "DESC" : "ASC";
+        } else {
+            return "asc".equals(direction) ? "ASC" : "DESC";
+        }
+    }
+
+    private static final String SV_GENE_CONSEQUENCE_FILTER =
+            " AND EXISTS (" +
+                    "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                    "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                    "WHERE UPPER(TRIM(gene)) = @rawGene " +
+                    "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+
+    private static final String SV_DEFAULT_FILTER = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
+
+    private static final String SV_GENE_CONSEQUENCE_SELECT =
+            "(SELECT STRING_AGG(DISTINCT SPLIT(cg, ' - ')[SAFE_OFFSET(0)], ', ') " +
+                    "FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
+                    "     UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
+                    "WHERE UPPER(TRIM(gene)) = @rawGene) AS consequence";
+
     private static String getConsequenceSeverityCaseStatement(String colAlias) {
         StringBuilder caseStatement = new StringBuilder("CASE ");
         for (Map.Entry<String, Integer> entry : CONSEQUENCE_SEVERITY_RANKS.entrySet()) {
@@ -357,21 +388,14 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     @Override
     public ResponseEntity<Analysis> getParticipantCounts() {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
         return ResponseEntity.ok(achillesAnalysisService.findAnalysisByIdAndDomain(3000L, "Genomics"));
     }
 
     @Override
     public ResponseEntity<Long> getVariantSearchResultSize(VariantResultSizeRequest variantResultSizeRequest) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
+
         String finalSql = COUNT_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -382,11 +406,13 @@ public class GenomicsController implements GenomicsApiDelegate {
         GenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
         String searchTerm = variantSearchTerm;
         boolean whereGeneFlag = false;
+
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
+
         String contig = "(?i)(" + searchTerm + ")$";
-        // Make sure the search term is not empty
+
         if (!Strings.isNullOrEmpty(searchTerm)) {
             GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
             finalSql += searchTermType.getSearchSqlQuery();
@@ -399,161 +425,16 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereGeneFlag = searchTermType.isWhereGeneFlag();
         }
 
-        String WHERE_GENE_IN = " AND genes in (";
-        String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in ( \n";
-        String WHERE_CON_NULL = "";
-        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
-        String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
-        String WHERE_CLIN_NULL = "";
-        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
-        String ALLELE_COUNT_FILTER = "";
-        String ALLELE_NUMBER_FILTER = "";
-        String ALLELE_FREQUENCY_FILTER = "";
-        String HOMOZYGOTE_COUNT_FILTER = "";
-        boolean geneFilterFlag = false;
-        boolean conFilterFlag = false;
-        boolean varTypeFilterFlag = false;
-        boolean clinFilterFlag = false;
+        // Build filters using the builder
+        GenomicFilterBuilder filterBuilder = new GenomicFilterBuilder(false);
+
         if (filters != null) {
-            GenomicFilterOptionList geneFilterList = filters.getGene();
-            List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
-                for(int i=0; i < geneFilters.size(); i++) {
-                    GenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
-                    }
-                }
-            }
-            GenomicFilterOptionList conFilterList = filters.getConsequence();
-            List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
-                for(int i=0; i < conFilters.size(); i++) {
-                    GenomicFilterOption filter = conFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_CON_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
-                        }
-                    }
-                }
-            }
-            GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
-            List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
-                for(int i=0; i < varTypeFilters.size(); i++) {
-                    GenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
-            GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
-            List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.isFilterActive()) {
-                for(int i=0; i < clinFilters.size(); i++) {
-                    GenomicFilterOption filter = clinFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_CLIN_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CLIN_NULL = " OR ARRAY_LENGTH(clinical_significance) = 0";
-                        }
-                    }
-                }
-            }
-            GenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.isChecked()) {
-                Long minVal = acFilter.getMin();
-                Long maxVal = acFilter.getMax();
-                ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.isChecked()) {
-                Long minVal = anFilter.getMin();
-                Long maxVal = anFilter.getMax();
-                ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.isChecked()) {
-                Float minVal = afFilter.getMinFreq();
-                Float maxVal = afFilter.getMaxFreq();
-                ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.isChecked()) {
-                Long minVal = hcFilter.getMin();
-                Long maxVal = hcFilter.getMax();
-                HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
-            }
+            filterBuilder.populateFromGenomicFilters(filters);
         }
-        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
-            geneFilterFlag = true;
-            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
-            WHERE_GENE_IN += ") ";
-        }
-        if (WHERE_CON_IN.substring(WHERE_CON_IN.length() - 1).equals(",")) {
-            conFilterFlag = true;
-            WHERE_CON_IN = WHERE_CON_IN.substring(0, WHERE_CON_IN.length()-1);
-            WHERE_CON_IN += ")) ";
-        }
-        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
-            varTypeFilterFlag = true;
-            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
-        }
-        if (WHERE_CLIN_IN.substring(WHERE_CLIN_IN.length() - 1).equals(",")) {
-            clinFilterFlag = true;
-            WHERE_CLIN_IN = WHERE_CLIN_IN.substring(0, WHERE_CLIN_IN.length()-1);
-            WHERE_CLIN_IN += ")) ";
-        }
-        if (geneFilterFlag) {
-            if (whereGeneFlag) {
-                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
-                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
-            }
-            finalSql += WHERE_GENE_IN;
-        }
-        if (conFilterFlag) {
-            finalSql += WHERE_CON_IN;
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += WHERE_CON_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
-            }
-        }
-        if (varTypeFilterFlag) {
-            finalSql += WHERE_VAR_TYPE_IN;
-            finalSql += ") ";
-        }
-        if (clinFilterFlag) {
-            finalSql += WHERE_CLIN_IN;
-            if (WHERE_CLIN_NULL.length() > 0) {
-                finalSql += WHERE_CLIN_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CLIN_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(clinical_significance) = 0";
-            }
-        }
-        if (ALLELE_COUNT_FILTER.length() > 0) {
-            finalSql += ALLELE_COUNT_FILTER;
-        }
-        if (ALLELE_NUMBER_FILTER.length() > 0) {
-            finalSql += ALLELE_NUMBER_FILTER;
-        }
-        if (ALLELE_FREQUENCY_FILTER.length() > 0) {
-            finalSql += ALLELE_FREQUENCY_FILTER;
-        }
-        if (HOMOZYGOTE_COUNT_FILTER.length() > 0) {
-            finalSql += HOMOZYGOTE_COUNT_FILTER;
-        }
+
+        StringBuilder baseSql = new StringBuilder(finalSql);
+        String filterSql = filterBuilder.buildFilterSql(whereGeneFlag, baseSql);
+        finalSql = baseSql.toString() + filterSql;
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -564,20 +445,18 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
+
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         List<FieldValue> row = result.iterateAll().iterator().next();
+
         return ResponseEntity.ok(bigQueryService.getLong(row, rm.get("count")));
     }
 
     @Override
     public ResponseEntity<Long> getSVVariantSearchResultSize(SVVariantResultSizeRequest variantResultSizeRequest) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
 
         String finalSql = SV_COUNT_SQL_TEMPLATE;
 
@@ -586,7 +465,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         Long low = 0L;
         Long high = 0L;
         boolean whereGeneFlag = false;
-        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
+        String rawGeneSearchTerm = "";
 
         String variantSearchTerm = variantResultSizeRequest.getQuery().trim();
         SVGenomicFilters filters = variantResultSizeRequest.getFilterMetadata();
@@ -597,7 +476,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
 
         String contig = "(?i)(" + searchTerm + ")$";
-        // Make sure the search term is not empty
+
         if (!Strings.isNullOrEmpty(searchTerm)) {
             SVGenomicSearchTermType searchTermType = getSVSearchType(variantSearchTerm, searchTerm);
             finalSql += searchTermType.getSearchSqlQuery();
@@ -608,180 +487,25 @@ public class GenomicsController implements GenomicsApiDelegate {
             variant_id = searchTermType.getVariantId();
             whereGeneFlag = searchTermType.isWhereGeneFlag();
 
-            // Store raw gene name and add filter to exclude variants where gene only has INTERGENIC/NEAREST_TSS consequences
             if (whereGeneFlag) {
                 rawGeneSearchTerm = searchTerm.toUpperCase().trim();
-                finalSql += " AND EXISTS (" +
-                        "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
-                        "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
-                        "WHERE UPPER(TRIM(gene)) = @rawGene " +
-                        "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+                finalSql += SV_GENE_CONSEQUENCE_FILTER;
             }
         }
 
-        String WHERE_GENE_IN = " AND genes in (";
-        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
-        String WHERE_CON_NULL = "";
-        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
-        String WHERE_FILTER_IN = " AND filter in (";
-        String SIZE_FILTER = "";
-        String ALLELE_COUNT_FILTER = "";
-        String ALLELE_NUMBER_FILTER = "";
-        String ALLELE_FREQUENCY_FILTER = "";
-        String HOMOZYGOTE_COUNT_FILTER = "";
-        boolean geneFilterFlag = false;
-        boolean varTypeFilterFlag = false;
-        boolean conFilterFlag = false;
-        boolean filterFilterFlag = false;
-        if (filters == null && !Strings.isNullOrEmpty(searchTerm)) {
-            WHERE_FILTER_IN = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
-            filterFilterFlag = true;
-        }
+        // Build filters using the builder
+        GenomicFilterBuilder filterBuilder = new GenomicFilterBuilder(true);
+
         if (filters != null) {
-            SVGenomicFilterOptionList geneFilterList = filters.getGene();
-            List<SVGenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
-                for(int i=0; i < geneFilters.size(); i++) {
-                    SVGenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
-                    }
-                }
-            }
-            SVGenomicFilterOptionList conFilterList = filters.getConsequence();
-            List<SVGenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
-                for(int i=0; i < conFilters.size(); i++) {
-                    SVGenomicFilterOption filter = conFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_SV_CON_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
-                        }
-                    }
-                }
-            }
-            SVGenomicFilterOptionList varTypeFilterList = filters.getVariantType();
-            List<SVGenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
-                for(int i=0; i < varTypeFilters.size(); i++) {
-                    SVGenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
-            SVGenomicFilterOption sizeFilter = filters.getSize();
-            if (sizeFilter != null && sizeFilter.isChecked()) {
-                Long minVal = sizeFilter.getMin();
-                Long maxVal = sizeFilter.getMax();
-                SIZE_FILTER = " AND size BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.isChecked()) {
-                Long minVal = acFilter.getMin();
-                Long maxVal = acFilter.getMax();
-                ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.isChecked()) {
-                Long minVal = anFilter.getMin();
-                Long maxVal = anFilter.getMax();
-                ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.isChecked()) {
-                Float minVal = afFilter.getMinFreq();
-                Float maxVal = afFilter.getMaxFreq();
-                ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.isChecked()) {
-                Long minVal = hcFilter.getMin();
-                Long maxVal = hcFilter.getMax();
-                HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOptionList filterFilterList = filters.getFilter();
-            if (filterFilterList != null) {
-                List<SVGenomicFilterOption> filterFilters = filterFilterList.getItems();
-                if (filterFilters != null && filterFilters.size() > 0 && filterFilterList.isFilterActive()) {
-                    for(int i=0; i < filterFilters.size(); i++) {
-                        SVGenomicFilterOption filter = filterFilters.get(i);
-                        if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_FILTER_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
-        }
-        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
-            geneFilterFlag = true;
-            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
-            WHERE_GENE_IN += ") ";
-        }
-        if (WHERE_SV_CON_IN.substring(WHERE_SV_CON_IN.length() - 1).equals(",")) {
-            conFilterFlag = true;
-            WHERE_SV_CON_IN = WHERE_SV_CON_IN.substring(0, WHERE_SV_CON_IN.length()-1);
-            WHERE_SV_CON_IN += ")) ";
+            filterBuilder.populateFromSVGenomicFilters(filters);
+        } else if (!Strings.isNullOrEmpty(searchTerm)) {
+            // Apply default filters when no filters provided
+            filterBuilder.setDefaultSVFilters();
         }
 
-        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
-            varTypeFilterFlag = true;
-            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
-        }
-
-        if (WHERE_FILTER_IN.substring(WHERE_FILTER_IN.length() - 1).equals(",")) {
-            filterFilterFlag = true;
-            WHERE_FILTER_IN = WHERE_FILTER_IN.substring(0, WHERE_FILTER_IN.length()-1);
-            WHERE_FILTER_IN += ") ";
-        }
-
-        if (geneFilterFlag) {
-            if (whereGeneFlag) {
-                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
-                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
-            }
-            finalSql += WHERE_GENE_IN;
-        }
-
-        if (conFilterFlag) {
-            finalSql += WHERE_SV_CON_IN;
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += WHERE_CON_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
-            }
-        }
-
-        if (varTypeFilterFlag) {
-            finalSql += WHERE_VAR_TYPE_IN;
-            finalSql += ") ";
-        }
-
-        if (SIZE_FILTER.length() > 0) {
-            finalSql += SIZE_FILTER;
-        }
-        if (ALLELE_COUNT_FILTER.length() > 0) {
-            finalSql += ALLELE_COUNT_FILTER;
-        }
-        if (ALLELE_NUMBER_FILTER.length() > 0) {
-            finalSql += ALLELE_NUMBER_FILTER;
-        }
-        if (ALLELE_FREQUENCY_FILTER.length() > 0) {
-            finalSql += ALLELE_FREQUENCY_FILTER;
-        }
-        if (HOMOZYGOTE_COUNT_FILTER.length() > 0) {
-            finalSql += HOMOZYGOTE_COUNT_FILTER;
-        }
-        if (filterFilterFlag) {
-            finalSql += WHERE_FILTER_IN;
-        }
+        StringBuilder baseSql = new StringBuilder(finalSql);
+        String filterSql = filterBuilder.buildFilterSql(whereGeneFlag, baseSql);
+        finalSql = baseSql.toString() + filterSql;
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -803,11 +527,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     @Override
     public ResponseEntity<SVVariantListResponse> searchSVVariants(SearchSVVariantsRequest searchVariantsRequest) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
 
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
@@ -815,100 +535,66 @@ public class GenomicsController implements GenomicsApiDelegate {
         SortSVMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         SVGenomicFilters filters = searchVariantsRequest.getFilterMetadata();
 
+        // Build ORDER BY clause
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
             if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
-                if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY variant_id " + getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true);
             }
 
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
             if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
-                if (variantTypeColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type DESC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_type ASC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY variant_type " + getSortDirection(variantTypeColumnSortMetadata.getSortDirection(), true);
             }
 
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                boolean ascending = consequenceColumnSortMetadata.getSortDirection().equals("asc");
-                ORDER_BY_CLAUSE = buildSVConsequenceSeverityOrderBy(ascending);
+                ORDER_BY_CLAUSE = buildSVConsequenceSeverityOrderBy(consequenceColumnSortMetadata.getSortDirection().equals("asc"));
             }
 
             SortColumnDetails positionColumnSortMetadata = sortMetadata.getPosition();
             if (positionColumnSortMetadata != null && positionColumnSortMetadata.isSortActive()) {
-                if (positionColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY position DESC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY position ASC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY position " + getSortDirection(positionColumnSortMetadata.getSortDirection(), true);
             }
 
             SortColumnDetails sizeColumnSortMetadata = sortMetadata.getSize();
             if (sizeColumnSortMetadata != null && sizeColumnSortMetadata.isSortActive()) {
-                if (sizeColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY size DESC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY size ASC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY size " + getSortDirection(sizeColumnSortMetadata.getSortDirection(), true);
             }
 
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
             if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.isSortActive()) {
-                if (alleleCountColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_count " + getSortDirection(alleleCountColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
             if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.isSortActive()) {
-                if (alleleNumberColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_number " + getSortDirection(alleleNumberColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
             if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.isSortActive()) {
-                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_frequency " + getSortDirection(alleleFrequencyColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
             if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.isSortActive()) {
-                if (homozygoteCountColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY homozygote_count " + getSortDirection(homozygoteCountColumnSortMetadata.getSortDirection(), false);
             }
 
             SortColumnDetails filterColumnSortMetadata = sortMetadata.getFilter();
             if (filterColumnSortMetadata != null && filterColumnSortMetadata.isSortActive()) {
-                if ("asc".equals(filterColumnSortMetadata.getSortDirection())) {
-                    ORDER_BY_CLAUSE = " ORDER BY filter ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY filter DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY filter " + getSortDirection(filterColumnSortMetadata.getSortDirection(), true);
             }
         }
 
+        // Parse search term
         String searchTerm = variantSearchTerm;
         String variant_id = "";
         String genes = "";
-        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
-        boolean whereVariantIdFlag = false;
+        String rawGeneSearchTerm = "";
         boolean whereGeneFlag = false;
-
         Long low = 0L;
         Long high = 0L;
 
@@ -929,214 +615,43 @@ public class GenomicsController implements GenomicsApiDelegate {
             high = searchTermType.getHigh();
             contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
 
-            // Store raw gene name for consequence filtering (without regex patterns)
             if (whereGeneFlag) {
                 rawGeneSearchTerm = searchTerm.toUpperCase().trim();
             }
         }
 
+        // Add gene consequence filter for gene searches
         if (whereGeneFlag && !rawGeneSearchTerm.isEmpty()) {
-            searchSqlQuery += " AND EXISTS (" +
-                    "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
-                    "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
-                    "WHERE UPPER(TRIM(gene)) = @rawGene " +
-                    "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+            searchSqlQuery += SV_GENE_CONSEQUENCE_FILTER;
         }
 
         // Build dynamic consequence SELECT based on whether it's a gene search
-        String consequenceSelect;
-        if (whereGeneFlag && !rawGeneSearchTerm.isEmpty()) {
-            // When searching by gene, extract only consequences associated with that gene
-            // Format: "CONSEQUENCE1 - GENE1,GENE2; CONSEQUENCE2 - GENE3,GENE4"
-            consequenceSelect =
-                    "(SELECT STRING_AGG(DISTINCT SPLIT(cg, ' - ')[SAFE_OFFSET(0)], ', ') " +
-                            "FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
-                            "     UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
-                            "WHERE UPPER(TRIM(gene)) = @rawGene) AS consequence";
-        } else {
-            consequenceSelect = "consequence";
-        }
+        String consequenceSelect = (whereGeneFlag && !rawGeneSearchTerm.isEmpty())
+                ? SV_GENE_CONSEQUENCE_SELECT
+                : "consequence";
 
         // Build the SQL with dynamic consequence select
         String finalSql = "SELECT variant_id, variant_type, " + consequenceSelect + ", position, a.size, " +
                 "a.allele_count, a.allele_number, a.allele_frequency, a.homozygote_count, a.filter " +
                 "FROM ${projectId}.${dataSetId}.aou_sv_vcf_7_1_processed a" + searchSqlQuery;
 
-        String WHERE_GENE_IN = " AND genes in (";
-        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
-        String WHERE_CON_NULL = "";
-        String WHERE_SV_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (split(consequence, ', ')) as con where con in ( \n";
-        String WHERE_FILTER_IN = " AND filter in (";
-        boolean filterFilterFlag = false;
-
-        if (filters == null && !Strings.isNullOrEmpty(searchTerm)) {
-            WHERE_FILTER_IN = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
-            filterFilterFlag = true;
-        }
-
-        String SIZE_FILTER = "";
-        String ALLELE_COUNT_FILTER = "";
-        String ALLELE_NUMBER_FILTER = "";
-        String ALLELE_FREQUENCY_FILTER = "";
-        String HOMOZYGOTE_COUNT_FILTER = "";
-        boolean geneFilterFlag = false;
-        boolean conFilterFlag = false;
-        boolean varTypeFilterFlag = false;
+        // Build filters using the builder
+        GenomicFilterBuilder filterBuilder = new GenomicFilterBuilder(true);
 
         if (filters != null) {
-            SVGenomicFilterOptionList geneFilterList = filters.getGene();
-            List<SVGenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
-                for(int i=0; i < geneFilters.size(); i++) {
-                    SVGenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
-                    }
-                }
-            }
-
-            SVGenomicFilterOptionList varTypeFilterList = filters.getVariantType();
-            List<SVGenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
-                for(int i=0; i < varTypeFilters.size(); i++) {
-                    SVGenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
-
-            SVGenomicFilterOptionList conFilterList = filters.getConsequence();
-            List<SVGenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
-                for(int i=0; i < conFilters.size(); i++) {
-                    SVGenomicFilterOption filter = conFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_SV_CON_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
-                        }
-                    }
-                }
-            }
-
-            SVGenomicFilterOption sizeFilter = filters.getSize();
-            if (sizeFilter != null && sizeFilter.isChecked()) {
-                Long minVal = sizeFilter.getMin();
-                Long maxVal = sizeFilter.getMax();
-                SIZE_FILTER = " AND size BETWEEN " + minVal + " AND " + maxVal;
-            }
-
-            SVGenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.isChecked()) {
-                Long minVal = acFilter.getMin();
-                Long maxVal = acFilter.getMax();
-                ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.isChecked()) {
-                Long minVal = anFilter.getMin();
-                Long maxVal = anFilter.getMax();
-                ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.isChecked()) {
-                Float minVal = afFilter.getMinFreq();
-                Float maxVal = afFilter.getMaxFreq();
-                ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
-            }
-            SVGenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.isChecked()) {
-                Long minVal = hcFilter.getMin();
-                Long maxVal = hcFilter.getMax();
-                HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-
-            SVGenomicFilterOptionList filterFilterList = filters.getFilter();
-            if (filterFilterList != null) {
-                List<SVGenomicFilterOption> filterFilters = filterFilterList.getItems();
-                if (filterFilters != null && filterFilters.size() > 0 && filterFilterList.isFilterActive()) {
-                    for(int i=0; i < filterFilters.size(); i++) {
-                        SVGenomicFilterOption filter = filterFilters.get(i);
-                        if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_FILTER_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
+            filterBuilder.populateFromSVGenomicFilters(filters);
+        } else if (!Strings.isNullOrEmpty(searchTerm)) {
+            // Apply default filters when no filters provided
+            filterBuilder.setDefaultSVFilters();
         }
 
-        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
-            geneFilterFlag = true;
-            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
-            WHERE_GENE_IN += ") ";
-        }
+        StringBuilder baseSql = new StringBuilder(finalSql);
+        String filterSql = filterBuilder.buildFilterSql(whereGeneFlag, baseSql);
+        finalSql = baseSql.toString() + filterSql;
 
-        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
-            varTypeFilterFlag = true;
-            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
-        }
-
-        if (WHERE_SV_CON_IN.substring(WHERE_SV_CON_IN.length() - 1).equals(",")) {
-            conFilterFlag = true;
-            WHERE_SV_CON_IN = WHERE_SV_CON_IN.substring(0, WHERE_SV_CON_IN.length()-1);
-            WHERE_SV_CON_IN += ")) ";
-        }
-
-        if (WHERE_FILTER_IN.substring(WHERE_FILTER_IN.length() - 1).equals(",")) {
-            filterFilterFlag = true;
-            WHERE_FILTER_IN = WHERE_FILTER_IN.substring(0, WHERE_FILTER_IN.length()-1);
-            WHERE_FILTER_IN += ") ";
-        }
-
-        if (geneFilterFlag) {
-            if (whereGeneFlag) {
-                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
-                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
-            }
-            finalSql += WHERE_GENE_IN;
-        }
-
-        if (varTypeFilterFlag) {
-            finalSql += WHERE_VAR_TYPE_IN;
-            finalSql += ") ";
-        }
-
-        if (conFilterFlag) {
-            finalSql += WHERE_SV_CON_IN;
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += WHERE_CON_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
-            }
-        }
-
-        if (SIZE_FILTER.length() > 0) {
-            finalSql += SIZE_FILTER;
-        }
-        if (ALLELE_COUNT_FILTER.length() > 0) {
-            finalSql += ALLELE_COUNT_FILTER;
-        }
-        if (ALLELE_NUMBER_FILTER.length() > 0) {
-            finalSql += ALLELE_NUMBER_FILTER;
-        }
-        if (ALLELE_FREQUENCY_FILTER.length() > 0) {
-            finalSql += ALLELE_FREQUENCY_FILTER;
-        }
-        if (HOMOZYGOTE_COUNT_FILTER.length() > 0) {
-            finalSql += HOMOZYGOTE_COUNT_FILTER;
-        }
-        if (filterFilterFlag) {
-            finalSql += WHERE_FILTER_IN;
-        }
+        // Add ORDER BY and pagination
         finalSql += ORDER_BY_CLAUSE;
-        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
+        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1) - 1) * rowCount);
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
@@ -1152,6 +667,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         List<SVVariant> variantList = new ArrayList<>();
+
         for (List<FieldValue> row : result.iterateAll()) {
             variantList.add(new SVVariant()
                     .variantId(bigQueryService.getString(row, rm.get("variant_id")))
@@ -1171,92 +687,67 @@ public class GenomicsController implements GenomicsApiDelegate {
         variantListResponse.setItems(variantList);
         return ResponseEntity.ok(variantListResponse);
     }
-
     @Override
     public ResponseEntity<VariantListResponse> searchVariants(SearchVariantsRequest searchVariantsRequest) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
 
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
         SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         GenomicFilters filters = searchVariantsRequest.getFilterMetadata();
+
+        // Build ORDER BY clause
         String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
             if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
-                if (variantIdColumnSortMetadata.getSortDirection().equals("desc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY variant_id DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY variant_id " + getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true);
             }
+
             SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
             if (geneColumnSortMetadata != null && geneColumnSortMetadata.isSortActive()) {
-                if (geneColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY genes ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY genes DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY genes " + getSortDirection(geneColumnSortMetadata.getSortDirection(), false);
             }
 
             SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
             if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                boolean ascending = consequenceColumnSortMetadata.getSortDirection().equals("asc");
-                ORDER_BY_CLAUSE = buildConsequenceSeverityOrderBy(ascending);
+                ORDER_BY_CLAUSE = buildConsequenceSeverityOrderBy(consequenceColumnSortMetadata.getSortDirection().equals("asc"));
             }
 
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
             if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
-                if (variantTypeColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) " + getSortDirection(variantTypeColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
             if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.isSortActive()) {
-                if (clinSigColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) "
+                        + getSortDirection(clinSigColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
             if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.isSortActive()) {
-                if (alleleCountColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_count ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_count DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_count " + getSortDirection(alleleCountColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
             if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.isSortActive()) {
-                if (alleleNumberColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_number ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_number DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_number " + getSortDirection(alleleNumberColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
             if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.isSortActive()) {
-                if (alleleFrequencyColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY allele_frequency DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY allele_frequency " + getSortDirection(alleleFrequencyColumnSortMetadata.getSortDirection(), false);
             }
+
             SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
             if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.isSortActive()) {
-                if (homozygoteCountColumnSortMetadata.getSortDirection().equals("asc")) {
-                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count ASC";
-                } else {
-                    ORDER_BY_CLAUSE = " ORDER BY homozygote_count DESC";
-                }
+                ORDER_BY_CLAUSE = " ORDER BY homozygote_count " + getSortDirection(homozygoteCountColumnSortMetadata.getSortDirection(), false);
             }
         }
+
+        // Parse search term
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
         String genes = "";
         Long low = 0L;
@@ -1265,11 +756,13 @@ public class GenomicsController implements GenomicsApiDelegate {
         String rs_id = "";
         String searchTerm = variantSearchTerm;
         boolean whereGeneFlag = false;
+
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
+
         String contig = searchTerm;
-        // Make sure the search term is not empty
+
         if (!Strings.isNullOrEmpty(searchTerm)) {
             GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
             finalSql += searchTermType.getSearchSqlQuery();
@@ -1282,167 +775,20 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereGeneFlag = searchTermType.isWhereGeneFlag();
         }
 
-        String WHERE_GENE_IN = " AND genes in (";
-        String WHERE_CON_IN = " AND (EXISTS (SELECT con FROM UNNEST (consequence) as con where con in (";
-        String WHERE_CON_NULL = "";
-        String WHERE_VAR_TYPE_IN = "AND variant_type in (";
-        String WHERE_CLIN_IN = " AND (EXISTS (SELECT clin FROM UNNEST (clinical_significance) as clin where clin in (";
-        String WHERE_CLIN_NULL = "";
-        String ALLELE_COUNT_FILTER = "";
-        String ALLELE_NUMBER_FILTER = "";
-        String ALLELE_FREQUENCY_FILTER = "";
-        String HOMOZYGOTE_COUNT_FILTER = "";
-        boolean geneFilterFlag = false;
-        boolean conFilterFlag = false;
-        boolean varTypeFilterFlag = false;
-        boolean clinFilterFlag = false;
+        // Build filters using the builder
+        GenomicFilterBuilder filterBuilder = new GenomicFilterBuilder(false);
+
         if (filters != null) {
-            GenomicFilterOptionList geneFilterList = filters.getGene();
-            List<GenomicFilterOption> geneFilters = geneFilterList.getItems();
-            if (geneFilters != null && geneFilters.size() > 0 && geneFilterList.isFilterActive()) {
-                for(int i=0; i < geneFilters.size(); i++) {
-                    GenomicFilterOption filter = geneFilters.get(i);
-                    if (filter.isChecked() && !Strings.isNullOrEmpty(filter.getOption())) {
-                        WHERE_GENE_IN += "\"" + filter.getOption().toUpperCase() + "\",";
-                    }
-                }
-            }
-
-            GenomicFilterOptionList conFilterList = filters.getConsequence();
-            List<GenomicFilterOption> conFilters = conFilterList.getItems();
-            if (conFilters != null && conFilters.size() > 0 && conFilterList.isFilterActive()) {
-                for(int i=0; i < conFilters.size(); i++) {
-                    GenomicFilterOption filter = conFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_CON_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CON_NULL = " OR ARRAY_LENGTH(consequence) = 0";
-                        }
-                    }
-                }
-            }
-
-            GenomicFilterOptionList varTypeFilterList = filters.getVariantType();
-            List<GenomicFilterOption> varTypeFilters = varTypeFilterList.getItems();
-            if (varTypeFilters != null && varTypeFilters.size() > 0 && varTypeFilterList.isFilterActive()) {
-                for(int i=0; i < varTypeFilters.size(); i++) {
-                    GenomicFilterOption filter = varTypeFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_VAR_TYPE_IN += "\"" + filter.getOption() + "\",";
-                        }
-                    }
-                }
-            }
-
-            GenomicFilterOptionList clinFilterList = filters.getClinicalSignificance();
-            List<GenomicFilterOption> clinFilters = clinFilterList.getItems();
-            if (clinFilters != null && clinFilters.size() > 0 && clinFilterList.isFilterActive()) {
-                for(int i=0; i < clinFilters.size(); i++) {
-                    GenomicFilterOption filter = clinFilters.get(i);
-                    if (filter.isChecked()) {
-                        if (!Strings.isNullOrEmpty(filter.getOption())) {
-                            WHERE_CLIN_IN += "\"" + filter.getOption() + "\",";
-                        } else {
-                            WHERE_CLIN_NULL = " OR ARRAY_LENGTH(clinical_significance) = 0";
-                        }
-                    }
-                }
-            }
-            GenomicFilterOption acFilter = filters.getAlleleCount();
-            if (acFilter != null && acFilter.isChecked()) {
-                Long minVal = acFilter.getMin();
-                Long maxVal = acFilter.getMax();
-                ALLELE_COUNT_FILTER = " AND allele_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption anFilter = filters.getAlleleNumber();
-            if (anFilter != null && anFilter.isChecked()) {
-                Long minVal = anFilter.getMin();
-                Long maxVal = anFilter.getMax();
-                ALLELE_NUMBER_FILTER = " AND allele_number BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption afFilter = filters.getAlleleFrequency();
-            if (afFilter != null && afFilter.isChecked()) {
-                Float minVal = afFilter.getMinFreq();
-                Float maxVal = afFilter.getMaxFreq();
-                ALLELE_FREQUENCY_FILTER = " AND allele_frequency BETWEEN " + minVal + " AND " + maxVal;
-            }
-            GenomicFilterOption hcFilter = filters.getHomozygoteCount();
-            if (hcFilter != null && hcFilter.isChecked()) {
-                Long minVal = hcFilter.getMin();
-                Long maxVal = hcFilter.getMax();
-                HOMOZYGOTE_COUNT_FILTER = " AND homozygote_count BETWEEN " + minVal + " AND " + maxVal;
-            }
-        }
-        if (WHERE_GENE_IN.substring(WHERE_GENE_IN.length() - 1).equals(",")) {
-            geneFilterFlag = true;
-            WHERE_GENE_IN = WHERE_GENE_IN.substring(0, WHERE_GENE_IN.length()-1);
-            WHERE_GENE_IN += ") ";
-        }
-        if (WHERE_CON_IN.substring(WHERE_CON_IN.length() - 1).equals(",")) {
-            conFilterFlag = true;
-            WHERE_CON_IN = WHERE_CON_IN.substring(0, WHERE_CON_IN.length()-1);
-            WHERE_CON_IN += ")) ";
-        }
-        if (WHERE_VAR_TYPE_IN.substring(WHERE_VAR_TYPE_IN.length() - 1).equals(",")) {
-            varTypeFilterFlag = true;
-            WHERE_VAR_TYPE_IN = WHERE_VAR_TYPE_IN.substring(0, WHERE_VAR_TYPE_IN.length()-1);
-        }
-        if (WHERE_CLIN_IN.substring(WHERE_CLIN_IN.length() - 1).equals(",")) {
-            clinFilterFlag = true;
-            WHERE_CLIN_IN = WHERE_CLIN_IN.substring(0, WHERE_CLIN_IN.length()-1);
-            WHERE_CLIN_IN += ")) ";
-        }
-        if (geneFilterFlag) {
-            if (whereGeneFlag) {
-                finalSql = finalSql.replace(WHERE_GENE_REGEX, "");
-                WHERE_GENE_IN = " WHERE" + WHERE_GENE_IN.substring(4);
-            }
-            finalSql += WHERE_GENE_IN;
-        }
-        if (conFilterFlag) {
-            finalSql += WHERE_CON_IN;
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += WHERE_CON_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CON_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(consequence) = 0";
-            }
+            filterBuilder.populateFromGenomicFilters(filters);
         }
 
-        if (varTypeFilterFlag) {
-            finalSql += WHERE_VAR_TYPE_IN;
-            finalSql += ") ";
-        }
+        StringBuilder baseSql = new StringBuilder(finalSql);
+        String filterSql = filterBuilder.buildFilterSql(whereGeneFlag, baseSql);
+        finalSql = baseSql.toString() + filterSql;
 
-        if (clinFilterFlag) {
-            finalSql += WHERE_CLIN_IN;
-            if (WHERE_CLIN_NULL.length() > 0) {
-                finalSql += WHERE_CLIN_NULL;
-            }
-            finalSql += ") ";
-        } else {
-            if (WHERE_CLIN_NULL.length() > 0) {
-                finalSql += " AND ARRAY_LENGTH(clinical_significance) = 0";
-            }
-        }
-        if (ALLELE_COUNT_FILTER.length() > 0) {
-            finalSql += ALLELE_COUNT_FILTER;
-        }
-        if (ALLELE_NUMBER_FILTER.length() > 0) {
-            finalSql += ALLELE_NUMBER_FILTER;
-        }
-        if (ALLELE_FREQUENCY_FILTER.length() > 0) {
-            finalSql += ALLELE_FREQUENCY_FILTER;
-        }
-        if (HOMOZYGOTE_COUNT_FILTER.length() > 0) {
-            finalSql += HOMOZYGOTE_COUNT_FILTER;
-        }
+        // Add ORDER BY and pagination
         finalSql += ORDER_BY_CLAUSE;
-        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1)-1)*rowCount);
+        finalSql += " LIMIT " + rowCount + " OFFSET " + ((Optional.ofNullable(page).orElse(1) - 1) * rowCount);
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1453,10 +799,12 @@ public class GenomicsController implements GenomicsApiDelegate {
                 .addNamedParameter("rs_id", QueryParameterValue.string(rs_id))
                 .setUseLegacySql(false)
                 .build();
+
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
         List<Variant> variantList = new ArrayList<>();
+
         for (List<FieldValue> row : result.iterateAll()) {
             variantList.add(new Variant()
                     .variantId(bigQueryService.getString(row, rm.get("variant_id")))
@@ -1470,7 +818,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                     .alleleFrequency(bigQueryService.getDouble(row, rm.get("allele_frequency")))
                     .homozygoteCount(bigQueryService.getLong(row, rm.get("homozygote_count")))
             );
-
         }
 
         VariantListResponse variantListResponse = new VariantListResponse();
@@ -1480,46 +827,34 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     @Override
     public ResponseEntity<GenomicFilters> getGenomicFilterOptions(String variantSearchTerm) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        String finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE;
+        initCdrVersion();
+
         String genes = "";
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
         String rs_id = "";
         String searchTerm = variantSearchTerm.trim();
-        boolean whereGeneFlag = false;
-        boolean whereContigFlag = false;
-        boolean wherePositionFlag = false;
-        boolean whereRsIdFlag = false;
-        boolean whereVariantIdFlag = false;
+
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
+
         String contig = searchTerm;
         String searchSqlQuery = "";
-        // Make sure the search term is not empty
+
         if (!Strings.isNullOrEmpty(searchTerm)) {
             GenomicSearchTermType searchTermType = getSearchType(variantSearchTerm, searchTerm);
-            searchSqlQuery += searchTermType.getSearchSqlQuery();
+            searchSqlQuery = searchTermType.getSearchSqlQuery();
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
             contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
             rs_id = searchTermType.getRsId();
-            whereGeneFlag = searchTermType.isWhereGeneFlag();
-            whereContigFlag = searchTermType.isWhereContigFlag();
-            wherePositionFlag = searchTermType.isWherePositionFlag();
-            whereRsIdFlag = searchTermType.isWhereRsIdFlag();
-            whereVariantIdFlag = searchTermType.isWhereVariantIdFlag();
         }
 
-        finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
+        String finalSql = FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_CLIN + searchSqlQuery
@@ -1527,7 +862,6 @@ public class GenomicsController implements GenomicsApiDelegate {
                 + FILTER_OPTION_SQL_TEMPLATE_ALLELE_NUMBER + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_HOMOZYGOTE_COUNT + searchSqlQuery
                 + FILTER_OPTION_SQL_TEMPLATE_UNION;
-
 
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("contig", QueryParameterValue.string(contig))
@@ -1542,174 +876,62 @@ public class GenomicsController implements GenomicsApiDelegate {
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
-        GenomicFilters genomicFilters = new GenomicFilters();
-        GenomicFilterOptionList geneFilterList = new GenomicFilterOptionList();
-        GenomicFilterOptionList conseqFilterList = new GenomicFilterOptionList();
-        GenomicFilterOptionList varTypeFilterList = new GenomicFilterOptionList();
-        GenomicFilterOptionList clinSigFilterList = new GenomicFilterOptionList();
 
-        List<GenomicFilterOption> geneFilters = new ArrayList<>();
-        List<GenomicFilterOption> conseqFilters = new ArrayList<>();
-        List<GenomicFilterOption> varTypeFilters = new ArrayList<>();
-        List<GenomicFilterOption> clinSigFilters = new ArrayList<>();
-
-
-        GenomicFilterOption alleleCountFilter = new GenomicFilterOption();
-        GenomicFilterOption alleleNumberFilter = new GenomicFilterOption();
-        GenomicFilterOption homozygoteCountFilter = new GenomicFilterOption();
+        GenomicFilterOptionsBuilder builder = new GenomicFilterOptionsBuilder(false);
 
         for (List<FieldValue> row : result.iterateAll()) {
-            String option = bigQueryService.getString(row, rm.get("option"));
-            String gene = bigQueryService.getString(row, rm.get("genes"));
-            String conseq = bigQueryService.getString(row, rm.get("conseq"));
-            String varType = bigQueryService.getString(row, rm.get("variant_type"));
-            String clinSignificance = bigQueryService.getString(row, rm.get("clin_significance"));
-            Long geneCount = bigQueryService.getLong(row, rm.get("gene_count"));
-            Long conCount = bigQueryService.getLong(row, rm.get("con_count"));
-            Long variantTypeCount = bigQueryService.getLong(row, rm.get("variant_type_count"));
-            Long clinCount = bigQueryService.getLong(row, rm.get("clin_count"));
-            Long minCount = bigQueryService.getLong(row, rm.get("min_count"));
-            Long maxCount = bigQueryService.getLong(row, rm.get("max_count"));
-            GenomicFilterOption genomicFilterOption = new GenomicFilterOption();
-            if (option.equals("Gene")) {
-                genomicFilterOption.setOption(gene);
-                genomicFilterOption.setCount(geneCount);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                geneFilters.add(genomicFilterOption);
-            } else if (option.equals("Consequence")) {
-                genomicFilterOption.setOption(conseq);
-                genomicFilterOption.setCount(conCount);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                conseqFilters.add(genomicFilterOption);
-            } else if (option.equals("Variant Type")) {
-                genomicFilterOption.setOption(varType);
-                genomicFilterOption.setCount(variantTypeCount);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                varTypeFilters.add(genomicFilterOption);
-            } else if (option.equals("Clinical Significance")) {
-                genomicFilterOption.setOption(clinSignificance);
-                genomicFilterOption.setCount(clinCount);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                clinSigFilters.add(genomicFilterOption);
-            } else if (option.equals("Allele Count")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                alleleCountFilter = genomicFilterOption;
-            } else if (option.equals("Allele Number")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                alleleNumberFilter = genomicFilterOption;
-            } else if (option.equals("Homozygote Count")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                homozygoteCountFilter = genomicFilterOption;
-            }
+            builder.processSNVRow(
+                    bigQueryService.getString(row, rm.get("option")),
+                    bigQueryService.getString(row, rm.get("genes")),
+                    bigQueryService.getString(row, rm.get("conseq")),
+                    bigQueryService.getString(row, rm.get("variant_type")),
+                    bigQueryService.getString(row, rm.get("clin_significance")),
+                    bigQueryService.getLong(row, rm.get("gene_count")),
+                    bigQueryService.getLong(row, rm.get("con_count")),
+                    bigQueryService.getLong(row, rm.get("variant_type_count")),
+                    bigQueryService.getLong(row, rm.get("clin_count")),
+                    bigQueryService.getLong(row, rm.get("min_count")),
+                    bigQueryService.getLong(row, rm.get("max_count"))
+            );
         }
 
-
-        GenomicFilterOption alleleFrequencyFilter = new GenomicFilterOption();
-        alleleFrequencyFilter.setOption("");
-        alleleFrequencyFilter.setCount(0L);
-        alleleFrequencyFilter.setChecked(false);
-        alleleFrequencyFilter.setMin(0L);
-        alleleFrequencyFilter.setMax(1L);
-
-        conseqFilters.sort((a, b) -> {
-            int rankA = CONSEQUENCE_SEVERITY_RANKS.getOrDefault(a.getOption(), 0);
-            int rankB = CONSEQUENCE_SEVERITY_RANKS.getOrDefault(b.getOption(), 0);
-            return Integer.compare(rankA, rankB); // Ascending order (lowest rank first)
-        });
-
-        geneFilterList.setItems(geneFilters);
-        geneFilterList.setFilterActive(false);
-        conseqFilterList.setItems(conseqFilters);
-        conseqFilterList.setFilterActive(false);
-        varTypeFilterList.setItems(varTypeFilters);
-        varTypeFilterList.setFilterActive(false);
-        clinSigFilterList.setItems(clinSigFilters);
-        clinSigFilterList.setFilterActive(false);
-
-        genomicFilters.gene(geneFilterList);
-        genomicFilters.consequence(conseqFilterList);
-        genomicFilters.variantType(varTypeFilterList);
-        genomicFilters.clinicalSignificance(clinSigFilterList);
-        genomicFilters.alleleCount(alleleCountFilter);
-        genomicFilters.alleleNumber(alleleNumberFilter);
-        genomicFilters.alleleFrequency(alleleFrequencyFilter);
-        genomicFilters.homozygoteCount(homozygoteCountFilter);
-
-        return ResponseEntity.ok(genomicFilters);
+        return ResponseEntity.ok(builder.buildGenomicFilters(CONSEQUENCE_SEVERITY_RANKS));
     }
 
     @Override
     public ResponseEntity<SVGenomicFilters> getSVGenomicFilterOptions(String variantSearchTerm) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
-        String finalSql = SV_FILTER_OPTION_SQL_TEMPLATE_GENE;
+        initCdrVersion();
 
         String genes = "";
         Long low = 0L;
         Long high = 0L;
         String variant_id = "";
-        String rawGeneSearchTerm = "";  // Store raw gene name for consequence filtering
-
+        String rawGeneSearchTerm = "";
         String searchTerm = variantSearchTerm.trim();
-        boolean whereGeneFlag = false;
-        boolean whereContigFlag = false;
-        boolean wherePositionFlag = false;
-        boolean whereVariantIdFlag = false;
+
         if (variantSearchTerm.startsWith("~")) {
             searchTerm = variantSearchTerm.substring(1);
         }
+
         String contig = searchTerm;
         String searchSqlQuery = "";
-        // Make sure the search term is not empty
+
         if (!Strings.isNullOrEmpty(searchTerm)) {
             SVGenomicSearchTermType searchTermType = getSVSearchType(variantSearchTerm, searchTerm);
-            searchSqlQuery += searchTermType.getSearchSqlQuery();
+            searchSqlQuery = searchTermType.getSearchSqlQuery();
             genes = searchTermType.getGenes();
             low = searchTermType.getLow();
             high = searchTermType.getHigh();
             contig = "(?i)\\b" + searchTermType.getContig() + "\\b";
             variant_id = searchTermType.getVariantId();
-            whereGeneFlag = searchTermType.isWhereGeneFlag();
-            whereContigFlag = searchTermType.isWhereContigFlag();
-            wherePositionFlag = searchTermType.isWherePositionFlag();
-            whereVariantIdFlag = searchTermType.isWhereVariantIdFlag();
 
-            // Store raw gene name and add filter to exclude variants where gene only has INTERGENIC/NEAREST_TSS consequences
-            if (whereGeneFlag) {
+            if (searchTermType.isWhereGeneFlag()) {
                 rawGeneSearchTerm = searchTerm.toUpperCase().trim();
-                searchSqlQuery += " AND EXISTS (" +
-                        "SELECT 1 FROM UNNEST(SPLIT(consequence_genes, '; ')) AS cg, " +
-                        "UNNEST(SPLIT(SPLIT(cg, ' - ')[SAFE_OFFSET(1)], ',')) AS gene " +
-                        "WHERE UPPER(TRIM(gene)) = @rawGene " +
-                        "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
+                searchSqlQuery += SV_GENE_CONSEQUENCE_FILTER;
             }
         }
 
-
-        finalSql = SV_FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
+        String finalSql = SV_FILTER_OPTION_SQL_TEMPLATE_GENE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_CON + searchSqlQuery
                 + SV_FILTER_OPTION_SQL_TEMPLATE_SIZE + searchSqlQuery
@@ -1732,139 +954,27 @@ public class GenomicsController implements GenomicsApiDelegate {
         qjc = bigQueryService.filterBigQueryConfig(qjc);
         TableResult result = bigQueryService.executeQuery(qjc);
         Map<String, Integer> rm = bigQueryService.getResultMapper(result);
-        SVGenomicFilters genomicFilters = new SVGenomicFilters();
 
-        SVGenomicFilterOptionList varTypeFilterList = new SVGenomicFilterOptionList();
-        SVGenomicFilterOptionList geneFilterList = new SVGenomicFilterOptionList();
-        SVGenomicFilterOptionList conFilterList = new SVGenomicFilterOptionList();
-        SVGenomicFilterOptionList filterFilterList = new SVGenomicFilterOptionList();
-
-        List<SVGenomicFilterOption> varTypeFilters = new ArrayList<>();
-        List<SVGenomicFilterOption> geneFilters = new ArrayList<>();
-        List<SVGenomicFilterOption> conFilters = new ArrayList<>();
-        List<SVGenomicFilterOption> filterFilters = new ArrayList<>();
-
-        SVGenomicFilterOption sizeFilter = new SVGenomicFilterOption();
-        SVGenomicFilterOption alleleCountFilter = new SVGenomicFilterOption();
-        SVGenomicFilterOption alleleNumberFilter = new SVGenomicFilterOption();
-        SVGenomicFilterOption homozygoteCountFilter = new SVGenomicFilterOption();
+        GenomicFilterOptionsBuilder builder = new GenomicFilterOptionsBuilder(true);
 
         for (List<FieldValue> row : result.iterateAll()) {
-            String option = bigQueryService.getString(row, rm.get("option"));
-            String varType = bigQueryService.getString(row, rm.get("variant_type"));
-            String gene = bigQueryService.getString(row, rm.get("genes"));
-            String conseq = bigQueryService.getString(row, rm.get("consequence"));
-            String filterValue = bigQueryService.getString(row, rm.get("filter_value"));
-            Long minCount = bigQueryService.getLong(row, rm.get("min_count"));
-            Long maxCount = bigQueryService.getLong(row, rm.get("max_count"));
-            SVGenomicFilterOption genomicFilterOption = new SVGenomicFilterOption();
-            if (option.equals("Gene")) {
-                genomicFilterOption.setOption(gene);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                geneFilters.add(genomicFilterOption);
-            } else if (option.equals("Variant Type")) {
-                genomicFilterOption.setOption(varType);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                varTypeFilters.add(genomicFilterOption);
-            } else if (option.equals("Consequence")) {
-                genomicFilterOption.setOption(conseq);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                conFilters.add(genomicFilterOption);
-            } else if (option.equals("Size")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                sizeFilter = genomicFilterOption;
-            } else if (option.equals("Allele Count")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                alleleCountFilter = genomicFilterOption;
-            } else if (option.equals("Allele Number")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                alleleNumberFilter = genomicFilterOption;
-            } else if (option.equals("Homozygote Count")) {
-                genomicFilterOption.setOption("");
-                genomicFilterOption.setCount(0L);
-                genomicFilterOption.setChecked(false);
-                genomicFilterOption.setMin(minCount);
-                genomicFilterOption.setMax(maxCount);
-                homozygoteCountFilter = genomicFilterOption;
-            } else if (option.equals("Filter")) {
-                genomicFilterOption.setOption(filterValue);
-                genomicFilterOption.setCount(0L);
-                // Set default checked for PASS and MULTIALLELIC
-                if (filterValue != null && (filterValue.equalsIgnoreCase("PASS") || filterValue.equalsIgnoreCase("MULTIALLELIC"))) {
-                    genomicFilterOption.setChecked(true);
-                } else {
-                    genomicFilterOption.setChecked(false);
-                }
-                genomicFilterOption.setMin(0L);
-                genomicFilterOption.setMax(0L);
-                filterFilters.add(genomicFilterOption);
-            }
+            builder.processSVRow(
+                    bigQueryService.getString(row, rm.get("option")),
+                    bigQueryService.getString(row, rm.get("genes")),
+                    bigQueryService.getString(row, rm.get("variant_type")),
+                    bigQueryService.getString(row, rm.get("consequence")),
+                    bigQueryService.getString(row, rm.get("filter_value")),
+                    bigQueryService.getLong(row, rm.get("min_count")),
+                    bigQueryService.getLong(row, rm.get("max_count"))
+            );
         }
 
-        SVGenomicFilterOption alleleFrequencyFilter = new SVGenomicFilterOption();
-        alleleFrequencyFilter.setOption("");
-        alleleFrequencyFilter.setCount(0L);
-        alleleFrequencyFilter.setChecked(false);
-        alleleFrequencyFilter.setMin(0L);
-        alleleFrequencyFilter.setMax(1L);
-
-        varTypeFilterList.setItems(varTypeFilters);
-        varTypeFilterList.setFilterActive(false);
-
-        geneFilterList.setItems(geneFilters);
-        geneFilterList.setFilterActive(false);
-
-        conFilters.sort((a, b) -> {
-            int rankA = SV_CONSEQUENCE_SEVERITY_RANKS.getOrDefault(a.getOption(), 0);
-            int rankB = SV_CONSEQUENCE_SEVERITY_RANKS.getOrDefault(b.getOption(), 0);
-            return Integer.compare(rankA, rankB);
-        });
-
-        conFilterList.setItems(conFilters);
-        conFilterList.setFilterActive(false);
-
-        filterFilterList.setItems(filterFilters);
-        // Set filter active to true since we have default selections (PASS and MULTIALLELIC)
-        filterFilterList.setFilterActive(true);
-
-        genomicFilters.consequence(conFilterList);
-        genomicFilters.variantType(varTypeFilterList);
-        genomicFilters.gene(geneFilterList);
-        genomicFilters.size(sizeFilter);
-        genomicFilters.alleleCount(alleleCountFilter);
-        genomicFilters.alleleNumber(alleleNumberFilter);
-        genomicFilters.alleleFrequency(alleleFrequencyFilter);
-        genomicFilters.homozygoteCount(homozygoteCountFilter);
-        genomicFilters.filter(filterFilterList);
-
-        return ResponseEntity.ok(genomicFilters);
+        return ResponseEntity.ok(builder.buildSVGenomicFilters(SV_CONSEQUENCE_SEVERITY_RANKS));
     }
 
     @Override
     public ResponseEntity<AnalysisListResponse> getChartData() {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
         ImmutableList<Long> analysisIds = ImmutableList.of(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_GENDER_ANALYSIS),
                 CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_AGE_ANALYSIS),
                 CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.GENO_COMBINED_AGE_GENDER_ANALYSIS),
@@ -1878,11 +988,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     @Override
     public ResponseEntity<VariantInfo> getVariantDetails(String variant_id) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
         String finalSql = VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID;
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
                 .addNamedParameter("variant_id", QueryParameterValue.string(variant_id))
@@ -1935,11 +1041,7 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     @Override
     public ResponseEntity<SVVariantInfo> getSVVariantDetails(String variant_id) {
-        try {
-            cdrVersionService.setDefaultCdrVersion();
-        } catch(NullPointerException ie) {
-            throw new ServerErrorException("Cannot set default cdr version");
-        }
+        initCdrVersion();
 
         String finalSql = SV_VARIANT_DETAIL_SQL_TEMPLATE + WHERE_VARIANT_ID_OR_VCF;
         QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(finalSql)
