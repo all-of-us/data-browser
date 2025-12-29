@@ -13,6 +13,32 @@ import { ClrIcon } from "app/utils/clr-icon";
 import { GraphType } from "app/utils/enum-defs";
 import { MatchType } from "publicGenerated/fetch";
 
+const ShareIcon: React.FC<{
+  onClick?: (e: React.MouseEvent) => void;
+  style?: React.CSSProperties;
+}> = ({ onClick, style }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 36 36"
+    width={20}
+    height={20}
+    fill="none"
+    stroke="#2691D0"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    onClick={onClick}
+    style={{ cursor: "pointer", ...style }}
+  >
+    {/* Box/container */}
+    <path d="M9 16v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-10" />
+    {/* Arrow pointing up */}
+    <polyline points="22 12 18 8 14 12" />
+    {/* Arrow stem */}
+    <line x1="18" y1="8" x2="18" y2="22" />
+  </svg>
+);
+
 const styles = reactStyles({
   bodyLead: {
     fontFamily: "GothamBook, Arial, sans-serif",
@@ -71,6 +97,29 @@ const styles = reactStyles({
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "flex-start",
+  },
+  shareButtonContainer: {
+    position: "relative",
+    display: "inline-flex",
+    alignItems: "center",
+  },
+  shareTooltip: {
+    position: "absolute",
+    bottom: "100%",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "auto",
+    fontSize: "14px",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    backgroundColor: "#FFFFFF",
+    color: "#302C71",
+    textAlign: "left",
+    padding: "5px",
+    zIndex: 110,
+    lineHeight: "normal",
+    outline: "2px solid #302C71",
+    boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.15)",
+    whiteSpace: "nowrap",
   },
 });
 
@@ -457,8 +506,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                     style={{ width: 20, height: 20, color: "#2691D0" }}
                   />
                 </button>
-                <button
-                  className="icon-btn icon-choice"
+                <button className="icon-btn icon-choice"
                   onClick={(e) => {
                     e.stopPropagation();
                     this.showChart("sources");
@@ -473,24 +521,21 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                     style={styles.sourceBtnMeta}
                   ></div>
                 </button>
-                <button className="icon-btn">
-                  <ClrIcon
-                    shape="share"
-                    className="icon-choice"
-                    style={{ width: 20, height: 20, color: "#2691D0" }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      this.shareConcept(e);
-                    }}
-                  ></ClrIcon>
-                </button>
-                {showCopyAlert && (
-                  <div
-                    style={{ margin: "20px -60px 0 0", position: "absolute" }}
-                  >
-                    <div className="copy-alert">Link copied to clipboard</div>
-                  </div>
-                )}
+                <div style={styles.shareButtonContainer}>
+                  <button className="icon-btn">
+                    <ShareIcon
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        this.shareConcept(e);
+                      }}
+                    />
+                  </button>
+                  {showCopyAlert && (
+                    <div style={styles.shareTooltip}>
+                      Link copied to clipboard
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             {synonymString && (

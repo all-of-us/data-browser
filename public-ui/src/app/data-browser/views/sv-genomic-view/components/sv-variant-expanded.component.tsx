@@ -171,26 +171,21 @@ const styles = reactStyles({
   },
   shareTooltip: {
     position: "absolute",
-    bottom: "calc(100% + 8px)",
+    bottom: "100%",
     left: "50%",
     transform: "translateX(-50%)",
-    backgroundColor: "#333",
-    color: "white",
-    padding: "6px 12px",
-    borderRadius: "4px",
-    fontSize: "12px",
+    width: "auto",
+    fontSize: "14px",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    backgroundColor: "#FFFFFF",
+    color: "#302C71",
+    textAlign: "left",
+    padding: "5px",
+    zIndex: 110,
+    lineHeight: "normal",
+    outline: "2px solid #302C71",
+    boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.15)",
     whiteSpace: "nowrap",
-    zIndex: 1000,
-    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-  },
-  shareTooltipArrow: {
-    position: "absolute",
-    top: "100%",
-    left: "50%",
-    transform: "translateX(-50%)",
-    borderWidth: "6px",
-    borderStyle: "solid",
-    borderColor: "#333 transparent transparent transparent",
   },
   shareButtonContainer: {
     position: "relative",
@@ -338,7 +333,6 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                   {showShareTooltip && (
                     <div style={styles.shareTooltip}>
                       Link copied to clipboard
-                      <div style={styles.shareTooltipArrow} />
                     </div>
                   )}
                 </div>
