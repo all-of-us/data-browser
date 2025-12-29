@@ -78,7 +78,7 @@ const styles = reactStyles({
     left: "0px",
     padding: ".5em",
     // paddingLeft: "1em",
-    zIndex: "9",
+    zIndex: 10,
     borderTop: "1px solid rgb(204, 204, 204)",
   },
   top: {
@@ -90,6 +90,7 @@ const styles = reactStyles({
     width: "100%",
     margin: "0",
     paddingBottom: ".5rem",
+    boxSizing: "border-box",
   },
   variantId: {
     fontSize: "18px",
@@ -150,7 +151,63 @@ const styles = reactStyles({
   closeIcon: {
     cursor: "pointer",
   },
+  headerActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "2rem", // equal to the width of the X button
+    flexShrink: 0,
+  },
+  shareTooltip: {
+    position: "absolute",
+    bottom: "100%",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "auto",
+    fontSize: "14px",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    backgroundColor: "#FFFFFF",
+    color: "#302C71",
+    textAlign: "left",
+    padding: "5px",
+    zIndex: 110,
+    lineHeight: "normal",
+    outline: "2px solid #302C71",
+    boxShadow: "0 4px 6px 0 rgba(0, 0, 0, 0.15)",
+    whiteSpace: "nowrap",
+  },
+  shareButtonContainer: {
+    position: "relative",
+    display: "inline-flex",
+    alignItems: "center",
+    width: "2rem",
+    height: "2rem",
+  },
 });
+
+const ShareIcon: React.FC<{ onClick?: (e: React.MouseEvent) => void }> = ({
+  onClick,
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 36 36"
+    width="2rem"
+    height="2rem"
+    fill="none"
+    stroke="rgb(0, 121, 184)"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    onClick={onClick}
+    style={{ cursor: "pointer" }}
+  >
+    {/* Box/container - with padding to match ClrIcon */}
+    <path d="M9 16v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-10" />
+    {/* Arrow pointing up */}
+    <polyline points="22 12 18 8 14 12" />
+    {/* Arrow stem */}
+    <line x1="18" y1="8" x2="18" y2="22" />
+  </svg>
+);
 
 interface Props {
   closed: Function;
@@ -159,18 +216,56 @@ interface Props {
   variantDetails: VariantInfo;
   loading: boolean;
 }
-// tslint:disable-next-line:no-empty-interface
-interface State {}
+
+interface State {
+  showShareTooltip: boolean;
+}
 
 export class VariantExpandedComponent extends React.Component<Props, State> {
+  private tooltipTimeout: NodeJS.Timeout | null = null;
+
   constructor(props: Props) {
     super(props);
+    this.state = {
+      showShareTooltip: false,
+    };
   }
+
+  componentWillUnmount() {
+    if (this.tooltipTimeout) {
+      clearTimeout(this.tooltipTimeout);
+    }
+  }
+
   handleMouseOver = () => {
     this.props.hovered(true);
   };
+
+  handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const { variant } = this.props;
+    const shareUrl = `${window.location.origin}/snvsindels/${variant.variantId}`;
+
+    // Copy to clipboard
+    navigator.clipboard
+      .writeText(shareUrl)
+      .then(() => {
+        this.setState({ showShareTooltip: true });
+
+        // Hide tooltip after 2 seconds
+        this.tooltipTimeout = setTimeout(() => {
+          this.setState({ showShareTooltip: false });
+        }, 2000);
+      })
+      .catch((err) => {
+        console.error("Failed to copy link:", err);
+      });
+  };
+
   render() {
     const { variantDetails, variant, loading } = this.props;
+    const { showShareTooltip } = this.state;
     let variantPopulationDetails: any[] = [];
     const rsLink =
       "https://www.ncbi.nlm.nih.gov/snp/?term=" + variantDetails.rsNumber;
@@ -197,7 +292,17 @@ export class VariantExpandedComponent extends React.Component<Props, State> {
                   </div>
                 )}{" "}
               </span>
-              <div style={{ position: "sticky", right: "2px" }}>
+              <div style={styles.headerActions}>
+                {/* Share Button */}
+                <div style={styles.shareButtonContainer}>
+                  <ShareIcon onClick={this.handleShare} />
+                  {showShareTooltip && (
+                    <div style={styles.shareTooltip}>
+                      Link copied to clipboard
+                    </div>
+                  )}
+                </div>
+                {/* Close Button */}
                 <ClrIcon
                   onClick={(e) => this.props.closed()}
                   className="exit"
