@@ -72,9 +72,9 @@ const styles = reactStyles({
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
     align-items: center;
-    width: 75rem;
+    width: 72rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -83,8 +83,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
-        width: 75rem;
+        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
+        width: 72rem;
     }
 }
 
@@ -222,9 +222,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>{variant.alleleNumber}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
             <div style={styles.rowItem}>{variant.homozygoteCount}</div>
-            <div style={styles.filterItem}>
-              {this.formatFilter(variant.filter)}
-            </div>
           </div>
         )}
       </React.Fragment>
