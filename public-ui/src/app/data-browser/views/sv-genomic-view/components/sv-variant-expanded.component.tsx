@@ -312,7 +312,10 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
         <div onMouseOver={this.handleMouseOver} style={styles.variantExpanded}>
           <div style={{ minWidth: "600px" }}>
             <div style={styles.top}>
-              <span style={styles.variantId}>
+              <span
+                style={{ ...styles.variantId, cursor: "pointer" }}
+                onClick={() => this.props.closed()}
+              >
                 <strong style={styles.variantIdLabel}>Variant ID: </strong>{" "}
                 {!loading ? (
                   <span
