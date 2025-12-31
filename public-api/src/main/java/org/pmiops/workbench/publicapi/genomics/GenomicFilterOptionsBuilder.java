@@ -1,4 +1,4 @@
-package org.pmiops.workbench.publicapi;
+package org.pmiops.workbench.publicapi.genomics;
 
 import org.pmiops.workbench.model.GenomicFilterOption;
 import org.pmiops.workbench.model.GenomicFilterOptionList;
