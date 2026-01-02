@@ -35,9 +35,6 @@ import org.pmiops.workbench.model.SearchVariantsRequest;
 import org.pmiops.workbench.model.SearchSVVariantsRequest;
 import org.pmiops.workbench.model.VariantResultSizeRequest;
 import org.pmiops.workbench.model.SVVariantResultSizeRequest;
-import org.pmiops.workbench.model.SortMetadata;
-import org.pmiops.workbench.model.SortSVMetadata;
-import org.pmiops.workbench.model.SortColumnDetails;
 
 import org.pmiops.workbench.publicapi.GenomicsApiDelegate;
 
@@ -241,14 +238,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         }
     }
 
-    private String getSortDirection(String direction, boolean defaultAsc) {
-        if (defaultAsc) {
-            return "desc".equals(direction) ? "DESC" : "ASC";
-        } else {
-            return "asc".equals(direction) ? "ASC" : "DESC";
-        }
-    }
-
     @Override
     public ResponseEntity<Analysis> getParticipantCounts() {
         initCdrVersion();
@@ -392,62 +381,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
-        SortSVMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         SVGenomicFilters filters = searchVariantsRequest.getFilterMetadata();
 
-        // Build ORDER BY clause
-        String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
-        if (sortMetadata != null) {
-            SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
-            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY variant_id " + getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true);
-            }
-
-            SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
-            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY variant_type " + getSortDirection(variantTypeColumnSortMetadata.getSortDirection(), true);
-            }
-
-            SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
-            if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = ConsequenceSeverityRanker.buildSVConsequenceOrderBy(consequenceColumnSortMetadata.getSortDirection().equals("asc"));
-            }
-
-            SortColumnDetails positionColumnSortMetadata = sortMetadata.getPosition();
-            if (positionColumnSortMetadata != null && positionColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY position " + getSortDirection(positionColumnSortMetadata.getSortDirection(), true);
-            }
-
-            SortColumnDetails sizeColumnSortMetadata = sortMetadata.getSize();
-            if (sizeColumnSortMetadata != null && sizeColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY size " + getSortDirection(sizeColumnSortMetadata.getSortDirection(), true);
-            }
-
-            SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
-            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_count " + getSortDirection(alleleCountColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
-            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_number " + getSortDirection(alleleNumberColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
-            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_frequency " + getSortDirection(alleleFrequencyColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
-            if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY homozygote_count " + getSortDirection(homozygoteCountColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails filterColumnSortMetadata = sortMetadata.getFilter();
-            if (filterColumnSortMetadata != null && filterColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY filter " + getSortDirection(filterColumnSortMetadata.getSortDirection(), true);
-            }
-        }
+        // Build ORDER BY clause using SortClauseBuilder
+        String ORDER_BY_CLAUSE = SortClauseBuilder.buildSVOrderBy(searchVariantsRequest.getSortMetadata());
 
         // Parse search term
         String searchTerm = variantSearchTerm;
@@ -553,58 +490,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         String variantSearchTerm = searchVariantsRequest.getQuery().trim();
         Integer page = searchVariantsRequest.getPageNumber();
         Integer rowCount = searchVariantsRequest.getRowCount();
-        SortMetadata sortMetadata = searchVariantsRequest.getSortMetadata();
         GenomicFilters filters = searchVariantsRequest.getFilterMetadata();
 
-        // Build ORDER BY clause
-        String ORDER_BY_CLAUSE = " ORDER BY variant_id ASC";
-        if (sortMetadata != null) {
-            SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
-            if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY variant_id " + getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true);
-            }
-
-            SortColumnDetails geneColumnSortMetadata = sortMetadata.getGene();
-            if (geneColumnSortMetadata != null && geneColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY genes " + getSortDirection(geneColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails consequenceColumnSortMetadata = sortMetadata.getConsequence();
-            if (consequenceColumnSortMetadata != null && consequenceColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = ConsequenceSeverityRanker.buildSNVConsequenceOrderBy(consequenceColumnSortMetadata.getSortDirection().equals("asc"));
-            }
-
-            SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
-            if (variantTypeColumnSortMetadata != null && variantTypeColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY lower(variant_type) " + getSortDirection(variantTypeColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails clinSigColumnSortMetadata = sortMetadata.getClinicalSignificance();
-            if (clinSigColumnSortMetadata != null && clinSigColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY (SELECT STRING_AGG(distinct d, \", \" order by d asc) FROM UNNEST(clinical_significance) d) "
-                        + getSortDirection(clinSigColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails alleleCountColumnSortMetadata = sortMetadata.getAlleleCount();
-            if (alleleCountColumnSortMetadata != null && alleleCountColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_count " + getSortDirection(alleleCountColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails alleleNumberColumnSortMetadata = sortMetadata.getAlleleNumber();
-            if (alleleNumberColumnSortMetadata != null && alleleNumberColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_number " + getSortDirection(alleleNumberColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails alleleFrequencyColumnSortMetadata = sortMetadata.getAlleleFrequency();
-            if (alleleFrequencyColumnSortMetadata != null && alleleFrequencyColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY allele_frequency " + getSortDirection(alleleFrequencyColumnSortMetadata.getSortDirection(), false);
-            }
-
-            SortColumnDetails homozygoteCountColumnSortMetadata = sortMetadata.getHomozygoteCount();
-            if (homozygoteCountColumnSortMetadata != null && homozygoteCountColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY homozygote_count " + getSortDirection(homozygoteCountColumnSortMetadata.getSortDirection(), false);
-            }
-        }
+        // Build ORDER BY clause using SortClauseBuilder
+        String ORDER_BY_CLAUSE = SortClauseBuilder.buildSNVOrderBy(searchVariantsRequest.getSortMetadata());
 
         // Parse search term
         String finalSql = VARIANT_LIST_SQL_TEMPLATE;
