@@ -187,8 +187,9 @@ export const homeCss = `
 	grid-template-columns: repeat(2, minmax(239px, 1fr));
 	column-gap:1rem;
 }
-.pm-boxes  .result-box, .genomic-boxes .result-box{
-  height: 18rem;
+.pm-boxes .result-box, .genomic-boxes .result-box{
+  height: auto;
+  min-height: 12rem;
 }
 .result-box:last-of-type {
 	margin-right: 0;
@@ -337,7 +338,7 @@ const styles = reactStyles({
     fontWeight: "bold",
     textAlign: "center",
     margin: 0,
-    padding: "16px",
+    padding: "50px",
   },
   dBDesc: {
     padding: "16px",
@@ -515,57 +516,37 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             </span>
           )}
           {/* SNVs/Indels without search */}
-            {domainType === "snvs" && name === "SNVs/Indels" && !searchWord && (
-              <React.Fragment>
-                <span className="result-box-body-item">
-                  <span className="result-stat">
-                    {variantListSize.toLocaleString()}
-                  </span>
-                  <span className="result-box-stat-label">
-                    SNVs/Indels
-                  </span>
-
-                  <React.Fragment>
-                    <span
-                      style={{ paddingTop: "2rem", fontSize: "28px" }}
-                      className="result-stat"
-                    >
-                      {wgsSRParticipantCount.toLocaleString()}
-                    </span>
-                    <div style={{ paddingTop: ".25rem" }}>
-                      Participants in the Short-Read
-                      Whole Genome Sequencing
-                      (WGS) dataset
-                    </div>
-                  </React.Fragment>
+          {domainType === "snvs" && name === "SNVs/Indels" && !searchWord && (
+            <React.Fragment>
+              <span className="result-box-body-item">
+                <span className="result-stat">
+                  {variantListSize.toLocaleString()}
                 </span>
-              </React.Fragment>
-            )}
+                <span className="result-box-stat-label">
+                  SNVs/Indels
+                </span>
+              </span>
+              <span className="result-box-body-item participant-count">
+                <strong>{wgsSRParticipantCount.toLocaleString()}</strong> participants
+              </span>
+            </React.Fragment>
+          )}
           {/* Structural Variants without search */}
-            {domainType === "svs" && name === "Structural Variants" && !searchWord && (
-              <React.Fragment>
-                <span className="result-box-body-item">
-                  <span className="result-stat">
-                    {svVariantListSize.toLocaleString()}
-                  </span>
-                  <span className="result-box-stat-label">
-                    Structural Variants
-                  </span>
-
-                  <React.Fragment>
-                    <span
-                      style={{ paddingTop: "2rem", fontSize: "28px" }}
-                      className="result-stat"
-                    >
-                      {wgsSVParticipantCount.toLocaleString()}
-                    </span>
-                    <div style={{ paddingTop: ".25rem" }}>
-                      Participants in the Short-Read WGS Structural Variants dataset
-                    </div>
-                  </React.Fragment>
+          {domainType === "svs" && name === "Structural Variants" && !searchWord && (
+            <React.Fragment>
+              <span className="result-box-body-item">
+                <span className="result-stat">
+                  {svVariantListSize.toLocaleString()}
                 </span>
-              </React.Fragment>
-            )}
+                <span className="result-box-stat-label">
+                  Structural Variants
+                </span>
+              </span>
+              <span className="result-box-body-item participant-count">
+                <strong>{wgsSVParticipantCount.toLocaleString()}</strong> participants
+              </span>
+            </React.Fragment>
+          )}
           {searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">
@@ -616,94 +597,55 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
           )}
-          {participantCount && !(domainType === "snvs") && (
+          {participantCount && !(domainType === "snvs") && !(domainType === "svs") && (
             <span className="result-box-body-item participant-count">
-              <strong> {participantCount.toLocaleString()}</strong> participants
+              <strong>{participantCount.toLocaleString()}</strong> participants
             </span>
           )}
           {/* SNVs/Indels with search */}
-            {domainType === "snvs" &&
-              name === "SNVs/Indels" &&
-              searchWord &&
-              !loadingVariantListSize &&
-              variantListSize > 0 && (
-                <React.Fragment>
-                  <span className="result-box-body-item">
-                    <span className="result-stat">
-                      {variantListSize.toLocaleString()}
-                    </span>
-                    <span className="result-box-stat-label">
-                      SNVs/Indels
-                    </span>
-
-                    <React.Fragment>
-                      <span
-                        style={{ paddingTop: "2rem", fontSize: "28px" }}
-                        className="result-stat"
-                      >
-                        {wgsSRParticipantCount.toLocaleString()}
-                      </span>
-                      <div style={{ paddingTop: ".25rem" }}>
-                        Participants in Short-Read <br></br>
-                        Whole Genome Sequencing <br></br>
-                        (WGS) dataset
-                      </div>
-                    </React.Fragment>
+          {domainType === "snvs" &&
+            name === "SNVs/Indels" &&
+            searchWord &&
+            !loadingVariantListSize &&
+            variantListSize > 0 && (
+              <React.Fragment>
+                <span className="result-box-body-item">
+                  <span className="result-stat">
+                    {variantListSize.toLocaleString()}
                   </span>
-                </React.Fragment>
-              )}
+                  <span className="result-box-stat-label">
+                    matching SNVs/Indels
+                  </span>
+                </span>
+                <span className="result-box-body-item participant-count">
+                  <strong>{wgsSRParticipantCount.toLocaleString()}</strong> participants
+                </span>
+              </React.Fragment>
+            )}
           {/* Structural Variants with search */}
-            {domainType === "svs" &&
-              name === "Structural Variants" &&
-              searchWord &&
-              !loadingSVVariantListSize &&
-              svVariantListSize > 0 && (
-                <React.Fragment>
-                  <span className="result-box-body-item">
-                    <span className="result-stat">
-                      {svVariantListSize.toLocaleString()}
-                    </span>
-                    <span className="result-box-stat-label">
-                      Structural Variants
-                    </span>
-
-                    <React.Fragment>
-                      <span
-                        style={{ paddingTop: "2rem", fontSize: "28px" }}
-                        className="result-stat"
-                      >
-                        {wgsSVParticipantCount.toLocaleString()}
-                      </span>
-                      <div style={{ paddingTop: ".25rem" }}>
-                        Participants in Short-Read <br></br>
-                        WGS Structural Variants dataset
-                      </div>
-                    </React.Fragment>
+          {domainType === "svs" &&
+            name === "Structural Variants" &&
+            searchWord &&
+            !loadingSVVariantListSize &&
+            svVariantListSize > 0 && (
+              <React.Fragment>
+                <span className="result-box-body-item">
+                  <span className="result-stat">
+                    {svVariantListSize.toLocaleString()}
                   </span>
-                </React.Fragment>
-              )}
-          {name.toLowerCase() === "physical measurements" && (
-            <span style={styles.resultBodyDescription}>
-              Participants have the option to provide a standard set of physical
-              measurements.
-            </span>
-          )}
-          {name.toLowerCase() === "fitbit" && (
-            <span style={styles.resultBodyDescription}>
-              Fitbit data includes heart rate and activity summaries.
-            </span>
-          )}
+                  <span className="result-box-stat-label">
+                    matching Structural Variants
+                  </span>
+                </span>
+                <span className="result-box-body-item participant-count">
+                  <strong>{wgsSVParticipantCount.toLocaleString()}</strong> participants
+                </span>
+              </React.Fragment>
+            )}
         </div>
         <div style={styles.resultBoxLink}>
-          {questionCount ? (
-            <a className="result-bottom-link">View Complete Survey</a>
-          ) : name === "SNVs/Indels" ? (
-            <a className="result-bottom-link">View SNVs/Indels</a>
-          ) : name === "Structural Variants" ? (
-            <a className="result-bottom-link">View Structural Variants</a>
-          ) : (
-            <a className="result-bottom-link">View {name}</a>
-          )}
+          {/* Spacer to maintain card dimensions */}
+          <span className="result-bottom-link" style={{ visibility: 'hidden' }}>&nbsp;</span>
         </div>
       </div>
     );

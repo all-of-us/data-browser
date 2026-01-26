@@ -103,7 +103,7 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
       <div className="consequence-wrapper">
         <style>{css}</style>
 
-        <span className="consequence-heading">Predicted Consequence(s):</span>
+        <span className="consequence-heading">Predicted Consequence:</span>
         <br />
         <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
           {firstEntry && (

@@ -143,9 +143,9 @@ export const tooltips = {
   "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
     social life, stress, and feelings about everyday life.`,
   snvs:
-    "Search and explore SNV/Indel variant data available within the dataset.",
+    "Search and explore SNV/Indel variant data available within the Short-Read Whole Genome Sequencing (WGS) dataset.",
   svs:
-    "Search and explore structural variant data available within the dataset.",
+    "Search and explore structural variant data available within the Short-Read WGS Structural Variants dataset.",
   pmValueChartHelpText:
     "Values provide the numeric result of the " +
     "physical measurements taken at the time of participant enrollment. " +
@@ -402,9 +402,9 @@ export class TooltipService {
     "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
        social life, stress, and feelings about everyday life.`,
   snvs:
-    "Search and explore SNV/Indel variant data available within the dataset.",
+    "Search and explore SNV/Indel variant data available within the Short-Read Whole Genome Sequencing (WGS) dataset.",
   svs:
-    "Search and explore structural variant data available within the dataset.",
+    "Search and explore structural variant data available within the Short-Read WGS Structural Variants dataset.",
     // genomicsCTA:
     // "this will be the tooltip",
     pmValueChartHelpText:

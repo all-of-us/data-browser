@@ -84,7 +84,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen1 ? "sub--nav--open" : "")
                       }
                     >
-                      <a href="https://www.researchallofus.org/about/">About</a>
+                      <a style={{ cursor: 'pointer' }}>About</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -144,9 +144,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen2 ? "sub--nav--open" : "")
                       }
                     >
-                      <a href="https://www.researchallofus.org/data-tools/">
-                        Data &amp; Tools
-                      </a>
+                      <a style={{ cursor: 'pointer' }}>Data &amp; Tools</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -231,9 +229,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen3 ? "sub--nav--open" : "")
                       }
                     >
-                      <a href="https://www.researchallofus.org/discover/">
-                        Discover
-                      </a>
+                      <a style={{ cursor: 'pointer' }}>Discover</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
