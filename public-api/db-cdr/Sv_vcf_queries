@@ -32,7 +32,15 @@ gatk VariantsToTable -SMA -V AoU_srWGS_SV.v9.sites_only.vcf.gz --show-filtered -
 -F AN_MID -F AC_MID -F AF_MID -F N_HOMALT_MID \
 -F AN_OTH -F AC_OTH -F AF_OTH -F N_HOMALT_OTH \
 -F AN_SAS -F AC_SAS -F AF_SAS -F N_HOMALT_SAS \
--F NCR
+-F NCR \
+-F CN_COUNT -F CN_NUMBER -F CN_FREQ -F CN_NONREF_COUNT -F CN_NONREF_FREQ \
+-F CN_NUMBER_AFR -F CN_COUNT_AFR -F CN_NONREF_COUNT_AFR -F CN_FREQ_AFR -F CN_NONREF_FREQ_AFR \
+-F CN_NUMBER_AMR -F CN_COUNT_AMR -F CN_NONREF_COUNT_AMR -F CN_FREQ_AMR -F CN_NONREF_FREQ_AMR \
+-F CN_NUMBER_EAS -F CN_COUNT_EAS -F CN_NONREF_COUNT_EAS -F CN_FREQ_EAS -F CN_NONREF_FREQ_EAS \
+-F CN_NUMBER_EUR -F CN_COUNT_EUR -F CN_NONREF_COUNT_EUR -F CN_FREQ_EUR -F CN_NONREF_FREQ_EUR \
+-F CN_NUMBER_MID -F CN_COUNT_MID -F CN_NONREF_COUNT_MID -F CN_FREQ_MID -F CN_NONREF_FREQ_MID \
+-F CN_NUMBER_OTH -F CN_COUNT_OTH -F CN_NONREF_COUNT_OTH -F CN_FREQ_OTH -F CN_NONREF_FREQ_OTH \
+-F CN_NUMBER_SAS -F CN_COUNT_SAS -F CN_NONREF_COUNT_SAS -F CN_FREQ_SAS -F CN_NONREF_FREQ_SAS
 
 python tsv_csv.py
 
@@ -44,10 +52,10 @@ CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_9_processed` A
 SELECT
   chrom, pos,
   CASE
-    WHEN chrom = chr2 OR chr2 IS NULL
+    WHEN chr2 IS NULL
       THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), '-', CAST(b.END AS STRING))
-    WHEN chrom != chr2
-      THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.END AS STRING))
+    ELSE
+      CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.POS AS STRING), ', ', SUBSTR(b.chr2, 4), ':', CAST(b.END2 AS STRING))
   END AS position,
   alt AS variant_type, filter, ac AS allele_count, an AS allele_number, chr2, cpx_intervals, cpx_type,
   b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial,
@@ -62,10 +70,27 @@ SELECT
   an_mid AS mid_an, ac_mid AS mid_ac, af_mid AS mid_af, n_homalt_mid AS mid_n_homalt,
   an_oth AS oth_an, ac_oth AS oth_ac, af_oth AS oth_af, n_homalt_oth AS oth_n_homalt,
   an_sas AS sas_an, ac_sas AS sas_ac, af_sas AS sas_af, n_homalt_sas AS sas_n_homalt,
+
+  -- CNV-specific metrics (global)
+  cn_count,
+  cn_number,
+  cn_freq,
+  cn_nonref_count,
+  cn_nonref_freq,
+
+  -- CNV-specific metrics (ancestry)
+  cn_number_afr, cn_count_afr, cn_nonref_count_afr, cn_freq_afr, cn_nonref_freq_afr,
+  cn_number_amr, cn_count_amr, cn_nonref_count_amr, cn_freq_amr, cn_nonref_freq_amr,
+  cn_number_eas, cn_count_eas, cn_nonref_count_eas, cn_freq_eas, cn_nonref_freq_eas,
+  cn_number_eur, cn_count_eur, cn_nonref_count_eur, cn_freq_eur, cn_nonref_freq_eur,
+  cn_number_mid, cn_count_mid, cn_nonref_count_mid, cn_freq_mid, cn_nonref_freq_mid,
+  cn_number_oth, cn_count_oth, cn_nonref_count_oth, cn_freq_oth, cn_nonref_freq_oth,
+  cn_number_sas, cn_count_sas, cn_nonref_count_sas, cn_freq_sas, cn_nonref_freq_sas,
+
   id AS variant_id_vcf,
   ncr AS no_call_rate,
   qual AS quality_score
-FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_v9` b;
+FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_v9_2026_01_26` b;
 
 
 -- Step 2: Add consequence and consequence_genes columns (no change needed)
@@ -199,6 +224,21 @@ SELECT
   mid_an, mid_ac, mid_af, mid_n_homalt,
   oth_an, oth_ac, oth_af, oth_n_homalt,
   sas_an, sas_ac, sas_af, sas_n_homalt,
+  -- CNV-specific metrics (global)
+  cn_count,
+  cn_number,
+  cn_freq,
+  cn_nonref_count,
+  cn_nonref_freq,
+
+  -- CNV-specific metrics (ancestry)
+  cn_number_afr, cn_count_afr, cn_nonref_count_afr, cn_freq_afr, cn_nonref_freq_afr,
+  cn_number_amr, cn_count_amr, cn_nonref_count_amr, cn_freq_amr, cn_nonref_freq_amr,
+  cn_number_eas, cn_count_eas, cn_nonref_count_eas, cn_freq_eas, cn_nonref_freq_eas,
+  cn_number_eur, cn_count_eur, cn_nonref_count_eur, cn_freq_eur, cn_nonref_freq_eur,
+  cn_number_mid, cn_count_mid, cn_nonref_count_mid, cn_freq_mid, cn_nonref_freq_mid,
+  cn_number_oth, cn_count_oth, cn_nonref_count_oth, cn_freq_oth, cn_nonref_freq_oth,
+  cn_number_sas, cn_count_sas, cn_nonref_count_sas, cn_freq_sas, cn_nonref_freq_sas,
   consequence, consequence_genes, genes, a.no_call_rate, a.quality_score,
   a.variant_id_vcf,
   variant_id
@@ -224,6 +264,21 @@ SELECT
   mid_an, mid_ac, mid_af, mid_n_homalt,
   oth_an, oth_ac, oth_af, oth_n_homalt,
   sas_an, sas_ac, sas_af, sas_n_homalt,
+  -- CNV-specific metrics (global)
+  cn_count,
+  cn_number,
+  cn_freq,
+  cn_nonref_count,
+  cn_nonref_freq,
+
+  -- CNV-specific metrics (ancestry)
+  cn_number_afr, cn_count_afr, cn_nonref_count_afr, cn_freq_afr, cn_nonref_freq_afr,
+  cn_number_amr, cn_count_amr, cn_nonref_count_amr, cn_freq_amr, cn_nonref_freq_amr,
+  cn_number_eas, cn_count_eas, cn_nonref_count_eas, cn_freq_eas, cn_nonref_freq_eas,
+  cn_number_eur, cn_count_eur, cn_nonref_count_eur, cn_freq_eur, cn_nonref_freq_eur,
+  cn_number_mid, cn_count_mid, cn_nonref_count_mid, cn_freq_mid, cn_nonref_freq_mid,
+  cn_number_oth, cn_count_oth, cn_nonref_count_oth, cn_freq_oth, cn_nonref_freq_oth,
+  cn_number_sas, cn_count_sas, cn_nonref_count_sas, cn_freq_sas, cn_nonref_freq_sas,
   consequence, consequence_genes, genes, b.no_call_rate, b.quality_score,
   b.variant_id_vcf,
   variant_id

@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
 export const menuItems = [
   {
     title: "about",
-    url: "https://www.researchallofus.org/about-the-research-hub/",
+    url: "",
     submenu: [
       {
         title: "About the Research Hub ",
@@ -35,7 +35,7 @@ export const menuItems = [
   },
   {
     title: "Data & Tools",
-    url: "https://www.researchallofus.org/data-tools/",
+    url: "",
     submenu: [
       {
         title: "Data Browser",
@@ -76,7 +76,7 @@ export const menuItems = [
   },
   {
     title: "Discover",
-    url: "https://www.researchallofus.org/research-projects-directory/?section=abc",
+    url: "",
     submenu: [
       {
         title: "Researcher Projects Directory",
