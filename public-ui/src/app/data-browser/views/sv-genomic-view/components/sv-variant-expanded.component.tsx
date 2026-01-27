@@ -45,6 +45,11 @@ const css = `
         grid-template-columns: 20% 20% 20% 20% 20%;
         font-size: 14px;
     }
+.pop-table-cnv {
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25%;
+        font-size: 14px;
+    }
 .pop-desc {
     display: flex;
     flex-direction: row;
@@ -280,9 +285,16 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
   replaceTag(variantType: string) {
     return variantType.replace(/^<|>$/g, '');
   }
+
+  isCNV() {
+    const { variant } = this.props;
+    return variant.variantType === "<CNV>";
+  }
+
   render() {
     const { variantDetails, variant, loading } = this.props;
     const { showShareTooltip } = this.state;
+    const isCNV = this.isCNV();
     let variantPopulationDetails: any[] = [];
     // const rsLink =  "https://www.ncbi.nlm.nih.gov/snp/?term=" + variantDetails.rsNumber;
     if (!loading) {
@@ -305,6 +317,11 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
 
     const consequenceEntries = Object.entries(consequenceMap);
     const hasMore = consequenceEntries.some(([, genes]) => genes.length > 5);
+
+    // Column labels based on variant type
+    const alleleCountLabel = isCNV ? "Non-diploid Samples" : "Allele Count";
+    const alleleNumberLabel = isCNV ? "Total Samples" : "Allele Number";
+    const alleleFrequencyLabel = isCNV ? "Non-diploid CN Frequency" : "Allele Frequency";
 
     return (
       <React.Fragment>
@@ -416,38 +433,51 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                 <h4 className="pop-title">Genetic Ancestry Populations</h4>
                 <div className="pop-table-container">
                   <div style={{ width: "100%" }}>
-                    <div className="pop-table">
+                    {/* Use different grid class based on CNV status */}
+                    <div className={isCNV ? "pop-table-cnv" : "pop-table"}>
                       <div style={styles.popTableHeading}></div>
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
-                          Allele <br />
-                          Count
+                          {isCNV ? (
+                            <>Non-diploid<br />Samples</>
+                          ) : (
+                            <>Allele<br />Count</>
+                          )}
                         </span>
                       </div>
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
-                          Allele <br />
-                          Number
+                          {isCNV ? (
+                            <>Total<br />Samples</>
+                          ) : (
+                            <>Allele<br />Number</>
+                          )}
                         </span>
                       </div>
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
-                          Allele <br />
-                          Frequency
+                          {isCNV ? (
+                            <>Non-diploid<br />CN Frequency</>
+                          ) : (
+                            <>Allele<br />Frequency</>
+                          )}
                         </span>
                       </div>
-                      <div style={styles.popTableHeading}>
-                        <span style={styles.catHeading}>
-                          Homozygote <br />
-                          Count
-                        </span>
-                      </div>
+                      {/* Only show Homozygote Count for non-CNV variants */}
+                      {!isCNV && (
+                        <div style={styles.popTableHeading}>
+                          <span style={styles.catHeading}>
+                            Homozygote <br />
+                            Count
+                          </span>
+                        </div>
+                      )}
                     </div>
                     <div style={styles.popTableBody}>
                       {variantPopulationDetails.map((item, index) => {
                         const colorStyle = { color: item.color };
                         return (
-                          <div key={index} className="pop-table">
+                          <div key={index} className={isCNV ? "pop-table-cnv" : "pop-table"}>
                             <div style={styles.popTableData}>
                               {item.Ancestry !== "Total" ? (
                                 <span className="pop-desc">
@@ -504,17 +534,20 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                                 </span>
                               )}
                             </div>
-                            <div style={styles.popTableData}>
-                              {item.Ancestry !== "Total" ? (
-                                <React.Fragment>
-                                  {item.HomozygoteCount.toLocaleString()}
-                                </React.Fragment>
-                              ) : (
-                                <span style={styles.catHeading}>
-                                  {item.HomozygoteCount.toLocaleString()}
-                                </span>
-                              )}
-                            </div>
+                            {/* Only show Homozygote Count for non-CNV variants */}
+                            {!isCNV && (
+                              <div style={styles.popTableData}>
+                                {item.Ancestry !== "Total" ? (
+                                  <React.Fragment>
+                                    {item.HomozygoteCount.toLocaleString()}
+                                  </React.Fragment>
+                                ) : (
+                                  <span style={styles.catHeading}>
+                                    {item.HomozygoteCount.toLocaleString()}
+                                  </span>
+                                )}
+                              </div>
+                            )}
                           </div>
                         );
                       })}
