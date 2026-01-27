@@ -555,6 +555,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                   </div>
                   <PopulationChartReactComponent
                     variantPopulationDetails={variantPopulationDetails}
+                    isCNV={isCNV}
                   />
                 <div className="alt-variant-id">
                   <strong>VCF ID:</strong> {variantDetails.variantIDVCF}

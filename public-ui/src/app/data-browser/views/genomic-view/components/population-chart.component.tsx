@@ -17,6 +17,7 @@ interface State {
 
 interface Props {
   variantPopulationDetails: any;
+  isCNV?: boolean;
 }
 
 export class PopulationChartReactComponent extends React.Component<
@@ -32,16 +33,31 @@ export class PopulationChartReactComponent extends React.Component<
     this.getChartOptions();
   }
 
+  componentDidUpdate(prevProps) {
+    // Rebuild chart if isCNV prop changes
+    if (prevProps.isCNV !== this.props.isCNV) {
+      this.getChartOptions();
+    }
+  }
+
   getChartOptions() {
-    const { variantPopulationDetails } = this.props;
+    const { variantPopulationDetails, isCNV } = this.props;
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "pie";
-    newBaseOptions.title.text =
+
+    // Use different title for CNV variants
+    if (isCNV) {
+      newBaseOptions.title.text =
+        '<div style="color:#262262;text-align:center;font-size:12px;">PERCENTAGE OF<br/>NON-DIPLOID SAMPLES</div>';
+    } else {
+      newBaseOptions.title.text =
         '<div style="color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
+    }
+
     newBaseOptions.title.verticalAlign = "middle";
     newBaseOptions.title.style = {
           color: "black",
-          fontSize: "15px",
+          fontSize: isCNV ? "12px" : "15px",
           wordBreak: "break-word",
           zIndex: 0,
           fontFamily: "GothamBook",
@@ -76,14 +92,15 @@ export class PopulationChartReactComponent extends React.Component<
               toolTipHelpText: this.getTooltipHelpText(
                 variantDet.Ancestry,
                 roundedPercentage,
-                variantDet.AlleleCount
+                variantDet.AlleleCount,
+                isCNV
               ),
             });
           }
     }
     newBaseOptions.series = [
           {
-            name: "Alleles",
+            name: isCNV ? "Non-diploid Samples" : "Alleles",
             data: chartData,
             size: "80%",
             shadow: false,
@@ -97,17 +114,18 @@ export class PopulationChartReactComponent extends React.Component<
     this.setState({ options: newBaseOptions });
   }
 
-  getTooltipHelpText(name: string, percentage: any, count: number) {
-        return (
-          '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center;">' +
-          "<strong>" +
-          name +
-          "</strong><br />" +
-          percentage +
-          "% | AC: " +
-          count.toLocaleString() +
-          "</div>"
-        );
+  getTooltipHelpText(name: string, percentage: any, count: number, isCNV?: boolean) {
+    const countLabel = isCNV ? "Samples" : "AC";
+    return (
+      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center;">' +
+      "<strong>" +
+      name +
+      "</strong><br />" +
+      percentage +
+      "% | " + countLabel + ": " +
+      count.toLocaleString() +
+      "</div>"
+    );
   }
 
   render() {
