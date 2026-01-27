@@ -377,19 +377,34 @@ public class GenomicFilterBuilder {
             filterSql.append(" AND size BETWEEN ").append(sizeMin).append(" AND ").append(sizeMax);
         }
 
-        // Allele count filter
+        // Allele count filter - Updated to use CNV-specific metrics for SV queries
         if (alleleCountMin != null && alleleCountMax != null) {
-            filterSql.append(" AND allele_count BETWEEN ").append(alleleCountMin).append(" AND ").append(alleleCountMax);
+            if (isSVQuery) {
+                filterSql.append(" AND CASE WHEN variant_type = '<CNV>' THEN cn_nonref_count ELSE allele_count END BETWEEN ")
+                        .append(alleleCountMin).append(" AND ").append(alleleCountMax);
+            } else {
+                filterSql.append(" AND allele_count BETWEEN ").append(alleleCountMin).append(" AND ").append(alleleCountMax);
+            }
         }
 
-        // Allele number filter
+        // Allele number filter - Updated to use CNV-specific metrics for SV queries
         if (alleleNumberMin != null && alleleNumberMax != null) {
-            filterSql.append(" AND allele_number BETWEEN ").append(alleleNumberMin).append(" AND ").append(alleleNumberMax);
+            if (isSVQuery) {
+                filterSql.append(" AND CASE WHEN variant_type = '<CNV>' THEN cn_number ELSE allele_number END BETWEEN ")
+                        .append(alleleNumberMin).append(" AND ").append(alleleNumberMax);
+            } else {
+                filterSql.append(" AND allele_number BETWEEN ").append(alleleNumberMin).append(" AND ").append(alleleNumberMax);
+            }
         }
 
-        // Allele frequency filter
+        // Allele frequency filter - Updated to use CNV-specific metrics for SV queries
         if (alleleFrequencyMin != null && alleleFrequencyMax != null) {
-            filterSql.append(" AND allele_frequency BETWEEN ").append(alleleFrequencyMin).append(" AND ").append(alleleFrequencyMax);
+            if (isSVQuery) {
+                filterSql.append(" AND CASE WHEN variant_type = '<CNV>' THEN cn_nonref_freq ELSE allele_frequency END BETWEEN ")
+                        .append(alleleFrequencyMin).append(" AND ").append(alleleFrequencyMax);
+            } else {
+                filterSql.append(" AND allele_frequency BETWEEN ").append(alleleFrequencyMin).append(" AND ").append(alleleFrequencyMax);
+            }
         }
 
         // Homozygote count filter
