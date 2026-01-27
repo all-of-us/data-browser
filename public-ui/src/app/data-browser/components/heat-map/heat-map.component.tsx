@@ -31,6 +31,9 @@ const getHoverColor = (color: any) => {
     return color?.hover || '#a27bd7';
 }
 
+// Fixed max value for color scale (for testing)
+const FIXED_COLOR_SCALE_MAX = 20000;
+
 export const HeatMapReactComponent =
     class extends React.Component<Props, State> {
         territories: string[];
@@ -77,6 +80,13 @@ export const HeatMapReactComponent =
             }, 0);
         }
 
+        // Check if fixed color scale should be used (for testing - EHR domain only)
+        shouldUseFixedColorScale = () => {
+            // Apply fixed scale only to EHR domain for testing
+            // Change this condition to expand to other sections/concepts
+            return this.props.domain === 'ehr';
+        }
+
         options = {
             chart: {
                 map: mapData,
@@ -86,6 +96,10 @@ export const HeatMapReactComponent =
 
             },
             colorAxis: {
+                // Use fixed min/max for testing (EHR domain)
+                // Values above max will use the darkest color
+                min: 0,
+                max: this.shouldUseFixedColorScale() ? FIXED_COLOR_SCALE_MAX : undefined,
                 stops: [
                     [0, '#d0eafc'],
                     [0.5, '#006699'],
@@ -99,7 +113,7 @@ export const HeatMapReactComponent =
                     const total = this.series.chart.userOptions.totalValue || 1;
                     const percentage = (this.point.value / total) * 100;
 
-                    // In the map tooltip, let’s display < 0.1% instead of 0.0 when a value is less than 0.05 (looks like standard rounding)
+                    // In the map tooltip, let's display < 0.1% instead of 0.0 when a value is less than 0.05 (looks like standard rounding)
                     const percentageDisplay = percentage < 0.05 ? '< 0.1%' : `${percentage.toFixed(1)}%`;
 
                     const tooltipText = `
@@ -194,6 +208,17 @@ export const HeatMapReactComponent =
             const total = this.calculateTotal(seriesData);
             (chartObj.userOptions as any).totalValue = total;
 
+            // Apply fixed color scale if needed
+            if (this.shouldUseFixedColorScale()) {
+                const colorAxis = (chartObj as any).colorAxis?.[0];
+                if (colorAxis) {
+                    colorAxis.update({
+                        min: 0,
+                        max: FIXED_COLOR_SCALE_MAX
+                    }, false);
+                }
+            }
+
             setTimeout(() => {
                 this.applyTerritoryColors();
                 this.setupEventListeners();
@@ -231,6 +256,27 @@ export const HeatMapReactComponent =
                         this.applyTerritoryColors();
                         this.setupEventListeners();
                     }, 100);
+                }
+            }
+
+            // Handle domain change - update color scale
+            if (prevProps.domain !== this.props.domain) {
+                if (chartObj) {
+                    const colorAxis = (chartObj as any).colorAxis?.[0];
+                    if (colorAxis) {
+                        if (this.shouldUseFixedColorScale()) {
+                            colorAxis.update({
+                                min: 0,
+                                max: FIXED_COLOR_SCALE_MAX
+                            }, true);
+                        } else {
+                            // Reset to auto-scaling
+                            colorAxis.update({
+                                min: undefined,
+                                max: undefined
+                            }, true);
+                        }
+                    }
                 }
             }
 
