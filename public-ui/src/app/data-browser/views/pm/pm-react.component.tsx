@@ -503,7 +503,7 @@ export const PMReactComponent = withRouteData(
         <React.Fragment>
           <style>{styleCss}</style>
           <div style={styles.pmContainer}>
-            <h1>Browse Program Physical Measurements</h1>
+            <h1>Physical Measurements</h1>
             {loading ? (
               <Spinner />
             ) : (
