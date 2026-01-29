@@ -165,7 +165,7 @@ const styleCss = `
 .button-item .btn-link {
     border-bottom: 1px solid;
   }
-  
+
   div.button-item:nth-child(1) > button:nth-child(1) {
     border-top: 1px solid;
 }
@@ -212,14 +212,6 @@ aside .button-item button {
     .db-card {
         overflow-x: scroll;
     }
-}
-.group-name {
-    font-size: 1.4em;
-    white-space: nowrap;
-    width: fit-content;
-    padding: 1em;
-    padding-top: .5em;
-    text-transform: capitalize;
 }
 .chart-item {
     width: calc((50%) - 18px);
@@ -546,9 +538,6 @@ export const PMReactComponent = withRouteData(
                     <div className="db-card" style={styles.dbCard}>
                       <div className="db-card-inner">
                         <div className="db-card-header">
-                          <div className="group-name">
-                            {selectedGroup.groupName}
-                          </div>
                           {selectedConcept &&
                           selectedConcept.analyses &&
                           selectedConcept.analyses
