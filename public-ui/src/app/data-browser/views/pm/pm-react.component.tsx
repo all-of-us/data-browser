@@ -8,7 +8,7 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { PM_CONCEPTS } from "app/utils/constants";
-import { urlParamsStore } from "app/utils/navigation";
+import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 import { isNumeric } from "rxjs/util/isNumeric";
 
@@ -19,13 +19,29 @@ const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
     paddingBottom: "18px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
     lineHeight: "1.5",
     fontSize: "16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     fontSize: "35px",
     marginBottom: "0",
     fontFamily: "gothamBook",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
   },
   aside: {
     paddingRight: "18px",
@@ -516,6 +532,7 @@ export const PMReactComponent = withRouteData(
           <div style={styles.pmContainer}>
             <div style={styles.pageHeader}>
               <h1 style={styles.title}>Physical Measurements</h1>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
             </div>
             {loading ? (
               <Spinner />

@@ -11,7 +11,7 @@ import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
-import { urlParamsStore } from "app/utils/navigation";
+import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 
 const styles = reactStyles({
@@ -21,13 +21,29 @@ const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
     paddingBottom: "18px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
     lineHeight: "1.5",
     fontSize: "16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     fontSize: "35px",
     marginBottom: "0",
     fontFamily: "gothamBook",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
   },
   fmLayout: {
     display: "flex",
@@ -274,6 +290,7 @@ export const FitbitReactComponent = withRouteData(
           <div className="fm-container" style={styles.fmContainer}>
             <div style={styles.pageHeader}>
               <h1 style={styles.title}>Fitbit Data</h1>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
             </div>
             {loading && <Spinner />}
             {!loading && (

@@ -502,13 +502,6 @@ export const SurveyViewReactComponent = withRouteData(
             {loading && <Spinner />}
             {survey && (
               <section className="results" style={styles.results}>
-                <a
-                  className="btn btn-link btn-sm main-search-link"
-                  style={styles.searchLink}
-                  onClick={() => this.backToMain()}
-                >
-                  &lt; Back to main search{" "}
-                </a>
                 <div className="db-card" style={styles.dbCard}>
                   <div className="survey-head" style={styles.surveyHead}>
                     <div className={statClass} style={statStyle}>

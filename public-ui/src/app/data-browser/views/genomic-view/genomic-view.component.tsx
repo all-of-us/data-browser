@@ -7,7 +7,7 @@ import { GenomicOverviewComponent } from "app/data-browser/views/genomic-view/co
 import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { triggerEvent } from "app/utils/google_analytics";
-import { urlParamsStore } from "app/utils/navigation";
+import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
 import { environment } from "environments/environment";
 import {
@@ -36,8 +36,24 @@ const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
     paddingBottom: "18px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
     lineHeight: "1.5",
     fontSize: "16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
   },
   titleContainer: {
     lineHeight: "1em",
@@ -1039,6 +1055,9 @@ export const GenomicViewComponent = withRouteData(
             <div style={styles.titleContainer}>
               <h1 style={styles.title}>{this.getTitle()}</h1>
             </div>
+            <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+          </div>
+          <div>
             <div style={styles.viewLayout}>
               <div style={styles.topBarLayout} id="topBar">
                 {this.topBarItems.map((item, index) => {
