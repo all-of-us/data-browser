@@ -16,7 +16,18 @@ import { Spinner } from "app/utils/spinner";
 
 const styles = reactStyles({
   fmContainer: {
-    margin: "1.2em",
+    // No margin - matches genomic view
+  },
+  pageHeader: {
+    paddingTop: "18px",
+    paddingBottom: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
   },
   fmLayout: {
     display: "flex",
@@ -261,7 +272,9 @@ export const FitbitReactComponent = withRouteData(
         <React.Fragment>
           <style>{styleCss}</style>
           <div className="fm-container" style={styles.fmContainer}>
-            <h1>Fitbit Data</h1>
+            <div style={styles.pageHeader}>
+              <h1 style={styles.title}>Fitbit Data</h1>
+            </div>
             {loading && <Spinner />}
             {!loading && (
               <div className="fm-layout" style={styles.fmLayout}>

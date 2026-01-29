@@ -14,7 +14,18 @@ import { isNumeric } from "rxjs/util/isNumeric";
 
 const styles = reactStyles({
   pmContainer: {
-    margin: "1.2em",
+    // No margin - matches genomic view
+  },
+  pageHeader: {
+    paddingTop: "18px",
+    paddingBottom: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
   },
   aside: {
     paddingRight: "18px",
@@ -42,7 +53,7 @@ const styles = reactStyles({
   },
   bsTitle: {
     paddingTop: "1em",
-    paddingLeft: "1.5em",
+    paddingBottom: "18px",
   },
   chartLayout: {
     display: "flex",
@@ -503,7 +514,9 @@ export const PMReactComponent = withRouteData(
         <React.Fragment>
           <style>{styleCss}</style>
           <div style={styles.pmContainer}>
-            <h1>Physical Measurements</h1>
+            <div style={styles.pageHeader}>
+              <h1 style={styles.title}>Physical Measurements</h1>
+            </div>
             {loading ? (
               <Spinner />
             ) : (

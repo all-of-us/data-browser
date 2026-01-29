@@ -7,8 +7,14 @@ import { reactStyles } from "app/utils";
 const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
+    paddingBottom: "0",
     paddingLeft: "18px",
     paddingRight: "18px",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
   },
   titleContainer: {
     width: "100%",
@@ -73,7 +79,7 @@ export const SurveyDescReactComponent = (props) => {
       <style>{cssStyles}</style>
       <div className="page-header" style={styles.pageHeader}>
         <div className="title-container" style={styles.titleContainer}>
-          <h1> {props.surveyName} </h1>
+          <h1 style={styles.title}> {props.surveyName} </h1>
           {props.isCopeSurvey ? (
             <p className="body-default help-text survey-desc">
               This optional survey was released to participants for completion
