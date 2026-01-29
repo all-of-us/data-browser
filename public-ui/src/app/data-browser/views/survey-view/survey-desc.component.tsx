@@ -3,12 +3,36 @@ import * as React from "react";
 import { Component, Input } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { reactStyles } from "app/utils";
+import { navigateByUrl } from "app/utils/navigation";
 
 const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
+    paddingBottom: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
     paddingLeft: "18px",
     paddingRight: "18px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
+    flexShrink: 0,
   },
   titleContainer: {
     width: "100%",
@@ -73,7 +97,7 @@ export const SurveyDescReactComponent = (props) => {
       <style>{cssStyles}</style>
       <div className="page-header" style={styles.pageHeader}>
         <div className="title-container" style={styles.titleContainer}>
-          <h1> {props.surveyName} </h1>
+          <h1 style={styles.title}> {props.surveyName} </h1>
           {props.isCopeSurvey ? (
             <p className="body-default help-text survey-desc">
               This optional survey was released to participants for completion
@@ -90,6 +114,7 @@ export const SurveyDescReactComponent = (props) => {
             </p>
           </div>
         </div>
+        <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
       </div>
     </React.Fragment>
   );

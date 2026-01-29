@@ -8,13 +8,40 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { PM_CONCEPTS } from "app/utils/constants";
-import { urlParamsStore } from "app/utils/navigation";
+import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 import { isNumeric } from "rxjs/util/isNumeric";
 
 const styles = reactStyles({
   pmContainer: {
-    margin: "1.2em",
+    // No margin - matches genomic view
+  },
+  pageHeader: {
+    paddingTop: "18px",
+    paddingBottom: "18px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
   },
   aside: {
     paddingRight: "18px",
@@ -42,7 +69,7 @@ const styles = reactStyles({
   },
   bsTitle: {
     paddingTop: "1em",
-    paddingLeft: "1.5em",
+    paddingBottom: "18px",
   },
   chartLayout: {
     display: "flex",
@@ -165,7 +192,7 @@ const styleCss = `
 .button-item .btn-link {
     border-bottom: 1px solid;
   }
-  
+
   div.button-item:nth-child(1) > button:nth-child(1) {
     border-top: 1px solid;
 }
@@ -212,14 +239,6 @@ aside .button-item button {
     .db-card {
         overflow-x: scroll;
     }
-}
-.group-name {
-    font-size: 1.4em;
-    white-space: nowrap;
-    width: fit-content;
-    padding: 1em;
-    padding-top: .5em;
-    text-transform: capitalize;
 }
 .chart-item {
     width: calc((50%) - 18px);
@@ -511,7 +530,10 @@ export const PMReactComponent = withRouteData(
         <React.Fragment>
           <style>{styleCss}</style>
           <div style={styles.pmContainer}>
-            <h1>Browse Program Physical Measurements</h1>
+            <div style={styles.pageHeader}>
+              <h1 style={styles.title}>Physical Measurements</h1>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+            </div>
             {loading ? (
               <Spinner />
             ) : (
@@ -546,9 +568,6 @@ export const PMReactComponent = withRouteData(
                     <div className="db-card" style={styles.dbCard}>
                       <div className="db-card-inner">
                         <div className="db-card-header">
-                          <div className="group-name">
-                            {selectedGroup.groupName}
-                          </div>
                           {selectedConcept &&
                           selectedConcept.analyses &&
                           selectedConcept.analyses

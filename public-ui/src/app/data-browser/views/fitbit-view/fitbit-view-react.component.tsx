@@ -11,20 +11,54 @@ import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
-import { urlParamsStore } from "app/utils/navigation";
+import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 
 const styles = reactStyles({
+  fmContainer: {
+    // No margin - matches genomic view
+  },
+  pageHeader: {
+    paddingTop: "18px",
+    paddingBottom: "18px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: "35px",
+    marginBottom: "0",
+    fontFamily: "gothamBook",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
+  },
   fmLayout: {
-    display: "grid",
-    gridTemplateColumns: "20% 80%",
-    columnGap: "0.5rem",
+    display: "flex",
+  },
+  fmAside: {
+    paddingRight: "18px",
+    display: "block",
   },
   fmBody: {
     background: "white",
     borderRadius: "3px",
     padding: "2rem",
-    paddingTop: "0",
+    paddingTop: "1.5em",
+    width: "100%",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
   fas: {
     paddingRight: "0.25em",
@@ -37,29 +71,6 @@ const styles = reactStyles({
     alignItems: "center",
     width: "100%",
   },
-  // fmMenuItem: {
-  //   display: "flex",
-  //   alignItems: "center",
-  //   padding: "0.5rem",
-  //   fontSize: "0.8em",
-  //   /* border-bottom: 1px solid #262262 ; */
-  //   // borderBottom: "1px solid #0079B8",
-  //   borderTop: "1px solid #0079B8",
-  //   cursor: "pointer",
-  // },
-  //  fmMenuItemActive: {
-  //     display: "flex",
-  //     alignItems: "center",
-  //     padding: "0.5rem",
-  //     fontSize: "0.8em",
-  //     borderBottom: "1px solid #0079B8",
-  //     borderTop: "2px solid #0079B8",
-  //     borderLeft: "2px solid #0079B8",
-  //     borderRight: "2px solid #0079B8",
-  //     cursor: "pointer",
-  //     // borderRadius: "3px",
-  //     fontFamily: "GothamBold",
-  //   },
   selectedDisplayH: {
     paddingBottom: "1rem",
     textTransform: "capitalize",
@@ -69,74 +80,91 @@ const styles = reactStyles({
     justifyContent: "space-between",
   },
   fmBodyBottom: {
-      paddingTop: "1rem",
       display: "flex",
       flexDirection: "column",
-      justifyContent: "center",
-      width: "100%",
+      paddingTop: "1em",
       gap: "1rem",
   },
   fmBottomChart: {
-    background: "#216fb40d",
-    padding: "1rem",
-    borderRadius: "3px",
-    minWidth: "15rem",
-    paddingTop: "1rem",
     width: "100%",
+    padding: "1em",
+    paddingLeft: "1.5em",
   },
   fmMenuItemContainer: {
-    // padding: "0.25rem 0rem",
-    // borderBottom: "1px solid #262262",
     cursor: "pointer",
   },
   chartDisplayBody: {
-    paddingBottom: "1rem",
+    paddingTop: "1em",
+    paddingLeft: "1.5em",
   },
   fmChart: {
-    background: "#216fb40d",
-    width: "calc(50% - 0.5rem)",
-    padding: "1rem",
-    borderRadius: "3px",
-    minWidth: "15rem",
+    width: "calc((50%) - 18px)",
+    height: "auto",
+    flexGrow: 1,
+  },
+  btnLink: {
+    fontSize: "14px",
+    color: "#0077b7",
+    textAlign: "left",
+    textTransform: "capitalize",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    padding: ".5rem",
+    cursor: "pointer",
+    margin: 0,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+  },
+  btnList: {
+    width: "14rem",
   },
   displayName: {
     textTransform: "capitalize",
+    flex: 1,
+    paddingRight: "0.5rem",
   },
 });
 
 const styleCss = `
-div.fm-menu-item-container:nth-child(7) > div:nth-child(1){
-  border-bottom:1px solid #0079B8;
+aside.fm-aside .button-item .btn-link {
+  border-bottom: 1px solid #0077b7;
 }
-  div.fm-menu-item-container {
-  border-top:1px solid #0079B8;
-  }
-  .fb-menu-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    font-size: 0.8em;
-    cursor: pointer,
-  }
-  .active {
-  border: 2px solid #0079B8;
-  border-top: 1px solid #0079B8;
-  border-bottom: 1px solid #0079B8;
-  font-family: GothamBold;
-  background: white;
-  }
-  div.fm-menu-item-container:nth-child(7) > div.active{
-  border-bottom: 2px solid #0079B8!important;
-  }
-@media (max-width: 900px) {
-    .fm-body-top .fm-chart {
-        width: 100%;
-    }
-    .fm-body-top .fm-chart:last-of-type {
-        width: 100%;
-        margin-top: 1rem;
-    }
 
+aside.fm-aside div.button-item:nth-child(1) > button:nth-child(1) {
+  border-top: 1px solid #0077b7;
+}
+
+.active {
+  font-weight: 900;
+  border: 2px solid #216fb4!important;
+  background: white;
+}
+
+aside.fm-aside div.button-item:not(:first-child) .active {
+  border-top: 1px solid #216fb4!important;
+  background: white;
+}
+
+aside.fm-aside .button-item button {
+  font-size: 0.8em;
+}
+
+@media (max-width: 978px) {
+  .fm-layout {
+    flex-direction: column;
+  }
+  aside.fm-aside {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    margin: -1em;
+    margin-bottom: 0px;
+  }
+  aside.fm-aside .button-item {
+    padding: 18px;
+    padding-top: 0;
+  }
 }
 `;
 
@@ -259,53 +287,48 @@ export const FitbitReactComponent = withRouteData(
       return (
         <React.Fragment>
           <style>{styleCss}</style>
-          <div className="fm-container">
-            <h1>Fitbit Data</h1>
+          <div className="fm-container" style={styles.fmContainer}>
+            <div style={styles.pageHeader}>
+              <h1 style={styles.title}>Fitbit Data</h1>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+            </div>
             {loading && <Spinner />}
             {!loading && (
               <div className="fm-layout" style={styles.fmLayout}>
-                <div className="fm-menu">
+                <aside className="fm-aside" style={styles.fmAside}>
                   {concepts &&
                     concepts.map((concept, index) => {
-                      const conceptClass =
+                      const buttonClass =
                         selectedDisplay.toLowerCase() ===
                         concept.displayName.toLowerCase()
-                          ? "fb-menu-item active"
-                          : "fb-menu-item ";
+                          ? "btn btn-link group-button active"
+                          : "btn btn-link group-button";
                       return (
-                        <div
-                          className="fm-menu-item-container"
-                          style={styles.fmMenuItemContainer}
-                          key={index}
-                        >
-                          <div
-                            tabIndex={tabIndex}
-                            className={conceptClass}
+                        <div className="button-item" key={index}>
+                          <button
+                            className={buttonClass}
+                            style={{ ...styles.btnLink, ...styles.btnList }}
                             onClick={() => this.setGraphs(concept)}
                           >
-                            <div
-                              className="fm-menu-item-display"
-                              style={styles.fmMenuItemDisplay}
-                            >
-                              <span style={styles.displayName}>
-                                {concept.displayName}
-                              </span>
+                            <span style={styles.displayName}>
+                              {concept.displayName}
+                            </span>
+                            <span onClick={(e) => e.stopPropagation()}>
                               <TooltipReactComponent
                                 tooltipKey={concept.tooltipKey}
                                 label="Fitbit concept Hover"
                                 searchTerm={search}
                                 action="Fitbit concept hover"
                               />
-                            </div>
-                          </div>
+                            </span>
+                          </button>
                         </div>
                       );
                     })}
-                </div>
+                </aside>
                 <div className="fm-body" style={styles.fmBody}>
-                  <h2 style={styles.selectedDisplayH}>{selectedDisplay} </h2>
-
-                  <div className="fm-body-bottom" style={styles.fmBodyBottom}>
+                  <div className="db-card-inner">
+                    <div className="fm-body-bottom" style={styles.fmBodyBottom}>
                       <div className="fm-chart" style={styles.fmBottomChart}>
                         <div className="display-body" style={styles.chartDisplayBody}>
                           Age + Sex
@@ -318,17 +341,18 @@ export const FitbitReactComponent = withRouteData(
                           />
                         )}
                       </div>
-                    <div className="fm-chart" style={styles.fmBottomChart}>
-                      <div className="display-body" style={styles.chartDisplayBody}>
-                        Location
+                      <div className="fm-chart" style={styles.fmBottomChart}>
+                        <div className="display-body" style={styles.chartDisplayBody}>
+                          Location
+                        </div>
+                        {selectedAnalyses && selectedAnalyses.locationAnalysis && (
+                          <HeatMapReactComponent
+                            locationAnalysis={selectedAnalyses?.locationAnalysis}
+                            domain="fitbit"
+                            selectedResult={selectedResult}
+                            color = "" />
+                        )}
                       </div>
-                      {selectedAnalyses && selectedAnalyses.locationAnalysis && (
-                        <HeatMapReactComponent
-                          locationAnalysis={selectedAnalyses?.locationAnalysis}
-                          domain="fitbit"
-                          selectedResult={selectedResult}
-                          color = "" />
-                      )}
                     </div>
                   </div>
                 </div>

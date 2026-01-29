@@ -39,7 +39,7 @@ const styles = reactStyles({
     display: "flex",
     justifyContent: "space-between",
     position: "relative",
-    marginBottom: "calc(18px * 4)",
+    marginBottom: "0.5rem",
   },
   results: {
     paddingTop: "36px",
@@ -71,13 +71,14 @@ const styles = reactStyles({
     display: "flex",
     flexDirection: "column",
     marginTop: "0",
-    fontSize: "70px",
+    fontSize: "30px",
     lineHeight: "0.97em",
     paddingRight: "45px",
   },
   secondaryDisplay: {
     lineHeight: "0.97em",
     fontSize: "0.9em",
+    marginBottom: "0.5rem",
   },
   highlight: {
     fontFamily: "GothamBold, Arial, san-serif",
@@ -113,8 +114,7 @@ const surveyStyle = `
   cursor: pointer;
 }
 .stat-container .secondary-display{
-  // margin-bottom:26px;
-  margin-bottom:1rem;
+  margin-bottom: 0.5rem;
   margin-top:0;
 }
 
@@ -502,13 +502,6 @@ export const SurveyViewReactComponent = withRouteData(
             {loading && <Spinner />}
             {survey && (
               <section className="results" style={styles.results}>
-                <a
-                  className="btn btn-link btn-sm main-search-link"
-                  style={styles.searchLink}
-                  onClick={() => this.backToMain()}
-                >
-                  &lt; Back to main search{" "}
-                </a>
                 <div className="db-card" style={styles.dbCard}>
                   <div className="survey-head" style={styles.surveyHead}>
                     <div className={statClass} style={statStyle}>

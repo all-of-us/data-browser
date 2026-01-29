@@ -49,7 +49,26 @@ const styles = reactStyles({
     margin: "1em",
   },
   pageHeader: {
-    padding: "18px",
+    paddingTop: "18px",
+    paddingBottom: "18px",
+    lineHeight: "1.5",
+    fontSize: "16px",
+    paddingLeft: "18px",
+    paddingRight: "18px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    padding: "0.5rem 1.5rem",
+    cursor: "pointer",
+    textDecoration: "none",
   },
   medlineLink: {
     fontSize: "14px",
@@ -131,7 +150,7 @@ const cssStyles = `
   margin:0;
 }
 .search-bar-container {
-    padding: 18px;
+    padding: 10px 18px 18px 18px;
 }
 .disclaimer-btn {
     font-size:.7em;
@@ -170,14 +189,15 @@ h5.secondary-display {
     margin-left: .2em;
 }
 .domain-title {
-  font-family:GothamBook Arial, sans-serif;
-  font-size: 36.8px;
+  font-family: gothamBook, GothamBook, Arial, sans-serif;
+  font-size: 35px;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
-  line-height: 45.36px;
+  line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
+  margin-bottom: 0;
 }
 .tbl-head .tbl-d::before {
     content: '';
@@ -682,7 +702,8 @@ export const EhrViewReactComponent = withRouteData(
           <div onScroll={this.handleScrollEnd}>
             <style>{cssStyles}</style>
             <div className="page-header" style={styles.pageHeader}>
-              {title && <h2 className="domain-title">{title}</h2>}
+              {title && <h1 className="domain-title">{title}</h1>}
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
             </div>
             <div className="search-bar-container">
               <SearchComponent
