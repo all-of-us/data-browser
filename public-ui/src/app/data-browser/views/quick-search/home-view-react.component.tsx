@@ -338,7 +338,7 @@ const styles = reactStyles({
     fontWeight: "bold",
     textAlign: "center",
     margin: 0,
-    padding: "50px",
+    padding: "50px 50px 16px 50px",
   },
   dBDesc: {
     padding: "16px",
