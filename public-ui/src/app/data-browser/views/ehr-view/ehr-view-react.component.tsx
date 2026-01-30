@@ -723,13 +723,6 @@ export const EhrViewReactComponent = withRouteData(
                   !measurementTestFilter &&
                   !measurementOrderFilter)) && (
                 <div className="results" style={styles.results}>
-                  <a
-                    className="btn btn-link btn-sm main-search-link"
-                    style={styles.searchLink}
-                    onClick={() => this.backToMain()}
-                  >
-                    &lt; Back to main search{" "}
-                  </a>
                   <div className="result-list">
                     <div className="db-card">
                       <div className="db-card-inner">
