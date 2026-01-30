@@ -13,9 +13,12 @@ const styles = reactStyles({
     fontSize: "16px",
     paddingLeft: "18px",
     paddingRight: "18px",
+  },
+  titleRow: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
+    marginBottom: "0.5rem",
   },
   title: {
     fontSize: "35px",
@@ -36,7 +39,6 @@ const styles = reactStyles({
   },
   titleContainer: {
     width: "100%",
-    paddingRight: "18px",
     margin: "0",
     lineHeight: "1em",
   },
@@ -96,8 +98,11 @@ export const SurveyDescReactComponent = (props) => {
     <React.Fragment>
       <style>{cssStyles}</style>
       <div className="page-header" style={styles.pageHeader}>
-        <div className="title-container" style={styles.titleContainer}>
+        <div className="title-row" style={styles.titleRow}>
           <h1 style={styles.title}> {props.surveyName} </h1>
+          <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+        </div>
+        <div className="title-container" style={styles.titleContainer}>
           {props.isCopeSurvey ? (
             <p className="body-default help-text survey-desc">
               This optional survey was released to participants for completion
@@ -114,7 +119,6 @@ export const SurveyDescReactComponent = (props) => {
             </p>
           </div>
         </div>
-        <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
       </div>
     </React.Fragment>
   );
