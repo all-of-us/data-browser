@@ -59,17 +59,20 @@ const styles = reactStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  homeButton: {
-    fontFamily: "GothamBook, Arial, sans-serif",
-    fontSize: "18px",
-    color: "#262262",
-    border: "1.5px solid #262262",
-    borderRadius: "5px",
-    background: "transparent",
-    padding: "0.5rem 1.5rem",
-    cursor: "pointer",
-    textDecoration: "none",
-  },
+    homeButton: {
+      fontFamily: "GothamBook, Arial, sans-serif",
+      fontSize: "18px",
+      color: "#262262",
+      border: "1.5px solid #262262",
+      borderRadius: "5px",
+      background: "transparent",
+      paddingTop: "0.1rem",
+      paddingBottom: "0",
+      paddingLeft: "0.4rem",
+      paddingRight: "0.4rem",
+      cursor: "pointer",
+      textDecoration: "none",
+    },
   medlineLink: {
     fontSize: "14px",
     color: "#262262",
@@ -197,7 +200,7 @@ h5.secondary-display {
   line-height: 1.2;
   letter-spacing: normal;
   text-align: left;
-  margin-bottom: 0;
+  margin: 0;
 }
 .tbl-head .tbl-d::before {
     content: '';

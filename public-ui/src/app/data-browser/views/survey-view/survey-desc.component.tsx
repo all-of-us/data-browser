@@ -22,7 +22,7 @@ const styles = reactStyles({
   },
   title: {
     fontSize: "35px",
-    marginBottom: "0",
+    margin: 0,
     fontFamily: "gothamBook",
   },
   homeButton: {
@@ -32,7 +32,10 @@ const styles = reactStyles({
     border: "1.5px solid #262262",
     borderRadius: "5px",
     background: "transparent",
-    padding: "0.5rem 1.5rem",
+    paddingTop: "0.1rem",
+    paddingBottom: "0",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
     cursor: "pointer",
     textDecoration: "none",
     flexShrink: 0,

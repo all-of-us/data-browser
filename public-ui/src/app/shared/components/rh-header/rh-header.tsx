@@ -84,7 +84,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen1 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'pointer' }}>About</a>
+                      <a style={{ cursor: 'default' }}>About</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -144,7 +144,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen2 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'pointer' }}>Data &amp; Tools</a>
+                      <a style={{ cursor: 'default' }}>Data &amp; Tools</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -229,7 +229,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen3 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'pointer' }}>Discover</a>
+                      <a style={{ cursor: 'default' }}>Discover</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li

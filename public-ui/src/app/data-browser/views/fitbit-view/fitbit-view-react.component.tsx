@@ -31,7 +31,7 @@ const styles = reactStyles({
   },
   title: {
     fontSize: "35px",
-    marginBottom: "0",
+    margin: 0,
     fontFamily: "gothamBook",
   },
   homeButton: {
@@ -41,12 +41,17 @@ const styles = reactStyles({
     border: "1.5px solid #262262",
     borderRadius: "5px",
     background: "transparent",
-    padding: "0.5rem 1.5rem",
+    paddingTop: "0.1rem",
+    paddingBottom: "0",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
     cursor: "pointer",
     textDecoration: "none",
   },
   fmLayout: {
     display: "flex",
+    paddingLeft: "18px",
+    paddingRight: "18px",
   },
   fmAside: {
     paddingRight: "18px",
@@ -80,22 +85,22 @@ const styles = reactStyles({
     justifyContent: "space-between",
   },
   fmBodyBottom: {
-      display: "flex",
-      flexDirection: "column",
-      paddingTop: "1em",
-      gap: "1rem",
+    display: "flex",
+    flexDirection: "column",
+    paddingTop: "1em",
+    gap: "1rem",
   },
   fmBottomChart: {
     width: "100%",
     padding: "1em",
-    paddingLeft: "1.5em",
+    background: "rgba(33, 111, 180, 0.05)",
   },
   fmMenuItemContainer: {
     cursor: "pointer",
   },
   chartDisplayBody: {
-    paddingTop: "1em",
-    paddingLeft: "1.5em",
+    paddingBottom: "1em",
+    fontFamily: "GothamBook, Arial, sans-serif",
   },
   fmChart: {
     width: "calc((50%) - 18px)",

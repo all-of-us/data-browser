@@ -29,7 +29,7 @@ const styles = reactStyles({
   },
   title: {
     fontSize: "35px",
-    marginBottom: "0",
+    margin: 0,
     fontFamily: "gothamBook",
   },
   homeButton: {
@@ -39,7 +39,10 @@ const styles = reactStyles({
     border: "1.5px solid #262262",
     borderRadius: "5px",
     background: "transparent",
-    padding: "0.5rem 1.5rem",
+    paddingTop: "0.1rem",
+    paddingBottom: "0",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
     cursor: "pointer",
     textDecoration: "none",
   },
@@ -48,10 +51,12 @@ const styles = reactStyles({
     display: "block",
   },
   dbCard: {
-    width: "100vw",
+    width: "100%",
   },
   pmLayout: {
     display: "flex",
+    paddingLeft: "18px",
+    paddingRight: "18px",
   },
   btnLink: {
     fontSize: "14px",
@@ -710,21 +715,23 @@ export const PMReactComponent = withRouteData(
                               </div>
                             ) : null
                           ) : null}
-                          {selectedConcept.analyses &&
-                          selectedConcept.analyses.ageAnalysis ? (
+                        </div>
+                        {selectedConcept.analyses &&
+                        selectedConcept.analyses.ageAnalysis ? (
+                          <React.Fragment>
+                            <div className="bs-title" style={styles.bsTitle}>
+                              Age When Physical Measurement Was Taken
+                              <TooltipReactComponent
+                                tooltipKey="pmAgeChartHelpText"
+                                label="Physical Measurements tooltip hover"
+                                searchTerm="TODO replace search text in here"
+                                action={
+                                  "Hover on pm age chart of concept " +
+                                  selectedConcept.conceptName
+                                }
+                              />
+                            </div>
                             <div className="chart-item age-chart">
-                              <div className="bs-title" style={styles.bsTitle}>
-                                Age When Physical Measurement Was Taken
-                                <TooltipReactComponent
-                                  tooltipKey="pmAgeChartHelpText"
-                                  label="Physical Measurements tooltip hover"
-                                  searchTerm="TODO replace search text in here"
-                                  action={
-                                    "Hover on pm age chart of concept " +
-                                    selectedConcept.conceptName
-                                  }
-                                />
-                              </div>
                               <AgeChartReactComponent
                                 ageAnalysis={
                                   selectedConcept.analyses.ageAnalysis
@@ -736,8 +743,8 @@ export const PMReactComponent = withRouteData(
                                 selectedResult=""
                               />
                             </div>
-                          ) : null}
-                        </div>
+                          </React.Fragment>
+                        ) : null}
                       </div>
                     </div>
                   </div>
