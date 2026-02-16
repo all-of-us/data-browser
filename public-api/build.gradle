@@ -449,6 +449,12 @@ dependencies {
 }
 
 
+dependencyCheck {
+    nvd {
+        apiKey = System.getenv('NVD_API_KEY')
+    }
+}
+
 group = 'org.pmiops.allofus.workbench'
 version = '0.1.0'
 sourceCompatibility = 17
