@@ -242,7 +242,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     ) {
       this.myRef.current.scrollIntoView();
     }
-    if (counter + 1 == totalResults) {
+    if (counter + 1 === totalResults) {
       this.props.endReached();
     }
   }
@@ -336,7 +336,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
     }
   }
 
-  shareConcept(e: any) {
+  shareConcept(_e: any) {
     const { concept, searchTerm } = this.props;
     let path = window.location.pathname;
     if (searchTerm && searchTerm.length > 0 && path.indexOf(searchTerm) > 0) {
@@ -506,7 +506,8 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
                     style={{ width: 20, height: 20, color: "#2691D0" }}
                   />
                 </button>
-                <button className="icon-btn icon-choice"
+                <button
+                  className="icon-btn icon-choice"
                   onClick={(e) => {
                     e.stopPropagation();
                     this.showChart("sources");
@@ -669,6 +670,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "app-concept-row-react",
   template: `<span #root></span>`,

@@ -56,65 +56,70 @@ export class PopulationChartReactComponent extends React.Component<
 
     newBaseOptions.title.verticalAlign = "middle";
     newBaseOptions.title.style = {
-          color: "black",
-          fontSize: isCNV ? "12px" : "15px",
-          wordBreak: "break-word",
-          zIndex: 0,
-          fontFamily: "GothamBook",
-          fontWeight: "normal",
+      color: "black",
+      fontSize: isCNV ? "12px" : "15px",
+      wordBreak: "break-word",
+      zIndex: 0,
+      fontFamily: "GothamBook",
+      fontWeight: "normal",
     };
     newBaseOptions.tooltip.outside = true;
     newBaseOptions.tooltip.style = {
-          color: "black",
-          whiteSpace: "nowrap", // Prevent wrapping in the tooltip
-          zIndex: 9998,
+      color: "black",
+      whiteSpace: "nowrap", // Prevent wrapping in the tooltip
+      zIndex: 9998,
     };
     newBaseOptions.tooltip.useHTML = true; // Enable custom HTML in tooltips
     newBaseOptions.tooltip.formatter = function () {
-        return this.point.toolTipHelpText;
+      return this.point.toolTipHelpText;
     };
     const chartData = [];
     const totalAlleleCount = variantPopulationDetails.filter(
-        (v) => v.Ancestry === "Total"
-        )[0].AlleleCount;
+      (v) => v.Ancestry === "Total"
+    )[0].AlleleCount;
     for (const variantDet of variantPopulationDetails) {
-        if (variantDet.Ancestry !== "Total") {
-            const roundedPercentage = (
-              (variantDet.AlleleCount / totalAlleleCount) *
-              100
-            ).toFixed(2);
-            chartData.push({
-              name: variantDet.Ancestry,
-              y: variantDet.AlleleCount,
-              color: variantDet.color,
-              totalCount: totalAlleleCount,
-              percentage: roundedPercentage,
-              toolTipHelpText: this.getTooltipHelpText(
-                variantDet.Ancestry,
-                roundedPercentage,
-                variantDet.AlleleCount,
-                isCNV
-              ),
-            });
-          }
+      if (variantDet.Ancestry !== "Total") {
+        const roundedPercentage = (
+          (variantDet.AlleleCount / totalAlleleCount) *
+          100
+        ).toFixed(2);
+        chartData.push({
+          name: variantDet.Ancestry,
+          y: variantDet.AlleleCount,
+          color: variantDet.color,
+          totalCount: totalAlleleCount,
+          percentage: roundedPercentage,
+          toolTipHelpText: this.getTooltipHelpText(
+            variantDet.Ancestry,
+            roundedPercentage,
+            variantDet.AlleleCount,
+            isCNV
+          ),
+        });
+      }
     }
     newBaseOptions.series = [
-          {
-            name: isCNV ? "Non-diploid Samples" : "Alleles",
-            data: chartData,
-            size: "80%",
-            shadow: false,
-            innerSize: "60%",
-            showInLegend: true,
-            dataLabels: {
-              enabled: false,
-            },
-          },
+      {
+        name: isCNV ? "Non-diploid Samples" : "Alleles",
+        data: chartData,
+        size: "80%",
+        shadow: false,
+        innerSize: "60%",
+        showInLegend: true,
+        dataLabels: {
+          enabled: false,
+        },
+      },
     ];
     this.setState({ options: newBaseOptions });
   }
 
-  getTooltipHelpText(name: string, percentage: any, count: number, isCNV?: boolean) {
+  getTooltipHelpText(
+    name: string,
+    percentage: any,
+    count: number,
+    isCNV?: boolean
+  ) {
     const countLabel = isCNV ? "Samples" : "AC";
     return (
       '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center;">' +
@@ -122,7 +127,9 @@ export class PopulationChartReactComponent extends React.Component<
       name +
       "</strong><br />" +
       percentage +
-      "% | " + countLabel + ": " +
+      "% | " +
+      countLabel +
+      ": " +
       count.toLocaleString() +
       "</div>"
     );

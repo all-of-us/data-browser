@@ -22,7 +22,7 @@ RUN apt-get update && \
        apt-get -y install sudo
 
 RUN npm install --global yarn n
-# Upgrade to Node 16, above installs 10.
+# Upgrade to Node 22 LTS (required by Angular 19).
 RUN n 22
 
 # Install openapi-generator-cli

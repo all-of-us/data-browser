@@ -3,7 +3,7 @@ import "highcharts/highcharts-more";
 import { HighchartsChartModule } from "highcharts-angular";
 
 import { CommonModule } from "@angular/common";
-import { NgModule } from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from "@angular/core";
 import { ClarityModule } from "@clr/angular";
 /* Components */
 import { DbNoResultsComponent } from "app/components/db-no-results/db-no-results.component";
@@ -49,6 +49,7 @@ import { EhrViewComponent } from "./views/ehr-view/ehr-view.component";
 import { FitbitViewComponent } from "./views/fitbit-view/fitbit-view.component";
 import { IntroVidsComponent } from "./views/intro-vids/intro-vids.component";
 import { PhysicalMeasurementsComponent } from "./views/pm/pm.component";
+import { ErrorMessageComponent } from "./views/error-message/error-message.component";
 import { QuickSearchComponent } from "./views/quick-search/quick-search.component";
 import { SurveyChartComponent } from "./views/survey-chart/survey-chart.component";
 import { SurveyAnswerWrapperComponent } from "./views/survey-view/components/survey-answer-react.component";
@@ -63,6 +64,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
   ],
   declarations: [
     DbNoResultsComponent,
+    ErrorMessageComponent,
     RecursiveTreeComponent,
     SourceTreeComponent,
     SourceTreeWrapperComponent,
@@ -142,6 +144,7 @@ import { SurveyQuestionWrapperComponent } from "./views/survey-view/components/s
     BreadCrumbWrapperComponent,
   ],
   providers: [ChartService, TreeHighlightService, VideoService, TooltipService],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class DataBrowserModule {
   constructor() {}

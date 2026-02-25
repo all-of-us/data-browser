@@ -33,7 +33,10 @@ const css = `
   }
 `;
 
-export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, ConsequenceState> {
+export class ConsequenceGeneDisplay extends React.Component<
+  ConsequenceProps,
+  ConsequenceState
+> {
   constructor(props: ConsequenceProps) {
     super(props);
     this.state = {
@@ -46,21 +49,23 @@ export class ConsequenceGeneDisplay extends React.Component<ConsequenceProps, Co
   };
 
   formatConsequence(consequence: string) {
-      if (!consequence) return consequence;
+    if (!consequence) {
+      return consequence;
+    }
 
-      const trimmed = consequence.trim().toUpperCase();
+    const trimmed = consequence.trim().toUpperCase();
 
-      // Special handling for INTERGENIC - display as "intergenic - nearest TSS"
-      if (trimmed === 'INTERGENIC') {
-        return 'intergenic - nearest TSS';
-      }
+    // Special handling for INTERGENIC - display as "intergenic - nearest TSS"
+    if (trimmed === "INTERGENIC") {
+      return "intergenic - nearest TSS";
+    }
 
-      // Special handling for NEAREST_TSS - display as "nearest TSS"
-      if (trimmed === 'NEAREST_TSS') {
-        return 'nearest TSS';
-      }
+    // Special handling for NEAREST_TSS - display as "nearest TSS"
+    if (trimmed === "NEAREST_TSS") {
+      return "nearest TSS";
+    }
 
-      return consequence.toLowerCase().replace(/_/g, ' ');
+    return consequence.toLowerCase().replace(/_/g, " ");
   }
 
   render() {

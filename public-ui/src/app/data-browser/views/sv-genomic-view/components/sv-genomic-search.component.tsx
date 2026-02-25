@@ -146,7 +146,10 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
       <React.Fragment>
         <div style={styles.titleBox}>
           <p style={styles.boxHeading} ref={this.scrollDiv}>
-            Explore allele frequencies for a gene or genomic region and drill down into variants to view select annotations and genetic ancestry associations. Variants are based on short-read whole genome sequencing and called against the GRCh38/hg38 genome reference.
+            Explore allele frequencies for a gene or genomic region and drill
+            down into variants to view select annotations and genetic ancestry
+            associations. Variants are based on short-read whole genome
+            sequencing and called against the GRCh38/hg38 genome reference.
             Learn more about{" "}
             <a
               style={{ color: "#1f79b8", cursor: "pointer" }}

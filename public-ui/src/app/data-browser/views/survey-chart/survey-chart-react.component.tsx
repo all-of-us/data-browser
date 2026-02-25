@@ -4,13 +4,13 @@ import { Component, Input, ViewEncapsulation } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-age-react.component";
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
+import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { VersionChartReactComponent } from "app/data-browser/charts/chart-version/chart-version-react.component";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { ErrorMessageReactComponent } from "app/data-browser/views/error-message/error-message-react.component";
 import { GraphType } from "app/utils/enum-defs";
 import { triggerEvent } from "app/utils/google_analytics";
-import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
-import { StackedColumnChartReactComponent } from 'app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component';
 
 interface State {
   graphToShow: string;
@@ -178,7 +178,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
       return "versionChartHelpText";
     } else if (g === "Age When Survey Was Taken") {
       return "surveyAgeChartHelpText";
-    } else if (g === 'Age + Sex') {
+    } else if (g === "Age + Sex") {
       return "surveyAgeSexChartHelpText";
     } else {
       return g;
@@ -274,24 +274,23 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
               surveyConceptId={surveyConceptId}
             />
           </div>
-
         ) : isLoaded && selectedChartAnalysis.analysisId === 3118 ? (
           <div className="chart" key="heat-map-chart">
             <HeatMapReactComponent
               selectedResult={selectedResult}
               locationAnalysis={selectedChartAnalysis}
               domain={"survey"}
-              color = ""
+              color=""
             />
           </div>
         ) : isLoaded && selectedChartAnalysis.analysisId === 3115 ? (
-            <div className="chart" key="age-gender-stacked-chart">
-              <StackedColumnChartReactComponent
-                ageGenderAnalysis={selectedChartAnalysis}
-                selectedResult={selectedResult}
-                domain = "survey"
-              />
-            </div>
+          <div className="chart" key="age-gender-stacked-chart">
+            <StackedColumnChartReactComponent
+              ageGenderAnalysis={selectedChartAnalysis}
+              selectedResult={selectedResult}
+              domain="survey"
+            />
+          </div>
         ) : null}
       </React.Fragment>
     );
@@ -299,6 +298,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-survey-chart-react",
   template: `<span #root></span>`,
   styleUrls: [

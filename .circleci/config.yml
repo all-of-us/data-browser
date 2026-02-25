@@ -166,22 +166,28 @@ jobs:
     steps:
       - checkout-code
       - run:
+          name: Install Node 22 LTS
+          command: |
+            sudo npm install -g n
+            sudo n 22
+            node --version
+      - run:
           working_directory: ~/data-browser
           name: Download Swagger CLI
           command: |
             ruby -r ./aou-utils/swagger.rb -e Workbench::Swagger.download_swagger_codegen_cli
       - restore_cache:
           keys:
-            - public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
-            - public-ui-cache-
+            - public-ui-cache-v2-{{ checksum "~/data-browser/public-ui/package.json" }}
+            - public-ui-cache-v2-
       - gcloud-auth-login
       - run:
           working_directory: ~/data-browser/public-ui
-          command: yarn install --frozen-lockfile && yarn codegen
+          command: yarn install --frozen-lockfile --ignore-engines && yarn codegen
       - save_cache:
           paths:
             - ~/data-browser/public-ui/node_modules
-          key: public-ui-cache-{{ checksum "~/data-browser/public-ui/package.json" }}
+          key: public-ui-cache-v2-{{ checksum "~/data-browser/public-ui/package.json" }}
       - run:
           name: Lint Angular app
           working_directory: ~/data-browser/public-ui

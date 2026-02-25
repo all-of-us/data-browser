@@ -151,6 +151,7 @@ export class TopResultsChartReactComponent extends React.Component<
 }
 
 @Component({
+  standalone: false,
   selector: "app-top-results-chart-react",
   template: `<span #root></span>`,
 })

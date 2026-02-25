@@ -8,6 +8,7 @@ import {
 } from "@angular/core";
 
 @Component({
+  standalone: false,
   selector: "app-page-template-signed-out",
   templateUrl: "./page-template-signed-out.component.html",
   styleUrls: ["./page-template-signed-out.component.css"],

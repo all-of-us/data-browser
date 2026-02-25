@@ -9,6 +9,7 @@ import { ChartBaseComponent } from "app/data-browser/charts/chart-base/chart-bas
 import { Concept } from "publicGenerated/model/concept";
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line:component-selector
   selector: "chart-top-results",
   templateUrl: "./chart-top-results.component.html",

@@ -2,8 +2,7 @@ import { environment } from "environments/environment";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
 import { RouteDataStore, routeDataStore } from "app/utils/stores";
-import { filter } from "rxjs/operators";
-import { Subscription } from "rxjs/Subscription";
+import { filter, Subscription } from "rxjs";
 
 export interface Breadcrumb {
   label: string;
@@ -11,6 +10,7 @@ export interface Breadcrumb {
   url: string;
 }
 @Component({
+  standalone: false,
   selector: "app-breadcrumb",
   templateUrl: "./breadcrumb.component.html",
   styleUrls: [

@@ -4,6 +4,7 @@ import { Component, Injector, Input } from "@angular/core";
 import { ChartService } from "app/data-browser/charts/chart.service";
 
 @Component({
+  standalone: false,
   selector: "app-chart-base",
   templateUrl: "./chart-base.component.html",
   styleUrls: ["./chart-base.component.css"],

@@ -1,4 +1,4 @@
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from "rxjs/internal/BehaviorSubject";
 
 export const NavStore = {
   navigate: undefined,

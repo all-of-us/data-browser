@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { VideoService } from "app/data-browser/services/video.service";
 @Component({
+  standalone: false,
   selector: "app-intro-vids",
   styleUrls: ["../../../styles/template.css", "./intro-vids.component.css"],
   templateUrl: "./intro-vids.component.html",

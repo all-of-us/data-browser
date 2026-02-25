@@ -1,9 +1,7 @@
 import * as React from "react";
 
-import { environment } from "environments/environment";
 import { Component, ViewEncapsulation } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
-import { menuItems } from "app/shared/services/header-footer.service";
 
 interface State {
   menuOpen: boolean;
@@ -30,7 +28,6 @@ export class RhHeader extends React.Component<{}, State> {
   render() {
     const {
       menuOpen,
-      searchTerms,
       submenusOpen1,
       submenusOpen2,
       submenusOpen3,
@@ -84,7 +81,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen1 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'default' }}>About</a>
+                      <a style={{ cursor: "default" }}>About</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -144,7 +141,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen2 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'default' }}>Data &amp; Tools</a>
+                      <a style={{ cursor: "default" }}>Data &amp; Tools</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -203,7 +200,11 @@ export class RhHeader extends React.Component<{}, State> {
                           id="menu-item-3299"
                           className="menu-item menu-item-type-post_type_archive menu-item-object-imputation menu-item-3299"
                         >
-                          <a href="https://imputation.researchallofus.org/" target="_blank" rel="noopener noreferrer">
+                          <a
+                            href="https://imputation.researchallofus.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             Imputation Service
                           </a>
                           <div className="item-expand" />
@@ -229,7 +230,7 @@ export class RhHeader extends React.Component<{}, State> {
                         (submenusOpen3 ? "sub--nav--open" : "")
                       }
                     >
-                      <a style={{ cursor: 'default' }}>Discover</a>
+                      <a style={{ cursor: "default" }}>Discover</a>
                       <div className="item-expand" />
                       <ul className="sub-menu">
                         <li
@@ -237,7 +238,7 @@ export class RhHeader extends React.Component<{}, State> {
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-3525"
                         >
                           <a href="https://www.researchallofus.org/research-project-directory/">
-                          Research Project Directory
+                            Research Project Directory
                           </a>
                           <div className="item-expand" />
                         </li>
@@ -329,6 +330,7 @@ export class RhHeader extends React.Component<{}, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-rh-header-react",
   template: "<div #root></div>",
   styleUrls: ["./rh-header.component.css", "../../../styles/template.css"],

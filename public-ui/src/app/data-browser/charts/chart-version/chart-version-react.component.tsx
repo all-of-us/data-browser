@@ -161,7 +161,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
   }
 
   getTooltipHelpText(answer, count, analysisStratumName, percentage, version) {
-    console.log('Here ???');
+    console.log("Here ???");
     return (
       '<div class="version-survey-tooltip" style="z-index: 180;"> <strong>' +
       answer +
@@ -195,6 +195,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-version-chart-react",
   template: `<span #root></span>`,
   styleUrls: ["./../../chart/chart.component.css"],

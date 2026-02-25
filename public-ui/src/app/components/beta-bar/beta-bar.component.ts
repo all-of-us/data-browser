@@ -1,6 +1,7 @@
 import { environment } from "environments/environment";
 import { Component, OnInit } from "@angular/core";
 @Component({
+  standalone: false,
   selector: "app-beta-bar",
   templateUrl: "./beta-bar.component.html",
   styleUrls: ["./beta-bar.component.css"],

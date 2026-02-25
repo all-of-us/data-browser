@@ -1,8 +1,5 @@
 import * as React from "react";
 
-import { Component, Input } from "@angular/core";
-import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
-import { ClrIcon } from "app/utils/clr-icon";
 
 const cssStyles = `
 strong {
@@ -53,8 +50,6 @@ div.version-box-item:nth-child(1),div.version-box-row span:nth-child(1){
 }
 `;
 
-const containerElementName = "root";
-
 interface Props {
   questionCount: number;
   participantCount: number;
@@ -83,7 +78,7 @@ export class PfhhSurveyTableReactComponent extends React.Component<
     const pafhh_survey_pdf_link = "/assets/surveys/Survey_PaFHH_Eng_Src.pdf";
     const pafhh_survey_pdf_link_spanish =
       "/assets/surveys/Survey_PaFHH_spn_Src.pdf";
-    const { questionCount, participantCount } = this.props;
+    const { questionCount, participantCount: _participantCount } = this.props;
 
     console.log(questionCount);
 

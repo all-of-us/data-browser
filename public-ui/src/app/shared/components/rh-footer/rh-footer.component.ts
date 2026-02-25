@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { HeaderFooterService } from "app/shared/services/header-footer.service";
 
 @Component({
+  standalone: false,
   selector: "app-rh-footer",
   templateUrl: "./rh-footer.component.html",
   styleUrls: ["./rh-footer.component.css", "../../../styles/template.css"],

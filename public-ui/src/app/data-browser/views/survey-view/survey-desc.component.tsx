@@ -103,7 +103,9 @@ export const SurveyDescReactComponent = (props) => {
       <div className="page-header" style={styles.pageHeader}>
         <div className="title-row" style={styles.titleRow}>
           <h1 style={styles.title}> {props.surveyName} </h1>
-          <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+          <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+            Home
+          </a>
         </div>
         <div className="title-container" style={styles.titleContainer}>
           {props.isCopeSurvey ? (
@@ -128,6 +130,7 @@ export const SurveyDescReactComponent = (props) => {
 };
 
 @Component({
+  standalone: false,
   selector: "app-survey-desc",
   template: `<div #root></div>`,
 })

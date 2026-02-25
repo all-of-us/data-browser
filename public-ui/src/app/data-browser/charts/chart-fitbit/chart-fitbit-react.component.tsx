@@ -97,11 +97,6 @@ export class ChartFitbitReactComponent extends React.Component<Props, State> {
         concept.countValue <= 20
           ? "&le; 20"
           : concept.countValue.toLocaleString();
-      const totalCount =
-        this.props.countAnalysis && this.props.countAnalysis.results
-          ? this.props.countAnalysis.results[0].countValue.toLocaleString()
-          : 0;
-      const percentage = ((concept.countValue / totalCount) * 100).toFixed();
       pointData.push({
         toolTipHelpText:
           '<div class="fitbit-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 20em;"><strong>' +

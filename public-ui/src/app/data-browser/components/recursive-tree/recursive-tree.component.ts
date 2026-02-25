@@ -8,9 +8,10 @@ import {
 } from "@angular/core";
 import { TreeHighlightService } from "app/data-browser/services/tree-highlight.service";
 import { DataBrowserService } from "publicGenerated";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Subscription as ISubscription } from "rxjs";
 
 @Component({
+  standalone: false,
   selector: "app-recursive-tree",
   templateUrl: "./recursive-tree.component.html",
   styleUrls: ["./recursive-tree.component.css"],

@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { VariantFilterItemComponent } from "app/data-browser/views/genomic-view/components/variant-filter-item.component";
-import { VariantSortItemComponent } from "app/data-browser/views/genomic-view/components/variant-sort-item.component";
 import { reactStyles } from "app/utils";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
@@ -165,7 +164,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
 
   render() {
     const { filterMetadata } = this.props;
-    const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
+    const { filterCats, filteredMetadata, cleared } = this.state;
     return (
       <React.Fragment>
         <div style={styles.filterBox}>

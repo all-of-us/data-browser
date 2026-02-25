@@ -5,7 +5,7 @@ import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
 
 import { SVVariantFilterItemComponent } from "./sv-variant-filter-item.component";
-import { SVVariantSortItemComponent } from "./sv-variant-sort-item.component";
+
 
 const styles = reactStyles({
   filterBox: {
@@ -166,7 +166,7 @@ export class SVVariantFilterComponent extends React.Component<Props, State> {
 
   render() {
     const { filterMetadata } = this.props;
-    const { filterCats, filteredMetadata, cleared, sortMetadata } = this.state;
+    const { filterCats, filteredMetadata, cleared } = this.state;
     return (
       <React.Fragment>
         <div style={styles.filterBox}>

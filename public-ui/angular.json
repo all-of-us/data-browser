@@ -9,7 +9,7 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -30,13 +30,8 @@
               "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
               "node_modules/@clr/icons/clr-icons.min.js"
             ],
-            "aot": false,
-            "buildOptimizer": false,
-            "vendorChunk": true,
-            "extractLicenses": false,
             "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "optimization": false
           },
           "configurations": {
             "local": {
@@ -82,11 +77,7 @@
             "production": {
               "optimization": false,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false
+              "sourceMap": false
             }
           },
           "defaultConfiguration": ""
@@ -94,34 +85,34 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "aou-data-browser:build",
+            "buildTarget": "aou-data-browser:build",
             "port": 4201
           },
           "configurations": {
             "local": {
-              "browserTarget": "aou-data-browser:build:local"
+              "buildTarget": "aou-data-browser:build:local"
             },
             "test": {
-              "browserTarget": "aou-data-browser:build:test"
+              "buildTarget": "aou-data-browser:build:test"
             },
             "staging": {
-              "browserTarget": "aou-data-browser:build:staging"
+              "buildTarget": "aou-data-browser:build:staging"
             },
             "stable": {
-              "browserTarget": "aou-data-browser:build:stable"
+              "buildTarget": "aou-data-browser:build:stable"
             },
             "prod": {
-              "browserTarget": "aou-data-browser:build:prod"
+              "buildTarget": "aou-data-browser:build:prod"
             },
             "production": {
-              "browserTarget": "aou-data-browser:build:production"
+              "buildTarget": "aou-data-browser:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "aou-data-browser:build"
+            "buildTarget": "aou-data-browser:build"
           }
         },
         "test": {
@@ -156,7 +147,6 @@
       "projectType": "application"
     }
   },
-  "defaultProject": "aou-data-browser",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

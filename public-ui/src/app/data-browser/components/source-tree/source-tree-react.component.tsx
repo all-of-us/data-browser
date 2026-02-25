@@ -154,6 +154,7 @@ export const SourceTreeComponent = class extends React.Component<
 };
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "react-source-tree",
   template: `<span #root></span>`,

@@ -3,7 +3,6 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortSVMetadata } from "publicGenerated/fetch";
@@ -91,19 +90,6 @@ const css = `
 }
 `;
 
-const lables = {
-  variantId: "Variant Id",
-  variantType: "Variant Type",
-  consequence: "Consequence",
-  position: "Position",
-  size: "Size",
-  alleleNumber: "Allele Number",
-  alleleFrequency: "Allele Frequency",
-  alleleCount: "Allele Count",
-  homozygoteCount: "Homozygote Count",
-  filter: "Filter",
-};
-
 interface Props {
   cleared: Boolean;
   onSortChange: Function;
@@ -185,7 +171,7 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
 
   render(): React.ReactNode {
     const { cleared } = this.props;
-    const { sortItemOpen, sortMetadata, filterCats, sortCats } = this.state;
+    const { sortItemOpen, sortMetadata, sortCats } = this.state;
 
     return (
       <React.Fragment>
@@ -211,7 +197,7 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
                   <div
                     style={{ cursor: "pointer", position: "relative" }}
                     key={index}
-                    onClick={(e) => this.clickToSort(cat.field)}
+                    onClick={(_e) => this.clickToSort(cat.field)}
                   >
                     <span
                       style={

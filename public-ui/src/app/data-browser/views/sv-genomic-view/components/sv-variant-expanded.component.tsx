@@ -3,13 +3,12 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PopulationChartReactComponent } from "app/data-browser/views/genomic-view/components/population-chart.component";
+import { ConsequenceGeneDisplay } from "app/data-browser/views/sv-genomic-view/components/consequence-gene-display-component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
 import { SVVariant, SVVariantInfo } from "publicGenerated";
-
-import { ConsequenceGeneDisplay } from "app/data-browser/views/sv-genomic-view/components/consequence-gene-display-component";
 
 const css = `
 .exit{
@@ -283,7 +282,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
   };
 
   replaceTag(variantType: string) {
-    return variantType.replace(/^<|>$/g, '');
+    return variantType.replace(/^<|>$/g, "");
   }
 
   isCNV() {
@@ -307,10 +306,12 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
     // Parse consequence string into a map
     const consequenceMap: Record<string, string[]> = {};
     if (consequenceString !== "-") {
-      consequenceString.split(';').forEach(line => {
+      consequenceString.split(";").forEach((line) => {
         const [label, geneStr] = line.split(" - ");
         if (label && geneStr) {
-          consequenceMap[label.trim()] = geneStr.split(",").map(g => g.trim());
+          consequenceMap[label.trim()] = geneStr
+            .split(",")
+            .map((g) => g.trim());
         }
       });
     }
@@ -321,7 +322,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
     // Column labels based on variant type
     const alleleCountLabel = isCNV ? "Non-diploid Samples" : "Allele Count";
     const alleleNumberLabel = isCNV ? "Total Samples" : "Allele Number";
-    const alleleFrequencyLabel = isCNV ? "Non-diploid CN Frequency" : "Allele Frequency";
+    const alleleFrequencyLabel = isCNV
+      ? "Non-diploid CN Frequency"
+      : "Allele Frequency";
 
     return (
       <React.Fragment>
@@ -372,32 +375,43 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Variant Type:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType ? this.replaceTag(variant.variantType) : "-"}
+                      {variant.variantType
+                        ? this.replaceTag(variant.variantType)
+                        : "-"}
                     </span>
                   </div>
-                  <ConsequenceGeneDisplay consequenceString={variantDetails.consequenceGenes || "-"} />
+                  <ConsequenceGeneDisplay
+                    consequenceString={variantDetails.consequenceGenes || "-"}
+                  />
 
                   <div>
                     <span style={styles.catHeading}>Position:</span>
                     <br />
                     <span style={styles.catInfo}>
-                    {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
+                      {variant.position
+                        ? `chr${variant.position.replace(/-chr/, ", chr")}`
+                        : "-"}
                     </span>
-                    </div>
+                  </div>
                   <div>
                     <span style={styles.catHeading}>Size:</span>
                     <br />
                     <span style={styles.catInfo}>
-                    {(variantDetails.variantType?.includes('CTX') || variantDetails.variantType?.includes('BND'))
-                      ? 'N/A'
-                      : (variantDetails.size != null && variantDetails.size >= 0 ? variantDetails.size : '-')}
+                      {variantDetails.variantType?.includes("CTX") ||
+                      variantDetails.variantType?.includes("BND")
+                        ? "N/A"
+                        : variantDetails.size != null &&
+                          variantDetails.size >= 0
+                        ? variantDetails.size
+                        : "-"}
                     </span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>CPX Type:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
+                      {variant.variantType === "<CTX>" ||
+                      variant.variantType === "<CPX>"
                         ? variantDetails.cpxType || "-"
                         : "N/A"}
                     </span>
@@ -406,11 +420,14 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>CPX Intervals:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variant.variantType === "<CTX>" || variant.variantType === "<CPX>"
+                      {variant.variantType === "<CTX>" ||
+                      variant.variantType === "<CPX>"
                         ? variantDetails.cpxIntervals
-                          ? variantDetails.cpxIntervals.split(',').map((interval, index) => (
-                              <div key={index}>{interval.trim()}</div>
-                            ))
+                          ? variantDetails.cpxIntervals
+                              .split(",")
+                              .map((interval, index) => (
+                                <div key={index}>{interval.trim()}</div>
+                              ))
                           : "-"
                         : "N/A"}
                     </span>
@@ -419,7 +436,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Quality Score:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.qualityScore? variantDetails.qualityScore : '-'}
+                      {variantDetails.qualityScore
+                        ? variantDetails.qualityScore
+                        : "-"}
                     </span>
                   </div>
                   <div>
@@ -439,27 +458,51 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
                           {isCNV ? (
-                            <>Non-diploid<br />Samples</>
+                            <>
+                              Non-diploid
+                              <br />
+                              Samples
+                            </>
                           ) : (
-                            <>Allele<br />Count</>
+                            <>
+                              Allele
+                              <br />
+                              Count
+                            </>
                           )}
                         </span>
                       </div>
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
                           {isCNV ? (
-                            <>Total<br />Samples</>
+                            <>
+                              Total
+                              <br />
+                              Samples
+                            </>
                           ) : (
-                            <>Allele<br />Number</>
+                            <>
+                              Allele
+                              <br />
+                              Number
+                            </>
                           )}
                         </span>
                       </div>
                       <div style={styles.popTableHeading}>
                         <span style={styles.catHeading}>
                           {isCNV ? (
-                            <>Non-diploid<br />CN Frequency</>
+                            <>
+                              Non-diploid
+                              <br />
+                              CN Frequency
+                            </>
                           ) : (
-                            <>Allele<br />Frequency</>
+                            <>
+                              Allele
+                              <br />
+                              Frequency
+                            </>
                           )}
                         </span>
                       </div>
@@ -477,7 +520,10 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       {variantPopulationDetails.map((item, index) => {
                         const colorStyle = { color: item.color };
                         return (
-                          <div key={index} className={isCNV ? "pop-table-cnv" : "pop-table"}>
+                          <div
+                            key={index}
+                            className={isCNV ? "pop-table-cnv" : "pop-table"}
+                          >
                             <div style={styles.popTableData}>
                               {item.Ancestry !== "Total" ? (
                                 <span className="pop-desc">
@@ -557,9 +603,9 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     variantPopulationDetails={variantPopulationDetails}
                     isCNV={isCNV}
                   />
-                <div className="alt-variant-id">
-                  <strong>VCF ID:</strong> {variantDetails.variantIDVCF}
-                </div>
+                  <div className="alt-variant-id">
+                    <strong>VCF ID:</strong> {variantDetails.variantIDVCF}
+                  </div>
                 </div>
               </React.Fragment>
             )}

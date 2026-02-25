@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges } from "@angular/core";
 
 @Component({
+  standalone: false,
   selector: "app-survey-version-table",
   templateUrl: "./survey-version-table.component.html",
   styleUrls: [

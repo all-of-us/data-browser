@@ -3,6 +3,7 @@ import { TooltipService } from "app/data-browser/services/tooltip.service";
 import { DbConfigService } from "app/utils/db-config.service";
 
 @Component({
+  standalone: false,
   selector: "app-tooltip",
   templateUrl: "./tooltip.component.html",
   styleUrls: ["./tooltip.component.css", "../../../styles/page.css"],

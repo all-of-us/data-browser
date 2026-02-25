@@ -86,8 +86,8 @@ export class VariantFilterChips extends React.Component<Props, State> {
 
   componentDidUpdate(
     prevProps: Readonly<Props>,
-    prevState: Readonly<State>,
-    snapshot?: any
+    _prevState: Readonly<State>,
+    _snapshot?: any
   ): void {
     if (prevProps !== this.props) {
       this.setState({ chips: this.formatChips(this.props.filteredMetadata) });

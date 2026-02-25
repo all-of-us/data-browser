@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 
 @Component({
+  standalone: false,
   selector: "app-pop-up",
   templateUrl: "./pop-up.component.html",
   styleUrls: ["./pop-up.component.css", "../../../styles/template.css"],

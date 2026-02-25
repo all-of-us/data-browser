@@ -9,9 +9,10 @@ import {
 import { Router } from "@angular/router";
 import { DbConfigService } from "app/utils/db-config.service";
 import { DataBrowserService } from "publicGenerated";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Subscription as ISubscription } from "rxjs";
 
 @Component({
+  standalone: false,
   selector: "app-db-no-results",
   templateUrl: "./db-no-results.component.html",
   styleUrls: ["./db-no-results.component.css", "../../styles/template.css"],

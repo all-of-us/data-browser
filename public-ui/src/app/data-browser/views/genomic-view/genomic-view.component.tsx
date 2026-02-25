@@ -1,15 +1,15 @@
 import * as React from "react";
 import _ from "lodash";
 
-import { SVGenomicSearchComponent } from "app/data-browser/views/sv-genomic-view/components/sv-genomic-search.component";
+import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { GenomicOverviewComponent } from "app/data-browser/views/genomic-view/components/genomic-overview.component";
+import { SVGenomicSearchComponent } from "app/data-browser/views/sv-genomic-view/components/sv-genomic-search.component";
 import { genomicsApi } from "app/services/swagger-fetch-clients";
+import { BreadCrumbComponent } from "app/shared/components/breadcrumb/breadcrumb-react.component";
 import { reactStyles } from "app/utils";
 import { triggerEvent } from "app/utils/google_analytics";
 import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
-import { BreadCrumbComponent } from 'app/shared/components/breadcrumb/breadcrumb-react.component';
-import { environment } from "environments/environment";
 import {
   GenomicFilters,
   SearchSVVariantsRequest,
@@ -332,10 +332,14 @@ export const GenomicViewComponent = withRouteData(
         id: 3,
         label: "Participant Demographics",
       },
-      ...(this.svVCFBrowserFlag ? [{
-        id: 2,
-        label: "Structural Variants",
-      }] : [])
+      ...(this.svVCFBrowserFlag
+        ? [
+            {
+              id: 2,
+              label: "Structural Variants",
+            },
+          ]
+        : []),
     ];
 
     title = "SNVs/Indels";
@@ -401,7 +405,6 @@ export const GenomicViewComponent = withRouteData(
       window.history.pushState(null, "Genomic Variants", url);
     }
 
-
     changeSVUrl() {
       const { svSearchTerm } = this.state;
       let url = "structural-variants";
@@ -413,51 +416,58 @@ export const GenomicViewComponent = withRouteData(
 
     handlePopState = () => {
       const currentUrl = window.location.pathname;
-      const pathParts = currentUrl.split('/');
+      const pathParts = currentUrl.split("/");
 
-      if (currentUrl.includes('structural-variants')) {
-        const searchTerm = pathParts[pathParts.length - 1] !== 'structural-variants'
-          ? decodeURIComponent(pathParts[pathParts.length - 1])
-          : '';
+      if (currentUrl.includes("structural-variants")) {
+        const searchTerm =
+          pathParts[pathParts.length - 1] !== "structural-variants"
+            ? decodeURIComponent(pathParts[pathParts.length - 1])
+            : "";
 
         // Clear filter metadata when navigating via browser back/forward
         this.clearSVFilterMetadata();
         this.clearSVSortMetadata();
 
-        this.setState({
-          selectionId: 2,
-          svSearchTerm: searchTerm,
-          loadingResults: true,
-          loadingSVVariantListSize: true
-        }, () => {
-          if (searchTerm) {
-            this.getSVVariantSearch(searchTerm);
+        this.setState(
+          {
+            selectionId: 2,
+            svSearchTerm: searchTerm,
+            loadingResults: true,
+            loadingSVVariantListSize: true,
+          },
+          () => {
+            if (searchTerm) {
+              this.getSVVariantSearch(searchTerm);
+            }
           }
-        });
-      } else if (currentUrl.includes('snvsindels')) {
-        const searchTerm = pathParts[pathParts.length - 1] !== 'snvsindels'
-          ? decodeURIComponent(pathParts[pathParts.length - 1])
-          : '';
+        );
+      } else if (currentUrl.includes("snvsindels")) {
+        const searchTerm =
+          pathParts[pathParts.length - 1] !== "snvsindels"
+            ? decodeURIComponent(pathParts[pathParts.length - 1])
+            : "";
 
         // Clear filter metadata when navigating via browser back/forward
         this.clearFilterMetadata();
         this.clearSortMetadata();
 
-        this.setState({
-          selectionId: 1,
-          searchTerm: searchTerm,
-          loadingResults: true,
-          loadingVariantListSize: true
-        }, () => {
-          if (searchTerm) {
-            this.getVariantSearch(searchTerm);
+        this.setState(
+          {
+            selectionId: 1,
+            searchTerm: searchTerm,
+            loadingResults: true,
+            loadingVariantListSize: true,
+          },
+          () => {
+            if (searchTerm) {
+              this.getVariantSearch(searchTerm);
+            }
           }
-        });
-      } else if (currentUrl.includes('participant-demographics')) {
+        );
+      } else if (currentUrl.includes("participant-demographics")) {
         this.setState({ selectionId: 3 });
       }
-    }
-
+    };
 
     getSearchSize(searchTerm: string, filtered: boolean) {
       if (!filtered) {
@@ -541,7 +551,7 @@ export const GenomicViewComponent = withRouteData(
           // Set default filters for the filter column: PASS and MULTIALLELIC checked by default
           if (result.filter && result.filter.items) {
             result.filter.items.forEach((el) => {
-              if (el.option === 'PASS' || el.option === 'MULTIALLELIC') {
+              if (el.option === "PASS" || el.option === "MULTIALLELIC") {
                 el.checked = true;
               } else {
                 el.checked = false;
@@ -727,16 +737,16 @@ export const GenomicViewComponent = withRouteData(
             loadingResults: false,
           });
 
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
+          if (results.items.length > 0) {
+            const firstWithGene = results.items.find(
+              (item) => item.genes && item.genes.trim() !== ""
+            );
+            const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+            if (firstGene) {
+              console.log("First gene from results:", firstGene);
+              this.setState({ firstGene });
             }
-
-
+          }
         });
     }
 
@@ -787,16 +797,16 @@ export const GenomicViewComponent = withRouteData(
             loadingResults: false,
           });
 
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
+          if (results.items.length > 0) {
+            const firstWithGene = results.items.find(
+              (item) => item.genes && item.genes.trim() !== ""
+            );
+            const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+            if (firstGene) {
+              console.log("First gene from results:", firstGene);
+              this.setState({ firstGene });
             }
-
-
+          }
         });
     }
 
@@ -843,19 +853,21 @@ export const GenomicViewComponent = withRouteData(
         });
       }
 
-      this.setState({
-        selectionId: selected
-      }, () => {
-        if (selected === 2) {
-          window.history.pushState({}, '', '/structural-variants');
-        } else if (selected === 1) {
-          window.history.pushState({}, '', '/snvsindels');
-        } else if (selected === 3) {
-          window.history.pushState({}, '', '/participant-demographics');
+      this.setState(
+        {
+          selectionId: selected,
+        },
+        () => {
+          if (selected === 2) {
+            window.history.pushState({}, "", "/structural-variants");
+          } else if (selected === 1) {
+            window.history.pushState({}, "", "/snvsindels");
+          } else if (selected === 3) {
+            window.history.pushState({}, "", "/participant-demographics");
+          }
         }
-      });
+      );
     }
-
 
     handleFaqClose() {
       this.setState({ selectionId: 1 });
@@ -902,11 +914,11 @@ export const GenomicViewComponent = withRouteData(
       const currentUrl = window.location.href;
 
       if (search) {
-        if (currentUrl.includes('structural-variants')) {
+        if (currentUrl.includes("structural-variants")) {
           this.setState({ svSearchTerm: search }, () => {
             this.getSVVariantSearch(search);
           });
-        } else if (currentUrl.includes('snvsindels')) {
+        } else if (currentUrl.includes("snvsindels")) {
           this.setState({ searchTerm: search }, () => {
             this.getVariantSearch(search);
           });
@@ -977,16 +989,16 @@ export const GenomicViewComponent = withRouteData(
             loadingResults: false,
           });
 
-            if (results.items.length > 0) {
-              const firstWithGene = results.items.find(item => item.genes && item.genes.trim() !== "");
-              const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
-              if (firstGene) {
-                console.log("First gene from results:", firstGene);
-                this.setState({ firstGene });
-              }
+          if (results.items.length > 0) {
+            const firstWithGene = results.items.find(
+              (item) => item.genes && item.genes.trim() !== ""
+            );
+            const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
+            if (firstGene) {
+              console.log("First gene from results:", firstGene);
+              this.setState({ firstGene });
             }
-
-
+          }
         });
     }
 
@@ -1058,7 +1070,9 @@ export const GenomicViewComponent = withRouteData(
             <div style={styles.titleContainer}>
               <h1 style={styles.title}>{this.getTitle()}</h1>
             </div>
-            <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+            <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+              Home
+            </a>
           </div>
           <div>
             <div style={styles.viewLayout}>
@@ -1093,9 +1107,9 @@ export const GenomicViewComponent = withRouteData(
             {selectionId === 3 && (
               <div style={styles.innerContainer}>
                 <p style={styles.desc}>
-                  View the self-reported categories, sex, and
-                  age of participants whose genomic data are available within
-                  the Researcher Workbench.{" "}
+                  View the self-reported categories, sex, and age of
+                  participants whose genomic data are available within the
+                  Researcher Workbench.{" "}
                 </p>
               </div>
             )}

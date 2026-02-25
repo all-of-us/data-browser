@@ -6,7 +6,7 @@ import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper
 export function highlightSearchTerm(
   searchTerm: string,
   text: string,
-  highlightColor: string
+  _highlightColor: string
 ) {
   let words = [];
   let matchString: RegExp;
@@ -47,27 +47,27 @@ export function highlightSearchTerm(
     }
   }
 
-    return (
-      <React.Fragment>
-        {words.map((word, w) => {
-          return (
-            <span
-              key={w}
-              style={
-                word && matchString.test(word.toLowerCase()) // Check if word is defined
-                  ? {
-                      fontFamily: "GothamBold, Arial, san-serif",
-                      fontWeight: 700,
-                    }
-                  : {}
-              }
-            >
-              {word}
-            </span>
-          );
-        })}
-      </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      {words.map((word, w) => {
+        return (
+          <span
+            key={w}
+            style={
+              word && matchString.test(word.toLowerCase()) // Check if word is defined
+                ? {
+                    fontFamily: "GothamBold, Arial, san-serif",
+                    fontWeight: 700,
+                  }
+                : {}
+            }
+          >
+            {word}
+          </span>
+        );
+      })}
+    </React.Fragment>
+  );
 }
 
 interface Props {
@@ -86,6 +86,7 @@ export const HighlightReactComponent = class extends React.Component<Props> {
 };
 
 @Component({
+  standalone: false,
   selector: "app-highlight-react",
   template: `<span #root></span>`,
   styleUrls: ["./highlight-search.component.css"],

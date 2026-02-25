@@ -4,6 +4,7 @@ import { DbConfigService } from "app/utils/db-config.service";
 import { GraphType } from "app/utils/enum-defs";
 
 @Component({
+  standalone: false,
   selector: "app-survey-chart",
   templateUrl: "./survey-chart.component.html",
   styleUrls: [

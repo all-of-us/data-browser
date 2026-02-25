@@ -6,9 +6,10 @@ import { DbConfigService } from "app/utils/db-config.service";
 import { DomainType } from "app/utils/enum-defs";
 import { DataBrowserService } from "publicGenerated/api/dataBrowser.service";
 import { Analysis } from "publicGenerated/model/analysis";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Subscription as ISubscription } from "rxjs";
 
 @Component({
+  standalone: false,
   selector: "app-physical-measurements",
   templateUrl: "./pm.component.html",
   styleUrls: [

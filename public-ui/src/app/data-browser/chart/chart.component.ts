@@ -14,6 +14,7 @@ import { Analysis } from "publicGenerated/model/analysis";
 import { Concept } from "publicGenerated/model/concept";
 
 @Component({
+  standalone: false,
   selector: "app-chart",
   templateUrl: "./chart.component.html",
   styleUrls: ["./chart.component.css"],

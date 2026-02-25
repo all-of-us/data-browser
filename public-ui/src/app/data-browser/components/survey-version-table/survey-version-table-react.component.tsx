@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { Component, Input } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
-import { ClrIcon } from "app/utils/clr-icon";
 
 const cssStyles = `
 strong {
@@ -127,6 +126,7 @@ export class SurveyVersionTableReactComponent extends React.Component<
 }
 
 @Component({
+  standalone: false,
   selector: "app-survey-version-table-react",
   template: `<span #${containerElementName}></span>`,
 })

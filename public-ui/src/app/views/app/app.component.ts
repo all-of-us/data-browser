@@ -13,12 +13,13 @@ import {
   routeConfigDataStore,
   urlParamsStore,
 } from "app/utils/navigation";
-import { filter } from "rxjs/operators";
+import { filter } from "rxjs";
 
 export const overriddenUrlKey = "allOfUsApiUrlOverride";
 export const overriddenPublicUrlKey = "publicApiUrlOverride";
 
 @Component({
+  standalone: false,
   selector: "app-public-aou",
   styleUrls: ["./app.component.css"],
   templateUrl: "./app.component.html",

@@ -167,7 +167,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
                 <div style={styles.variantIconText}>
                   <ClrIcon
                     style={styles.caretIcon}
-                    onClick={(e) => {}}
+                    onClick={(_e) => {}}
                     size="lg"
                     shape="caret"
                     dir="down"
@@ -178,18 +178,18 @@ export class VariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
               {variant.genes && variant.genes.length ? (
                 <div>
-                  {variant.genes.split(',').map((gene, idx, arr) => (
+                  {variant.genes.split(",").map((gene, idx, arr) => (
                     <React.Fragment key={idx}>
                       <span
                         onClick={() => this.props.onGeneClick(gene.trim())}
                         style={{
-                          cursor: 'pointer',
-                          textDecoration: 'none',
+                          cursor: "pointer",
+                          textDecoration: "none",
                         }}
                       >
                         {gene.trim()}
                       </span>
-                      {idx < arr.length - 1 && ', '}
+                      {idx < arr.length - 1 && ", "}
                     </React.Fragment>
                   ))}
                 </div>
