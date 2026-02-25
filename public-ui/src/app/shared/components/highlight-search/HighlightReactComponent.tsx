@@ -86,6 +86,7 @@ export const HighlightReactComponent = class extends React.Component<Props> {
 };
 
 @Component({
+  standalone: false,
   selector: "app-highlight-react",
   template: `<span #root></span>`,
   styleUrls: ["./highlight-search.component.css"],

@@ -814,6 +814,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-concept-chart-react",
   template: `<span #root></span>`,
 })

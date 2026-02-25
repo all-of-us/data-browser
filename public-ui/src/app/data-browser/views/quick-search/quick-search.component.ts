@@ -9,11 +9,11 @@ import {
   DataBrowserService,
   DomainInfosAndSurveyModulesResponse,
 } from "publicGenerated";
-import { Observable } from "rxjs/internal/Observable";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Observable, Subscription as ISubscription } from "rxjs";
 import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 
 @Component({
+  standalone: false,
   selector: "app-quick-search",
   templateUrl: "./quick-search.component.html",
   styleUrls: [

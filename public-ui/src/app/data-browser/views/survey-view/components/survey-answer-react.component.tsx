@@ -597,6 +597,7 @@ export class SurveyAnswerReactComponent extends React.Component<Props> {
 }
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "app-survey-answer-react",
   template: `<span #root></span>`,

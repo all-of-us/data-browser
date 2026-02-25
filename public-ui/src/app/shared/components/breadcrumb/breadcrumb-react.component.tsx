@@ -10,7 +10,7 @@ import {
   routeConfigDataStore,
   urlParamsStore,
 } from "app/utils/navigation";
-import { Subscription } from "rxjs/Subscription";
+import { Subscription } from "rxjs";
 
 const styles = reactStyles({
   preCrumb: {
@@ -99,6 +99,7 @@ export const BreadCrumbComponent = class extends React.Component<
 };
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "react-breadcrumbs",
   template: `<span #root></span>`,

@@ -305,6 +305,7 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-age-chart-react",
   template: `<span #root></span>`,
   styleUrls: ["./chart-age.component.css"],

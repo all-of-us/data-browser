@@ -669,6 +669,7 @@ export class ConceptRowReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "app-concept-row-react",
   template: `<span #root></span>`,

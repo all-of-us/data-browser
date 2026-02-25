@@ -61,6 +61,7 @@ export class CdrVersionReactComponent extends React.Component<{}, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-cdr-version-react",
   template: `<span #${containerElementName}></span>`,
   styleUrls: [],

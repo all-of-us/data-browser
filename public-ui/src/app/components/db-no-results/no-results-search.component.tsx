@@ -285,6 +285,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-domain-results-match",
   template: `<span #root></span>`,
 })

@@ -10,7 +10,7 @@ import { reactStyles } from "app/utils";
 import { PM_CONCEPTS } from "app/utils/constants";
 import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
-import { isNumeric } from "rxjs/util/isNumeric";
+const isNumeric = (val: any): boolean => !isNaN(parseFloat(val)) && isFinite(val);
 
 const styles = reactStyles({
   pmContainer: {

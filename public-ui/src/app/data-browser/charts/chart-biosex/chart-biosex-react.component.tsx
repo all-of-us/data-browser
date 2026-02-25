@@ -274,6 +274,7 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-biosex-chart-react",
   template: `<span #root></span>`,
   styleUrls: ["./chart-biosex.component.css"],

@@ -170,6 +170,7 @@ export const PopUpReactComponent = (props) => {
 };
 
 @Component({
+  standalone: false,
   selector: "app-popup-react",
   template: `<span #root></span>`,
 })

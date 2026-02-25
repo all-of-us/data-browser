@@ -16,185 +16,169 @@ import { SurveyViewReactComponent } from "./data-browser/views/survey-view/surve
 export const AppRoutingComponent: React.FunctionComponent = () => {
   return (
     <AppRouter>
-      <AppRoute
-        path="/"
-        component={() =>
+      {AppRoute({
+        path: "/",
+        component: () =>
           dBHomeComponent({
             routeData: {
               title: "Data Browser",
               breadcrumb: { value: "" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/introductory-videos"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/introductory-videos",
+        component: () =>
           IntroVidReactComponent({
             routeData: {
               title: "Introductory Videos",
               breadcrumb: { value: "Introductory Videos" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/ehr/:id"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/ehr/:id",
+        component: () =>
           EhrViewReactComponent({
             routeData: {
               title: "View Full Results",
               breadcrumb: { value: ":id" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/ehr/:id/:search"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/ehr/:id/:search",
+        component: () =>
           EhrViewReactComponent({
             routeData: {
               title: "View Full Results",
               breadcrumb: { value: ":id" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/survey/:id"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/survey/:id",
+        component: () =>
           SurveyViewReactComponent({
             routeData: {
               title: "View Survey Questions and Answers",
               breadcrumb: { value: ":id Domain" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/survey/:id/:search"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/survey/:id/:search",
+        component: () =>
           SurveyViewReactComponent({
             routeData: {
               title: "View Survey Questions and Answers",
               breadcrumb: { value: ":id Domain" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/fitbit"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/fitbit",
+        component: () =>
           FitbitReactComponent({
             routeData: {
               title: "Fitbit Data",
               breadcrumb: { value: "Fitbit Data" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/fitbit/:search"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/fitbit/:search",
+        component: () =>
           FitbitReactComponent({
             routeData: {
               title: "Fitbit Data",
               breadcrumb: { value: "Fitbit Data" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/snvsindels"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/snvsindels",
+        component: () =>
           GenomicViewComponent({
             selectionId: 1,
             routeData: {
               title: "Genomic Variants",
               breadcrumb: { value: "Genomic Variants" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/snvsindels/:search"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/snvsindels/:search",
+        component: () =>
           GenomicViewComponent({
             selectionId: 1,
             routeData: {
               title: "Genomic Variants",
               breadcrumb: { value: "Genomic Variants" },
             },
-          })
-        }
-      />
-      {environment.svVCFBrowser && (
-        <AppRoute
-          path="/structural-variants"
-          component={() =>
+          }),
+      })}
+      {environment.svVCFBrowser &&
+        AppRoute({
+          path: "/structural-variants",
+          component: () =>
             GenomicViewComponent({
               selectionId: 2,
               routeData: {
                 title: "Genomic Variants",
                 breadcrumb: { value: "Genomic Variants" },
               },
-            })
-          }
-        />
-      )}
-      {environment.svVCFBrowser && (
-        <AppRoute
-          path="/structural-variants/:search"
-          component={() =>
+            }),
+        })}
+      {environment.svVCFBrowser &&
+        AppRoute({
+          path: "/structural-variants/:search",
+          component: () =>
             GenomicViewComponent({
               selectionId: 2,
               routeData: {
                 title: "Genomic Variants",
                 breadcrumb: { value: "Genomic Variants" },
               },
-            })
-          }
-        />
-      )}
-      <AppRoute
-        path="/participant-demographics"
-        component={() =>
+            }),
+        })}
+      {AppRoute({
+        path: "/participant-demographics",
+        component: () =>
           GenomicViewComponent({
             selectionId: 3,
             routeData: {
               title: "Genomic Variants",
               breadcrumb: { value: "Genomic Variants" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/physical-measurements"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/physical-measurements",
+        component: () =>
           PMReactComponent({
             routeData: {
               title: "Physical Measurements",
               breadcrumb: { value: "physical measurements" },
             },
-          })
-        }
-      />
-      <AppRoute
-        path="/physical-measurements/:search"
-        component={() =>
+          }),
+      })}
+      {AppRoute({
+        path: "/physical-measurements/:search",
+        component: () =>
           PMReactComponent({
             routeData: {
               title: "Physical Measurements",
               breadcrumb: { value: "physical measurements" },
             },
-          })
-        }
-      />
+          }),
+      })}
     </AppRouter>
   );
 };
 
 @AComponent({
+  standalone: false,
   template: '<div #root style="display: inline;"></div>',
 })
 export class AppRouting extends BaseReactWrapper {

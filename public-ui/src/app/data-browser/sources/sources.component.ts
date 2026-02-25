@@ -6,6 +6,7 @@ import { Concept } from "publicGenerated";
 import { DataBrowserService } from "publicGenerated";
 
 @Component({
+  standalone: false,
   selector: "app-sources",
   templateUrl: "./sources.component.html",
   styleUrls: ["../../styles/template.css", "./sources.component.css"],

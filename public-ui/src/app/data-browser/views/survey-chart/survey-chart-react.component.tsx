@@ -299,6 +299,7 @@ export class SurveyChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-survey-chart-react",
   template: `<span #root></span>`,
   styleUrls: [

@@ -410,6 +410,7 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-value-chart-react",
   template: `<span #root></span>`,
   styleUrls: ["./../../chart/chart.component.css"],

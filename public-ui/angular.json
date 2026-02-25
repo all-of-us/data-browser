@@ -94,34 +94,34 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "aou-data-browser:build",
+            "buildTarget": "aou-data-browser:build",
             "port": 4201
           },
           "configurations": {
             "local": {
-              "browserTarget": "aou-data-browser:build:local"
+              "buildTarget": "aou-data-browser:build:local"
             },
             "test": {
-              "browserTarget": "aou-data-browser:build:test"
+              "buildTarget": "aou-data-browser:build:test"
             },
             "staging": {
-              "browserTarget": "aou-data-browser:build:staging"
+              "buildTarget": "aou-data-browser:build:staging"
             },
             "stable": {
-              "browserTarget": "aou-data-browser:build:stable"
+              "buildTarget": "aou-data-browser:build:stable"
             },
             "prod": {
-              "browserTarget": "aou-data-browser:build:prod"
+              "buildTarget": "aou-data-browser:build:prod"
             },
             "production": {
-              "browserTarget": "aou-data-browser:build:production"
+              "buildTarget": "aou-data-browser:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "aou-data-browser:build"
+            "buildTarget": "aou-data-browser:build"
           }
         },
         "test": {
@@ -156,7 +156,6 @@
       "projectType": "application"
     }
   },
-  "defaultProject": "aou-data-browser",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

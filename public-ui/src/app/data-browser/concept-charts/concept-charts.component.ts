@@ -7,9 +7,10 @@ import { AchillesResult } from "publicGenerated/model/achillesResult";
 import { Analysis } from "publicGenerated/model/analysis";
 import { Concept } from "publicGenerated/model/concept";
 import { ConceptAnalysis } from "publicGenerated/model/conceptAnalysis";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Subscription as ISubscription } from "rxjs";
 
 @Component({
+  standalone: false,
   selector: "app-concept-charts",
   templateUrl: "./concept-charts.component.html",
   styleUrls: ["./concept-charts.component.css", "../../styles/page.css"],

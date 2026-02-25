@@ -20,12 +20,13 @@ import { ConceptListResponse } from "publicGenerated/model/conceptListResponse";
 import { Domain } from "publicGenerated/model/domain";
 import { SearchConceptsRequest } from "publicGenerated/model/searchConceptsRequest";
 import { StandardConceptFilter } from "publicGenerated/model/standardConceptFilter";
-import { Subscription as ISubscription } from "rxjs/internal/Subscription";
+import { Subscription as ISubscription } from "rxjs";
 import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 
 /* This displays concept search for a Domain. */
 
 @Component({
+  standalone: false,
   selector: "app-ehr-view",
   templateUrl: "./ehr-view.component.html",
   styleUrls: [

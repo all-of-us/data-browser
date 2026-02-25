@@ -127,6 +127,7 @@ export class SurveyVersionTableReactComponent extends React.Component<
 }
 
 @Component({
+  standalone: false,
   selector: "app-survey-version-table-react",
   template: `<span #${containerElementName}></span>`,
 })

@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http/";
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 
 export class HttpStub {
   public get(url: string, options?: HttpClient): Observable<Response> {

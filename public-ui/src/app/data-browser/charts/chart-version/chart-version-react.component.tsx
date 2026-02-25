@@ -195,6 +195,7 @@ export class VersionChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-version-chart-react",
   template: `<span #root></span>`,
   styleUrls: ["./../../chart/chart.component.css"],

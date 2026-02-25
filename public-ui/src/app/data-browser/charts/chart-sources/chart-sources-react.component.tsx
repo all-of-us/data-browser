@@ -129,6 +129,7 @@ export class SourcesChartReactComponent extends React.Component<Props, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-sources-chart-react",
   template: `<span #root></span>`,
 })

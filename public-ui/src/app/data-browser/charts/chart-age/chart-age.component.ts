@@ -2,6 +2,7 @@ import { Component, Injector, Input, OnChanges } from "@angular/core";
 import { ChartBaseComponent } from "app/data-browser/charts/chart-base/chart-base.component";
 
 @Component({
+  standalone: false,
   // tslint:disable-next-line: component-selector
   selector: "chart-age",
   templateUrl: "./chart-age.component.html",

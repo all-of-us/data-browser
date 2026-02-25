@@ -2,6 +2,7 @@ import { environment } from "environments/environment";
 import { Component, Input, OnInit } from "@angular/core";
 import { HeaderFooterService } from "app/shared/services/header-footer.service";
 @Component({
+  standalone: false,
   selector: "app-rh-header",
   templateUrl: "./rh-header.component.html",
   styleUrls: ["./rh-header.component.css", "../../../styles/template.css"],

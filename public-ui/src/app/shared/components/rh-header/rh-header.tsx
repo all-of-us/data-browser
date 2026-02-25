@@ -329,6 +329,7 @@ export class RhHeader extends React.Component<{}, State> {
 }
 
 @Component({
+  standalone: false,
   selector: "app-rh-header-react",
   template: "<div #root></div>",
   styleUrls: ["./rh-header.component.css", "../../../styles/template.css"],

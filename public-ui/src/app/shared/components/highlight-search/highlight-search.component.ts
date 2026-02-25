@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnDestroy } from "@angular/core";
 
 @Component({
+  standalone: false,
   selector: "app-highlight-search",
   templateUrl: "./highlight-search.component.html",
   styleUrls: ["./highlight-search.component.css"],

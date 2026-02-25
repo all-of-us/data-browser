@@ -128,6 +128,7 @@ export const SurveyDescReactComponent = (props) => {
 };
 
 @Component({
+  standalone: false,
   selector: "app-survey-desc",
   template: `<div #root></div>`,
 })
