@@ -240,7 +240,7 @@ export class SurveyAnswerChartReactComponent extends React.Component<
           ? ((20 / surveyVersionParticipantCounts) * 100).toFixed()
           : ((count / surveyVersionParticipantCounts) * 100).toFixed();
       if (
-        this.point.y == 0 &&
+        this.point.y === 0 &&
         this.point.series.name.toLowerCase() !== "did not answer"
       ) {
         toolTipText +=

@@ -268,10 +268,7 @@ export class NoResultSearchComponent extends React.Component<Props, State> {
               <a
                 style={styles.domainResult}
                 onClick={() =>
-                  this.handleOnClick(
-                    variantSearchResultSize,
-                    "SNVs/Indels"
-                  )
+                  this.handleOnClick(variantSearchResultSize, "SNVs/Indels")
                 }
               >
                 SNVs/Indels

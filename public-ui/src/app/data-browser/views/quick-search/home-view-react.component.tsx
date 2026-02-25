@@ -495,7 +495,13 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             <TooltipReactComponent
               label="Homepage Tooltip Hover"
               action={"Hover on " + name + "tile tooltip"}
-              tooltipKey={domain && domain.toLowerCase() === "genomics" ? domainType : (domain ? domain.toLowerCase() : name.toLowerCase())}
+              tooltipKey={
+                domain && domain.toLowerCase() === "genomics"
+                  ? domainType
+                  : domain
+                  ? domain.toLowerCase()
+                  : name.toLowerCase()
+              }
               searchTerm=""
             />
           </div>
@@ -522,31 +528,33 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                 <span className="result-stat">
                   {variantListSize.toLocaleString()}
                 </span>
-                <span className="result-box-stat-label">
-                  SNVs/Indels
-                </span>
+                <span className="result-box-stat-label">SNVs/Indels</span>
               </span>
               <span className="result-box-body-item participant-count">
-                <strong>{wgsSRParticipantCount.toLocaleString()}</strong> participants
+                <strong>{wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                participants
               </span>
             </React.Fragment>
           )}
           {/* Structural Variants without search */}
-          {domainType === "svs" && name === "Structural Variants" && !searchWord && (
-            <React.Fragment>
-              <span className="result-box-body-item">
-                <span className="result-stat">
-                  {svVariantListSize.toLocaleString()}
+          {domainType === "svs" &&
+            name === "Structural Variants" &&
+            !searchWord && (
+              <React.Fragment>
+                <span className="result-box-body-item">
+                  <span className="result-stat">
+                    {svVariantListSize.toLocaleString()}
+                  </span>
+                  <span className="result-box-stat-label">
+                    Structural Variants
+                  </span>
                 </span>
-                <span className="result-box-stat-label">
-                  Structural Variants
+                <span className="result-box-body-item participant-count">
+                  <strong>{wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                  participants
                 </span>
-              </span>
-              <span className="result-box-body-item participant-count">
-                <strong>{wgsSVParticipantCount.toLocaleString()}</strong> participants
-              </span>
-            </React.Fragment>
-          )}
+              </React.Fragment>
+            )}
           {searchWord && domainType === "ehr" && (
             <span className="result-box-body-item">
               <span className="result-box-stat-label">
@@ -597,11 +605,14 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
               <span className="result-box-stat-label">Fitbit Measurements</span>
             </span>
           )}
-          {participantCount && !(domainType === "snvs") && !(domainType === "svs") && (
-            <span className="result-box-body-item participant-count">
-              <strong>{participantCount.toLocaleString()}</strong> participants
-            </span>
-          )}
+          {participantCount &&
+            !(domainType === "snvs") &&
+            !(domainType === "svs") && (
+              <span className="result-box-body-item participant-count">
+                <strong>{participantCount.toLocaleString()}</strong>{" "}
+                participants
+              </span>
+            )}
           {/* SNVs/Indels with search */}
           {domainType === "snvs" &&
             name === "SNVs/Indels" &&
@@ -618,7 +629,8 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   </span>
                 </span>
                 <span className="result-box-body-item participant-count">
-                  <strong>{wgsSRParticipantCount.toLocaleString()}</strong> participants
+                  <strong>{wgsSRParticipantCount.toLocaleString()}</strong>{" "}
+                  participants
                 </span>
               </React.Fragment>
             )}
@@ -638,14 +650,17 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
                   </span>
                 </span>
                 <span className="result-box-body-item participant-count">
-                  <strong>{wgsSVParticipantCount.toLocaleString()}</strong> participants
+                  <strong>{wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                  participants
                 </span>
               </React.Fragment>
             )}
         </div>
         <div style={styles.resultBoxLink}>
           {/* Spacer to maintain card dimensions */}
-          <span className="result-bottom-link" style={{ visibility: 'hidden' }}>&nbsp;</span>
+          <span className="result-bottom-link" style={{ visibility: "hidden" }}>
+            &nbsp;
+          </span>
         </div>
       </div>
     );
@@ -703,7 +718,7 @@ export const dBHomeComponent = withRouteData(
 
     handlePopState = () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const searchWord = urlParams.get('search') || '';
+      const searchWord = urlParams.get("search") || "";
 
       this.setState({ searchWord, loading: true }, () => {
         localStorage.setItem("searchText", searchWord);
@@ -713,7 +728,7 @@ export const dBHomeComponent = withRouteData(
           this.getSVVariantResultSize();
         }
       });
-    }
+    };
 
     search = _.debounce((val) => {
       this.typing = true;
@@ -743,7 +758,7 @@ export const dBHomeComponent = withRouteData(
     componentDidMount() {
       // Initialize search from URL if present
       const urlParams = new URLSearchParams(window.location.search);
-      const urlSearch = urlParams.get('search');
+      const urlSearch = urlParams.get("search");
       if (urlSearch && urlSearch !== this.state.searchWord) {
         this.setState({ searchWord: urlSearch }, () => {
           localStorage.setItem("searchText", urlSearch);
@@ -921,10 +936,17 @@ export const dBHomeComponent = withRouteData(
         physicalMeasurementsInfo.length === 0 &&
         surveyInfo.length === 0;
 
-      const showGenomicsSection = environment.geno && genomicInfo &&
-        (!loadingVariantListSize && (!environment.svVCFBrowser || !loadingSVVariantListSize)) &&
-        ((!searchWord && (variantListSize > 0 || (environment.svVCFBrowser && svVariantListSize !== null))) ||
-         (searchWord && (variantListSize > 0 || (environment.svVCFBrowser && svVariantListSize > 0))));
+      const showGenomicsSection =
+        environment.geno &&
+        genomicInfo &&
+        !loadingVariantListSize &&
+        (!environment.svVCFBrowser || !loadingSVVariantListSize) &&
+        ((!searchWord &&
+          (variantListSize > 0 ||
+            (environment.svVCFBrowser && svVariantListSize !== null))) ||
+          (searchWord &&
+            (variantListSize > 0 ||
+              (environment.svVCFBrowser && svVariantListSize > 0))));
 
       return (
         <React.Fragment>
@@ -982,7 +1004,9 @@ export const dBHomeComponent = withRouteData(
             </div>
           </div>
 
-          {loading || loadingVariantListSize || (environment.svVCFBrowser && loadingSVVariantListSize) ? (
+          {loading ||
+          loadingVariantListSize ||
+          (environment.svVCFBrowser && loadingSVVariantListSize) ? (
             <div
               style={{
                 height: "15vh",
@@ -996,9 +1020,11 @@ export const dBHomeComponent = withRouteData(
             </div>
           ) : (
             <section style={styles.results}>
-              {noConceptData && variantListSize === 0 && (!environment.svVCFBrowser || svVariantListSize === 0) && (
-                <ErrorMessageReactComponent dataType="noResults" />
-              )}
+              {noConceptData &&
+                variantListSize === 0 &&
+                (!environment.svVCFBrowser || svVariantListSize === 0) && (
+                  <ErrorMessageReactComponent dataType="noResults" />
+                )}
               {true && (
                 <div
                   className={`result-boxes ${
@@ -1050,15 +1076,14 @@ export const dBHomeComponent = withRouteData(
                             gridArea: "gHeading",
                           }}
                         >
-                          <span
-                            style={{ position: "relative", bottom: "2px" }}
-                          >
+                          <span style={{ position: "relative", bottom: "2px" }}>
                             Genomics
                           </span>
                         </h5>
                         <div className="genomic-boxes">
                           {/* SNVs/Indels tile - show if no search OR if search has results */}
-                          {(!searchWord || (searchWord && variantListSize > 0)) && (
+                          {(!searchWord ||
+                            (searchWord && variantListSize > 0)) && (
                             <ResultLinksComponent
                               typing={!this.typing}
                               key="genomics-tile"
@@ -1075,21 +1100,23 @@ export const dBHomeComponent = withRouteData(
                             <GenomicCallToActionComponent {...genomicInfo} />
                           )}
 
-
                           {/* Structural Variants tile - show if no search OR if search has results */}
-                          {environment.svVCFBrowser && (!searchWord || (searchWord && svVariantListSize > 0)) && (
-                            <ResultLinksComponent
-                              typing={!this.typing}
-                              key="sv-genomics-tile"
-                              searchWord={searchWord}
-                              {...genomicInfo}
-                              name="Structural Variants"
-                              domainType="svs"
-                              svVariantListSize={svVariantListSize}
-                              loadingSVVariantListSize={loadingSVVariantListSize}
-                            />
-                          )}
-
+                          {environment.svVCFBrowser &&
+                            (!searchWord ||
+                              (searchWord && svVariantListSize > 0)) && (
+                              <ResultLinksComponent
+                                typing={!this.typing}
+                                key="sv-genomics-tile"
+                                searchWord={searchWord}
+                                {...genomicInfo}
+                                name="Structural Variants"
+                                domainType="svs"
+                                svVariantListSize={svVariantListSize}
+                                loadingSVVariantListSize={
+                                  loadingSVVariantListSize
+                                }
+                              />
+                            )}
                         </div>
                       </div>
                     )}

@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactPaginate from "react-paginate";
 import _ from "lodash";
 import { faVial } from "@fortawesome/free-solid-svg-icons";
 import { faFileSignature } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +11,6 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { SearchComponent } from "app/data-browser/search/home-search.component";
 import { ConceptRowReactComponent } from "app/data-browser/views/ehr-view/components/concept-row-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
-import { PopUpReactComponent } from "app/shared/components/pop-up/PopUpReactComponent";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { PM_CONCEPTS, routeToDomain } from "app/utils/constants";
@@ -59,20 +57,20 @@ const styles = reactStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
-    homeButton: {
-      fontFamily: "GothamBook, Arial, sans-serif",
-      fontSize: "18px",
-      color: "#262262",
-      border: "1.5px solid #262262",
-      borderRadius: "5px",
-      background: "transparent",
-      paddingTop: "0.1rem",
-      paddingBottom: "0",
-      paddingLeft: "0.4rem",
-      paddingRight: "0.4rem",
-      cursor: "pointer",
-      textDecoration: "none",
-    },
+  homeButton: {
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontSize: "18px",
+    color: "#262262",
+    border: "1.5px solid #262262",
+    borderRadius: "5px",
+    background: "transparent",
+    paddingTop: "0.1rem",
+    paddingBottom: "0",
+    paddingLeft: "0.4rem",
+    paddingRight: "0.4rem",
+    cursor: "pointer",
+    textDecoration: "none",
+  },
   medlineLink: {
     fontSize: "14px",
     color: "#262262",
@@ -391,8 +389,16 @@ export const EhrViewReactComponent = withRouteData(
     }, 1000);
 
     componentDidMount() {
-      const seededUrl = `ehr/${this.state.domainId}${this.state.searchWord ? "/" + encodeURIComponent(this.state.searchWord) : ""}`;
-      window.history.replaceState({ search: this.state.searchWord }, "Ehr View", seededUrl);
+      const seededUrl = `ehr/${this.state.domainId}${
+        this.state.searchWord
+          ? "/" + encodeURIComponent(this.state.searchWord)
+          : ""
+      }`;
+      window.history.replaceState(
+        { search: this.state.searchWord },
+        "Ehr View",
+        seededUrl
+      );
 
       this.getDomainTotals();
       window.addEventListener("scroll", this.handleScrollEnd);
@@ -409,7 +415,10 @@ export const EhrViewReactComponent = withRouteData(
       const parts = path.split("/").filter(Boolean);
       const ehrIdx = parts.indexOf("ehr");
       const domainId = ehrIdx >= 0 ? parts[ehrIdx + 1] : this.state.domainId;
-      const search = ehrIdx >= 0 && parts[ehrIdx + 2] ? decodeURIComponent(parts[ehrIdx + 2]) : "";
+      const search =
+        ehrIdx >= 0 && parts[ehrIdx + 2]
+          ? decodeURIComponent(parts[ehrIdx + 2])
+          : "";
 
       this.setState(
         {
@@ -671,13 +680,11 @@ export const EhrViewReactComponent = withRouteData(
       const {
         title,
         searchWord,
-        showStatement,
         showTopConcepts,
         domain,
         totalResults,
         totalParticipants,
         selectedConcept,
-        numPages,
         loading,
         medlinePlusLink,
         medlineTerm,
@@ -686,7 +693,6 @@ export const EhrViewReactComponent = withRouteData(
         standardConceptIds,
         matchType,
         selectedMeasurementTypeFilter,
-        currentPage,
         measurementTestFilter,
         measurementOrderFilter,
         top10Results,
@@ -694,9 +700,6 @@ export const EhrViewReactComponent = withRouteData(
       } = this.state;
       const maxResults = 50;
       const noMatchFilter = 1;
-      const dropdownClass = selectedMeasurementTypeFilter
-        ? "dropdown bottom-left open"
-        : "dropdown bottom-left";
       const filterIconClass = selectedMeasurementTypeFilter
         ? "filter-grid-icon is-solid"
         : "filter-grid-icon";
@@ -706,7 +709,9 @@ export const EhrViewReactComponent = withRouteData(
             <style>{cssStyles}</style>
             <div className="page-header" style={styles.pageHeader}>
               {title && <h1 className="domain-title">{title}</h1>}
-              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+                Home
+              </a>
             </div>
             <div className="search-bar-container">
               <SearchComponent
@@ -759,12 +764,14 @@ export const EhrViewReactComponent = withRouteData(
                                     )}
                                   </div>
                                 </div>
-                                {showTopConcepts && top10Results && top10Results.length > 0 && (
-                                  <TopResultsChartReactComponent
-                                    concepts={top10Results}
-                                    onClick={(e) => this.selectConcept(e)}
-                                  />
-                                )}
+                                {showTopConcepts &&
+                                  top10Results &&
+                                  top10Results.length > 0 && (
+                                    <TopResultsChartReactComponent
+                                      concepts={top10Results}
+                                      onClick={(e) => this.selectConcept(e)}
+                                    />
+                                  )}
                               </React.Fragment>
                             </h5>
                           </div>
@@ -876,7 +883,8 @@ export const EhrViewReactComponent = withRouteData(
                                 </div>
                                 <div className="tbl-d body-lead">
                                   {" "}
-                                  Participants of {totalParticipants.toLocaleString()}
+                                  Participants of{" "}
+                                  {totalParticipants.toLocaleString()}
                                   <TooltipReactComponent
                                     tooltipKey="participantCountHelpText"
                                     label="EHR Tooltip Hover"

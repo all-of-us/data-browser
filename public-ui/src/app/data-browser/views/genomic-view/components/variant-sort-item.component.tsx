@@ -3,13 +3,11 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { SortMetadata } from "publicGenerated/fetch";
 
-const styles = reactStyles({
-});
+const styles = reactStyles({});
 
 const css = `
 .tooltip {
@@ -53,7 +51,6 @@ interface Props {
 
 interface State {
   sortMetadata: SortMetadata;
-  filterCats: any[];
 }
 
 export class VariantSortItemComponent extends React.Component<Props, State> {
@@ -61,16 +58,6 @@ export class VariantSortItemComponent extends React.Component<Props, State> {
     super(props);
     this.state = {
       sortMetadata: props.sortMetadata,
-      filterCats: [
-        { display: "Gene", field: "gene" },
-        { display: "Consequence", field: "consequence" },
-        { display: "Variant Type", field: "variantType" },
-        { display: "ClinVar Significance", field: "clinicalSignificance" },
-        { display: "Allele Count", field: "alleleCount" },
-        { display: "Allele Number", field: "alleleNumber" },
-        { display: "Allele Frequency", field: "alleleFrequency" },
-        { display: "Homozygote Count", field: "homozygoteCount" },
-      ],
     };
   }
 

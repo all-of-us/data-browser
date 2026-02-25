@@ -219,9 +219,9 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   getTooltipHelpText(
     count,
     analysisStratumName,
-    percentage,
-    totalCount,
-    domain
+    _percentage,
+    _totalCount,
+    _domain
   ) {
     return (
       '<div class="chart-tooltip age-tooltip" style="white-space: normal; word-wrap: break-word; font-size: 14px; width: 30em;">' +
@@ -238,33 +238,10 @@ export class AgeChartReactComponent extends React.Component<Props, State> {
   prepFitbitCategoriesAndData() {
     const {
       ageAnalysis: { results },
-      ageCountAnalysis,
     } = this.props;
     const pointData = [];
     const categoryArr = [];
     for (const concept of results) {
-      const ageCountResults = ageCountAnalysis.results.filter(
-        (r) => r.stratum4 === concept.stratum2
-      );
-      let ageCountTooltip = "";
-      let percentage;
-      if (ageCountResults && ageCountResults.length > 0) {
-        percentage = (
-          (concept.countValue / ageCountResults[0].countValue) *
-          100
-        ).toFixed();
-        if (percentage < 1) {
-          percentage = (
-            (concept.countValue / ageCountResults[0].countValue) *
-            100
-          ).toFixed(1);
-        }
-        const totCount =
-          ageCountResults[0].countValue <= 20
-            ? "&le; 20"
-            : ageCountResults[0].countValue;
-        ageCountTooltip += "Total Count = <strong>" + totCount + "</strong>";
-      }
       const count =
         concept.countValue <= 20
           ? "&le; 20"

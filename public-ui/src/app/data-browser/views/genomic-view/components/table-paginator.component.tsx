@@ -102,7 +102,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentPage, rowCount } = this.state;
+    const { currentPage } = this.state;
     const { pageCount } = this.props;
     return (
       <React.Fragment>
@@ -126,7 +126,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
               currentPage !== 1 ? styles.pageButton : styles.disabledPageButton
             }
             disabled={currentPage === 1}
-            onClick={(e) => {
+            onClick={(_e) => {
               this.setState({ currentPage: this.state.currentPage - 1 }, () => {
                 this.props.onPageChange(this.state.currentPage);
               });
@@ -147,7 +147,7 @@ export class TablePaginatorComponent extends React.Component<Props, State> {
                 : styles.disabledPageButton
             }
             disabled={currentPage === pageCount}
-            onClick={(e) => {
+            onClick={(_e) => {
               this.setState({ currentPage: this.state.currentPage + 1 }, () => {
                 this.props.onPageChange(this.state.currentPage);
               });

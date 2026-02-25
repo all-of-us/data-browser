@@ -167,7 +167,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   render(): React.ReactNode {
-    const { category, cleared, filterItem } = this.props;
+    const { category, cleared } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
 
     return (
@@ -225,8 +225,8 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                 category={category.field.toString()}
                 filterItem={filterItemState}
                 ogFilterItem={ogFilterMetaData}
-                onSliderChange={(e) =>
-                  this.handleSliderChange(e, filterItemState)
+                onSliderChange={(_e) =>
+                  this.handleSliderChange(_e, filterItemState)
                 }
               />
             )}

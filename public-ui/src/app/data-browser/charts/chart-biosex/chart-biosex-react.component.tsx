@@ -188,9 +188,9 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   getTooltipHelpText(
     count,
     analysisStratumName,
-    percentage,
-    totalCount,
-    domain
+    _percentage,
+    _totalCount,
+    _domain
   ) {
     const toolTipHelpText =
       '<div class="chart-tooltip age-tooltip">' +
@@ -206,33 +206,10 @@ export class BioSexChartReactComponent extends React.Component<Props, State> {
   prepFitbitCategoriesAndData() {
     const {
       genderAnalysis: { results },
-      genderCountAnalysis,
     } = this.props;
     const pointData = [];
     const categoryArr = [];
     for (const concept of results) {
-      const genderCountResults = genderCountAnalysis.results.filter(
-        (r) => r.stratum4 === concept.stratum2
-      );
-      let genderCountTooltip = "";
-      let percentage;
-      if (genderCountResults && genderCountResults.length > 0) {
-        percentage = (
-          (concept.countValue / genderCountResults[0].countValue) *
-          100
-        ).toFixed();
-        if (percentage < 1) {
-          percentage = (
-            (concept.countValue / genderCountResults[0].countValue) *
-            100
-          ).toFixed(1);
-        }
-        const totCount =
-          genderCountResults[0].countValue <= 20
-            ? "&le; 20"
-            : genderCountResults[0].countValue;
-        genderCountTooltip += "Total Count = <strong>" + totCount + "</strong>";
-      }
       const count =
         concept.countValue <= 20
           ? "&le; 20"

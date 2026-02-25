@@ -42,8 +42,7 @@ const styles = reactStyles({
     cursor: "pointer",
     userSelect: "none",
   },
-  headingLabel: {
-  },
+  headingLabel: {},
   first: {
     paddingLeft: ".5rem",
     position: "sticky",
@@ -190,7 +189,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
     }
   }
 
-  handleScrollEnd = (event) => {
+  handleScrollEnd = (_event) => {
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
       const scrollArea = document.querySelector(".scroll-area");
@@ -200,7 +199,8 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         const scrolledToBottom = scrollTop / scrollHeight > 0.35;
         if (
           scrolledToBottom &&
-          this.props.currentPage < this.props.svVariantListSize / this.props.rowCount
+          this.props.currentPage <
+            this.props.svVariantListSize / this.props.rowCount
         ) {
           this.props.onScrollBottom();
         }
@@ -253,10 +253,16 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
 
   setArrowIcon(varName: string) {
     const { sortMetadata } = this.state;
-    return sortMetadata[varName].sortDirection === "asc" ? faArrowUp : faArrowDown;
+    return sortMetadata[varName].sortDirection === "asc"
+      ? faArrowUp
+      : faArrowDown;
   }
 
-  renderColumnHeader = (columnKey: string, displayName: string, additionalStyles = {}) => {
+  renderColumnHeader = (
+    columnKey: string,
+    displayName: string,
+    additionalStyles = {}
+  ) => {
     const { sortMetadata } = this.state;
     return (
       <div
@@ -309,7 +315,11 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
               {this.renderColumnHeader("alleleCount", "Allele Count")}
               {this.renderColumnHeader("alleleNumber", "Allele Number")}
               {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader("homozygoteCount", "Homozygote Count", styles.last)}
+              {this.renderColumnHeader(
+                "homozygoteCount",
+                "Homozygote Count",
+                styles.last
+              )}
             </div>
 
             {svResults &&
@@ -328,9 +338,8 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
               })}
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
-                {currentPage < svVariantListSize / rowCount && loadingResults && (
-                  <Spinner />
-                )}
+                {currentPage < svVariantListSize / rowCount &&
+                  loadingResults && <Spinner />}
               </div>
             )}
           </div>
@@ -352,7 +361,9 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   <div
                     onClick={() => this.searchItem("AAK1")}
                     style={styles.helpSearchDiv}
-                  >AAK1</div>
+                  >
+                    AAK1
+                  </div>
                 </div>
                 <div style={styles.helpText}>
                   <strong>Variant:</strong>{" "}
@@ -368,7 +379,9 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   <div
                     onClick={() => this.searchItem("chr2:15100000-15200000")}
                     style={styles.helpSearchDiv}
-                  >chr2:15100000-15200000</div>
+                  >
+                    chr2:15100000-15200000
+                  </div>
                 </div>
               </div>
             )}

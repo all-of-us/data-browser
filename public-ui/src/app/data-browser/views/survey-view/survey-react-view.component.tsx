@@ -249,15 +249,16 @@ export const SurveyViewReactComponent = withRouteData(
     }
 
     handlePopState = () => {
-      const pathParts = window.location.pathname.split('/');
-      const searchWord = pathParts.length > 3 && pathParts[3]
-        ? decodeURIComponent(pathParts[3])
-        : '';
+      const pathParts = window.location.pathname.split("/");
+      const searchWord =
+        pathParts.length > 3 && pathParts[3]
+          ? decodeURIComponent(pathParts[3])
+          : "";
 
       this.setState({ searchWord, loading: true }, () => {
         this.fetchSurvey(this.state.surveyId);
       });
-    }
+    };
 
     componentDidMount() {
       this.fetchSurvey(this.state.surveyId);

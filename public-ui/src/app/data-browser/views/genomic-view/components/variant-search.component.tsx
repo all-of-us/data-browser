@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { environment } from "environments/environment";
+import { GeneLeadsIdeogram } from "app/components/GeneLeadsIdeogram";
 import { SearchComponent } from "app/data-browser/search/home-search.component";
 import { VariantFilterComponent } from "app/data-browser/views/genomic-view/components/variant-filter.component";
 import { reactStyles } from "app/utils";
@@ -8,8 +9,6 @@ import { ClrIcon } from "app/utils/clr-icon";
 import { Spinner } from "app/utils/spinner";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
-
-import { GeneLeadsIdeogram } from "app/components/GeneLeadsIdeogram";
 
 import { VariantFilterChips } from "./variant-filter-chips.component";
 
@@ -120,7 +119,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
   }
 
   handleChange(val: string) {
-    if (val == "") {
+    if (val === "") {
       this.setState({ scrollClean: true });
     }
     this.props.onSearchTerm(val);
@@ -131,30 +130,33 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     });
   }
 
-    componentDidUpdate(prevProps: Readonly<Props>) {
-      const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene, scrollClean } = this.props;
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const {
+      searchTerm,
+      filterMetadata,
+      submittedFilterMetadata,
+      firstGene,
+      scrollClean,
+    } = this.props;
 
-      if (prevProps.scrollClean !== scrollClean) {
-        this.setState({ scrollClean: scrollClean });
-      }
-
-      if (prevProps.searchTerm !== searchTerm) {
-        this.setState({ searchWord: searchTerm });
-      }
-      if (prevProps.filterMetadata !== filterMetadata) {
-        this.setState({ filterMetadata });
-      }
-      if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
-        this.setState({ submittedFilterMetadata });
-      }
-
-      if (
-        prevProps.firstGene !== firstGene &&
-        firstGene
-      ) {
-        this.setState({ currentGene: firstGene });
-      }
+    if (prevProps.scrollClean !== scrollClean) {
+      this.setState({ scrollClean: scrollClean });
     }
+
+    if (prevProps.searchTerm !== searchTerm) {
+      this.setState({ searchWord: searchTerm });
+    }
+    if (prevProps.filterMetadata !== filterMetadata) {
+      this.setState({ filterMetadata });
+    }
+    if (prevProps.submittedFilterMetadata !== submittedFilterMetadata) {
+      this.setState({ submittedFilterMetadata });
+    }
+
+    if (prevProps.firstGene !== firstGene && firstGene) {
+      this.setState({ currentGene: firstGene });
+    }
+  }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -237,7 +239,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
           </div>
         </div>
         {environment.geneLeads && currentGene && (
-          <div style={{ width: '100%', paddingTop: '1em' }}>
+          <div style={{ width: "100%", paddingTop: "1em" }}>
             <GeneLeadsIdeogram gene={this.state.currentGene} />
           </div>
         )}

@@ -88,18 +88,24 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
         }
       }
     }
-    console.log('formatChips - displayArr:', displayArr);
+    console.log("formatChips - displayArr:", displayArr);
     return displayArr;
   }
 
   componentDidUpdate(
     prevProps: Readonly<Props>,
-    prevState: Readonly<State>,
-    snapshot?: any
+    _prevState: Readonly<State>,
+    _snapshot?: any
   ): void {
     if (prevProps.filteredMetadata !== this.props.filteredMetadata) {
-      console.log('componentDidUpdate - prevProps.filteredMetadata:', prevProps.filteredMetadata);
-      console.log('componentDidUpdate - this.props.filteredMetadata:', this.props.filteredMetadata);
+      console.log(
+        "componentDidUpdate - prevProps.filteredMetadata:",
+        prevProps.filteredMetadata
+      );
+      console.log(
+        "componentDidUpdate - this.props.filteredMetadata:",
+        this.props.filteredMetadata
+      );
 
       // Clear chips if filteredMetadata is null/undefined
       if (!this.props.filteredMetadata) {
@@ -108,14 +114,14 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
       }
 
       const formattedChips = this.formatChips(this.props.filteredMetadata);
-      console.log('componentDidUpdate - formattedChips:', formattedChips);
+      console.log("componentDidUpdate - formattedChips:", formattedChips);
       this.setState({ chips: formattedChips });
     }
   }
 
   removeChip(item, cat) {
-    console.log('removeChip - item:', item);
-    console.log('removeChip - cat:', cat);
+    console.log("removeChip - item:", item);
+    console.log("removeChip - cat:", cat);
     const { filteredMetadata } = this.props;
 
     // Guard against null/undefined filteredMetadata
@@ -123,7 +129,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
       return;
     }
 
-    console.log('removeChip - filteredMetadata before:', JSON.parse(JSON.stringify(filteredMetadata)));
+    console.log(
+      "removeChip - filteredMetadata before:",
+      JSON.parse(JSON.stringify(filteredMetadata))
+    );
 
     if (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
       filteredMetadata[cat.toString()].items = filteredMetadata[
@@ -140,7 +149,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
         const originalFilterMetadata = JSON.parse(
           localStorage.getItem("svOriginalFilterMetadata") || "{}"
         );
-        console.log('removeChip - originalFilterMetadata:', originalFilterMetadata);
+        console.log(
+          "removeChip - originalFilterMetadata:",
+          originalFilterMetadata
+        );
         if (originalFilterMetadata[cat.toString()]) {
           filteredMetadata[cat.toString()].min =
             originalFilterMetadata[cat.toString()].min;
@@ -161,7 +173,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     ) {
       filteredMetadata[cat.toString()].filterActive = false;
     }
-    console.log('removeChip - filteredMetadata after:', JSON.parse(JSON.stringify(filteredMetadata)));
+    console.log(
+      "removeChip - filteredMetadata after:",
+      JSON.parse(JSON.stringify(filteredMetadata))
+    );
     this.props.onChipChange(filteredMetadata);
   }
 
@@ -184,10 +199,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                           : "(undefined)";
 
                         // Remove < and > brackets for variant type display only
-                        if (el.cat === 'variantType') {
-                          chipLabel = chipLabel.replace(/[<>]/g, '');
+                        if (el.cat === "variantType") {
+                          chipLabel = chipLabel.replace(/[<>]/g, "");
                         }
-                        if (el.cat === 'consequence') {
+                        if (el.cat === "consequence") {
                           chipLabel = chipLabel.trim().toLowerCase();
                         }
                         return (

@@ -174,7 +174,9 @@ export class ValueReactChartComponent extends React.Component<Props, State> {
 
     newBaseOptions.tooltip.positioner = (width, height, point) => {
       const chart = this.chartRef.current?.chart; // Access chart via ref
-      if (!chart) return { x: 0, y: 0 };
+      if (!chart) {
+        return { x: 0, y: 0 };
+      }
 
       const chartWidth = chart.chartWidth;
       const chartHeight = chart.chartHeight;

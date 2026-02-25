@@ -62,7 +62,6 @@ export class GenomicChartComponent extends React.Component<Props, State> {
     };
   }
 
-
   componentDidMount() {
     this.dataToOptions();
   }
@@ -146,24 +145,26 @@ export class GenomicChartComponent extends React.Component<Props, State> {
 
       chartOptions.plotOptions = {
         column: {
-          stacking: 'normal',
+          stacking: "normal",
           groupPadding: 0.4,
           pointWidth: 50,
           dataLabels: { enabled: false },
           states: { hover: { brightness: 0.1 } },
-        }
+        },
       };
 
       chartOptions.tooltip = {
         shared: false,
         useHTML: true,
         formatter: function () {
-          const ageGroup = this.series.chart.xAxis[0].categories[this.point.index];
+          const ageGroup =
+            this.series.chart.xAxis[0].categories[this.point.index];
           const count = this.y;
           const totalInGroup = this.series.chart.series
             .map((s) => s.data[this.point.index]?.y || 0)
             .reduce((a, b) => a + b, 0);
-          const percent = totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : "0";
+          const percent =
+            totalInGroup > 0 ? ((count / totalInGroup) * 100).toFixed(1) : "0";
 
           return `
             <div style="text-align: left;">
@@ -172,7 +173,7 @@ export class GenomicChartComponent extends React.Component<Props, State> {
               <div>${percent}% of age group</div>
             </div>
           `;
-        }
+        },
       };
 
       this.setState({ options: chartOptions });
@@ -226,10 +227,13 @@ export class GenomicChartComponent extends React.Component<Props, State> {
       }
     });
 
-    chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort((a, b) => {
-      const sortArr = data.analysisId === 3503 ? sortingDemoArr : sortingSexArr;
-      return sortArr.indexOf(a) - sortArr.indexOf(b);
-    });
+    chartOptions.xAxis.categories = chartOptions.xAxis.categories.sort(
+      (a, b) => {
+        const sortArr =
+          data.analysisId === 3503 ? sortingDemoArr : sortingSexArr;
+        return sortArr.indexOf(a) - sortArr.indexOf(b);
+      }
+    );
 
     selectedData = selectedData.sort((a, b) => {
       return (

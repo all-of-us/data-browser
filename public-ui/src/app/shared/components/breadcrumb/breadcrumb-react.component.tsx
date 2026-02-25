@@ -10,7 +10,7 @@ import {
   routeConfigDataStore,
   urlParamsStore,
 } from "app/utils/navigation";
-import { Subscription } from "rxjs";
+import { Subscription } from "rxjs/internal/Subscription";
 
 const styles = reactStyles({
   preCrumb: {
@@ -59,11 +59,11 @@ export const BreadCrumbComponent = class extends React.Component<
       } else if (routeData.breadcrumb) {
         breadcrumb = routeData.breadcrumb.value;
       }
-      if (breadcrumb === 'Labs And Measurements') {
-            breadcrumb = 'Labs & Measurements';
+      if (breadcrumb === "Labs And Measurements") {
+        breadcrumb = "Labs & Measurements";
       }
-      if (breadcrumb === 'SNVs/Indels') {
-           // breadcrumb = 'Test';
+      if (breadcrumb === "SNVs/Indels") {
+        // breadcrumb = 'Test';
       }
       this.setState({ breadcrumb });
     });

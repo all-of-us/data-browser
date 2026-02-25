@@ -125,7 +125,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
   }
 
   replaceTag(variantType: string) {
-    return variantType.replace(/^<|>$/g, '');
+    return variantType.replace(/^<|>$/g, "");
   }
 
   handleClick(variantId?: string) {
@@ -136,16 +136,21 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       svVariantExpanded: !this.state.svVariantExpanded,
     });
     {
+      // intentionally empty
     }
   }
 
   formatConsequence(consequence: string) {
-    return consequence ? consequence.toLowerCase().replace(/_/g, ' ') : consequence;
+    return consequence
+      ? consequence.toLowerCase().replace(/_/g, " ")
+      : consequence;
   }
 
   formatFilter(filter: string) {
-    if (!filter) return '-';
-    return filter.split(',').map((item, index) => {
+    if (!filter) {
+      return "-";
+    }
+    return filter.split(",").map((item, index) => {
       const trimmedItem = item.trim();
       const formattedLabel = trimmedItem;
       return (
@@ -199,7 +204,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
                 <div style={styles.variantIconText}>
                   <ClrIcon
                     style={styles.caretIcon}
-                    onClick={(e) => {}}
+                    onClick={(_e) => {}}
                     size="lg"
                     shape="caret"
                     dir="down"
@@ -207,16 +212,24 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
                 </div>
               </div>
             </div>
-            <div style={styles.rowItem}>{this.replaceTag(variant.variantType)}</div>
+            <div style={styles.rowItem}>
+              {this.replaceTag(variant.variantType)}
+            </div>
             <div style={styles.rowItem}>
               {this.formatConsequence(variant.consequence)}
             </div>
             <div style={styles.rowItem}>
-            {variant.position ? `chr${variant.position.replace(/-chr/, ', chr')}` : "-"}
+              {variant.position
+                ? `chr${variant.position.replace(/-chr/, ", chr")}`
+                : "-"}
             </div>
             <div style={styles.rowItem}>
-            {(variant.variantType?.includes('CTX') || variant.variantType?.includes('BND'))
-            ? 'N/A' : (variant.size != null && variant.size >= 0 ? variant.size : '-')}
+              {variant.variantType?.includes("CTX") ||
+              variant.variantType?.includes("BND")
+                ? "N/A"
+                : variant.size != null && variant.size >= 0
+                ? variant.size
+                : "-"}
             </div>
             <div style={styles.rowItem}>{variant.alleleCount}</div>
             <div style={styles.rowItem}>{variant.alleleNumber}</div>

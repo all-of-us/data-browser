@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { environment } from "environments/environment";
 import { Component, Input, ViewEncapsulation } from "@angular/core";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
 import { SurveyAnswerChartReactComponent } from "app/data-browser/charts/chart-survey-answers/react-survey-answer-chart.component";
@@ -12,9 +13,8 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 import { SurveyChartReactComponent } from "app/data-browser/views/survey-chart/survey-chart-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { ClrIcon } from "app/utils/clr-icon";
-import { countPercentage } from "app/utils/survey-utils";
 import { LoadingDots } from "app/utils/spinner";
-import { environment } from "environments/environment";
+import { countPercentage } from "app/utils/survey-utils";
 
 const styleCss = `
     .survey-tbl {
@@ -148,7 +148,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
       .then((results) => {
         this.setState({
           subQuestions: this.processResults(results.questions.items),
-          drawerLoading: false
+          drawerLoading: false,
         });
       })
       .catch((e) => console.log(e, "error"));
@@ -157,7 +157,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
   processResults(questions: Array<any>) {
     const { countValue } = this.props;
     this.setState({
-      drawerLoading: true
+      drawerLoading: true,
     });
     questions.forEach((q) => {
       q.countAnalysis.results = q.countAnalysis.results.filter(
@@ -169,9 +169,8 @@ const SurveyAnswerRowComponent = class extends React.Component<
       q.ageAnalysis.results = q.ageAnalysis.results.filter(
         (a) => a.stratum6 === q.path
       );
-      q.combinedAgeSexAnalysis.results = q.combinedAgeSexAnalysis.results.filter(
-        (a) => a.stratum6 === q.path
-      );
+      q.combinedAgeSexAnalysis.results =
+        q.combinedAgeSexAnalysis.results.filter((a) => a.stratum6 === q.path);
       if (q.versionAnalysis && q.versionAnalysis.results) {
         q.versionAnalysis.results = q.versionAnalysis.results.filter(
           (a) => a.stratum6 === q.path
@@ -197,7 +196,7 @@ const SurveyAnswerRowComponent = class extends React.Component<
     });
     questions.sort((a, b) => a.id - b.id);
     this.setState({
-      drawerLoading: false
+      drawerLoading: false,
     });
     return questions;
   }
@@ -229,108 +228,107 @@ const SurveyAnswerRowComponent = class extends React.Component<
       );
     }
     if (q.locationAnalysis) {
-        this.addMissingAnalysisResults(
-          q.locationAnalysis,
-          q.locationAnalysis.results.filter(
-            (r) => r.stratum3 !== null && r.stratum3 === a.stratum3
-          )
-        );
+      this.addMissingAnalysisResults(
+        q.locationAnalysis,
+        q.locationAnalysis.results.filter(
+          (r) => r.stratum3 !== null && r.stratum3 === a.stratum3
+        )
+      );
     }
   }
 
-    public addMissingAnalysisResults(analysis: any, results: any) {
-      const fullGenderStratums = ["8507", "8532", "0"];
-      const fullAgeStratums = ["2", "3", "4", "5", "6", "7", "8", "9"];
-      const fullLocationStratums = Object.keys(LOCATION_STRATUM_MAP);
+  public addMissingAnalysisResults(analysis: any, results: any) {
+    const fullGenderStratums = ["8507", "8532", "0"];
+    const fullAgeStratums = ["2", "3", "4", "5", "6", "7", "8", "9"];
+    const fullLocationStratums = Object.keys(LOCATION_STRATUM_MAP);
 
-      const uniquePairs = new Set<string>();
+    const uniquePairs = new Set<string>();
 
-      for (const result of results) {
-        if (analysis.analysisId === 3115) {
-          const key = `${result.stratum5}|${result.stratum6}`;
-          uniquePairs.add(key);
-        } else if (analysis.analysisId === 3118) {
-          const strat = result.stratum5;
-          if (!uniquePairs.has(strat)) {
-            uniquePairs.add(strat);
-          }
-        } else {
-          const strat = result.stratum5;
-          if (!uniquePairs.has(strat)) {
-            uniquePairs.add(strat);
-          }
+    for (const result of results) {
+      if (analysis.analysisId === 3115) {
+        const key = `${result.stratum5}|${result.stratum6}`;
+        uniquePairs.add(key);
+      } else if (analysis.analysisId === 3118) {
+        const strat = result.stratum5;
+        if (!uniquePairs.has(strat)) {
+          uniquePairs.add(strat);
+        }
+      } else {
+        const strat = result.stratum5;
+        if (!uniquePairs.has(strat)) {
+          uniquePairs.add(strat);
         }
       }
+    }
 
-      if (analysis.analysisId === 3115) {
-        for (const age of fullAgeStratums) {
-          for (const gender of fullGenderStratums) {
-            const key = `${age}|${gender}`;
-            if (!uniquePairs.has(key) && results.length > 0) {
-              const base = results[0];
-              const missingResult = {
-                analysisId: 3115,
-                countValue: 20,
-                countPercent: countPercentage(20, this.props.countValue),
-                stratum1: base.stratum1,
-                stratum2: base.stratum2,
-                stratum3: base.stratum3,
-                stratum4: base.stratum4,
-                stratum5: age,
-                stratum6: gender,
-                analysisStratumName: `${AGE_STRATUM_MAP[age]} | ${GENDER_STRATUM_MAP[gender]}`,
-              };
-              analysis.results.push(missingResult);
-            }
-          }
-        }
-      } else if (analysis.analysisId === 3118) {
-            for (const location of fullLocationStratums) {
-              if (!uniquePairs.has(location) && results.length > 0) {
-                const base = results[0];
-                const missingResult = {
-                  analysisId: 3118,
-                  countValue: 20,
-                  countPercent: countPercentage(20, this.props.countValue),
-                  stratum1: base.stratum1,
-                  stratum2: base.stratum2,
-                  stratum3: base.stratum3,
-                  stratum4: base.stratum4,
-                  stratum5: location,
-                  stratum6: base.stratum6,
-                  stratum7: base.stratum7,
-                  analysisStratumName: LOCATION_STRATUM_MAP[location],
-                };
-                analysis.results.push(missingResult);
-              }
-            }
-      } else {
-        const fullStratums =
-          analysis.analysisId === 3111 ? fullGenderStratums : fullAgeStratums;
-        for (const missingStratum of fullStratums) {
-          if (!uniquePairs.has(missingStratum) && results.length > 0) {
+    if (analysis.analysisId === 3115) {
+      for (const age of fullAgeStratums) {
+        for (const gender of fullGenderStratums) {
+          const key = `${age}|${gender}`;
+          if (!uniquePairs.has(key) && results.length > 0) {
             const base = results[0];
             const missingResult = {
-              analysisId: analysis.analysisId,
+              analysisId: 3115,
               countValue: 20,
               countPercent: countPercentage(20, this.props.countValue),
               stratum1: base.stratum1,
               stratum2: base.stratum2,
               stratum3: base.stratum3,
               stratum4: base.stratum4,
-              stratum5: missingStratum,
-              stratum6: base.stratum6,
-              analysisStratumName:
-                analysis.analysisId === 3111
-                  ? GENDER_STRATUM_MAP[missingStratum]
-                  : AGE_STRATUM_MAP[missingStratum],
+              stratum5: age,
+              stratum6: gender,
+              analysisStratumName: `${AGE_STRATUM_MAP[age]} | ${GENDER_STRATUM_MAP[gender]}`,
             };
             analysis.results.push(missingResult);
           }
         }
       }
+    } else if (analysis.analysisId === 3118) {
+      for (const location of fullLocationStratums) {
+        if (!uniquePairs.has(location) && results.length > 0) {
+          const base = results[0];
+          const missingResult = {
+            analysisId: 3118,
+            countValue: 20,
+            countPercent: countPercentage(20, this.props.countValue),
+            stratum1: base.stratum1,
+            stratum2: base.stratum2,
+            stratum3: base.stratum3,
+            stratum4: base.stratum4,
+            stratum5: location,
+            stratum6: base.stratum6,
+            stratum7: base.stratum7,
+            analysisStratumName: LOCATION_STRATUM_MAP[location],
+          };
+          analysis.results.push(missingResult);
+        }
+      }
+    } else {
+      const fullStratums =
+        analysis.analysisId === 3111 ? fullGenderStratums : fullAgeStratums;
+      for (const missingStratum of fullStratums) {
+        if (!uniquePairs.has(missingStratum) && results.length > 0) {
+          const base = results[0];
+          const missingResult = {
+            analysisId: analysis.analysisId,
+            countValue: 20,
+            countPercent: countPercentage(20, this.props.countValue),
+            stratum1: base.stratum1,
+            stratum2: base.stratum2,
+            stratum3: base.stratum3,
+            stratum4: base.stratum4,
+            stratum5: missingStratum,
+            stratum6: base.stratum6,
+            analysisStratumName:
+              analysis.analysisId === 3111
+                ? GENDER_STRATUM_MAP[missingStratum]
+                : AGE_STRATUM_MAP[missingStratum],
+          };
+          analysis.results.push(missingResult);
+        }
+      }
     }
-
+  }
 
   render() {
     const {
@@ -391,15 +389,15 @@ const SurveyAnswerRowComponent = class extends React.Component<
               {isCopeSurvey
                 ? answerConceptId
                 : countPercent
-                  ? countPercent.toFixed(2)
-                  : participantPercentage}
+                ? countPercent.toFixed(2)
+                : participantPercentage}
               {isCopeSurvey ? null : "%"}
             </div>
             <div className="survey-tbl-d display-body info-text survey-answer-level-1">
               {hasSubQuestions === "1" ? (
                 drawerLoading ? (
                   <div style={{ marginLeft: "-1rem" }}>
-                  <LoadingDots />
+                    <LoadingDots />
                   </div>
                 ) : (
                   <ClrIcon
@@ -410,12 +408,12 @@ const SurveyAnswerRowComponent = class extends React.Component<
                   />
                 )
               ) : answerValueString !== "Did not answer" ? (
-              <ClrIcon
-                className={
-                  drawerOpen ? "is-solid survey-row-icon" : "survey-row-icon"
-                }
-                shape="bar-chart"
-              />
+                <ClrIcon
+                  className={
+                    drawerOpen ? "is-solid survey-row-icon" : "survey-row-icon"
+                  }
+                  shape="bar-chart"
+                />
               ) : null}
             </div>
           </div>

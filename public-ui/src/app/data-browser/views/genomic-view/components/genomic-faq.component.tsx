@@ -122,9 +122,9 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               </strong>
             </div>
             <div style={styles.answer}>
-              Genetic ancestry is not the same as race and ethnicity. People of the same race or
-              ethnicity may share the same genetic ancestry, but this is not
-              always the case.
+              Genetic ancestry is not the same as race and ethnicity. People of
+              the same race or ethnicity may share the same genetic ancestry,
+              but this is not always the case.
             </div>
             <div style={styles.question}>
               <strong>
@@ -153,17 +153,21 @@ export class GenomicFaqComponent extends React.Component<Props, State> {
               </strong>
             </div>
             <div style={styles.answer}>
-              This genetic ancestry group includes people who may be able to trace at least some of their distant
-              ancestors back to North, Central, or South America. However, many of these people may also have some
-              ancestors who came from other places, like Europe and Africa.
-              People with combinations of Indigenous American genetic ancestry with European and/or African genetic
-              ancestry are included in this category. It is important to acknowledge that these combinations are
-              common in large part because of the shameful history of colonization and slavery in the Americas.
-              <br/>
+              This genetic ancestry group includes people who may be able to
+              trace at least some of their distant ancestors back to North,
+              Central, or South America. However, many of these people may also
+              have some ancestors who came from other places, like Europe and
+              Africa. People with combinations of Indigenous American genetic
+              ancestry with European and/or African genetic ancestry are
+              included in this category. It is important to acknowledge that
+              these combinations are common in large part because of the
+              shameful history of colonization and slavery in the Americas.
               <br />
-              It’s also important to recognize that having American genetic ancestry does not necessarily mean someone is a
-                          citizen of a Tribal Nation or a member of a Tribal community. Only Tribes and Tribal communities decide how to
-                          define their membership.
+              <br />
+              It’s also important to recognize that having American genetic
+              ancestry does not necessarily mean someone is a citizen of a
+              Tribal Nation or a member of a Tribal community. Only Tribes and
+              Tribal communities decide how to define their membership.
             </div>
             <div style={styles.question}>
               <strong>What does the category ‘Remaining’ mean?</strong>

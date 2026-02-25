@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { environment } from "environments/environment";
 import { Component as AComponent } from "@angular/core";
 import { AppRoute, AppRouter } from "app/components/app-router";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
@@ -9,7 +10,6 @@ import { GenomicViewComponent } from "app/data-browser/views/genomic-view/genomi
 import { IntroVidReactComponent } from "app/data-browser/views/intro-vids/intro-vids-react.component";
 import { PMReactComponent } from "app/data-browser/views/pm/pm-react.component";
 import { dBHomeComponent } from "app/data-browser/views/quick-search/home-view-react.component";
-import { environment } from "environments/environment";
 
 import { SurveyViewReactComponent } from "./data-browser/views/survey-view/survey-react-view.component";
 

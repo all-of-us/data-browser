@@ -43,8 +43,7 @@ const styles = reactStyles({
     position: "relative",
     userSelect: "none",
   },
-  headingLabel: {
-  },
+  headingLabel: {},
   first: {
     paddingLeft: ".5rem",
     position: "sticky",
@@ -192,7 +191,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     }
   }
 
-  handleScrollEnd = (event) => {
+  handleScrollEnd = (_event) => {
     clearTimeout(this.debounceTimer);
     this.debounceTimer = setTimeout(() => {
       const scrollArea = document.querySelector(".scroll-area");
@@ -202,7 +201,8 @@ export class VariantTableComponent extends React.Component<Props, State> {
         const scrolledToBottom = scrollTop / scrollHeight > 0.35;
         if (
           scrolledToBottom &&
-          this.props.currentPage < this.props.variantListSize / this.props.rowCount
+          this.props.currentPage <
+            this.props.variantListSize / this.props.rowCount
         ) {
           this.props.onScrollBottom();
         }
@@ -255,17 +255,23 @@ export class VariantTableComponent extends React.Component<Props, State> {
 
   setArrowIcon(varName: string) {
     const { sortMetadata } = this.state;
-    return sortMetadata[varName].sortDirection === "asc" ? faArrowUp : faArrowDown;
+    return sortMetadata[varName].sortDirection === "asc"
+      ? faArrowUp
+      : faArrowDown;
   }
 
-  renderColumnHeader = (columnKey: string, displayName: string, additionalStyles = {}) => {
+  renderColumnHeader = (
+    columnKey: string,
+    displayName: string,
+    additionalStyles = {}
+  ) => {
     const { sortMetadata } = this.state;
     return (
       <div
         className="heading-item"
         style={{ ...styles.headingItem, ...additionalStyles }}
         onClick={() => this.sortClick(columnKey)}
-        title = "Click to sort"
+        title="Click to sort"
       >
         <span style={styles.headingLabel}>{displayName}</span>
         {sortMetadata[columnKey].sortActive && (
@@ -307,11 +313,18 @@ export class VariantTableComponent extends React.Component<Props, State> {
               {this.renderColumnHeader("gene", "Gene")}
               {this.renderColumnHeader("consequence", "Consequence")}
               {this.renderColumnHeader("variantType", "Variant Type")}
-              {this.renderColumnHeader("clinicalSignificance", "ClinVar Significance")}
+              {this.renderColumnHeader(
+                "clinicalSignificance",
+                "ClinVar Significance"
+              )}
               {this.renderColumnHeader("alleleCount", "Allele Count")}
               {this.renderColumnHeader("alleleNumber", "Allele Number")}
               {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader("homozygoteCount", "Homozygote Count", styles.last)}
+              {this.renderColumnHeader(
+                "homozygoteCount",
+                "Homozygote Count",
+                styles.last
+              )}
             </div>
 
             {searchResults &&

@@ -90,11 +90,7 @@ export const AppRoute = ({
     <Route
       path={path}
       element={
-        <AppRouteInner
-          data={data}
-          guards={guards}
-          component={Component}
-        />
+        <AppRouteInner data={data} guards={guards} component={Component} />
       }
     />
   );

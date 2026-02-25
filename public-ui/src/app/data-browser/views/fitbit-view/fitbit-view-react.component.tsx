@@ -5,9 +5,9 @@ import { withRouteData } from "app/components/app-router";
 import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-age-react.component";
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
 import { ChartFitbitReactComponent } from "app/data-browser/charts/chart-fitbit/chart-fitbit-react.component";
-import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
+import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
 import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { fitbitConcepts } from "app/utils/constants";
@@ -234,7 +234,8 @@ export const FitbitReactComponent = withRouteData(
             totalCountAnalysis = item.countAnalysis;
             fitbitConcept.participantCountAnalysis =
               item.participantCountAnalysis;
-            fitbitConcept.combinedAgeGenderAnalysis = item.combinedAgeGenderAnalysis;
+            fitbitConcept.combinedAgeGenderAnalysis =
+              item.combinedAgeGenderAnalysis;
             fitbitConcept.locationAnalysis = item.locationAnalysis;
           }
           let selectedItem = this.state.selectedItem;
@@ -295,7 +296,9 @@ export const FitbitReactComponent = withRouteData(
           <div className="fm-container" style={styles.fmContainer}>
             <div style={styles.pageHeader}>
               <h1 style={styles.title}>Fitbit Data</h1>
-              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+                Home
+              </a>
             </div>
             {loading && <Spinner />}
             {!loading && (
@@ -335,28 +338,41 @@ export const FitbitReactComponent = withRouteData(
                   <div className="db-card-inner">
                     <div className="fm-body-bottom" style={styles.fmBodyBottom}>
                       <div className="fm-chart" style={styles.fmBottomChart}>
-                        <div className="display-body" style={styles.chartDisplayBody}>
+                        <div
+                          className="display-body"
+                          style={styles.chartDisplayBody}
+                        >
                           Age + Sex
                         </div>
-                        {selectedAnalyses && selectedAnalyses.combinedAgeGenderAnalysis && (
-                          <StackedColumnChartReactComponent
-                            ageGenderAnalysis={selectedAnalyses.combinedAgeGenderAnalysis}
-                            selectedResult={selectedResult}
-                            domain="fitbit"
-                          />
-                        )}
+                        {selectedAnalyses &&
+                          selectedAnalyses.combinedAgeGenderAnalysis && (
+                            <StackedColumnChartReactComponent
+                              ageGenderAnalysis={
+                                selectedAnalyses.combinedAgeGenderAnalysis
+                              }
+                              selectedResult={selectedResult}
+                              domain="fitbit"
+                            />
+                          )}
                       </div>
                       <div className="fm-chart" style={styles.fmBottomChart}>
-                        <div className="display-body" style={styles.chartDisplayBody}>
+                        <div
+                          className="display-body"
+                          style={styles.chartDisplayBody}
+                        >
                           Location
                         </div>
-                        {selectedAnalyses && selectedAnalyses.locationAnalysis && (
-                          <HeatMapReactComponent
-                            locationAnalysis={selectedAnalyses?.locationAnalysis}
-                            domain="fitbit"
-                            selectedResult={selectedResult}
-                            color = "" />
-                        )}
+                        {selectedAnalyses &&
+                          selectedAnalyses.locationAnalysis && (
+                            <HeatMapReactComponent
+                              locationAnalysis={
+                                selectedAnalyses?.locationAnalysis
+                              }
+                              domain="fitbit"
+                              selectedResult={selectedResult}
+                              color=""
+                            />
+                          )}
                       </div>
                     </div>
                   </div>

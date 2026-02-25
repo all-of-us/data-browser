@@ -113,7 +113,7 @@ export class TooltipReactComponent extends React.Component<Props, State> {
     e.stopPropagation();
   }
 
-  handleResize = (e) => {
+  handleResize = (_e) => {
     this.detectOverflow();
   };
 
@@ -121,7 +121,7 @@ export class TooltipReactComponent extends React.Component<Props, State> {
     const tabIndex = 0;
     const iconShape = "info-standard";
     const iconClass = "is-solid info-icon";
-    const { overflowX, left } = this.state;
+    const { overflowX } = this.state;
     const move = overflowX > 0 ? -overflowX - 28 : 0;
 
     return (

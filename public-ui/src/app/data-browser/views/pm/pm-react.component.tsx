@@ -10,7 +10,8 @@ import { reactStyles } from "app/utils";
 import { PM_CONCEPTS } from "app/utils/constants";
 import { navigateByUrl, urlParamsStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
-const isNumeric = (val: any): boolean => !isNaN(parseFloat(val)) && isFinite(val);
+const isNumeric = (val: any): boolean =>
+  !isNaN(parseFloat(val)) && isFinite(val);
 
 const styles = reactStyles({
   pmContainer: {
@@ -537,7 +538,9 @@ export const PMReactComponent = withRouteData(
           <div style={styles.pmContainer}>
             <div style={styles.pageHeader}>
               <h1 style={styles.title}>Physical Measurements</h1>
-              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>Home</a>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+                Home
+              </a>
             </div>
             {loading ? (
               <Spinner />

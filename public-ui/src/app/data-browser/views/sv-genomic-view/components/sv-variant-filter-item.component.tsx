@@ -170,7 +170,7 @@ export class SVVariantFilterItemComponent extends React.Component<
   }
 
   render(): React.ReactNode {
-    const { category, cleared, filterItem } = this.props;
+    const { category, cleared } = this.props;
     const { filterItemOpen, filterItemState, ogFilterMetaData } = this.state;
     return (
       <React.Fragment>
@@ -201,11 +201,11 @@ export class SVVariantFilterItemComponent extends React.Component<
               let itemLabel = item.option ? item.option : "(undefined)";
 
               // Remove < and > brackets for variant type display only
-              if (category.field === 'variantType') {
-                itemLabel = itemLabel.replace(/[<>]/g, '');
+              if (category.field === "variantType") {
+                itemLabel = itemLabel.replace(/[<>]/g, "");
               }
 
-              if (category.field === 'consequence') {
+              if (category.field === "consequence") {
                 itemLabel = itemLabel.trim().toLowerCase();
               }
 

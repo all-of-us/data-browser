@@ -6,8 +6,8 @@ import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-
 import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
 import { ValueReactChartComponent } from "app/data-browser/charts/chart-measurement-values/chart-value-react.component";
 import { SourcesChartReactComponent } from "app/data-browser/charts/chart-sources/chart-sources-react.component";
-import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
+import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { SourceTreeComponent } from "app/data-browser/components/source-tree/source-tree-react.component";
 import { TooltipNoIconReactComponent } from "app/data-browser/components/tooltip/tooltip-no-icon-react.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
@@ -16,7 +16,6 @@ import { dataBrowserApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { GraphType } from "app/utils/enum-defs";
 import { LoadingDots, Spinner } from "app/utils/spinner";
-import { environment } from "environments/environment";
 
 const styles = reactStyles({
   sourceLayout: {
@@ -159,11 +158,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       graphButtons:
         this.props.domain.name.toLowerCase() === "labs & measurements"
           ? ["Values", "Age + Sex", "Location", "Sources"]
-          : [
-            "Age + Sex",
-            "Location",
-            "Sources",
-          ],
+          : ["Age + Sex", "Location", "Sources"],
       graphToShow: this.props.graphToShow
         ? this.props.graphToShow
         : this.props.domain.name.toLowerCase() === "labs & measurements"
@@ -260,7 +255,7 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
   }
 
   selectConceptCode(attrType: string) {
-    const { concept, searchTerm } = this.props;
+    const { concept } = this.props;
     const selectedConcept = this.state.selectedTreeNode
       ? this.state.selectedTreeNode
       : concept;
@@ -529,7 +524,6 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
       showConceptCopyAlert,
     } = this.state;
 
-
     const tabIndex = 0;
     return (
       <React.Fragment>
@@ -550,22 +544,19 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                   key={index}
                 >
                   <span>{g}</span>
-                <TooltipReactComponent
-                  tooltipKey={
-                    g === "Age + Sex"
-                      ? "ehrAgeSexChartHelpText"
-                      : g
-                  }
-                  label="EHR Tooltip Hover"
-                  searchTerm={searchTerm}
-                  action={
-                    "Concept graph " +
-                    g +
-                    " tooltip hover on concept " +
-                    concept.conceptName
-                  }
-                />
-
+                  <TooltipReactComponent
+                    tooltipKey={
+                      g === "Age + Sex" ? "ehrAgeSexChartHelpText" : g
+                    }
+                    label="EHR Tooltip Hover"
+                    searchTerm={searchTerm}
+                    action={
+                      "Concept graph " +
+                      g +
+                      " tooltip hover on concept " +
+                      concept.conceptName
+                    }
+                  />
                 </div>
               );
             })}
@@ -595,12 +586,17 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                 <HeatMapReactComponent
                   locationAnalysis={selectedChartAnalysis}
                   domain={"ehr"}
-                  selectedResult = ""
-                  color = "" />
+                  selectedResult=""
+                  color=""
+                />
               </div>
             ) : graphToShow === "Age + Sex" && selectedChartAnalysis ? (
               <div className="chart" key="age-gender-stacked-chart">
-                <StackedColumnChartReactComponent ageGenderAnalysis={selectedChartAnalysis} selectedResult="" domain="ehr"/>
+                <StackedColumnChartReactComponent
+                  ageGenderAnalysis={selectedChartAnalysis}
+                  selectedResult=""
+                  domain="ehr"
+                />
               </div>
             ) : graphToShow === "Age" ? (
               <div className="chart" key="age-chart">
@@ -743,23 +739,23 @@ export class ConceptChartReactComponent extends React.Component<Props, State> {
                           )}
                         </React.Fragment>
                       </div>
-                    <div
-                      style={styles.conceptBoxInfoP}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        this.selectConceptCode("id");
-                      }}
-                    >
-                      OMOP Concept Id:{" "}
-                      {selectedTreeNode ? (
-                        selectedTreeNode.conceptId
-                      ) : (
-                        <TooltipNoIconReactComponent
-                          tooltipKey="conceptCopyHelpText"
-                          text={concept.conceptId}
-                        ></TooltipNoIconReactComponent>
-                      )}
-                    </div>
+                      <div
+                        style={styles.conceptBoxInfoP}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          this.selectConceptCode("id");
+                        }}
+                      >
+                        OMOP Concept Id:{" "}
+                        {selectedTreeNode ? (
+                          selectedTreeNode.conceptId
+                        ) : (
+                          <TooltipNoIconReactComponent
+                            tooltipKey="conceptCopyHelpText"
+                            text={concept.conceptId}
+                          ></TooltipNoIconReactComponent>
+                        )}
+                      </div>
                       {selectedTreeNode && selectedTreeNode.canSelect === 1 && (
                         <a
                           href={

@@ -80,7 +80,8 @@ export class GenomicSearchComponent extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Readonly<Props>) {
-    const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } = this.props;
+    const { searchTerm, filterMetadata, submittedFilterMetadata, firstGene } =
+      this.props;
     if (prevProps.searchTerm !== searchTerm) {
       this.setState({ searchTerm: searchTerm });
     }

@@ -179,7 +179,7 @@ export const SearchComponent = class extends React.Component<SearchProps, {}> {
           />
           <div
             className="clear-icon"
-            onClick={(e) => {
+            onClick={(_e) => {
               onClear();
             }}
           >
