@@ -106,10 +106,9 @@
     "typescript": "~5.5.0"
   },
   "resolutions": {
-    "ajv": "^8.18.0"
+    "@angular-eslint/schematics/**/ajv": "^6.14.0"
   },
   "overrides": {
-    "node-fetch": "^2.6.7",
-    "ajv": "^8.18.0"
+    "node-fetch": "^2.6.7"
   }
 }
