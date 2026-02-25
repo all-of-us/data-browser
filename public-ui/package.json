@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "postinstall": "rm -rf node_modules/@angular-devkit/core/node_modules/ajv",
     "build": "ng build",
     "test": "ng test --sourcemaps=false",
     "lint": "yarn eslint src --ext .tsx",
@@ -101,6 +102,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "^2.1.0",
     "karma-webdriver-launcher": "^1.0.8",
+    "ajv": "8.18.0",
     "prettier": "2.7.1",
     "ts-node": "~10.9.0",
     "typescript": "~5.5.0"
@@ -109,6 +111,7 @@
     "node-fetch": "^2.6.7"
   },
   "resolutions": {
-    "ajv": "^8.18.0"
+    "@angular-devkit/core/ajv": "8.18.0",
+    "schema-utils/ajv": "8.18.0"
   }
 }

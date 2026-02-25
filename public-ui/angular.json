@@ -9,7 +9,7 @@
       "projectType": "application",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
             "outputPath": "dist",
             "index": "src/index.html",
@@ -30,13 +30,8 @@
               "node_modules/@webcomponents/custom-elements/custom-elements.min.js",
               "node_modules/@clr/icons/clr-icons.min.js"
             ],
-            "aot": false,
-            "buildOptimizer": false,
-            "vendorChunk": true,
-            "extractLicenses": false,
             "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+            "optimization": false
           },
           "configurations": {
             "local": {
@@ -82,11 +77,7 @@
             "production": {
               "optimization": false,
               "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false
+              "sourceMap": false
             }
           },
           "defaultConfiguration": ""
