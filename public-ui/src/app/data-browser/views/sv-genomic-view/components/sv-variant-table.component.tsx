@@ -350,7 +350,8 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                 <Spinner />
               </div>
             )}
-            {(!svResults || (svResults && svResults.length === 0)) && (
+            {!loading && !loadingResults && !loadingSVVariantListSize &&
+              (!svResults || (svResults && svResults.length === 0)) && (
               <div style={styles.helpTextContainer}>
                 <div style={styles.helpText}>
                   Enter a query in the search bar or get started with an example
