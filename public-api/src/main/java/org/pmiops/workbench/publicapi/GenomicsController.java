@@ -44,6 +44,8 @@ import org.pmiops.workbench.model.SVVariantResultSizeRequest;
 import org.pmiops.workbench.model.SortMetadata;
 import org.pmiops.workbench.model.SortSVMetadata;
 import org.pmiops.workbench.model.SortColumnDetails;
+import org.pmiops.workbench.model.CNCountResponse;
+import org.pmiops.workbench.model.CNCountEntry;
 
 @RestController
 public class GenomicsController implements GenomicsApiDelegate {
@@ -56,6 +58,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     private BigQueryService bigQueryService;
 
     private static final Map<String, Integer> CONSEQUENCE_SEVERITY_RANKS;
+
     static {
         Map<String, Integer> map = new HashMap<>();
         map.put("transcript_ablation", 42);
@@ -104,6 +107,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     private static final Map<String, Integer> SV_CONSEQUENCE_SEVERITY_RANKS;
+
     static {
         Map<String, Integer> map = new HashMap<>();
         map.put("LOF", 16);
@@ -257,6 +261,13 @@ public class GenomicsController implements GenomicsApiDelegate {
             "b as\n" +
             "(select 'Consequence' as option, '' as genes, conseq, '' as variant_type, '' as clin_significance, 0 as gene_count, count(*) as con_count, 0 as variant_type_count, 0 as clin_count, 0 as min_count, 0 as max_count\n" +
             "from ${projectId}.${dataSetId}.wgs_variant left join unnest(consequence) AS conseq\n";
+
+    private static final String SV_CN_COUNT_SQL_TEMPLATE =
+            "SELECT offset AS copy_number, CAST(TRIM(count) AS INT64) AS sample_count " +
+                    "FROM ${projectId}.${dataSetId}.aou_sv_vcf_9_processed a, " +
+                    "UNNEST(SPLIT(REGEXP_REPLACE(cn_count, r'[\\[\\]\\s]', ''), ',')) AS count WITH OFFSET AS offset " +
+                    "WHERE (variant_id = @variant_id OR variant_id_vcf = @variant_id) " +
+                    "ORDER BY offset";
 
     private static final String FILTER_OPTION_SQL_TEMPLATE_VAR_TYPE =
             " group by conseq" + CONSEQ_ORDER_BY_FOR_FILTERS + "),\n" +
@@ -412,7 +423,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
 
-    public GenomicsController() {}
+    public GenomicsController() {
+    }
 
     public GenomicsController(AchillesAnalysisService achillesAnalysisService, CdrVersionService cdrVersionService,
                               BigQueryService bigQueryService) {
@@ -726,6 +738,7 @@ public class GenomicsController implements GenomicsApiDelegate {
         variantListResponse.setItems(variantList);
         return ResponseEntity.ok(variantListResponse);
     }
+
     @Override
     public ResponseEntity<VariantListResponse> searchVariants(SearchVariantsRequest searchVariantsRequest) {
         initCdrVersion();
@@ -1161,7 +1174,6 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
 
-
     public static GenomicSearchTermType getSearchType(String variantSearchTerm, String searchTerm) {
         GenomicSearchTermType searchTermType = new GenomicSearchTermType();
         String genes = "";
@@ -1193,7 +1205,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                         wherePositionFlag = true;
                         searchSql += AND_POSITION;
                     }
-                } catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.out.println("Trying to convert bad number.");
                 }
             }
@@ -1289,7 +1301,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                         wherePositionFlag = true;
                         searchSql += AND_POS;
                     }
-                } catch(NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     System.out.println("Trying to convert bad number.");
                 }
             }
@@ -1316,5 +1328,29 @@ public class GenomicsController implements GenomicsApiDelegate {
         searchTermType.setSearchSqlQuery(searchSql);
 
         return searchTermType;
+    }
+
+    @Override
+    public ResponseEntity<CNCountResponse> getSVVariantCNCounts(String variantId) {
+        initCdrVersion();
+
+        QueryJobConfiguration qjc = QueryJobConfiguration.newBuilder(SV_CN_COUNT_SQL_TEMPLATE)
+                .addNamedParameter("variant_id", QueryParameterValue.string(variantId))
+                .setUseLegacySql(false)
+                .build();
+        qjc = bigQueryService.filterBigQueryConfig(qjc);
+        TableResult result = bigQueryService.executeQuery(qjc);
+        Map<String, Integer> rm = bigQueryService.getResultMapper(result);
+
+        List<CNCountEntry> entries = new ArrayList<>();
+        for (List<FieldValue> row : result.iterateAll()) {
+            entries.add(new CNCountEntry()
+                    .copyNumber(bigQueryService.getLong(row, rm.get("copy_number")).intValue())
+                    .sampleCount(bigQueryService.getLong(row, rm.get("sample_count"))));
+        }
+
+        CNCountResponse response = new CNCountResponse();
+        response.setItems(entries);
+        return ResponseEntity.ok(response);
     }
 }

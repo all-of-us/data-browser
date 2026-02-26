@@ -3,12 +3,13 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { PopulationChartReactComponent } from "app/data-browser/views/genomic-view/components/population-chart.component";
+import { CNDistributionChart } from "app/data-browser/views/sv-genomic-view/components/cn-distribution-chart.component";
 import { ConsequenceGeneDisplay } from "app/data-browser/views/sv-genomic-view/components/consequence-gene-display-component";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 import { prepVariantPopulationDetails } from "app/utils/constants";
 import { Spinner } from "app/utils/spinner";
-import { SVVariant, SVVariantInfo } from "publicGenerated";
+import { CNCountEntry, SVVariant, SVVariantInfo } from "publicGenerated";
 
 const css = `
 .exit{
@@ -231,6 +232,8 @@ interface Props {
   variant: SVVariant;
   variantDetails: SVVariantInfo;
   loading: boolean;
+  cnCounts?: CNCountEntry[];
+  cnCountsLoading?: boolean;
 }
 
 interface State {
@@ -291,7 +294,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { variantDetails, variant, loading } = this.props;
+    const { variantDetails, variant, loading, cnCounts, cnCountsLoading } = this.props;
     const { showShareTooltip } = this.state;
     const isCNV = this.isCNV();
     let variantPopulationDetails: any[] = [];
@@ -599,10 +602,20 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       })}
                     </div>
                   </div>
-                  <PopulationChartReactComponent
-                    variantPopulationDetails={variantPopulationDetails}
-                    isCNV={isCNV}
-                  />
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                      <div style={isCNV ? { transform: "scale(0.50)", transformOrigin: "top center", height: "180px" } : {}}>
+                        <PopulationChartReactComponent
+                          variantPopulationDetails={variantPopulationDetails}
+                          isCNV={isCNV}
+                        />
+                      </div>
+                      {isCNV && (
+                        <CNDistributionChart
+                          cnCounts={cnCounts || []}
+                          loading={cnCountsLoading}
+                        />
+                      )}
+                    </div>
                   <div className="alt-variant-id">
                     <strong>VCF ID:</strong> {variantDetails.variantIDVCF}
                   </div>

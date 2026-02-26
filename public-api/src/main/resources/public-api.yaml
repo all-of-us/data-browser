@@ -259,6 +259,26 @@ paths:
           schema:
             $ref: "#/definitions/SVVariantListResponse"
 
+  /v1/genomics/sv-variant-cn-counts/{variantId}:
+    get:
+      tags:
+        - Genomics
+      description: Get copy number distribution counts for a structural variant
+      operationId: getSVVariantCNCounts
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: variantId
+          type: string
+          required: true
+          description: The variant ID to look up
+      responses:
+        "200":
+          description: Copy number count distribution
+          schema:
+            $ref: "#/definitions/CNCountResponse"
+
   # Data Browser #######################################################################
   /v1/config:
     get:
@@ -2158,6 +2178,26 @@ definitions:
         format: double
       totalHomozygoteCount:
         description: Total Homozygote Count
+        type: integer
+        format: int64
+
+  CNCountResponse:
+    type: object
+    properties:
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/CNCountEntry"
+
+  CNCountEntry:
+    type: object
+    properties:
+      copyNumber:
+        description: The copy number value (0, 1, 2, ...)
+        type: integer
+        format: int32
+      sampleCount:
+        description: Number of samples with this copy number
         type: integer
         format: int64
 
