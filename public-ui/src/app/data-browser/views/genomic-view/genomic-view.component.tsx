@@ -36,13 +36,14 @@ const styles = reactStyles({
   pageHeader: {
     paddingTop: "18px",
     paddingBottom: "18px",
-    paddingLeft: "18px",
-    paddingRight: "18px",
+    paddingLeft: "0",
+    paddingRight: "0",
     lineHeight: "1.5",
     fontSize: "16px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    maxWidth: "70rem",
   },
   homeButton: {
     fontFamily: "GothamBook, Arial, sans-serif",
