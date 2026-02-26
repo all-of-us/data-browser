@@ -357,8 +357,9 @@ export class VariantTableComponent extends React.Component<Props, State> {
                 <Spinner />
               </div>
             )}
-            {(!searchResults ||
-              (searchResults && searchResults.length === 0)) && (
+        {!loading && !loadingResults && !loadingVariantListSize &&
+          (!searchResults ||
+          (searchResults && searchResults.length === 0)) && (
               <div style={styles.helpTextContainer}>
                 <div style={styles.helpText}>
                   Enter a query in the search bar or get started with an example

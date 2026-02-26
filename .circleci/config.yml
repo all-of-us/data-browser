@@ -205,6 +205,13 @@ jobs:
     <<: *defaults
     steps:
       - checkout-code
+      - run:
+          name: Install Node 22 LTS
+          command: |
+            sudo npm install -g n
+            sudo n 22
+            hash -r
+            node --version
       - gcloud-auth-login
       # Use the ui-build-test workspace here to avoid redoing the setup.
       - attach_workspace:
