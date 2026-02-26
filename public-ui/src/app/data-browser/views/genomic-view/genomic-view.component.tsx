@@ -30,20 +30,22 @@ import { GenomicSearchComponent } from "./components/genomic-search.component";
 const styles = reactStyles({
   title: {
     fontSize: "35px",
-    margin: 0,
+    margin: "0",
     fontFamily: "gothamBook",
   },
   pageHeader: {
     paddingTop: "18px",
     paddingBottom: "18px",
-    paddingLeft: "0",
-    paddingRight: "0",
+    paddingLeft: "18px",
+    paddingRight: "18px",
     lineHeight: "1.5",
     fontSize: "16px",
+  },
+  titleRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    maxWidth: "70rem",
+    paddingBottom: "18px",
   },
   homeButton: {
     fontFamily: "GothamBook, Arial, sans-serif",
@@ -52,17 +54,15 @@ const styles = reactStyles({
     border: "1.5px solid #262262",
     borderRadius: "5px",
     background: "transparent",
-    paddingTop: "0.1rem",
-    paddingBottom: "0",
-    paddingLeft: "0.4rem",
-    paddingRight: "0.4rem",
+    padding: "0.1rem 0.4rem",
     cursor: "pointer",
     textDecoration: "none",
+    whiteSpace: "nowrap",
   },
   titleContainer: {
     lineHeight: "1em",
     margin: "0px",
-    width: "100%",
+    flex: "1",
     display: "block",
   },
   viewLayout: {
@@ -1068,14 +1068,14 @@ export const GenomicViewComponent = withRouteData(
         <React.Fragment>
           <style>{css}</style>
           <div style={styles.pageHeader}>
-            <div style={styles.titleContainer}>
-              <h1 style={styles.title}>{this.getTitle()}</h1>
+            <div style={styles.titleRow}>
+              <div style={styles.titleContainer}>
+                <h1 style={styles.title}>{this.getTitle()}</h1>
+              </div>
+              <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
+                Home
+              </a>
             </div>
-            <a onClick={() => navigateByUrl("")} style={styles.homeButton}>
-              Home
-            </a>
-          </div>
-          <div>
             <div style={styles.viewLayout}>
               <div style={styles.topBarLayout} id="topBar">
                 {this.topBarItems.map((item, index) => {
