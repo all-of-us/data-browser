@@ -3,7 +3,7 @@ import * as React from "react";
 import { genomicsApi } from "app/services/swagger-fetch-clients";
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
-import { SVVariant, SVVariantInfo } from "publicGenerated";
+import { CNCountEntry, SVVariant, SVVariantInfo } from "publicGenerated";
 
 import { SVVariantExpandedComponent } from "./sv-variant-expanded.component";
 
@@ -100,6 +100,8 @@ interface State {
   mouseOverExpanded: boolean;
   variantDetails: SVVariantInfo;
   loadingVarDetails: boolean;
+  cnCounts: CNCountEntry[];
+  cnCountsLoading: boolean;
 }
 
 export class SVVariantRowComponent extends React.Component<Props, State> {
@@ -110,6 +112,8 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       mouseOverExpanded: false,
       variantDetails: null,
       loadingVarDetails: true,
+      cnCounts: [],
+      cnCountsLoading: false,
     };
   }
 
@@ -122,6 +126,23 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
           loadingVarDetails: false,
         });
       });
+
+    // Fetch CN counts for CNV variants
+    if (this.props.variant.variantType === "<CNV>") {
+      this.setState({ cnCountsLoading: true });
+      genomicsApi()
+        .getSVVariantCNCounts(variantId)
+        .then((response) => {
+          this.setState({
+            cnCounts: response.items || [],
+            cnCountsLoading: false,
+          });
+        })
+        .catch((err) => {
+          console.error("Failed to fetch CN counts:", err);
+          this.setState({ cnCountsLoading: false });
+        });
+    }
   }
 
   replaceTag(variantType: string) {
@@ -163,7 +184,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
 
   render() {
     const { variant } = this.props;
-    const { svVariantExpanded, variantDetails, loadingVarDetails } = this.state;
+    const { svVariantExpanded, variantDetails, loadingVarDetails, cnCounts, cnCountsLoading } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -178,6 +199,8 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
                 ? this.props.allowParentScroll(true)
                 : this.props.allowParentScroll(false)
             }
+            cnCounts={cnCounts}
+            cnCountsLoading={cnCountsLoading}
           />
         ) : (
           <div className="row-layout">
