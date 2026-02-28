@@ -159,6 +159,8 @@ public class GenomicsController implements GenomicsApiDelegate {
     private static final String svVariantIdRegexV7 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.chr[1-9XY][0-9]?(?:\\.final_cleanup_)?(BND|DUP|DEL|INS|CPX|INV|CTX|CNV)_chr[1-9XY][0-9]?_\\d+";
 
     private static final String svVariantIdRegexV8 = "(?i)AoUSVPhase[a-zA-Z0-9]{1,2}\\.(BND|DUP|DEL|INS|CPX|INV|CTX|CNV)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
+
+    private static final String svVariantIdRegexV9 = "(?i)AoU_srWGS_SV\\.v\\d+\\.(BND|DUP|DEL|INS|CPX|INV|CTX|CNV)_chr[1-9XY][0-9]?_shard[0-9][0-9]?_\\d+";
     private static final String svVariantIdRegexRandom = "(?i)(\\d{1,2}|X|Y)-\\d{1,10}-[0-9a-fA-F]{2}";
 
     private static final String svVariantIdRegexRefined = "(?i)(\\d{1,2}|X|Y)-(\\d{1,10})([a-z])?";
@@ -1269,6 +1271,10 @@ public class GenomicsController implements GenomicsApiDelegate {
         } else if (searchTerm.matches(svVariantIdRegexV8)) {
             // Check if the search term matches variant id v8 pattern
             // Search on both variant_id and variant_id_vcf columns
+            variant_id = searchTerm;
+            whereVariantIdFlag = true;
+            searchSql += WHERE_VARIANT_ID_OR_VCF;
+        } else if (searchTerm.matches(svVariantIdRegexV9)) {
             variant_id = searchTerm;
             whereVariantIdFlag = true;
             searchSql += WHERE_VARIANT_ID_OR_VCF;
