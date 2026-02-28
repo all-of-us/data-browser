@@ -1275,6 +1275,8 @@ public class GenomicsController implements GenomicsApiDelegate {
             whereVariantIdFlag = true;
             searchSql += WHERE_VARIANT_ID_OR_VCF;
         } else if (searchTerm.matches(svVariantIdRegexV9)) {
+            // Check if the search term matches variant id v9 pattern
+            // Search on both variant_id and variant_id_vcf columns
             variant_id = searchTerm;
             whereVariantIdFlag = true;
             searchSql += WHERE_VARIANT_ID_OR_VCF;
