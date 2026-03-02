@@ -123,6 +123,10 @@ export class SVVariantSearchComponent extends React.Component<Props, State> {
     });
   }
 
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }

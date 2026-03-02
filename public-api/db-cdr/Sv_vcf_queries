@@ -168,7 +168,7 @@ SELECT
 FROM `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_9_processed`;
 
 
--- Step 4: Create unique variant IDs (fixed to preserve variant_id_vcf)
+-- Step 4: Create unique variant IDs (fixed position with chr prefix)
 CREATE OR REPLACE TABLE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_9_processed` AS
 WITH single_cnt_ids AS (
   SELECT chrom, pos, COUNT(*) AS cnt
@@ -209,8 +209,8 @@ multiple_random_ids AS (
 SELECT
   chrom, pos,
   CASE
-    WHEN chrom = chr2 OR chr2 IS NULL THEN CONCAT(SUBSTR(a.chrom, 4), ':', CAST(a.pos AS STRING), '-', CAST(a.end AS STRING))
-    ELSE CONCAT(SUBSTR(a.chrom, 4), ':', CAST(a.pos AS STRING), '-', CAST(a.chr2 AS STRING), ':', CAST(a.end AS STRING))
+    WHEN chr2 IS NULL THEN CONCAT(a.chrom, ':', CAST(a.pos AS STRING), '-', CAST(a.end AS STRING))
+    ELSE CONCAT(a.chrom, ':', CAST(a.pos AS STRING), ', ', a.chr2, ':', CAST(a.end2 AS STRING))
   END AS position,
   variant_type, filter, allele_count, allele_number, chr2, cpx_intervals, cpx_type,
   a.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial,
@@ -224,14 +224,11 @@ SELECT
   mid_an, mid_ac, mid_af, mid_n_homalt,
   oth_an, oth_ac, oth_af, oth_n_homalt,
   sas_an, sas_ac, sas_af, sas_n_homalt,
-  -- CNV-specific metrics (global)
   cn_count,
   cn_number,
   cn_freq,
   cn_nonref_count,
   cn_nonref_freq,
-
-  -- CNV-specific metrics (ancestry)
   cn_number_afr, cn_count_afr, cn_nonref_count_afr, cn_freq_afr, cn_nonref_freq_afr,
   cn_number_amr, cn_count_amr, cn_nonref_count_amr, cn_freq_amr, cn_nonref_freq_amr,
   cn_number_eas, cn_count_eas, cn_nonref_count_eas, cn_freq_eas, cn_nonref_freq_eas,
@@ -249,8 +246,8 @@ UNION ALL
 SELECT
   chrom, pos,
   CASE
-    WHEN chrom = chr2 OR chr2 IS NULL THEN CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.pos AS STRING), '-', CAST(b.end AS STRING))
-    ELSE CONCAT(SUBSTR(b.chrom, 4), ':', CAST(b.pos AS STRING), '-', CAST(b.chr2 AS STRING), ':', CAST(b.end AS STRING))
+    WHEN chr2 IS NULL THEN CONCAT(b.chrom, ':', CAST(b.pos AS STRING), '-', CAST(b.end AS STRING))
+    ELSE CONCAT(b.chrom, ':', CAST(b.pos AS STRING), ', ', b.chr2, ':', CAST(b.end2 AS STRING))
   END AS position,
   variant_type, filter, allele_count, allele_number, chr2, cpx_intervals, cpx_type,
   b.end, end2, predicted_breakend_exonic, predicted_copy_gain, predicted_dup_partial,
@@ -264,14 +261,11 @@ SELECT
   mid_an, mid_ac, mid_af, mid_n_homalt,
   oth_an, oth_ac, oth_af, oth_n_homalt,
   sas_an, sas_ac, sas_af, sas_n_homalt,
-  -- CNV-specific metrics (global)
   cn_count,
   cn_number,
   cn_freq,
   cn_nonref_count,
   cn_nonref_freq,
-
-  -- CNV-specific metrics (ancestry)
   cn_number_afr, cn_count_afr, cn_nonref_count_afr, cn_freq_afr, cn_nonref_freq_afr,
   cn_number_amr, cn_count_amr, cn_nonref_count_amr, cn_freq_amr, cn_nonref_freq_amr,
   cn_number_eas, cn_count_eas, cn_nonref_count_eas, cn_freq_eas, cn_nonref_freq_eas,
