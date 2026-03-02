@@ -242,9 +242,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
               {this.formatConsequence(variant.consequence)}
             </div>
             <div style={styles.rowItem}>
-              {variant.position
-                ? `chr${variant.position.replace(/-chr/, ", chr")}`
-                : "-"}
+              {variant.position || "-"}
             </div>
             <div style={styles.rowItem}>
               {variant.variantType?.includes("CTX") ||
