@@ -49,14 +49,7 @@ fi
 gcloud config set project aou-db-test
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project_id=$BQ_PROJECT ls --max_results=500)
-if [ -z "$datasets" ]
-then
-  echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
-  exit 1
-fi
-re=\\b$BQ_DATASET\\b
-if [[ $datasets == *"$BQ_DATASET"* ]]; then
+if bq --quiet --project_id=$BQ_PROJECT show $BQ_DATASET > /dev/null 2>&1; then
   echo "$BQ_PROJECT.$BQ_DATASET exists. Good. Carrying on."
 else
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
