@@ -38,14 +38,14 @@ const styles = reactStyles({
     display: "block",
     marginTop: "0.4em",
     fontSize: "13px",
-    color: "#595959",
+    color: "#6B6B6B",
     fontStyle: "italic",
   },
   branchingLogic: {
     display: "block",
     marginTop: "0.4em",
     fontSize: "13px",
-    color: "#595959",
+    color: "#6B6B6B",
     fontStyle: "italic",
   },
 });
@@ -176,6 +176,7 @@ export class SurveyQuestionReactComponent extends React.Component<
     } = this.props;
     const { showAnswers, questionWithResults, surveyCountAnalysis } =
       this.state;
+
     return (
       <div>
         <style>{styleCss}</style>
@@ -205,13 +206,11 @@ export class SurveyQuestionReactComponent extends React.Component<
               tooltipKey="genderIdentityQuestionHelpText"
             />
           )}
-          {/* Help text — shown below question name when present */}
           {question.helpText && question.helpText.trim() !== "" && (
             <span style={styles.helpText}>
               {question.helpText}
             </span>
           )}
-          {/* Branching logic — shown below question name when present */}
           {question.branchingLogic && question.branchingLogic.trim() !== "" && (
             <span style={styles.branchingLogic}>
               {question.branchingLogic}
