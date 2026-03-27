@@ -82,5 +82,15 @@
     "mode": "REQUIRED",
     "name": "parent_answer_concept_id",
     "type": "INTEGER"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "help_text",
+    "type": "STRING"
+  },
+  {
+    "mode": "NULLABLE",
+    "name": "branching_logic",
+    "type": "STRING"
   }
 ]
