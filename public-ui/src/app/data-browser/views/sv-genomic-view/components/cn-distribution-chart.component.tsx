@@ -7,7 +7,7 @@ import { reactStyles } from "app/utils";
 import { CNCountEntry } from "publicGenerated";
 
 const THEME_COLOR = "#262262";
-const MAX_CN_BINS = 10; // CN 0-9 individually, CN>=10 aggregated
+const MAX_CN_BINS = 10;
 
 const styles = reactStyles({
   chartContainer: {
@@ -40,9 +40,6 @@ export class CNDistributionChart extends React.Component<Props, State> {
     }
   }
 
-  /**
-   * Aggregate CN counts into bins: 0..9 individually, >=10 summed into one bin.
-   */
   getChartData(): { categories: string[]; data: number[] } {
     const { cnCounts } = this.props;
     if (!cnCounts || cnCounts.length === 0) {
@@ -58,7 +55,6 @@ export class CNDistributionChart extends React.Component<Props, State> {
       data.push(entry ? (entry.sampleCount || 0) : 0);
     }
 
-    // Aggregated bin for CN >= 10
     const overflow = cnCounts
       .filter((e) => (e.copyNumber || 0) >= MAX_CN_BINS)
       .reduce((sum, e) => sum + (e.sampleCount || 0), 0);
@@ -84,12 +80,15 @@ export class CNDistributionChart extends React.Component<Props, State> {
       return;
     }
 
+    const maxVal = Math.max(...data);
+
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
     newBaseOptions.chart.height = 280;
 
     newBaseOptions.title.useHTML = true;
-    newBaseOptions.title.text = '<div style="color:#262262;text-align:center;font-size:12px;">COPY NUMBER<br/>DISTRIBUTION</div>';
+    newBaseOptions.title.text =
+      '<div style="color:#262262;text-align:center;font-size:12px;">COPY NUMBER DISTRIBUTION</div>';
     newBaseOptions.title.align = "center";
     newBaseOptions.title.style = {
       color: THEME_COLOR,
@@ -100,15 +99,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
 
     newBaseOptions.xAxis = {
       categories: categories,
-      title: {
-        text: "Copy Number",
-        margin: 12,
-        style: {
-          color: THEME_COLOR,
-          fontSize: "12px",
-          fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
-        },
-      },
+      title: { text: null },
       labels: {
         style: {
           color: THEME_COLOR,
@@ -121,14 +112,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
     };
 
     newBaseOptions.yAxis = {
-      title: {
-        text: "Samples",
-        style: {
-          color: THEME_COLOR,
-          fontSize: "12px",
-          fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
-        },
-      },
+      title: { text: null },
       labels: {
         style: {
           color: THEME_COLOR,
@@ -145,18 +129,31 @@ export class CNDistributionChart extends React.Component<Props, State> {
 
     newBaseOptions.tooltip.outside = true;
     newBaseOptions.tooltip.useHTML = true;
+    newBaseOptions.tooltip.shared = true;
+    newBaseOptions.tooltip.backgroundColor = "#FFFFFF";
+    newBaseOptions.tooltip.borderColor = "#E0E0E0";
+    newBaseOptions.tooltip.borderRadius = 4;
+    newBaseOptions.tooltip.borderWidth = 1;
+    newBaseOptions.tooltip.shadow = true;
     newBaseOptions.tooltip.style = {
       color: THEME_COLOR,
       whiteSpace: "nowrap",
       zIndex: 9998,
     };
     newBaseOptions.tooltip.formatter = function () {
+      // Use the visible series data, not the invisible hitarea series
+      const visiblePoint = this.points?.find(
+        (p: any) => p.series.name === "Samples"
+      );
+      if (!visiblePoint) {
+        return false;
+      }
       return (
-        '<div style="text-align:center;font-family:GothamBook,Arial,sans-serif;font-size:12px;">' +
+        '<div style="text-align:center;font-family:GothamBook,Arial,sans-serif;font-size:14px;">' +
         "<strong>CN=" +
-        this.x +
+        visiblePoint.x +
         "</strong>: " +
-        this.y.toLocaleString() +
+        visiblePoint.y.toLocaleString() +
         " samples</div>"
       );
     };
@@ -165,23 +162,37 @@ export class CNDistributionChart extends React.Component<Props, State> {
       column: {
         borderColor: THEME_COLOR,
         borderWidth: 1.5,
-        color: "#FFFFFF",
         pointPadding: 0,
         groupPadding: 0.05,
+        stacking: "normal",
+      },
+    };
+
+    newBaseOptions.series = [
+      {
+        name: "_hitarea",
+        data: data.map((v) => maxVal - v),
+        color: "rgba(0,0,0,0)",
+        borderWidth: 0,
+        showInLegend: false,
+        enableMouseTracking: true,
+        states: {
+          hover: {
+            color: "rgba(0,0,0,0)",
+          },
+        },
+      },
+      {
+        name: "Samples",
+        data: data,
+        color: "#FFFFFF",
+        showInLegend: false,
         states: {
           hover: {
             color: THEME_COLOR,
             borderColor: THEME_COLOR,
           },
         },
-      },
-    };
-
-    newBaseOptions.series = [
-      {
-        name: "Samples",
-        data: data,
-        showInLegend: false,
       },
     ];
 

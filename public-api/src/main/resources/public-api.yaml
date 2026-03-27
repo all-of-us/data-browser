@@ -963,6 +963,12 @@ definitions:
       participantCountAnalysis:
         description: participant count analysis
         $ref: "#/definitions/Analysis"
+      helpText:
+        description: help text for the survey question
+        type: string
+      branchingLogic:
+        description: branching logic for the survey question
+        type: string
 
   SurveyMetadataListResponse:
     type: object

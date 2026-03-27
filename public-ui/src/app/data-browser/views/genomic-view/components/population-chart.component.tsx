@@ -34,7 +34,6 @@ export class PopulationChartReactComponent extends React.Component<
   }
 
   componentDidUpdate(prevProps) {
-    // Rebuild chart if isCNV prop changes
     if (prevProps.isCNV !== this.props.isCNV) {
       this.getChartOptions();
     }
@@ -45,16 +44,16 @@ export class PopulationChartReactComponent extends React.Component<
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "pie";
 
-    // Use different title for CNV variants
     if (isCNV) {
       newBaseOptions.title.text =
-        '<div style="color:#262262;text-align:center;font-size:12px;">PERCENTAGE OF<br/>NON-DIPLOID SAMPLES</div>';
+        '<div style="color:#262262;text-align:center;font-size:2em;">PERCENTAGE OF NON-DIPLOID SAMPLES</div>';
+      newBaseOptions.title.verticalAlign = "top";
     } else {
       newBaseOptions.title.text =
         '<div style="color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
+      newBaseOptions.title.verticalAlign = "middle";
     }
 
-    newBaseOptions.title.verticalAlign = "middle";
     newBaseOptions.title.style = {
       color: "black",
       fontSize: isCNV ? "12px" : "15px",
@@ -122,7 +121,7 @@ export class PopulationChartReactComponent extends React.Component<
   ) {
     const countLabel = isCNV ? "Samples" : "AC";
     return (
-      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center;">' +
+      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center; font-size:1.8em;">' +
       "<strong>" +
       name +
       "</strong><br />" +

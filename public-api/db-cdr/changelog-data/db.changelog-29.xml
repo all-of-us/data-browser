@@ -26,6 +26,8 @@
       <column name="type" type="STRING" />
       <column name="parent_question_concept_id" type="NUMERIC" />
       <column name="parent_answer_concept_id" type="NUMERIC" />
+      <column name="help_text" type="STRING" />
+      <column name="branching_logic" type="STRING" />
     </loadData>
 
   </changeSet>

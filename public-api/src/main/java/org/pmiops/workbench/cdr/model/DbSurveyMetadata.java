@@ -31,6 +31,8 @@ public class DbSurveyMetadata {
     private DbAchillesAnalysis participantCountAnalysis;
     private DbSurveyMetadataId dbSurveyMetadataId;
     private String type;
+    private String helpText;
+    private String branchingLogic;
 
     @EmbeddedId
     @AttributeOverrides({
@@ -200,6 +202,34 @@ public class DbSurveyMetadata {
 
     public DbSurveyMetadata type(String type) {
         this.type = type;
+        return this;
+    }
+
+    @Column(name = "help_text")
+    public String getHelpText() {
+        return helpText;
+    }
+
+    public void setHelpText(String helpText) {
+        this.helpText = helpText;
+    }
+
+    public DbSurveyMetadata helpText(String helpText) {
+        this.helpText = helpText;
+        return this;
+    }
+
+    @Column(name = "branching_logic")
+    public String getBranchingLogic() {
+        return branchingLogic;
+    }
+
+    public void setBranchingLogic(String branchingLogic) {
+        this.branchingLogic = branchingLogic;
+    }
+
+    public DbSurveyMetadata branchingLogic(String branchingLogic) {
+        this.branchingLogic = branchingLogic;
         return this;
     }
 

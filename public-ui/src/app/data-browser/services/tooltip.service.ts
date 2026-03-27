@@ -12,6 +12,11 @@ export const tooltips = {
       "Register for the Researcher Workbench to access the full genomic dataset and start your project.",
     ],
   },
+  workbench: {
+    texts: [
+      "Register for the Researcher Workbench to access the full genomic dataset and start your project.",
+    ],
+  },
   "Search Across Data Types": {
     texts: [
       `Search across all data types using keywords, gene names, or billing/data standards codes (i.e., SNOMED, CPT, ICD).
@@ -22,8 +27,8 @@ export const tooltips = {
     texts: [
       `Through "The Basics" program survey, participants self-report race and ethnicity information to the`,
       `Research Program. Each participant who answered this survey question is only counted once in the counts below. If
-                 a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`,
-      `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`,
+                 a participant selected more than one option, they are counted in the "more than one race/ethnicity" category.`,
+      `To learn more about this question, please visit "The Basics" in the Survey Explorer under Data Sources`,
     ],
   },
   conceptCopyHelpText: {
@@ -57,8 +62,8 @@ export const tooltips = {
     texts: [
       "Medical concepts are similar to medical terms; " +
         "they capture medical information\n" +
-        "in an individual’s records and may sometimes have values associated with them.\n" +
-        "For example, “height” is a medical concept that has a measurement value (in centimeters).\n" +
+        "in an individual's records and may sometimes have values associated with them.\n" +
+        "For example, \"height\" is a medical concept that has a measurement value (in centimeters).\n" +
         "These concepts are categorized into different domains. " +
         "Domains are types of medical information.\n" +
         "The Data Browser searches the ",
@@ -73,11 +78,11 @@ export const tooltips = {
   },
   ehrDomainHelpText:
     "Electronic health records contain information " +
-    "about an individual’s health.\n" +
+    "about an individual's health.\n" +
     "Medical concepts are similar to medical terms;\n" +
     "they capture medical information in individual records and may sometimes " +
     "have values associated with them.\n" +
-    "For example, “height” is a medical concept that has a " +
+    "For example, \"height\" is a medical concept that has a " +
     "measurement value (in centimeters).\n" +
     "These concepts are categorized into different domains. " +
     "Domains are types of medical information.\n" +
@@ -112,9 +117,9 @@ export const tooltips = {
     "diagnostic or therapeutic purposes are captured by the procedures domain.",
   "the basics": `This survey asks basic demographic questions including
                  questions about a participant's work and home.`,
-  "overall health": `This survey collects information about a participant’s overall health
-                     including general health, daily activities, and women’s health topics.`,
-  lifestyle: `This survey asks questions about a participant’s use of tobacco, alcohol,
+  "overall health": `This survey collects information about a participant's overall health
+                     including general health, daily activities, and women's health topics.`,
+  lifestyle: `This survey asks questions about a participant's use of tobacco, alcohol,
                      and recreational drugs.`,
   "personal medical history": `This survey collects information about past medical history,
                                    including medical conditions.`,
@@ -131,16 +136,16 @@ export const tooltips = {
   "covid-19 participant experience (cope)":
     "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
   "summer 2021 minute survey on covid-19 vaccines":
-    "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+    "This survey includes information regarding a participant's COVID-19 vaccination experience.",
   "fall 2021 minute survey on covid-19 vaccines":
-    "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+    "This survey includes information regarding a participant's COVID-19 vaccination experience.",
   "winter minute survey on covid-19 vaccines":
-    "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+    "This survey includes information regarding a participant's COVID-19 vaccination experience.",
   "cope minute survey":
-    "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+    "This survey includes information regarding a participant's COVID-19 vaccination experience.",
   "minute survey on covid-19 vaccines":
-    "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-  "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
+    "This survey includes information regarding a participant's COVID-19 vaccination experience.",
+  "social factors of health": `This survey includes information about the social factors of health, including a participant's neighborhood,
     social life, stress, and feelings about everyday life.`,
   snvs:
     "Search and explore SNV/Indel variant data available within the Short-Read Whole Genome Sequencing (WGS) dataset.",
@@ -171,7 +176,7 @@ export const tooltips = {
   valueChartHelpText:
     "Values provide the numeric result of an " +
     "examination or test done on a participant. " +
-    "For example, a participant’s measurement of their body " +
+    "For example, a participant's measurement of their body " +
     "temperature might have a value of 96.8 degrees. " +
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
@@ -186,7 +191,7 @@ export const tooltips = {
        multiple of 20. Participant counts of 0 - 20 are returned as ≤ 20.`,
   vocabularyCodeHelpText: `Individual health records often contain medical information that means
        the same thing but may be recorded in many different ways.
-       Source concepts are the way the data was originally represented in a patient’s record.
+       Source concepts are the way the data was originally represented in a patient's record.
        The vocabulary code listed here is a standard vocabulary code for the medical
        information. Standard codes are ways of representing data that is recorded many
        different ways in original patient records but essentially means the same thing.`,
@@ -199,7 +204,7 @@ export const tooltips = {
          the sum total of counts for the descendants in the tree may be more than the count
          returned for the top level concept.`,
   allOfUsHelpText: `All of Us`,
-  q2RolledCategoriesHelpText: `“Other” includes the following categories: Middle Eastern or North African,
+  q2RolledCategoriesHelpText: `"Other" includes the following categories: Middle Eastern or North African,
       Native Hawaiian or other Pacific Islander, and None of these describe me.`,
   fitbitAllDataHelpText: `Summary of participant counts for Fitbit data available across all variables.`,
   fitbitHeartZoneHelpText: `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
@@ -219,10 +224,10 @@ export const tooltips = {
   conceptSynonyms: `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names
     and descriptions, if available, are listed for each medical concept.`,
   "Sex": `The sex bar chart shows the sex of participants with this concept in their records.`,
-  "Gender Identity": `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
-                            or may not correspond to a person’s \n`,
-  "Race / Ethnicity": `“Race” refers to physical differences that groups and cultures
-                                consider socially significant, while “ethnicity” refers to shared culture, such as language,
+  "Gender Identity": `Gender identity refers to one's internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
+                            or may not correspond to a person's \n`,
+  "Race / Ethnicity": `"Race" refers to physical differences that groups and cultures
+                                consider socially significant, while "ethnicity" refers to shared culture, such as language,
                                 ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
                                 as separate questions, recent data from the Census Bureau determined that combining the
                                 question leads to better understanding of the question as well as improving the accuracy of
@@ -230,7 +235,7 @@ export const tooltips = {
                                 race/ethnicity which can lead to the bar charts totaling more than 100%.`,
   Age: `The age bar chart displays a binned distribution of the ages at which
                      medical concepts first occurred in participants' electronic health records. For example, if
-                     a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+                     a medical concept occurred in a participant's record at age 25 and again at age 43, 45 and 47
                      the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts
                         are the total sum of participants with the medical
                      concept mentioned in their electronic health record (EHR). \n`,
@@ -244,7 +249,7 @@ export const tooltips = {
   Values:
     "Values provide the numeric result of an " +
     "examination or test done on a participant. " +
-    "For example, a participant’s measurement of their body " +
+    "For example, a participant's measurement of their body " +
     "temperature might have a value of 96.8 degrees. " +
     "Values can also be reported in different units, " +
     "such as Fahrenheit or Celsius for body temperature.",
@@ -278,13 +283,17 @@ export class TooltipService {
       Advanced genomic variant search is available in the Genomics sections.`,
       ],
     },
-
+    workbench: {
+      texts: [
+        "Register for the Researcher Workbench to access the full genomic dataset and start your project.",
+      ],
+    },
     raceEthnicityQuestionHelpText: {
       texts: [
         `Through "The Basics" program survey, participants self-report race and ethnicity information to the`,
         `Research Program. Each participant who answered this survey question is only counted once in the counts below. If
-                 a participant selected more than one option, they are counted in the “more than one race/ethnicity” category.`,
-        `To learn more about this question, please visit “The Basics” in the Survey Explorer under Data Sources`,
+                 a participant selected more than one option, they are counted in the "more than one race/ethnicity" category.`,
+        `To learn more about this question, please visit "The Basics" in the Survey Explorer under Data Sources`,
       ],
     },
     conceptCopyHelpText: {
@@ -318,8 +327,8 @@ export class TooltipService {
       texts: [
         "Medical concepts are similar to medical terms; " +
           "they capture medical information\n" +
-          "in an individual’s records and may sometimes have values associated with them.\n" +
-          "For example, “height” is a medical concept that has a measurement value (in centimeters).\n" +
+          "in an individual's records and may sometimes have values associated with them.\n" +
+          "For example, \"height\" is a medical concept that has a measurement value (in centimeters).\n" +
           "These concepts are categorized into different domains. " +
           "Domains are types of medical information.\n" +
           "The Data Browser searches the ",
@@ -334,11 +343,11 @@ export class TooltipService {
     },
     ehrDomainHelpText:
       "Electronic health records contain information " +
-      "about an individual’s health.\n" +
+      "about an individual's health.\n" +
       "Medical concepts are similar to medical terms;\n" +
       "they capture medical information in individual records and may sometimes " +
       "have values associated with them.\n" +
-      "For example, “height” is a medical concept that has a " +
+      "For example, \"height\" is a medical concept that has a " +
       "measurement value (in centimeters).\n" +
       "These concepts are categorized into different domains. " +
       "Domains are types of medical information.\n" +
@@ -371,9 +380,9 @@ export class TooltipService {
       "diagnostic or therapeutic purposes are captured by the procedures domain.",
     "the basics": `This survey asks basic demographic questions including
                         questions about a participant's work and home.`,
-    "overall health": `This survey collects information about a participant’s overall health
-                     including general health, daily activities, and women’s health topics.`,
-    lifestyle: `This survey asks questions about a participant’s use of tobacco, alcohol,
+    "overall health": `This survey collects information about a participant's overall health
+                     including general health, daily activities, and women's health topics.`,
+    lifestyle: `This survey asks questions about a participant's use of tobacco, alcohol,
                      and recreational drugs.`,
     "personal medical history": `This survey collects information about past medical history,
                                    including medical conditions.`,
@@ -390,23 +399,21 @@ export class TooltipService {
     "covid-19 participant experience (cope)":
       "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
     "summer 2021 minute survey on covid-19 vaccines":
-      "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+      "This survey includes information regarding a participant's COVID-19 vaccination experience.",
     "fall 2021 minute survey on covid-19 vaccines":
-      "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+      "This survey includes information regarding a participant's COVID-19 vaccination experience.",
     "winter minute survey on covid-19 vaccines":
-      "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+      "This survey includes information regarding a participant's COVID-19 vaccination experience.",
     "cope minute survey":
-      "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
+      "This survey includes information regarding a participant's COVID-19 vaccination experience.",
     "minute survey on covid-19 vaccines":
-      "This survey includes information regarding a participant’s COVID-19 vaccination experience.",
-    "social factors of health": `This survey includes information about the social factors of health, including a participant’s neighborhood,
+      "This survey includes information regarding a participant's COVID-19 vaccination experience.",
+    "social factors of health": `This survey includes information about the social factors of health, including a participant's neighborhood,
        social life, stress, and feelings about everyday life.`,
-  snvs:
-    "Search and explore SNV/Indel variant data available within the Short-Read Whole Genome Sequencing (WGS) dataset.",
-  svs:
-    "Search and explore structural variant data available within the Short-Read WGS Structural Variants dataset.",
-    // genomicsCTA:
-    // "this will be the tooltip",
+    snvs:
+      "Search and explore SNV/Indel variant data available within the Short-Read Whole Genome Sequencing (WGS) dataset.",
+    svs:
+      "Search and explore structural variant data available within the Short-Read WGS Structural Variants dataset.",
     pmValueChartHelpText:
       "Values provide the numeric result of the " +
       "physical measurements taken at the time of participant enrollment. " +
@@ -427,7 +434,7 @@ export class TooltipService {
     valueChartHelpText:
       "Values provide the numeric result of an " +
       "examination or test done on a participant. " +
-      "For example, a participant’s measurement of their body " +
+      "For example, a participant's measurement of their body " +
       "temperature might have a value of 96.8 degrees. " +
       "Values can also be reported in different units, " +
       "such as Fahrenheit or Celsius for body temperature.",
@@ -442,7 +449,7 @@ export class TooltipService {
        multiple of 20. Participant counts of 0 - 20 are returned as ≤ 20.`,
     vocabularyCodeHelpText: `Individual health records often contain medical information that means
        the same thing but may be recorded in many different ways.
-       Source concepts are the way the data was originally represented in a patient’s record.
+       Source concepts are the way the data was originally represented in a patient's record.
        The vocabulary code listed here is a standard vocabulary code for the medical
        information. Standard codes are ways of representing data that is recorded many
        different ways in original patient records but essentially means the same thing.`,
@@ -457,7 +464,7 @@ export class TooltipService {
     allOfUsHelpText: `All of Us`,
     surveyExplorerUrl:
       "https://www.researchallofus.org/data/data-sources/survey-explorer/",
-    q2RolledCategoriesHelpText: `“Other” includes the following categories: Middle Eastern or North African,
+    q2RolledCategoriesHelpText: `"Other" includes the following categories: Middle Eastern or North African,
       Native Hawaiian or other Pacific Islander, and None of these describe me.`,
     fitbitAllDataHelpText: `Summary of participant counts for Fitbit data available across all variables.`,
     fitbitHeartZoneHelpText: `Heart rate zones are personalized based on resting heart rate and age. Heart rate by zone summaries
@@ -476,10 +483,10 @@ export class TooltipService {
     conceptSynonyms: `Medical concepts often have alternative names and descriptions, known as synonyms. Alternate names
         and descriptions, if available, are listed for each medical concept.`,
     "Sex": `The sex bar chart shows the sex of participants with this concept in their records.`,
-    "Gender Identity": `Gender identity refers to one’s internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
-                              or may not correspond to a person’s \n`,
-    "Race / Ethnicity": `“Race” refers to physical differences that groups and cultures
-                       consider socially significant, while “ethnicity” refers to shared culture, such as language,
+    "Gender Identity": `Gender identity refers to one's internal sense of gender (e.g. being a man, a woman, or genderqueer) that may
+                              or may not correspond to a person's \n`,
+    "Race / Ethnicity": `"Race" refers to physical differences that groups and cultures
+                       consider socially significant, while "ethnicity" refers to shared culture, such as language,
                        ancestry, practices, and beliefs. Although race and ethnicity have historically been asked
                        as separate questions, recent data from the Census Bureau determined that combining the
                        question leads to better understanding of the question as well as improving the accuracy of
@@ -487,7 +494,7 @@ export class TooltipService {
                        race/ethnicity which can lead to the bar charts totaling more than 100%.`,
     Age: `The age bar chart displays a binned distribution of the ages at which
           medical concepts first occurred in participants' electronic health records. For example, if
-          a medical concept occurred in a participant’s record at age 25 and again at age 43, 45 and 47
+          a medical concept occurred in a participant's record at age 25 and again at age 43, 45 and 47
           the participant is included once in the bar chart at the age of first occurrence, age 25. \n Counts are the total sum of participants with the medical
           concept mentioned in their electronic health record (EHR). \n`,
     Sources: `Individual health records often contain medical information that means the same thing
@@ -495,7 +502,7 @@ export class TooltipService {
               returned in the search results has been recorded in patient records.
               The sources bar chart provides the top 10 source concepts from the All of Us data.`,
     Values: `Values provide the numeric result of an examination or test done on a participant.
-             For example, a participant’s measurement of their body
+             For example, a participant's measurement of their body
              temperature might have a value of 96.8 degrees.
              Values can also be reported in different units,
              such as Fahrenheit or Celsius for body temperature.`,

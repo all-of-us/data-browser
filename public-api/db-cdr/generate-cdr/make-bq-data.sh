@@ -49,14 +49,7 @@ fi
 gcloud config set project aou-db-test
 
 # Check that bq_dataset exists and exit if not
-datasets=$(bq --project_id=$BQ_PROJECT ls --max_results=500)
-if [ -z "$datasets" ]
-then
-  echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
-  exit 1
-fi
-re=\\b$BQ_DATASET\\b
-if [[ $datasets == *"$BQ_DATASET"* ]]; then
+if bq --quiet --project_id=$BQ_PROJECT show $BQ_DATASET > /dev/null 2>&1; then
   echo "$BQ_PROJECT.$BQ_DATASET exists. Good. Carrying on."
 else
   echo "$BQ_PROJECT.$BQ_DATASET does not exist. Please specify a valid project and dataset."
@@ -117,7 +110,7 @@ if [ "$SEARCH_VAT" = true ]; then
   "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
   with distinct_transcripts as
   (
-  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\` d
+  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\` d
   ),
   mane_transcripts as
   (SELECT d.transcript from distinct_transcripts d join \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts\` AS m ON d.transcript LIKE CONCAT('%', m.transcript, '%'))
@@ -200,12 +193,12 @@ ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     END,
     transcript ASC
 ) AS row_number
-  FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$BQ_PROJECT.$BQ_DATASET.echo_full_vat\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\`
      GROUP BY vid
   )
   SELECT
