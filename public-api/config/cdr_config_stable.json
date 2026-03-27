@@ -107,19 +107,5 @@
     "releaseNumber": 15,
     "numParticipants": 633540,
     "publicDbName": "p_2024q3_42"
-  },
-  {
-    "cdrVersionId": 10,
-    "isDefault": true,
-    "name": "v0-6-rc4 Release version of 2025q4r1_combined",
-    "dataAccessLevel": 1,
-    "bigqueryProject": "aou-res-curation-prod",
-    "bigqueryDataset": "2025q4r1_combined_release",
-    "genomicsProject": "aou-db-prod",
-    "genomicsDataset": "2025q4r1_genomics",
-    "creationTime": "2025-10-019 12:21:29Z",
-    "releaseNumber": 15,
-    "numParticipants": 747033,
-    "publicDbName": "p_2025q4_7"
   }
 ]
