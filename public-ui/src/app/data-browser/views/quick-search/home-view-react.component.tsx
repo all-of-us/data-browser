@@ -19,7 +19,6 @@ import { triggerEvent } from "app/utils/google_analytics";
 import { NavStore } from "app/utils/navigation";
 import { Spinner } from "app/utils/spinner";
 
-import { GenomicCallToActionComponent } from "./genomic-call-to-action-react.component";
 
 export const homeCss = `
 .homePageLink {
@@ -79,6 +78,7 @@ export const homeCss = `
 	grid-template-columns: repeat(4, minmax(239px, 1fr));
 	grid-area: gBoxes;
 	column-gap: 1rem;
+	row-gap: 1rem;
 }
 .pm-boxes{
 	grid-area: pmBoxes;
@@ -182,18 +182,78 @@ export const homeCss = `
   color:#302c71;
 }
 
-.pm-boxes , .genomic-boxes{
-
-	grid-template-columns: repeat(2, minmax(239px, 1fr));
+.pm-boxes {
+	grid-template-columns: repeat(4, minmax(239px, 1fr));
+	column-gap:1rem;
+}
+.genomic-boxes{
+	grid-template-columns: repeat(4, minmax(239px, 1fr));
 	column-gap:1rem;
 }
 .pm-boxes .result-box, .genomic-boxes .result-box{
   height: auto;
-  min-height: 12rem;
+  align-self: start;
 }
 .result-box:last-of-type {
 	margin-right: 0;
 }
+
+/* Double-wide workbench card */
+.workbench-card {
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.15);
+  padding: .5rem 1rem;
+  position: relative;
+  grid-column: span 2;
+  min-height: 12rem;
+  text-decoration: none;
+  display: block;
+}
+.workbench-card:hover {
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+}
+.workbench-card .result-box-title {
+  color: #3279b7;
+}
+.workbench-card .result-box-body {
+  font-size: 14px;
+  color: #302c71;
+  padding-bottom: 0.5rem;
+}
+.workbench-card-body-item {
+  padding-bottom: 0.7em;
+  display: block;
+  font-family: GothamBook, Arial, sans-serif;
+  font-size: 14px;
+  color: #302c71;
+}
+.workbench-card-last-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.workbench-register-link {
+  white-space: nowrap;
+  font-size: 15px;
+  color: #337ab7;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+.workbench-register-link:hover {
+  color: #262262;
+}
+.workbench-card .result-bottom-link {
+  color: #337ab7;
+  text-decoration: underline;
+}
+.workbench-card .result-bottom-link:hover {
+  color: #262262;
+}
+
 @media (max-width: 1048px) {
 
 	.genomic-pm{
@@ -204,9 +264,16 @@ export const homeCss = `
 	.survey-result-boxes, .ehr-boxes{
 		grid-template-columns: repeat(3, minmax(239px, 1fr));
 	}
-  .pm-boxes, .genomic-boxes {
+  .pm-boxes {
 		width:auto;
 		grid-template-columns: repeat(3, minmax(239px, 1fr));
+	}
+  .genomic-boxes {
+		width:auto;
+		grid-template-columns: repeat(2, minmax(239px, 1fr));
+	}
+	.workbench-card {
+		grid-column: span 2;
 	}
 	.cope-preview {
 		justify-content: flex-start;
@@ -231,9 +298,16 @@ export const homeCss = `
 	.result-boxes, .survey-result-boxes, .ehr-boxes{
 		grid-template-columns: repeat(1, minmax(239px, 1fr));
 	}
-	.pm-boxes, .genomic-boxes {
+	.pm-boxes {
 		width:auto;
 		grid-template-columns: repeat(1, minmax(239px, 1fr));
+	}
+	.genomic-boxes {
+		width:auto;
+		grid-template-columns: repeat(1, minmax(239px, 1fr));
+	}
+	.workbench-card {
+		grid-column: span 1;
 	}
 	.genomic-boxes{
 		// grid-template-columns: repeat(2, minmax(239px, 1fr));
@@ -667,6 +741,68 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
   }
 };
 
+/* New double-wide Researcher Workbench card for v9 */
+const WorkbenchCardComponent = () => {
+  const registerUrl =
+    "https://www.researchallofus.org/register/";
+
+  return (
+    <a
+      className="workbench-card"
+      href={registerUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() =>
+        triggerEvent(
+          "WorkbenchCardClick",
+          "Click",
+          "Homepage Workbench Card",
+          "Workbench Register CTA",
+          null,
+          null
+        )
+      }
+    >
+      <div className="result-box-title">
+        <span className="result-box-title-text">
+          Genomic data only in the Researcher Workbench
+        </span>
+        <div>
+          <TooltipReactComponent
+            label="Homepage Tooltip Hover"
+            action="Hover on Workbench card tooltip"
+            tooltipKey="workbench"
+            searchTerm=""
+          />
+        </div>
+      </div>
+      <div className="result-box-body">
+        <span className="workbench-card-body-item">
+          <strong>14,521</strong> participants in the long-read WGS dataset
+        </span>
+        <span className="workbench-card-body-item">
+          <strong>9,043</strong> participants in the bulk RNASeq dataset
+        </span>
+        <span className="workbench-card-body-item">
+          <strong>10,170</strong> participants in the proteomics dataset
+        </span>
+        <span className="workbench-card-body-item workbench-card-last-row">
+          <span><strong>8,152</strong> participants in all three of the above</span>
+          <a
+            href="https://www.researchallofus.org/register/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="workbench-register-link"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Register
+          </a>
+        </span>
+      </div>
+    </a>
+  );
+};
+
 interface State {
   surveyInfo: any[];
   domainInfo: any[];
@@ -1033,6 +1169,7 @@ export const dBHomeComponent = withRouteData(
                       : ""
                   }  `}
                 >
+                  {/* EHR section — unchanged */}
                   {domainInfo.length > 0 && (
                     <h5
                       style={{
@@ -1066,99 +1203,69 @@ export const dBHomeComponent = withRouteData(
                       </div>
                     </React.Fragment>
                   )}
-                  <div className="genomic-pm">
-                    {showGenomicsSection && (
-                      <div>
-                        <h5
-                          style={{
-                            ...globalStyles.secondaryDisplay,
-                            ...styles.resultHeading,
-                            gridArea: "gHeading",
-                          }}
-                        >
-                          <span style={{ position: "relative", bottom: "2px" }}>
-                            Genomics
-                          </span>
-                        </h5>
-                        <div className="genomic-boxes">
-                          {/* SNVs/Indels tile - show if no search OR if search has results */}
-                          {(!searchWord ||
-                            (searchWord && variantListSize > 0)) && (
+
+                  {/* Genomics section — SNVs/Indels + SVs + new double-wide Workbench card */}
+                  {showGenomicsSection && (
+                    <div>
+                      <h5
+                        style={{
+                          ...globalStyles.secondaryDisplay,
+                          ...styles.resultHeading,
+                          gridArea: "gHeading",
+                        }}
+                      >
+                        <span style={{ position: "relative", bottom: "2px" }}>
+                          Genomics
+                        </span>
+                      </h5>
+                      <div className="genomic-boxes">
+                        {/* SNVs/Indels tile */}
+                        {(!searchWord ||
+                          (searchWord && variantListSize > 0)) && (
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key="genomics-tile"
+                            searchWord={searchWord}
+                            {...genomicInfo}
+                            name="SNVs/Indels"
+                            domainType="snvs"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                        )}
+
+                        {/* Empty placeholder when svVCFBrowser=false to keep workbench card in cols 3+4 */}
+                        {!environment.svVCFBrowser && (
+                          <div style={{ visibility: "hidden" }} />
+                        )}
+
+                        {/* Structural Variants tile */}
+                        {environment.svVCFBrowser &&
+                          (!searchWord ||
+                            (searchWord && svVariantListSize > 0)) && (
                             <ResultLinksComponent
                               typing={!this.typing}
-                              key="genomics-tile"
+                              key="sv-genomics-tile"
                               searchWord={searchWord}
                               {...genomicInfo}
-                              name="SNVs/Indels"
-                              domainType="snvs"
-                              variantListSize={variantListSize}
-                              loadingVariantListSize={loadingVariantListSize}
+                              name="Structural Variants"
+                              domainType="svs"
+                              svVariantListSize={svVariantListSize}
+                              loadingSVVariantListSize={
+                                loadingSVVariantListSize
+                              }
                             />
                           )}
 
-                          {!environment.svVCFBrowser && (
-                            <GenomicCallToActionComponent {...genomicInfo} />
-                          )}
-
-                          {/* Structural Variants tile - show if no search OR if search has results */}
-                          {environment.svVCFBrowser &&
-                            (!searchWord ||
-                              (searchWord && svVariantListSize > 0)) && (
-                              <ResultLinksComponent
-                                typing={!this.typing}
-                                key="sv-genomics-tile"
-                                searchWord={searchWord}
-                                {...genomicInfo}
-                                name="Structural Variants"
-                                domainType="svs"
-                                svVariantListSize={svVariantListSize}
-                                loadingSVVariantListSize={
-                                  loadingSVVariantListSize
-                                }
-                              />
-                            )}
-                        </div>
+                        {/* New double-wide Researcher Workbench card */}
+                        <WorkbenchCardComponent />
                       </div>
-                    )}
-                    {physicalMeasurementsInfo.length > 0 && (
-                      <div>
-                        <h5
-                          style={{
-                            ...globalStyles.secondaryDisplay,
-                            ...styles.resultHeading,
-                            gridArea: "pmHeading",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          <span style={{ position: "relative", bottom: "2px" }}>
-                            Measurements & Wearables
-                          </span>
-                        </h5>
-                        <div className="pm-boxes">
-                          {physicalMeasurementsInfo.map(
-                            (phyMeasurements, index) => {
-                              const key = "phyMeasurements" + index;
-                              return (
-                                <ResultLinksComponent
-                                  typing={!this.typing}
-                                  key={key}
-                                  searchWord={searchWord}
-                                  {...phyMeasurements}
-                                  domainType="pmw"
-                                  variantListSize={variantListSize}
-                                  loadingVariantListSize={
-                                    loadingVariantListSize
-                                  }
-                                />
-                              );
-                            }
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
+
+              {/* Surveys section */}
               {surveyInfo.length > 0 && (
                 <React.Fragment>
                   <h5
@@ -1188,6 +1295,42 @@ export const dBHomeComponent = withRouteData(
                   </div>
                 </React.Fragment>
               )}
+
+              {/* Measurements & Wearables section — moved below Surveys */}
+              {physicalMeasurementsInfo.length > 0 && (
+                <div style={{ marginTop: "3rem" }}>
+                  <h5
+                    style={{
+                      ...globalStyles.secondaryDisplay,
+                      ...styles.resultHeading,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <span style={{ position: "relative", bottom: "2px" }}>
+                      Measurements & Wearables
+                    </span>
+                  </h5>
+                  <div className="pm-boxes">
+                    {physicalMeasurementsInfo.map(
+                      (phyMeasurements, index) => {
+                        const key = "phyMeasurements" + index;
+                        return (
+                          <ResultLinksComponent
+                            typing={!this.typing}
+                            key={key}
+                            searchWord={searchWord}
+                            {...phyMeasurements}
+                            domainType="pmw"
+                            variantListSize={variantListSize}
+                            loadingVariantListSize={loadingVariantListSize}
+                          />
+                        );
+                      }
+                    )}
+                  </div>
+                </div>
+              )}
+
               {noResults && (
                 <h5
                   style={{
