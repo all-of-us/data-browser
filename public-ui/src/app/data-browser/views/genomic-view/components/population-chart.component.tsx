@@ -121,7 +121,7 @@ export class PopulationChartReactComponent extends React.Component<
   ) {
     const countLabel = isCNV ? "Samples" : "AC";
     return (
-      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center; font-size:1.7em;">' +
+      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center; font-size:1.8em;">' +
       "<strong>" +
       name +
       "</strong><br />" +
