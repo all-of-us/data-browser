@@ -34,6 +34,20 @@ const styles = reactStyles({
     marginTop: "0.5em",
     fontSize: "14px",
   },
+  helpText: {
+    display: "block",
+    marginTop: "0.4em",
+    fontSize: "13px",
+    color: "#6B6B6B",
+    fontStyle: "italic",
+  },
+  branchingLogic: {
+    display: "block",
+    marginTop: "0.4em",
+    fontSize: "13px",
+    color: "#6B6B6B",
+    fontStyle: "italic",
+  },
 });
 
 const styleCss = `
@@ -80,9 +94,6 @@ export class SurveyQuestionReactComponent extends React.Component<
     if (!this.state.questionWithResults) {
       this.getAnalysis();
       this.getCountAnalysis();
-      // if (this.props.isCopeSurvey) {
-      //     this.getSurveyVersionAnalysis();
-      // }
       this.setState({
         showAnswers: !this.state.showAnswers,
       });
@@ -142,6 +153,7 @@ export class SurveyQuestionReactComponent extends React.Component<
         console.log("Error searching: ", err);
       });
   }
+
   getCountAnalysis() {
     api
       .getCountAnalysis(this.props.surveyConceptId.toString(), "survey")
@@ -152,6 +164,7 @@ export class SurveyQuestionReactComponent extends React.Component<
         }
       });
   }
+
   render() {
     const {
       question,
@@ -163,6 +176,7 @@ export class SurveyQuestionReactComponent extends React.Component<
     } = this.props;
     const { showAnswers, questionWithResults, surveyCountAnalysis } =
       this.state;
+
     return (
       <div>
         <style>{styleCss}</style>
@@ -191,6 +205,16 @@ export class SurveyQuestionReactComponent extends React.Component<
               action="Survey Page Tooltip"
               tooltipKey="genderIdentityQuestionHelpText"
             />
+          )}
+          {question.helpText && question.helpText.trim() !== "" && (
+            <span style={styles.helpText}>
+              {question.helpText}
+            </span>
+          )}
+          {question.branchingLogic && question.branchingLogic.trim() !== "" && (
+            <span style={styles.branchingLogic}>
+              {question.branchingLogic}
+            </span>
           )}
           <div style={styles.seeAnswers} tabIndex={0}>
             See Answers
