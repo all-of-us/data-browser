@@ -14,4 +14,5 @@ export const testEnvironmentBase = {
   heatmap: true,
   combinedAgeGenderChart: true,
   geneLeads: true,
+  cdrV9: true,
 };

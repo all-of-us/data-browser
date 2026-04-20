@@ -13,8 +13,9 @@ export const environment = {
   genoFilters: true,
   fitbitCDRUpdate: true,
   infiniteSrcoll: true,
-  svVCFBrowser: true,
+  svVCFBrowser: false,
   heatmap: true,
   combinedAgeGenderChart: true,
   geneLeads: false,
+  cdrV9: false,
 };
