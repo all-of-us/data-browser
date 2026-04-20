@@ -4,8 +4,23 @@ import { TooltipReactComponent } from "app/data-browser/components/tooltip/toolt
 
 const ctaCss = `
 .cta-stat-layout {
-  display:grid;
-}`;
+  display: grid;
+}
+.cta-line {
+  display: block;
+  font-family: GothamBook, Arial, sans-serif;
+  font-size: 14px;
+  color: #302c71;
+  padding-bottom: 0.75em;
+  line-height: 1.3;
+}
+.cta-line strong {
+  font-weight: 700;
+  font-size: 20px;
+  display: inline-block;
+  margin-right: 0.5em;
+}
+`;
 interface Props {
   wgsSRParticipantCount: number;
   wgsLRParticipantCount: number;
@@ -52,27 +67,20 @@ export class GenomicCallToActionComponent extends React.Component<
 
           <div className="result-box-body">
             {wgsLRParticipantCount > 0 && (
-              <span className="result-box-body-item hgc-count-text">
-                <span>
-                  <strong> {wgsLRParticipantCount.toLocaleString()}</strong>{" "}
-                  participants in the<br></br> Long-Read WGS dataset
-                </span>
+              <span className="cta-line">
+                <strong>{wgsLRParticipantCount.toLocaleString()}</strong>{" "}
+                Long-Read WGS
               </span>
             )}
             {wgsSVParticipantCount > 0 && (
-              <span className="result-box-body-item hgc-count-text">
-                <span>
-                  <strong> {wgsSVParticipantCount.toLocaleString()}</strong>{" "}
-                  participants in the<br></br>Short-Read WGS Structural<br></br>{" "}
-                  Variants dataset
-                </span>
+              <span className="cta-line">
+                <strong>{wgsSVParticipantCount.toLocaleString()}</strong>{" "}
+                Short-Read WGS SVs
               </span>
             )}
-            <span className="result-box-body-item hgc-count-text">
-              <span>
-                <strong> {microarrayParticipantCount.toLocaleString()}</strong>{" "}
-                participants in the<br></br> Genotyping Arrays dataset
-              </span>
+            <span className="cta-line">
+              <strong>{microarrayParticipantCount.toLocaleString()}</strong>{" "}
+              Genotyping Arrays
             </span>
           </div>
           <div>
