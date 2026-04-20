@@ -1,29 +1,31 @@
 plugins {
-    id "com.github.lkishalmi.gatling" version "3.0.2"
+    id 'scala'
+    id 'io.gatling.gradle' version '3.11.5.2'
 }
 
 repositories {
     mavenCentral()
 }
 
-apply plugin: 'com.github.lkishalmi.gatling'
-apply plugin: 'scala'
-
-// Latest Gatling scala defaults to '2.12.3'
-def projectScalaVersion = '2.12.3'
+def gatlingVersion = '3.11.5'
 
 dependencies {
-    compile group: 'io.gatling', name: 'gatling-core', version: '3.0.2'
-    compile group: 'io.gatling', name: 'gatling-http', version: '3.0.2'
-    compile group: 'org.scala-lang', name: 'scala-library', version: projectScalaVersion
+    gatlingImplementation "io.gatling:gatling-core:${gatlingVersion}"
+    gatlingImplementation "io.gatling.highcharts:gatling-charts-highcharts:${gatlingVersion}"
 }
 
-gatling {
-    scalaVersion = projectScalaVersion
+configurations.all {
+    resolutionStrategy {
+        force 'com.fasterxml.jackson.core:jackson-databind:2.15.4'
+        force 'com.fasterxml.jackson.core:jackson-core:2.15.4'
+        force 'com.fasterxml.jackson.core:jackson-annotations:2.15.4'
+        force 'io.netty:netty-codec-http2:4.1.111.Final'
+        force 'io.netty:netty-codec-http:4.1.111.Final'
+        force 'io.netty:netty-handler:4.1.111.Final'
+        force 'io.netty:netty-common:4.1.111.Final'
+    }
 }
 
-// See https://github.com/lkishalmi/gradle-gatling-plugin#source-files-layout
-// `src/gatling/simulations` is a plugin requirement. 
 sourceSets {
     gatling {
         scala {
@@ -35,5 +37,8 @@ sourceSets {
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
