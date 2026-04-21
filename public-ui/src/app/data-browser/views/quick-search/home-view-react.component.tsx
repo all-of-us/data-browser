@@ -1111,6 +1111,12 @@ export const dBHomeComponent = withRouteData(
             (variantListSize > 0 ||
               (environment.svVCFBrowser && svVariantListSize > 0))));
 
+      // M&W always renders in its original section below Surveys.
+      // (Previously there was an inline split layout for cdrV9=false +
+      // svVCFBrowser=true, but that's been replaced by a single genomics
+      // row with SNVs + SVs + wide CTA card.)
+      const showMWBelowSurveys = physicalMeasurementsInfo.length > 0;
+
       return (
         <React.Fragment>
           <style>{homeCss}</style>
@@ -1231,11 +1237,14 @@ export const dBHomeComponent = withRouteData(
                     </React.Fragment>
                   )}
 
-                  {/* Genomics section — SNVs/Indels + SVs + (Workbench card OR M&W tiles depending on cdrV9) */}
+                  {/* Genomics section */}
                   {showGenomicsSection && (
                     <div>
                       {environment.cdrV9 ? (
-                        // cdrV9=true (test): single "Genomics" heading + row with SNVs + CallToAction/SVs + Workbench card
+                        // ===================================================
+                        // cdrV9=true (test): single "Genomics" heading + row
+                        // with SNVs + CallToAction/SVs + Workbench card
+                        // ===================================================
                         <>
                           <h5
                             style={{
@@ -1292,101 +1301,62 @@ export const dBHomeComponent = withRouteData(
                           </div>
                         </>
                       ) : (
-                        // cdrV9=false (staging/stable/prod): two side-by-side subsections,
-                        // each with its own heading — Genomics on the left, Measurements & Wearables on the right
-                        <div className="genomics-mw-split">
-                          <div className="genomics-subsection">
-                            <h5
-                              style={{
-                                ...globalStyles.secondaryDisplay,
-                                ...styles.resultHeading,
-                              }}
-                            >
-                              <span style={{ position: "relative", bottom: "2px" }}>
-                                Genomics
-                              </span>
-                            </h5>
-                            <div className="genomic-subsection-boxes">
-                              {/* SNVs/Indels tile */}
-                              {(!searchWord ||
-                                (searchWord && variantListSize > 0)) && (
+                        // ===================================================
+                        // cdrV9=false (staging/stable/prod): single Genomics
+                        // heading with SNVs/Indels + (optional) SVs tile +
+                        // wide Genomic Call To Action card (spans 2 cols).
+                        // M&W renders in its own section below Surveys.
+                        // ===================================================
+                        <>
+                          <h5
+                            style={{
+                              ...globalStyles.secondaryDisplay,
+                              ...styles.resultHeading,
+                              gridArea: "gHeading",
+                            }}
+                          >
+                            <span style={{ position: "relative", bottom: "2px" }}>
+                              Genomics
+                            </span>
+                          </h5>
+                          <div className="genomic-boxes">
+                            {/* SNVs/Indels tile */}
+                            {(!searchWord ||
+                              (searchWord && variantListSize > 0)) && (
+                              <ResultLinksComponent
+                                typing={!this.typing}
+                                key="genomics-tile"
+                                searchWord={searchWord}
+                                {...genomicInfo}
+                                name="SNVs/Indels"
+                                domainType="snvs"
+                                variantListSize={variantListSize}
+                                loadingVariantListSize={loadingVariantListSize}
+                              />
+                            )}
+
+                            {/* Structural Variants tile — only when svVCFBrowser is enabled */}
+                            {environment.svVCFBrowser &&
+                              (!searchWord ||
+                                (searchWord && svVariantListSize > 0)) && (
                                 <ResultLinksComponent
                                   typing={!this.typing}
-                                  key="genomics-tile"
+                                  key="sv-genomics-tile"
                                   searchWord={searchWord}
                                   {...genomicInfo}
-                                  name="SNVs/Indels"
-                                  domainType="snvs"
-                                  variantListSize={variantListSize}
-                                  loadingVariantListSize={loadingVariantListSize}
-                                />
-                              )}
-
-                              {/* When svVCFBrowser is false, show the Genomic Call To Action component */}
-                              {!environment.svVCFBrowser && (
-                                <GenomicCallToActionComponent
-                                  {...genomicInfo}
-                                />
-                              )}
-
-                              {/* Structural Variants tile */}
-                              {environment.svVCFBrowser &&
-                                (!searchWord ||
-                                  (searchWord && svVariantListSize > 0)) && (
-                                  <ResultLinksComponent
-                                    typing={!this.typing}
-                                    key="sv-genomics-tile"
-                                    searchWord={searchWord}
-                                    {...genomicInfo}
-                                    name="Structural Variants"
-                                    domainType="svs"
-                                    svVariantListSize={svVariantListSize}
-                                    loadingSVVariantListSize={
-                                      loadingSVVariantListSize
-                                    }
-                                  />
-                                )}
-                            </div>
-                          </div>
-
-                          {physicalMeasurementsInfo.length > 0 && (
-                            <div className="mw-subsection">
-                              <h5
-                                style={{
-                                  ...globalStyles.secondaryDisplay,
-                                  ...styles.resultHeading,
-                                  whiteSpace: "nowrap",
-                                }}
-                              >
-                                <span
-                                  style={{ position: "relative", bottom: "2px" }}
-                                >
-                                  Measurements &amp; Wearables
-                                </span>
-                              </h5>
-                              <div className="mw-subsection-boxes">
-                                {physicalMeasurementsInfo.map(
-                                  (phyMeasurements, index) => {
-                                    const key = "genomics-pm-" + index;
-                                    return (
-                                      <ResultLinksComponent
-                                        typing={!this.typing}
-                                        key={key}
-                                        searchWord={searchWord}
-                                        {...phyMeasurements}
-                                        domainType="pmw"
-                                        variantListSize={variantListSize}
-                                        loadingVariantListSize={
-                                          loadingVariantListSize
-                                        }
-                                      />
-                                    );
+                                  name="Structural Variants"
+                                  domainType="svs"
+                                  svVariantListSize={svVariantListSize}
+                                  loadingSVVariantListSize={
+                                    loadingSVVariantListSize
                                   }
-                                )}
-                              </div>
-                            </div>
-                          )}
-                        </div>
+                                />
+                              )}
+
+                            {/* Wide Genomic Call To Action card (spans 2 cols) */}
+                            <GenomicCallToActionComponent {...genomicInfo} />
+                          </div>
+                        </>
                       )}
                     </div>
                   )}
@@ -1424,9 +1394,9 @@ export const dBHomeComponent = withRouteData(
                 </React.Fragment>
               )}
 
-              {/* Measurements & Wearables section below Surveys — only in test (cdrV9=true).
-                  In staging/stable/prod, M&W tiles are shown up in the genomics row instead. */}
-              {physicalMeasurementsInfo.length > 0 && environment.cdrV9 && (
+              {/* Measurements & Wearables section below Surveys.
+                  Renders whenever there's physical measurements data. */}
+              {showMWBelowSurveys && (
                 <div style={{ marginTop: "3rem" }}>
                   <h5
                     style={{
