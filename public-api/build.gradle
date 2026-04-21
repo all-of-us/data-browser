@@ -15,7 +15,6 @@ buildscript {
         SWAGGER_3_CODEGEN_VERSION = '3.0.52'
         OPENCENSUS_VERSION = '0.23.0'
         MAPSTRUCT_VERSION = '1.5.5.Final'
-        // Security-related pinned versions (used in both direct deps and resolutionStrategy)
         NETTY_VERSION = '4.1.118.Final'
         PROTOBUF_VERSION = '3.25.5'
     }
@@ -236,15 +235,12 @@ dependencies {
     implementation "org.liquibase:liquibase-core:$project.ext.LIQUIBASE_VERSION"
     implementation 'com.mysql:mysql-connector-j:8.3.0'
     implementation "org.apache.commons:commons-collections4:4.4"
-    // Security fixes: bumped commons-lang3 (3.12.0 -> 3.18.0) and commons-text (1.10.0 -> 1.14.0)
     implementation 'org.apache.commons:commons-lang3:3.18.0'
     implementation 'org.apache.commons:commons-text:1.14.0'
-    // Security fix: httpclient5 5.3.1 -> 5.5.1 (CWE-400 DoS)
     implementation "org.apache.httpcomponents.client5:httpclient5:5.5.1"
     implementation "org.springframework.boot:spring-boot-starter-validation:$project.ext.SPRING_BOOT_VERSION"
     implementation "commons-codec:commons-codec:1.15"
     implementation 'com.auth0:java-jwt:3.19.2'
-    // Security fix: netty-common 4.1.82.Final -> 4.1.118.Final (CWE-670, CWE-1284)
     implementation "io.netty:netty-common:${NETTY_VERSION}"
     implementation 'org.json:json:20231013'
     implementation("com.google.appengine:appengine-api-1.0-sdk:$project.ext.GAE_VERSION") {
@@ -259,7 +255,6 @@ dependencies {
     implementation 'com.google.auth:google-auth-library-appengine:1.23.0'
     implementation 'com.google.auth:google-auth-library-oauth2-http:1.23.0'
     implementation 'com.google.cloud.sql:mysql-socket-factory:1.7.0'
-    // Security fixes: bumped Google Cloud client libraries (transitive protobuf/netty/grpc CVEs)
     implementation 'com.google.cloud:google-cloud-bigquery:2.56.0'
     implementation 'com.google.cloud:google-cloud-iamcredentials:2.79.0'
     implementation 'com.google.cloud:google-cloud-logging:3.11.5'
@@ -270,9 +265,7 @@ dependencies {
     implementation "com.google.code.gson:gson:$project.ext.GSON_VERSION"
     implementation 'com.google.guava:guava:32.0.1-jre'
     implementation 'com.google.oauth-client:google-oauth-client-jetty:1.34.1'
-    // Security fix: protobuf-java 3.25.3 -> 3.25.5 (CWE-121 Stack Buffer Overflow)
     implementation "com.google.protobuf:protobuf-java:${PROTOBUF_VERSION}"
-    // Security fix: owasp-java-html-sanitizer 20240325.1 -> 20260101.1 (CWE-79 XSS)
     implementation 'com.googlecode.owasp-java-html-sanitizer:owasp-java-html-sanitizer:20260101.1'
     implementation "org.hibernate.orm:hibernate-core:$project.ext.HIBERNATE_VERSION"
     implementation "org.hibernate.orm:hibernate-community-dialects:$project.ext.HIBERNATE_VERSION"
@@ -344,7 +337,6 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
         exclude group: 'com.vaadin.external.google', module: 'android-json'
     }
-    // Add Truth and Spring Boot Test dependencies for integration tests
     integrationImplementation "com.google.truth:truth:$project.ext.GOOGLE_TRUTH_VERSION"
     integrationImplementation "com.google.truth.extensions:truth-java8-extension:$project.ext.GOOGLE_TRUTH_VERSION"
     integrationImplementation "org.springframework.boot:spring-boot-starter-test:$project.ext.SPRING_BOOT_VERSION"
