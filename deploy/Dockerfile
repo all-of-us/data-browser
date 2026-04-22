@@ -19,12 +19,7 @@ RUN apt-get update \
   git \
   unzip \
   wait-for-it \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
-
-RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade \
-  && apt-get -y install sudo \
+  sudo \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
