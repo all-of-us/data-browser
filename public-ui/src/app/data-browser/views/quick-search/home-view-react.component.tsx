@@ -774,12 +774,9 @@ const WorkbenchCardComponent = () => {
     "https://www.researchallofus.org/register/";
 
   return (
-    <a
+    <div
       className="workbench-card"
-      href={registerUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() =>
+      onClick={() => {
         triggerEvent(
           "WorkbenchCardClick",
           "Click",
@@ -787,8 +784,9 @@ const WorkbenchCardComponent = () => {
           "Workbench Register CTA",
           null,
           null
-        )
-      }
+        );
+        window.open(registerUrl, "_blank", "noopener,noreferrer");
+      }}
     >
       <div className="result-box-title">
         <span className="result-box-title-text">
@@ -816,7 +814,7 @@ const WorkbenchCardComponent = () => {
         <span className="workbench-card-body-item workbench-card-last-row">
           <span><strong>8,152</strong> participants in all three of the above</span>
           <a
-            href="https://www.researchallofus.org/register/"
+            href={registerUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="workbench-register-link"
@@ -826,7 +824,7 @@ const WorkbenchCardComponent = () => {
           </a>
         </span>
       </div>
-    </a>
+    </div>
   );
 };
 
