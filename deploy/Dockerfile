@@ -3,7 +3,11 @@
 # Keep synchronized with ci/Dockerfile.circle_build
 FROM eclipse-temurin:17
 
+# Upgrade base OS packages to pick up available security fixes (binutils, etc.)
+# from the Ubuntu archive. Must run before any other apt-get install so the
+# downstream layers inherit the patched baseline.
 RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade \
   && apt-get install --no-install-recommends -yq \
   gettext \
   ruby \
@@ -18,8 +22,11 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update && \
-       apt-get -y install sudo
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get -yq upgrade \
+  && apt-get -y install sudo \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/*
 
 RUN npm install --global yarn n
 # Upgrade to Node 22 LTS (required by Angular 19).
@@ -52,6 +59,6 @@ RUN curl -L -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-
 ENV PATH="/opt/gradle/gradle-${GRADLE_VERSION}/bin:${PATH}"
 
 RUN gem install logger
-RUN  gem install concurrent-ruby -v 1.3.4
+RUN gem install concurrent-ruby -v 1.3.4
 RUN gem install activesupport -v 6.1.4.6 --conservative
 RUN gem install jira-ruby
