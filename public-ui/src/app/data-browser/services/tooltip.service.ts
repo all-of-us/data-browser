@@ -133,6 +133,8 @@ export const tooltips = {
                                            to and use of health care.`,
   "health care access and utilization": `This survey asks questions about participants' access
                                              to and use of health care.`,
+  "emotional health history and well-being": `This survey asks information about mental health functioning (e.g., depression symptoms, trauma experiences) and well-being.`,
+  "behavioral health and personality": `This survey asks information about mental health functioning (e.g., ADHD symptoms, experiences of psychosis) and personality.`,
   "covid-19 participant experience (cope)":
     "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
   "summer 2021 minute survey on covid-19 vaccines":
@@ -396,6 +398,8 @@ export class TooltipService {
                                            to and use of health care.`,
     "health care access and utilization": `This survey asks questions about participants' access
                                                to and use of health care.`,
+    "emotional health history and well-being": `This survey asks information about mental health functioning (e.g., depression symptoms, trauma experiences) and well-being.`,
+    "behavioral health and personality": `This survey asks information about mental health functioning (e.g., ADHD symptoms, experiences of psychosis) and personality.`,
     "covid-19 participant experience (cope)":
       "This survey includes information about the impact of COVID-19 on participant mental and physical health.",
     "summer 2021 minute survey on covid-19 vaccines":

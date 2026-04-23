@@ -72,6 +72,8 @@ export const SourceTreeComponent = class extends React.Component<
 
   componentDidMount() {
     const { first, node } = this.props;
+    console.log('Am i here?');
+    console.log(node);
     this.setState({ isHandelSelected: first });
     if (node.group && !node.children && !this.state.children) {
       this.getChildren();
@@ -79,6 +81,7 @@ export const SourceTreeComponent = class extends React.Component<
   }
 
   getChildren() {
+    console.log('Am i here?');
     dataBrowserApi()
       .getCriteriaChildren(this.props.node.id)
       .then((data) => {
