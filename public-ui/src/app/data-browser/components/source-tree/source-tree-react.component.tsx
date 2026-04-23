@@ -79,7 +79,6 @@ export const SourceTreeComponent = class extends React.Component<
   }
 
   getChildren() {
-    console.log('Am i here?');
     dataBrowserApi()
       .getCriteriaChildren(this.props.node.id)
       .then((data) => {
