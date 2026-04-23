@@ -30,7 +30,6 @@ export class RecursiveTreeComponent implements OnChanges, OnDestroy {
 
   ngOnChanges() {
     if (this.node && this.node.group) {
-      console.log('Am i here?');
       this.loading = true;
       // get it from database
       this.subscriptions.push(
