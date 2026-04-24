@@ -53,6 +53,20 @@ RUN cd /tmp && \
 
 ENV PATH=/home/circleci/node/bin:/home/circleci/google-cloud-sdk/bin:$PATH
 
+# Install Node 22 LTS into /home/circleci/node (matches PATH above).
+# Required by Angular 19 and @openapitools/openapi-generator-cli (>=20.19.0).
+# The base image ships an older Node; n overrides it by installing into N_PREFIX.
+RUN sudo npm install --global n \
+  && sudo mkdir -p /home/circleci/node \
+  && sudo chown -R circleci:circleci /home/circleci/node \
+  && N_PREFIX=/home/circleci/node n 22 \
+  && node --version \
+  && npm --version
+
+# Install yarn and openapi-generator-cli using the Node 22 npm we just installed.
+RUN npm install --global yarn \
+  && npm install --global @openapitools/openapi-generator-cli
+
 RUN curl -o /tmp/cloud_sql_proxy https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/v2.14.2/cloud-sql-proxy.linux.amd64 \
   && sudo mv /tmp/cloud_sql_proxy /usr/local/bin && sudo chmod +x /usr/local/bin/cloud_sql_proxy
 

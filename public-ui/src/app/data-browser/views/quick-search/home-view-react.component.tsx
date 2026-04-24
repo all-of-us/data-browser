@@ -229,6 +229,10 @@ export const homeCss = `
 .workbench-card:hover {
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
 }
+.workbench-card:focus-visible {
+  outline: 2px solid #262262;
+  outline-offset: 2px;
+}
 .workbench-card .result-box-title {
   color: #3279b7;
 }
@@ -770,25 +774,34 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
 
 /* New double-wide Researcher Workbench card for v9 */
 const WorkbenchCardComponent = () => {
-  const registerUrl =
-    "https://www.researchallofus.org/register/";
+  const registerUrl = "https://www.researchallofus.org/register/";
+
+  const handleCardClick = () => {
+    triggerEvent(
+      "WorkbenchCardClick",
+      "Click",
+      "Homepage Workbench Card",
+      "Workbench Register CTA",
+      null,
+      null
+    );
+    window.open(registerUrl, "_blank", "noopener,noreferrer");
+  };
+
+  const handleCardKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardClick();
+    }
+  };
 
   return (
-    <a
+    <div
       className="workbench-card"
-      href={registerUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      onClick={() =>
-        triggerEvent(
-          "WorkbenchCardClick",
-          "Click",
-          "Homepage Workbench Card",
-          "Workbench Register CTA",
-          null,
-          null
-        )
-      }
+      role="link"
+      tabIndex={0}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKeyDown}
     >
       <div className="result-box-title">
         <span className="result-box-title-text">
@@ -814,9 +827,11 @@ const WorkbenchCardComponent = () => {
           <strong>10,170</strong> participants in the proteomics dataset
         </span>
         <span className="workbench-card-body-item workbench-card-last-row">
-          <span><strong>8,152</strong> participants in all three of the above</span>
+          <span>
+            <strong>8,152</strong> participants in all three of the above
+          </span>
           <a
-            href="https://www.researchallofus.org/register/"
+            href={registerUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="workbench-register-link"
@@ -826,7 +841,7 @@ const WorkbenchCardComponent = () => {
           </a>
         </span>
       </div>
-    </a>
+    </div>
   );
 };
 

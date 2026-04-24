@@ -43,7 +43,7 @@ security:
 
 paths:
 
-  # CDR versions #########################################################################
+  # CDR versions ########################################################################
 
   /v1/cdrVersions:
     get:
@@ -57,7 +57,8 @@ paths:
           schema:
             $ref: "#/definitions/CdrVersionListResponse"
 
-  # Genomics ###########################################################################
+  # Genomics ############################################################################
+
   /v1/genomics/participant-counts:
     get:
       tags:
@@ -110,7 +111,6 @@ paths:
           description: Type of the genomic search term
           schema:
             type: string
-
 
   /v1/genomics/variant-search-result-size:
     post:
@@ -279,7 +279,8 @@ paths:
           schema:
             $ref: "#/definitions/CNCountResponse"
 
-  # Data Browser #######################################################################
+  # Data Browser ########################################################################
+
   /v1/config:
     get:
       tags:
@@ -335,7 +336,6 @@ paths:
     get:
       tags:
         - dataBrowser
-
       description: Gets participant count of question by each stratum
       operationId: "getSurveyQuestionCounts"
       parameters:
@@ -373,13 +373,10 @@ paths:
           schema:
             $ref: "#/definitions/ConceptAnalysisListResponse"
 
-
-
   /v1/databrowser/concept-analysis-results:
     get:
       tags:
         - dataBrowser
-
       description: Gets analysis results for concept
       operationId: "getConceptAnalysisResults"
       parameters:
@@ -405,7 +402,6 @@ paths:
     get:
       tags:
         - dataBrowser
-
       description: Gets results for an analysis id and stratum
       operationId: "getParticipantCount"
       parameters: []
@@ -419,7 +415,6 @@ paths:
     get:
       tags:
         - dataBrowser
-
       description: Gets results for an analysis id
       operationId: "getGenderAnalysis"
       parameters: []
@@ -519,12 +514,10 @@ paths:
           schema:
             $ref: "#/definitions/ConceptListResponse"
 
-
   /v1/databrowser/source-concepts:
     get:
       tags:
         - dataBrowser
-
       description: Get children of the given concept
       operationId: "getSourceConcepts"
       parameters:
@@ -660,10 +653,13 @@ paths:
           schema:
             $ref: "#/definitions/SurveyVersionCountResponse"
 
+
 ##########################################################################################
 ## DEFINITIONS
 ##########################################################################################
+
 definitions:
+
   Concept:
     type: object
     required:
@@ -674,7 +670,6 @@ definitions:
       - conceptCode
       - conceptClassId
       - standardConcept
-
     properties:
       conceptId:
         description: id of the concept
@@ -809,6 +804,7 @@ definitions:
         description: |
           Stackdriver API key for error reporting, scoped to a particular
           domain. If unset, Stackdriver error reporting should be disabled.
+
   Criteria:
     type: object
     required:
@@ -894,7 +890,6 @@ definitions:
       - conceptId
       - conceptName
       - surveyName
-
     properties:
       id:
         description: id of each row
@@ -984,7 +979,6 @@ definitions:
     type: object
     required:
       - analysisId
-
     properties:
       id:
         description: pk id for jpa code to work
@@ -1044,7 +1038,6 @@ definitions:
     type: object
     required:
       - analysisId
-
     properties:
       id:
         description: pk id for jpa code to work
@@ -1123,34 +1116,34 @@ definitions:
         type: integer
         format: int64
       analysisName:
-        description:  analysis name
+        description: analysis name
         type: string
       stratum1Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum2Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum3Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum4Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum5Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum6Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       stratum7Name:
-        description:  usually concept name corresponding to stratum
+        description: usually concept name corresponding to stratum
         type: string
       chartType:
-        description:  chart type to display for this analysis column pie box
+        description: chart type to display for this analysis column pie box
         type: string
       dataType:
-        description:  data type of this analysis count or distribution
+        description: data type of this analysis count or distribution
         type: string
       results:
         description: count results
@@ -1278,14 +1271,17 @@ definitions:
     type: string
     description: filter on whether standard, non-standard, or all concepts should be returned\
     enum: &STANDARD_CONCEPT_FILTER [ALL_CONCEPTS, STANDARD_CONCEPTS, NON_STANDARD_CONCEPTS, STANDARD_OR_CODE_ID_MATCH]
+
   TestFilter:
     type: string
     description: filter to toggle lab measurement tests
     enum: &TEST_FILTER [SELECTED, UNSELECTED]
+
   OrderFilter:
     type: string
     description: filter to toggle lab measurement orders
     enum: &ORDER_FILTER [SELECTED, UNSELECTED]
+
   Domain:
     type: string
     description: a domain for concepts corresponding to a table in the OMOP schema
@@ -1298,6 +1294,7 @@ definitions:
       - DEVICE
       - DEATH
       - VISIT
+
   MatchType:
     type: string
     description: match column type on concept search
@@ -1305,6 +1302,7 @@ definitions:
       - CONCEPT_CODE
       - CONCEPT_ID
       - CONCEPT_NAME
+
   AnalysisIdConstant:
     type: string
     description: analysis id constant map
@@ -1697,9 +1695,8 @@ definitions:
   ErrorCode:
     type: string
     description: Short parsable error descriptions
-    enum: [
-      PARSE_ERROR
-    ]
+    enum:
+      - PARSE_ERROR
 
   Variant:
     type: object
