@@ -8,6 +8,9 @@
 
 require "open3"
 require "jira-ruby"
+# jira-ruby 2.3.0's JIRA::HTTPError constructor calls String#presence without
+# requiring this extension, which masks real HTTP errors as NoMethodError.
+require "active_support/core_ext/object/blank"
 
 require_relative "../../aou-utils/utils/common"
 
