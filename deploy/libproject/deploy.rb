@@ -296,8 +296,13 @@ def deploy(cmd_name, args)
   maybe_log_jira.call "'#{op.opts.project}': completed Public-UI service deployment"
 
   if create_ticket
-    jira_client.create_ticket(op.opts.project, from_version,
-                              op.opts.git_version, op.opts.circle_url)
+    begin
+      jira_client.create_ticket(op.opts.project, from_version,
+                                op.opts.git_version, op.opts.circle_url)
+    rescue => e
+      common.warning "Jira release ticket creation failed; deploy has already " +
+                     "succeeded, continuing. Error: #{e.message}"
+    end
   end
 
   err_str, value = Open3.capture2e(*(%W{../public-api/project.rb integration --env #{op.opts.project}}))
