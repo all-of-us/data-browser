@@ -81,7 +81,7 @@ export const HeatMapReactComponent = class extends React.Component<
   shouldUseFixedColorScale = () => {
     // Apply fixed scale only to EHR domain for testing
     // Change this condition to expand to other sections/concepts
-    return this.props.domain === "ehr";
+    return false;
   };
 
   options = {
