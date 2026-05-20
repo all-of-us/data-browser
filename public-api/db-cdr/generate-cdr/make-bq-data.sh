@@ -66,7 +66,7 @@ else
   bq --project_id=$OUTPUT_PROJECT mk $OUTPUT_DATASET
 fi
 
-GENOMICS_DATASET="2024q3r2_genomics"
+GENOMICS_DATASET="2025q4r1_genomics"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
