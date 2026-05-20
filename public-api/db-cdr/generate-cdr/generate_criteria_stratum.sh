@@ -174,6 +174,7 @@ on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3101 join \`$OUTPUT
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
+# PATCHED: union condition_occurrence with observation for reclassified 441840 descendants
 echo "biological sex parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
@@ -189,7 +190,22 @@ from
     where type = 'SNOMED'
     and domain_id = 'CONDITION'
     and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join (
+    SELECT person_id, condition_concept_id AS concept_id
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`
+    UNION ALL
+    SELECT person_id, observation_concept_id AS concept_id
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+    WHERE observation_concept_id IN (
+      SELECT ca.descendant_concept_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON c.concept_id = ca.descendant_concept_id
+      WHERE ca.ancestor_concept_id = 441840
+        AND c.vocabulary_id = 'SNOMED'
+        AND c.standard_concept = 'S'
+    )
+  ) b on a.descendant_concept_id = b.concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   group by 1,2) y
   group by concept_id,gender,cnt
@@ -204,15 +220,16 @@ on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3102 join \`$OUTPUT
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc"
 
+# PATCHED: union condition_occurrence with observation; condition_start_datetime renamed to event_datetime
 echo "age parent concept counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 with y as
 (select ancestor_concept_id as concept_id, b.person_id,
-  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
+  CASE WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age
   from
   (select *
   from \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\`
@@ -222,7 +239,22 @@ with y as
     where type = 'SNOMED'
     and domain_id = 'CONDITION'
     and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join (
+    SELECT person_id, condition_concept_id AS concept_id, condition_start_datetime AS event_datetime
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`
+    UNION ALL
+    SELECT person_id, observation_concept_id AS concept_id, observation_datetime AS event_datetime
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+    WHERE observation_concept_id IN (
+      SELECT ca.descendant_concept_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON c.concept_id = ca.descendant_concept_id
+      WHERE ca.ancestor_concept_id = 441840
+        AND c.vocabulary_id = 'SNOMED'
+        AND c.standard_concept = 'S'
+    )
+  ) b on a.descendant_concept_id = b.concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   group by 1,2,3),
   min_y as
@@ -242,16 +274,17 @@ on cast(c.concept_id as string)=ar.stratum_1 and analysis_id=3105 join \`$OUTPUT
 and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='CONDITION' and cr.full_text like '%rank1%' and ar.stratum_3='Condition'
 group by c.concept_id,ar.stratum_2,ar.stratum_4,ar.count_value order by concept_id asc"
 
+# PATCHED: union condition_occurrence with observation; condition_start_datetime renamed to event_datetime
 echo "combined age + gender parent concept counts 3105"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\`
 (concept_id, stratum_1, stratum_2, stratum_3, domain, count_value, analysis_id)
 with y as
 (select ancestor_concept_id as concept_id, b.person_id,
-  CASE WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
-       WHEN CEIL(TIMESTAMP_DIFF(condition_start_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
+  CASE WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) >= 18 AND CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) <= 29 THEN '2'
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) > 89 THEN '9'
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) >= 30 AND CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) <= 89 THEN CAST(FLOOR(CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) / 10) AS STRING)
+       WHEN CEIL(TIMESTAMP_DIFF(event_datetime, birth_datetime, DAY) / 365.25) < 18 THEN '0' END AS age,
   p.gender_concept_id as gender
   from
   (select *
@@ -262,7 +295,22 @@ with y as
     where type = 'SNOMED'
     and domain_id = 'CONDITION'
     and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join (
+    SELECT person_id, condition_concept_id AS concept_id, condition_start_datetime AS event_datetime
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`
+    UNION ALL
+    SELECT person_id, observation_concept_id AS concept_id, observation_datetime AS event_datetime
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+    WHERE observation_concept_id IN (
+      SELECT ca.descendant_concept_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON c.concept_id = ca.descendant_concept_id
+      WHERE ca.ancestor_concept_id = 441840
+        AND c.vocabulary_id = 'SNOMED'
+        AND c.standard_concept = 'S'
+    )
+  ) b on a.descendant_concept_id = b.concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   group by 1,2,3,4),
   min_y as
@@ -541,6 +589,7 @@ and cr.is_group=0 and cr.is_selectable=1 and cr.type='SNOMED' and cr.domain_id='
 where ar.stratum_2 is not null
 group by c.concept_id,ar.stratum_2,ar.count_value order by concept_id asc;"
 
+# PATCHED: union condition_occurrence with observation for reclassified 441840 descendants
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
 "insert into \`$OUTPUT_PROJECT.$OUTPUT_DATASET.criteria_stratum\` (concept_id, stratum_1, stratum_2, domain, count_value, analysis_id)
 WITH state_information AS (
@@ -563,7 +612,22 @@ from
     where type = 'SNOMED'
     and domain_id = 'CONDITION'
     and is_group = 1 and full_text like '%rank1%')) a
-  join \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\` b on a.descendant_concept_id = b.condition_concept_id
+  join (
+    SELECT person_id, condition_concept_id AS concept_id
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.condition_occurrence\`
+    UNION ALL
+    SELECT person_id, observation_concept_id AS concept_id
+    FROM \`${BQ_PROJECT}.${BQ_DATASET}.observation\`
+    WHERE observation_concept_id IN (
+      SELECT ca.descendant_concept_id
+      FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+      JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+        ON c.concept_id = ca.descendant_concept_id
+      WHERE ca.ancestor_concept_id = 441840
+        AND c.vocabulary_id = 'SNOMED'
+        AND c.standard_concept = 'S'
+    )
+  ) b on a.descendant_concept_id = b.concept_id
   join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on p.person_id = b.person_id
   join state_information si on p.person_id = si.person_id
   group by 1,2) y
