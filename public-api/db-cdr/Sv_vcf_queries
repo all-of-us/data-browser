@@ -277,3 +277,10 @@ SELECT
   b.variant_id_vcf,
   variant_id
 FROM multiple_random_ids b;
+
+
+UPDATE `aou-db-prod.2024q3r2_genomics.aou_sv_vcf_9_processed`
+SET
+  chr2 = NULL,
+  position = CONCAT(SUBSTR(chrom, 4), ':', CAST(pos AS STRING), '-', CAST(`end` AS STRING))
+WHERE chr2 = chrom AND end2 IS NULL;
