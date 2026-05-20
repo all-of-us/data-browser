@@ -504,6 +504,51 @@ and (select flag from \`$OUTPUT_PROJECT.$OUTPUT_DATASET.filter_conditions\` wher
 from \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c left outer join \`${BQ_PROJECT}.${BQ_DATASET}.concept_synonym\` cs on c.concept_id=cs.concept_id and cs.language_concept_id=4180186
 group by c.concept_id,c.concept_name,c.domain_id,c.vocabulary_id,c.concept_class_id, c.standard_concept, c.concept_code, cs.concept_id"
 
+###############################################################
+# Reclassify SNOMED 'Clinical finding' (441840) descendants   #
+# as Condition domain.                                        #
+#                                                             #
+# In the 2025Q4 vocabulary update, concept 441840 and its     #
+# ~29K descendants moved from domain_id = 'Condition' to      #
+# 'Observation' (and 128 to 'Measurement'). Records for       #
+# these concepts now live in the observation and measurement  #
+# tables, not condition_occurrence. We override the domain    #
+# locally so the Data Browser displays them as Conditions,    #
+# matching how the cohort builder presents them.              #
+#                                                             #
+# Two updates:                                                #
+#  1. concept.domain_id     -> 'Condition' (drives domain     #
+#                              info rollups, tile counts)     #
+#  2. achilles_results.     -> 'Condition' (drives per-       #
+#       stratum_3              concept participant counts     #
+#                              displayed under the tile)      #
+###############################################################
+
+echo "Reclassify concept.domain_id to Condition for SNOMED 441840 descendants"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.concept\` c
+SET c.domain_id = 'Condition'
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+WHERE ca.descendant_concept_id = c.concept_id
+  AND ca.ancestor_concept_id = 441840
+  AND c.vocabulary_id = 'SNOMED'
+  AND c.standard_concept = 'S'
+  AND c.domain_id != 'Condition'"
+
+echo "Reassign Achilles stratum_3 to Condition for SNOMED 441840 descendants"
+bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
+"UPDATE \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a
+SET a.stratum_3 = 'Condition'
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.concept_ancestor\` ca
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.concept\` c
+  ON c.concept_id = ca.descendant_concept_id
+WHERE ca.ancestor_concept_id = 441840
+  AND c.vocabulary_id = 'SNOMED'
+  AND c.standard_concept = 'S'
+  AND SAFE_CAST(a.stratum_1 AS INT64) = ca.descendant_concept_id
+  AND a.stratum_3 IN ('Observation', 'Measurement')
+  AND a.analysis_id IN (3000, 3101, 3102, 3105, 3106, 3108)"
+
 # Update counts and prevalence in concept
 q="select count_value from \`${OUTPUT_PROJECT}.${OUTPUT_DATASET}.achilles_results\` a where a.analysis_id = 1"
 person_count=$(bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql "$q" |  tr -dc '0-9')
