@@ -889,8 +889,8 @@ public class GenomicsController implements GenomicsApiDelegate {
         if (sortMetadata != null) {
             SortColumnDetails variantIdColumnSortMetadata = sortMetadata.getVariantId();
             if (variantIdColumnSortMetadata != null && variantIdColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY variant_id "
-                        + getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true);
+                ORDER_BY_CLAUSE = buildPositionOrderBy(
+                        getSortDirection(variantIdColumnSortMetadata.getSortDirection(), true));
             }
 
             SortColumnDetails variantTypeColumnSortMetadata = sortMetadata.getVariantType();
@@ -909,8 +909,8 @@ public class GenomicsController implements GenomicsApiDelegate {
 
             SortColumnDetails positionColumnSortMetadata = sortMetadata.getPosition();
             if (positionColumnSortMetadata != null && positionColumnSortMetadata.isSortActive()) {
-                ORDER_BY_CLAUSE = " ORDER BY position "
-                        + getSortDirection(positionColumnSortMetadata.getSortDirection(), true);
+                ORDER_BY_CLAUSE = buildPositionOrderBy(
+                        getSortDirection(positionColumnSortMetadata.getSortDirection(), true));
             }
 
             SortColumnDetails sizeColumnSortMetadata = sortMetadata.getSize();
@@ -1409,5 +1409,12 @@ public class GenomicsController implements GenomicsApiDelegate {
         String direction = ascending ? "ASC" : "DESC";
         return " ORDER BY (SELECT MAX(CASE " + caseStatement.toString()
                 + "ELSE 0 END) FROM UNNEST(SPLIT(consequence, ', ')) con) " + direction;
+    }
+
+    private static String buildPositionOrderBy(String dir) {
+        return " ORDER BY SAFE_CAST(SUBSTR(chrom, 4) AS INT64) " + dir + " NULLS LAST"
+                + ", SUBSTR(chrom, 4) " + dir
+                + ", pos " + dir
+                + ", variant_id " + dir;
     }
 }

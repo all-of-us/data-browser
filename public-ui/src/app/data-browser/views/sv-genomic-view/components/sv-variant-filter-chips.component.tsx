@@ -24,6 +24,8 @@ const lables = {
   filter: "Filter",
 };
 
+const VARIANT_TYPE_GROUPS = ["INS", "DEL"];
+
 const styles = reactStyles({
   chipCat: {
     display: "flex",
@@ -52,6 +54,70 @@ const styles = reactStyles({
     alignItems: "center",
   },
 });
+
+function stripBrackets(raw: string): string {
+  if (!raw) {
+    return "";
+  }
+  return raw.replace(/^<|>$/g, "");
+}
+
+function groupFor(rawOption: string): string | null {
+  const stripped = stripBrackets(rawOption);
+  for (const group of VARIANT_TYPE_GROUPS) {
+    if (stripped === group || stripped.startsWith(group + ":")) {
+      return group;
+    }
+  }
+  return null;
+}
+
+function formatChipValue(cat: string, val: number): string {
+  if (val == null || Number.isNaN(val)) {
+    return "";
+  }
+  if (cat === "alleleFrequency") {
+    const s = Number(val).toFixed(6);
+    return s.replace(/(\.\d*?)0+$/, "$1").replace(/\.$/, "");
+  }
+  return Number(val).toLocaleString("en-US");
+}
+
+interface VariantTypeChipRow {
+  label: string;
+  members: any[];
+}
+
+// For variantType chips, collapse INS:* and DEL:* into single group chips.
+function buildVariantTypeChipRows(checkedItems: any[]): VariantTypeChipRow[] {
+  const groupBuckets: Record<string, any[]> = {};
+  const standalone: VariantTypeChipRow[] = [];
+
+  for (const item of checkedItems) {
+    const g = groupFor(item.option);
+    if (g) {
+      if (!groupBuckets[g]) {
+        groupBuckets[g] = [];
+      }
+      groupBuckets[g].push(item);
+    } else {
+      standalone.push({
+        label: stripBrackets(item.option),
+        members: [item],
+      });
+    }
+  }
+
+  const rows: VariantTypeChipRow[] = [];
+  for (const group of VARIANT_TYPE_GROUPS) {
+    if (groupBuckets[group] && groupBuckets[group].length > 0) {
+      rows.push({ label: group, members: groupBuckets[group] });
+    }
+  }
+  rows.push(...standalone);
+  return rows;
+}
+
 export class SVVariantFilterChips extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -62,7 +128,6 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
 
   formatChips(filteredMetadata): Array<any> {
     const displayArr = [];
-    // Add null/undefined check
     if (!filteredMetadata) {
       return displayArr;
     }
@@ -75,20 +140,10 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
           Array.isArray(filteredMetadata[key]) &&
           filteredMetadata[key].every((t) => t.checked);
         if (!allChecked) {
-          const el = filteredMetadata[key];
-          if (!el.hasOwnProperty("filterActive")) {
-            if (el.min < 1) {
-              el.min = +el.min.toFixed(2);
-            }
-            if (el.max < 1) {
-              el.max = +el.max.toFixed(2);
-            }
-          }
-          displayArr.push({ cat: key, data: el });
+          displayArr.push({ cat: key, data: filteredMetadata[key] });
         }
       }
     }
-    console.log("formatChips - displayArr:", displayArr);
     return displayArr;
   }
 
@@ -98,41 +153,41 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     _snapshot?: any
   ): void {
     if (prevProps.filteredMetadata !== this.props.filteredMetadata) {
-      console.log(
-        "componentDidUpdate - prevProps.filteredMetadata:",
-        prevProps.filteredMetadata
-      );
-      console.log(
-        "componentDidUpdate - this.props.filteredMetadata:",
-        this.props.filteredMetadata
-      );
-
-      // Clear chips if filteredMetadata is null/undefined
       if (!this.props.filteredMetadata) {
         this.setState({ chips: [] });
         return;
       }
-
       const formattedChips = this.formatChips(this.props.filteredMetadata);
-      console.log("componentDidUpdate - formattedChips:", formattedChips);
       this.setState({ chips: formattedChips });
     }
   }
 
-  removeChip(item, cat) {
-    console.log("removeChip - item:", item);
-    console.log("removeChip - cat:", cat);
+  // For group chips (INS / DEL): uncheck every member at once.
+  removeVariantTypeGroup(members: any[]) {
     const { filteredMetadata } = this.props;
-
-    // Guard against null/undefined filteredMetadata
     if (!filteredMetadata) {
       return;
     }
-
-    console.log(
-      "removeChip - filteredMetadata before:",
-      JSON.parse(JSON.stringify(filteredMetadata))
+    const vt = filteredMetadata["variantType"];
+    if (!vt || !vt.items) {
+      return;
+    }
+    const memberSet = new Set(members);
+    vt.items = vt.items.map((el) =>
+      memberSet.has(el) ? { ...el, checked: false } : el
     );
+    const anyChecked = vt.items.some((t) => t.checked === true);
+    if (!anyChecked && vt.hasOwnProperty("filterActive")) {
+      vt.filterActive = false;
+    }
+    this.props.onChipChange(filteredMetadata);
+  }
+
+  removeChip(item, cat) {
+    const { filteredMetadata } = this.props;
+    if (!filteredMetadata) {
+      return;
+    }
 
     if (filteredMetadata[cat.toString()].hasOwnProperty("filterActive")) {
       filteredMetadata[cat.toString()].items = filteredMetadata[
@@ -148,10 +203,6 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
       try {
         const originalFilterMetadata = JSON.parse(
           localStorage.getItem("svOriginalFilterMetadata") || "{}"
-        );
-        console.log(
-          "removeChip - originalFilterMetadata:",
-          originalFilterMetadata
         );
         if (originalFilterMetadata[cat.toString()]) {
           filteredMetadata[cat.toString()].min =
@@ -173,11 +224,41 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     ) {
       filteredMetadata[cat.toString()].filterActive = false;
     }
-    console.log(
-      "removeChip - filteredMetadata after:",
-      JSON.parse(JSON.stringify(filteredMetadata))
-    );
     this.props.onChipChange(filteredMetadata);
+  }
+
+  // Render variant-type chips with INS/DEL collapsed into group chips.
+  renderVariantTypeChips(el: any, count: number) {
+    const checkedItems = el.data.items.filter((p: any) => p.checked);
+    if (checkedItems.length === 0) {
+      return null;
+    }
+    const rows = buildVariantTypeChipRows(checkedItems);
+
+    return (
+      <div key={count}>
+        <div style={styles.chipCat}>
+          {lables[el.cat.toString()]}
+          {rows.map((row, i) => (
+            <div style={styles.chipLayout} key={i}>
+              <div style={styles.chip}>
+                <span>{row.label.replace(/_/g, " ")}</span>
+                <FontAwesomeIcon
+                  style={{
+                    paddingLeft: ".5rem",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => this.removeVariantTypeGroup(row.members)}
+                  icon={faXmark}
+                  className="clear-search-icon"
+                  caria-hidden="true"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -186,6 +267,14 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
       <div style={styles.chipFormat}>
         {chips.length > 0 &&
           chips.map((el, count) => {
+            // Special handling for variantType — collapse INS/DEL into group chips.
+            if (
+              el.cat === "variantType" &&
+              el.data.hasOwnProperty("filterActive")
+            ) {
+              return this.renderVariantTypeChips(el, count);
+            }
+
             if (el.data.hasOwnProperty("filterActive")) {
               return (
                 <div key={count}>
@@ -198,10 +287,6 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                           ? item.option
                           : "(undefined)";
 
-                        // Remove < and > brackets for variant type display only
-                        if (el.cat === "variantType") {
-                          chipLabel = chipLabel.replace(/[<>]/g, "");
-                        }
                         if (el.cat === "consequence") {
                           chipLabel = chipLabel.trim().toLowerCase();
                         }
@@ -241,11 +326,11 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                             <span style={{ fontFamily: "GothamBook" }}>
                               Min&nbsp;
                             </span>
-                            <span>{el.data.min} </span>
+                            <span>{formatChipValue(el.cat, el.data.min)} </span>
                             <span style={{ fontFamily: "GothamBook" }}>
                               &nbsp;|&nbsp;Max&nbsp;
                             </span>
-                            <span>{el.data.max}</span>
+                            <span>{formatChipValue(el.cat, el.data.max)}</span>
                             <FontAwesomeIcon
                               style={{
                                 paddingLeft: ".5rem",

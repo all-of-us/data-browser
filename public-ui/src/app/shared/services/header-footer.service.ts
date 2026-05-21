@@ -22,6 +22,11 @@ export const menuItems = [
         submenu: [],
       },
       {
+        title: "Partnered Research Studies",
+        url: "https://www.researchallofus.org/prs-info/",
+        submenu: [],
+      },
+      {
         title: "Research Hub Updates",
         url: "https://www.researchallofus.org/research-hub-updates/",
         submenu: [],
