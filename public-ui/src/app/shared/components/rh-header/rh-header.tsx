@@ -227,6 +227,19 @@ export class RhHeader extends React.Component<{}, State> {
                           </a>
                           <div className="item-expand" />
                         </li>
+                        <li
+                          id="menu-item-allbyall"
+                          className="menu-item menu-item-type-custom menu-item-object-custom menu-item-allbyall"
+                        >
+                          <a
+                            href="https://allbyall.researchallofus.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            All by All Browser
+                          </a>
+                          <div className="item-expand" />
+                        </li>
                       </ul>
                     </li>
                     <li
