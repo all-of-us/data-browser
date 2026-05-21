@@ -343,7 +343,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   <SVVariantRowComponent
                     key={index}
                     variant={variant}
-                    resetExpandedSignal={this.state.resetExpandedSignal}   // NEW
+                    resetExpandedSignal={this.state.resetExpandedSignal}
                     allowParentScroll={() =>
                       this.setState({
                         allowParentScroll: !this.state.allowParentScroll,

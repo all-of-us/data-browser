@@ -192,7 +192,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
       this.setState({
         searchResults: searchResults,
         loading: loadingResults,
-        resetExpandedSignal: this.state.resetExpandedSignal + 1,  // NEW
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
       });
     }
   }
@@ -253,7 +253,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
     this.setState(
       {
         sortMetadata: sortMetadata,
-        resetExpandedSignal: this.state.resetExpandedSignal + 1,  // NEW
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
       },
       () => {
         this.props.onSortClick(this.state.sortMetadata);
@@ -351,7 +351,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   <VariantRowComponent
                     key={index}
                     variant={variant}
-                    resetExpandedSignal={this.state.resetExpandedSignal}   // NEW
+                    resetExpandedSignal={this.state.resetExpandedSignal}
                     allowParentScroll={() =>
                       this.setState({
                         allowParentScroll: !this.state.allowParentScroll,
