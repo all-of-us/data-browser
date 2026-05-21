@@ -173,6 +173,7 @@ interface State {
   filterChipsShow: boolean;
   scrollClean: boolean;
   firstGene: string;
+  previousSelectionId: number;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -319,6 +320,7 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 10)
         ),
         firstGene: "",
+        previousSelectionId: 1,
       };
     }
 
@@ -544,7 +546,6 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .getSVGenomicFilterOptions(searchTerm)
         .then((result) => {
-          console.log(result);
           result.gene.items.forEach((el) => {
             el.checked = false;
           });
@@ -744,7 +745,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }
@@ -804,7 +804,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }
@@ -835,6 +834,15 @@ export const GenomicViewComponent = withRouteData(
     }
 
     topBarClick(selected: number) {
+      // Opening the FAQ — remember where we came from, don't clear search/filters or change URL
+      if (selected === 4) {
+        this.setState({
+          previousSelectionId: this.state.selectionId,
+          selectionId: 4,
+        });
+        return;
+      }
+
       // Clear filter metadata when switching tabs
       if (selected === 1) {
         this.clearFilterMetadata();
@@ -871,7 +879,7 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFaqClose() {
-      this.setState({ selectionId: 1 });
+      this.setState({ selectionId: this.state.previousSelectionId });
     }
 
     handleSearchTerm(searchTerm: string) {
@@ -996,7 +1004,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }

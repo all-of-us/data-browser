@@ -1240,8 +1240,8 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] rangeSplit = regionTermSplit[1].split("-");
                 try {
                     if (rangeSplit.length == 2) {
-                        low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                        high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                        low = Long.valueOf(rangeSplit[0]);
+                        high = Long.valueOf(rangeSplit[1]);
                         wherePositionFlag = true;
                         searchSql += AND_POSITION;
                     }
@@ -1323,8 +1323,8 @@ public class GenomicsController implements GenomicsApiDelegate {
                 String[] rangeSplit = regionTermSplit[1].split("-");
                 try {
                     if (rangeSplit.length == 2) {
-                        low = Math.min(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
-                        high = Math.max(Long.valueOf(rangeSplit[0]), Long.valueOf(rangeSplit[1]));
+                        low = Long.valueOf(rangeSplit[0]);
+                        high = Long.valueOf(rangeSplit[1]);
                         wherePositionFlag = true;
                         searchSql += AND_POS;
                     }

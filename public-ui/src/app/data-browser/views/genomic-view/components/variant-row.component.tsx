@@ -82,6 +82,7 @@ interface Props {
   variant: Variant;
   allowParentScroll: Function;
   onGeneClick: (gene: string) => void;
+  resetExpandedSignal?: number;
 }
 
 interface State {
@@ -100,6 +101,15 @@ export class VariantRowComponent extends React.Component<Props, State> {
       variantDetails: null,
       loadingVarDetails: true,
     };
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    if (
+      prevProps.resetExpandedSignal !== this.props.resetExpandedSignal &&
+      this.state.variantExpanded
+    ) {
+      this.setState({ variantExpanded: false });
+    }
   }
 
   getVariantDetails(variantId: string) {

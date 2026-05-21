@@ -90,10 +90,10 @@ const styles = reactStyles({
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 72rem;
+    width: 75rem;
     position: sticky;
     left: 0;
     top:0;
@@ -102,8 +102,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 10rem 7rem 11rem 8rem 5rem 7rem 7rem 8rem 9rem;
-        width: 72rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+        width: 75rem;
     }
 }
 .paginator {
@@ -150,6 +150,7 @@ interface State {
   svResults: SVVariant[];
   sortMetadata: any;
   allowParentScroll: Boolean;
+  resetExpandedSignal: number;
 }
 
 export class SVVariantTableComponent extends React.Component<Props, State> {
@@ -165,6 +166,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
     "Allele Number",
     "Allele Frequency",
     "Homozygote Count",
+    "Filter",
   ];
   debounceTimer = null;
 
@@ -175,6 +177,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       svResults: props.svResults,
       sortMetadata: props.sortMetadata,
       allowParentScroll: true,
+      resetExpandedSignal: 0,
     };
   }
 
@@ -185,7 +188,11 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       this.scrollAreaToTop();
     }
     if (prevProps.svResults !== svResults) {
-      this.setState({ svResults: svResults, loading: loadingResults });
+      this.setState({
+        svResults: svResults,
+        loading: loadingResults,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
+      });
     }
   }
 
@@ -219,7 +226,11 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
   };
 
   sortClick(key: string) {
-    const { sortMetadata } = this.state;
+    const sortMetadata = { ...this.state.sortMetadata };
+    Object.keys(sortMetadata).forEach((sKey) => {
+      sortMetadata[sKey] = { ...sortMetadata[sKey] };
+    });
+
     if (sortMetadata[key].sortActive) {
       const direction = sortMetadata[key].sortDirection;
       direction === "desc"
@@ -236,9 +247,16 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         sortMetadata[sKey].sortDirection = "desc";
       }
     }
-    this.setState({ sortMetadata: sortMetadata }, () => {
-      this.props.onSortClick(this.state.sortMetadata);
-    });
+
+    this.setState(
+      {
+        sortMetadata: sortMetadata,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
+      },
+      () => {
+        this.props.onSortClick(this.state.sortMetadata);
+      }
+    );
   }
 
   searchItem(searchTerm: string) {
@@ -315,11 +333,8 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
               {this.renderColumnHeader("alleleCount", "Allele Count")}
               {this.renderColumnHeader("alleleNumber", "Allele Number")}
               {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader(
-                "homozygoteCount",
-                "Homozygote Count",
-                styles.last
-              )}
+              {this.renderColumnHeader("homozygoteCount", "Homozygote Count")}
+              {this.renderColumnHeader("filter", "Filter", styles.last)}
             </div>
 
             {svResults &&
@@ -328,6 +343,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   <SVVariantRowComponent
                     key={index}
                     variant={variant}
+                    resetExpandedSignal={this.state.resetExpandedSignal}
                     allowParentScroll={() =>
                       this.setState({
                         allowParentScroll: !this.state.allowParentScroll,
@@ -336,6 +352,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   />
                 );
               })}
+
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
                 {currentPage < svVariantListSize / rowCount &&
