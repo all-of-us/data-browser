@@ -150,6 +150,7 @@ interface State {
   svResults: SVVariant[];
   sortMetadata: any;
   allowParentScroll: Boolean;
+  resetExpandedSignal: number;
 }
 
 export class SVVariantTableComponent extends React.Component<Props, State> {
@@ -176,6 +177,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       svResults: props.svResults,
       sortMetadata: props.sortMetadata,
       allowParentScroll: true,
+      resetExpandedSignal: 0,
     };
   }
 
@@ -186,7 +188,11 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       this.scrollAreaToTop();
     }
     if (prevProps.svResults !== svResults) {
-      this.setState({ svResults: svResults, loading: loadingResults });
+      this.setState({
+        svResults: svResults,
+        loading: loadingResults,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
+      });
     }
   }
 
@@ -220,7 +226,11 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
   };
 
   sortClick(key: string) {
-    const { sortMetadata } = this.state;
+    const sortMetadata = { ...this.state.sortMetadata };
+    Object.keys(sortMetadata).forEach((sKey) => {
+      sortMetadata[sKey] = { ...sortMetadata[sKey] };
+    });
+
     if (sortMetadata[key].sortActive) {
       const direction = sortMetadata[key].sortDirection;
       direction === "desc"
@@ -237,9 +247,16 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         sortMetadata[sKey].sortDirection = "desc";
       }
     }
-    this.setState({ sortMetadata: sortMetadata }, () => {
-      this.props.onSortClick(this.state.sortMetadata);
-    });
+
+    this.setState(
+      {
+        sortMetadata: sortMetadata,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,
+      },
+      () => {
+        this.props.onSortClick(this.state.sortMetadata);
+      }
+    );
   }
 
   searchItem(searchTerm: string) {
@@ -326,6 +343,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   <SVVariantRowComponent
                     key={index}
                     variant={variant}
+                    resetExpandedSignal={this.state.resetExpandedSignal}   // NEW
                     allowParentScroll={() =>
                       this.setState({
                         allowParentScroll: !this.state.allowParentScroll,
@@ -334,6 +352,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                   />
                 );
               })}
+
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
                 {currentPage < svVariantListSize / rowCount &&

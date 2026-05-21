@@ -546,7 +546,6 @@ export const GenomicViewComponent = withRouteData(
       genomicsApi()
         .getSVGenomicFilterOptions(searchTerm)
         .then((result) => {
-          console.log(result);
           result.gene.items.forEach((el) => {
             el.checked = false;
           });
@@ -746,7 +745,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }
@@ -806,7 +804,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }
@@ -1007,7 +1004,6 @@ export const GenomicViewComponent = withRouteData(
             );
             const firstGene = firstWithGene?.genes?.split(",")[0]?.trim();
             if (firstGene) {
-              console.log("First gene from results:", firstGene);
               this.setState({ firstGene });
             }
           }

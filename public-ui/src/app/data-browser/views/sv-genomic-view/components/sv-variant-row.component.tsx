@@ -93,6 +93,7 @@ const css = `
 interface Props {
   variant: SVVariant;
   allowParentScroll: Function;
+  resetExpandedSignal?: number;
 }
 
 interface State {
@@ -115,6 +116,15 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       cnCounts: [],
       cnCountsLoading: false,
     };
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    if (
+      prevProps.resetExpandedSignal !== this.props.resetExpandedSignal &&
+      this.state.svVariantExpanded
+    ) {
+      this.setState({ svVariantExpanded: false });
+    }
   }
 
   getVariantDetails(variantId: string) {

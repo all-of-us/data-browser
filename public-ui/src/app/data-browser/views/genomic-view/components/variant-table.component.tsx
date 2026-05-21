@@ -152,6 +152,7 @@ interface State {
   searchResults: Variant[];
   sortMetadata: any;
   allowParentScroll: Boolean;
+  resetExpandedSignal: number;
 }
 
 export class VariantTableComponent extends React.Component<Props, State> {
@@ -177,6 +178,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
       searchResults: props.searchResults,
       sortMetadata: props.sortMetadata,
       allowParentScroll: true,
+      resetExpandedSignal: 0,
     };
   }
 
@@ -187,7 +189,11 @@ export class VariantTableComponent extends React.Component<Props, State> {
       this.scrollAreaToTop();
     }
     if (prevProps.searchResults !== searchResults) {
-      this.setState({ searchResults: searchResults, loading: loadingResults });
+      this.setState({
+        searchResults: searchResults,
+        loading: loadingResults,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,  // NEW
+      });
     }
   }
 
@@ -221,7 +227,12 @@ export class VariantTableComponent extends React.Component<Props, State> {
   };
 
   sortClick(key: string) {
-    const { sortMetadata } = this.state;
+    // Clone sortMetadata and each inner object so we don't mutate state directly
+    const sortMetadata = { ...this.state.sortMetadata };
+    Object.keys(sortMetadata).forEach((sKey) => {
+      sortMetadata[sKey] = { ...sortMetadata[sKey] };
+    });
+
     if (sortMetadata[key].sortActive) {
       const direction = sortMetadata[key].sortDirection;
       direction === "desc"
@@ -238,9 +249,16 @@ export class VariantTableComponent extends React.Component<Props, State> {
         sortMetadata[sKey].sortDirection = "desc";
       }
     }
-    this.setState({ sortMetadata: sortMetadata }, () => {
-      this.props.onSortClick(this.state.sortMetadata);
-    });
+
+    this.setState(
+      {
+        sortMetadata: sortMetadata,
+        resetExpandedSignal: this.state.resetExpandedSignal + 1,  // NEW
+      },
+      () => {
+        this.props.onSortClick(this.state.sortMetadata);
+      }
+    );
   }
 
   searchItem(searchTerm: string) {
@@ -333,6 +351,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   <VariantRowComponent
                     key={index}
                     variant={variant}
+                    resetExpandedSignal={this.state.resetExpandedSignal}   // NEW
                     allowParentScroll={() =>
                       this.setState({
                         allowParentScroll: !this.state.allowParentScroll,
@@ -342,6 +361,7 @@ export class VariantTableComponent extends React.Component<Props, State> {
                   />
                 );
               })}
+
             {environment.infiniteSrcoll && (
               <div style={{ marginTop: "2rem" }}>
                 {currentPage < variantListSize / rowCount && loadingResults && (
