@@ -173,6 +173,7 @@ interface State {
   filterChipsShow: boolean;
   scrollClean: boolean;
   firstGene: string;
+  previousSelectionId: number;
 }
 
 class SortMetadataClass implements SortMetadata {
@@ -319,6 +320,7 @@ export const GenomicViewComponent = withRouteData(
           new SortColumnDetailsClass(false, "asc", 10)
         ),
         firstGene: "",
+        previousSelectionId: 1,
       };
     }
 
@@ -835,6 +837,15 @@ export const GenomicViewComponent = withRouteData(
     }
 
     topBarClick(selected: number) {
+      // Opening the FAQ — remember where we came from, don't clear search/filters or change URL
+      if (selected === 4) {
+        this.setState({
+          previousSelectionId: this.state.selectionId,
+          selectionId: 4,
+        });
+        return;
+      }
+
       // Clear filter metadata when switching tabs
       if (selected === 1) {
         this.clearFilterMetadata();
@@ -871,7 +882,7 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleFaqClose() {
-      this.setState({ selectionId: 1 });
+      this.setState({ selectionId: this.state.previousSelectionId });
     }
 
     handleSearchTerm(searchTerm: string) {
