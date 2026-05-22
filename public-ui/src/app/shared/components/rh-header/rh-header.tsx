@@ -103,20 +103,20 @@ export class RhHeader extends React.Component<{}, State> {
                           <div className="item-expand" />
                         </li>
                         <li
-                          id="menu-item-91"
-                          className="icon_privacy-security menu-item menu-item-type-post_type menu-item-object-page menu-item-91"
-                        >
-                          <a href="https://www.researchallofus.org/privacy-security-protocols/">
-                            Privacy &amp; Security Protocols
-                          </a>
-                          <div className="item-expand" />
-                        </li>
-                        <li
                           id="menu-item-prs"
                           className="menu-item menu-item-type-post_type menu-item-object-page menu-item-prs"
                         >
                           <a href="https://www.researchallofus.org/prs-info/">
                             Partnered Research Studies
+                          </a>
+                          <div className="item-expand" />
+                        </li>
+                        <li
+                          id="menu-item-91"
+                          className="icon_privacy-security menu-item menu-item-type-post_type menu-item-object-page menu-item-91"
+                        >
+                          <a href="https://www.researchallofus.org/privacy-security-protocols/">
+                            Privacy &amp; Security Protocols
                           </a>
                           <div className="item-expand" />
                         </li>
@@ -270,6 +270,15 @@ export class RhHeader extends React.Component<{}, State> {
                         >
                           <a href="https://www.researchallofus.org/publication-directory/">
                             Publication Directory
+                          </a>
+                          <div className="item-expand" />
+                        </li>
+                        <li
+                          id="menu-item-prs-directory"
+                          className="menu-item menu-item-type-post_type menu-item-object-page menu-item-prs-directory"
+                        >
+                          <a href="https://www.researchallofus.org/prs-directory/">
+                            Partnered Research Directory
                           </a>
                           <div className="item-expand" />
                         </li>

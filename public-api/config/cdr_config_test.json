@@ -128,7 +128,6 @@
   },
   {
     "cdrVersionId": 15,
-    "isDefault": true,
     "name": "v0-6-rc4 Release version of 2025q4r1_combined",
     "dataAccessLevel": 1,
     "bigqueryProject": "aou-res-curation-prod",
@@ -139,5 +138,19 @@
     "releaseNumber": 15,
     "numParticipants": 747033,
     "publicDbName": "p_2025q4_7"
+  },
+  {
+    "cdrVersionId": 16,
+    "isDefault": true,
+    "name": "v0-6-rc5 Release version of 2025q4r5_combined",
+    "dataAccessLevel": 1,
+    "bigqueryProject": "aou-res-curation-prod",
+    "bigqueryDataset": "2025q4r5_combined_release",
+    "genomicsProject": "aou-db-prod",
+    "genomicsDataset": "2025q4r5_genomics",
+    "creationTime": "2026-04-27 12:21:29Z",
+    "releaseNumber": 16,
+    "numParticipants": 747040,
+    "publicDbName": "p_2025q4_13"
   }
 ]
