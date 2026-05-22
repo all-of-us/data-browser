@@ -226,6 +226,32 @@ const ShareIcon: React.FC<{ onClick?: (e: React.MouseEvent) => void }> = ({
   </svg>
 );
 
+// Format integers with thousands separators (1234 -> "1,234").
+function formatNumber(val: any): string {
+  if (val == null || val === "") {
+    return "";
+  }
+  const n = Number(val);
+  if (Number.isNaN(n)) {
+    return String(val);
+  }
+  return n.toLocaleString("en-US");
+}
+
+// Variant card shows the full size in base pairs with " bp" suffix:
+//   266       -> "266 bp"
+//   1234567   -> "1,234,567 bp"
+function formatSizeCard(val: any): string {
+  if (val == null || val === "") {
+    return "";
+  }
+  const n = Number(val);
+  if (Number.isNaN(n)) {
+    return String(val);
+  }
+  return `${n.toLocaleString("en-US")} bp`;
+}
+
 interface Props {
   closed: Function;
   hovered: Function;
@@ -403,7 +429,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                         ? "N/A"
                         : variantDetails.size != null &&
                           variantDetails.size >= 0
-                        ? variantDetails.size
+                        ? formatSizeCard(variantDetails.size)
                         : "-"}
                     </span>
                   </div>

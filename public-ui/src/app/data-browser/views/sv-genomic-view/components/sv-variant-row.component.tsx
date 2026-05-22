@@ -177,6 +177,40 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       : consequence;
   }
 
+  // Format integers with thousands separators (1234 -> "1,234").
+  formatNumber(val: any): string {
+    if (val == null || val === "") {
+      return "";
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return String(val);
+    }
+    return n.toLocaleString("en-US");
+  }
+
+  // Compact size for the results table:
+  //   <1,000           -> "<n> bp"          (e.g. 266 -> "266 bp")
+  //   1,000..999,999   -> "<n/1000> kb"     (1 decimal, e.g. 1,234 -> "1.2 kb")
+  //   >=1,000,000      -> "<n/1e6> Mb"      (1 decimal, e.g. 1,234,567 -> "1.2 Mb")
+  formatSizeTable(val: any): string {
+    if (val == null || val === "") {
+      return "";
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return String(val);
+    }
+    if (n < 1000) {
+      // Keep integers as-is so we don't see "266.0 bp".
+      return `${n} bp`;
+    }
+    if (n < 1_000_000) {
+      return `${(n / 1000).toFixed(1)} kb`;
+    }
+    return `${(n / 1_000_000).toFixed(1)} Mb`;
+  }
+
   formatFilter(filter: string) {
     if (!filter) {
       return "-";
@@ -259,13 +293,13 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
               variant.variantType?.includes("BND")
                 ? "N/A"
                 : variant.size != null && variant.size >= 0
-                ? variant.size
+                ? this.formatSizeTable(variant.size)
                 : "-"}
             </div>
-            <div style={styles.rowItem}>{variant.alleleCount}</div>
-            <div style={styles.rowItem}>{variant.alleleNumber}</div>
+            <div style={styles.rowItem}>{this.formatNumber(variant.alleleCount)}</div>
+            <div style={styles.rowItem}>{this.formatNumber(variant.alleleNumber)}</div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-            <div style={styles.rowItem}>{variant.homozygoteCount}</div>
+            <div style={styles.rowItem}>{this.formatNumber(variant.homozygoteCount)}</div>
             <div style={styles.filterItem}>
               {this.formatFilter(variant.filter)}
             </div>
