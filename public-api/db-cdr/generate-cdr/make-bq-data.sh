@@ -67,6 +67,7 @@ else
 fi
 
 GENOMICS_DATASET="2025q4r5_genomics"
+VAT_TABLE="foxtrot_v4_2025_07_29_vat_v9_r2_p1"
 
 #Check if tables to be copied over exists in bq project dataset
 tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
@@ -110,7 +111,7 @@ if [ "$SEARCH_VAT" = true ]; then
   "CREATE OR REPLACE TABLE \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts_in_vat\` as
   with distinct_transcripts as
   (
-  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\` d
+  SELECT DISTINCT d.transcript FROM \`$BQ_PROJECT.$BQ_DATASET.$VAT_TABLE\` d
   ),
   mane_transcripts as
   (SELECT d.transcript from distinct_transcripts d join \`$OUTPUT_PROJECT.$GENOMICS_DATASET.mane_transcripts\` AS m ON d.transcript LIKE CONCAT('%', m.transcript, '%'))
@@ -193,12 +194,12 @@ ROW_NUMBER() OVER(PARTITION BY vid ORDER BY
     END,
     transcript ASC
 ) AS row_number
-  FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\`
+  FROM \`$BQ_PROJECT.$BQ_DATASET.$VAT_TABLE\`
   WHERE is_canonical_transcript OR transcript is NULL
   ORDER BY vid, row_number),
   genes as (
      SELECT vid, ARRAY_TO_STRING(array_agg(distinct gene_symbol ignore nulls ORDER BY gene_symbol), ', ') as genes
-     FROM \`$BQ_PROJECT.$BQ_DATASET.foxtrot_v4_2025_07_29_vat\`
+     FROM \`$BQ_PROJECT.$BQ_DATASET.$VAT_TABLE\`
      GROUP BY vid
   )
   SELECT
