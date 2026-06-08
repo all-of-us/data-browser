@@ -137,13 +137,6 @@ public class GenomicsController implements GenomicsApiDelegate {
         SV_CONSEQUENCE_SEVERITY_RANKS = Collections.unmodifiableMap(map);
     }
 
-    // ====================================================================
-    // TABLE NAMES
-    // ====================================================================
-    // Declared before the SQL templates below so they are initialized first
-    // (static final fields are initialized in textual order; a template that
-    // references one of these before it is assigned would see null).
-
     private static final String WGS_VARIANT_TABLE = "wgs_variant";
     private static final String SV_VARIANT_TABLE = "aou_sv_vcf_9_processed";
 
