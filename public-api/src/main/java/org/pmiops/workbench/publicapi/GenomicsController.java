@@ -138,6 +138,16 @@ public class GenomicsController implements GenomicsApiDelegate {
     }
 
     // ====================================================================
+    // TABLE NAMES
+    // ====================================================================
+    // Declared before the SQL templates below so they are initialized first
+    // (static final fields are initialized in textual order; a template that
+    // references one of these before it is assigned would see null).
+
+    private static final String WGS_VARIANT_TABLE = "wgs_variant";
+    private static final String SV_VARIANT_TABLE = "aou_sv_vcf_9_processed";
+
+    // ====================================================================
     // SEARCH TERM REGEX PATTERNS
     // ====================================================================
 
@@ -197,7 +207,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     // ====================================================================
 
     private static final String COUNT_SQL_TEMPLATE =
-            "SELECT count(*) as count FROM ${projectId}.${dataSetId}.wgs_variant";
+            "SELECT count(*) as count FROM ${projectId}.${dataSetId}." + WGS_VARIANT_TABLE;
 
     private static final String VARIANT_LIST_SQL_TEMPLATE =
             "SELECT variant_id, genes, "
@@ -209,7 +219,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "(SELECT STRING_AGG(distinct d, \", \" order by d asc) "
                     + "FROM UNNEST(clinical_significance) d) as clin_sig_agg_str, "
                     + "allele_count, allele_number, allele_frequency, homozygote_count "
-                    + "FROM ${projectId}.${dataSetId}.wgs_variant";
+                    + "FROM ${projectId}.${dataSetId}." + WGS_VARIANT_TABLE;
 
     private static final String VARIANT_DETAIL_SQL_TEMPLATE =
             "SELECT dna_change, transcript, ARRAY_TO_STRING(rs_number, ', ') as rs_number, "
@@ -230,7 +240,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "gvs_all_ac as total_allele_count, gvs_all_an as total_allele_number, "
                     + "gvs_all_af as total_allele_frequency, "
                     + "homozygote_count as total_homozygote_count "
-                    + "from ${projectId}.${dataSetId}.wgs_variant";
+                    + "from ${projectId}.${dataSetId}." + WGS_VARIANT_TABLE;
 
     // Single-scan filter options query. Replaces the previous 7-CTE structure
     // that scanned wgs_variant 7 times. The `filtered` CTE is evaluated once
@@ -240,7 +250,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "  SELECT genes, consequence, variant_type, clinical_significance,\n"
                     + "         allele_count, allele_number, homozygote_count,\n"
                     + "         contig, position, variant_id, rs_number\n"
-                    + "  FROM `${projectId}.${dataSetId}.wgs_variant`\n";
+                    + "  FROM `${projectId}.${dataSetId}." + WGS_VARIANT_TABLE + "`\n";
 
     private static final String FILTER_OPTION_SQL_SUFFIX =
             ")\n"
@@ -276,7 +286,7 @@ public class GenomicsController implements GenomicsApiDelegate {
     // ====================================================================
 
     private static final String SV_COUNT_SQL_TEMPLATE =
-            "SELECT count(*) as count FROM ${projectId}.${dataSetId}.aou_sv_vcf_9_processed";
+            "SELECT count(*) as count FROM ${projectId}.${dataSetId}." + SV_VARIANT_TABLE;
 
     private static final String SV_VARIANT_LIST_SQL_TEMPLATE =
             "SELECT variant_id, variant_type, consequence, position, a.size, \n"
@@ -287,7 +297,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "CASE WHEN variant_type = '<CNV>' THEN a.cn_nonref_freq "
                     + "ELSE a.allele_frequency END AS allele_frequency, \n"
                     + "a.homozygote_count, a.filter "
-                    + "FROM ${projectId}.${dataSetId}.aou_sv_vcf_9_processed a";
+                    + "FROM ${projectId}.${dataSetId}." + SV_VARIANT_TABLE + " a";
 
     private static final String SV_VARIANT_DETAIL_SQL_TEMPLATE =
             "SELECT variant_type, consequence_genes, position, size, variant_id_vcf, \n"
@@ -350,11 +360,11 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "CASE WHEN variant_type = '<CNV>' THEN cn_nonref_freq "
                     + "ELSE allele_frequency END as total_allele_frequency, \n"
                     + "homozygote_count as total_homozygote_count "
-                    + "from ${projectId}.${dataSetId}.aou_sv_vcf_9_processed a \n";
+                    + "from ${projectId}.${dataSetId}." + SV_VARIANT_TABLE + " a \n";
 
     private static final String SV_CN_COUNT_SQL_TEMPLATE =
             "SELECT offset AS copy_number, CAST(TRIM(count) AS INT64) AS sample_count "
-                    + "FROM ${projectId}.${dataSetId}.aou_sv_vcf_9_processed a, "
+                    + "FROM ${projectId}.${dataSetId}." + SV_VARIANT_TABLE + " a, "
                     + "UNNEST(SPLIT(REGEXP_REPLACE(cn_count, r'[\\[\\]\\s]', ''), ',')) "
                     + "AS count WITH OFFSET AS offset "
                     + "WHERE (variant_id = @variant_id OR variant_id_vcf = @variant_id) "
@@ -370,7 +380,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "         allele_count, cn_nonref_count,\n"
                     + "         allele_number, cn_number,\n"
                     + "         consequence_genes, chrom, pos, variant_id, variant_id_vcf\n"
-                    + "  FROM `${projectId}.${dataSetId}.aou_sv_vcf_9_processed`\n";
+                    + "  FROM `${projectId}.${dataSetId}." + SV_VARIANT_TABLE + "`\n";
 
     private static final String SV_FILTER_OPTION_SQL_SUFFIX =
             ")\n"
@@ -1004,7 +1014,7 @@ public class GenomicsController implements GenomicsApiDelegate {
                 + "CASE WHEN variant_type = '<CNV>' THEN a.cn_nonref_freq "
                 + "ELSE a.allele_frequency END AS allele_frequency, "
                 + "a.homozygote_count, a.filter "
-                + "FROM ${projectId}.${dataSetId}.aou_sv_vcf_9_processed a"
+                + "FROM ${projectId}.${dataSetId}." + SV_VARIANT_TABLE + " a"
                 + searchSqlQuery;
 
         GenomicFilterBuilder filterBuilder = new GenomicFilterBuilder(true);
