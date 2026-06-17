@@ -131,6 +131,8 @@ const styles = reactStyles({
     display: "flex",
     paddingTop: "1em",
     justifyContent: "flex-start",
+    position: "relative",
+    zIndex: 150,
   },
   faqLink: {
     color: "#0079b8",

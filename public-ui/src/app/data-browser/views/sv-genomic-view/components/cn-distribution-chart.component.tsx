@@ -8,6 +8,7 @@ import { CNCountEntry } from "publicGenerated";
 
 const THEME_COLOR = "#262262";
 const MAX_CN_BINS = 10;
+const OVERFLOW_LABEL = "\u226510"; // "≥10"
 
 const styles = reactStyles({
   chartContainer: {
@@ -60,7 +61,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
       .reduce((sum, e) => sum + (e.sampleCount || 0), 0);
 
     if (overflow > 0 || cnCounts.some((e) => (e.copyNumber || 0) >= MAX_CN_BINS)) {
-      categories.push("\u226510");
+      categories.push(OVERFLOW_LABEL);
       data.push(overflow);
     }
 
@@ -85,11 +86,15 @@ export class CNDistributionChart extends React.Component<Props, State> {
     const newBaseOptions = getBaseOptions();
     newBaseOptions.chart.type = "column";
     newBaseOptions.chart.height = 280;
+    // Push the title down (away from whatever sits above this chart — the donut).
+    newBaseOptions.chart.spacingTop = 25;
 
     newBaseOptions.title.useHTML = true;
     newBaseOptions.title.text =
       '<div style="color:#262262;text-align:center;font-size:12px;">COPY NUMBER DISTRIBUTION</div>';
     newBaseOptions.title.align = "center";
+    // Bring the title close to the bars below it.
+    newBaseOptions.title.margin = 5;
     newBaseOptions.title.style = {
       color: THEME_COLOR,
       fontSize: "12px",
@@ -148,10 +153,13 @@ export class CNDistributionChart extends React.Component<Props, State> {
       if (!visiblePoint) {
         return false;
       }
+      // The overflow bucket renders as "CN≥10"; normal bins as "CN=<n>".
+      const xStr = String(visiblePoint.x);
+      const cnLabel = xStr === OVERFLOW_LABEL ? "CN" + OVERFLOW_LABEL : "CN=" + xStr;
       return (
-        '<div style="text-align:center;font-family:GothamBook,Arial,sans-serif;font-size:14px;">' +
-        "<strong>CN=" +
-        visiblePoint.x +
+        '<div style="padding: 0 1em; text-align:center;font-family:GothamBook,Arial,sans-serif;font-size:14px;">' +
+        "<strong>" +
+        cnLabel +
         "</strong>: " +
         visiblePoint.y.toLocaleString() +
         " samples</div>"

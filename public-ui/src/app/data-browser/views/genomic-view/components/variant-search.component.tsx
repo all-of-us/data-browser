@@ -238,7 +238,7 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             <strong>Genomic Region:</strong> chr13:32355000-32375000
           </div>
         </div>
-        {environment.geneLeads && currentGene && (
+        {environment.geneLeads && currentGene && searchWord && (
           <div style={{ width: "100%", paddingTop: "1em" }}>
             <GeneLeadsIdeogram gene={this.state.currentGene} />
           </div>

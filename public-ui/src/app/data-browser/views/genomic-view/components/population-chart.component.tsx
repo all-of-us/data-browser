@@ -20,10 +20,7 @@ interface Props {
   isCNV?: boolean;
 }
 
-export class PopulationChartReactComponent extends React.Component<
-  Props,
-  State
-> {
+export class PopulationChartReactComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = { options: null };
@@ -48,6 +45,9 @@ export class PopulationChartReactComponent extends React.Component<
       newBaseOptions.title.text =
         '<div style="color:#262262;text-align:center;font-size:2em;">PERCENTAGE OF NON-DIPLOID SAMPLES</div>';
       newBaseOptions.title.verticalAlign = "top";
+      newBaseOptions.title.margin = 5;
+      newBaseOptions.chart.spacingTop = 5;
+      newBaseOptions.chart.spacingBottom = 20;
     } else {
       newBaseOptions.title.text =
         '<div style="color:#262262;text-align:center">PERCENTAGE <br/> OF ALLELES</div>';
@@ -104,6 +104,7 @@ export class PopulationChartReactComponent extends React.Component<
         size: "80%",
         shadow: false,
         innerSize: "60%",
+        center: isCNV ? ["50%", "40%"] : ["50%", "50%"],
         showInLegend: true,
         dataLabels: {
           enabled: false,
@@ -121,7 +122,7 @@ export class PopulationChartReactComponent extends React.Component<
   ) {
     const countLabel = isCNV ? "Samples" : "AC";
     return (
-      '<div class="pop-chart-tooltip" style="white-space: nowrap; text-align: center; font-size:1.8em;">' +
+      '<div class="pop-chart-tooltip" style="padding: 0 1em; white-space: nowrap; text-align: center; font-size:1.8em;">' +
       "<strong>" +
       name +
       "</strong><br />" +
