@@ -19,12 +19,12 @@ interface State {
 const styles = reactStyles({
   container: {
     display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    alignItems: "flex-start",
     justifyContent: "flex-start",
-    gap: "0.75rem",
+    gap: "0.4rem",
     padding: "0.5rem 0.5rem 0.5rem 1rem",
-    fontSize: "0.8em",
+    fontSize: "0.7em",
     fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
     color: "#262262",
   },
@@ -36,6 +36,9 @@ const styles = reactStyles({
   },
   label: {
     fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
+    width: "2.2rem",
+    display: "inline-block",
+    textAlign: "right",
   },
   input: {
     width: "5.5rem", // ~9 chars at this font size
@@ -51,7 +54,7 @@ const styles = reactStyles({
   },
   hint: {
     color: "#A8201A",
-    fontSize: "0.7em",
+    fontSize: "1em",
     paddingLeft: "1rem",
     marginTop: "0.15rem",
     fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
@@ -99,10 +102,7 @@ function parseUserInput(raw: string, category: string): number | null {
   return Number.isNaN(n) ? null : n;
 }
 
-export class SVVariantFilterInputsComponent extends React.Component<
-  Props,
-  State
-> {
+export class SVVariantFilterInputsComponent extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     // Start with the current filter values formatted for display.
@@ -230,45 +230,43 @@ export class SVVariantFilterInputsComponent extends React.Component<
       parsedMin != null && parsedMax != null && parsedMin > parsedMax;
 
     return (
-      <React.Fragment>
-        <div style={styles.container}>
-          <div style={styles.field}>
-            <span style={styles.label}>Min:</span>
-            <input
-              type="text"
-              inputMode={isDecimalCategory(category) ? "decimal" : "numeric"}
-              style={styles.input}
-              value={minStr}
-              placeholder={minPlaceholder}
-              maxLength={MAX_INPUT_CHARS + 4} // room for grouping commas while typing
-              onChange={this.handleMinChange}
-              onFocus={this.handleMinFocus}
-              onBlur={this.handleMinBlur}
-              onKeyDown={this.handleKeyDown}
-              aria-label={`Minimum ${category}`}
-            />
-          </div>
-          <div style={styles.field}>
-            <span style={styles.label}>Max:</span>
-            <input
-              type="text"
-              inputMode={isDecimalCategory(category) ? "decimal" : "numeric"}
-              style={styles.input}
-              value={maxStr}
-              placeholder={maxPlaceholder}
-              maxLength={MAX_INPUT_CHARS + 4}
-              onChange={this.handleMaxChange}
-              onFocus={this.handleMaxFocus}
-              onBlur={this.handleMaxBlur}
-              onKeyDown={this.handleKeyDown}
-              aria-label={`Maximum ${category}`}
-            />
-          </div>
+      <div style={styles.container}>
+        <div style={styles.field}>
+          <span style={styles.label}>Min:</span>
+          <input
+            type="text"
+            inputMode={isDecimalCategory(category) ? "decimal" : "numeric"}
+            style={styles.input}
+            value={minStr}
+            placeholder={minPlaceholder}
+            maxLength={MAX_INPUT_CHARS + 4}
+            onChange={this.handleMinChange}
+            onFocus={this.handleMinFocus}
+            onBlur={this.handleMinBlur}
+            onKeyDown={this.handleKeyDown}
+            aria-label={`Minimum ${category}`}
+          />
+        </div>
+        <div style={styles.field}>
+          <span style={styles.label}>Max:</span>
+          <input
+            type="text"
+            inputMode={isDecimalCategory(category) ? "decimal" : "numeric"}
+            style={styles.input}
+            value={maxStr}
+            placeholder={maxPlaceholder}
+            maxLength={MAX_INPUT_CHARS + 4}
+            onChange={this.handleMaxChange}
+            onFocus={this.handleMaxFocus}
+            onBlur={this.handleMaxBlur}
+            onKeyDown={this.handleKeyDown}
+            aria-label={`Maximum ${category}`}
+          />
         </div>
         {inverted && (
           <div style={styles.hint}>Min is greater than Max</div>
         )}
-      </React.Fragment>
+      </div>
     );
   }
 }
