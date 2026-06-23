@@ -49,6 +49,7 @@ const styles = reactStyles({
     position: "sticky",
     left: 0,
     background: "#f9f9fa",
+    zIndex: 2,
   },
   last: {
     paddingRight: ".5rem",

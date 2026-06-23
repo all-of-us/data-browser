@@ -9,16 +9,17 @@ import { VariantExpandedComponent } from "./variant-expanded.component";
 
 const styles = reactStyles({
   variant: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    height: "100%",
-    borderRight: "1px solid #CCCCCC",
-    boxShadow: "rgb(204 204 204) 0.2rem 0px 8px -2px",
-    background: "white",
-    color: "#216FB4",
-    position: "sticky",
-    left: 0,
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      height: "100%",
+      borderRight: "1px solid #CCCCCC",
+      boxShadow: "rgb(204 204 204) 0.2rem 0px 8px -2px",
+      background: "white",
+      color: "#216FB4",
+      position: "sticky",
+      left: 0,
+      zIndex: 2,
   },
   caretIcon: {
     fontFamily: "gothamBold,Arial, Helvetica, sans-serif",
