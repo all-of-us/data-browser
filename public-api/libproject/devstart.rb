@@ -113,6 +113,21 @@ def dev_up()
     raise("Please run 'gcloud auth login' before starting the server.")
   end
 
+  begin
+    docker_version = common.capture_stdout(%W{docker -v}).strip
+    compose_version = common.capture_stdout(%W{docker-compose -v}).strip
+
+    common.status "Docker version: #{docker_version}"
+    common.status "Docker Compose version: #{compose_version}"
+  rescue => e
+    common.status "Warning: Could not detect Docker versions - #{e.message}"
+  end
+
+  at_exit { common.run_inline %W{docker-compose down} }
+
+  ServiceAccountContext.new(TEST_PROJECT).run do
+  end
+
   at_exit { common.run_inline %W{docker-compose down} }
 
   ServiceAccountContext.new(TEST_PROJECT).run do

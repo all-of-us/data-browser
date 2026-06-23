@@ -74,4 +74,8 @@ RUN unzip gradle.zip && rm gradle.zip \
 ENV PATH="$PATH:/gradle/bin"
 WORKDIR /
 
+# Create .dockerenv file so scripts can detect they're running inside Docker
+RUN touch /.dockerenv
+
 COPY with-uid.sh /usr/local/bin
+RUN chmod +x /usr/local/bin/with-uid.sh
