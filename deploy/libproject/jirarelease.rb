@@ -132,7 +132,6 @@ class JiraReleaseClient
 
   def comment_ticket(tag, msg)
     common = Common.new
-
     summary = ticket_summary(tag)
     begin
       issues = @client.Issue.jql(
@@ -149,6 +148,7 @@ class JiraReleaseClient
                      issues.map { |iss| "[#{iss.key}] #{iss.fields['summary']}" }.join(', ')
     end
     issue = issues.first
+    issue.fetch
     comment = issue.comments.build
     begin
       comment.save!(:body => msg)
