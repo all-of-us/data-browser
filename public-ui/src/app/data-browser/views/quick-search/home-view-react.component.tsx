@@ -821,10 +821,10 @@ const WorkbenchCardComponent = () => {
           <strong>14,521</strong> participants in the long-read WGS dataset
         </span>
         <span className="workbench-card-body-item">
-          <strong>9,043</strong> participants in the bulk RNASeq dataset
+          <strong>8,980</strong> participants in the bulk RNASeq dataset
         </span>
         <span className="workbench-card-body-item">
-          <strong>10,170</strong> participants in the proteomics dataset
+          <strong>9,969</strong> participants in the proteomics dataset
         </span>
         <span className="workbench-card-body-item workbench-card-last-row">
           <span>

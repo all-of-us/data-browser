@@ -24,8 +24,9 @@ ENV CLOUD_SDK_VERSION 503.0.0
 RUN cd && \
   wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz -O gcloud.tgz && \
   tar -xf gcloud.tgz && \
-  ./google-cloud-sdk/install.sh  --quiet && \
+  ./google-cloud-sdk/install.sh --quiet && \
   ~/google-cloud-sdk/bin/gcloud components install app-engine-java && \
+  rm -rf /home/circleci/google-cloud-sdk/platform/bundledpythonunix && \
   rm -rf gcloud.tgz
 
 RUN sudo apt-get update && sudo apt-get install -y \
@@ -39,6 +40,10 @@ RUN sudo apt-get update && sudo apt-get install -y \
   libssl-dev \
   libcurl4-openssl-dev \
   iputils-ping
+
+# Force gcloud/gsutil to use system python3 — defensive against future base
+# image bumps that could ship a Python version gsutil doesn't support (3.8-3.12).
+ENV CLOUDSDK_PYTHON=/usr/bin/python3
 
 # Install specific version of curl
 RUN cd /tmp && \
@@ -79,5 +84,6 @@ RUN wget "https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin
   && sudo unzip /tmp/gradle.zip -d /opt/gradle
 ENV PATH="/opt/gradle/gradle-${GRADLE_VERSION}/bin:${PATH}"
 
-# Force a lower concurrent-ruby version, as we only have Ruby 2.3.
-RUN sudo gem install jira-ruby
+# Pinned to 3.2.0 — earlier versions hit the deprecated /rest/api/2/search
+# endpoint (Atlassian removed → 410 Gone).
+RUN sudo gem install jira-ruby -v '3.2.0'
