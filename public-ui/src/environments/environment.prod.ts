@@ -17,5 +17,5 @@ export const environment = {
   heatmap: true,
   combinedAgeGenderChart: true,
   geneLeads: false,
-  cdrV9: false,
+  cdrV9: true,
 };
