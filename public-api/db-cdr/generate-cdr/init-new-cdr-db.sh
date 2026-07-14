@@ -28,6 +28,13 @@ then
   exit 1
 fi
 
+# Activate service account if credentials are available
+if [ -n "$GOOGLE_APPLICATION_CREDENTIALS" ] && [ -f "$GOOGLE_APPLICATION_CREDENTIALS" ]; then
+    echo "Activating service account: $GOOGLE_APPLICATION_CREDENTIALS"
+    gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
+else
+    echo "Warning: No service account credentials found at $GOOGLE_APPLICATION_CREDENTIALS"
+fi
 
 # export for liquibase to use this
 export CDR_DB_NAME
