@@ -108,10 +108,10 @@ function groupFor(rawOption: string): string | null {
 }
 
 interface DisplayRow {
-  label: string;       // what the user sees ("INS", "DEL", "CTX", ...)
-  isGroup: boolean;    // true for INS/DEL aggregate rows
-  members: any[];      // underlying item refs from filterItemState.items
-  checked: boolean;    // aggregate checked state (all members checked)
+  label: string; // what the user sees ("INS", "DEL", "CTX", ...)
+  isGroup: boolean; // true for INS/DEL aggregate rows
+  members: any[]; // underlying item refs from filterItemState.items
+  checked: boolean; // aggregate checked state (all members checked)
 }
 
 // Collapse the raw items list into the user-facing rows.
@@ -174,7 +174,7 @@ interface State {
   filterItemOpen: Boolean;
   filterItemState: any;
   filterCheckMap: any;
-  ogFilterMetaData: string;
+  ogFilterMetaData: any;
 }
 
 export class SVVariantFilterItemComponent extends React.Component<
@@ -187,9 +187,7 @@ export class SVVariantFilterItemComponent extends React.Component<
       filterItemOpen: false,
       filterItemState: props.filterItem || "",
       filterCheckMap: props.filterItem || "",
-      ogFilterMetaData: JSON.parse(
-        localStorage.getItem("svOriginalFilterMetadata") || "{}"
-      )[this.props.category.field.toString()],
+      ogFilterMetaData: this.readOgFilterItem(),
     };
   }
 
@@ -200,6 +198,30 @@ export class SVVariantFilterItemComponent extends React.Component<
     ) {
       this.state.filterCheckMap.items.forEach((i) => (i.checked = false));
     }
+  }
+
+  // Filter options arrive asynchronously. If a new filterItem lands while this
+  // component is already mounted, pick it up instead of keeping the value
+  // snapshotted at construction.
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { filterItem } = this.props;
+    if (prevProps.filterItem !== filterItem) {
+      this.setState({
+        filterItemState: filterItem || "",
+        filterCheckMap: filterItem || "",
+        // Written to localStorage by the same call that returns filterItem.
+        ogFilterMetaData: this.readOgFilterItem(),
+      });
+    }
+  }
+
+  // The dataset defaults for this category. Returns an empty object rather than
+  // undefined so the numeric inputs never dereference a missing key.
+  readOgFilterItem() {
+    const og = JSON.parse(
+      localStorage.getItem("svOriginalFilterMetadata") || "{}"
+    );
+    return og[this.props.category.field.toString()] || {};
   }
 
   filterClick() {
@@ -220,8 +242,16 @@ export class SVVariantFilterItemComponent extends React.Component<
 
     const anyChecked = newItems.some((x) => x.checked === true);
 
-    const newFilterItemState = { ...filterItemState, items: newItems, filterActive: anyChecked };
-    const newFilterCheckMap = { ...filterCheckMap, items: newItems, filterActive: anyChecked };
+    const newFilterItemState = {
+      ...filterItemState,
+      items: newItems,
+      filterActive: anyChecked,
+    };
+    const newFilterCheckMap = {
+      ...filterCheckMap,
+      items: newItems,
+      filterActive: anyChecked,
+    };
 
     this.setState({
       filterItemState: newFilterItemState,
@@ -272,11 +302,7 @@ export class SVVariantFilterItemComponent extends React.Component<
         const key = "vtgroup-" + index;
         const idAttr = "vt-" + row.label;
         return (
-          <span
-            title={row.label}
-            style={styles.filterItemOption}
-            key={key}
-          >
+          <span title={row.label} style={styles.filterItemOption} key={key}>
             <input
               onChange={() => this.handleDisplayRowToggle(row)}
               id={idAttr}
@@ -303,11 +329,7 @@ export class SVVariantFilterItemComponent extends React.Component<
       }
 
       return (
-        <span
-          title={item.option}
-          style={styles.filterItemOption}
-          key={key}
-        >
+        <span title={item.option} style={styles.filterItemOption} key={key}>
           <input
             onChange={() => this.handleCheck(item)}
             id={item.option}
@@ -316,6 +338,8 @@ export class SVVariantFilterItemComponent extends React.Component<
             name={item.option}
             checked={item.checked}
           />
+          {/* Display-only underscore removal — item.option stays raw, since it
+              is what gets submitted to and matched by the API. */}
           <label style={styles.filterItemLabel} htmlFor={item.option}>
             {itemLabel.replace(/_/g, " ")}
           </label>
@@ -344,9 +368,7 @@ export class SVVariantFilterItemComponent extends React.Component<
           </div>
         </div>
         {cleared && filterItemOpen && Array.isArray(filterItemState.items) ? (
-          <div style={styles.filterItemForm}>
-            {this.renderCheckboxList()}
-          </div>
+          <div style={styles.filterItemForm}>{this.renderCheckboxList()}</div>
         ) : (
           <div>
             {filterItemOpen && (

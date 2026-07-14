@@ -110,21 +110,25 @@ export class ConsequenceGeneDisplay extends React.Component<
 
         <span className="consequence-heading">Predicted Consequence:</span>
         <br />
-        <div style={{ whiteSpace: "pre-line", marginTop: "4px" }}>
+        {/* No marginTop here — the sibling fields in the card grid have none, so
+            any offset drops this value below their baseline. The <br /> above
+            already provides the break from the heading. */}
+        <div style={{ whiteSpace: "pre-line" }}>
           {firstEntry && (
             <div className="consequence-item">
               <i>{this.formatConsequence(firstEntry[0])}:</i>{" "}
               <span style={{ display: "inline" }}>
                 {showAll ? firstEntry[1].join(", ") : truncatedGeneStr}
-                {!showAll && (shouldTruncate || consequenceEntries.length > 1) && (
-                  <button
-                    type="button"
-                    onClick={this.toggleShowAll}
-                    className="consequence-toggle"
-                  >
-                    … Show more
-                  </button>
-                )}
+                {!showAll &&
+                  (shouldTruncate || consequenceEntries.length > 1) && (
+                    <button
+                      type="button"
+                      onClick={this.toggleShowAll}
+                      className="consequence-toggle"
+                    >
+                      … Show more
+                    </button>
+                  )}
               </span>
             </div>
           )}
@@ -136,6 +140,8 @@ export class ConsequenceGeneDisplay extends React.Component<
               </div>
             ))}
 
+          {/* This 4px is intentional — it spaces the Show less button off the
+              last consequence row. Unrelated to the field alignment above. */}
           {showAll && (shouldTruncate || consequenceEntries.length > 1) && (
             <div style={{ marginTop: "4px" }}>
               <button

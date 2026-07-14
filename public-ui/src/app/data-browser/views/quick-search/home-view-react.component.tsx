@@ -119,6 +119,11 @@ export const homeCss = `
 	padding: .5rem 1rem;
 	position: relative;
 }
+/* Matches the hover treatment on .workbench-card so every homepage card
+   lifts the same way on hover. */
+.result-box:hover {
+	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
+}
 .result-box-title {
 	font-family: GothamBook, Arial, sans-serif;
 	color: #3279b7;

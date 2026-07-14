@@ -252,6 +252,16 @@ function formatSizeCard(val: any): string {
   return `${n.toLocaleString("en-US")} bp`;
 }
 
+// Display-only: FILTER values come back underscored (e.g. HIGH_SR_BACKGROUND).
+// Show them with single spaces. The raw value is never mutated — it is what the
+// filter panel submits to the API and what the API matches on.
+function formatFilterValue(filter: string): string {
+  if (!filter) {
+    return "-";
+  }
+  return filter.replace(/_/g, " ");
+}
+
 interface Props {
   closed: Function;
   hovered: Function;
@@ -320,7 +330,8 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
   }
 
   render() {
-    const { variantDetails, variant, loading, cnCounts, cnCountsLoading } = this.props;
+    const { variantDetails, variant, loading, cnCounts, cnCountsLoading } =
+      this.props;
     const { showShareTooltip } = this.state;
     const isCNV = this.isCNV();
     let variantPopulationDetails: any[] = [];
@@ -367,9 +378,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
               >
                 <strong style={styles.variantIdLabel}>Variant ID: </strong>{" "}
                 {!loading ? (
-                  <span
-                    style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}
-                  >
+                  <span style={{ paddingLeft: "1em", overflowWrap: "anywhere" }}>
                     {variant.variantId}
                   </span>
                 ) : (
@@ -416,9 +425,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                   <div>
                     <span style={styles.catHeading}>Position:</span>
                     <br />
-                    <span style={styles.catInfo}>
-                        {variant.position || "-"}
-                    </span>
+                    <span style={styles.catInfo}>{variant.position || "-"}</span>
                   </div>
                   <div>
                     <span style={styles.catHeading}>Size:</span>
@@ -472,7 +479,7 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                     <span style={styles.catHeading}>Filter:</span>
                     <br />
                     <span style={styles.catInfo}>
-                      {variantDetails.filter ? variantDetails.filter : "-"}
+                      {formatFilterValue(variantDetails.filter)}
                     </span>
                   </div>
                 </div>
@@ -626,20 +633,36 @@ export class SVVariantExpandedComponent extends React.Component<Props, State> {
                       })}
                     </div>
                   </div>
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                      <div style={isCNV ? { transform: "scale(0.50)", transformOrigin: "top center", height: "180px" } : {}}>
-                        <PopulationChartReactComponent
-                          variantPopulationDetails={variantPopulationDetails}
-                          isCNV={isCNV}
-                        />
-                      </div>
-                      {isCNV && (
-                        <CNDistributionChart
-                          cnCounts={cnCounts || []}
-                          loading={cnCountsLoading}
-                        />
-                      )}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div
+                      style={
+                        isCNV
+                          ? {
+                              transform: "scale(0.50)",
+                              transformOrigin: "top center",
+                              height: "180px",
+                            }
+                          : {}
+                      }
+                    >
+                      <PopulationChartReactComponent
+                        variantPopulationDetails={variantPopulationDetails}
+                        isCNV={isCNV}
+                      />
                     </div>
+                    {isCNV && (
+                      <CNDistributionChart
+                        cnCounts={cnCounts || []}
+                        loading={cnCountsLoading}
+                      />
+                    )}
+                  </div>
                   <div className="alt-variant-id">
                     <strong>VCF ID:</strong> {variantDetails.variantIDVCF}
                   </div>
