@@ -95,7 +95,7 @@ interface State {
   filterItemOpen: Boolean;
   filterItemState: any;
   filterCheckMap: any;
-  ogFilterMetaData: string;
+  ogFilterMetaData: any;
 }
 
 export class VariantFilterItemComponent extends React.Component<Props, State> {
@@ -105,9 +105,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
       filterItemOpen: false,
       filterItemState: props.filterItem || "",
       filterCheckMap: props.filterItem || "",
-      ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
-      )[this.props.category.field.toString()],
+      ogFilterMetaData: this.readOgFilterItem(),
     };
   }
 
@@ -118,6 +116,30 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     ) {
       this.state.filterCheckMap.items.forEach((i) => (i.checked = false));
     }
+  }
+
+  // Filter options arrive asynchronously. If a new filterItem lands while this
+  // component is already mounted, pick it up instead of keeping the value
+  // snapshotted at construction.
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { filterItem } = this.props;
+    if (prevProps.filterItem !== filterItem) {
+      this.setState({
+        filterItemState: filterItem || "",
+        filterCheckMap: filterItem || "",
+        // Written to localStorage by the same call that returns filterItem.
+        ogFilterMetaData: this.readOgFilterItem(),
+      });
+    }
+  }
+
+  // The dataset defaults for this category. Returns an empty object rather than
+  // undefined so the slider never dereferences a missing key.
+  readOgFilterItem() {
+    const og = JSON.parse(
+      localStorage.getItem("originalFilterMetadata") || "{}"
+    );
+    return og[this.props.category.field.toString()] || {};
   }
 
   filterClick() {
@@ -211,6 +233,8 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
                     name={item.option}
                     checked={item.checked}
                   />
+                  {/* Display-only underscore removal — item.option stays raw, since
+                      it is what gets submitted to and matched by the API. */}
                   <label style={styles.filterItemLabel} htmlFor={item.option}>
                     {itemLabel.replace(/_/g, " ")}
                   </label>

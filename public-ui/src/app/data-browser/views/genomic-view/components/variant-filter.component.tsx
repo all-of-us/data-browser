@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { VariantFilterItemComponent } from "app/data-browser/views/genomic-view/components/variant-filter-item.component";
 import { reactStyles } from "app/utils";
+import { Spinner } from "app/utils/spinner";
 import { GenomicFilters } from "publicGenerated";
 import { SortMetadata } from "publicGenerated/fetch";
 
@@ -54,9 +55,25 @@ const styles = reactStyles({
     width: "45%",
     cursor: "pointer",
   },
+  disabledBtn: {
+    cursor: "default",
+    opacity: 0.5,
+  },
   filterItems: {
     maxHeight: "340px",
     overflowY: "auto",
+  },
+  loadingContainer: {
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  // Scale lives on an inner wrapper, not on the flex container above, so the
+  // transform can't shift the centering.
+  loadingSpinner: {
+    transform: "scale(.5)",
   },
 });
 
@@ -97,11 +114,34 @@ export class VariantFilterComponent extends React.Component<Props, State> {
       filteredMetadata: this.props.filterMetadata,
       filterMetadata: this.props.filterMetadata,
       cleared: true,
-      ogFilterMetaData: JSON.parse(
-        localStorage.getItem("originalFilterMetadata") || "{}"
-      ),
+      ogFilterMetaData: this.readOriginalFilterMetadata(),
       sortMetadata: this.props.sortMetadata,
     };
+  }
+
+  // Filter options are fetched asynchronously and can land *after* the panel is
+  // mounted. Without this, the panel keeps the null it snapshotted at construction
+  // and shows nothing until the user closes and reopens it.
+  componentDidUpdate(prevProps: Readonly<Props>) {
+    const { filterMetadata, sortMetadata } = this.props;
+
+    if (prevProps.filterMetadata !== filterMetadata) {
+      this.setState({
+        filterMetadata: filterMetadata,
+        filteredMetadata: filterMetadata,
+        // Written to localStorage by the same call that returns filterMetadata,
+        // so it is only reliable once that call has resolved.
+        ogFilterMetaData: this.readOriginalFilterMetadata(),
+      });
+    }
+
+    if (prevProps.sortMetadata !== sortMetadata) {
+      this.setState({ sortMetadata: sortMetadata });
+    }
+  }
+
+  readOriginalFilterMetadata() {
+    return JSON.parse(localStorage.getItem("originalFilterMetadata") || "{}");
   }
 
   handleFilterChange(filteredItem: GenomicFilters, cat: Cat) {
@@ -135,9 +175,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
   }
 
   handleClear() {
-    const ogFilterMetaData = JSON.parse(
-      localStorage.getItem("originalFilterMetadata") || "{}"
-    );
+    const ogFilterMetaData = this.readOriginalFilterMetadata();
     // tslint:disable-next-line: forin
     for (const key in this.state.filteredMetadata) {
       this.state.filteredMetadata[key] = ogFilterMetaData[key];
@@ -155,6 +193,7 @@ export class VariantFilterComponent extends React.Component<Props, State> {
       {
         cleared: false,
         filteredMetadata: this.state.filteredMetadata,
+        ogFilterMetaData: ogFilterMetaData,
         sortMetadata: sortMetadata,
       },
       () => this.setState({ cleared: true })
@@ -165,17 +204,26 @@ export class VariantFilterComponent extends React.Component<Props, State> {
   render() {
     const { filterMetadata } = this.props;
     const { filterCats, filteredMetadata, cleared } = this.state;
+
+    // Options still in flight — the panel was opened before the filter-options
+    // call came back.
+    const loadingOptions = !filterMetadata || !filteredMetadata;
+
     return (
       <React.Fragment>
         <div style={styles.filterBox}>
           <div style={styles.filterItems}>
-            {filterCats.map((cat, index) => {
-              const key = "cat" + index;
-              {
+            {loadingOptions ? (
+              <div style={styles.loadingContainer}>
+                <div style={styles.loadingSpinner}>
+                  <Spinner />
+                </div>
+              </div>
+            ) : (
+              filterCats.map((cat, index) => {
+                const key = "cat" + index;
                 return (
-                  cleared &&
-                  filterMetadata &&
-                  filteredMetadata && (
+                  cleared && (
                     <VariantFilterItemComponent
                       onFilterChange={(e) => this.handleFilterChange(e, cat)}
                       key={key}
@@ -185,16 +233,29 @@ export class VariantFilterComponent extends React.Component<Props, State> {
                     />
                   )
                 );
-              }
-            })}
+              })
+            )}
           </div>
           <div style={styles.actionBtnContainer}>
-            <button onClick={() => this.handleClear()} style={styles.clearBtn}>
+            <button
+              onClick={() => !loadingOptions && this.handleClear()}
+              disabled={loadingOptions as boolean}
+              style={{
+                ...styles.clearBtn,
+                ...(loadingOptions ? styles.disabledBtn : {}),
+              }}
+            >
               Clear
             </button>
             <button
-              onClick={() => this.submitFilter(filteredMetadata)}
-              style={styles.applyBtn}
+              onClick={() =>
+                !loadingOptions && this.submitFilter(filteredMetadata)
+              }
+              disabled={loadingOptions as boolean}
+              style={{
+                ...styles.applyBtn,
+                ...(loadingOptions ? styles.disabledBtn : {}),
+              }}
             >
               Apply
             </button>

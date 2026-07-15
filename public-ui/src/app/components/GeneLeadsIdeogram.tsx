@@ -9,12 +9,19 @@ declare global {
   }
 }
 
-function waitForElement(id: string): Promise<HTMLElement> {
-  return new Promise((resolve) => {
+// Poll for an element Ideogram.js creates. Bounded — an earlier version polled
+// forever, so a collapsed/unmounted ideogram left a timer running for the life of
+// the page.
+function waitForElement(id: string, timeoutMs = 5000): Promise<HTMLElement> {
+  return new Promise((resolve, reject) => {
+    const deadline = Date.now() + timeoutMs;
     const check = () => {
       const el = document.getElementById(id);
       if (el) {
         return resolve(el);
+      }
+      if (Date.now() > deadline) {
+        return reject(new Error(`Timed out waiting for #${id}`));
       }
       setTimeout(check, 50);
     };
@@ -48,6 +55,8 @@ const styles = reactStyles({
   },
 });
 
+// Chromosome fill comes from the chrFillColor config option (as in the reference)
+// rather than an !important CSS override on .chromosome.
 const styleCss = `
   #_ideogram {
       display: flex;
@@ -65,9 +74,6 @@ const styleCss = `
     color: #0366d6;
     text-decoration: underline;
   }
-  #_ideogram .chromosome {
-    fill: #dae6ed !important;
-  }
 `;
 
 interface Props {
@@ -80,12 +86,23 @@ interface State {
 
 export class GeneLeadsIdeogram extends React.Component<Props, State> {
   private containerRef = React.createRef<HTMLDivElement>();
+  private unmounted = false;
+  private loadTimeout: any = null;
 
   constructor(props: Props) {
     super(props);
     this.state = {
       isLoading: true,
     };
+  }
+
+  // Every async path here can resolve after the user has collapsed the section.
+  // Route all state updates through this.
+  safeSetState(partial: Partial<State>) {
+    if (this.unmounted) {
+      return;
+    }
+    this.setState(partial as State);
   }
 
   async adjustIdeogramLayout() {
@@ -95,6 +112,10 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
       const ideogram = await waitForElement("_ideogram");
       const legend = await waitForElement("_ideogramLegend");
       const gear = await waitForElement("gear");
+
+      if (this.unmounted) {
+        return;
+      }
 
       const screenWidth = window.innerWidth;
       wrap.style.maxWidth = "100%";
@@ -142,12 +163,41 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
     } catch (error) {
       console.error("Error adjusting layout: ", error);
     } finally {
-      this.setState({ isLoading: false });
+      this.safeSetState({ isLoading: false });
     }
   }
 
   componentDidMount() {
     this.initIdeogram(this.props.gene);
+  }
+
+  // Ideogram.js manages its own DOM and attaches nodes (tooltip, gear) outside
+  // this component's subtree, plus a window.ideogram global. React unmounting the
+  // wrapper does not clean any of that up, so collapsing the section would
+  // otherwise leave the library's leftovers on the page.
+  componentWillUnmount() {
+    this.unmounted = true;
+
+    if (this.loadTimeout) {
+      clearTimeout(this.loadTimeout);
+      this.loadTimeout = null;
+    }
+
+    try {
+      const container = this.containerRef.current;
+      ["_ideogramTooltip", "gear", "_ideogramOuterWrap"].forEach((id) => {
+        const el = document.getElementById(id);
+        // Anything still inside our own container is removed by React. Only
+        // strip nodes the library parked elsewhere in the document.
+        if (el && (!container || !container.contains(el))) {
+          el.remove();
+        }
+      });
+    } catch (err) {
+      console.warn("Error tearing down ideogram:", err);
+    }
+
+    window.ideogram = null;
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -157,7 +207,7 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
       prevProps.gene !== gene &&
       typeof window.ideogram?.plotRelatedGenes === "function"
     ) {
-      this.setState({ isLoading: true });
+      this.safeSetState({ isLoading: true });
 
       const container = document.getElementById(
         "gene-leads-ideogram-container"
@@ -166,34 +216,32 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
         container.style.display = "block";
       }
 
-      // Timeout fallback: Stop loading if nothing happens in 5s
-      setTimeout(() => {
+      // Timeout fallback: stop loading if nothing happens in 5s
+      this.loadTimeout = setTimeout(() => {
         console.warn(`Timed out loading ideogram for "${gene}"`);
-        this.setState({ isLoading: false });
+        this.safeSetState({ isLoading: false });
       }, 5000);
 
       Promise.resolve()
         .then(async () => {
           await window.ideogram.plotRelatedGenes(gene);
-          await this.adjustIdeogramLayout();
-
-          const wrap = document.getElementById("_ideogramOuterWrap");
-          if (wrap) {
-            wrap.style.height = "150px";
+          if (this.unmounted) {
+            return;
           }
+          await this.adjustIdeogramLayout();
         })
         .catch((err) => {
           console.warn(`Exception: Gene "${gene}" not found`, err);
-          this.setState({ isLoading: false });
-          const container = document.getElementById(
+          this.safeSetState({ isLoading: false });
+          const errContainer = document.getElementById(
             "gene-leads-ideogram-container"
           );
-          if (container) {
-            container.style.display = "none";
+          if (errContainer) {
+            errContainer.style.display = "none";
           }
         })
         .finally(() => {
-          this.setState({ isLoading: false });
+          this.safeSetState({ isLoading: false });
         });
     }
   }
@@ -203,63 +251,58 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
       return;
     }
 
-    const taxon = "Homo sapiens";
     const genesInScope = "all";
 
+    // Config copied from the resolved config of the working Gene Leads demo
+    // (eweitz.github.io/ideogram/gene-leads?q=ATM), which labels ~16 of 26
+    // related genes where ours labeled 10.
+    //
+    // The two keys that matter are `rotatable` + `orientation: "vertical"`.
+    // Its labels render as rotate(-90) <text> with a `_ideogramLabelRect` hit box;
+    // rotated labels need far less horizontal room, so the library's collision
+    // detection culls far fewer of them. Ours drew horizontal labels, which
+    // collide and get dropped.
+    //
+    // Note its chrHeight is 100 — SHORTER than the 150 we were using. Vertical
+    // space was never the problem.
     const config = {
       container: `#${this.containerRef.current.id}`,
-      chromosomes: [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-        "16",
-        "17",
-        "18",
-        "19",
-        "20",
-        "21",
-        "22",
-        "X",
-        "Y",
-      ],
-      organism: taxon,
+      organism: "homo-sapiens",
+      relatedGenesMode: "hints",
+      rotatable: true,
+      orientation: "vertical",
       chrWidth: 9,
-      chrHeight: 150,
+      chrHeight: 100,
       chrLabelSize: 12,
       annotationHeight: 7,
+      showAnnotLabels: true,
+      chrFillColor: { arm: "#DDD", centromere: "#DDF" },
       showVariantInTooltip: false,
       showGeneStructureInTooltip: true,
       showProteinInTooltip: true,
-      showParalogNeighborhoods: true,
       showAnnotTooltip: true,
 
       onClickAnnot: async (annot: any) => {
+        if (this.unmounted) {
+          return;
+        }
         try {
           await window.ideogram.plotRelatedGenes(annot.name);
-          await this.adjustIdeogramLayout(); // ⬅️ Adjust layout after click
+          if (this.unmounted) {
+            return;
+          }
+          await this.adjustIdeogramLayout();
         } catch (err) {
           console.warn(`Click error for "${annot.name}":`, err);
         }
       },
 
       onLoad: async () => {
-        if (!window.ideogram?.chromosomesArray?.length) {
+        if (this.unmounted || !window.ideogram?.chromosomesArray?.length) {
           return;
         }
 
-        this.setState({ isLoading: true });
+        this.safeSetState({ isLoading: true });
 
         const container = document.getElementById(
           "gene-leads-ideogram-container"
@@ -270,23 +313,21 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
 
         try {
           await window.ideogram.plotRelatedGenes(gene);
+          if (this.unmounted) {
+            return;
+          }
           await this.adjustIdeogramLayout();
         } catch (err) {
           console.warn(`onLoad error for "${gene}":`, err);
-          this.setState({ isLoading: false });
-          const container = document.getElementById(
+          this.safeSetState({ isLoading: false });
+          const errContainer = document.getElementById(
             "gene-leads-ideogram-container"
           );
-          if (container) {
-            container.style.display = "none";
+          if (errContainer) {
+            errContainer.style.display = "none";
           }
         } finally {
-          this.setState({ isLoading: false });
-        }
-
-        const wrap = document.getElementById("_ideogramOuterWrap");
-        if (wrap) {
-          wrap.style.height = "150px";
+          this.safeSetState({ isLoading: false });
         }
       },
     };
@@ -301,7 +342,7 @@ export class GeneLeadsIdeogram extends React.Component<Props, State> {
       if (container) {
         container.style.display = "none";
       }
-      this.setState({ isLoading: false });
+      this.safeSetState({ isLoading: false });
     }
   }
 

@@ -211,15 +211,18 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return `${(n / 1_000_000).toFixed(1)} Mb`;
   }
 
+  // Display-only: FILTER values come back underscored (e.g. HIGH_SR_BACKGROUND).
+  // Show them with single spaces. The raw value is never mutated — it is what
+  // the filter panel submits to the API and what the API matches on.
   formatFilter(filter: string) {
     if (!filter) {
       return "-";
     }
     return filter.split(",").map((item, index) => {
       const trimmedItem = item.trim();
-      const formattedLabel = trimmedItem;
+      const formattedLabel = trimmedItem.replace(/_/g, " ");
       return (
-        <div key={index} style={styles.filterValue} title={trimmedItem}>
+        <div key={index} style={styles.filterValue} title={formattedLabel}>
           {formattedLabel}
         </div>
       );
@@ -228,7 +231,13 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
 
   render() {
     const { variant } = this.props;
-    const { svVariantExpanded, variantDetails, loadingVarDetails, cnCounts, cnCountsLoading } = this.state;
+    const {
+      svVariantExpanded,
+      variantDetails,
+      loadingVarDetails,
+      cnCounts,
+      cnCountsLoading,
+    } = this.state;
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -285,9 +294,7 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
               {this.formatConsequence(variant.consequence)}
             </div>
-            <div style={styles.rowItem}>
-              {variant.position || "-"}
-            </div>
+            <div style={styles.rowItem}>{variant.position || "-"}</div>
             <div style={styles.rowItem}>
               {variant.variantType?.includes("CTX") ||
               variant.variantType?.includes("BND")
@@ -296,10 +303,16 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
                 ? this.formatSizeTable(variant.size)
                 : "-"}
             </div>
-            <div style={styles.rowItem}>{this.formatNumber(variant.alleleCount)}</div>
-            <div style={styles.rowItem}>{this.formatNumber(variant.alleleNumber)}</div>
+            <div style={styles.rowItem}>
+              {this.formatNumber(variant.alleleCount)}
+            </div>
+            <div style={styles.rowItem}>
+              {this.formatNumber(variant.alleleNumber)}
+            </div>
             <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-            <div style={styles.rowItem}>{this.formatNumber(variant.homozygoteCount)}</div>
+            <div style={styles.rowItem}>
+              {this.formatNumber(variant.homozygoteCount)}
+            </div>
             <div style={styles.filterItem}>
               {this.formatFilter(variant.filter)}
             </div>

@@ -30,6 +30,23 @@ const styles = reactStyles({
     textAlign: "left",
     color: "#262262",
   },
+  vocabLine: {
+    margin: 0,
+    marginTop: ".5em",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    fontWeight: 100,
+    fontStyle: "normal",
+    fontSize: ".8em",
+    fontStretch: "normal",
+    lineHeight: "1.47em",
+    letterSpacing: "normal",
+    textAlign: "left",
+    color: "#262262",
+  },
+  vocabSeparator: {
+    padding: "0 .5em",
+    color: "#262262",
+  },
 });
 
 interface Props {
@@ -160,6 +177,32 @@ export class SVGenomicSearchComponent extends React.Component<Props, State> {
             </a>
           </p>
         </div>
+        <p style={styles.vocabLine}>
+          Vocabulary references:{" "}
+          <a
+            style={{ color: "#1f79b8", cursor: "pointer" }}
+            target="_blank"
+            href="https://gatk.broadinstitute.org/hc/en-us/articles/30332011989659-SVAnnotate"
+          >
+            Predicted consequences
+          </a>
+          <span style={styles.vocabSeparator}>|</span>
+          <a
+            style={{ color: "#1f79b8", cursor: "pointer" }}
+            target="_blank"
+            href="https://gatk.broadinstitute.org/hc/en-us/articles/9022476791323-Structural-Variants"
+          >
+            SV Types
+          </a>
+          <span style={styles.vocabSeparator}>|</span>
+          <a
+            style={{ color: "#1f79b8", cursor: "pointer" }}
+            target="_blank"
+            href="https://www.nature.com/articles/s41586-020-2287-8#Sec2"
+          >
+            CPX Types
+          </a>
+        </p>
         <SVVariantSearchComponent
           onSearchTerm={(searchWord: string) => {
             onSearchInput(searchWord);

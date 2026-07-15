@@ -12,6 +12,46 @@ import { SortMetadata } from "publicGenerated/fetch";
 
 import { VariantFilterChips } from "./variant-filter-chips.component";
 
+// The search bar accepts several things besides a gene name, each with a
+// recognizable shape. Anything matching none of them is treated as a gene.
+//   rs number         rs169547
+//   genomic region    chr13:32355000-32375000
+//   variant ID        13-32355250-T-C
+//   position          2-15199481
+//   chromosome only   chr1, chrX, 13, MT
+const RS_NUMBER = /^rs\d+$/i;
+const GENOMIC_REGION = /^(chr)?[\dxymt]+\s*:\s*[\d,]+\s*-\s*[\d,]+$/i;
+const VARIANT_ID = /^(chr)?[\dxymt]+-\d+-[acgtn]+-[acgtn]+$/i;
+const POSITION = /^(chr)?[\dxymt]+-[\d,]+$/i;
+
+// A bare chromosome, with or without the prefix: 1-22, X, Y, M, MT.
+const CHROMOSOME_ONLY = /^(chr)?([1-9]|1\d|2[0-2]|x|y|m|mt)$/i;
+
+// Any term the user has prefixed with "chr" is a coordinate search, no matter how
+// incomplete — this also covers half-typed input like "chr1:" arriving mid-debounce.
+const CHR_PREFIXED = /^chr/i;
+
+// Gene Leads is only meaningful for a gene-name search. Note the parent derives
+// firstGene from the first *result row*, so a region or variant search also
+// yields a gene — which is why the section used to appear for those too.
+export function isGeneSearch(term: string): boolean {
+  if (!term) {
+    return false;
+  }
+  const t = term.trim();
+  if (!t) {
+    return false;
+  }
+  return (
+    !CHR_PREFIXED.test(t) &&
+    !CHROMOSOME_ONLY.test(t) &&
+    !RS_NUMBER.test(t) &&
+    !GENOMIC_REGION.test(t) &&
+    !VARIANT_ID.test(t) &&
+    !POSITION.test(t)
+  );
+}
+
 const styles = reactStyles({
   searchBar: {
     paddingRight: "2rem",
@@ -46,6 +86,48 @@ const styles = reactStyles({
     gridTemplateColumns: "11.5rem 1fr",
     alignItems: "baseline",
     zIndex: 100,
+  },
+  ideogramContainer: {
+    width: "100%",
+    paddingTop: "1em",
+    paddingBottom: "1em",
+  },
+  // Ideogram.js sets position:relative on its own wrapper, which paints it above
+  // unpositioned siblings. Both controls need their own positioned stacking
+  // context or the ideogram's overflow box swallows the click.
+  ideogramToggle: {
+    position: "relative",
+    zIndex: 100,
+    display: "flex",
+    alignItems: "center",
+    gap: ".25rem",
+    fontFamily: "gothamBold, Arial, Helvetica, sans-serif",
+    color: "#216FB4",
+    cursor: "pointer",
+    width: "fit-content",
+    fontSize: ".9em",
+  },
+  ideogramCaretClosed: {
+    transform: "rotate(180deg)",
+  },
+  ideogramCaretOpen: {
+    transform: "rotate(0deg)",
+  },
+  hideBtnContainer: {
+    position: "relative",
+    zIndex: 100,
+    display: "flex",
+    justifyContent: "flex-end",
+    paddingTop: ".25rem",
+  },
+  hideBtn: {
+    background: "none",
+    border: "none",
+    padding: 0,
+    color: "#216FB4",
+    fontFamily: "gothamBold, Arial, Helvetica, sans-serif",
+    fontSize: ".9em",
+    cursor: "pointer",
   },
 });
 
@@ -94,6 +176,7 @@ interface State {
   searchWord: string;
   scrollClean: boolean;
   currentGene?: string;
+  showIdeogram: boolean;
 }
 
 export class VariantSearchComponent extends React.Component<Props, State> {
@@ -110,6 +193,8 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       sortMetadata: this.props.sortMetadata,
       scrollClean: this.props.scrollClean,
       currentGene: this.props.firstGene || "",
+      // Gene Leads starts collapsed — the user opens it from the header.
+      showIdeogram: false,
     };
     if (this.state.searchWord !== "") {
       this.props.onSearchTerm(this.state.searchWord);
@@ -154,9 +239,12 @@ export class VariantSearchComponent extends React.Component<Props, State> {
     }
 
     if (prevProps.firstGene !== firstGene && firstGene) {
-      this.setState({ currentGene: firstGene });
+      // New gene — collapse back to the header so the section is closed by
+      // default on every search, not just the first one.
+      this.setState({ currentGene: firstGene, showIdeogram: false });
     }
   }
+
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -176,6 +264,13 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       }
     }
   }
+
+  toggleIdeogram = (e?: React.SyntheticEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    this.setState({ showIdeogram: !this.state.showIdeogram });
+  };
 
   showFilter() {
     this.setState({ filterShow: !this.state.filterShow });
@@ -209,13 +304,21 @@ export class VariantSearchComponent extends React.Component<Props, State> {
       submittedFilterMetadata,
       scrollClean,
       currentGene,
+      showIdeogram,
     } = this.state;
-    const { filterMetadata, firstGene } = this.props;
+    const { filterMetadata } = this.props;
     const { variantListSize, loadingResults, loadingVariantListSize } =
       this.props;
     const variantListSizeDisplay = variantListSize
       ? variantListSize.toLocaleString()
       : 0;
+
+    const showGeneLeads =
+      environment.geneLeads &&
+      currentGene &&
+      searchWord &&
+      isGeneSearch(searchWord);
+
     return (
       <React.Fragment>
         <style>{css}</style>
@@ -238,9 +341,45 @@ export class VariantSearchComponent extends React.Component<Props, State> {
             <strong>Genomic Region:</strong> chr13:32355000-32375000
           </div>
         </div>
-        {environment.geneLeads && currentGene && searchWord && (
-          <div style={{ width: "100%", paddingTop: "1em" }}>
-            <GeneLeadsIdeogram gene={this.state.currentGene} />
+        {showGeneLeads && (
+          <div style={styles.ideogramContainer}>
+            <div
+              onClick={this.toggleIdeogram}
+              style={styles.ideogramToggle}
+              role="button"
+              tabIndex={0}
+              aria-expanded={showIdeogram}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  this.toggleIdeogram(e);
+                }
+              }}
+            >
+              <span>Gene Ideogram</span>
+              <ClrIcon
+                style={
+                  showIdeogram
+                    ? { ...styles.ideogramCaretOpen }
+                    : { ...styles.ideogramCaretClosed }
+                }
+                shape="angle"
+              />
+            </div>
+            {showIdeogram && (
+              <React.Fragment>
+                <GeneLeadsIdeogram gene={currentGene} />
+                <div style={styles.hideBtnContainer}>
+                  <button
+                    type="button"
+                    onClick={this.toggleIdeogram}
+                    style={styles.hideBtn}
+                  >
+                    Hide
+                  </button>
+                </div>
+              </React.Fragment>
+            )}
           </div>
         )}
         {submittedFilterMetadata && (

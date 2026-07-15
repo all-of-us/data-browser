@@ -154,6 +154,7 @@ interface State {
   searchResults: Variant[];
   searchSVResults: SVVariant[];
   loadingResults: boolean;
+  loadingSVResults: boolean;
   variantListSize: number;
   loadingVariantListSize: boolean;
   svVariantListSize: number;
@@ -161,7 +162,9 @@ interface State {
   searchTerm: string;
   svSearchTerm: string;
   currentPage: number;
+  svCurrentPage: number;
   rowCount: number;
+  svRowCount: number;
   participantCount: string;
   chartData: any;
   sortMetadata: SortMetadata;
@@ -174,6 +177,7 @@ interface State {
   svFilteredMetadata: SVGenomicFilters;
   filterChipsShow: boolean;
   scrollClean: boolean;
+  svScrollClean: boolean;
   firstGene: string;
   previousSelectionId: number;
 }
@@ -280,6 +284,7 @@ export const GenomicViewComponent = withRouteData(
         searchResults: [],
         searchSVResults: [],
         loadingResults: null,
+        loadingSVResults: null,
         variantListSize: null,
         loadingVariantListSize: null,
         svVariantListSize: null,
@@ -287,7 +292,9 @@ export const GenomicViewComponent = withRouteData(
         searchTerm: "",
         svSearchTerm: "",
         currentPage: null,
+        svCurrentPage: null,
         rowCount: 50,
+        svRowCount: 50,
         participantCount: null,
         chartData: null,
         filterChipsShow: false,
@@ -298,6 +305,7 @@ export const GenomicViewComponent = withRouteData(
         svFilteredMetadata: undefined,
         submittedSVFilterMetadata: undefined,
         scrollClean: true,
+        svScrollClean: true,
         sortMetadata: new SortMetadataClass(
           new SortColumnDetailsClass(true, "asc", 1),
           new SortColumnDetailsClass(false, "asc", 2),
@@ -401,22 +409,28 @@ export const GenomicViewComponent = withRouteData(
       localStorage.removeItem("svOriginalFilterMetadata");
     }
 
-    changeUrl() {
+    // Builds the SNV/Indel URL for the currently held search term.
+    snvUrl() {
       const { searchTerm } = this.state;
-      let url = "snvsindels";
-      if (searchTerm) {
-        url += "/" + searchTerm;
-      }
-      window.history.pushState(null, "Genomic Variants", url);
+      return searchTerm
+        ? "/snvsindels/" + encodeURIComponent(searchTerm)
+        : "/snvsindels";
+    }
+
+    // Builds the SV URL for the currently held search term.
+    svUrl() {
+      const { svSearchTerm } = this.state;
+      return svSearchTerm
+        ? "/structural-variants/" + encodeURIComponent(svSearchTerm)
+        : "/structural-variants";
+    }
+
+    changeUrl() {
+      window.history.pushState(null, "Genomic Variants", this.snvUrl());
     }
 
     changeSVUrl() {
-      const { svSearchTerm } = this.state;
-      let url = "structural-variants";
-      if (svSearchTerm) {
-        url += "/" + svSearchTerm;
-      }
-      window.history.pushState(null, "Genomic Variants", url);
+      window.history.pushState(null, "Genomic Variants", this.svUrl());
     }
 
     handlePopState = () => {
@@ -429,7 +443,14 @@ export const GenomicViewComponent = withRouteData(
             ? decodeURIComponent(pathParts[pathParts.length - 1])
             : "";
 
-        // Clear filter metadata when navigating via browser back/forward
+        // Only re-run the search if the URL points at a different term than the
+        // one already loaded — otherwise just switch back to the tab and keep
+        // the results, filters, and sort the user already had.
+        if (searchTerm === this.state.svSearchTerm) {
+          this.setState({ selectionId: 2 });
+          return;
+        }
+
         this.clearSVFilterMetadata();
         this.clearSVSortMetadata();
 
@@ -437,7 +458,7 @@ export const GenomicViewComponent = withRouteData(
           {
             selectionId: 2,
             svSearchTerm: searchTerm,
-            loadingResults: true,
+            loadingSVResults: true,
             loadingSVVariantListSize: true,
           },
           () => {
@@ -452,7 +473,11 @@ export const GenomicViewComponent = withRouteData(
             ? decodeURIComponent(pathParts[pathParts.length - 1])
             : "";
 
-        // Clear filter metadata when navigating via browser back/forward
+        if (searchTerm === this.state.searchTerm) {
+          this.setState({ selectionId: 1 });
+          return;
+        }
+
         this.clearFilterMetadata();
         this.clearSortMetadata();
 
@@ -619,7 +644,7 @@ export const GenomicViewComponent = withRouteData(
           null
         );
         this.setState(
-          { loadingResults: true, currentPage: 1, rowCount: 200 },
+          { loadingSVResults: true, svCurrentPage: 1, svRowCount: 200 },
           () => {
             this.fetchSVVariantData();
           }
@@ -627,7 +652,7 @@ export const GenomicViewComponent = withRouteData(
       } else {
         this.setState({
           searchSVResults: null,
-          loadingResults: false,
+          loadingSVResults: false,
         });
       }
     }
@@ -636,8 +661,6 @@ export const GenomicViewComponent = withRouteData(
       if (prevProps.selectionId !== this.props.selectionId) {
         this.setState({ selectionId: this.props.selectionId });
       }
-
-      const { firstGene } = this.state;
     }
 
     componentCleanup() {
@@ -703,7 +726,7 @@ export const GenomicViewComponent = withRouteData(
 
     handleSVPageChange(info) {
       this.setState(
-        { loadingResults: true, currentPage: info.selectedPage },
+        { loadingSVResults: true, svCurrentPage: info.selectedPage },
         () => {
           this.fetchSVVariantData();
         }
@@ -711,9 +734,12 @@ export const GenomicViewComponent = withRouteData(
     }
 
     handleSVRowCountChange(info) {
-      this.setState({ loadingResults: true, rowCount: +info.rowCount }, () => {
-        this.fetchSVVariantData();
-      });
+      this.setState(
+        { loadingSVResults: true, svRowCount: +info.rowCount },
+        () => {
+          this.fetchSVVariantData();
+        }
+      );
     }
 
     fetchVariantData() {
@@ -756,15 +782,15 @@ export const GenomicViewComponent = withRouteData(
     fetchSVVariantData() {
       const {
         svSearchTerm,
-        currentPage,
+        svCurrentPage,
         svSortMetadata,
-        rowCount,
+        svRowCount,
         svFilterMetadata,
       } = this.state;
       const searchRequest: SearchSVVariantsRequest = {
         query: svSearchTerm,
-        pageNumber: currentPage,
-        rowCount: rowCount,
+        pageNumber: svCurrentPage,
+        rowCount: svRowCount,
         sortMetadata: svSortMetadata,
         filterMetadata: svFilterMetadata,
       };
@@ -774,7 +800,7 @@ export const GenomicViewComponent = withRouteData(
         .then((results) => {
           this.setState({
             searchSVResults: results.items,
-            loadingResults: false,
+            loadingSVResults: false,
           });
         });
     }
@@ -816,11 +842,11 @@ export const GenomicViewComponent = withRouteData(
       filteredMetadata: SVGenomicFilters,
       sortMetadata: SortSVMetadata
     ) {
-      const { svSearchTerm, rowCount } = this.state;
+      const { svSearchTerm, svRowCount } = this.state;
       const searchRequest = {
         query: svSearchTerm,
         pageNumber: 1,
-        rowCount: rowCount,
+        rowCount: svRowCount,
         filterMetadata: filteredMetadata,
         sortMetadata: sortMetadata,
       };
@@ -830,7 +856,8 @@ export const GenomicViewComponent = withRouteData(
         .then((results) => {
           this.setState({
             searchSVResults: results.items,
-            loadingResults: false,
+            svCurrentPage: 1,
+            loadingSVResults: false,
           });
         });
     }
@@ -845,34 +872,17 @@ export const GenomicViewComponent = withRouteData(
         return;
       }
 
-      // Clear filter metadata when switching tabs
-      if (selected === 1) {
-        this.clearFilterMetadata();
-        this.clearSortMetadata();
-        this.setState({
-          searchTerm: "",
-          searchResults: [],
-          variantListSize: null,
-        });
-      } else if (selected === 2) {
-        this.clearSVFilterMetadata();
-        this.clearSVSortMetadata();
-        this.setState({
-          svSearchTerm: "",
-          searchSVResults: [],
-          svVariantListSize: null,
-        });
-      }
-
+      // Each genomic tab keeps its own search term, results, filters, and sort,
+      // so switching tabs only swaps the view — nothing is cleared or refetched.
       this.setState(
         {
           selectionId: selected,
         },
         () => {
           if (selected === 2) {
-            window.history.pushState({}, "", "/structural-variants");
+            window.history.pushState({}, "", this.svUrl());
           } else if (selected === 1) {
-            window.history.pushState({}, "", "/snvsindels");
+            window.history.pushState({}, "", this.snvUrl());
           } else if (selected === 3) {
             window.history.pushState({}, "", "/participant-demographics");
           }
@@ -909,7 +919,7 @@ export const GenomicViewComponent = withRouteData(
             svFilterMetadata: null,
             submittedSVFilterMetadata: undefined,
             svSearchTerm: searchTerm,
-            loadingResults: true,
+            loadingSVResults: true,
             loadingSVVariantListSize: true,
           },
           () => this.svSearch(searchTerm)
@@ -1014,21 +1024,21 @@ export const GenomicViewComponent = withRouteData(
 
     handleSVScrollBottom() {
       this.setState({
-        currentPage: this.state.currentPage + 1,
-        loadingResults: true,
-        scrollClean: false,
+        svCurrentPage: this.state.svCurrentPage + 1,
+        loadingSVResults: true,
+        svScrollClean: false,
       });
       const {
         svSearchTerm,
-        currentPage,
+        svCurrentPage,
         svSortMetadata,
-        rowCount,
+        svRowCount,
         svFilterMetadata,
       } = this.state;
       const searchRequest: SearchVariantsRequest = {
         query: svSearchTerm,
-        pageNumber: currentPage,
-        rowCount: rowCount,
+        pageNumber: svCurrentPage,
+        rowCount: svRowCount,
         sortMetadata: svSortMetadata,
         filterMetadata: svFilterMetadata,
       };
@@ -1038,30 +1048,32 @@ export const GenomicViewComponent = withRouteData(
         .then((results) => {
           this.setState({
             searchSVResults: [...this.state.searchSVResults, ...results.items],
-            loadingResults: false,
+            loadingSVResults: false,
           });
         });
     }
 
     getTitle() {
-      const { selectionId } = this.state;
       return "Genomic Variants";
     }
 
     render() {
       const {
         currentPage,
+        svCurrentPage,
         selectionId,
         loadingVariantListSize,
         variantListSize,
         loadingSVVariantListSize,
         svVariantListSize,
         loadingResults,
+        loadingSVResults,
         searchResults,
         searchSVResults,
         participantCount,
         chartData,
         rowCount,
+        svRowCount,
         searchTerm,
         svSearchTerm,
         filterMetadata,
@@ -1071,6 +1083,7 @@ export const GenomicViewComponent = withRouteData(
         submittedFilterMetadata,
         submittedSVFilterMetadata,
         scrollClean,
+        svScrollClean,
       } = this.state;
       this.topBarItems = this.topBarItems.sort((a, b) => a.id - b.id);
       return (
@@ -1189,18 +1202,18 @@ export const GenomicViewComponent = withRouteData(
                     this.handleSVFilterSubmit(filteredMetadata, svSortMetadata);
                   }}
                   onScrollBottom={() => this.handleSVScrollBottom()}
-                  currentPage={currentPage}
-                  rowCount={rowCount}
+                  currentPage={svCurrentPage}
+                  rowCount={svRowCount}
                   svVariantListSize={svVariantListSize}
                   loadingSVVariantListSize={loadingSVVariantListSize}
-                  loadingResults={loadingResults}
+                  loadingResults={loadingSVResults}
                   svResults={searchSVResults}
                   participantCount={participantCount}
                   searchTerm={svSearchTerm}
                   filterMetadata={svFilterMetadata}
                   submittedFilterMetadata={submittedSVFilterMetadata}
                   sortMetadata={svSortMetadata}
-                  scrollClean={scrollClean}
+                  scrollClean={svScrollClean}
                 />
               )}
 
