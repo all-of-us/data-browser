@@ -608,6 +608,14 @@ union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
 ) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
 
 echo "Getting genomic tile counts"
@@ -956,7 +964,16 @@ SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union distinct
-SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
+) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
 group by 5;"
 
 echo "Getting physical measurement participant counts by gender"
@@ -1036,6 +1053,14 @@ union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
 ),
 min_dates as
 (select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
