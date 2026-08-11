@@ -503,6 +503,9 @@ export const GenomicViewComponent = withRouteData(
       if (!filtered) {
         this.getFilterMetadata(searchTerm);
       }
+      // The flag was only ever cleared, never set, so it under-reported an
+      // in-flight count request.
+      this.setState({ loadingVariantListSize: true });
       const variantSizeRequest = {
         query: searchTerm,
         filterMetadata: this.state.filterMetadata,
@@ -517,6 +520,7 @@ export const GenomicViewComponent = withRouteData(
         })
         .catch((e) => {
           console.log(e, "error");
+          this.setState({ loadingVariantListSize: false });
         });
     }
 
@@ -524,6 +528,7 @@ export const GenomicViewComponent = withRouteData(
       if (!filtered) {
         this.getSVFilterMetadata(searchTerm);
       }
+      this.setState({ loadingSVVariantListSize: true });
       const variantSizeRequest = {
         query: searchTerm,
         filterMetadata: this.state.svFilterMetadata,
@@ -539,6 +544,7 @@ export const GenomicViewComponent = withRouteData(
         })
         .catch((e) => {
           console.log(e, "error");
+          this.setState({ loadingSVVariantListSize: false });
         });
     }
 
@@ -712,16 +718,24 @@ export const GenomicViewComponent = withRouteData(
       });
     }
 
+    // loadingResults drives the results-table loading overlay, so it has to go
+    // true before the refetch starts, not just false when it lands.
     handleSortClick(sortMetadataTemp) {
-      this.setState({ sortMetadata: sortMetadataTemp }, () => {
-        this.fetchVariantData();
-      });
+      this.setState(
+        { sortMetadata: sortMetadataTemp, loadingResults: true },
+        () => {
+          this.fetchVariantData();
+        }
+      );
     }
 
     handleSVSortClick(sortMetadataTemp) {
-      this.setState({ svSortMetadata: sortMetadataTemp }, () => {
-        this.fetchSVVariantData();
-      });
+      this.setState(
+        { svSortMetadata: sortMetadataTemp, loadingSVResults: true },
+        () => {
+          this.fetchSVVariantData();
+        }
+      );
     }
 
     handleSVPageChange(info) {
@@ -805,11 +819,15 @@ export const GenomicViewComponent = withRouteData(
         });
     }
 
+    // Filter refetches previously only cleared loadingResults on completion,
+    // never set it — so the table never saw a busy state and showed no loading
+    // indicator while new results were being generated.
     filterGenomics(
       filteredMetadata: GenomicFilters,
       sortMetadata: SortMetadata
     ) {
       const { searchTerm, rowCount } = this.state;
+      this.setState({ loadingResults: true });
       const searchRequest = {
         query: searchTerm,
         pageNumber: 1,
@@ -843,6 +861,7 @@ export const GenomicViewComponent = withRouteData(
       sortMetadata: SortSVMetadata
     ) {
       const { svSearchTerm, svRowCount } = this.state;
+      this.setState({ loadingSVResults: true });
       const searchRequest = {
         query: svSearchTerm,
         pageNumber: 1,

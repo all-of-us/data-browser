@@ -15,7 +15,7 @@
 set -xeuo pipefail
 IFS=$'\n\t'
 
-USAGE="./generate-cloudsql-cdr/generate-fitbit-counts.sh --bq-project <PROJECT> --bq-dataset <DATASET>"
+USAGE="./generate-cdr/generate-fitbit-data-counts.sh --bq-project <PROJECT> --bq-dataset <DATASET>"
 USAGE="$USAGE --workbench-project <PROJECT> --workbench-dataset <DATASET>"
 
 while [ $# -gt 0 ]; do

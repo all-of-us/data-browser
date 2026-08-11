@@ -12,6 +12,12 @@ import { SortSVMetadata } from "publicGenerated/fetch";
 import { SVVariantRowComponent } from "./sv-variant-row.component";
 import { TablePaginatorComponent } from "./table-paginator.component";
 
+// Refetches triggered by a filter change are often fast enough that an
+// immediately-shown overlay would flash on and straight back off, which reads
+// as a glitch rather than as progress. Wait this long before showing it; if the
+// results land first the overlay never appears at all.
+const LOADING_OVERLAY_DELAY_MS = 200;
+
 const styles = reactStyles({
   tableContainer: {
     borderTop: "1px solid #CCCCCC",
@@ -23,6 +29,30 @@ const styles = reactStyles({
     marginTop: "0.5rem",
     overflowY: environment.infiniteSrcoll ? "scroll" : "hidden",
     height: environment.infiniteSrcoll ? "30rem" : "",
+  },
+  // The overlay is positioned against this wrapper rather than against
+  // .scroll-area, because .scroll-area scrolls — an overlay inside it would
+  // drift out of view with the rows.
+  tableWrapper: {
+    position: "relative",
+  },
+  // The spinner is anchored near the top of the table rather than centred on
+  // it: that's where the eye already is after clicking a filter chip, it stays
+  // visible on long result sets where dead-centre falls below the fold, and it
+  // sits in the gap under the header instead of on top of a row's text.
+  loadingOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(255, 255, 255, 0.6)",
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    paddingTop: "6rem",
+    // Above the sticky header, which sits at z-index 10, and above the rows.
+    zIndex: 100,
   },
   noScroll: {
     overflowX: "scroll",
@@ -40,14 +70,41 @@ const styles = reactStyles({
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
     cursor: "pointer",
+    position: "relative",
     userSelect: "none",
   },
+  // Headers for the right-aligned numeric columns (Size, Allele Count, Allele
+  // Number, Allele Frequency, Homozygote Count). paddingRight matches
+  // numericRowItem in sv-variant-row.component.tsx so the label lines up with
+  // the values beneath it. paddingLeft stays at 0 — right-aligned text already
+  // pushes away from the left edge, and any left padding narrows the content
+  // box enough to wrap "Allele Frequency" in its 7rem column. The sort arrow trails the
+  // label here just as it does on the left-aligned headers, so the arrow always
+  // sits on the same side of the text throughout the row.
+  headingItemNumeric: {
+    fontSize: ".8em",
+    paddingTop: ".5rem",
+    paddingBottom: ".5rem",
+    paddingLeft: 0,
+    paddingRight: ".75rem",
+    cursor: "pointer",
+    position: "relative",
+    userSelect: "none",
+    textAlign: "right",
+  },
   headingLabel: {},
+  sortIcon: {
+    color: "rgb(33, 111, 180)",
+    marginLeft: "0.5em",
+  },
+  // zIndex keeps the sticky first column above the columns that scroll beneath
+  // it — without it, "Pred. Consequence" bleeds through "Variant ID".
   first: {
     paddingLeft: ".5rem",
     position: "sticky",
     left: 0,
     background: "#f9f9fa",
+    zIndex: 2,
   },
   last: {
     paddingRight: ".5rem",
@@ -88,14 +145,15 @@ const styles = reactStyles({
 });
 
 // Column widths must stay in sync with .row-layout in sv-variant-row.component.tsx.
-// The 9th column (Homozygote Count) is 9rem so the header fits on one line.
+// The 9th column (Homozygote Count) is 9rem so the header fits on one line. The
+// 5th column (Size) is 6rem to fit the value plus the fixed-width unit slot.
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 6rem 7rem 7rem 7rem 9rem 9rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 77rem;
+    width: 78rem;
     position: sticky;
     left: 0;
     top:0;
@@ -104,8 +162,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
-        width: 77rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 6rem 7rem 7rem 7rem 9rem 9rem;
+        width: 78rem;
     }
 }
 .paginator {
@@ -153,6 +211,7 @@ interface State {
   sortMetadata: any;
   allowParentScroll: Boolean;
   resetExpandedSignal: number;
+  showLoadingOverlay: boolean;
 }
 
 export class SVVariantTableComponent extends React.Component<Props, State> {
@@ -171,6 +230,7 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
     "Filter",
   ];
   debounceTimer = null;
+  overlayTimer = null;
 
   constructor(props: Props) {
     super(props);
@@ -180,10 +240,19 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       sortMetadata: props.sortMetadata,
       allowParentScroll: true,
       resetExpandedSignal: 0,
+      showLoadingOverlay: false,
     };
   }
 
-  componentDidUpdate(prevProps: Readonly<Props>) {
+  // True whenever a fetch is in flight, whatever kicked it off — filter change,
+  // sort, page change or row-count change.
+  isBusy(props: Props, state: State) {
+    return (
+      state.loading || props.loadingResults || props.loadingSVVariantListSize
+    );
+  }
+
+  componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>) {
     const { svResults, loadingResults, filtered } = this.props;
 
     if (filtered) {
@@ -196,6 +265,25 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
         resetExpandedSignal: this.state.resetExpandedSignal + 1,
       });
     }
+
+    const wasBusy = this.isBusy(prevProps, prevState);
+    const isBusy = this.isBusy(this.props, this.state);
+    if (isBusy !== wasBusy) {
+      clearTimeout(this.overlayTimer);
+      if (isBusy) {
+        this.overlayTimer = setTimeout(
+          () => this.setState({ showLoadingOverlay: true }),
+          LOADING_OVERLAY_DELAY_MS
+        );
+      } else if (this.state.showLoadingOverlay) {
+        this.setState({ showLoadingOverlay: false });
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.debounceTimer);
+    clearTimeout(this.overlayTimer);
   }
 
   handleScrollEnd = (_event) => {
@@ -281,23 +369,28 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
   renderColumnHeader = (
     columnKey: string,
     displayName: string,
-    additionalStyles = {}
+    additionalStyles = {},
+    numeric = false
   ) => {
     const { sortMetadata } = this.state;
+    const sortArrow = sortMetadata[columnKey].sortActive && (
+      <FontAwesomeIcon
+        icon={this.setArrowIcon(columnKey)}
+        style={styles.sortIcon}
+      />
+    );
     return (
       <div
         className="heading-item"
-        style={{ ...styles.headingItem, ...additionalStyles }}
+        style={{
+          ...(numeric ? styles.headingItemNumeric : styles.headingItem),
+          ...additionalStyles,
+        }}
         onClick={() => this.sortClick(columnKey)}
         title="Click to sort"
       >
         <span style={styles.headingLabel}>{displayName}</span>
-        {sortMetadata[columnKey].sortActive && (
-          <FontAwesomeIcon
-            icon={this.setArrowIcon(columnKey)}
-            style={{ color: "rgb(33, 111, 180)", marginLeft: "0.5em" }}
-          />
-        )}
+        {sortArrow}
       </div>
     );
   };
@@ -310,55 +403,90 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
       rowCount,
       currentPage,
     } = this.props;
-    const { loading, svResults, allowParentScroll } = this.state;
+    const { loading, svResults, allowParentScroll, showLoadingOverlay } =
+      this.state;
     styles.noScroll.overflowX = !allowParentScroll ? "hidden" : "scroll";
+
+    // Once there are results the table stays mounted through refetches, so a
+    // filter change dims the existing rows instead of collapsing the table to
+    // an empty box. The frame below is only for the very first load.
+    const hasResults = svResults && svResults.length > 0;
 
     return (
       <React.Fragment>
         <style>{css}</style>
-        {!loading &&
-        !loadingSVVariantListSize &&
-        svResults &&
-        svResults.length ? (
-          <div
-            ref={this.scrollAreaRef}
-            onScroll={this.handleScrollEnd}
-            className="scroll-area"
-            style={{ ...styles.tableContainer, ...styles.noScroll }}
-          >
-            <div className="header-layout">
-              {this.renderColumnHeader("variantId", "Variant ID", styles.first)}
-              {this.renderColumnHeader("variantType", "Variant Type")}
-              {this.renderColumnHeader("consequence", "Pred. Consequence")}
-              {this.renderColumnHeader("position", "Position")}
-              {this.renderColumnHeader("size", "Size")}
-              {this.renderColumnHeader("alleleCount", "Allele Count")}
-              {this.renderColumnHeader("alleleNumber", "Allele Number")}
-              {this.renderColumnHeader("alleleFrequency", "Allele Frequency")}
-              {this.renderColumnHeader("homozygoteCount", "Homozygote Count")}
-              {this.renderColumnHeader("filter", "Filter", styles.last)}
+        {hasResults ? (
+          <div style={styles.tableWrapper}>
+            <div
+              ref={this.scrollAreaRef}
+              onScroll={this.handleScrollEnd}
+              className="scroll-area"
+              style={{ ...styles.tableContainer, ...styles.noScroll }}
+            >
+              <div className="header-layout">
+                {this.renderColumnHeader(
+                  "variantId",
+                  "Variant ID",
+                  styles.first
+                )}
+                {this.renderColumnHeader("variantType", "Variant Type")}
+                {this.renderColumnHeader("consequence", "Pred. Consequence")}
+                {this.renderColumnHeader("position", "Position")}
+                {this.renderColumnHeader("size", "Size", {}, true)}
+                {this.renderColumnHeader(
+                  "alleleCount",
+                  "Allele Count",
+                  {},
+                  true
+                )}
+                {this.renderColumnHeader(
+                  "alleleNumber",
+                  "Allele Number",
+                  {},
+                  true
+                )}
+                {this.renderColumnHeader(
+                  "alleleFrequency",
+                  "Allele Frequency",
+                  {},
+                  true
+                )}
+                {this.renderColumnHeader(
+                  "homozygoteCount",
+                  "Homozygote Count",
+                  {},
+                  true
+                )}
+                {this.renderColumnHeader("filter", "Filter", styles.last)}
+              </div>
+
+              {svResults &&
+                svResults.map((variant, index) => {
+                  return (
+                    <SVVariantRowComponent
+                      key={index}
+                      variant={variant}
+                      resetExpandedSignal={this.state.resetExpandedSignal}
+                      allowParentScroll={() =>
+                        this.setState({
+                          allowParentScroll: !this.state.allowParentScroll,
+                        })
+                      }
+                    />
+                  );
+                })}
+
+              {environment.infiniteSrcoll && (
+                <div style={{ marginTop: "2rem" }}>
+                  {currentPage < svVariantListSize / rowCount &&
+                    loadingResults && <Spinner />}
+                </div>
+              )}
             </div>
 
-            {svResults &&
-              svResults.map((variant, index) => {
-                return (
-                  <SVVariantRowComponent
-                    key={index}
-                    variant={variant}
-                    resetExpandedSignal={this.state.resetExpandedSignal}
-                    allowParentScroll={() =>
-                      this.setState({
-                        allowParentScroll: !this.state.allowParentScroll,
-                      })
-                    }
-                  />
-                );
-              })}
-
-            {environment.infiniteSrcoll && (
-              <div style={{ marginTop: "2rem" }}>
-                {currentPage < svVariantListSize / rowCount &&
-                  loadingResults && <Spinner />}
+            {showLoadingOverlay && (
+              <div style={styles.loadingOverlay}>
+                <Spinner />
               </div>
             )}
           </div>
@@ -369,66 +497,65 @@ export class SVVariantTableComponent extends React.Component<Props, State> {
                 <Spinner />
               </div>
             )}
-            {!loading && !loadingResults && !loadingSVVariantListSize &&
+            {!loading &&
+              !loadingResults &&
+              !loadingSVVariantListSize &&
               (!svResults || (svResults && svResults.length === 0)) && (
-              <div style={styles.helpTextContainer}>
-                <div style={styles.helpText}>
-                  Enter a query in the search bar or get started with an example
-                  query:
-                </div>
-                <div style={styles.helpText}>
-                  <strong>Gene:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("AAK1")}
-                    style={styles.helpSearchDiv}
-                  >
-                    AAK1
+                <div style={styles.helpTextContainer}>
+                  <div style={styles.helpText}>
+                    Enter a query in the search bar or get started with an
+                    example query:
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Gene:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("AAK1")}
+                      style={styles.helpSearchDiv}
+                    >
+                      AAK1
+                    </div>
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Variant:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("2-15199481")}
+                      style={styles.helpSearchDiv}
+                    >
+                      2-15199481
+                    </div>
+                  </div>
+                  <div style={styles.helpText}>
+                    <strong>Genomic region:</strong>{" "}
+                    <div
+                      onClick={() => this.searchItem("chr2:15100000-15200000")}
+                      style={styles.helpSearchDiv}
+                    >
+                      chr2:15100000-15200000
+                    </div>
                   </div>
                 </div>
-                <div style={styles.helpText}>
-                  <strong>Variant:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("2-15199481")}
-                    style={styles.helpSearchDiv}
-                  >
-                    2-15199481
-                  </div>
-                </div>
-                <div style={styles.helpText}>
-                  <strong>Genomic region:</strong>{" "}
-                  <div
-                    onClick={() => this.searchItem("chr2:15100000-15200000")}
-                    style={styles.helpSearchDiv}
-                  >
-                    chr2:15100000-15200000
-                  </div>
-                </div>
-              </div>
+              )}
+          </div>
+        )}
+        {hasResults && svVariantListSize > rowCount && (
+          <div className="paginator">
+            {!environment.infiniteSrcoll && (
+              <TablePaginatorComponent
+                pageCount={Math.ceil(svVariantListSize / rowCount)}
+                variantListSize={svVariantListSize}
+                currentPage={currentPage}
+                resultsSize={svResults.length}
+                rowCount={rowCount}
+                onPageChange={(info) => {
+                  this.handlePageClick(info);
+                }}
+                onRowCountChange={(info) => {
+                  this.handleRowCountChange(info);
+                }}
+              />
             )}
           </div>
         )}
-        {!loading &&
-          !loadingSVVariantListSize &&
-          svResults &&
-          svVariantListSize > rowCount && (
-            <div className="paginator">
-              {!environment.infiniteSrcoll && (
-                <TablePaginatorComponent
-                  pageCount={Math.ceil(svVariantListSize / rowCount)}
-                  variantListSize={svVariantListSize}
-                  currentPage={currentPage}
-                  resultsSize={svResults.length}
-                  rowCount={rowCount}
-                  onPageChange={(info) => {
-                    this.handlePageClick(info);
-                  }}
-                  onRowCountChange={(info) => {
-                    this.handleRowCountChange(info);
-                  }}
-                />
-              )}
-            </div>
-          )}
       </React.Fragment>
     );
   }

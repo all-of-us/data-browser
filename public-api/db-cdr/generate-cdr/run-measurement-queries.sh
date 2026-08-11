@@ -1847,7 +1847,7 @@ select * from yes_values_2"
 ####################
 # fitbit counts    #
 ####################
-if ./generate-cloudsql-cdr/generate-fitbit-data-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET \
+if ./generate-cdr/generate-fitbit-data-counts.sh --bq-project $BQ_PROJECT --bq-dataset $BQ_DATASET \
    --workbench-project $WORKBENCH_PROJECT --workbench-dataset $WORKBENCH_DATASET
 then
     echo "Fitbit counts generated"
@@ -1855,3 +1855,4 @@ else
     echo "FAILED To generate fitbit counts"
     exit 1
 fi
+
