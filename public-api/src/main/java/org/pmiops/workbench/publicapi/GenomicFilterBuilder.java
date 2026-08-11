@@ -412,9 +412,14 @@ public class GenomicFilterBuilder {
             filterSql.append(" AND homozygote_count BETWEEN ").append(homozygoteCountMin).append(" AND ").append(homozygoteCountMax);
         }
 
-        // Filter filter (SV only - PASS/MULTIALLELIC)
+        // Filter filter (SV only). FILTER is a comma-separated list, so match any
+        // record containing a selected value, whether it is the record's only
+        // FILTER value or one of several.
         if (isSVQuery && !filterValues.isEmpty()) {
-            filterSql.append(" AND filter in (").append(buildQuotedList(filterValues)).append(") ");
+            filterSql.append(" AND EXISTS (SELECT f FROM UNNEST(SPLIT(filter, ',')) AS f")
+                    .append(" WHERE TRIM(f) in (")
+                    .append(buildQuotedList(filterValues))
+                    .append(")) ");
         }
 
         return filterSql.toString();
