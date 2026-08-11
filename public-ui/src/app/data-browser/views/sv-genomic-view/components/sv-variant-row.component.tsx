@@ -69,12 +69,15 @@ const styles = reactStyles({
   },
 });
 
+// Column widths must stay in sync with .header-layout in
+// sv-variant-table.component.tsx. The 9th column (Homozygote Count) is 9rem so
+// the header fits on one line.
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
     align-items: center;
-    width: 75rem;
+    width: 77rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -83,8 +86,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
-        width: 75rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
+        width: 77rem;
     }
 }
 
@@ -187,6 +190,23 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       return String(val);
     }
     return n.toLocaleString("en-US");
+  }
+
+  // Results-table display only: allele frequency in scientific notation with
+  // 2 decimals (0.000036 -> 3.60e-5, 0.001678 -> 1.68e-3). Exact zero shows as
+  // "0" rather than "0.00e+0". The variant card keeps the full decimal value.
+  formatAlleleFrequency(val: any): string {
+    if (val == null || val === "") {
+      return "";
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return String(val);
+    }
+    if (n === 0) {
+      return "0";
+    }
+    return n.toExponential(2);
   }
 
   // Compact size for the results table:
@@ -309,7 +329,9 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
               {this.formatNumber(variant.alleleNumber)}
             </div>
-            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+            <div style={styles.rowItem}>
+              {this.formatAlleleFrequency(variant.alleleFrequency)}
+            </div>
             <div style={styles.rowItem}>
               {this.formatNumber(variant.homozygoteCount)}
             </div>

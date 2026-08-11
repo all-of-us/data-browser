@@ -87,13 +87,15 @@ const styles = reactStyles({
   },
 });
 
+// Column widths must stay in sync with .row-layout in sv-variant-row.component.tsx.
+// The 9th column (Homozygote Count) is 9rem so the header fits on one line.
 const css = `
 .header-layout {
     display: grid;
-    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
     background: #f9f9fa;
     font-family: gothamBold,Arial, Helvetica,sans-serif;
-    width: 75rem;
+    width: 77rem;
     position: sticky;
     left: 0;
     top:0;
@@ -102,8 +104,8 @@ const css = `
 }
 @media (max-width: 900px) {
     .header-layout {
-        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
-        width: 75rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 9rem 9rem;
+        width: 77rem;
     }
 }
 .paginator {

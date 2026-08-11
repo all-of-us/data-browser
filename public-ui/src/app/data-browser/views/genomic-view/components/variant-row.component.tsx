@@ -135,6 +135,23 @@ export class VariantRowComponent extends React.Component<Props, State> {
     }
   }
 
+  // Results-table display only: allele frequency in scientific notation with
+  // 2 decimals (0.000036 -> 3.60e-5, 0.001678 -> 1.68e-3). Exact zero shows as
+  // "0" rather than "0.00e+0". The variant card keeps the full decimal value.
+  formatAlleleFrequency(val: any): string {
+    if (val == null || val === "") {
+      return "";
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return String(val);
+    }
+    if (n === 0) {
+      return "0";
+    }
+    return n.toExponential(2);
+  }
+
   render() {
     const { variant } = this.props;
     const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
@@ -242,7 +259,9 @@ export class VariantRowComponent extends React.Component<Props, State> {
             <div style={styles.rowItem}>
               {variant.alleleNumber.toLocaleString()}
             </div>
-            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
+            <div style={styles.rowItem}>
+              {this.formatAlleleFrequency(variant.alleleFrequency)}
+            </div>
             <div style={styles.rowItem}>
               {variant.homozygoteCount.toLocaleString()}
             </div>
