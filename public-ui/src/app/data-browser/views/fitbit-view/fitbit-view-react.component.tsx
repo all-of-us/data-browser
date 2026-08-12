@@ -1,6 +1,5 @@
 import * as React from "react";
 
-import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
 import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
@@ -191,22 +190,19 @@ export const FitbitReactComponent = withRouteData(
     getFitbitData() {
       const { concepts } = this.state;
       const { search } = urlParamsStore.getValue();
-      const fitbitUpdateFlag = environment.fitbitCDRUpdate;
       const FITBIT_MEASUREMENTS = [
         "Any Fitbit Data",
         "Heart Rate (Summary)",
         "Heart rate (minute-level)",
         "Activity Daily Summary",
         "Activity intraday steps (minute-level)",
+        "Sleep Daily Summary",
+        "Sleep Daily Summary (Counts)",
+        "Sleep Daily Summary (Extended)",
+        "Sleep Daily Summary (30-day average)",
+        "Sleep Level (Sequence by level)",
+        "Sleep Level (Short)",
       ];
-      if (fitbitUpdateFlag) {
-        FITBIT_MEASUREMENTS.push("Sleep Daily Summary");
-        FITBIT_MEASUREMENTS.push("Sleep Daily Summary (Counts)");
-        FITBIT_MEASUREMENTS.push("Sleep Daily Summary (Extended)");
-        FITBIT_MEASUREMENTS.push("Sleep Daily Summary (30-day average)");
-        FITBIT_MEASUREMENTS.push("Sleep Level (Sequence by level)");
-        FITBIT_MEASUREMENTS.push("Sleep Level (Short)");
-      }
       dataBrowserApi()
         .getFitbitAnalysisResults(FITBIT_MEASUREMENTS)
         .then((result) => {

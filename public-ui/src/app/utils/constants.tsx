@@ -1,7 +1,3 @@
-import { environment } from "environments/environment";
-
-const fitbitUpdateFlag = environment.fitbitCDRUpdate;
-
 export const domainToRoute = {
   condition: "conditions",
   drug: "drug-exposures",
@@ -89,60 +85,49 @@ export const fitbitConcepts = [
     icon: "faPersonWalking",
     tooltipKey: "fitbitActivityStepsHelpText",
   },
-];
-
-if (fitbitUpdateFlag) {
-  // NOTE: order matters. The lookup in fitbit-react.component.tsx is a substring
-  // match (conceptName.includes(item.conceptId)), so "Sleep Daily Summary" also
-  // matches the three variants below it. The base entry must stay first.
-  fitbitConcepts.push({
+  {
     id: 6,
     displayName: "sleep daily summary",
-    conceptName: "sleep daily summary",
+    conceptName: "Sleep Daily Summary",
     icon: "faBedPulse",
     tooltipKey: "sleepDailySummaryHelpText",
-  });
-
-  fitbitConcepts.push({
+  },
+  {
     id: 7,
     displayName: "sleep daily summary (counts)",
     conceptName: "Sleep Daily Summary (Counts)",
     icon: "faBedPulse",
     tooltipKey: "sleepDailySummaryCountsHelpText",
-  });
-
-  fitbitConcepts.push({
+  },
+  {
     id: 8,
     displayName: "sleep daily summary (extended)",
     conceptName: "Sleep Daily Summary (Extended)",
     icon: "faBedPulse",
-    tooltipKey: "sleepDailySummaryExtendedHelpText",
-  });
-
-  fitbitConcepts.push({
+    tooltipKey: "sleepDailySummaryExtHelpText",
+  },
+  {
     id: 9,
     displayName: "sleep daily summary (30-day average)",
     conceptName: "Sleep Daily Summary (30-day average)",
     icon: "faBedPulse",
     tooltipKey: "sleepDailySummary30DayAvgHelpText",
-  });
-
-  fitbitConcepts.push({
+  },
+  {
     id: 10,
     displayName: "sleep level (sequence by level)",
     conceptName: "Sleep Level (Sequence by level)",
     icon: "faBedPulse",
     tooltipKey: "sleepLevelHelpText",
-  });
-
-  fitbitConcepts.push({
+  },
+  {
     id: 11,
     displayName: "sleep level (short)",
     conceptName: "Sleep Level (Short)",
     icon: "faBedPulse",
     tooltipKey: "sleepLevelShortHelpText",
-  });
-}
+  },
+];
 
 export const VARIANT_POPULATION_DETAILS = [
   {
