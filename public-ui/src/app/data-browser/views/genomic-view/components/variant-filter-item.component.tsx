@@ -4,7 +4,7 @@ import { Cat } from "app/data-browser/views/genomic-view/components/variant-filt
 import { reactStyles } from "app/utils";
 import { ClrIcon } from "app/utils/clr-icon";
 
-import { VariantFilterSliderComponent } from "./slider-filter/variant-filter-slider.component";
+import { VariantFilterInputsComponent } from "app/data-browser/views/genomic-view/components/slider-filter/variant-filter-inputs.component";
 
 const styles = reactStyles({
   filterItem: {
@@ -134,7 +134,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
   }
 
   // The dataset defaults for this category. Returns an empty object rather than
-  // undefined so the slider never dereferences a missing key.
+  // undefined so the inputs never dereference a missing key.
   readOgFilterItem() {
     const og = JSON.parse(
       localStorage.getItem("originalFilterMetadata") || "{}"
@@ -180,6 +180,9 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
     this.props.onFilterChange(newFilterItemState, this.props.category);
   }
 
+  // Receives [min, max] from the range inputs. The prop is still called
+  // onSliderChange on the inputs component so this contract is unchanged from
+  // when a slider was rendered here.
   handleSliderChange(vals, filterItem) {
     const updatedFilterItem = { ...filterItem };
     updatedFilterItem.min = vals[0];
@@ -245,7 +248,7 @@ export class VariantFilterItemComponent extends React.Component<Props, State> {
         ) : (
           <div>
             {filterItemOpen && (
-              <VariantFilterSliderComponent
+              <VariantFilterInputsComponent
                 category={category.field.toString()}
                 filterItem={filterItemState}
                 ogFilterItem={ogFilterMetaData}

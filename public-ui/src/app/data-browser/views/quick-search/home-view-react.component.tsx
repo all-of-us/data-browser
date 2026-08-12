@@ -240,6 +240,7 @@ export const homeCss = `
 }
 .workbench-card .result-box-title {
   color: #3279b7;
+  margin-bottom: 0;
 }
 .workbench-card .result-box-body {
   font-size: 14px;
@@ -777,6 +778,16 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
   }
 };
 
+const roundUpTo20 = (n: number) => Math.ceil(n / 20) * 20;
+
+const WORKBENCH_COUNTS = {
+  genotypingArray: 553960,
+  longReadWgs: 14540,
+  bulkRnaSeq: 8980,
+  proteomics: 9980,
+  allThree: 8160,
+};
+
 /* New double-wide Researcher Workbench card for v9 */
 const WorkbenchCardComponent = () => {
   const registerUrl = "https://www.researchallofus.org/register/";
@@ -822,21 +833,39 @@ const WorkbenchCardComponent = () => {
         </div>
       </div>
       <div className="result-box-body">
-        <span className="workbench-card-body-item">
-          <strong>14,521</strong> participants in the long-read WGS dataset
-        </span>
-        <span className="workbench-card-body-item">
-          <strong>8,980</strong> participants in the bulk RNASeq dataset
-        </span>
-        <span className="workbench-card-body-item">
-          <strong>9,969</strong> participants in the proteomics dataset
-        </span>
-        <span className="workbench-card-body-item workbench-card-last-row">
+              <span className="workbench-card-body-item">
+                <strong>
+                  {roundUpTo20(WORKBENCH_COUNTS.genotypingArray).toLocaleString()}
+                </strong>{" "}
+                participants in the genotyping array dataset
+              </span>
+              <span className="workbench-card-body-item">
+                <strong>
+                  {roundUpTo20(WORKBENCH_COUNTS.longReadWgs).toLocaleString()}
+                </strong>{" "}
+                participants in the long-read WGS dataset
+              </span>
+              <span className="workbench-card-body-item">
+                <strong>
+                  {roundUpTo20(WORKBENCH_COUNTS.bulkRnaSeq).toLocaleString()}
+                </strong>{" "}
+                participants in the bulk RNASeq dataset
+              </span>
+              <span className="workbench-card-body-item">
+                <strong>
+                  {roundUpTo20(WORKBENCH_COUNTS.proteomics).toLocaleString()}
+                </strong>{" "}
+                participants in the proteomics dataset
+              </span>
+           <span className="workbench-card-body-item workbench-card-last-row">
           <span>
-            <strong>8,152</strong> participants in all three of the above
+            <strong>
+              {roundUpTo20(WORKBENCH_COUNTS.allThree).toLocaleString()}
+            </strong>{" "}
+            participants with lrWGS + RNASeq + proteomics data
           </span>
-          <a
-            href={registerUrl}
+
+          <a href={registerUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="workbench-register-link"

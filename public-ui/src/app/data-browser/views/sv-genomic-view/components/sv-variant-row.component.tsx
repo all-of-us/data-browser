@@ -30,6 +30,35 @@ const styles = reactStyles({
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
   },
+  // Numeric columns (Size, Allele Count, Allele Number, Allele Frequency,
+  // Homozygote Count) are right-aligned so digits line up down the column.
+  // paddingRight must stay in sync with headingItemNumeric in
+  // sv-variant-table.component.tsx so the header label lines up with the
+  // values. tabular-nums gives every digit the same advance width, otherwise
+  // the proportional font leaves the digits ragged even with the right edges
+  // flush.
+  numericRowItem: {
+    width: "100%",
+    paddingTop: ".5rem",
+    paddingBottom: ".5rem",
+    paddingRight: ".75rem",
+    textAlign: "right",
+    fontVariantNumeric: "tabular-nums",
+  },
+  // Size renders as a number plus a unit (bp/kb/Mb). Plain right-alignment
+  // would pin the unit to the right edge and leave the digits ragged, since
+  // "98.0 kb" and "240 bp" have different suffix lengths. Instead the number is
+  // right-aligned against a fixed-width unit slot, so all the digits share a
+  // common right edge.
+  sizeCell: {
+    display: "inline-flex",
+    justifyContent: "flex-end",
+  },
+  sizeUnit: {
+    width: "1.5rem",
+    paddingLeft: ".25rem",
+    textAlign: "left",
+  },
   filterItem: {
     width: "100%",
     paddingTop: ".5rem",
@@ -69,12 +98,16 @@ const styles = reactStyles({
   },
 });
 
+// Column widths must stay in sync with .header-layout in
+// sv-variant-table.component.tsx. The 9th column (Homozygote Count) is 9rem so
+// the header fits on one line. The 5th column (Size) is 6rem to fit the value
+// plus the fixed-width unit slot.
 const css = `
 .row-layout {
     display: grid;
-    grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
+    grid-template-columns: 9rem 7rem 9rem 8rem 6rem 7rem 7rem 7rem 9rem 9rem;
     align-items: center;
-    width: 75rem;
+    width: 78rem;
     background: white;
     font-size: .8em;
     border-bottom: 1px solid #CCCCCC;
@@ -83,8 +116,8 @@ const css = `
 
 @media (max-width: 900px) {
     .row-layout {
-        grid-template-columns: 9rem 7rem 9rem 8rem 5rem 7rem 7rem 7rem 7rem 9rem;
-        width: 75rem;
+        grid-template-columns: 9rem 7rem 9rem 8rem 6rem 7rem 7rem 7rem 9rem 9rem;
+        width: 78rem;
     }
 }
 
@@ -189,11 +222,10 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return n.toLocaleString("en-US");
   }
 
-  // Compact size for the results table:
-  //   <1,000           -> "<n> bp"          (e.g. 266 -> "266 bp")
-  //   1,000..999,999   -> "<n/1000> kb"     (1 decimal, e.g. 1,234 -> "1.2 kb")
-  //   >=1,000,000      -> "<n/1e6> Mb"      (1 decimal, e.g. 1,234,567 -> "1.2 Mb")
-  formatSizeTable(val: any): string {
+  // Results-table display only: allele frequency in scientific notation with
+  // 2 decimals (0.000036 -> 3.60e-5, 0.001678 -> 1.68e-3). Exact zero shows as
+  // "0" rather than "0.00e+0". The variant card keeps the full decimal value.
+  formatAlleleFrequency(val: any): string {
     if (val == null || val === "") {
       return "";
     }
@@ -201,14 +233,57 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     if (Number.isNaN(n)) {
       return String(val);
     }
+    if (n === 0) {
+      return "0";
+    }
+    return n.toExponential(2);
+  }
+
+  // Compact size for the results table, returned as [value, unit] so the two
+  // parts can be laid out separately (see renderSize):
+  //   <1,000           -> "266",  "bp"
+  //   1,000..999,999   -> "1.2",  "kb"   (1 decimal)
+  //   >=1,000,000      -> "1.2",  "Mb"   (1 decimal)
+  formatSizeTable(val: any): [string, string] {
+    if (val == null || val === "") {
+      return ["", ""];
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return [String(val), ""];
+    }
     if (n < 1000) {
       // Keep integers as-is so we don't see "266.0 bp".
-      return `${n} bp`;
+      return [`${n}`, "bp"];
     }
     if (n < 1_000_000) {
-      return `${(n / 1000).toFixed(1)} kb`;
+      return [`${(n / 1000).toFixed(1)}`, "kb"];
     }
-    return `${(n / 1_000_000).toFixed(1)} Mb`;
+    return [`${(n / 1_000_000).toFixed(1)}`, "Mb"];
+  }
+
+  // CTX and BND records describe a junction rather than a span, so they have no
+  // meaningful size. Placeholders go through the same value/unit layout as real
+  // sizes so they sit over the digit column instead of the table edge.
+  renderSize(variant: SVVariant) {
+    let value: string;
+    let unit = "";
+    if (
+      variant.variantType?.includes("CTX") ||
+      variant.variantType?.includes("BND")
+    ) {
+      value = "N/A";
+    } else if (variant.size != null && variant.size >= 0) {
+      [value, unit] = this.formatSizeTable(variant.size);
+    } else {
+      value = "-";
+    }
+    return (
+      <span style={styles.sizeCell}>
+        <span>{value}</span>
+        <span style={styles.sizeUnit}>{unit}</span>
+      </span>
+    );
   }
 
   // Display-only: FILTER values come back underscored (e.g. HIGH_SR_BACKGROUND).
@@ -295,22 +370,17 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
               {this.formatConsequence(variant.consequence)}
             </div>
             <div style={styles.rowItem}>{variant.position || "-"}</div>
-            <div style={styles.rowItem}>
-              {variant.variantType?.includes("CTX") ||
-              variant.variantType?.includes("BND")
-                ? "N/A"
-                : variant.size != null && variant.size >= 0
-                ? this.formatSizeTable(variant.size)
-                : "-"}
-            </div>
-            <div style={styles.rowItem}>
+            <div style={styles.numericRowItem}>{this.renderSize(variant)}</div>
+            <div style={styles.numericRowItem}>
               {this.formatNumber(variant.alleleCount)}
             </div>
-            <div style={styles.rowItem}>
+            <div style={styles.numericRowItem}>
               {this.formatNumber(variant.alleleNumber)}
             </div>
-            <div style={styles.rowItem}>{variant.alleleFrequency}</div>
-            <div style={styles.rowItem}>
+            <div style={styles.numericRowItem}>
+              {this.formatAlleleFrequency(variant.alleleFrequency)}
+            </div>
+            <div style={styles.numericRowItem}>
               {this.formatNumber(variant.homozygoteCount)}
             </div>
             <div style={styles.filterItem}>

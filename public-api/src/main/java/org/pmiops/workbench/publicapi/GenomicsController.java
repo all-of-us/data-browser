@@ -187,7 +187,9 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "WHERE UPPER(TRIM(gene)) = @rawGene "
                     + "AND SPLIT(cg, ' - ')[SAFE_OFFSET(0)] NOT IN ('INTERGENIC', 'NEAREST_TSS'))";
 
-    private static final String SV_DEFAULT_FILTER = " AND filter in (\"PASS\", \"MULTIALLELIC\")";
+    private static final String SV_DEFAULT_FILTER =
+            " AND EXISTS (SELECT f FROM UNNEST(SPLIT(filter, ',')) AS f"
+                    + " WHERE TRIM(f) IN (\"PASS\", \"MULTIALLELIC\"))";
 
     private static final String SV_GENE_CONSEQUENCE_SELECT =
             "(SELECT STRING_AGG(DISTINCT SPLIT(cg, ' - ')[SAFE_OFFSET(0)], ', ') "
@@ -409,8 +411,8 @@ public class GenomicsController implements GenomicsApiDelegate {
                     + "SELECT 'Homozygote Count', '', '', '', '',\n"
                     + "       MIN(homozygote_count), MAX(homozygote_count) FROM filtered\n"
                     + "UNION ALL\n"
-                    + "SELECT DISTINCT 'Filter', '', '', '', filter, 0, 0\n"
-                    + "FROM filtered;";
+                    + "SELECT DISTINCT 'Filter', '', '', '', TRIM(f), 0, 0\n"
+                    + "FROM filtered, UNNEST(SPLIT(filter, ',')) AS f;";
 
     // ====================================================================
     // CONSTRUCTORS

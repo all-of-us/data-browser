@@ -1,74 +1,122 @@
-
 #!/bin/bash
+# Runs achilles queries to populate the count db for cloudsql from BigQuery.
 
-# Runs achilles queries to populate count db for cloudsql in BigQuery
-set -xeuo pipefail
-IFS=$'\n\t'
+set -euo pipefail
+if [[ "${DEBUG:-0}" == "1" ]]; then
+  set -x
+fi
 
-USAGE="./generate-clousql-cdr/run-achilles-queries.sh --bq-project <PROJECT> --bq-dataset <DATASET> --workbench-project <PROJECT>"
-USAGE="$USAGE --cdr-version=YYYYMMDD"
+readonly USAGE="Usage: ./generate-cdr/run-achilles-queries.sh \\
+  --bq-project <PROJECT> --bq-dataset <DATASET> \\
+  --workbench-project <PROJECT> --workbench-dataset <DATASET> \\
+  [--cdr-version <YYYYMMDD>]"
 
-while [ $# -gt 0 ]; do
-  echo "1 is $1"
+BQ_PROJECT=""
+BQ_DATASET=""
+WORKBENCH_PROJECT=""
+WORKBENCH_DATASET=""
+CDR_VERSION=""
+
+# Guards against a flag whose value is missing, empty, or is actually the next
+# flag -- the last case happens when the caller passes an unquoted empty var.
+require_value() {
+  if [[ $# -lt 2 || -z "$2" || "$2" == --* ]]; then
+    echo "Missing value for $1" >&2
+    echo "$USAGE" >&2
+    exit 1
+  fi
+}
+
+while [[ $# -gt 0 ]]; do
   case "$1" in
-    --bq-project) BQ_PROJECT=$2; shift 2;;
-    --bq-dataset) BQ_DATASET=$2; shift 2;;
-    --workbench-project) WORKBENCH_PROJECT=$2; shift 2;;
-    --workbench-dataset) WORKBENCH_DATASET=$2; shift 2;;
-    -- ) shift; break ;;
-    * ) break ;;
+    --bq-project)         require_value "$@"; BQ_PROJECT="$2";        shift 2 ;;
+    --bq-dataset)         require_value "$@"; BQ_DATASET="$2";        shift 2 ;;
+    --workbench-project)  require_value "$@"; WORKBENCH_PROJECT="$2"; shift 2 ;;
+    --workbench-dataset)  require_value "$@"; WORKBENCH_DATASET="$2"; shift 2 ;;
+    --cdr-version)        require_value "$@"; CDR_VERSION="$2";       shift 2 ;;
+    -h|--help)            echo "$USAGE"; exit 0 ;;
+    # Accept --flag=value as well as --flag value.
+    --*=*)                set -- "${1%%=*}" "${1#*=}" "${@:2}" ;;
+    --)                   shift; break ;;
+    *)                    echo "Unknown argument: $1" >&2; echo "$USAGE" >&2; exit 1 ;;
   esac
 done
 
-if [ -z "${BQ_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
+for required in BQ_PROJECT BQ_DATASET WORKBENCH_PROJECT WORKBENCH_DATASET; do
+  if [[ -z "${!required}" ]]; then
+    echo "Missing required argument for ${required}" >&2
+    echo "$USAGE" >&2
+    exit 1
+  fi
+done
+
+readonly BQ_PROJECT BQ_DATASET WORKBENCH_PROJECT WORKBENCH_DATASET CDR_VERSION
+
+# Combined-release datasets carry _mapping_* tables; clean datasets do not.
+# `bq ls --max_results=100` was truncating: a combined release has well over 100
+# tables, so _mapping_ could be absent from the listing and the wrong branch taken.
+HAS_MAPPING="$(bq --quiet --project_id="${BQ_PROJECT}" query \
+  --use_legacy_sql=false --format=csv --max_rows=1 \
+  "SELECT COUNT(*) FROM \`${BQ_PROJECT}.${BQ_DATASET}.INFORMATION_SCHEMA.TABLES\`
+   WHERE STARTS_WITH(table_name, '_mapping_')" | tail -n 1)"
+readonly HAS_MAPPING
+
+if ! [[ "${HAS_MAPPING}" =~ ^[0-9]+$ ]]; then
+  echo "Could not determine _mapping_ table presence in ${BQ_PROJECT}.${BQ_DATASET} (got: '${HAS_MAPPING}')" >&2
   exit 1
 fi
 
-if [ -z "${BQ_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
+# Single source of truth for domain config. Columns:
+#   name  table  domain_id  domain_concept_id  start_datetime  exclude_concept_id
+#
+# exclude_concept_id is dropped from the 3000 concept counts.
+readonly DOMAINS=(
+  "condition    condition_occurrence    Condition    19  condition_start_datetime      19"
+  "drug         drug_exposure           Drug         13  drug_exposure_start_datetime  -1"
+  "procedure    procedure_occurrence    Procedure    10  procedure_datetime            -1"
+  "observation  observation             Observation  27  observation_datetime          -1"
+  "measurement  measurement             Measurement  21  measurement_datetime          -1"
+)
 
-if [ -z "${WORKBENCH_PROJECT}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
+# Derive the parallel arrays the loops below index into. Six of the original
+# eleven were mechanical functions of the others, so they are computed rather
+# than hand-maintained -- they can no longer fall out of index alignment.
+domain_names=();        domain_stratum_names=();  actual_table_names=()
+domain_table_names=();  id_column_names=();       datetime_names_3102=()
+domain_concept_ids=();  concept_ids_to_exclude=()
+view_names=();          view_table_names=()
+view_mapping_table_names=(); view_domain_names=()
 
-if [ -z "${WORKBENCH_DATASET}" ]
-then
-  echo "Usage: $USAGE"
-  exit 1
-fi
+for rec in "${DOMAINS[@]}"; do
+  read -r d_name d_table d_stratum d_cid d_dt d_excl <<< "${rec}"
 
-#Get the list of tables in the dataset
-tables=$(bq --project_id=$BQ_PROJECT --dataset_id=$BQ_DATASET ls --max_results=100)
+  domain_names+=("${d_name}")
+  domain_stratum_names+=("${d_stratum}")
+  actual_table_names+=("${d_table}")
+  domain_table_names+=("v_ehr_${d_table}")
+  id_column_names+=("${d_table}_id")
+  datetime_names_3102+=("${d_dt}")
+  domain_concept_ids+=("${d_cid}")
+  concept_ids_to_exclude+=("${d_excl}")
 
-declare -a domain_names domain_table_names measurement_table_name
-domain_names=(condition drug procedure observation measurement)
-domain_stratum_names=(Condition Drug Procedure Observation Measurement)
-domain_table_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation v_ehr_measurement)
-actual_table_names=(condition_occurrence drug_exposure procedure_occurrence observation measurement)
-id_column_names=(condition_occurrence_id drug_exposure_id procedure_occurrence_id observation_id measurement_id)
-datetime_names_3102=(condition_start_datetime drug_exposure_start_datetime procedure_datetime observation_datetime measurement_datetime)
-concept_ids_to_exclude=(19 0 0 0 0)
-domain_concept_ids=(19 13 10 27 21)
-view_names=(v_ehr_condition_occurrence v_ehr_drug_exposure v_ehr_procedure_occurrence v_ehr_observation)
-view_table_names=(condition_occurrence drug_exposure procedure_occurrence observation)
-view_mapping_table_names=(_mapping_condition_occurrence _mapping_drug_exposure _mapping_procedure_occurrence _mapping_observation)
-view_domain_names=(condition drug procedure observation)
+  # Measurement gets its own view definitions, so it is excluded from view_*.
+  if [[ "${d_table}" != "measurement" ]]; then
+    view_names+=("v_ehr_${d_table}")
+    view_table_names+=("${d_table}")
+    view_mapping_table_names+=("_mapping_${d_table}")
+    view_domain_names+=("${d_name}")
+  fi
+done
 
-if [[ "$tables" == *"_mapping_"* ]]; then
+if [[ "${HAS_MAPPING}" -gt 0 ]]; then
+  tables="_mapping_"          # shim: keeps the existing
   measurement_table_name="v_full_measurement"
 else
+  tables=""                   # [[ "$tables" == *"_mapping_"* ]] checks below
   measurement_table_name="v_ehr_measurement"
 fi
 
 deid_pipeline_table="pipeline_tables"
-
 
 ################################################
 # CREATE VIEWS
@@ -608,6 +656,14 @@ union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
 ) a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` b on a.person_id=b.person_id) as count_value, 0 as source_count_value;"
 
 echo "Getting genomic tile counts"
@@ -956,7 +1012,16 @@ SELECT distinct person_id FROM \`${BQ_PROJECT}.${BQ_DATASET}.steps_intraday\`
 union distinct
 SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union distinct
-SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union distinct
+SELECT distinct person_id FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
+) a join \`${WORKBENCH_PROJECT}.${WORKBENCH_DATASET}.v_person\` b on a.person_id=b.person_id
 group by 5;"
 
 echo "Getting physical measurement participant counts by gender"
@@ -1036,6 +1101,14 @@ union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level\`
 union all
 SELECT person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_counts\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_ext\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_daily_summary_30dayavg\`
+union all
+SELECT distinct person_id, sleep_date as data_date FROM  \`${BQ_PROJECT}.${BQ_DATASET}.sleep_level_short\`
 ),
 min_dates as
 (select distinct a.person_id, min(data_date) as join_date from all_fibit_data a join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on a.person_id = p.person_id group by 1),
