@@ -1,10 +1,6 @@
 import * as React from "react";
 
-import { environment } from "environments/environment";
 import { withRouteData } from "app/components/app-router";
-import { AgeChartReactComponent } from "app/data-browser/charts/chart-age/chart-age-react.component";
-import { BioSexChartReactComponent } from "app/data-browser/charts/chart-biosex/chart-biosex-react.component";
-import { ChartFitbitReactComponent } from "app/data-browser/charts/chart-fitbit/chart-fitbit-react.component";
 import { StackedColumnChartReactComponent } from "app/data-browser/charts/chart-stacked-age-gender/chart-stacked-age-gender-react.component";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { TooltipReactComponent } from "app/data-browser/components/tooltip/tooltip-react.component";
@@ -65,25 +61,6 @@ const styles = reactStyles({
     width: "100%",
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
   },
-  fas: {
-    paddingRight: "0.25em",
-    fontSize: "2em",
-  },
-  fmMenuItemDisplay: {
-    color: "#0079b8",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-  },
-  selectedDisplayH: {
-    paddingBottom: "1rem",
-    textTransform: "capitalize",
-  },
-  fmBodyTop: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   fmBodyBottom: {
     display: "flex",
     flexDirection: "column",
@@ -95,17 +72,9 @@ const styles = reactStyles({
     padding: "1em",
     background: "rgba(33, 111, 180, 0.05)",
   },
-  fmMenuItemContainer: {
-    cursor: "pointer",
-  },
   chartDisplayBody: {
     paddingBottom: "1em",
     fontFamily: "GothamBook, Arial, sans-serif",
-  },
-  fmChart: {
-    width: "calc((50%) - 18px)",
-    height: "auto",
-    flexGrow: 1,
   },
   btnLink: {
     fontSize: "14px",
@@ -175,9 +144,6 @@ aside.fm-aside .button-item button {
 
 interface State {
   concepts: any;
-  domainCountAnalysis: any;
-  totalCountAnalysis: any;
-  selectedItem: any;
   selectedDisplay: any;
   selectedAnalyses: any;
   loading: boolean;
@@ -189,9 +155,6 @@ export const FitbitReactComponent = withRouteData(
       super(props);
       this.state = {
         concepts: fitbitConcepts,
-        domainCountAnalysis: null,
-        totalCountAnalysis: null,
-        selectedItem: "any Fitbit data",
         selectedDisplay: "any Fitbit data",
         selectedAnalyses: null,
         loading: true,
@@ -200,45 +163,58 @@ export const FitbitReactComponent = withRouteData(
 
     componentDidMount() {
       this.getFitbitData();
-      this.getCountData();
+    }
+
+    // Concept names are not unique prefixes of each other ("Sleep Daily Summary"
+    // is a substring of "Sleep Daily Summary (Counts)"), so prefer an exact match
+    // and fall back to the shortest substring match rather than array order.
+    findConcept(concepts, conceptId) {
+      if (!conceptId) {
+        return undefined;
+      }
+      const target = conceptId.toLowerCase();
+      const exact = concepts.find(
+        (concept) => concept.conceptName.toLowerCase() === target
+      );
+      if (exact) {
+        return exact;
+      }
+      const matches = concepts.filter((concept) =>
+        concept.conceptName.toLowerCase().includes(target)
+      );
+      return matches.sort(
+        (a, b) => a.conceptName.length - b.conceptName.length
+      )[0];
     }
 
     getFitbitData() {
       const { concepts } = this.state;
       const { search } = urlParamsStore.getValue();
-      const fitbitUpdateFlag = environment.fitbitCDRUpdate;
       const FITBIT_MEASUREMENTS = [
         "Any Fitbit Data",
         "Heart Rate (Summary)",
         "Heart rate (minute-level)",
         "Activity Daily Summary",
         "Activity intraday steps (minute-level)",
+        "Sleep Daily Summary",
+        "Sleep Daily Summary (Counts)",
+        "Sleep Daily Summary (Extended)",
+        "Sleep Daily Summary (30-day average)",
+        "Sleep Level (Sequence by level)",
+        "Sleep Level (Short)",
       ];
-      if (fitbitUpdateFlag) {
-        FITBIT_MEASUREMENTS.push("Sleep Daily Summary");
-        FITBIT_MEASUREMENTS.push("Sleep Level (Sequence by level)");
-      }
       dataBrowserApi()
         .getFitbitAnalysisResults(FITBIT_MEASUREMENTS)
         .then((result) => {
-          let totalCountAnalysis = null;
           for (const item of result.items) {
-            const fitbitConcept = concepts.filter((concept) =>
-              concept.conceptName
-                .toLowerCase()
-                .includes(item.conceptId.toLowerCase())
-            )[0];
-            fitbitConcept.ageAnalysis = item.ageAnalysis;
-            fitbitConcept.genderAnalysis = item.genderAnalysis;
-            fitbitConcept.countAnalysis = item.countAnalysis;
-            totalCountAnalysis = item.countAnalysis;
-            fitbitConcept.participantCountAnalysis =
-              item.participantCountAnalysis;
+            const fitbitConcept = this.findConcept(concepts, item.conceptId);
+            if (!fitbitConcept) {
+              continue;
+            }
             fitbitConcept.combinedAgeGenderAnalysis =
               item.combinedAgeGenderAnalysis;
             fitbitConcept.locationAnalysis = item.locationAnalysis;
           }
-          let selectedItem = this.state.selectedItem;
           let selectedDisplay = this.state.selectedDisplay;
           let selectedAnalyses = result.items[0];
           if (search) {
@@ -246,15 +222,12 @@ export const FitbitReactComponent = withRouteData(
               concept.conceptName.toLowerCase().includes(search.toLowerCase())
             );
             if (matchingConcepts && matchingConcepts.length > 0) {
-              selectedItem = matchingConcepts[0].conceptName;
               selectedDisplay = matchingConcepts[0].displayName;
               selectedAnalyses = matchingConcepts[0];
             }
           }
           this.setState({
             concepts: concepts,
-            totalCountAnalysis: totalCountAnalysis,
-            selectedItem: selectedItem,
             selectedDisplay: selectedDisplay,
             selectedAnalyses: selectedAnalyses,
             loading: false,
@@ -262,33 +235,17 @@ export const FitbitReactComponent = withRouteData(
         });
     }
 
-    getCountData() {
-      dataBrowserApi()
-        .getCountAnalysis("Fitbit", "fitbit")
-        .then((result) => {
-          this.setState({ domainCountAnalysis: result });
-        });
-    }
-
     setGraphs(concept) {
       this.setState({
         selectedAnalyses: concept,
-        selectedItem: concept.displayName,
         selectedDisplay: concept.displayName,
       });
     }
 
     render() {
-      const {
-        concepts,
-        selectedDisplay,
-        selectedAnalyses,
-        totalCountAnalysis,
-        domainCountAnalysis,
-        loading,
-      } = this.state;
+      const { concepts, selectedDisplay, selectedAnalyses, loading } =
+        this.state;
       const { search } = urlParamsStore.getValue();
-      const tabIndex = 0;
       const selectedResult = null;
       return (
         <React.Fragment>
