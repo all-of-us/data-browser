@@ -213,19 +213,8 @@ export const FitbitReactComponent = withRouteData(
           for (const item of result.items) {
             const fitbitConcept = this.findConcept(concepts, item.conceptId);
             if (!fitbitConcept) {
-              console.log(
-                "[Fitbit] NO MATCH for API conceptId:",
-                item.conceptId
-              );
               continue;
             }
-            console.log("[Fitbit] matched", {
-              conceptId: item.conceptId,
-              conceptName: fitbitConcept.conceptName,
-              displayName: fitbitConcept.displayName,
-              hasAgeSex: !!item.combinedAgeGenderAnalysis,
-              hasLocation: !!item.locationAnalysis,
-            });
             fitbitConcept.combinedAgeGenderAnalysis =
               item.combinedAgeGenderAnalysis;
             fitbitConcept.locationAnalysis = item.locationAnalysis;
@@ -241,11 +230,6 @@ export const FitbitReactComponent = withRouteData(
               selectedAnalyses = matchingConcepts[0];
             }
           }
-          console.log("[Fitbit] initial selection", {
-            selectedDisplay: selectedDisplay,
-            selectedAnalyses: selectedAnalyses,
-            fromSearch: !!search,
-          });
           this.setState({
             concepts: concepts,
             selectedDisplay: selectedDisplay,
@@ -256,14 +240,6 @@ export const FitbitReactComponent = withRouteData(
     }
 
     setGraphs(concept) {
-      console.log("[Fitbit] tab clicked", {
-        displayName: concept.displayName,
-        conceptName: concept.conceptName,
-        tooltipKey: concept.tooltipKey,
-        hasAgeSex: !!concept.combinedAgeGenderAnalysis,
-        hasLocation: !!concept.locationAnalysis,
-        concept: concept,
-      });
       this.setState({
         selectedAnalyses: concept,
         selectedDisplay: concept.displayName,
@@ -275,17 +251,6 @@ export const FitbitReactComponent = withRouteData(
         this.state;
       const { search } = urlParamsStore.getValue();
       const selectedResult = null;
-      if (!loading) {
-        console.log("[Fitbit] rendering", {
-          selectedDisplay: selectedDisplay,
-          ageSexChart: selectedAnalyses?.combinedAgeGenderAnalysis
-            ? "drawn"
-            : "empty",
-          locationChart: selectedAnalyses?.locationAnalysis
-            ? "drawn"
-            : "empty",
-        });
-      }
       return (
         <React.Fragment>
           <style>{styleCss}</style>
