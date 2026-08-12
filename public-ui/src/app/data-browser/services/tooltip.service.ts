@@ -219,7 +219,11 @@ export const tooltips = {
   fitbitActivityStepsHelpText: `Activity data represented granularly at the minute level. Intraday steps are the total
     summary of a participant's daily calories and steps.`,
   sleepDailySummaryHelpText: `Sleep data summarized as a daily report of minutes spent in various sleep levels during a given day.`,
+  sleepDailySummaryCountsHelpText: `Sleep data summarized as the daily total number of times the user entered different sleep stages.`,
+  sleepDailySummaryExtHelpText: `Extended sleep summary data with sleep type, duration, efficiency, start/end times, time asleep/in bed, data quality, and main sleep classification.`,
+  sleepDailySummary30DayAvgHelpText: `Sleep data summarized as the daily average sleep stage time over the past 30 days.`,
   sleepLevelHelpText: `Sleep data represented granularly as a sequence of sleep levels and duration of each level in minutes.`,
+  sleepLevelShortHelpText: `Short wake periods representing physiological awakenings that are <= 180 seconds long.`,
   percentageOfParticipants: `The overall participant count of this medical concept divided by the total number of participants`,
   valueFilter: `This code contains values. Search the medical concept keyword to see related Labs & Measurements results`,
   orderFilter: `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
@@ -480,7 +484,11 @@ export class TooltipService {
     fitbitActivityStepsHelpText: `Activity data represented granularly at the minute level. Intraday steps are the total summary of a participant's
       daily calories and steps.`,
     sleepDailySummaryHelpText: `Sleep data summarized as a daily report of minutes spent in various sleep levels during a given day.`,
+    sleepDailySummaryCountsHelpText: `Sleep data summarized as the daily total number of times the user entered different sleep stages.`,
+    sleepDailySummaryExtHelpText: `Extended sleep summary data with sleep type, duration, efficiency, start/end times, time asleep/in bed, data quality, and main sleep classification.`,
+    sleepDailySummary30DayAvgHelpText: `Sleep data summarized as the daily average sleep stage time over the past 30 days.`,
     sleepLevelHelpText: `Sleep data represented granularly as a sequence of sleep levels and duration of each level in minutes.`,
+    sleepLevelShortHelpText: `Short wake periods representing physiological awakenings that are <= 180 seconds long.`,
     percentageOfParticipants: `The overall participant count of this medical concept divided by the total number of participants`,
     valueFilter: `This code contains values. Search the medical concept keyword to see related Labs & Measurements results`,
     orderFilter: `This code contains orders. Search the medical concept keyword to see related Labs & Measurements results.`,
