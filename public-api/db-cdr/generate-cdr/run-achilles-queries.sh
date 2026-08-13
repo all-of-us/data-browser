@@ -682,6 +682,15 @@ select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lo
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 union distinct
 select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union distinct
+select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union distinct
+select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union distinct
+select distinct p.person_id as person from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id)
 ;"
 
@@ -704,6 +713,18 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 union all
 select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
 \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union all
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'lrwgs_rna_seq_proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
+\`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union all
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'rna_seq' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
+\`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+union all
+select 0 as id, 3000 as analysis_id, '0' as stratum_1, 'Genomics' as stratum_3, 'proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value from
+\`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id;"
 
 echo "Getting genomic biological sex counts"
@@ -725,6 +746,18 @@ on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}
 group by 4
 union all
 select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'lrwgs_rna_seq_proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'rna_seq' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
+group by 4
+union all
+select 0 as id, 3501 as analysis_id, '0' as stratum_1, cast(p.gender_concept_id as string) stratum_2, 'Genomics' as stratum_3, 'proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id
 group by 4;"
 
@@ -760,6 +793,21 @@ group by 4
 union all
 select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2, 'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4, count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2, 'Genomics' as stratum_3, 'lrwgs_rna_seq_proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2, 'Genomics' as stratum_3, 'rna_seq' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3503 as analysis_id, '0' as stratum_1, race_eth as stratum_2, 'Genomics' as stratum_3, 'proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join race_eth_desc pa on p.person_id=pa.person_id
 group by 4;"
 
@@ -847,6 +895,60 @@ JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
     ON b.person_id = p.person_id
 JOIN state_information
     ON p.person_id = state_information.person_id
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'lrwgs_rna_seq_proteomics' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'rna_seq' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
+GROUP BY stratum_2
+UNION ALL
+SELECT
+    0 AS id,
+    3508 AS analysis_id,
+    '0' AS stratum_1,
+    state_information.location AS stratum_2,
+    'Genomics' AS stratum_3,
+    'proteomics' AS stratum_4,
+    COUNT(DISTINCT p.person_id) AS count_value,
+    0 AS source_count_value
+FROM \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a
+JOIN \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+    ON CAST(a.sample_name AS int64) = b.research_id
+JOIN \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+    ON b.person_id = p.person_id
+JOIN state_information
+    ON p.person_id = state_information.person_id
 GROUP BY stratum_2;"
 
 
@@ -887,7 +989,33 @@ when age >= 30 and age <= 89 then cast(floor(age/10) as string)
 when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4, count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3502 as analysis_id, '0' as stratum_1,case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'lrwgs_rna_seq_proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3502 as analysis_id, '0' as stratum_1,case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'rna_seq' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
+group by 4
+union all
+select 0 as id, 3502 as analysis_id, '0' as stratum_1,case when age >= 18 and age <= 29 then '2'
+when age > 89 then '9'
+when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
+group by 4
 group by 4;"
+
 
 echo "Getting genomic age + gender counts"
 bq --quiet --project_id=$BQ_PROJECT query --nouse_legacy_sql \
@@ -978,6 +1106,69 @@ select 0 as id, 3505 as analysis_id,
        'Genomics' as stratum_3, 'wgs_structural_variants' as stratum_4,
        count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_structural_variants_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'lrwgs_rna_seq_proteomics' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_lrwgs_rna_seq_proteomics_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'rna_seq' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_rna_seq_metadata\` a
+join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
+  on cast(a.sample_name as int64)=b.research_id
+join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
+  on b.person_id=p.person_id
+join person_age_gender pag
+  on pag.person_id=p.person_id
+group by 3, 4
+
+union all
+
+select 0 as id, 3505 as analysis_id,
+       case
+         when age >= 18 and age <= 29 then '2'
+         when age > 89 then '9'
+         when age >= 30 and age <= 89 then cast(floor(age/10) as string)
+         when age < 18 then '0'
+       end as stratum_1,
+       cast(gender as string) as stratum_2,
+       'Genomics' as stratum_3, 'proteomics' as stratum_4,
+       count(distinct p.person_id), 0 as source_count_value
+from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a
 join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
   on cast(a.sample_name as int64)=b.research_id
 join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p
