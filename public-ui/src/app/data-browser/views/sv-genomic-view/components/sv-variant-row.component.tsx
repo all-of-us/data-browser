@@ -30,13 +30,6 @@ const styles = reactStyles({
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
   },
-  // Numeric columns (Size, Allele Count, Allele Number, Allele Frequency,
-  // Homozygote Count) are right-aligned so every value -- including the "N/A"
-  // and "-" placeholders in Size -- ends at the same edge. paddingRight must
-  // stay in sync with headingItemNumeric in sv-variant-table.component.tsx so
-  // the header label lines up with the values. tabular-nums gives every digit
-  // the same advance width, otherwise the proportional font leaves the digits
-  // ragged even with the right edges flush.
   numericRowItem: {
     width: "100%",
     paddingTop: ".5rem",
@@ -84,9 +77,6 @@ const styles = reactStyles({
   },
 });
 
-// Column widths must stay in sync with .header-layout in
-// sv-variant-table.component.tsx. The 9th column (Homozygote Count) is 9rem so
-// the header fits on one line.
 const css = `
 .row-layout {
     display: grid;
@@ -185,7 +175,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       svVariantExpanded: !this.state.svVariantExpanded,
     });
     {
-      // intentionally empty
     }
   }
 
@@ -195,7 +184,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       : consequence;
   }
 
-  // Format integers with thousands separators (1234 -> "1,234").
   formatNumber(val: any): string {
     if (val == null || val === "") {
       return "";
@@ -207,9 +195,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return n.toLocaleString("en-US");
   }
 
-  // Results-table display only: allele frequency in scientific notation with
-  // 2 decimals (0.000036 -> 3.60e-5, 0.001678 -> 1.68e-3). Exact zero shows as
-  // "0" rather than "0.00e+0". The variant card keeps the full decimal value.
   formatAlleleFrequency(val: any): string {
     if (val == null || val === "") {
       return "";
@@ -224,10 +209,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return n.toExponential(2);
   }
 
-  // Compact size for the results table:
-  //   <1,000           -> "266 bp"
-  //   1,000..999,999   -> "1.2 kb"   (1 decimal)
-  //   >=1,000,000      -> "1.2 Mb"   (1 decimal)
   formatSizeTable(val: any): string {
     if (val == null || val === "") {
       return "";
@@ -237,7 +218,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
       return String(val);
     }
     if (n < 1000) {
-      // Keep integers as-is so we don't see "266.0 bp".
       return `${n} bp`;
     }
     if (n < 1_000_000) {
@@ -246,9 +226,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return `${(n / 1_000_000).toFixed(1)} Mb`;
   }
 
-  // CTX and BND records describe a junction rather than a span, so they have no
-  // meaningful size. Placeholders are plain strings so they right-align in the
-  // cell like every other numeric column.
   renderSize(variant: SVVariant) {
     if (
       variant.variantType?.includes("CTX") ||
@@ -262,9 +239,6 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return "-";
   }
 
-  // Display-only: FILTER values come back underscored (e.g. HIGH_SR_BACKGROUND).
-  // Show them with single spaces. The raw value is never mutated — it is what
-  // the filter panel submits to the API and what the API matches on.
   formatFilter(filter: string) {
     if (!filter) {
       return "-";
