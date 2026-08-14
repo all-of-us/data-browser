@@ -31,12 +31,6 @@ const styles = reactStyles({
     paddingBottom: ".5rem",
     paddingLeft: ".75rem",
   },
-  // Numeric columns (Allele Count, Allele Number, Allele Frequency, Homozygote
-  // Count) are right-aligned so digits line up down the column. paddingRight
-  // must stay in sync with headingItemNumeric in variant-table.component.tsx so
-  // the header label lines up with the values. tabular-nums gives every digit
-  // the same advance width, otherwise the proportional font leaves the digits
-  // ragged even with the right edges flush.
   numericRowItem: {
     width: "100%",
     paddingTop: ".5rem",
@@ -149,6 +143,20 @@ export class VariantRowComponent extends React.Component<Props, State> {
     }
   }
 
+  formatAlleleFrequency(val: any): string {
+    if (val == null || val === "") {
+      return "";
+    }
+    const n = Number(val);
+    if (Number.isNaN(n)) {
+      return String(val);
+    }
+    if (n === 0) {
+      return "0";
+    }
+    return n.toExponential(2);
+  }
+
   render() {
     const { variant } = this.props;
     const { variantExpanded, variantDetails, loadingVarDetails } = this.state;
@@ -257,7 +265,7 @@ export class VariantRowComponent extends React.Component<Props, State> {
               {variant.alleleNumber.toLocaleString()}
             </div>
             <div style={styles.numericRowItem}>
-              {variant.alleleFrequency}
+              {this.formatAlleleFrequency(variant.alleleFrequency)}
             </div>
             <div style={styles.numericRowItem}>
               {variant.homozygoteCount.toLocaleString()}
