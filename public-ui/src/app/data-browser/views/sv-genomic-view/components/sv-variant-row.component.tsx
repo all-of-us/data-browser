@@ -31,12 +31,12 @@ const styles = reactStyles({
     paddingLeft: ".75rem",
   },
   // Numeric columns (Size, Allele Count, Allele Number, Allele Frequency,
-  // Homozygote Count) are right-aligned so digits line up down the column.
-  // paddingRight must stay in sync with headingItemNumeric in
-  // sv-variant-table.component.tsx so the header label lines up with the
-  // values. tabular-nums gives every digit the same advance width, otherwise
-  // the proportional font leaves the digits ragged even with the right edges
-  // flush.
+  // Homozygote Count) are right-aligned so every value -- including the "N/A"
+  // and "-" placeholders in Size -- ends at the same edge. paddingRight must
+  // stay in sync with headingItemNumeric in sv-variant-table.component.tsx so
+  // the header label lines up with the values. tabular-nums gives every digit
+  // the same advance width, otherwise the proportional font leaves the digits
+  // ragged even with the right edges flush.
   numericRowItem: {
     width: "100%",
     paddingTop: ".5rem",
@@ -44,20 +44,6 @@ const styles = reactStyles({
     paddingRight: ".75rem",
     textAlign: "right",
     fontVariantNumeric: "tabular-nums",
-  },
-  // Size renders as a number plus a unit (bp/kb/Mb). Plain right-alignment
-  // would pin the unit to the right edge and leave the digits ragged, since
-  // "98.0 kb" and "240 bp" have different suffix lengths. Instead the number is
-  // right-aligned against a fixed-width unit slot, so all the digits share a
-  // common right edge.
-  sizeCell: {
-    display: "inline-flex",
-    justifyContent: "flex-end",
-  },
-  sizeUnit: {
-    width: "1.5rem",
-    paddingLeft: ".25rem",
-    textAlign: "left",
   },
   filterItem: {
     width: "100%",
@@ -100,8 +86,7 @@ const styles = reactStyles({
 
 // Column widths must stay in sync with .header-layout in
 // sv-variant-table.component.tsx. The 9th column (Homozygote Count) is 9rem so
-// the header fits on one line. The 5th column (Size) is 6rem to fit the value
-// plus the fixed-width unit slot.
+// the header fits on one line.
 const css = `
 .row-layout {
     display: grid;
@@ -239,51 +224,42 @@ export class SVVariantRowComponent extends React.Component<Props, State> {
     return n.toExponential(2);
   }
 
-  // Compact size for the results table, returned as [value, unit] so the two
-  // parts can be laid out separately (see renderSize):
-  //   <1,000           -> "266",  "bp"
-  //   1,000..999,999   -> "1.2",  "kb"   (1 decimal)
-  //   >=1,000,000      -> "1.2",  "Mb"   (1 decimal)
-  formatSizeTable(val: any): [string, string] {
+  // Compact size for the results table:
+  //   <1,000           -> "266 bp"
+  //   1,000..999,999   -> "1.2 kb"   (1 decimal)
+  //   >=1,000,000      -> "1.2 Mb"   (1 decimal)
+  formatSizeTable(val: any): string {
     if (val == null || val === "") {
-      return ["", ""];
+      return "";
     }
     const n = Number(val);
     if (Number.isNaN(n)) {
-      return [String(val), ""];
+      return String(val);
     }
     if (n < 1000) {
       // Keep integers as-is so we don't see "266.0 bp".
-      return [`${n}`, "bp"];
+      return `${n} bp`;
     }
     if (n < 1_000_000) {
-      return [`${(n / 1000).toFixed(1)}`, "kb"];
+      return `${(n / 1000).toFixed(1)} kb`;
     }
-    return [`${(n / 1_000_000).toFixed(1)}`, "Mb"];
+    return `${(n / 1_000_000).toFixed(1)} Mb`;
   }
 
   // CTX and BND records describe a junction rather than a span, so they have no
-  // meaningful size. Placeholders go through the same value/unit layout as real
-  // sizes so they sit over the digit column instead of the table edge.
+  // meaningful size. Placeholders are plain strings so they right-align in the
+  // cell like every other numeric column.
   renderSize(variant: SVVariant) {
-    let value: string;
-    let unit = "";
     if (
       variant.variantType?.includes("CTX") ||
       variant.variantType?.includes("BND")
     ) {
-      value = "N/A";
-    } else if (variant.size != null && variant.size >= 0) {
-      [value, unit] = this.formatSizeTable(variant.size);
-    } else {
-      value = "-";
+      return "N/A";
     }
-    return (
-      <span style={styles.sizeCell}>
-        <span>{value}</span>
-        <span style={styles.sizeUnit}>{unit}</span>
-      </span>
-    );
+    if (variant.size != null && variant.size >= 0) {
+      return this.formatSizeTable(variant.size);
+    }
+    return "-";
   }
 
   // Display-only: FILTER values come back underscored (e.g. HIGH_SR_BACKGROUND).
