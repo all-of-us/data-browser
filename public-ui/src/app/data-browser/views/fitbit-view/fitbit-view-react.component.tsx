@@ -216,7 +216,11 @@ export const FitbitReactComponent = withRouteData(
             fitbitConcept.locationAnalysis = item.locationAnalysis;
           }
           let selectedDisplay = this.state.selectedDisplay;
-          let selectedAnalyses = result.items[0];
+          // Select the decorated fitbitConcepts entry rather than the raw API
+          // item -- the sidebar highlights on displayName, which API items
+          // don't carry, so result.items[0] leaves the button and the charts
+          // out of sync on first paint.
+          let selectedAnalyses = concepts[0];
           if (search) {
             const matchingConcepts = concepts.filter((concept) =>
               concept.conceptName.toLowerCase().includes(search.toLowerCase())
@@ -232,6 +236,10 @@ export const FitbitReactComponent = withRouteData(
             selectedAnalyses: selectedAnalyses,
             loading: false,
           });
+        })
+        .catch((e) => {
+          console.error("getFitbitAnalysisResults failed", e);
+          this.setState({ loading: false });
         });
     }
 
@@ -319,9 +327,14 @@ export const FitbitReactComponent = withRouteData(
                         >
                           Location
                         </div>
+                        {/* key forces a remount on concept change --
+                            HeatMapReactComponent builds its Highcharts
+                            instance in componentDidMount and doesn't redraw
+                            on a changed locationAnalysis prop. */}
                         {selectedAnalyses &&
                           selectedAnalyses.locationAnalysis && (
                             <HeatMapReactComponent
+                              key={selectedDisplay}
                               locationAnalysis={
                                 selectedAnalyses?.locationAnalysis
                               }
