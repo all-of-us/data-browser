@@ -1013,7 +1013,6 @@ when age >= 30 and age <= 89 then cast(floor(age/10) as string)
 when age < 18 then '0' end as stratum_2, 'Genomics' as stratum_3, 'proteomics' as stratum_4, count(distinct p.person_id), 0 as source_count_value
 from \`${BQ_PROJECT}.${BQ_DATASET}.prep_proteomics_metadata\` a join \`${BQ_PROJECT}.${deid_pipeline_table}.primary_pid_rid_mapping\` b
 on cast(a.sample_name as int64)=b.research_id join \`${BQ_PROJECT}.${BQ_DATASET}.person\` p on b.person_id=p.person_id join person_age pa on p.person_id=pa.person_id
-group by 4
 group by 4;"
 
 
