@@ -135,9 +135,14 @@ class JiraReleaseClient
 
     summary = ticket_summary(tag)
     begin
+      # jira-ruby 3.2.0 routes JQL through Jira's enhanced search endpoint
+      # (/rest/api/*/search/jql), which returns issue IDs only unless `fields`
+      # is specified. Request the fields read below (key + summary) so the
+      # returned issues are populated; otherwise issue.key raises NoMethodError.
       issues = @client.Issue.jql(
         "project = \"#{JIRA_PROJECT_NAME}\" AND " +
-        "summary ~ \"#{summary}\" ORDER BY created DESC")
+        "summary ~ \"#{summary}\" ORDER BY created DESC",
+        fields: %w[key summary])
     rescue JIRA::HTTPError => e
       raise RuntimeError.new format_jira_error(e)
     end
