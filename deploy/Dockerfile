@@ -2,9 +2,11 @@
 # have an ARM build (M1 chip requires emulation).
 # Keep synchronized with ci/Dockerfile.circle_build
 #
-# Pinned to jammy (Ubuntu 22.04) — the floating `17` tag now resolves to Debian
-# Trixie which ships Python 3.14, incompatible with gsutil (requires 3.8-3.12).
-FROM eclipse-temurin:17-jdk-jammy
+# Pinned to noble (Ubuntu 24.04) — jammy ships Ruby 3.0.2, but jira-ruby 3.x
+# requires Ruby >= 3.1.0. Noble ships Ruby 3.2 and Python 3.12 (still inside
+# gsutil's supported 3.8-3.12 window). Do not use the floating `17` tag — it
+# resolves to Debian Trixie which ships Python 3.14, incompatible with gsutil.
+FROM eclipse-temurin:17-jdk-noble
 
 # Upgrade base OS packages to pick up available security fixes (binutils, etc.)
 # from the Ubuntu archive. Must run before any other apt-get install so the
@@ -14,6 +16,8 @@ RUN apt-get update \
   && apt-get install --no-install-recommends -yq \
   gettext \
   ruby \
+  ruby-dev \
+  build-essential \
   default-mysql-client \
   python3 \
   python3-pip \
@@ -27,6 +31,10 @@ RUN apt-get update \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
+# Ubuntu 24.04 marks the system Python as externally managed (PEP 668);
+# without this, any `pip install` fails with externally-managed-environment.
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
 RUN npm install --global yarn n
 # Upgrade to Node 22 LTS (required by Angular 19).
 RUN n 22
@@ -36,6 +44,10 @@ RUN npm install @openapitools/openapi-generator-cli -g
 
 ENV CLOUD_SDK_VERSION 503.0.0
 
+# Force gcloud/gsutil to use system python3 (Ubuntu 24.04 ships 3.12).
+# Set before install.sh so the installer itself runs under it.
+ENV CLOUDSDK_PYTHON=/usr/bin/python3
+
 WORKDIR /root
 RUN curl -o gcloud.tgz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${CLOUD_SDK_VERSION}-linux-x86_64.tar.gz && \
   tar -xf gcloud.tgz && \
@@ -43,9 +55,6 @@ RUN curl -o gcloud.tgz https://dl.google.com/dl/cloudsdk/channels/rapid/download
   ./google-cloud-sdk/bin/gcloud components install app-engine-java && \
   rm -rf /root/google-cloud-sdk/platform/bundledpythonunix && \
   rm -rf gcloud.tgz
-
-# Force gcloud/gsutil to use system python3 (Ubuntu 22.04 ships 3.10).
-ENV CLOUDSDK_PYTHON=/usr/bin/python3
 
 ENV PATH=/root/google-cloud-sdk/bin:$PATH
 
@@ -62,9 +71,10 @@ RUN curl -L -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-
 
 ENV PATH="/opt/gradle/gradle-${GRADLE_VERSION}/bin:${PATH}"
 
+# activesupport 6.1 shims for Ruby 3.1+ — must stay ahead of jira-ruby.
 RUN gem install logger
 RUN gem install concurrent-ruby -v 1.3.4
 RUN gem install activesupport -v 6.1.4.6 --conservative
 # Pinned to 3.2.0 — earlier versions hit the deprecated /rest/api/2/search
-# endpoint (Atlassian removed → 410 Gone).
+# endpoint (Atlassian removed → 410 Gone). Requires Ruby >= 3.1.0, hence noble.
 RUN gem install jira-ruby -v '3.2.0'
