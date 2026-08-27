@@ -19,3 +19,8 @@ hs_err_pid*
 target
 .gradle
 build
+docker-compose.yaml
+db-cdr/generate-cdr/init-new-cdr-db.sh
+libproject/devstart.rb
+src/dev/server/Dockerfile
+src/dev/server/with-uid.sh
