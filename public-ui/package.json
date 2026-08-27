@@ -20,7 +20,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-eslint/schematics": "^19.0.0",
+    "@angular-eslint/schematics": "^21.0.0",
     "@angular/animations": "^19.2.18",
     "@angular/cdk": "^19.0.0",
     "@angular/common": "^19.2.18",
@@ -55,7 +55,7 @@
     "mutationobserver-shim": "^0.3.2",
     "ngx-pagination": "^6.0.0",
     "nouislider": "10.0.0",
-    "nyc": "^15.1.0",
+    "nyc": "^18.0.0",
     "portable-fetch": "^3.0.0",
     "prop-types": "^15.8.1",
     "react": "^19.2.1",
