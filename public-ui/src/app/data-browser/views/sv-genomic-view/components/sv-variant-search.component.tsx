@@ -52,7 +52,7 @@ const css = `
     display: flex;
     flex-wrap:wrap-reverse;
     align-items: flex-end;
-    
+
 }
 @media (max-width: 1220px) {
     .search-container {
