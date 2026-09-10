@@ -55,6 +55,18 @@ else
     exit 1
 fi
 
+## Copy the standalone CHEL tables into the versioned public dataset so the dump picks them up
+echo "Copying CHEL tables into public dataset"
+if ./generate-cdr/make-bq-chel-data.sh \
+  --public-project $PUBLIC_PROJECT --public-dataset $PUBLIC_DATASET \
+  --chel-project $PUBLIC_PROJECT --chel-dataset chel_public
+then
+    echo "CHEL tables copied"
+else
+    echo "FAILED to copy CHEL tables for public $CDR_VERSION"
+    exit 1
+fi
+
 ## Dump public cdr count data
 echo "Dumping public dataset to .csv"
 if ./generate-cdr/make-bq-data-dump.sh --dataset $PUBLIC_DATASET --project $PUBLIC_PROJECT --bucket $BUCKET

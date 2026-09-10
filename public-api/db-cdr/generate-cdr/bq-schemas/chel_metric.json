@@ -1,0 +1,112 @@
+[
+  {
+    "mode": "REQUIRED",
+    "name": "metric_key",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "metric_year",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "metric_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "title",
+    "type": "STRING"
+  },
+  {
+    "name": "description",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "metric_group",
+    "type": "STRING"
+  },
+  {
+    "name": "unit",
+    "type": "STRING"
+  },
+  {
+    "name": "value_type",
+    "type": "STRING"
+  },
+  {
+    "name": "higher_is_worse",
+    "type": "BOOLEAN"
+  },
+  {
+    "name": "palette_name",
+    "type": "STRING"
+  },
+  {
+    "name": "reverse_palette",
+    "type": "BOOLEAN"
+  },
+  {
+    "name": "legend_decimals",
+    "type": "INTEGER"
+  },
+  {
+    "name": "display_format",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "sort_order",
+    "type": "INTEGER"
+  },
+  {
+    "name": "min_value",
+    "type": "FLOAT"
+  },
+  {
+    "name": "max_value",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p01",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p05",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p25",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p50",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p75",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p95",
+    "type": "FLOAT"
+  },
+  {
+    "name": "p99",
+    "type": "FLOAT"
+  },
+  {
+    "name": "breaks_json",
+    "type": "STRING"
+  },
+  {
+    "name": "non_missing_count",
+    "type": "INTEGER"
+  },
+  {
+    "name": "missing_count",
+    "type": "INTEGER"
+  }
+]

@@ -44,11 +44,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.pmiops.workbench.exceptions.ServerErrorException;
 
+import org.pmiops.workbench.service.ChelService;
+import org.pmiops.workbench.model.ChelMetricsResponse;
+import org.pmiops.workbench.model.ChelValuesResponse;
+import org.pmiops.workbench.exceptions.DataNotFoundException;
+
 @RestController
 public class DataBrowserController implements DataBrowserApiDelegate {
 
     @Autowired
     private AchillesResultService achillesResultService;
+
+    @Autowired
+    private ChelService chelService;
+
     @Autowired
     private AchillesAnalysisService achillesAnalysisService;
     @Autowired
@@ -73,7 +82,8 @@ public class DataBrowserController implements DataBrowserApiDelegate {
     public DataBrowserController(ConceptService conceptService, CriteriaService criteriaService,
                                  CdrVersionService cdrVersionService, DomainInfoService domainInfoService,
                                  SurveyMetadataService surveyMetadataService, SurveyModuleService surveyModuleService,
-                                 AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService) {
+                                 AchillesResultService achillesResultService, AchillesAnalysisService achillesAnalysisService,
+                                 ChelService chelService) {
         this.conceptService = conceptService;
         this.criteriaService = criteriaService;
         this.cdrVersionService = cdrVersionService;
@@ -82,6 +92,7 @@ public class DataBrowserController implements DataBrowserApiDelegate {
         this.domainInfoService = domainInfoService;
         this.achillesResultService = achillesResultService;
         this.achillesAnalysisService = achillesAnalysisService;
+        this.chelService = chelService;
     }
 
     @Override
@@ -372,5 +383,34 @@ public class DataBrowserController implements DataBrowserApiDelegate {
             throw new ServerErrorException("Cannot set default cdr version");
         }
         return ResponseEntity.ok(achillesResultService.findAchillesResultByAnalysisId(CommonStorageEnums.analysisIdFromName(AnalysisIdConstant.PARTICIPANT_COUNT_ANALYSIS_ID)));
+    }
+
+    @Override
+    public ResponseEntity<ChelMetricsResponse> getChelMetrics() {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch (NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+        ChelMetricsResponse response = new ChelMetricsResponse();
+        response.setCells(chelService.getCells());
+        response.setMetrics(chelService.getMetrics());
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<ChelValuesResponse> getChelValues(String metricKey) {
+        try {
+            cdrVersionService.setDefaultCdrVersion();
+        } catch (NullPointerException ie) {
+            throw new ServerErrorException("Cannot set default cdr version");
+        }
+        if (!chelService.metricExists(metricKey)) {
+            throw new DataNotFoundException("No CHEL metric found for key " + metricKey);
+        }
+        ChelValuesResponse response = new ChelValuesResponse();
+        response.setMetricKey(metricKey);
+        response.setValues(chelService.getValues(metricKey));
+        return ResponseEntity.ok(response);
     }
 }

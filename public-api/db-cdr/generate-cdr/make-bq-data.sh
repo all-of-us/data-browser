@@ -79,7 +79,7 @@ cb_cri_anc_table_check=\\bcb_criteria_ancestor\\b
 # Create bq tables we have json schema for
 schema_path=generate-cdr/bq-schemas
 create_tables=(achilles_analysis achilles_results achilles_results_concept achilles_results_dist concept concept_relationship cb_criteria cb_criteria_attribute cb_criteria_relationship cb_criteria_ancestor
-domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata pfhh_qa_metadata pfhh_path_update)
+domain_info survey_module domain vocabulary concept_synonym domain_vocabulary_info unit_map filter_conditions criteria_stratum source_standard_unit_map measurement_concept_info survey_metadata pfhh_qa_metadata pfhh_path_update chel_h3_cell chel_metric chel_h3_metric_value)
 
 for t in "${create_tables[@]}"
 do
@@ -90,7 +90,7 @@ done
 # Populate some tables from cdr data
 
 # Load tables from csvs we have. This is not cdr data but meta data needed for databrowser app
-load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata pfhh_qa_metadata pfhh_path_update)
+load_tables=(domain_info survey_module achilles_analysis achilles_results unit_map filter_conditions source_standard_unit_map survey_metadata pfhh_qa_metadata pfhh_path_update chel_h3_cell chel_metric chel_h3_metric_value)
 csv_path=generate-cdr/csv
 for t in "${load_tables[@]}"
 do

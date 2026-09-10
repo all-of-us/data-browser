@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-86-chel-h3-cell">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="chel_h3_cell"/>
+      </not>
+    </preConditions>
+    <createTable tableName="chel_h3_cell">
+      <column name="h3_id" type="VARCHAR(16)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="cell_index" type="INTEGER">
+        <constraints nullable="false" unique="true"/>
+      </column>
+      <column name="resolution" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="centroid_lat" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+      <column name="centroid_lon" type="DOUBLE">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-86-chel-metric">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="chel_metric"/>
+      </not>
+    </preConditions>
+    <createTable tableName="chel_metric">
+      <column name="metric_key" type="VARCHAR(64)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="metric_year" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="metric_id" type="VARCHAR(32)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="title" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="VARCHAR(2000)"/>
+      <column name="metric_group" type="VARCHAR(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="unit" type="VARCHAR(64)"/>
+      <column name="value_type" type="VARCHAR(32)"/>
+      <column name="higher_is_worse" type="BOOLEAN"/>
+      <column name="palette_name" type="VARCHAR(32)"/>
+      <column name="reverse_palette" type="BOOLEAN" defaultValueBoolean="false"/>
+      <column name="legend_decimals" type="INTEGER" defaultValue="0"/>
+      <column name="display_format" type="VARCHAR(32)"/>
+      <column name="sort_order" type="INTEGER">
+        <constraints nullable="false"/>
+      </column>
+      <column name="min_value" type="DOUBLE"/>
+      <column name="max_value" type="DOUBLE"/>
+      <column name="p01" type="DOUBLE"/>
+      <column name="p05" type="DOUBLE"/>
+      <column name="p25" type="DOUBLE"/>
+      <column name="p50" type="DOUBLE"/>
+      <column name="p75" type="DOUBLE"/>
+      <column name="p95" type="DOUBLE"/>
+      <column name="p99" type="DOUBLE"/>
+      <column name="breaks_json" type="VARCHAR(1000)"/>
+      <column name="non_missing_count" type="INTEGER"/>
+      <column name="missing_count" type="INTEGER"/>
+    </createTable>
+    <createIndex tableName="chel_metric" indexName="chel_metric_group_sort_index">
+      <column name="metric_year"/>
+      <column name="sort_order"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet author="srushtigangireddy" runAlways="true" onValidationFail="MARK_RAN" id="changelog-86-chel-h3-metric-value">
+    <validCheckSum>ANY</validCheckSum>
+    <preConditions onFail="MARK_RAN">
+      <not>
+        <tableExists tableName="chel_h3_metric_value"/>
+      </not>
+    </preConditions>
+    <createTable tableName="chel_h3_metric_value">
+      <column name="metric_key" type="VARCHAR(64)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="h3_id" type="VARCHAR(16)">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="metric_value" type="DOUBLE"/>
+    </createTable>
+    <createIndex tableName="chel_h3_metric_value" indexName="chel_value_h3_index">
+      <column name="h3_id"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>
