@@ -63,6 +63,8 @@ import org.pmiops.workbench.cdr.ConceptMapper;
 import org.pmiops.workbench.cdr.ConceptMapperImpl;
 import org.springframework.test.context.TestPropertySource;
 
+import org.pmiops.workbench.service.ChelService;
+
 @DataJpaTest
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @TestPropertySource(properties = "spring.main.allow-bean-definition-overriding=true")
@@ -435,6 +437,7 @@ public class DataBrowserControllerTest {
     @Mock private DomainInfoService domainInfoService;
     @Mock private AchillesResultService achillesResultService;
     @Mock private CriteriaService criteriaService;
+    @Mock private ChelService chelService;
 
     private DataBrowserController dataBrowserController;
     private ConceptService conceptService;
@@ -447,7 +450,7 @@ public class DataBrowserControllerTest {
         conceptService = new ConceptService(entityManager, conceptDao, conceptMapper);
         AchillesAnalysisService achillesAnalysisService = new AchillesAnalysisService(achillesAnalysisDao, achillesMapper, achillesResultDistService);
         dataBrowserController = new DataBrowserController(conceptService, criteriaService, cdrVersionService, domainInfoService, surveyMetadataService,
-                surveyModuleService, achillesResultService, achillesAnalysisService);
+                surveyModuleService, achillesResultService, achillesAnalysisService, chelService);
     }
 
     @Test
