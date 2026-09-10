@@ -45,6 +45,23 @@ def read(src, name):
     return pd.read_csv(os.path.join(src, name), encoding="utf-8-sig")
 
 
+def severity_direction(higher_is_worse):
+    """
+    The source ships a nullable boolean. A null cannot survive this pipeline: bq extract
+    writes it as an empty field and mysqlimport stores an empty boolean column as false,
+    which would assert a direction the data never claimed. Encoding the three states as
+    strings keeps "we do not know" distinguishable from "lower is worse".
+
+    Note this is a faithful re-encoding, not a correction. E_PARK ("Lack of Recreational
+    Parks") arrives with higher_is_worse=False and so becomes lower_is_worse here, which
+    still looks inverted against its own title -- that is a question for the data provider,
+    not something to silently patch in the loader.
+    """
+    if pd.isna(higher_is_worse):
+        return "unspecified"
+    return "higher_is_worse" if bool(higher_is_worse) else "lower_is_worse"
+
+
 def metric_key(year, metric_id):
     """Metric ids are unique only within a vintage, so the key carries the year."""
     return "{}_{}".format(int(year), metric_id)
@@ -60,7 +77,7 @@ def nullable(v, fmt):
 HEADERS = {
     "chel_h3_cell": ["h3_id", "cell_index", "resolution", "centroid_lat", "centroid_lon"],
     "chel_metric": ["metric_key", "metric_year", "metric_id", "title", "description",
-                    "metric_group", "unit", "value_type", "higher_is_worse", "palette_name",
+                    "metric_group", "unit", "value_type", "severity_direction", "palette_name",
                     "reverse_palette", "legend_decimals", "display_format", "sort_order",
                     "min_value", "max_value", "p01", "p05", "p25", "p50", "p75", "p95", "p99",
                     "breaks_json", "non_missing_count", "missing_count"],
@@ -164,7 +181,7 @@ def build(src, out, fmt):
             r.metric_group,
             r.unit,
             r.value_type,
-            nullable(None if pd.isna(r.higher_is_worse) else int(bool(r.higher_is_worse)), fmt),
+            severity_direction(r.higher_is_worse),
             r.palette_name,
             int(bool(r.reverse_palette)),
             int(r.legend_decimals),

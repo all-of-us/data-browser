@@ -22,7 +22,7 @@ public class DbChelMetric {
     private String metricGroup;
     private String unit;
     private String valueType;
-    private Boolean higherIsWorse;
+    private String severityDirection;
     private String paletteName;
     private boolean reversePalette;
     private int legendDecimals;
@@ -155,18 +155,24 @@ public class DbChelMetric {
         return this;
     }
 
-    /** Nullable on purpose — E_WLKIND ships with no direction set. */
-    @Column(name = "higher_is_worse")
-    public Boolean getHigherIsWorse() {
-        return higherIsWorse;
+    /**
+     * Which end of the range is the bad end: "higher_is_worse", "lower_is_worse" or
+     * "unspecified". A string rather than a nullable boolean because the source leaves the
+     * direction blank for some metrics, and a null cannot survive this pipeline -- bq extract
+     * writes it as an empty field and mysqlimport stores an empty boolean as false, which
+     * would assert a direction the data never claimed. Never null.
+     */
+    @Column(name = "severity_direction")
+    public String getSeverityDirection() {
+        return severityDirection;
     }
 
-    public void setHigherIsWorse(Boolean higherIsWorse) {
-        this.higherIsWorse = higherIsWorse;
+    public void setSeverityDirection(String severityDirection) {
+        this.severityDirection = severityDirection;
     }
 
-    public DbChelMetric higherIsWorse(Boolean higherIsWorse) {
-        this.higherIsWorse = higherIsWorse;
+    public DbChelMetric severityDirection(String severityDirection) {
+        this.severityDirection = severityDirection;
         return this;
     }
 

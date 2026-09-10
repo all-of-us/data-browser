@@ -58,7 +58,9 @@
       </column>
       <column name="unit" type="VARCHAR(64)"/>
       <column name="value_type" type="VARCHAR(32)"/>
-      <column name="higher_is_worse" type="BOOLEAN"/>
+      <column name="severity_direction" type="VARCHAR(16)" defaultValue="unspecified">
+        <constraints nullable="false"/>
+      </column>
       <column name="palette_name" type="VARCHAR(32)"/>
       <column name="reverse_palette" type="BOOLEAN" defaultValueBoolean="false"/>
       <column name="legend_decimals" type="INTEGER" defaultValue="0"/>
