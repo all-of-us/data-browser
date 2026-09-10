@@ -37,8 +37,9 @@
     "type": "STRING"
   },
   {
-    "name": "higher_is_worse",
-    "type": "BOOLEAN"
+    "mode": "REQUIRED",
+    "name": "severity_direction",
+    "type": "STRING"
   },
   {
     "name": "palette_name",

@@ -2454,7 +2454,7 @@ definitions:
       - centroidLon
     properties:
       h3Id:
-        description: H3 cell index as a hex string; boundary is derived client-side via h3-js
+        description: H3 cell index as a hex string; joins to the committed boundary geometry
         type: string
       cellIndex:
         description: ordinal position of this cell in every values array
@@ -2480,6 +2480,7 @@ definitions:
       - title
       - metricGroup
       - sortOrder
+      - severityDirection
     properties:
       metricKey:
         description: stable identifier, "{year}_{metricId}"
@@ -2503,9 +2504,12 @@ definitions:
         type: string
       valueType:
         type: string
-      higherIsWorse:
-        description: direction of severity; null where the source data does not specify one
-        type: boolean
+      severityDirection:
+        description: >
+          which end of the range is the bad end. One of higher_is_worse, lower_is_worse
+          or unspecified. Never null -- the source leaves the direction blank for some
+          metrics, and unspecified records that explicitly rather than guessing a default.
+        type: string
       paletteName:
         description: color ramp name, assigned per metric group
         type: string
