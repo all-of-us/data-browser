@@ -353,6 +353,43 @@ paths:
           schema:
             $ref: "#/definitions/AnalysisListResponse"
 
+  /v1/databrowser/chel/metrics:
+    get:
+      tags:
+        - dataBrowser
+      description: >
+        Returns the canonical H3 cell list and the full CHEL metric catalog with legend/scale
+        configuration. The cell list is the positional key for every values response, so clients
+        fetch this once and then request only value arrays.
+      operationId: "getChelMetrics"
+      responses:
+        200:
+          description: The CHEL cell list and metric catalog
+          schema:
+            $ref: "#/definitions/ChelMetricsResponse"
+
+  /v1/databrowser/chel/values/{metricKey}:
+    get:
+      tags:
+        - dataBrowser
+      description: >
+        Returns the values for one metric as a bare array aligned to the cell list from
+        /v1/databrowser/chel/metrics. Nulls indicate no data for that cell.
+      operationId: "getChelValues"
+      parameters:
+        - in: path
+          name: metricKey
+          type: string
+          required: true
+          description: metric key, formatted "{year}_{metricId}" e.g. 2024_E_PM
+      responses:
+        200:
+          description: Metric values in cell order
+          schema:
+            $ref: "#/definitions/ChelValuesResponse"
+        404:
+          description: No CHEL metric with that key
+
   /v1/databrowser/fitbit-analysis-results:
     get:
       tags:
@@ -2373,3 +2410,155 @@ definitions:
         description: Total Homozygote Count
         type: integer
         format: int64
+
+  ChelMetricsResponse:
+    type: object
+    required:
+      - cells
+      - metrics
+    properties:
+      cells:
+        description: canonical H3 cell list; index position is the key for values arrays
+        type: array
+        items:
+          $ref: "#/definitions/ChelH3Cell"
+      metrics:
+        description: metric catalog with legend and scale configuration
+        type: array
+        items:
+          $ref: "#/definitions/ChelMetric"
+
+  ChelValuesResponse:
+    type: object
+    required:
+      - metricKey
+      - values
+    properties:
+      metricKey:
+        description: the metric these values belong to
+        type: string
+      values:
+        description: one value per cell, positionally aligned to the cell list; null means no data
+        type: array
+        items:
+          type: number
+          format: double
+
+  ChelH3Cell:
+    type: object
+    required:
+      - h3Id
+      - cellIndex
+      - resolution
+      - centroidLat
+      - centroidLon
+    properties:
+      h3Id:
+        description: H3 cell index as a hex string; joins to the committed boundary geometry
+        type: string
+      cellIndex:
+        description: ordinal position of this cell in every values array
+        type: integer
+        format: int32
+      resolution:
+        description: H3 resolution of the cell
+        type: integer
+        format: int32
+      centroidLat:
+        type: number
+        format: double
+      centroidLon:
+        type: number
+        format: double
+
+  ChelMetric:
+    type: object
+    required:
+      - metricKey
+      - year
+      - metricId
+      - title
+      - metricGroup
+      - sortOrder
+      - severityDirection
+    properties:
+      metricKey:
+        description: stable identifier, "{year}_{metricId}"
+        type: string
+      year:
+        description: data vintage; metrics do not repeat across vintages, so this is not a time axis
+        type: integer
+        format: int32
+      metricId:
+        type: string
+      title:
+        description: display title
+        type: string
+      description:
+        description: long description used for tooltips
+        type: string
+      metricGroup:
+        description: sociodemographic, pollution, built_environment, climate or health
+        type: string
+      unit:
+        type: string
+      valueType:
+        type: string
+      severityDirection:
+        description: >
+          which end of the range is the bad end. One of higher_is_worse, lower_is_worse
+          or unspecified. Never null -- the source leaves the direction blank for some
+          metrics, and unspecified records that explicitly rather than guessing a default.
+        type: string
+      paletteName:
+        description: color ramp name, assigned per metric group
+        type: string
+      reversePalette:
+        type: boolean
+      legendDecimals:
+        type: integer
+        format: int32
+      displayFormat:
+        type: string
+      sortOrder:
+        description: display order within the vintage
+        type: integer
+        format: int32
+      minValue:
+        description: recommended scale minimum
+        type: number
+        format: double
+      maxValue:
+        description: recommended scale maximum
+        type: number
+        format: double
+      p01:
+        type: number
+        format: double
+      p05:
+        type: number
+        format: double
+      p25:
+        type: number
+        format: double
+      p50:
+        type: number
+        format: double
+      p75:
+        type: number
+        format: double
+      p95:
+        type: number
+        format: double
+      p99:
+        type: number
+        format: double
+      breaksJson:
+        description: JSON array of recommended legend breaks, passed through verbatim
+        type: string
+      nonMissingCount:
+        type: integer
+        format: int32
+      missingCount:
+        type: integer
+        format: int32

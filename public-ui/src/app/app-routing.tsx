@@ -4,6 +4,7 @@ import { environment } from "environments/environment";
 import { Component as AComponent } from "@angular/core";
 import { AppRoute, AppRouter } from "app/components/app-router";
 import { BaseReactWrapper } from "app/data-browser/base-react/base-react.wrapper";
+import { ChelMapReactComponent } from "app/data-browser/views/chel-map/chel-map-react.component";
 import { EhrViewReactComponent } from "app/data-browser/views/ehr-view/ehr-view-react.component";
 import { FitbitReactComponent } from "app/data-browser/views/fitbit-view/fitbit-view-react.component";
 import { GenomicViewComponent } from "app/data-browser/views/genomic-view/genomic-view.component";
@@ -93,6 +94,16 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
             routeData: {
               title: "Fitbit Data",
               breadcrumb: { value: "Fitbit Data" },
+            },
+          }),
+      })}
+      {AppRoute({
+        path: "/environmental-map",
+        component: () =>
+          ChelMapReactComponent({
+            routeData: {
+              title: "Environmental Map",
+              breadcrumb: { value: "Environmental Map" },
             },
           }),
       })}

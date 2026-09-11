@@ -1,0 +1,27 @@
+[
+  {
+    "mode": "REQUIRED",
+    "name": "h3_id",
+    "type": "STRING"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "cell_index",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "resolution",
+    "type": "INTEGER"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "centroid_lat",
+    "type": "FLOAT"
+  },
+  {
+    "mode": "REQUIRED",
+    "name": "centroid_lon",
+    "type": "FLOAT"
+  }
+]
