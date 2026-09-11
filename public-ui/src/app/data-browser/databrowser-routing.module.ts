@@ -173,6 +173,16 @@ const routes: Routes = [
             },
           },
           {
+            path: "environmental-map",
+            component: AppRouting,
+            data: {
+              title: "Environmental Map",
+              breadcrumb: {
+                value: "Environmental Map",
+              },
+            },
+          },
+          {
             path: "introductory-videos",
             component: AppRouting,
             data: {
