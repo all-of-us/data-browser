@@ -142,6 +142,14 @@ const styles = reactStyles({
     padding: "1rem",
     marginBottom: "1rem",
   },
+  groupHeading: {
+    fontSize: "0.75rem",
+    fontWeight: 600,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    color: "#6C6C6C",
+    margin: "0.75rem 0 0.4rem",
+  },
   panelHeading: {
     fontSize: "0.95rem",
     fontWeight: 600,
@@ -152,14 +160,6 @@ const styles = reactStyles({
     maxHeight: "36rem",
     overflowY: "auto",
     paddingRight: "0.25rem",
-  },
-  groupHeading: {
-    fontSize: "0.75rem",
-    fontWeight: 600,
-    letterSpacing: "0.04em",
-    textTransform: "uppercase",
-    color: "#6C6C6C",
-    margin: "0.75rem 0 0.4rem",
   },
   card: {
     display: "block",
