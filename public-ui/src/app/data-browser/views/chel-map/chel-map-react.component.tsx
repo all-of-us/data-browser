@@ -24,17 +24,23 @@ TiledWebMap(Highcharts);
 // 40 rows of the API response.
 const NULL_COLOR = "#D9D9D9";
 const BORDER_COLOR = "#FFFFFF";
-const BORDER_WIDTH = 0.1;
-const FILL_OPACITY = 0.95;
+const BORDER_WIDTH = 0.3;
+// Below 1 so the basemap's boundaries and labels stay legible through the hex layer, but not
+// so low that the light end of the ramp disappears into the terrain. The delivered catalog
+// specifies 0.95, which is near-opaque and buries the map entirely.
+const FILL_OPACITY = 0.85;
 
 // Sequential ramps keyed by the palette_name the catalog ships. Light-to-dark in every case.
 // Severity direction is described by the data, not encoded by flipping the ramp.
+// Each ramp starts at a tint with enough saturation to be distinguishable from the basemap
+// and from the grey used for no-data. A near-white floor makes a real low value look like an
+// absent cell, which is the one reading the map must never produce.
 const PALETTES: Record<string, string[]> = {
-  Blues: ["#DEEBF7", "#6BAED6", "#08519C"],
-  Purples: ["#EFEDF5", "#9E9AC8", "#54278F"],
-  Greens: ["#E5F5E0", "#74C476", "#006D2C"],
-  Oranges: ["#FEE6CE", "#FD8D3C", "#A63603"],
-  Reds: ["#FEE0D2", "#FB6A4A", "#99000D"],
+  Blues: ["#C6DBEF", "#6BAED6", "#08519C"],
+  Purples: ["#DADAEB", "#9E9AC8", "#54278F"],
+  Greens: ["#C7E9C0", "#74C476", "#006D2C"],
+  Oranges: ["#FDD0A2", "#FD8D3C", "#A63603"],
+  Reds: ["#FCBBA1", "#FB6A4A", "#99000D"],
 };
 const DEFAULT_PALETTE = PALETTES.Blues;
 
@@ -47,7 +53,43 @@ const GROUP_ORDER: Array<{ key: string; label: string }> = [
   { key: "health", label: "Health outcomes" },
 ];
 
-const CONUS_VIEW = { lat: 39.5, lng: -98.0, zoom: 3.4 };
+// Bounds of the delivered cell set, used to fit the view rather than hardcoding a zoom.
+// A fixed zoom is wrong the moment the panel changes width -- this adapts.
+const CONUS_BOUNDS = {
+  type: "MultiPoint",
+  coordinates: [
+    [-126.2, 23.2],
+    [-65.9, 50.6],
+  ],
+};
+
+// Quintile labels for the tooltip's position bar. Purely about magnitude -- deliberately not
+// "better"/"worse", since severityDirection is unspecified for some metrics and inverted for
+// others, and a value judgement in the tooltip would be wrong for both.
+const QUINTILE_LABELS = ["Lowest", "Low", "Middle", "High", "Highest"];
+
+const WRAPPER_OPEN =
+  '<div style="width:260px;white-space:normal;word-break:break-word;' +
+  'font-family:GothamBook,Arial,sans-serif">';
+
+const tooltipHeader = (cellIndex: number) =>
+  '<div style="font-size:15px;font-weight:600;color:#262262;' +
+  'padding-bottom:6px;border-bottom:1px solid #E5E5E5">Hex ' +
+  cellIndex +
+  "</div>";
+
+// The catalog's `unit` column is a value category ("value", "concentration", "risk"), not a
+// display unit, so printing it raw puts the word "value" under a metric title. Only entries
+// that read as real units are shown; everything else renders as a bare number, which is how
+// most of these metrics are meant to appear. Percent is omitted because display_format
+// already appends % to the values themselves.
+//
+// Diesel PM (E_DSLPM) is the one that genuinely wants a unit and has none in the delivery --
+// add it here once CLAD supplies it.
+const DISPLAY_UNITS: Record<string, string> = {
+  days: "days",
+  rank: "rank",
+};
 
 const styles = reactStyles({
   pageHeader: {
@@ -82,35 +124,57 @@ const styles = reactStyles({
   },
   layout: {
     display: "flex",
+    alignItems: "flex-start",
     paddingLeft: "18px",
     paddingRight: "18px",
-    alignItems: "stretch",
+    paddingBottom: "18px",
   },
-  sidebar: {
-    flex: "0 0 22rem",
-    maxHeight: "44rem",
-    overflowY: "auto",
+  sidebarColumn: {
+    flex: "0 0 24rem",
     paddingRight: "1rem",
+    display: "flex",
+    flexDirection: "column",
+  },
+  panel: {
+    background: "#FFFFFF",
+    border: "1px solid #DDE1E6",
+    borderRadius: "8px",
+    padding: "1rem",
+    marginBottom: "1rem",
   },
   groupHeading: {
-    fontSize: "0.85rem",
+    fontSize: "0.75rem",
+    fontWeight: 600,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    color: "#6C6C6C",
+    margin: "0.75rem 0 0.4rem",
+  },
+  panelHeading: {
+    fontSize: "0.95rem",
     fontWeight: 600,
     color: "#262262",
-    margin: "1rem 0 0.5rem",
+    marginBottom: "0.75rem",
+  },
+  scrollArea: {
+    maxHeight: "36rem",
+    overflowY: "auto",
+    paddingRight: "0.25rem",
   },
   card: {
+    display: "block",
     width: "100%",
     textAlign: "left",
     background: "#FFFFFF",
     border: "1px solid #DDE1E6",
-    borderRadius: "3px",
-    padding: "0.75rem",
+    borderRadius: "6px",
+    padding: "0.7rem 0.75rem",
     marginBottom: "0.5rem",
     cursor: "pointer",
     font: "inherit",
   },
   cardSelected: {
-    background: "#E9F1FA",
+    background: "#EDF3FB",
     border: "1px solid #216FB4",
   },
   cardTitle: {
@@ -119,28 +183,57 @@ const styles = reactStyles({
     marginBottom: "0.15rem",
   },
   cardUnit: {
-    fontSize: "0.8rem",
-    color: "#4A4A4A",
+    fontSize: "0.78rem",
+    color: "#6C6C6C",
     marginBottom: "0.25rem",
   },
   cardDesc: {
     fontSize: "0.8rem",
     color: "#262262",
-    lineHeight: 1.35,
+    lineHeight: 1.4,
+  },
+  downloadButton: {
+    width: "100%",
+    background: "#2F5CC5",
+    color: "#FFFFFF",
+    border: "none",
+    borderRadius: "6px",
+    padding: "0.7rem",
+    fontSize: "1rem",
+    fontFamily: "GothamBook, Arial, sans-serif",
+    cursor: "pointer",
   },
   mapPanel: {
     flex: "1 1 auto",
     minWidth: 0,
     position: "relative",
+    background: "#FFFFFF",
+    border: "1px solid #DDE1E6",
+    borderRadius: "8px",
+    overflow: "hidden",
+  },
+  chartWrap: {
+    position: "relative",
+  },
+  chartOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "rgba(255, 255, 255, 0.6)",
   },
   status: {
     padding: "1rem",
     color: "#262262",
   },
   note: {
-    fontSize: "0.8rem",
-    color: "#4A4A4A",
-    marginTop: "0.5rem",
+    fontSize: "0.78rem",
+    color: "#6C6C6C",
+    padding: "0.5rem 1rem 0.75rem",
   },
 });
 
@@ -170,6 +263,7 @@ export const ChelMapReactComponent = withRouteData(
     /** metricKey -> values, so re-selecting a metric does not refetch. */
     valueCache: Record<string, number[]> = {};
     mounted = false;
+    chartRef = React.createRef<HighchartsReact.RefObject>();
 
     constructor(props: Props) {
       super(props);
@@ -187,11 +281,26 @@ export const ChelMapReactComponent = withRouteData(
     componentDidMount() {
       this.mounted = true;
       this.loadCatalog();
+      window.addEventListener("resize", this.reflow);
     }
 
     componentWillUnmount() {
       this.mounted = false;
+      window.removeEventListener("resize", this.reflow);
     }
+
+    /**
+     * Highcharts measures its container when the chart is created. The map lives in a flex
+     * column that can still be settling at that moment, which leaves the chart sized to a
+     * stale width -- tiles and legend draw, hexes do not. Reflowing once the layout has
+     * settled fixes it, and the same handler covers window resizes.
+     */
+    reflow = () => {
+      const chart = this.chartRef.current && this.chartRef.current.chart;
+      if (chart) {
+        chart.reflow();
+      }
+    };
 
     async loadCatalog() {
       try {
@@ -245,7 +354,9 @@ export const ChelMapReactComponent = withRouteData(
           return;
         }
         this.valueCache[metricKey] = values;
-        this.setState({ values, loadingValues: false });
+        this.setState({ values, loadingValues: false }, () =>
+          window.requestAnimationFrame(this.reflow)
+        );
       } catch (e) {
         if (this.mounted) {
           this.setState({
@@ -295,8 +406,48 @@ export const ChelMapReactComponent = withRouteData(
 
       const data = cells.map((cell, i) => ({
         h3_id: cell.h3Id,
+        cellIndex: cell.cellIndex,
         value: values[i] === undefined ? null : values[i],
       }));
+
+      // Observed range and sorted values for the tooltip's position bar. Derived from the
+      // array already in memory, so no extra request and no dependency on the catalog's
+      // scale config -- which reports a raw_min of -999 wherever sentinels existed.
+      const present = values.filter(
+        (v) => v !== null && v !== undefined
+      ) as number[];
+      const sorted = [...present].sort((a, b) => a - b);
+      const observedMin = sorted.length ? sorted[0] : null;
+      const observedMax = sorted.length ? sorted[sorted.length - 1] : null;
+
+      const fmt = (v: number) => v.toFixed(decimals) + suffix;
+
+      /**
+       * Share of cells with a strictly lower value, 0-1.
+       *
+       * Strictly-below rather than a midpoint or "at or below", because ties dominate some
+       * metrics: 43% of E_OZONE cells are exactly 0.0. Any other rule puts the lowest value
+       * in the data somewhere above the bottom of the scale, which reads as wrong however
+       * defensible the statistics are. This way the minimum is always 0% and every cell
+       * sharing a value gets the same label.
+       *
+       * The cost is that a large tie block leaves a gap -- for ozone the next distinct value
+       * jumps straight to 43%, so nothing lands in the second fifth. That gap is real, and
+       * showing it beats hiding it.
+       */
+      const rankOf = (v: number) => {
+        let lo = 0;
+        let hi = sorted.length;
+        while (lo < hi) {
+          const mid = (lo + hi) >> 1;
+          if (sorted[mid] < v) {
+            lo = mid + 1;
+          } else {
+            hi = mid;
+          }
+        }
+        return sorted.length ? lo / sorted.length : 0;
+      };
 
       const suffix = this.suffixOf(metric.displayFormat);
       const decimals = metric.legendDecimals ?? 2;
@@ -305,7 +456,7 @@ export const ChelMapReactComponent = withRouteData(
       return {
         chart: {
           backgroundColor: "rgba(0, 0, 0, 0)",
-          height: 640,
+          height: 720,
           animation: false,
         },
         title: { text: undefined },
@@ -313,8 +464,7 @@ export const ChelMapReactComponent = withRouteData(
         // Tiles are Web Mercator, so the whole view has to be.
         mapView: {
           projection: { name: "WebMercator" },
-          center: [CONUS_VIEW.lng, CONUS_VIEW.lat],
-          zoom: CONUS_VIEW.zoom,
+          fitToGeometry: CONUS_BOUNDS as any,
         },
         mapNavigation: {
           enabled: true,
@@ -322,8 +472,10 @@ export const ChelMapReactComponent = withRouteData(
           buttonOptions: { verticalAlign: "top", align: "right" },
         },
         colorAxis: {
-          // p05/p95, not the raw range: one extreme cell would otherwise flatten the
-          // whole ramp into a single shade.
+          // p05/p95, not the observed range: one extreme cell would otherwise flatten the
+          // whole ramp into a single shade. The trade-off is that the top and bottom 5% of
+          // cells clamp to the end colors -- visible on E_WLKIND, whose recommended range
+          // covers 4.06-7.06 of an actual 1-11.98 spread.
           min: metric.minValue,
           max: metric.maxValue,
           stops,
@@ -345,31 +497,98 @@ export const ChelMapReactComponent = withRouteData(
         tooltip: {
           useHTML: true,
           headerFormat: "",
-          pointFormatter: function () {
-            const shown =
-              this.value === null || this.value === undefined
-                ? "No data"
-                : Number(this.value).toFixed(decimals) + suffix;
+          borderWidth: 0,
+          shadow: true,
+          backgroundColor: "#FFFFFF",
+          // Highcharts defaults the tooltip label to white-space: nowrap, which makes the
+          // fixed-width wrapper below do nothing and runs the explanatory text off the edge.
+          style: { whiteSpace: "normal" },
+          // The map panel clips its overflow, so a tooltip near an edge would be cut off
+          // unless it is rendered outside the chart container.
+          outside: true,
+          // Highcharts routes visible null points to nullFormatter; pointFormatter is never
+          // called for them. Without this a no-data cell hovers to an empty tooltip box.
+          nullFormatter: function () {
+            const point: any = (this as any).point;
             return (
-              '<div style="text-align:center">' +
-              '<div style="font-weight:600;margin-bottom:2px">' +
-              title +
-              "</div><div>" +
-              shown +
+              WRAPPER_OPEN +
+              tooltipHeader(point.cellIndex) +
+              '<div style="padding-top:10px;color:#6C6C6C;line-height:1.45">' +
+              "No data for " +
+              title.toLowerCase() +
+              " in this area." +
               "</div></div>"
+            );
+          },
+          pointFormatter: function () {
+            const point: any = this;
+            const pct = Math.round(rankOf(point.value) * 100);
+            const quintile =
+              QUINTILE_LABELS[Math.min(4, Math.floor((pct / 100) * 5))];
+
+            return (
+              WRAPPER_OPEN +
+              tooltipHeader(point.cellIndex) +
+              // metric and value
+              '<div style="display:flex;justify-content:space-between;' +
+              'align-items:baseline;padding:8px 0 10px">' +
+              '<span style="color:#216FB4;font-weight:600">' +
+              title +
+              "</span>" +
+              '<span style="color:#262262;font-weight:600">' +
+              fmt(point.value) +
+              "</span></div>" +
+              // position bar
+              '<div style="position:relative;height:10px;border-radius:5px;' +
+              "background:linear-gradient(to right,#F2F2F2,#9E9AC8,#54278F);" +
+              'margin-bottom:4px">' +
+              '<div style="position:absolute;top:-2px;left:calc(' +
+              pct +
+              '% - 7px);width:14px;height:14px;border-radius:7px;' +
+              'background:#FFFFFF;border:2px solid #262262"></div>' +
+              "</div>" +
+              '<div style="display:flex;justify-content:space-between;' +
+              'font-size:11px;color:#6C6C6C;padding-bottom:8px">' +
+              "<span>Lowest</span><span>Highest</span></div>" +
+              // explanation
+              '<div style="font-size:11.5px;color:#216FB4;line-height:1.45">' +
+              pct +
+              "% of the " +
+              sorted.length +
+              " areas with data have a lower value. Across all areas, " +
+              title.toLowerCase() +
+              " ranges from " +
+              (observedMin === null ? "-" : fmt(observedMin)) +
+              " to " +
+              (observedMax === null ? "-" : fmt(observedMax)) +
+              ".</div>" +
+              '<div style="font-size:11.5px;color:#216FB4;line-height:1.45;' +
+              'padding-top:6px">' +
+              "This area falls in the <b>" +
+              quintile +
+              "</b> fifth for " +
+              title.toLowerCase() +
+              ".</div>" +
+              "</div>"
             );
           },
         },
         plotOptions: {
           map: {
             states: { hover: { borderColor: "#262262", borderWidth: 1 } },
+            // Also set on the series below. Highcharts reads this from series.options at
+            // hover time, but setting it only on the series can be missed when the chart is
+            // patched via chart.update() rather than recreated.
+            nullInteraction: true,
           },
         },
         series: [
           {
             type: "tiledwebmap",
             name: "Basemap",
-            provider: { type: "OpenStreetMap", theme: "Standard" },
+            // Esri's topographic tiles carry state boundaries and place labels that survive
+            // being seen through the hex layer. OSM Standard washes out at this zoom.
+            provider: { type: "Esri", theme: "WorldTopoMap" },
             showInLegend: false,
           },
           {
@@ -379,6 +598,10 @@ export const ChelMapReactComponent = withRouteData(
             joinBy: ["h3_id", "h3_id"],
             data,
             nullColor: NULL_COLOR,
+            // Off by default, which leaves no-data cells inert -- no hover, no tooltip. A
+            // grey cell that does nothing reads as a rendering bug rather than as missing
+            // data, so the tooltip has to be able to say which it is.
+            nullInteraction: true,
             borderColor: BORDER_COLOR,
             borderWidth: BORDER_WIDTH,
             opacity: FILL_OPACITY,
@@ -387,6 +610,37 @@ export const ChelMapReactComponent = withRouteData(
         ] as any,
       };
     }
+
+    /**
+     * Builds a CSV of the selected metric from data already in memory: one row per cell,
+     * with the value blank where there is none. No round trip to the server.
+     */
+    downloadCurrent = () => {
+      const metric = this.selectedMetric();
+      const { cells, values } = this.state;
+      if (!metric || !cells.length) {
+        return;
+      }
+      const lines = ["h3_id,centroid_lat,centroid_lon," + metric.metricId];
+      cells.forEach((cell, i) => {
+        const v = values[i];
+        lines.push(
+          [
+            cell.h3Id,
+            cell.centroidLat,
+            cell.centroidLon,
+            v === null || v === undefined ? "" : v,
+          ].join(",")
+        );
+      });
+      const blob = new Blob([lines.join("\n")], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "chel_" + metric.metricKey + ".csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    };
 
     renderSidebar() {
       const { metrics, selectedKey } = this.state;
@@ -398,35 +652,51 @@ export const ChelMapReactComponent = withRouteData(
       })).filter((group) => group.items.length > 0);
 
       return (
-        <aside style={styles.sidebar}>
-          {byGroup.map((group) => (
-            <div key={group.key}>
-              <div style={styles.groupHeading}>{group.label}</div>
-              {group.items.map((metric) => {
-                const selected = metric.metricKey === selectedKey;
-                return (
-                  <button
-                    key={metric.metricKey}
-                    type="button"
-                    aria-pressed={selected}
-                    style={
-                      selected
-                        ? { ...styles.card, ...styles.cardSelected }
-                        : styles.card
-                    }
-                    onClick={() => this.selectMetric(metric.metricKey)}
-                  >
-                    <div style={styles.cardTitle}>{metric.title}</div>
-                    {metric.unit && (
-                      <div style={styles.cardUnit}>{metric.unit}</div>
-                    )}
-                    <div style={styles.cardDesc}>{metric.description}</div>
-                  </button>
-                );
-              })}
+        <div style={styles.sidebarColumn}>
+          <div style={styles.panel}>
+            <div style={styles.panelHeading}>Environmental Factors</div>
+            <div style={styles.scrollArea}>
+              {byGroup.map((group) => (
+                <div key={group.key}>
+                  <div style={styles.groupHeading}>{group.label}</div>
+                  {group.items.map((metric) => {
+                    const selected = metric.metricKey === selectedKey;
+                    return (
+                      <button
+                        key={metric.metricKey}
+                        type="button"
+                        aria-pressed={selected}
+                        style={
+                          selected
+                            ? { ...styles.card, ...styles.cardSelected }
+                            : styles.card
+                        }
+                        onClick={() => this.selectMetric(metric.metricKey)}
+                      >
+                        <div style={styles.cardTitle}>{metric.title}</div>
+                        {DISPLAY_UNITS[metric.unit] && (
+                          <div style={styles.cardUnit}>
+                            {DISPLAY_UNITS[metric.unit]}
+                          </div>
+                        )}
+                        <div style={styles.cardDesc}>
+                          {metric.description} ({metric.metricId}, {metric.year})
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
-        </aside>
+          </div>
+          <button
+            type="button"
+            style={styles.downloadButton}
+            onClick={this.downloadCurrent}
+          >
+            Download Data
+          </button>
+        </div>
       );
     }
 
@@ -450,16 +720,23 @@ export const ChelMapReactComponent = withRouteData(
             <div style={styles.layout}>
               {this.renderSidebar()}
               <div style={styles.mapPanel}>
-                {loadingValues && <Spinner />}
                 {error && <div style={styles.status}>{error}</div>}
-                {!loadingValues && !error && metric && (
-                  <HighchartsReact
-                    highcharts={Highcharts}
-                    options={this.buildOptions()}
-                    constructorType={"mapChart"}
-                    allowChartUpdate={true}
-                    immutable={false}
-                  />
+                {!error && metric && (
+                  <div style={styles.chartWrap}>
+                    <HighchartsReact
+                      highcharts={Highcharts}
+                      options={this.buildOptions()}
+                      constructorType={"mapChart"}
+                      ref={this.chartRef}
+                      allowChartUpdate={true}
+                      immutable={false}
+                    />
+                    {loadingValues && (
+                      <div style={styles.chartOverlay}>
+                        <Spinner />
+                      </div>
+                    )}
+                  </div>
                 )}
                 <div style={styles.note}>
                   Each hexagon covers roughly 12,000 km². Values describe the area, not
