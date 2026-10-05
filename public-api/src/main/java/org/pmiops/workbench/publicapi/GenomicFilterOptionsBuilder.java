@@ -28,6 +28,7 @@ public class GenomicFilterOptionsBuilder {
     private GenomicFilterOption homozygoteCountFilter = new GenomicFilterOption();
 
     // SV filter lists
+    // Always empty; kept so SVGenomicFilters.gene stays a valid (empty) list for clients.
     private final List<SVGenomicFilterOption> svGeneFilters = new ArrayList<>();
     private final List<SVGenomicFilterOption> svConseqFilters = new ArrayList<>();
     private final List<SVGenomicFilterOption> svVarTypeFilters = new ArrayList<>();
@@ -82,10 +83,7 @@ public class GenomicFilterOptionsBuilder {
     public void processSVRow(String option, String gene, String varType, String conseq,
                              String filterValue, Long minCount, Long maxCount) {
         switch (option) {
-            case "Gene":
-                SVGenomicFilterOption geneOption = createSVFilterOption(gene, false);
-                svGeneFilters.add(geneOption);
-                break;
+            // No "Gene" rows: the SV filter options query no longer returns them.
             case "Variant Type":
                 SVGenomicFilterOption varTypeOption = createSVFilterOption(varType, false);
                 svVarTypeFilters.add(varTypeOption);
