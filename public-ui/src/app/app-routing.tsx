@@ -97,16 +97,17 @@ export const AppRoutingComponent: React.FunctionComponent = () => {
             },
           }),
       })}
-      {AppRoute({
-        path: "/environmental-map",
-        component: () =>
-          ChelMapReactComponent({
-            routeData: {
-              title: "Environmental Map",
-              breadcrumb: { value: "Environmental Map" },
-            },
-          }),
-      })}
+      {environment.environmentalMap &&
+        AppRoute({
+          path: "/environmental-map",
+          component: () =>
+            ChelMapReactComponent({
+              routeData: {
+                title: "Environmental Map",
+                breadcrumb: { value: "Environmental Map" },
+              },
+            }),
+        })}
       {AppRoute({
         path: "/snvsindels",
         component: () =>
