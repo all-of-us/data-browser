@@ -500,28 +500,28 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
         // condition
         case 19:
           url = this.props.searchWord
-            ? "ehr/conditions/" + this.props.searchWord
+            ? "ehr/conditions/" + encodeURIComponent(this.props.searchWord)
             : "ehr/conditions";
           NavStore.navigateByUrl(url);
           break;
         // drugs
         case 13:
           url = this.props.searchWord
-            ? "ehr/drug-exposures/" + this.props.searchWord
+            ? "ehr/drug-exposures/" + encodeURIComponent(this.props.searchWord)
             : "ehr/drug-exposures";
           NavStore.navigateByUrl(url);
           break;
         // MEASUREMENT
         case 21:
           url = this.props.searchWord
-            ? "ehr/labs-and-measurements/" + this.props.searchWord
+            ? "ehr/labs-and-measurements/" + encodeURIComponent(this.props.searchWord)
             : "ehr/labs-and-measurements";
           NavStore.navigateByUrl(url);
           break;
         // PROCEDURE
         case 10:
           url = this.props.searchWord
-            ? "ehr/procedures/" + this.props.searchWord
+            ? "ehr/procedures/" + encodeURIComponent(this.props.searchWord)
             : "ehr/procedures";
           NavStore.navigateByUrl(url);
           break;
@@ -531,14 +531,14 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
       switch (info.conceptId) {
         case 1333342:
           url = this.props.searchWord
-            ? "survey/covid-19-participant-experience/" + this.props.searchWord
+            ? "survey/covid-19-participant-experience/" + encodeURIComponent(this.props.searchWord)
             : "survey/covid-19-participant-experience";
           NavStore.navigateByUrl(url);
           break;
         case 43528895:
           url = this.props.searchWord
             ? "survey/health-care-access-and-utilization/" +
-              this.props.searchWord
+              encodeURIComponent(this.props.searchWord)
             : "survey/health-care-access-and-utilization";
           NavStore.navigateByUrl(url);
           break;
@@ -547,7 +547,7 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
             ? "survey/" +
               info.name.replaceAll(" ", "-").toLowerCase() +
               "/" +
-              this.props.searchWord
+              encodeURIComponent(this.props.searchWord)
             : "survey/" + info.name.replaceAll(" ", "-").toLowerCase();
           NavStore.navigateByUrl(url);
           break;
@@ -555,22 +555,22 @@ export const ResultLinksComponent = class extends React.Component<ResultLinkProp
     } else {
       if (info.name === "Physical Measurements") {
         const url = this.props.searchWord
-          ? "physical-measurements/" + this.props.searchWord
+          ? "physical-measurements/" + encodeURIComponent(this.props.searchWord)
           : "physical-measurements";
         NavStore.navigateByUrl(url);
       } else if (info.name === "Fitbit") {
         const url = this.props.searchWord
-          ? "fitbit/" + this.props.searchWord
+          ? "fitbit/" + encodeURIComponent(this.props.searchWord)
           : "fitbit";
         NavStore.navigateByUrl(url);
       } else if (info.name === "SNVs/Indels") {
         const url = this.props.searchWord
-          ? "snvsindels/" + this.props.searchWord
+          ? "snvsindels/" + encodeURIComponent(this.props.searchWord)
           : "snvsindels";
         NavStore.navigateByUrl(url);
       } else if (info.name === "Structural Variants") {
         const url = this.props.searchWord
-          ? "structural-variants/" + this.props.searchWord
+          ? "structural-variants/" + encodeURIComponent(this.props.searchWord)
           : "structural-variants";
         NavStore.navigateByUrl(url);
       }
