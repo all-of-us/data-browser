@@ -14,6 +14,7 @@ export const environment = {
   fitbitCDRUpdate: true,
   infiniteSrcoll: true,
   svVCFBrowser: true,
+  environmentalMap: false,
   heatmap: true,
   combinedAgeGenderChart: true,
   geneLeads: false,

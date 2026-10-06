@@ -147,6 +147,12 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
     return displayArr;
   }
 
+  // Chips mount with the default filters (PASS / MULTIALLELIC) already set, so
+  // componentDidUpdate never sees them change; build the initial chips here.
+  componentDidMount(): void {
+    this.setState({ chips: this.formatChips(this.props.filteredMetadata) });
+  }
+
   componentDidUpdate(
     prevProps: Readonly<Props>,
     _prevState: Readonly<State>,

@@ -367,7 +367,9 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     // Single-scan SV filter options query. Replaces the previous 8-CTE structure
     // that scanned aou_sv_vcf_9_processed 8 times. The `filtered` CTE is evaluated
-    // once and reused across all 8 UNION ALL branches.
+    // once and reused across all UNION ALL branches.
+    // No Gene branch: the SV filter panel has no gene filter, and on broad searches
+    // (e.g. chr1) the per-gene rows made up nearly the whole response (~12k rows).
     private static final String SV_FILTER_OPTION_SQL_PREFIX =
             "WITH filtered AS (\n"
                     + "  SELECT genes, variant_type, consequence, filter,\n"
@@ -379,13 +381,9 @@ public class GenomicsController implements GenomicsApiDelegate {
 
     private static final String SV_FILTER_OPTION_SQL_SUFFIX =
             ")\n"
-                    + "SELECT 'Gene' AS option, gene AS genes, '' AS variant_type,\n"
+                    + "SELECT DISTINCT 'Variant Type' AS option, '' AS genes, variant_type,\n"
                     + "       '' AS consequence, '' AS filter_value,\n"
                     + "       0 AS min_count, 0 AS max_count\n"
-                    + "FROM filtered, UNNEST(SPLIT(genes, ', ')) gene\n"
-                    + "GROUP BY gene\n"
-                    + "UNION ALL\n"
-                    + "SELECT DISTINCT 'Variant Type', '', variant_type, '', '', 0, 0\n"
                     + "FROM filtered\n"
                     + "UNION ALL\n"
                     + "SELECT 'Consequence', '', '', con, '', 0, 0\n"
