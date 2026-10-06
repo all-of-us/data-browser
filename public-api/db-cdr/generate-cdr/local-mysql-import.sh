@@ -40,7 +40,7 @@ rm -rf $local_fpath
 gsutil -m cp gs://$BUCKET/$SQL_DUMP_FILE $local_fpath
 
 # Import dump
-mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < $local_fpath
+mysql -h ${DB_HOST} --port ${DB_PORT} --get-server-public-key -u root -p${MYSQL_ROOT_PASSWORD} < $local_fpath
 
 echo "Import complete"
 

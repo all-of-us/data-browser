@@ -14,4 +14,4 @@ trap finish EXIT
 envsubst < "$(dirname "${BASH_SOURCE}")/drop_db.sql" > $DROP_DB_FILE
 
 echo "Dropping database..."
-mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} < ${DROP_DB_FILE}
+mysql -h ${DB_HOST} --port ${DB_PORT} --get-server-public-key -u root -p${MYSQL_ROOT_PASSWORD} < ${DROP_DB_FILE}

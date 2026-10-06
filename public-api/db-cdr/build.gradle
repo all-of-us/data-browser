@@ -32,7 +32,7 @@ liquibase {
     activities {
         schema {
             changelogFile "changelog-schema/db.changelog-master.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
+            url "jdbc:mysql://${db_host}:${db_port}/${db_name}?allowPublicKeyRetrieval=true"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
@@ -42,7 +42,7 @@ liquibase {
                 contexts contexts
             }
             changelogFile "changelog-data/db.changelog-master.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
+            url "jdbc:mysql://${db_host}:${db_port}/${db_name}?allowPublicKeyRetrieval=true"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
@@ -52,7 +52,7 @@ liquibase {
                 contexts contexts
             }
             changelogFile "changelog-bigdata/db.changelog-add-indexes.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
+            url "jdbc:mysql://${db_host}:${db_port}/${db_name}?allowPublicKeyRetrieval=true"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
@@ -62,7 +62,7 @@ liquibase {
                 contexts contexts
             }
             changelogFile "changelog-bigdata/db.changelog-drop-indexes.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/${db_name}"
+            url "jdbc:mysql://${db_host}:${db_port}/${db_name}?allowPublicKeyRetrieval=true"
             username "liquibase"
             password "${liquibase_password}"
             classpath "$rootDir"
