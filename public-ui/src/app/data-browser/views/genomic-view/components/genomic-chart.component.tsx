@@ -12,6 +12,8 @@ import {
 import { reactStyles } from "app/utils";
 import { Analysis } from "publicGenerated";
 
+import { getGenomicDataType } from "./genomic-data-types";
+
 const styles = reactStyles({
   chartContainer: {
     background: "rgba(33,111,180,0.05)",
@@ -255,16 +257,8 @@ export class GenomicChartComponent extends React.Component<Props, State> {
   render() {
     const { options, selectedGenotype } = this.state;
     const { title, color } = this.props;
-    let legendText = selectedGenotype;
-    if (selectedGenotype === "micro-array") {
-      legendText = "Genotyping Arrays";
-    } else if (selectedGenotype === "wgs_longread") {
-      legendText = "Long-Read WGS";
-    } else if (selectedGenotype === "wgs_shortread") {
-      legendText = "Short-Read WGS";
-    } else if (selectedGenotype === "wgs_structural_variants") {
-      legendText = "Short-Read WGS Structural Variants";
-    }
+    const legendText =
+      getGenomicDataType(selectedGenotype)?.label ?? selectedGenotype;
 
     return (
       <div style={styles.chartContainer}>

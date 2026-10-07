@@ -3,96 +3,81 @@ import * as React from "react";
 import { environment } from "environments/environment";
 import { HeatMapReactComponent } from "app/data-browser/components/heat-map/heat-map.component";
 import { reactStyles } from "app/utils";
+import { ClrIcon } from "app/utils/clr-icon";
 
 import { GenomicChartComponent } from "./genomic-chart.component";
+import { GENOMIC_DATA_TYPES, getGenomicDataType } from "./genomic-data-types";
 
 const css = `
-label {
+.genotype-select {
+  position: relative;
+  display: inline-block;
+  min-width: 18rem;
+  font-size: 14px;
+}
+.genotype-select-button {
   display: flex;
   align-items: center;
-}
-input[type='radio']{
-  appearance: none;
-  height: 1rem;
-  width: 1rem;
-  border: 1px solid #FAAF56;
-  border-radius:50%;
-  margin-right:0.5rem;
-  margin-left: 1em;
-  // outline-color:#FAAF56;
-}
-input:focus{
-  outline:none;
-
-}
-input[type='radio']:before {
-  content: '';
-  display: block;
-  width: 50%;
-  height: 50%;
-  margin: 50%;
-  transform: translate(-50%,-50%);
-  border-radius: 50%;
-}
-#radio-orange[type='radio']:checked:before {
-  background:#FAAF56;
-}
-
-#radio-red{
-  border-color:#93003A
-}
-#radio-red:checked:before{
-  background:#93003A
-}
-#radio-teal{
-  border-color:#6F98A0
-}
-#radio-teal:checked:before{
-  background:#6F98A0
-}
-#radio-blue{
-  border-color:#01429D
-}
-#radio-blue:checked:before{
-  background:#01429D
-}
-
-.radio-label {
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: 2rem 1fr;
-    align-items: center;
-}
-
-.radio-label input {
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.4rem 0.75rem;
+  background: white;
+  border: 1px solid rgba(38, 34, 98, 0.4);
+  border-radius: 3px;
+  color: #262262;
+  font-family: GothamBook, Arial, Helvetica, sans-serif;
+  font-size: 1em;
+  text-align: left;
   cursor: pointer;
 }
-
-.heading-layout {
-  font-size: 14px;
-  display: grid;
-  grid-template-columns: 10rem 10rem 17rem 10rem;
-  // justify-content: space-between;
+.genotype-select-button:focus-visible,
+.genotype-select-option:focus-visible {
+  outline: 2px solid #216fb4;
+  outline-offset: 1px;
+}
+.genotype-select-list {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  margin: 0;
+  padding: 0.25rem 0;
+  list-style: none;
+  background: white;
+  border: 1px solid rgba(38, 34, 98, 0.4);
+  border-radius: 3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.genotype-select-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  color: #262262;
+  cursor: pointer;
+}
+.genotype-select-option:hover,
+.genotype-select-option[aria-selected='true'] {
+  background: rgba(33, 111, 180, 0.08);
+}
+.genotype-bullet {
+  flex: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+.genotype-select-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .chart-container {
 background: #f3f8fb;
 }
 
-
-
-@media only screen and (max-width: 900px) {
-    .heading-layout {
-      grid-template-columns:50% 50%;
-      row-gap: 1rem;
-    }
-}
-@media only screen and (max-width: 700px) {
-    .heading-layout {
-      grid-template-columns:100%;
-      row-gap: 1rem;
-    }
-}
 
 `;
 const styles = reactStyles({
@@ -136,7 +121,7 @@ interface State {
   participantCounts: any[];
   selectedGenotype: string;
   locationData: any;
-  color: string;
+  dropdownOpen: boolean;
 }
 
 export class GenomicOverviewComponent extends React.Component<Props, State> {
@@ -151,10 +136,13 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       participantCounts: [],
       locationData: {},
       selectedGenotype: "wgs_shortread",
-      color: "#6F98A0",
+      dropdownOpen: false,
     };
-    this.onGenotypeSelect = this.onGenotypeSelect.bind(this);
+    this.dropdownRef = React.createRef();
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
+
+  dropdownRef: React.RefObject<HTMLDivElement>;
 
   raceEthArr: any[] = [];
   sexAtBirthArr: any[] = [];
@@ -166,6 +154,21 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
   componentDidMount() {
     // { this.props.chartData && this.getGenomicChartData(); }
     this.getGenomicChartData();
+    document.addEventListener("mousedown", this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
+  handleClickOutside(event: MouseEvent) {
+    if (
+      this.state.dropdownOpen &&
+      this.dropdownRef.current &&
+      !this.dropdownRef.current.contains(event.target as Node)
+    ) {
+      this.setState({ dropdownOpen: false });
+    }
   }
 
   getGenomicChartData() {
@@ -220,22 +223,82 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
     });
   }
 
-  onGenotypeSelect(event) {
-    this.setState({ selectedGenotype: event.target.value });
-    switch (event.target.value) {
-      case "micro-array":
-        this.setState({ color: "#FAAF56" });
-        break;
-      case "wgs_structural_variants":
-        this.setState({ color: "#93003A" });
-        break;
-      case "wgs_shortread":
-        this.setState({ color: "#6F98A0" });
-        break;
-      case "wgs_longread":
-        this.setState({ color: "#01429D" });
-        break;
-    }
+  onGenotypeSelect(value: string) {
+    this.setState({ selectedGenotype: value, dropdownOpen: false });
+  }
+
+  // Data types with participants in this CDR, in display order. Types missing from the
+  // counts (e.g. a CDR built before the RNASeq/proteomics prep tables) are left out.
+  availableDataTypes() {
+    const { participantCounts } = this.state;
+    const countResults =
+      participantCounts && participantCounts[0]
+        ? participantCounts[0].results
+        : [];
+    return GENOMIC_DATA_TYPES.filter((type) =>
+      countResults.some((r) => r.stratum4 === type.value && r.countValue > 0)
+    );
+  }
+
+  renderDataTypeSelect() {
+    const { selectedGenotype, dropdownOpen } = this.state;
+    const options = this.availableDataTypes();
+    const selected = getGenomicDataType(selectedGenotype);
+    return (
+      <div className="genotype-select" ref={this.dropdownRef}>
+        <button
+          type="button"
+          className="genotype-select-button"
+          aria-haspopup="listbox"
+          aria-expanded={dropdownOpen}
+          onClick={() => this.setState({ dropdownOpen: !dropdownOpen })}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              this.setState({ dropdownOpen: false });
+            }
+          }}
+        >
+          <span className="genotype-select-label">
+            {selected && (
+              <span
+                className="genotype-bullet"
+                style={{ background: selected.color }}
+              />
+            )}
+            {selected ? selected.label : "Select a data type"}
+          </span>
+          <ClrIcon shape="angle" dir={dropdownOpen ? "up" : "down"} />
+        </button>
+        {dropdownOpen && (
+          <ul className="genotype-select-list" role="listbox">
+            {options.map((option) => (
+              <li
+                key={option.value}
+                className="genotype-select-option"
+                role="option"
+                tabIndex={0}
+                aria-selected={option.value === selectedGenotype}
+                onClick={() => this.onGenotypeSelect(option.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    this.onGenotypeSelect(option.value);
+                  } else if (e.key === "Escape") {
+                    this.setState({ dropdownOpen: false });
+                  }
+                }}
+              >
+                <span
+                  className="genotype-bullet"
+                  style={{ background: option.color }}
+                />
+                {option.label}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    );
   }
 
   render() {
@@ -248,103 +311,17 @@ export class GenomicOverviewComponent extends React.Component<Props, State> {
       participantCounts,
       selectedGenotype,
       loading,
-      color,
     } = this.state;
-    const { participantCount } = this.props;
-    let countResults = [];
-    let wgsSRParticipantCount = 0;
-    let wgsLRParticipantCount = 0;
-    let wgsSVParticipantCount = 0;
-    let arrayParticipantCount = 0;
-
-    if (!loading && participantCounts) {
-      countResults = participantCounts[0].results;
-
-      wgsSRParticipantCount = countResults.filter(
-        (r) => r.stratum4 === "wgs_shortread"
-      )[0].countValue;
-      wgsLRParticipantCount = countResults.filter(
-        (r) => r.stratum4 === "wgs_longread"
-      )[0].countValue;
-      wgsSVParticipantCount = countResults.filter(
-        (r) => r.stratum4 === "wgs_structural_variants"
-      )[0].countValue;
-      arrayParticipantCount = countResults.filter(
-        (r) => r.stratum4 === "micro-array"
-      )[0].countValue;
-    }
+    const color = getGenomicDataType(selectedGenotype)?.color;
 
     return (
       <React.Fragment>
         <style>{css}</style>
         <div style={styles.innerContainer}>
           {!loading && (
-            <form
-              style={styles.selectGenotypeData}
-              onChange={this.onGenotypeSelect}
-              id="selectGenotypeDataForm"
-            >
-              <div className="heading-layout">
-                {wgsSRParticipantCount > 0 && (
-                  <React.Fragment>
-                    <label className="radio-label">
-                      <input
-                        id="radio-teal"
-                        type="radio"
-                        value="wgs_shortread"
-                        name="genotype"
-                        defaultChecked={selectedGenotype === "wgs_shortread"}
-                      />{" "}
-                      Short-Read WGS
-                    </label>
-                  </React.Fragment>
-                )}
-                {wgsLRParticipantCount > 0 && (
-                  <React.Fragment>
-                    <label className="radio-label">
-                      <input
-                        id="radio-blue"
-                        type="radio"
-                        value="wgs_longread"
-                        name="genotype"
-                        defaultChecked={selectedGenotype === "wgs_longread"}
-                      />{" "}
-                      Long-Read WGS
-                    </label>
-                  </React.Fragment>
-                )}
-                {wgsSVParticipantCount > 0 && (
-                  <React.Fragment>
-                    <label className="radio-label">
-                      <input
-                        id="radio-red"
-                        type="radio"
-                        value="wgs_structural_variants"
-                        name="genotype"
-                        defaultChecked={
-                          selectedGenotype === "wgs_structural_variants"
-                        }
-                      />{" "}
-                      Short-Read WGS Structural Variants
-                    </label>
-                  </React.Fragment>
-                )}
-                {arrayParticipantCount > 0 && (
-                  <React.Fragment>
-                    <label className="radio-label">
-                      <input
-                        id="radio-orange"
-                        type="radio"
-                        value="micro-array"
-                        name="genotype"
-                        defaultChecked={selectedGenotype === "micro-array"}
-                      />{" "}
-                      Genotyping Arrays
-                    </label>
-                  </React.Fragment>
-                )}
-              </div>
-            </form>
+            <div style={styles.selectGenotypeData}>
+              {this.renderDataTypeSelect()}
+            </div>
           )}
           {!loading && (
             <React.Fragment>
