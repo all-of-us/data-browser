@@ -52,7 +52,8 @@ const styles = reactStyles({
     // wordWrap: "break-word",
   },
   activeSort: {
-    fontFamily: "gothamBold",
+    fontFamily: "'Gotham A', 'Gotham B'",
+    fontWeight: 700,
   },
 });
 
@@ -66,7 +67,7 @@ const css = `
     visibility: hidden;
     width: 185px;
     font-size: 14px;
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
     background-color: #FFFFFF;
     color: #302C71;
     text-align: left;
@@ -177,7 +178,11 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
       <React.Fragment>
         <style>{css}</style>
         <div onClick={() => this.sortClick()} style={styles.sortItem}>
-          <span style={{ fontFamily: "gothamBold" }}>Sort By</span>
+          <span
+            style={{ fontFamily: "'Gotham A', 'Gotham B'", fontWeight: 700 }}
+          >
+            Sort By
+          </span>
           <div>
             <ClrIcon
               style={

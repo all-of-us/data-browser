@@ -26,7 +26,7 @@ const css = `
   border: 1px solid rgba(38, 34, 98, 0.4);
   border-radius: 3px;
   color: #262262;
-  font-family: GothamBook, Arial, Helvetica, sans-serif;
+  font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif;
   font-size: 1em;
   text-align: left;
   cursor: pointer;

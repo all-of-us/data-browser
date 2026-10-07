@@ -19,13 +19,13 @@ const styles = reactStyles({
 
 const searchStyle = `
 .search-title .secondary-display {
-    font-family:GothamBook;
+    font-family:'Gotham A', 'Gotham B';
     margin-bottom: 0.5em;
     display: flex;
     flex-direction: row;
 }
 .secondary-display {
-  font-family:GothamBook, Arial, sans-serif;
+  font-family:'Gotham A', 'Gotham B', Arial, sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;
@@ -35,7 +35,7 @@ const searchStyle = `
   text-align: left;
 }
 .genomics-search-heading-display {
-  font-family:GothamBook, Arial, sans-serif;
+  font-family:'Gotham A', 'Gotham B', Arial, sans-serif;
   font-style: normal;
   font-size: 18px;
   font-weight: 200;

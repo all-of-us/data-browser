@@ -30,7 +30,7 @@
 
 .primary-display,
 h1 {
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-size: 36.8px;
   font-weight: normal;
   font-style: normal;
@@ -42,7 +42,7 @@ h1 {
 
 .secondary-display,
 h2 {
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-weight: 200;
   font-style: normal;
   font-size: 27px;
@@ -58,7 +58,7 @@ a:hover {
 }
 
 .body-lead {
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-size: 20px;
   font-weight: normal;
   font-style: normal;
@@ -68,7 +68,7 @@ a:hover {
 }
 
 .display-body {
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-size: 22px;
   font-weight: 500;
   font-style: normal;
@@ -88,7 +88,7 @@ a:hover {
 
 .body-default,
 p {
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -111,7 +111,7 @@ p {
   padding-bottom: 63px;
   margin: 0 auto;
   line-height: 2;
-  font-family: "GothamBook", "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
   font-size: 20px;
 }
 

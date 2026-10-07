@@ -206,13 +206,13 @@ export class DbConfigService {
   /* Chart Styles */
   CHART_TITLE_STYLE = {
     color: "#262262",
-    "font-family": "GothamBook",
+    "font-family": "'Gotham A', 'Gotham B'",
     "font-size": "22px",
     "font-weight": "normal",
   };
   DATA_LABEL_STYLE = {
     color: "#f6f6f8",
-    "font-family": "GothamBook",
+    "font-family": "'Gotham A', 'Gotham B'",
     fontSize: "15px",
     padding: "10px",
     "font-weight": "300",
@@ -220,7 +220,7 @@ export class DbConfigService {
   };
   GI_DATA_LABEL_STYLE = {
     color: "#f6f6f8",
-    "font-family": "GothamBook",
+    "font-family": "'Gotham A', 'Gotham B'",
     "font-size": "22px",
     "font-weight": "300",
     textOutline: "none",

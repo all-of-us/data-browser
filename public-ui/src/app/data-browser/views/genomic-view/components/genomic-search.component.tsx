@@ -21,7 +21,7 @@ const styles = reactStyles({
   },
   boxHeading: {
     margin: 0,
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontWeight: 100,
     fontStyle: "normal",
     fontSize: ".8em",

@@ -3,7 +3,7 @@ import * as React from "react";
 
 const cssStyles = `
 strong {
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
 }
 
 .version-box-container  {
@@ -33,7 +33,7 @@ strong {
 }
 
 .version-box-header > .version-box-item {
-    font-family: GothamBold;
+    font-family: 'Gotham A', 'Gotham B'; font-weight: 700;
     text-align: center;
 }
 

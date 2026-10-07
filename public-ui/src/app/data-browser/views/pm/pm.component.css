@@ -103,7 +103,7 @@
 button {
     text-align: left;
     padding: 0;
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
 }
 
 .participant-count {
@@ -113,7 +113,7 @@ button {
 }
 
 .active {
-    font-family: GothamBold, Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif; font-weight: 700;
     font-weight: 900;
 }
 

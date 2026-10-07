@@ -362,7 +362,7 @@ export class SVVariantFilterItemComponent extends React.Component<
       <React.Fragment>
         <style>{css}</style>
         <div onClick={() => this.filterClick()} style={styles.filterItem}>
-          <span style={{ fontFamily: "gothamBold" }}>{category.display}</span>
+          <span style={{ fontFamily: "'Gotham A', 'Gotham B'", fontWeight: 700 }}>{category.display}</span>
           <div>
             <ClrIcon
               style={

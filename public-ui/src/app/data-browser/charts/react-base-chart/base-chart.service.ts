@@ -118,12 +118,12 @@ export const LOCATION_STRATUM_MAP = {
 export const baseOptions = {
   lang: { thousandsSep: "," },
   style: {
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "14px",
   },
   chart: {
     style: {
-      fontFamily: "GothamBook, Arial, sans-serif",
+      fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     },
     type: "",
     backgroundColor: "transparent",
@@ -140,7 +140,7 @@ export const baseOptions = {
       wordBreak: undefined,
       zIndex: undefined,
       fontSize: "14px",
-      fontFamily: "GothamBook",
+      fontFamily: "'Gotham A', 'Gotham B'",
       fontWeight: "normal",
     },
   },
@@ -350,7 +350,7 @@ export const genomicOptions = {
     style: {
       color: "#666",
       fontSize: "14px",
-      fontFamily: "GothamBook",
+      fontFamily: "'Gotham A', 'Gotham B'",
       fontWeight: "normal",
     },
   },
@@ -377,7 +377,7 @@ export const genomicOptions = {
         width: "80px",
         fontSize: "11px",
         color: "#262262",
-        fontFamily: "GothamBook",
+        fontFamily: "'Gotham A', 'Gotham B'",
       },
       // formatter: () => {
       //     const label = this.axis.defaultLabelFormatter.call(this);
@@ -398,7 +398,7 @@ export const genomicOptions = {
         fontWeight: "bold",
         textTransform: "capitalize",
         fontSize: "11px",
-        fontFamily: "GothamBook",
+        fontFamily: "'Gotham A', 'Gotham B'",
       },
     },
     tickLength: 0,
@@ -413,7 +413,7 @@ export const genomicOptions = {
       style: {
         color: "#262262",
         fontSize: "11px",
-        fontFamily: "GothamBook",
+        fontFamily: "'Gotham A', 'Gotham B'",
         textTransform: "capitalize",
         whiteSpace: "wrap",
         textOverflow: "ellipsis",
@@ -432,7 +432,7 @@ export const genomicOptions = {
         whiteSpace: "wrap",
         textOverflow: "ellipsis",
         color: "#262262",
-        fontFamily: "GothamBook",
+        fontFamily: "'Gotham A', 'Gotham B'",
       },
       // formatter: () => {
       //     const label = this.axis.defaultLabelFormatter.call(this);

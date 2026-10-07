@@ -125,7 +125,7 @@ export const homeCss = `
 	box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.25);
 }
 .result-box-title {
-	font-family: GothamBook, Arial, sans-serif;
+	font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
 	color: #3279b7;
 	height: 2.5rem;
 	margin-bottom:1rem;
@@ -141,7 +141,7 @@ export const homeCss = `
 }
 .result-box-body {
 	color: #302c71;
-	font-family: GothamBook, Arial, sans-serif;
+	font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
 	font-size: 14px;
 	display: flex;
 	flex-direction: column;
@@ -162,7 +162,7 @@ export const homeCss = `
 .result-stat {
 	display: block;
 	color: #302c71;
-	font-family: GothamBook, Arial, sans-serif;
+	font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 35px;
@@ -250,7 +250,7 @@ export const homeCss = `
 .workbench-card-body-item {
   padding-bottom: 0.7em;
   display: block;
-  font-family: GothamBook, Arial, sans-serif;
+  font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
   font-size: 14px;
   color: #302c71;
 }
@@ -392,7 +392,7 @@ const styles = reactStyles({
 
   resultBoxTitle: {
     color: "#337ab7",
-    fontFamily: "GothamBook,Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, sans-serif",
     display: "flex",
     margin: "0",
     fontSize: "16px",
@@ -403,7 +403,7 @@ const styles = reactStyles({
   },
   resultBody: {
     color: "#302c71",
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "14px",
     display: "flex",
     flexDirection: "column",
@@ -420,7 +420,7 @@ const styles = reactStyles({
   },
   resultBoxLink: {},
   resultHeading: {
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "23px",
     height: "0rem",
     paddingLeft: "0",
@@ -428,7 +428,7 @@ const styles = reactStyles({
   resultBodyItem: {},
   resultStat: {
     color: "#302c71",
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontStyle: "normal",
     fontWeight: 400,
     fontSize: "35px",
@@ -436,7 +436,7 @@ const styles = reactStyles({
   },
   genoResultStat: {
     color: "#302c71",
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontStyle: "normal",
     lineHeight: "1em",
   },
@@ -445,7 +445,7 @@ const styles = reactStyles({
     fontSize: "14px",
   },
   dBTitle: {
-    fontFamily: "GothamBold, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontWeight: "bold",
     textAlign: "center",
     margin: 0,
@@ -456,7 +456,7 @@ const styles = reactStyles({
     paddingBottom: "63px",
     margin: "0 auto",
     lineHeight: "2",
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "20px",
     textAlign: "center",
   },

@@ -124,7 +124,7 @@ const styles = reactStyles({
   },
   helpText: {
     margin: 0,
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontWeight: 100,
     fontStyle: "normal",
     fontSize: "1em",
@@ -146,7 +146,7 @@ const css = `
     display: grid;
     grid-template-columns: 10rem 7rem 7rem 7rem 9rem 7rem 7rem 8rem 10rem;
     background: #f9f9fa;
-    font-family: gothamBold,Arial, Helvetica,sans-serif;
+    font-family: 'Gotham A', 'Gotham B',Arial, Helvetica,sans-serif; font-weight: 700;
     width: 72rem;
     position: sticky;
     left: 0;

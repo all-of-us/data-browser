@@ -1,5 +1,5 @@
 strong {
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
     color: #302c71;
 }
 
@@ -127,7 +127,7 @@ app-spinner {
 
 .result-box-title {
     color: #337ab7;
-    font-family:GothamBook, Arial, sans-serif;
+    font-family:'Gotham A', 'Gotham B', Arial, sans-serif;
     display: flex;
     padding: 18px;
     padding-bottom: 3px;
@@ -142,7 +142,7 @@ app-spinner {
 
 .result-stat {
     color: #302c71;
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 35px;
@@ -151,7 +151,7 @@ app-spinner {
 
 .result-body {
     color: #302c71;
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
     font-size: 14px;
     padding: 18px;
     padding-top: 0px;

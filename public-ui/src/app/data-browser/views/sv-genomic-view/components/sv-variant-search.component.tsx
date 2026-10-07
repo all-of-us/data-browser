@@ -30,7 +30,8 @@ const styles = reactStyles({
     fontSize: "1.2em",
   },
   filterBtn: {
-    fontFamily: "gothamBold",
+    fontFamily: "'Gotham A', 'Gotham B'",
+    fontWeight: 700,
     color: "#216FB4",
     cursor: "Pointer",
     width: "fit-content",

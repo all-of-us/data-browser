@@ -2,7 +2,7 @@ import { reactStyles } from "app/utils";
 
 export const globalStyles = reactStyles({
   bodyDefault: {
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontWeight: "normal",
     fontStyle: "normal",
     fontStretch: "normal",
@@ -13,7 +13,7 @@ export const globalStyles = reactStyles({
     color: "#262262",
   },
   primaryDisplay: {
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "36.8px",
     fontWeight: "normal",
     fontStyle: "normal",
@@ -24,7 +24,7 @@ export const globalStyles = reactStyles({
     color: "#262262",
   },
   secondaryDisplay: {
-    fontFamily: "GothamBook,Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, sans-serif",
     fontWeight: 200,
     fontStyle: "normal",
     fontSize: "27px",
@@ -35,7 +35,7 @@ export const globalStyles = reactStyles({
     color: "#262262",
   },
   bodyLead: {
-    fontFamily: "GothamBook, Arial, sans - serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans - serif",
     fontSize: "20px",
     fontWeight: "normal",
     fontStyle: "normal",

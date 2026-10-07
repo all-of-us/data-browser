@@ -26,19 +26,19 @@ const css = `
 }
 .pop-title {
     font-weight: bold;
-    font-family: gothamBold,Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif; font-weight: 700;
     font-size: 18px;
     margin-top: 2rem;
 }
 .alt-variant-id {
-    font-family: gothamBook, Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif;
     font-size: 12px;
     align-items: center;
     margin-bottom: 1rem;
 }
 
 .alt-variant-id strong {
-    font-family: gothamBold, Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif; font-weight: 700;
 }
 .pop-table {
         display: grid;
@@ -120,7 +120,8 @@ const styles = reactStyles({
   },
 
   catHeading: {
-    fontFamily: "gothamBold,Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
+    fontWeight: 700,
   },
   catInfo: {
     overflowWrap: "anywhere",
@@ -128,7 +129,8 @@ const styles = reactStyles({
     display: "inline-block",
   },
   totalCatHeading: {
-    fontFamily: "gothamBold,Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
+    fontWeight: 700,
     marginLeft: "1.6em",
   },
   loading: {
@@ -181,7 +183,7 @@ const styles = reactStyles({
     transform: "translateX(-50%)",
     width: "auto",
     fontSize: "14px",
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     backgroundColor: "#FFFFFF",
     color: "#302C71",
     textAlign: "left",

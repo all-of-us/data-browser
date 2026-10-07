@@ -38,7 +38,8 @@ const styles = reactStyles({
     color: "rgb(33, 111, 180)",
     padding: ".05rem .5rem",
     borderRadius: "15px",
-    fontFamily: "GothamBold",
+    fontFamily: "'Gotham A', 'Gotham B'",
+    fontWeight: 700,
     margin: ".25rem .25rem",
   },
   chipFormat: {
@@ -182,11 +183,15 @@ export class VariantFilterChips extends React.Component<Props, State> {
                         <div style={styles.chipLayout}>
                           {lables[el.cat.toString()]}
                           <div style={styles.chip}>
-                            <span style={{ fontFamily: "GothamBook" }}>
+                            <span
+                              style={{ fontFamily: "'Gotham A', 'Gotham B'" }}
+                            >
                               Min&nbsp;
                             </span>
                             <span>{el.data.min} </span>
-                            <span style={{ fontFamily: "GothamBook" }}>
+                            <span
+                              style={{ fontFamily: "'Gotham A', 'Gotham B'" }}
+                            >
                               &nbsp;|&nbsp;Max&nbsp;
                             </span>
                             <span>{el.data.max}</span>

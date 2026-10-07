@@ -13,7 +13,7 @@ handlers:
       X-Content-Type-Options: "nosniff"
       X-XSS-Protection: "1"
       X-Frame-Options: "SAMEORIGIN"
-      Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org https://server.arcgisonline.com; frame-ancestors 'self'; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com;"
+      Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org https://server.arcgisonline.com; frame-ancestors 'self'; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com https://cloud.typography.com;"
 
   - url: /.*
     static_files: dist/index.html
@@ -26,4 +26,4 @@ handlers:
       X-Content-Type-Options: "nosniff"
       X-XSS-Protection: "1"
       X-Frame-Options: "SAMEORIGIN"
-      Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org https://server.arcgisonline.com; frame-ancestors 'self'; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com;"
+      Content-Security-Policy: "default-src https:; script-src https: 'unsafe-inline' 'unsafe-eval'; style-src https: 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.stable.researchallofus.org https://www.staging.researchallofus.org https://server.arcgisonline.com; frame-ancestors 'self'; font-src 'self' data: https://kit-pro.fontawesome.com https://kit-free.fontawesome.com https://ka-p.fontawesome.com https://cloud.typography.com;"
