@@ -29,7 +29,7 @@ liquibase {
     activities {
         main {
             changelogFile "changelog/db.changelog-master.xml"
-            url "jdbc:mysql://${db_host}:${db_port}/databrowser"
+            url "jdbc:mysql://${db_host}:${db_port}/databrowser?allowPublicKeyRetrieval=true"
             username "liquibase"
             password "${liquibase_password}"
         }

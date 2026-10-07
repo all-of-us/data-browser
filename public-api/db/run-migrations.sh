@@ -29,13 +29,13 @@ function run_mysql() {
     docker run --rm --network host --entrypoint '' \
       -v "${CREATE_DB_FILE}:${CREATE_DB_FILE}" \
       --platform linux/amd64 \
-      mysql:5.7.27 \
+      mysql:8.4 \
       mysql $@
   fi
 }
 
 echo "Creating database if it does not exist..."
-run_mysql -h "${DB_HOST}" --port "${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD}" < "${CREATE_DB_FILE}"
+run_mysql -h "${DB_HOST}" --port "${DB_PORT}" --get-server-public-key -u root -p"${MYSQL_ROOT_PASSWORD}" < "${CREATE_DB_FILE}"
 
 echo "Upgrading database..."
 (cd "$(dirname "${BASH_SOURCE}")" && ../gradlew update $activity $context)

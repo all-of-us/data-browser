@@ -58,7 +58,7 @@ function mysqlimport_table () {
    echo "Mysql importing $file into $db.$table..."
    mysqlimport --fields-terminated-by=, --fields-optionally-enclosed-by='"' \
       --verbose --local -h ${DB_HOST} --port ${DB_PORT} \
-      -u root -p${MYSQL_ROOT_PASSWORD} $db $file
+      --get-server-public-key -u root -p${MYSQL_ROOT_PASSWORD} $db $file
 }
 
 # Function for mysqlimport concept_synonym
@@ -70,14 +70,14 @@ function mysqlimport_concept_synonym_table () {
    echo "Mysql importing $file into $db.$table..."
    mysqlimport --fields-terminated-by=, --fields-optionally-enclosed-by='"' --columns=concept_id,concept_synonym_name,language_concept_id \
       --verbose --local -h ${DB_HOST} --port ${DB_PORT} \
-      -u root -p${MYSQL_ROOT_PASSWORD} $db $file
+      --get-server-public-key -u root -p${MYSQL_ROOT_PASSWORD} $db $file
 }
 
 # Import data
 for table in "${TABLES[@]}"
 do
   # Truncate the table in case this is ever run separate
-  mysql -h ${DB_HOST} --port ${DB_PORT} -u root -p${MYSQL_ROOT_PASSWORD} -e "truncate table $CDR_DB_NAME.$table"
+  mysql -h ${DB_HOST} --port ${DB_PORT} --get-server-public-key -u root -p${MYSQL_ROOT_PASSWORD} -e "truncate table $CDR_DB_NAME.$table"
 
   #  some files come in multiple csv because big. If we have just $table.csv , it is one file
   #  $table0*.csv will be multiple files.

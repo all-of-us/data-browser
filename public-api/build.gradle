@@ -53,7 +53,7 @@ def project_name = System.getenv("PROJECT")
 
 def dbProperties = [
         'spring.datasource.driver-class-name': 'com.mysql.cj.jdbc.Driver',
-        'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false",
+        'spring.datasource.url': "jdbc:mysql://${db_host}:${db_port}/databrowser?useSSL=false&allowPublicKeyRetrieval=true",
         'spring.datasource.username': databrowser_db_user,
         'spring.datasource.password': databrowser_db_password
 ]
@@ -436,7 +436,7 @@ def cloudSdkHomePath = "/google-cloud-sdk"
 if (System.getenv('CIRCLECI') == 'true') {
     cloudSdkHomePath = "/home/circleci/google-cloud-sdk"
 } else if (System.getenv('PROJECT').equals("stable") || System.getenv('PROJECT').equals("prod")) {
-    cloudSdkHomePath = "/root/google-cloud-sdk"
+    cloudSdkHomePath = "/google-cloud-sdk"
 } else {
     cloudSdkHomePath = "/google-cloud-sdk"
 }

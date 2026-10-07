@@ -286,7 +286,14 @@ export class SVVariantFilterItemComponent extends React.Component<
     const updatedFilterItem = { ...filterItem };
     updatedFilterItem.min = vals[0];
     updatedFilterItem.max = vals[1];
-    updatedFilterItem.checked = true;
+    // Only an actual narrowing counts as a filter: a range edited back to the dataset
+    // defaults stays unchecked, so no chip shows and no range is sent with the search.
+    const og = this.state.ogFilterMetaData;
+    const sameAsDefault = (value, ogValue) =>
+      ogValue !== undefined && Math.abs(Number(value) - Number(ogValue)) < 1e-9;
+    updatedFilterItem.checked = !(
+      sameAsDefault(vals[0], og.min) && sameAsDefault(vals[1], og.max)
+    );
     this.props.onFilterChange(updatedFilterItem, this.props.category);
   }
 
