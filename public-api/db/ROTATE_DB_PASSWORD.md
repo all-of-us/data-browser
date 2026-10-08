@@ -28,34 +28,33 @@ turns the old password off.
      chmod +x rotate-db-password.sh
      ```
 
-2. **Clear old proxies**
-   ```bash
-   pkill -f cloud-sql-proxy
-   ```
-
-3. **Rotate**, for example `root` on test, which needs no redeploy:
+2. **Rotate `root`**, for example on test (no redeploy needed):
    ```bash
    ./rotate-db-password.sh --project aou-db-test --group root
    ```
-   Type `y` when it asks. When it prints `Verified: ...`, finish with:
+   Type `y` when it asks. When it prints `Done.`, finish with:
    ```bash
    ./rotate-db-password.sh --project aou-db-test --group root --discard-old
    ```
 
-4. **Rotate the `app` group** (`databrowser`, `liquibase`, `public` together), for
+3. **Rotate the `app` group** (`databrowser`, `liquibase`, `public` together), for
    example on test:
    ```bash
    ./rotate-db-password.sh --project aou-db-test --group app
    ```
-   Type `y` when it asks. When it prints `Verified: ...`, redeploy the APIs it lists from
-   your machine or CircleCI (the deploy needs your local repo); for test that is test,
-   staging **and** stable. Check the logs, then come back to Cloud Shell and finish with:
+   Type `y` when it asks and wait for `Done.`
+
+4. **Redeploy the API(s)** from your machine (see [Redeploying](#redeploying) below).
+   For `app` on test, that is test, staging **and** stable.
+
+5. **Turn off the old password**, back in Cloud Shell, once every API from step 4 is
+   healthy:
    ```bash
    ./rotate-db-password.sh --project aou-db-test --group app --discard-old
    ```
 
 The uploaded file stays in your Cloud Shell home folder between sessions, so next time
-just run `cd ~` and step 3.
+just run `cd ~` and continue from step 2.
 
 ## What to rotate
 
@@ -75,10 +74,48 @@ three keys each bucket has.
 
 ## Redeploying
 
-Always redeploy with `./project.rb deploy-public-api --project <project> ...` (or the
-CircleCI job), never a bare `gcloud app deploy`: the deploy copies the new password from
-the bucket into the app. Afterwards check the API logs show
-`HikariPool-1 - Start completed` and no `Access denied`.
+Run these **on your machine**, from `public-api/` in an up-to-date checkout of `master`.
+The deploy copies the new password from the bucket into the app, so always use
+`./project.rb deploy-public-api`, never a bare `gcloud app deploy`.
+
+```bash
+cd data-browser/public-api
+git checkout master && git pull
+
+# Use a new version name each time, e.g. pw-rotation-20261201
+./project.rb deploy-public-api --project aou-db-test --version pw-rotation-YYYYMMDD --promote
+```
+
+For `app` on test, run the deploy three times, once per project:
+
+```bash
+for p in aou-db-test aou-db-staging aou-db-stable; do
+  ./project.rb deploy-public-api --project "$p" --version pw-rotation-YYYYMMDD --promote
+done
+```
+
+For prod, the same command with `--project aou-db-prod`.
+
+**Check each deploy** before running `--discard-old`:
+
+```bash
+P=aou-db-test           # repeat for each project you deployed
+V=pw-rotation-YYYYMMDD
+
+# The version points at this project's database (not another environment's).
+gcloud app versions describe "$V" --project="$P" --service=api \
+  --format="yaml(envVariables.CLOUD_SQL_INSTANCE_NAME)"
+
+# Load the site once, then look for a clean connection.
+gcloud logging read 'resource.type="gae_app" AND resource.labels.module_id="api" AND (textPayload:"Access denied" OR textPayload:"HikariPool")' \
+  --project="$P" --freshness=15m --limit=10 --format="value(timestamp, textPayload)"
+```
+
+You want `CLOUD_SQL_INSTANCE_NAME: <same project>:us-central1:databrowsermaindb` and
+`HikariPool-1 - Start completed` with no `Access denied`.
+
+If you hit "Your app may not have more than 210 versions", delete old unused versions
+first (`gcloud app versions list --project=<project> --service=api`).
 
 ## If something goes wrong
 

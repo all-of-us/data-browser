@@ -63,5 +63,15 @@ done
 gsutil -q cp /tmp/vars.env "$BUCKET/vars.env"
 rm -f /tmp/vars.env
 
-echo "Done. Next: redeploy the API (for app on aou-db-test: test, staging and stable),"
-echo "check the logs, then run: $0 --project ${PROJECT} --group ${GROUP} --discard-old"
+echo "Done."
+if [ "$GROUP" = "app" ]; then
+  [ "$PROJECT" = "aou-db-test" ] && TARGETS="aou-db-test aou-db-staging aou-db-stable" || TARGETS="$PROJECT"
+  echo "Next, on your machine from data-browser/public-api, redeploy:"
+  for p in $TARGETS; do
+    echo "  ./project.rb deploy-public-api --project $p --version pw-rotation-$(date +%Y%m%d) --promote"
+  done
+  echo "Check the logs (see ROTATE_DB_PASSWORD.md), then run here:"
+else
+  echo "No redeploy needed. Next, run:"
+fi
+echo "  $0 --project ${PROJECT} --group ${GROUP} --discard-old"
