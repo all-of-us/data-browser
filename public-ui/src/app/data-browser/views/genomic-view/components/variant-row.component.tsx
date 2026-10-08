@@ -22,7 +22,7 @@ const styles = reactStyles({
       zIndex: 2,
   },
   caretIcon: {
-    fontFamily: "gothamBold,Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
     fontWeight: "bold",
   },
   rowItem: {

@@ -63,7 +63,7 @@ footer {
 
 .main-menu-item > a {
     text-transform: uppercase;
-    font-family: GothamBold, Helvetica Neue, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Helvetica Neue, sans-serif; font-weight: 700;
 }
 
 .main-menu-item * {
@@ -100,7 +100,7 @@ footer {
     padding-top: 0.2em;
     padding-bottom: 0.2em;
     line-height: 1.2;
-    font-family: GothamBold, "Helvetica Neue", sans-serif;
+    font-family: 'Gotham A', 'Gotham B', "Helvetica Neue", sans-serif; font-weight: 700;
     min-width: max-content;
     border-radius: 0px;
     border: 1px solid #fff;

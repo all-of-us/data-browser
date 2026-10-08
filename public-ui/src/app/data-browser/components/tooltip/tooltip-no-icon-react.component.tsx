@@ -12,7 +12,7 @@ export const tooltipNoIconCss = `
     visibility: hidden;
     width: 150px;
     font-size: 14px;
-    font-family: GothamBook, Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
     background-color: #FFFFFF;
     color: #302C71;
     text-align: left;

@@ -181,7 +181,11 @@ export class SurveyQuestionReactComponent extends React.Component<
       <div>
         <style>{styleCss}</style>
         <span
-          style={{ fontFamily: showAnswers && "GothamBold", cursor: "pointer" }}
+          style={{
+            fontFamily: showAnswers && "'Gotham A', 'Gotham B'",
+            fontWeight: showAnswers ? 700 : undefined,
+            cursor: "pointer",
+          }}
           onClick={() => this.showAnswers()}
           onKeyPress={(e) => this.showAnswers(e)}
         >

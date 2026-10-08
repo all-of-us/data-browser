@@ -56,7 +56,7 @@ export function highlightSearchTerm(
             style={
               word && matchString.test(word.toLowerCase()) // Check if word is defined
                 ? {
-                    fontFamily: "GothamBold, Arial, san-serif",
+                    fontFamily: "'Gotham A', 'Gotham B', Arial, san-serif",
                     fontWeight: 700,
                   }
                 : {}

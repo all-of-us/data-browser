@@ -98,7 +98,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
     newBaseOptions.title.style = {
       color: THEME_COLOR,
       fontSize: "12px",
-      fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+      fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
       fontWeight: "normal",
     };
 
@@ -109,7 +109,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
         style: {
           color: THEME_COLOR,
           fontSize: "10px",
-          fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+          fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
         },
       },
       lineColor: THEME_COLOR,
@@ -122,7 +122,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
         style: {
           color: THEME_COLOR,
           fontSize: "10px",
-          fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+          fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
         },
       },
       gridLineColor: "#E0E0E0",
@@ -157,7 +157,7 @@ export class CNDistributionChart extends React.Component<Props, State> {
       const xStr = String(visiblePoint.x);
       const cnLabel = xStr === OVERFLOW_LABEL ? "CN" + OVERFLOW_LABEL : "CN=" + xStr;
       return (
-        '<div style="padding: 0 1em; text-align:center;font-family:GothamBook,Arial,sans-serif;font-size:14px;">' +
+        '<div style="padding: 0 1em; text-align:center;font-family:\'Gotham A\', \'Gotham B\',Arial,sans-serif;font-size:14px;">' +
         "<strong>" +
         cnLabel +
         "</strong>: " +

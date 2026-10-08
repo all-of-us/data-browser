@@ -31,7 +31,7 @@ const styles = reactStyles({
   title: {
     fontSize: "35px",
     margin: "0",
-    fontFamily: "gothamBook",
+    fontFamily: "'Gotham A', 'Gotham B'",
   },
   pageHeader: {
     paddingTop: "18px",
@@ -48,7 +48,7 @@ const styles = reactStyles({
     paddingBottom: "18px",
   },
   homeButton: {
-    fontFamily: "GothamBook, Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
     fontSize: "18px",
     color: "#262262",
     border: "1.5px solid #262262",
@@ -89,7 +89,7 @@ const styles = reactStyles({
     width: "75%",
   },
   topBarItemSelected: {
-    fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
     fontWeight: "bolder",
     backgroundColor: "white",
     border: "3px solid #216fb4",

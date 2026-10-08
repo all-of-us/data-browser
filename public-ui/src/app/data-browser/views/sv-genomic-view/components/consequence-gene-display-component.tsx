@@ -10,11 +10,11 @@ interface ConsequenceState {
 
 const css = `
   .consequence-wrapper {
-    font-family: gothamBook, Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif;
   }
 
   .consequence-heading {
-    font-family: gothamBold, Arial, Helvetica, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif; font-weight: 700;
   }
 
   .consequence-item {

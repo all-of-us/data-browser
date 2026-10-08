@@ -614,46 +614,6 @@ a:hover {
 
 
 
-@font-face {
-  font-family: "GothamBook";
-  src: url("/assets/fonts/GothamBook.eot");
-  /* IE9 Compat Modes */
-  src: url("/assets/fonts/GothamBook.eot?#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */
-    url("/assets/fonts/GothamBook.otf") format("opentype"),
-    /* Open Type Font */
-    url("/assets/fonts/GothamBook.svg") format("svg"),
-    /* Legacy iOS */
-    url("/assets/fonts/GothamBook.ttf") format("truetype"),
-    /* Safari, Android, iOS */
-    url("/assets/fonts/GothamBook.woff") format("woff"),
-    /* Modern Browsers */
-    url("/assets/fonts/GothamBook.woff2") format("woff2");
-  /* Modern Browsers */
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "GothamBold";
-  src: url("/assets/fonts/GothamBold.eot");
-  /* IE9 Compat Modes */
-  src: url("/assets/fonts/GothamBold.eot?#iefix") format("embedded-opentype"),
-    /* IE6-IE8 */
-    url("/assets/fonts/GothamBold.otf") format("opentype"),
-    /* Open Type Font */
-    url("/assets/fonts/GothamBold.svg") format("svg"),
-    /* Legacy iOS */
-    url("/assets/fonts/GothamBold.ttf") format("truetype"),
-    /* Safari, Android, iOS */
-    url("/assets/fonts/GothamBold.woff") format("woff"),
-    /* Modern Browsers */
-    url("/assets/fonts/GothamBold.woff2") format("woff2");
-  /* Modern Browsers */
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   box-sizing: border-box;
 }
@@ -661,7 +621,7 @@ a:hover {
 body {
   background-color: #f9f9fa;
   /* overflow-x: hidden; */
-  font-family: GothamBook, Arial, sans-serif;
+  font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
   font-size: 18px;
   color: #262262;
   line-height: 1.5;
@@ -786,13 +746,13 @@ a a:link a:visited {
   white-space: normal;
   background-color: #ffffff;
   font-size: 14px;
-  font-family: GothamBook, Arial, sans-serif;
+  font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
   padding: .5rem;
   border:#262262 1px solid;
   box-shadow: 0px 0px 2px 1px #26226258;
 }
 .chart-tooltip strong{
-  font-family: 'GothamBold';
+  font-family: 'Gotham A', 'Gotham B'; font-weight: 700;
   font-weight: bold;
 }
 .sources-tooltip {
@@ -879,7 +839,7 @@ a a:link a:visited {
 }
 
 strong {
-  font-family: GothamBold;
+  font-family: 'Gotham A', 'Gotham B'; font-weight: 700;
 }
 
 @media all and (-ms-high-contrast: none),

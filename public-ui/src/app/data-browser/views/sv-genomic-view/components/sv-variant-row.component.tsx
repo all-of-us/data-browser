@@ -21,7 +21,7 @@ const styles = reactStyles({
     left: 0,
   },
   caretIcon: {
-    fontFamily: "gothamBold,Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
     fontWeight: "bold",
   },
   rowItem: {

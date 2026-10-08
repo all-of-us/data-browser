@@ -60,7 +60,7 @@ export class ChartSurveyAnswersComponent
     const labelStyle = {
       style: {
         fontSize: "16px",
-        fontFamily: "GothamBook",
+        fontFamily: "'Gotham A', 'Gotham B'",
         color: "#262262",
       },
     };
@@ -68,7 +68,7 @@ export class ChartSurveyAnswersComponent
     this.chartOptions.yAxis.labels = labelStyle;
     this.chartOptions.yAxis.title.margin = 35;
     this.chartOptions.yAxis.title.style = {
-      fontFamily: "GothamBook",
+      fontFamily: "'Gotham A', 'Gotham B'",
       padding: "1rem",
       color: "#262262",
     };

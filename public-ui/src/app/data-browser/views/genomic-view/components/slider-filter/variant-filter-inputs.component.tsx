@@ -25,7 +25,7 @@ const styles = reactStyles({
     gap: "0.4rem",
     padding: "0.5rem 0.5rem 0.5rem 1rem",
     fontSize: "0.7em",
-    fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
     color: "#262262",
   },
   field: {
@@ -35,7 +35,8 @@ const styles = reactStyles({
     gap: "0.25rem",
   },
   label: {
-    fontFamily: "GothamBold, Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
+    fontWeight: 700,
     width: "2.2rem",
     display: "inline-block",
     textAlign: "right",
@@ -45,7 +46,7 @@ const styles = reactStyles({
     padding: "0.2rem 0.3rem",
     border: "1px solid rgba(74,74,74,0.4)",
     borderRadius: "2px",
-    fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
     fontSize: "1em",
     color: "#262262",
     textAlign: "center",
@@ -57,7 +58,7 @@ const styles = reactStyles({
     fontSize: "1em",
     paddingLeft: "1rem",
     marginTop: "0.15rem",
-    fontFamily: "GothamBook, Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif",
   },
 });
 
