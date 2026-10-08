@@ -20,8 +20,8 @@ const styles = reactStyles({
   },
   boxHeading: {
     margin: 0,
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
-    fontWeight: 100,
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
+    fontWeight: 400,
     fontStyle: "normal",
     fontSize: ".8em",
     fontStretch: "normal",
@@ -33,8 +33,8 @@ const styles = reactStyles({
   vocabLine: {
     margin: 0,
     marginTop: ".5em",
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
-    fontWeight: 100,
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
+    fontWeight: 400,
     fontStyle: "normal",
     fontSize: ".8em",
     fontStretch: "normal",

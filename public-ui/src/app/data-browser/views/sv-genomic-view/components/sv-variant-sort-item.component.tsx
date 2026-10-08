@@ -52,7 +52,7 @@ const styles = reactStyles({
     // wordWrap: "break-word",
   },
   activeSort: {
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
   },
 });
@@ -67,7 +67,7 @@ const css = `
     visibility: hidden;
     width: 185px;
     font-size: 14px;
-    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
     background-color: #FFFFFF;
     color: #302C71;
     text-align: left;
@@ -179,7 +179,11 @@ export class SVVariantSortItemComponent extends React.Component<Props, State> {
         <style>{css}</style>
         <div onClick={() => this.sortClick()} style={styles.sortItem}>
           <span
-            style={{ fontFamily: "'Gotham A', 'Gotham B'", fontWeight: 700 }}
+            style={{
+              fontFamily:
+                "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
+              fontWeight: 700,
+            }}
           >
             Sort By
           </span>

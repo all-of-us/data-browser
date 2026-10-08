@@ -31,10 +31,10 @@ const styles = reactStyles({
   title: {
     fontSize: "35px",
     margin: 0,
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
   },
   homeButton: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontSize: "18px",
     color: "#262262",
     border: "1.5px solid #262262",
@@ -64,7 +64,7 @@ const styles = reactStyles({
     color: "#0077b7",
     textAlign: "left",
     textTransform: "capitalize",
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     padding: ".5rem",
     whiteSpace: "nowrap",
     cursor: "pointer",
@@ -193,7 +193,7 @@ const PMGroups = [
 
 const styleCss = `
 .active {
-    font-weight: 900;
+    font-weight: 700;
 }
 .button-item .btn-link {
     border-bottom: 1px solid;
@@ -221,7 +221,7 @@ const styleCss = `
     padding-right: 0.5em;
 }
 .unit-button.active, .concept-button.active {
-    font-weight: 900;
+    font-weight: 700;
     border-bottom: 4px solid #216fb4;
 }
 .active {

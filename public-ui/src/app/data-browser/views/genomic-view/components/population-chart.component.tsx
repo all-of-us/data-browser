@@ -59,7 +59,7 @@ export class PopulationChartReactComponent extends React.Component<Props, State>
       fontSize: isCNV ? "12px" : "15px",
       wordBreak: "break-word",
       zIndex: 0,
-      fontFamily: "'Gotham A', 'Gotham B'",
+      fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       fontWeight: "normal",
     };
     newBaseOptions.tooltip.outside = true;

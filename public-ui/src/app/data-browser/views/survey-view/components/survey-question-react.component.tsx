@@ -182,7 +182,7 @@ export class SurveyQuestionReactComponent extends React.Component<
         <style>{styleCss}</style>
         <span
           style={{
-            fontFamily: showAnswers && "'Gotham A', 'Gotham B'",
+            fontFamily: showAnswers && "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
             fontWeight: showAnswers ? 700 : undefined,
             cursor: "pointer",
           }}

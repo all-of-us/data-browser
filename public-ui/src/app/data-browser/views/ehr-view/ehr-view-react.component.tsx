@@ -58,7 +58,7 @@ const styles = reactStyles({
     alignItems: "center",
   },
   homeButton: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontSize: "18px",
     color: "#262262",
     border: "1.5px solid #262262",
@@ -167,8 +167,8 @@ const cssStyles = `
 }
 .secondary-display,
 h2 {
-  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
-  font-weight: 200;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
   font-style: normal;
   font-size: 27px;
   font-stretch: normal;
@@ -178,8 +178,8 @@ h2 {
 }
 h5.secondary-display {
     font-size: 20px;
-    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
-    font-weight: 100;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
 }
 h5.secondary-display {
     padding: 18px;
@@ -190,7 +190,7 @@ h5.secondary-display {
     margin-left: .2em;
 }
 .domain-title {
-  font-family: 'Gotham A', 'Gotham B', 'Gotham A', 'Gotham B', Arial, sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-size: 35px;
   font-weight: normal;
   font-style: normal;

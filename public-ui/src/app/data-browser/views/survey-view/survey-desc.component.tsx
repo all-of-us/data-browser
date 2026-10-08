@@ -23,10 +23,10 @@ const styles = reactStyles({
   title: {
     fontSize: "35px",
     margin: 0,
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
   },
   homeButton: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontSize: "18px",
     color: "#262262",
     border: "1.5px solid #262262",
@@ -69,7 +69,7 @@ const cssStyles = `
 }
 .body-default,
 p {
-  font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif;
+  font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -91,7 +91,7 @@ p {
   margin: 5px;
 }
 .bold-note-heading {
-    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif; font-weight: 700;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif; font-weight: 700;
     font-weight: bold;
 }
 `;

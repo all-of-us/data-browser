@@ -24,7 +24,7 @@ const css = `
 }
 .pop-title {
     font-weight: bold;
-    font-family: 'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif; font-weight: 700;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif; font-weight: 700;
     font-size: 18px;
     margin-top: 2rem;
 }
@@ -103,7 +103,7 @@ const styles = reactStyles({
   },
 
   catHeading: {
-    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
   },
   catInfo: {
@@ -112,7 +112,7 @@ const styles = reactStyles({
     display: "inline-block",
   },
   totalCatHeading: {
-    fontFamily: "'Gotham A', 'Gotham B',Arial, Helvetica, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
     marginLeft: "1.6em",
   },
@@ -166,7 +166,7 @@ const styles = reactStyles({
     transform: "translateX(-50%)",
     width: "auto",
     fontSize: "14px",
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     backgroundColor: "#FFFFFF",
     color: "#302C71",
     textAlign: "left",

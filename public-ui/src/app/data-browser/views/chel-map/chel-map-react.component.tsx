@@ -70,7 +70,7 @@ const QUINTILE_LABELS = ["Lowest", "Low", "Middle", "High", "Highest"];
 
 const WRAPPER_OPEN =
   '<div style="width:260px;white-space:normal;word-break:break-word;' +
-  'font-family:\'Gotham A\', \'Gotham B\',Arial,sans-serif">';
+  'font-family:\'Gotham A\', \'Gotham B\', \'Helvetica Neue\', sans-serif">';
 
 const tooltipHeader = (cellIndex: number) =>
   '<div style="font-size:15px;font-weight:600;color:#262262;' +
@@ -106,10 +106,10 @@ const styles = reactStyles({
   title: {
     fontSize: "35px",
     margin: 0,
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
   },
   homeButton: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontSize: "18px",
     color: "#262262",
     border: "1.5px solid #262262",
@@ -200,7 +200,7 @@ const styles = reactStyles({
     borderRadius: "6px",
     padding: "0.7rem",
     fontSize: "1rem",
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     cursor: "pointer",
   },
   mapPanel: {

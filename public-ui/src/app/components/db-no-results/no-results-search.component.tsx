@@ -13,7 +13,7 @@ import { LoadingDots } from "app/utils/spinner";
 
 const styles = reactStyles({
   loadingText: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: "normal",
     fontStyle: "normal",
     fontStretch: "normal",
