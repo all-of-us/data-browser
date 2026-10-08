@@ -8,7 +8,7 @@ Passwords are rotated in two groups:
 
 - **`app`**: `databrowser`, `liquibase` and `public`. These always share **one**
   password (`DATABROWSER_DB_PASSWORD`, `LIQUIBASE_DB_PASSWORD`, `PUBLIC_DB_PASSWORD`).
-  The script refuses to run if they don't already match in the bucket.
+  The script sets the same new password on all three and in all three keys.
 - **`root`**: `MYSQL_ROOT_PASSWORD`, on its own.
 
 It uses MySQL dual passwords: the new password is set while the old one keeps working,
@@ -82,10 +82,10 @@ the bucket into the app. Afterwards check the API logs show
 
 ## If something goes wrong
 
-- **"differs from ... they must match"**: the bucket holds different passwords for the
-  `app` users. Make them the same (bucket and database) before rotating.
-- **"does not log in ... nothing changed"**: the password in the bucket differs from the
-  database for that user. Fix that mismatch before rotating.
+- **API shows `Access denied` after the redeploy**: the old password still works until
+  `--discard-old`, so nothing is down yet. Check the API was redeployed with
+  `./project.rb deploy-public-api` (it copies the password from the bucket).
 - **Need the previous `vars.env`**: every run backs it up to
-  `gs://<project>-credentials/backups/vars.env.<timestamp>`.
-- The script never prints passwords. Don't run it with `bash -x`.
+  `gs://<project>-credentials/backups/vars.env.<timestamp>`; copy it back with
+  `gsutil cp`.
+- Run the script in Cloud Shell (it uses Linux `sed -i`), and never with `bash -x`.
