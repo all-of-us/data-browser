@@ -30,6 +30,24 @@ esac
 [ -n "$PROJECT" ] || { echo "--project is required"; exit 1; }
 
 BUCKET="gs://${PROJECT}-credentials"
+
+# After any password change MySQL's caching_sha2_password cache is empty for the user, and
+# the API (Cloud SQL Java connector) gets "Access denied" until one full login refills it.
+# Log in once as every user with password $1 to refill it.
+warm_cache() {
+  pkill -f "cloud-sql-proxy.*--port 9475" || true
+  # --gcloud-auth: use your gcloud login (works in Cloud Shell and on a laptop without ADC).
+  cloud-sql-proxy "${PROJECT}:us-central1:databrowsermaindb" --port 9475 --gcloud-auth \
+    > /tmp/proxy.log 2>&1 &
+  local proxy=$!
+  sleep 4
+  for u in $USERS; do
+    MYSQL_PWD="$1" mysql --get-server-public-key -h127.0.0.1 -P9475 -u"$u" -N \
+      -e "SELECT CURRENT_USER();" > /dev/null \
+      && echo "Login check OK: $u" || echo "WARNING: login failed for $u (see /tmp/proxy.log)"
+  done
+  kill "$proxy"
+}
 read -r -p "$($DISCARD && echo Discard old || echo Rotate) password for ${USERS} on ${PROJECT}? [y/N] " ok
 [ "$ok" = "y" ] || exit 1
 
@@ -38,6 +56,8 @@ if $DISCARD; then
     gcloud sql users set-password "$u" --host=% --instance=databrowsermaindb \
       --project="$PROJECT" --discard-dual-password
   done
+  KEY=${KEYS%% *}
+  warm_cache "$(gsutil cat "$BUCKET/vars.env" | sed -n "s/^${KEY}=//p")"
   echo "Done. Only the new password works now."
   exit 0
 fi
@@ -62,6 +82,8 @@ for k in $KEYS; do
 done
 gsutil -q cp /tmp/vars.env "$BUCKET/vars.env"
 rm -f /tmp/vars.env
+
+warm_cache "$NEW"
 
 echo "Done."
 if [ "$GROUP" = "app" ]; then

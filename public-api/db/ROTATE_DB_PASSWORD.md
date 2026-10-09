@@ -37,6 +37,9 @@ turns the old password off.
    ./rotate-db-password.sh --project aou-db-test --group root --discard-old
    ```
 
+   Both commands end with `Login check OK: root`. That login also refills MySQL's
+   password cache, which the API needs after any password change.
+
 3. **Rotate the `app` group** (`databrowser`, `liquibase`, `public` together), for
    example on test:
    ```bash
@@ -119,9 +122,22 @@ first (`gcloud app versions list --project=<project> --service=api`).
 
 ## If something goes wrong
 
-- **API shows `Access denied` after the redeploy**: the old password still works until
-  `--discard-old`, so nothing is down yet. Check the API was redeployed with
-  `./project.rb deploy-public-api` (it copies the password from the bucket).
+- **API shows `Access denied` even though the password is right**: after any password
+  change (or a Cloud SQL restart) MySQL's `caching_sha2_password` cache is empty, and the
+  API's connector can't log in until one full login refills it. The script does that login
+  for you (it prints `Login check OK: <user>` per user). If you still see it, log in once
+  from Cloud Shell and restart the API's instances:
+  ```bash
+  cloud-sql-proxy <project>:us-central1:databrowsermaindb --port 9475 &
+  PW=$(gsutil cat gs://<project>-credentials/vars.env | sed -n 's/^DATABROWSER_DB_PASSWORD=//p')
+  for u in databrowser liquibase public; do
+    MYSQL_PWD="$PW" mysql --get-server-public-key -h127.0.0.1 -P9475 -u$u -N -e "SELECT CURRENT_USER();"
+  done
+  unset PW; pkill -f cloud-sql-proxy
+  # then delete the serving version's instances (gcloud app instances delete ...) and load the site
+  ```
+- **`WARNING: login failed for <user>`** from the script: that user's password in the
+  database doesn't match the bucket. Fix it before redeploying or running `--discard-old`.
 - **Need the previous `vars.env`**: every run backs it up to
   `gs://<project>-credentials/backups/vars.env.<timestamp>`; copy it back with
   `gsutil cp`.
