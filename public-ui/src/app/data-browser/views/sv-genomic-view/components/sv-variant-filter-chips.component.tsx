@@ -40,7 +40,7 @@ const styles = reactStyles({
     color: "rgb(33, 111, 180)",
     padding: ".05rem .5rem",
     borderRadius: "15px",
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
     margin: ".25rem .25rem",
   },
@@ -330,11 +330,11 @@ export class SVVariantFilterChips extends React.Component<Props, State> {
                         <div style={styles.chipLayout}>
                           {lables[el.cat.toString()]}
                           <div style={styles.chip}>
-                            <span style={{ fontFamily: "'Gotham A', 'Gotham B'" }}>
+                            <span style={{ fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif" }}>
                               Min&nbsp;
                             </span>
                             <span>{formatChipValue(el.cat, el.data.min)} </span>
-                            <span style={{ fontFamily: "'Gotham A', 'Gotham B'" }}>
+                            <span style={{ fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif" }}>
                               &nbsp;|&nbsp;Max&nbsp;
                             </span>
                             <span>{formatChipValue(el.cat, el.data.max)}</span>

@@ -68,7 +68,7 @@ const styleCss = `
   }
   #_ideogramLegend {
     font: 0.8em;
-    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
   }
   #_ideogramTooltip a {
     color: #0366d6;

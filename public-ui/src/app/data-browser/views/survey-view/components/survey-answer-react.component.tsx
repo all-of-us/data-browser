@@ -21,8 +21,8 @@ const styleCss = `
         width: 100%;
     }
     .survey-tbl *{
-        font-family: 'Gotham A', 'Gotham B', "Arial", sans-serif,
-        font-size: 1em
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
+        font-size: 1em;
     }
     .survey-tbl-r.survey-tbl-head {
         /* padding-bottom: 0; */
@@ -43,7 +43,7 @@ const styleCss = `
         text-align: left;
         font-weight: bold;
         margin-left: 1em;
-        font-family: 'Gotham A', 'Gotham B', Arial, Helvetica, sans-serif; font-weight: 700;
+        font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif; font-weight: 700;
     }
     .non-bold-text {
       font-weight: normal !important;

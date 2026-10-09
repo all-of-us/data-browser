@@ -30,7 +30,7 @@ const styles = reactStyles({
     fontSize: "1.2em",
   },
   filterBtn: {
-    fontFamily: "'Gotham A', 'Gotham B'",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
     color: "#216FB4",
     cursor: "Pointer",

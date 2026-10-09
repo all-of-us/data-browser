@@ -30,7 +30,7 @@ export class ChartBaseComponent {
     return {
       chart: this.chartObj,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
         fontSize: "14px",
       },
       tooltip: {

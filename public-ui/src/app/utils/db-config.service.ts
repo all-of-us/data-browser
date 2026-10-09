@@ -206,23 +206,23 @@ export class DbConfigService {
   /* Chart Styles */
   CHART_TITLE_STYLE = {
     color: "#262262",
-    "font-family": "'Gotham A', 'Gotham B'",
+    "font-family": "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     "font-size": "22px",
     "font-weight": "normal",
   };
   DATA_LABEL_STYLE = {
     color: "#f6f6f8",
-    "font-family": "'Gotham A', 'Gotham B'",
+    "font-family": "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontSize: "15px",
     padding: "10px",
-    "font-weight": "300",
+    "font-weight": "400",
     textOutline: "none",
   };
   GI_DATA_LABEL_STYLE = {
     color: "#f6f6f8",
-    "font-family": "'Gotham A', 'Gotham B'",
+    "font-family": "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     "font-size": "22px",
-    "font-weight": "300",
+    "font-weight": "400",
     textOutline: "none",
   };
   MULTIPLE_ANSWER_SURVEY_QUESTIONS = [43528428, 1585952, 1585806, 1585838];

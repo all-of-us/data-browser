@@ -47,7 +47,7 @@ const styles = reactStyles({
     padding: "18px",
   },
   strong: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     color: "#302c71",
   },
   searchBarContainer: {
@@ -81,7 +81,7 @@ const styles = reactStyles({
     marginBottom: "0.5rem",
   },
   highlight: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, san-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: 700,
     padding: "3px",
   },
@@ -134,7 +134,7 @@ const surveyStyle = `
         border-top: 1px solid #cccccc;
         padding: 9px 0;
         font-size: 0.9em;
-        font-family:'Gotham A', 'Gotham B' Arial, sans-serif;
+        font-family:'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
         color: #262262;
         width: 100%;
 }

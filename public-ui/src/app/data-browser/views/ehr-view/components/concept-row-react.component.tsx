@@ -41,7 +41,7 @@ const ShareIcon: React.FC<{
 
 const styles = reactStyles({
   bodyLead: {
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontWeight: "normal",
     fontStyle: "normal",
     fontStretch: "normal",
@@ -66,7 +66,7 @@ const styles = reactStyles({
   },
   akaText: {
     /* width: 170px; */
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     fontStyle: "italic",
     color: "#6B6B6B",
   },
@@ -110,7 +110,7 @@ const styles = reactStyles({
     transform: "translateX(-50%)",
     width: "auto",
     fontSize: "14px",
-    fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
     backgroundColor: "#FFFFFF",
     color: "#302C71",
     textAlign: "left",

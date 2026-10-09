@@ -103,7 +103,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
     return {
       chart: options.chart,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
       lang: this.dbc.lang,
       credits: this.dbc.credits,
@@ -434,7 +434,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       tooltip: { pointFormat: "{point.y}" },
       yAxisMin: null,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -544,7 +544,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: "Participant Count",
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -695,7 +695,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : "Participant Count",
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -794,7 +794,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : "Participant Count",
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -941,7 +941,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: yAxisLabel !== null ? yAxisLabel : "Participant Count",
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -1125,7 +1125,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       },
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }
@@ -1196,7 +1196,7 @@ export class ChartComponent implements OnChanges, AfterViewInit {
       yAxisTitle: "Participant Count",
       yAxisMin: temp.length > 0 ? 0 : 20,
       style: {
-        fontFamily: "'Gotham A', 'Gotham B', Arial, sans-serif",
+        fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
       },
     };
   }

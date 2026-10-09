@@ -19,7 +19,7 @@ const css = `
     visibility: hidden;
     width: 185px;
     font-size: 14px;
-    font-family: 'Gotham A', 'Gotham B', Arial, sans-serif;
+    font-family: 'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif;
     background-color: #FFFFFF;
     color: #302C71;
     text-align: left;

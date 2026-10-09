@@ -160,7 +160,7 @@ export function Tick({ tick, count, format = (d) => d }) {
         stroke="#333"
         dy="-5px"
         textAnchor="middle"
-        fontFamily="'Gotham A', 'Gotham B', Arial, sans-serif"
+        fontFamily="'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif"
         fontSize="24px"
       >
         {format(tick.value)}
