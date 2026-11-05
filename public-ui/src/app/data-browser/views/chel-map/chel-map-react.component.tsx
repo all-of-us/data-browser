@@ -63,11 +63,6 @@ const CONUS_BOUNDS = {
   ],
 };
 
-// Quintile labels for the tooltip's position bar. Purely about magnitude -- deliberately not
-// "better"/"worse", since severityDirection is unspecified for some metrics and inverted for
-// others, and a value judgement in the tooltip would be wrong for both.
-const QUINTILE_LABELS = ["Lowest", "Low", "Middle", "High", "Highest"];
-
 const WRAPPER_OPEN =
   '<div style="width:260px;white-space:normal;word-break:break-word;' +
   'font-family:\'Gotham A\', \'Gotham B\', \'Helvetica Neue\', sans-serif">';
@@ -122,9 +117,11 @@ const styles = reactStyles({
     cursor: "pointer",
     textDecoration: "none",
   },
+  // Stretch so the map panel takes the metric panel's height; the chart fills what the note
+  // leaves rather than setting the row height itself.
   layout: {
     display: "flex",
-    alignItems: "flex-start",
+    alignItems: "stretch",
     paddingLeft: "18px",
     paddingRight: "18px",
     paddingBottom: "18px",
@@ -140,7 +137,6 @@ const styles = reactStyles({
     border: "1px solid #DDE1E6",
     borderRadius: "8px",
     padding: "1rem",
-    marginBottom: "1rem",
   },
   groupHeading: {
     fontSize: "0.75rem",
@@ -201,9 +197,13 @@ const styles = reactStyles({
     border: "1px solid #DDE1E6",
     borderRadius: "8px",
     overflow: "hidden",
+    display: "flex",
+    flexDirection: "column",
   },
   chartWrap: {
     position: "relative",
+    flex: "1 1 0",
+    minHeight: 0,
   },
   chartOverlay: {
     position: "absolute",
@@ -221,7 +221,7 @@ const styles = reactStyles({
     color: "#262262",
   },
   note: {
-    fontSize: "0.78rem",
+    fontSize: "0.5rem",
     color: "#6C6C6C",
     padding: "0.5rem 1rem 0.75rem",
   },
@@ -254,6 +254,7 @@ export const ChelMapReactComponent = withRouteData(
     valueCache: Record<string, number[]> = {};
     mounted = false;
     chartRef = React.createRef<HighchartsReact.RefObject>();
+    chartWrapObserver: ResizeObserver | null = null;
 
     constructor(props: Props) {
       super(props);
@@ -277,7 +278,29 @@ export const ChelMapReactComponent = withRouteData(
     componentWillUnmount() {
       this.mounted = false;
       window.removeEventListener("resize", this.reflow);
+      if (this.chartWrapObserver) {
+        this.chartWrapObserver.disconnect();
+        this.chartWrapObserver = null;
+      }
     }
+
+    /**
+     * The chart's height now comes from the flex layout (it fills whatever the metric panel
+     * leaves), and that height is only known after the sidebar has rendered. Highcharts reads
+     * its container once at creation -- if the box is still 0 tall it falls back to 400px --
+     * and only re-measures on window resize. Watching the wrapper itself catches every
+     * layout change, including the first settle.
+     */
+    setChartWrap = (el: HTMLDivElement | null) => {
+      if (this.chartWrapObserver) {
+        this.chartWrapObserver.disconnect();
+        this.chartWrapObserver = null;
+      }
+      if (el && typeof ResizeObserver !== "undefined") {
+        this.chartWrapObserver = new ResizeObserver(() => this.reflow());
+        this.chartWrapObserver.observe(el);
+      }
+    };
 
     /**
      * Highcharts measures its container when the chart is created. The map lives in a flex
@@ -393,6 +416,10 @@ export const ChelMapReactComponent = withRouteData(
         i / (ramp.length - 1),
         color,
       ]);
+      // The tooltip's position bar and value reuse the map's ramp, so the bar reads as the
+      // same scale as the hexes and legend.
+      const rampGradient = "linear-gradient(to right," + ramp.join(",") + ")";
+      const rampDarkest = ramp[ramp.length - 1];
 
       const data = cells.map((cell, i) => ({
         h3_id: cell.h3Id,
@@ -446,7 +473,6 @@ export const ChelMapReactComponent = withRouteData(
       return {
         chart: {
           backgroundColor: "rgba(0, 0, 0, 0)",
-          height: 720,
           animation: false,
         },
         title: { text: undefined },
@@ -470,6 +496,7 @@ export const ChelMapReactComponent = withRouteData(
           max: metric.maxValue,
           stops,
           labels: {
+            style: { fontSize: "0.8em" },
             formatter: function () {
               return Number(this.value).toFixed(decimals) + suffix;
             },
@@ -513,8 +540,6 @@ export const ChelMapReactComponent = withRouteData(
           pointFormatter: function () {
             const point: any = this;
             const pct = Math.round(rankOf(point.value) * 100);
-            const quintile =
-              QUINTILE_LABELS[Math.min(4, Math.floor((pct / 100) * 5))];
 
             return (
               WRAPPER_OPEN +
@@ -525,12 +550,16 @@ export const ChelMapReactComponent = withRouteData(
               '<span style="color:#216FB4;font-weight:600">' +
               title +
               "</span>" +
-              '<span style="color:#262262;font-weight:600">' +
+              '<span style="color:' +
+              rampDarkest +
+              ';font-weight:600">' +
               fmt(point.value) +
               "</span></div>" +
               // position bar
               '<div style="position:relative;height:10px;border-radius:5px;' +
-              "background:linear-gradient(to right,#F2F2F2,#9E9AC8,#54278F);" +
+              "background:" +
+              rampGradient +
+              ";" +
               'margin-bottom:4px">' +
               '<div style="position:absolute;top:-2px;left:calc(' +
               pct +
@@ -551,13 +580,6 @@ export const ChelMapReactComponent = withRouteData(
               (observedMin === null ? "-" : fmt(observedMin)) +
               " to " +
               (observedMax === null ? "-" : fmt(observedMax)) +
-              ".</div>" +
-              '<div style="font-size:11.5px;color:#216FB4;line-height:1.45;' +
-              'padding-top:6px">' +
-              "This area falls in the <b>" +
-              quintile +
-              "</b> fifth for " +
-              title.toLowerCase() +
               ".</div>" +
               "</div>"
             );
@@ -674,12 +696,18 @@ export const ChelMapReactComponent = withRouteData(
               <div style={styles.mapPanel}>
                 {error && <div style={styles.status}>{error}</div>}
                 {!error && metric && (
-                  <div style={styles.chartWrap}>
+                  <div style={styles.chartWrap} ref={this.setChartWrap}>
                     <HighchartsReact
                       highcharts={Highcharts}
                       options={this.buildOptions()}
                       constructorType={"mapChart"}
                       ref={this.chartRef}
+                      // Absolutely filling the wrapper, not height: 100% -- a percentage
+                      // height inside a flex item does not resolve in every browser
+                      // (Safari), which leaves the container 0 tall.
+                      containerProps={{
+                        style: { position: "absolute", top: 0, right: 0, bottom: 0, left: 0 },
+                      }}
                       allowChartUpdate={true}
                       immutable={false}
                     />
