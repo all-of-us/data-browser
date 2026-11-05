@@ -82,12 +82,12 @@ const tooltipHeader = (cellIndex: number) =>
 // display unit, so printing it raw puts the word "value" under a metric title. Only entries
 // that read as real units are shown; everything else renders as a bare number, which is how
 // most of these metrics are meant to appear. Percent is omitted because display_format
-// already appends % to the values themselves.
+// already appends % to the values themselves. "days" is omitted because the title
+// (e.g. Extreme Heat Days) already says it.
 //
 // Diesel PM (E_DSLPM) is the one that genuinely wants a unit and has none in the delivery --
 // add it here once CLAD supplies it.
 const DISPLAY_UNITS: Record<string, string> = {
-  days: "days",
   rank: "rank",
 };
 
@@ -150,12 +150,6 @@ const styles = reactStyles({
     color: "#6C6C6C",
     margin: "0.75rem 0 0.4rem",
   },
-  panelHeading: {
-    fontSize: "0.95rem",
-    fontWeight: 600,
-    color: "#262262",
-    marginBottom: "0.75rem",
-  },
   scrollArea: {
     maxHeight: "36rem",
     overflowY: "auto",
@@ -192,16 +186,12 @@ const styles = reactStyles({
     color: "#262262",
     lineHeight: 1.4,
   },
-  downloadButton: {
-    width: "100%",
-    background: "#2F5CC5",
-    color: "#FFFFFF",
-    border: "none",
-    borderRadius: "6px",
-    padding: "0.7rem",
-    fontSize: "1rem",
-    fontFamily: "'Gotham A', 'Gotham B', 'Helvetica Neue', sans-serif",
-    cursor: "pointer",
+  cardMeta: {
+    fontSize: "0.8rem",
+    color: "#262262",
+    lineHeight: 1.4,
+    textAlign: "right",
+    marginTop: "0.25rem",
   },
   mapPanel: {
     flex: "1 1 auto",
@@ -611,37 +601,6 @@ export const ChelMapReactComponent = withRouteData(
       };
     }
 
-    /**
-     * Builds a CSV of the selected metric from data already in memory: one row per cell,
-     * with the value blank where there is none. No round trip to the server.
-     */
-    downloadCurrent = () => {
-      const metric = this.selectedMetric();
-      const { cells, values } = this.state;
-      if (!metric || !cells.length) {
-        return;
-      }
-      const lines = ["h3_id,centroid_lat,centroid_lon," + metric.metricId];
-      cells.forEach((cell, i) => {
-        const v = values[i];
-        lines.push(
-          [
-            cell.h3Id,
-            cell.centroidLat,
-            cell.centroidLon,
-            v === null || v === undefined ? "" : v,
-          ].join(",")
-        );
-      });
-      const blob = new Blob([lines.join("\n")], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "chel_" + metric.metricKey + ".csv";
-      link.click();
-      URL.revokeObjectURL(url);
-    };
-
     renderSidebar() {
       const { metrics, selectedKey } = this.state;
       const byGroup = GROUP_ORDER.map((group) => ({
@@ -654,7 +613,6 @@ export const ChelMapReactComponent = withRouteData(
       return (
         <div style={styles.sidebarColumn}>
           <div style={styles.panel}>
-            <div style={styles.panelHeading}>Environmental Factors</div>
             <div style={styles.scrollArea}>
               {byGroup.map((group) => (
                 <div key={group.key}>
@@ -679,8 +637,9 @@ export const ChelMapReactComponent = withRouteData(
                             {DISPLAY_UNITS[metric.unit]}
                           </div>
                         )}
-                        <div style={styles.cardDesc}>
-                          {metric.description} ({metric.metricId}, {metric.year})
+                        <div style={styles.cardDesc}>{metric.description}</div>
+                        <div style={styles.cardMeta}>
+                          {metric.metricId}, {metric.year}
                         </div>
                       </button>
                     );
@@ -689,13 +648,6 @@ export const ChelMapReactComponent = withRouteData(
               ))}
             </div>
           </div>
-          <button
-            type="button"
-            style={styles.downloadButton}
-            onClick={this.downloadCurrent}
-          >
-            Download Data
-          </button>
         </div>
       );
     }
