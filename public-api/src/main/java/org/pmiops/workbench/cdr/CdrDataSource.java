@@ -2,16 +2,17 @@ package org.pmiops.workbench.cdr;
 
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.PersistenceException;
-import jakarta.persistence.TypedQuery;
 import javax.sql.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolConfiguration;
 import org.pmiops.workbench.db.model.DbCdrVersion;
@@ -28,6 +29,9 @@ public class CdrDataSource extends AbstractRoutingDataSource {
     private final PoolConfiguration basePoolConfig;
     private final PoolConfiguration cdrPoolConfig;
     private final EntityManagerFactory emFactory;
+
+    // CDR version ID -> public DB name, for versions whose DB could not be opened at startup.
+    private final Map<Object, String> unavailableVersions = new HashMap<>();
 
     CdrDataSource(
             DbParams params,
@@ -52,6 +56,8 @@ public class CdrDataSource extends AbstractRoutingDataSource {
             // This emits "Table 'CDR_VERSION' not found" before throwing to this catch, so it is not
             // necessary to warn further.
             return new ArrayList<>();
+        } finally {
+            em.close();
         }
     }
 
@@ -60,24 +66,42 @@ public class CdrDataSource extends AbstractRoutingDataSource {
     }
 
     void resetTargetDataSources() {
-        // Build a map of CDR version ID -> DataSource for use later, based on all the entries in the
-        // cdr_version table. Note that if new CDR versions are inserted, we need to restart the
-        // server in order for it to be used.
-        // TODO: find a way to make sure CDR versions aren't shown in the UI until they are in use by
-        // all servers.
+        // Build a map of CDR version ID -> DataSource based on all entries in the cdr_version table.
+        // If new CDR versions are inserted, the server must be restarted for them to be used.
+        // A version whose DB cannot be opened is skipped and recorded, so one bad row cannot take
+        // down the others; requests for it fail with a clear message (see determineTargetDataSource).
         Map<Object, Object> cdrVersionDataSourceMap = new HashMap<>();
+        unavailableVersions.clear();
+
         for (DbCdrVersion cdrVersion : getCdrVersions()) {
+            Object id = cdrVersion.getCdrVersionId();
+            String dbName = cdrVersion.getPublicDbName();
             try {
-                DataSource dataSource = createCdrDs(cdrVersion.getPublicDbName());
+                DataSource dataSource = createCdrDs(dbName);
                 if (dataSource == null) {
+                    unavailableVersions.put(id, dbName);
                     continue;
                 }
-                cdrVersionDataSourceMap.put(cdrVersion.getCdrVersionId(), dataSource);
+                cdrVersionDataSourceMap.put(id, dataSource);
             } catch (HikariPool.PoolInitializationException e) {
-                // If this is caught, java.sql.SQLSyntaxErrorException: Unknown database 'name'
-                // was thrown, so no need to repeat here.
+                unavailableVersions.put(id, dbName);
+                log.log(
+                        Level.SEVERE,
+                        String.format(
+                                "CDR version %s unavailable: could not open database '%s' (%s). "
+                                        + "Restore the database or remove this cdr_version row, then restart.",
+                                id, dbName, e.getMessage()));
             }
         }
+
+        log.info(
+                String.format(
+                        "CDR datasources ready: %d available %s, %d unavailable %s",
+                        cdrVersionDataSourceMap.size(),
+                        cdrVersionDataSourceMap.keySet(),
+                        unavailableVersions.size(),
+                        unavailableVersions));
+
         setTargetDataSources(cdrVersionDataSourceMap);
     }
 
@@ -86,8 +110,22 @@ public class CdrDataSource extends AbstractRoutingDataSource {
         return CdrVersionContext.getCdrVersion().getCdrVersionId();
     }
 
+    @Override
+    protected DataSource determineTargetDataSource() {
+        Object key = determineCurrentLookupKey();
+        String missingDb = unavailableVersions.get(key);
+        if (missingDb != null) {
+            throw new IllegalStateException(
+                    String.format(
+                            "CDR version %s is unavailable: database '%s' could not be opened when this "
+                                    + "instance started. Restore the database and restart instances.",
+                            key, missingDb));
+        }
+        return super.determineTargetDataSource();
+    }
+
     Optional<String> getEnv(String name) {
-        return Optional.ofNullable(System.getenv(name)).map(s -> s.trim()).filter(s -> s != "");
+        return Optional.ofNullable(System.getenv(name)).map(String::trim).filter(s -> !s.isEmpty());
     }
 
     String getEnvRequired(String name) {
