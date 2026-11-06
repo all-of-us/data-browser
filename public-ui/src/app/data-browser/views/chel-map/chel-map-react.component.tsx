@@ -68,7 +68,7 @@ const WRAPPER_OPEN =
   'font-family:\'Gotham A\', \'Gotham B\', \'Helvetica Neue\', sans-serif">';
 
 const tooltipHeader = (cellIndex: number) =>
-  '<div style="font-size:15px;font-weight:600;color:#262262;' +
+  '<div style="font-size:15px;font-weight:600;color:#6C6C6C;' +
   'padding-bottom:6px;border-bottom:1px solid #E5E5E5">Hex ' +
   cellIndex +
   "</div>";
@@ -169,7 +169,7 @@ const styles = reactStyles({
   },
   cardTitle: {
     fontWeight: 600,
-    color: "#302C71",
+    color: "#262262",
     marginBottom: "0.15rem",
   },
   cardUnit: {
@@ -221,7 +221,7 @@ const styles = reactStyles({
     color: "#262262",
   },
   note: {
-    fontSize: "0.5rem",
+    fontSize: "0.5em",
     color: "#6C6C6C",
     padding: "0.5rem 1rem 0.75rem",
   },
@@ -547,7 +547,7 @@ export const ChelMapReactComponent = withRouteData(
               // metric and value
               '<div style="display:flex;justify-content:space-between;' +
               'align-items:baseline;padding:8px 0 10px">' +
-              '<span style="color:#216FB4;font-weight:600">' +
+              '<span style="color:#262262;font-weight:600">' +
               title +
               "</span>" +
               '<span style="color:' +
@@ -570,7 +570,7 @@ export const ChelMapReactComponent = withRouteData(
               'font-size:11px;color:#6C6C6C;padding-bottom:8px">' +
               "<span>Lowest</span><span>Highest</span></div>" +
               // explanation
-              '<div style="font-size:11.5px;color:#216FB4;line-height:1.45">' +
+              '<div style="font-size:11.5px;color:#262262;line-height:1.45">' +
               pct +
               "% of the " +
               sorted.length +
